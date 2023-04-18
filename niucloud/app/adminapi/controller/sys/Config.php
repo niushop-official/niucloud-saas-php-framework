@@ -45,7 +45,7 @@ class Config extends BaseAdminController
             ["phone",""],
             ["business_hours",""],
         ]);
-        $this->validate($data, 'app\validate\site\site.update');
+        $this->validate($data, 'app\validate\site\Site.update');
         (new ConfigService())->setWebSite($data);
         return success();
     }
