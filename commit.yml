@@ -2,25 +2,10 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'bc6e48dfca645912dfc37e791a98ce0f4d6a73dc'
-    oldFile: !uuid '966510f04428e5f2e66748d7bcd596d9e260d1c6'
-  /niucloud/app:
-    newFile: !uuid '2722dcd70f4ae186b8cc26d723ad0213ad101609'
-    oldFile: !uuid 'f642f9b04f52944f1080ed38b618af6b0b2372b9'
-  /niucloud/app/adminapi:
-    newFile: !uuid '94c14877bcde64a1dd43be26e2e342bf60f88c52'
-    oldFile: !uuid '5ce6323c2c0d93f715791e606f8303ec76ada4e9'
-  /niucloud/app/adminapi/controller:
-    newFile: !uuid '97436c093143b82106e26509e5551a9fb3ef436e'
-    oldFile: !uuid '9d8fe5862a92c3d20fdddfe9e6c2129c8d14fd0a'
-  /niucloud/app/adminapi/controller/generator:
-    newFile: !uuid 'cf442428c646cde4c0e6bdfa95ee133aa78c8dce'
-    oldFile: !uuid 'd45c000e7f80ce134809768b101c91a205695f6c'
-  /niucloud/app/adminapi/controller/generator/Generator.php:
-    newFile: !uuid '782da50d6d80ec1cf4e0c8e957a33b5a84674965'
-    oldFile: !uuid '03cf2b941cb9153a52bc2dcb914bc049de080eb1'
-gitCommitId: !uuid '69235add6d250d467e4e082ac120e0edc169f1ad'
+  /README.md:
+    newFile: !uuid 'baa6b8f687c30eb15372f2d77efe149589e896fb'
+    oldFile: !uuid '9a93adda24e2bc3a9703b60c65572c7258418a81'
+gitCommitId: !uuid '7974ee67bc2b44722b1ceed41138f361727609aa'
 renames: {
   }
-revisionId: 6
+revisionId: 7
