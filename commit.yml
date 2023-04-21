@@ -2,10 +2,13 @@
 branches: {
   }
 fileChange:
-  /README.md:
-    newFile: !uuid '019e84653cda0e9696248577526496836985d07d'
-    oldFile: !uuid 'baa6b8f687c30eb15372f2d77efe149589e896fb'
-gitCommitId: !uuid 'b17a68057a3748895a94cb94def00f7f5ddd0b38'
+  /niucloud:
+    newFile: !uuid '6bfe3ac622adab12986161f58c4fbf615d41d040'
+    oldFile: !uuid 'dcea07b8a90eb5daf022fc0657dc3ececc5a0fb2'
+  /niucloud/.htaccess:
+    newFile: !uuid '81fe165fe8096b10f1e5d153ecd30e000bf1b954'
+    oldFile: null
+gitCommitId: !uuid '8e23f2149f3ab691079a4b204bdbb5b7ad529e97'
 renames: {
   }
-revisionId: 11
+revisionId: 12
