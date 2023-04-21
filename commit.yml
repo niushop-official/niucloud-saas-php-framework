@@ -3,12 +3,21 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '6bfe3ac622adab12986161f58c4fbf615d41d040'
-    oldFile: !uuid 'dcea07b8a90eb5daf022fc0657dc3ececc5a0fb2'
+    newFile: !uuid 'b0b86a9e883e1b488c26f10dfefa2ea19c294f55'
+    oldFile: !uuid '6bfe3ac622adab12986161f58c4fbf615d41d040'
   /niucloud/.htaccess:
+    newFile: null
+    oldFile: !uuid '81fe165fe8096b10f1e5d153ecd30e000bf1b954'
+  /niucloud/public:
+    newFile: !uuid '5770d8a4873e09e27c5d4075c2f7763f798ba35d'
+    oldFile: !uuid 'bd9c440c220392c2f8e8ab74993a0633601f815b'
+  /niucloud/public/.gitignore:
+    newFile: !uuid '604067ecd9bb7c71717ee0646a23923bdf6d4f87'
+    oldFile: !uuid 'e7a89feb399d74b74575c0dd9d054ebfd7ce707a'
+  /niucloud/public/.htaccess:
     newFile: !uuid '81fe165fe8096b10f1e5d153ecd30e000bf1b954'
     oldFile: null
-gitCommitId: !uuid '8e23f2149f3ab691079a4b204bdbb5b7ad529e97'
-renames: {
-  }
-revisionId: 12
+gitCommitId: !uuid '5f23d1a1af3c17a1d6f9ca2c835e2ca1b5a02218'
+renames:
+  /niucloud/public/.htaccess: /niucloud/.htaccess
+revisionId: 13
