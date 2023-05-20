@@ -2,10 +2,115 @@
 branches: {
   }
 fileChange:
-  /README.md:
-    newFile: !uuid 'c2cb31cc55bf8f3586a6b6351924e1db36d0f44f'
-    oldFile: !uuid '6d07ef10431ea486b00efa87a0484b3c98067392'
-gitCommitId: !uuid 'fa37c55a5df23a1e01590b72372e91e36f798a14'
+  /web:
+    newFile: !uuid '677c50d24a7a68bd0b1988cf07302e50df228182'
+    oldFile: !uuid '707b8ab43952fa5baadf9014389ceb3ff897cd3c'
+  /web/.gitignore:
+    newFile: !uuid '152d35c0ff53e913ca7e3d652aca8b9b0d363954'
+    oldFile: !uuid '90e126daf02e04a95bc074d06ab6df75f17b51cd'
+  /web/api:
+    newFile: !uuid 'abed89cb5b3e96316f83ab927137b6b07d2ef697'
+    oldFile: !uuid '8fc6ec06d636564433dd5af030f703461d952f79'
+  /web/api/member.ts:
+    newFile: !uuid '06e0f5cee881c13541bce0ae0be26c433f311708'
+    oldFile: !uuid 'ac7c027044e69787654437fa00c06bf90e466de3'
+  /web/api/system.ts:
+    newFile: !uuid '3c1d2c0b9666f032da6b76943428b3bca6512a8a'
+    oldFile: !uuid '0f544abc54559e09826517f855bb98dea4c28450'
+  /web/app.vue:
+    newFile: !uuid '82729e23bb80967b68cc2e5576fd7ec2ae887e9a'
+    oldFile: !uuid 'a8dab3971f0d2e83eb0c9bac152159f9d1269f09'
+  /web/assets:
+    newFile: !uuid '80d4a64e8b23935b9258c9f383d776cc5df538fb'
+    oldFile: !uuid '2d5ac5d234a6bebea303cbe58aa3d05e5eb3db26'
+  /web/assets/images:
+    newFile: !uuid '25f0dce70059cf3225dd51e80db3fe9249b78437'
+    oldFile: !uuid '7fa267d361dcf9725a095aa2c86fe072c27b830b'
+  /web/assets/images/index_carousel.png:
+    newFile: !uuid '38515e1f2c525768c20b6de0793a9e708c29cb54'
+    oldFile: !uuid '034ad88bb489541c82ea058c75d634975687b174'
+  /web/components:
+    newFile: !uuid '024589749145bd95726de884c5c4c18163dae1f6'
+    oldFile: !uuid '5d5387b1d8e1f1f732cf14d9c8df2940104de31c'
+  /web/components/sms-code:
+    newFile: !uuid '918834f051e0962726aa17701d3c2dddaccde787'
+    oldFile: !uuid 'e1fbd40078bbf2dfbc082d90157ece09309f4a15'
+  /web/components/sms-code/index.vue:
+    newFile: !uuid 'f958eeaccab539f00465016f4ffb4eb3a4438da2'
+    oldFile: !uuid '3e9a4aefeec1c22883dfc1c0784c6296d8901314'
+  /web/composables:
+    newFile: !uuid 'cc6b331a0f2bfccc308294762c5c00d40d4d8a6b'
+    oldFile: !uuid 'b7212e0437ca3f85735cad7ded4bfbd96aeb647f'
+  /web/composables/useLang.ts:
+    newFile: !uuid '8faf483ad6d0d8ec144b22c4f5fb6f416ca56f06'
+    oldFile: !uuid 'd7a0f5ac4f3b62f6001e85fbdd63a237137c5b56'
+  /web/lang:
+    newFile: !uuid 'e3674b845cdb12e49cb568a84269f4d96878da3a'
+    oldFile: !uuid 'ce7ea62a148ef0de5aad79f5f713b98aa7323cb7'
+  /web/lang/zh-cn:
+    newFile: !uuid '2121017a9998498e31968d09d083cc93c58d459a'
+    oldFile: !uuid 'fe811de7e947e82a9041e6a30c7b7f78f7cd30e2'
+  /web/lang/zh-cn/article.detail.json:
+    newFile: !uuid '96fc010c452dff553b39b1fddb6eba8aa0b89cf0'
+    oldFile: null
+  /web/lang/zh-cn/article.list.json:
+    newFile: !uuid '96fc010c452dff553b39b1fddb6eba8aa0b89cf0'
+    oldFile: null
+  /web/lang/zh-cn/auth.login.json:
+    newFile: !uuid '7c3ae24825643adc78610c23b4c26ba6bb1fefff'
+    oldFile: null
+  /web/lang/zh-cn/pages.json:
+    newFile: !uuid 'bc017438ca2b7f3ff9f2baa15fb1bb82c32bb195'
+    oldFile: !uuid '01a5cfd3d229cc6b69e06afb05dc6a5ec5d661a1'
+  /web/layouts:
+    newFile: !uuid '008fabdd138da77438d1e6f59212c3320a594944'
+    oldFile: !uuid 'ae7ab3d0697631ec3c206bcd35728c6bfedfcb36'
+  /web/layouts/components:
+    newFile: !uuid '0b2486f7d6352cd6070f7a8b2a2a9cb8590f831c'
+    oldFile: !uuid '7aad25f5dba7086d12dd5bff3bf6ef9883681902'
+  /web/layouts/components/header:
+    newFile: !uuid '339944144d3de5cacdf30a9c01d978013ef3db82'
+    oldFile: !uuid '4fdac856ebc8b2ecb022288c6dc4597f0244d993'
+  /web/layouts/components/header/index.vue:
+    newFile: !uuid '206e4764ebc05f7076675681ef11e74fe785b2ea'
+    oldFile: !uuid '77070187b0b3edb06f24f7a429e5f9f7615af3b3'
+  /web/package-lock.json:
+    newFile: !uuid '4b44d1365d4c4955b3d263d51f61a78959962bce'
+    oldFile: !uuid '9796cc63b61d7518c2b93df2b3bcccfb076510d3'
+  /web/package.json:
+    newFile: !uuid 'c1599a81d79001584b22677eb20b489a6d8fc674'
+    oldFile: !uuid '0999ad330612105d7f04ca5779e3aa8fe3d392a6'
+  /web/pages:
+    newFile: !uuid '5e8a173bd9eb0813c3889b42b354c1a712d25890'
+    oldFile: !uuid '14caf118e2f8cce307e6ffe098c1f47832f92d81'
+  /web/pages/article:
+    newFile: !uuid '49295ff99ffc494958090de10cbad562c8e57b69'
+    oldFile: null
+  /web/pages/article/detail.vue:
+    newFile: !uuid '7cc8b8bb709636c4d8a2dde07e30f0f74631e18a'
+    oldFile: null
+  /web/pages/article/list.vue:
+    newFile: !uuid 'b7c8ecc84482eda35fabad7854620edb4df1885f'
+    oldFile: null
+  /web/pages/auth:
+    newFile: !uuid '4e12040b6a126968f48d1d3a6117411188d74abc'
+    oldFile: !uuid 'faedd91134fbdff231740c8efc316ac2c982b690'
+  /web/pages/auth/login.vue:
+    newFile: !uuid '25ea7be9787337f856f538f68f84089e32439606'
+    oldFile: !uuid '382d26dea10af1f499db23f2e75052f917dac987'
+  /web/pages/member:
+    newFile: !uuid '039eb9566c3518349d3b75c95c2c296abaab4951'
+    oldFile: !uuid '718659e94112c90e121b4ec3452ef22b8d33ffef'
+  /web/pages/member/center.vue:
+    newFile: !uuid '41a664b787def3773fde1918af044c9c050305a5'
+    oldFile: !uuid '6fb939e38db48c49dea8cf6c339140dac768b466'
+  /web/utils:
+    newFile: !uuid 'dca15ccde5867862619def5df581a3fafd0097a4'
+    oldFile: !uuid 'f150d1403633d16789e0da642581bd55a986a680'
+  /web/utils/request.ts:
+    newFile: !uuid '2841a3b08c66fb5ccd2292c1dc4088acedc95622'
+    oldFile: !uuid '5de628a7de484ae714e47d8cea180bb1d5afc882'
+gitCommitId: !uuid 'e2537e99b001fa4fc88e38e8ee8dec838ad5b5ac'
 renames: {
   }
-revisionId: 44
+revisionId: 45
