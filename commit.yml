@@ -2,19 +2,19 @@
 branches: {
   }
 fileChange:
-  /upgrade:
-    newFile: !uuid '63fce8c9f3bc1a1ae25a9abf9e96316ce84dd809'
-    oldFile: !uuid '5c6c33bba26864b99fe663a86645f0276eef9638'
-  /upgrade/20230531.1.0.2:
-    newFile: !uuid 'f48ebb1699de4c17eaa4c6280efb79fea1b3dc0a'
-    oldFile: !uuid '43916f4d5766494ee906634dfb2f5d72b4d060de'
-  /upgrade/20230531.1.0.2/database.sql:
-    newFile: !uuid '103663038081317c7c07c49a892f13aa770bbbc0'
-    oldFile: !uuid '04fc24658347ee7ef0ac0b7fa7d662704113c117'
-  /upgrade/20230531.1.0.2/upgrade.sql:
-    newFile: !uuid '50ce2c1eab8b7cc08bd65f35a5d6d1a350bc232a'
-    oldFile: !uuid '0dab95072563eadd51710512ecd0dbf78d3f2799'
-gitCommitId: !uuid '9dec677b1ee796afddf3d53708ce1ab526ca113f'
+  /admin:
+    newFile: !uuid '957760132eefe403f111185395b7ef818f831407'
+    oldFile: !uuid '944a26f0df8839cea1ceec7c2f945aa05ae91a46'
+  /admin/auto-imports.d.ts:
+    newFile: !uuid 'a51b7a66e7ad9a532e83b4cab6e64bd9ab09aeb6'
+    oldFile: !uuid '08908edd6a4136cad144e7a483f291f9d9618be2'
+  /admin/components.d.ts:
+    newFile: !uuid '7fcb7ca9aa3e12d157024c108bd6de87977c04e5'
+    oldFile: !uuid '2909be7555aef124ebaee8451bceb62996ec240f'
+  /admin/package-lock.json:
+    newFile: !uuid '328310d0ea619e10e0ef21c6568a538ddb11f2e5'
+    oldFile: !uuid 'af3e999b6f85b08ce841d13f58e456f4e20229a4'
+gitCommitId: !uuid '39b4608da005199945c45c986160125355bfd9e8'
 renames: {
   }
-revisionId: 63
+revisionId: 64
