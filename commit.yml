@@ -3,120 +3,204 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'baa8b21da34b8ba6070ef9ec138de3ae2a957f76'
-    oldFile: !uuid 'c6680fb8ee2d161339b9c2bc3fa9fc30e68082d1'
-  /niucloud/extend:
+    newFile: !uuid '43ae92f83a24678184ae305a5dbe3b0c335e7a5c'
+    oldFile: !uuid 'baa8b21da34b8ba6070ef9ec138de3ae2a957f76'
+  /niucloud/.env:
+    newFile: !uuid '2bd64549a1a7374a2bf31176922e898d8bef7cf1'
+    oldFile: !uuid '399f7e5f6d5f3c95494a339f829562109e65f4c2'
+  /niucloud/vendor:
+    newFile: !uuid '4d747c4c22c04a5294607169f3698ffb8f2e9560'
+    oldFile: !uuid 'c1c44fc140d47c262478085143eb4fe35cdbd74a'
+  /niucloud/vendor/composer:
+    newFile: !uuid '3bdd794c286496d29da6a9f84a1b132259dcdcb3'
+    oldFile: !uuid 'd8ca2f580eb120f1eb460abcfe300ff6048c6f34'
+  /niucloud/vendor/composer/autoload_files.php:
+    newFile: !uuid 'd56d9f7a706cd173920e138a9bbd3a6e5a9472de'
+    oldFile: !uuid 'cc8b6f2c4d3813b6fd975e7c086e1476adfc9f5d'
+  /niucloud/vendor/composer/autoload_psr4.php:
+    newFile: !uuid '2ed5d042825eaebcbec70d1971c1a478d8fc12af'
+    oldFile: !uuid 'b7663ed79b7f604c00308a30351dc11b212f77d3'
+  /niucloud/vendor/composer/autoload_static.php:
+    newFile: !uuid 'a7281c5ae246e6ede531828d152e39b30e683c00'
+    oldFile: !uuid 'b6eaa7f9f098d2da8ca00dd84dd193a83e32f394'
+  /niucloud/vendor/composer/installed.json:
+    newFile: !uuid '749b7202ebfb80fb531fc50dd1cff1682b1ef360'
+    oldFile: !uuid 'b2349d3633623fc9a13267cfa379509baaa9ac9b'
+  /niucloud/vendor/composer/installed.php:
+    newFile: !uuid '6afaec7bb882a9381c3239df2faa68cf22d56eb2'
+    oldFile: !uuid '51bd46cee42a1c6734eded19ee37a996fc9e48ab'
+  /niucloud/vendor/guzzlehttp:
+    newFile: !uuid '8c9689c841fde9c8b6e2bede427c8ed67c0df203'
+    oldFile: !uuid '32d805959adc49e8ef5bc20d6b4241b7673a5d52'
+  /niucloud/vendor/guzzlehttp/promises:
+    newFile: !uuid '5f146f2548d0c13c4c52d8d5b083353c90f1d710'
+    oldFile: !uuid '1348d37fc6be038342fbe9144e9a1b5fd7d05570'
+  /niucloud/vendor/guzzlehttp/promises/CHANGELOG.md:
+    newFile: !uuid '2e1a2f3841be01916979e370c15c0b6ebc0f444c'
+    oldFile: !uuid '253282eb1c87a7826beadac5dff7a471fccd1e98'
+  /niucloud/vendor/guzzlehttp/promises/composer.json:
+    newFile: !uuid '966e3e3a8ba04c5a26b2c845a6cdf88e47cead00'
+    oldFile: !uuid 'c959fb32b413b9b3a1386e02ac43c79661f02239'
+  /niucloud/vendor/guzzlehttp/promises/src:
+    newFile: !uuid 'b48da706c1058a908b6bc7fe4dd3c753fca071d6'
+    oldFile: !uuid 'd1cba34111ce57603f7f5c5c479fc5a120a799ac'
+  /niucloud/vendor/guzzlehttp/promises/src/Each.php:
+    newFile: !uuid 'ff8efd734bf5ca54d7be89b2e4ef6d447028459c'
+    oldFile: !uuid '1dda3549932f50402af746f4933c6c34011e98ec'
+  /niucloud/vendor/guzzlehttp/promises/src/Utils.php:
+    newFile: !uuid 'e37618833aaa6fd494a022130269b1121fba3fbe'
+    oldFile: !uuid '8647126d8a6ac918de3cfc71b4d7325cae2a62f8'
+  /niucloud/vendor/services.php:
+    newFile: !uuid '5fbbd6aa42925114c1777b32077331abe445a894'
+    oldFile: !uuid '71a4cdecb10e56bedd875c3cf2ccc161bc969686'
+  /niucloud/vendor/topthink:
+    newFile: !uuid 'bf2d9409f3cb5a535474054a53049f62dd23541d'
+    oldFile: !uuid 'b51fa502464c3ed40f0d7e1ffb8f00187f32874f'
+  /niucloud/vendor/topthink/think-captcha:
+    newFile: !uuid '262f4de3441d84403e5e8f797f630e452902aca6'
+    oldFile: !uuid '4984efca8d11a23c5c7e2af33a55c483e6e4c867'
+  /niucloud/vendor/topthink/think-captcha/src:
+    newFile: !uuid '527cc93cb0b1ba47bc5be941c86fd70749a734e0'
+    oldFile: !uuid '470f5f463cc06a3b0e91a2bb444326c66d8cb881'
+  /niucloud/vendor/topthink/think-captcha/src/Captcha.php:
+    newFile: !uuid '3de7325480aff479835fe41905effda802c5404b'
+    oldFile: !uuid '80844dbd5a7d74de1ba75f13acf645bcb05fc09b'
+  /niucloud/vendor/yunwuxin:
     newFile: null
-    oldFile: !uuid '2aaedad4b0ce5221336fa2321f2f10e52fb5dedf'
-  /niucloud/extend/driver:
+    oldFile: !uuid '618ee530edba2e8bcef0135d89e2cf4d47c56222'
+  /niucloud/vendor/yunwuxin/think-cron:
     newFile: null
-    oldFile: !uuid 'c3dbb430ab05e80191c1765a6309253b33bdd9e7'
-  /niucloud/extend/driver/file:
+    oldFile: !uuid '1258baabddafc46a19f065aaefc93fbdef352b35'
+  /niucloud/vendor/yunwuxin/think-cron/.gitignore:
     newFile: null
-    oldFile: !uuid '5348e9806dfe7207f58af2ba2c4e45aa3bc31142'
-  /niucloud/extend/driver/file/FileDriver.php:
+    oldFile: !uuid '35ec8a0f095c9d70d635841a9003e48507d87a69'
+  /niucloud/vendor/yunwuxin/think-cron/README.md:
     newFile: null
-    oldFile: !uuid 'b5c4a7d8cf0dc5426bce10d3950ed64e6f3aa3b5'
-  /niucloud/extend/driver/file/Storage.php:
+    oldFile: !uuid '2da9a185587bbde7b38653117bc438897748d250'
+  /niucloud/vendor/yunwuxin/think-cron/composer.json:
     newFile: null
-    oldFile: !uuid '3d3ce16b7d7004c7d058b72ba4497a9a90db7a69'
-  /niucloud/extend/driver/file/ToolTrait.php:
+    oldFile: !uuid '044d966c654c4e515ae657ea4c62a3890511e084'
+  /niucloud/vendor/yunwuxin/think-cron/src:
     newFile: null
-    oldFile: !uuid '750d173289a62781f26e73fff63b8173c9f59468'
-  /niucloud/extend/driver/file/storage:
+    oldFile: !uuid 'ff93c6c1938e8f1fb8800853b749af999f52e634'
+  /niucloud/vendor/yunwuxin/think-cron/src/config.php:
     newFile: null
-    oldFile: !uuid '5e57896cb2b62c4161473f3b677ad5d357990b84'
-  /niucloud/extend/driver/file/storage/Aliyun.php:
+    oldFile: !uuid 'e5a24290af1ce91663336fe93a7259897211b98f'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron:
     newFile: null
-    oldFile: !uuid '1d177e3ff49cdf18b80a1d86a14df90eed79a81a'
-  /niucloud/extend/driver/file/storage/Local.php:
+    oldFile: !uuid '66dadb82d21d56f765f1aa8cfa603d68d87246f2'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/ManagesFrequencies.php:
     newFile: null
-    oldFile: !uuid 'd20d5722a73343349af0ab9e1303a47044b6463d'
-  /niucloud/extend/driver/file/storage/Qcloud.php:
+    oldFile: !uuid '1b78ebae9cc1953a9539491f85be4f18832fef69'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/Scheduler.php:
     newFile: null
-    oldFile: !uuid '23dc9243e1b9ca40e0c08c7bfe553fbbc5602ae2'
-  /niucloud/extend/driver/file/storage/Qiniu.php:
+    oldFile: !uuid '9cf74aeece9ae3b34c485bdede3d3be5228d05e0'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/Service.php:
     newFile: null
-    oldFile: !uuid 'dd0828e1105267fb823f70458d17b3cf41b762c6'
-  /niucloud/extend/driver/pay:
+    oldFile: !uuid '33e3833831ba15b3f91385daeeca4e642db9b96e'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/Task.php:
     newFile: null
-    oldFile: !uuid '3fda40b5f51eca784bf702e6b6a7f0798dc6e825'
-  /niucloud/extend/driver/pay/BasePay.php:
+    oldFile: !uuid '5f491e8269c000f049d9669013911913f758bebe'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/command:
     newFile: null
-    oldFile: !uuid '7b7005050a1fe740e1d5bec2f324a631402b2406'
-  /niucloud/extend/driver/pay/PayDriver.php:
+    oldFile: !uuid 'aa4e7ce1d3c30a6911c197db2fcec6440647eb69'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/command/Run.php:
     newFile: null
-    oldFile: !uuid '28dc017662585074d664000f26aeb0af52f6c6ae'
-  /niucloud/extend/driver/pay/driver:
+    oldFile: !uuid '7b3718b6cd4878167239d5e7b0a7a69131343338'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/command/Schedule.php:
     newFile: null
-    oldFile: !uuid '521b303ab8943eeefb3ea6221f06d4e2cba178eb'
-  /niucloud/extend/driver/pay/driver/Alipay.php:
+    oldFile: !uuid 'edeea6041e83ca275232b50b9fd9048af3bfe5b2'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/event:
     newFile: null
-    oldFile: !uuid '9e2ad147d8d6a3443515c6f5879c7b5c964fbd47'
-  /niucloud/extend/driver/pay/driver/Wechatpay.php:
+    oldFile: !uuid 'a6763e851e3778bbfb1931641fb89341005faa34'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/event/TaskEvent.php:
     newFile: null
-    oldFile: !uuid '94bd36cddc89d0e652a0bab3d780aaee0fef6736'
-  /niucloud/extend/driver/sms:
+    oldFile: !uuid '33acb322b997ecd3481fc19127eee4de525b3fc8'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/event/TaskFailed.php:
     newFile: null
-    oldFile: !uuid '28e457bc89eb1d2f25f88c33aa3473976a2f2e6c'
-  /niucloud/extend/driver/sms/SmsDriver.php:
+    oldFile: !uuid 'a5675611186022d82c0e42a0cd5ce2c82de89418'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/event/TaskProcessed.php:
     newFile: null
-    oldFile: !uuid 'f730eae9141e4aa11b05b4b3af92834c76d0ddbf'
-  /niucloud/extend/driver/sms/driver:
+    oldFile: !uuid '44b74eac97506ca5ff774de7085392155b4395df'
+  /niucloud/vendor/yunwuxin/think-cron/src/cron/event/TaskSkipped.php:
     newFile: null
-    oldFile: !uuid 'f15c3ce80794d517be1b3b1b16c6c3ffebe63046'
-  /niucloud/extend/driver/sms/driver/AliSms.php:
-    newFile: null
-    oldFile: !uuid 'ae75cd424faa9427e80cfe88a1832421c3cb7454'
-  /niucloud/extend/driver/sms/driver/TencentSms.php:
-    newFile: null
-    oldFile: !uuid '7d06a1e44c4d73207ae1580f2560e1c9835276c7'
-  /niucloud/extend/exception:
-    newFile: null
-    oldFile: !uuid '739d4fbe2f69cc480127bfacef60a9180438cdb0'
-  /niucloud/extend/exception/AdminException.php:
-    newFile: null
-    oldFile: !uuid 'c72a1c3f37a9988177d7951c5d3c81bb176cda50'
-  /niucloud/extend/exception/ApiException.php:
-    newFile: null
-    oldFile: !uuid '99e7a4ebdd8fb1bfc3b0a1e55cb8a9ce8007a226'
-  /niucloud/extend/exception/AuthException.php:
-    newFile: null
-    oldFile: !uuid '4d975e890bff1a08d2a96b75b5bf4bb685f27314'
-  /niucloud/extend/exception/CaptchaException.php:
-    newFile: null
-    oldFile: !uuid 'b7a10f87f553b5901ca86ac257c00af71528ecdc'
-  /niucloud/extend/exception/CommonException.php:
-    newFile: null
-    oldFile: !uuid '46e1a82d93e0eabde0a350a7123a0c7f9c6bbfc8'
-  /niucloud/extend/exception/MessageException.php:
-    newFile: null
-    oldFile: !uuid '396d22963b2ed099817f509aa7fe26f51af1b318'
-  /niucloud/extend/exception/PayException.php:
-    newFile: null
-    oldFile: !uuid '87013f2751356569e4e6b86269a07bd1786c49c8'
-  /niucloud/extend/exception/UploadFileException.php:
-    newFile: null
-    oldFile: !uuid '80118abef7261cccacc80719550e133fa41200c6'
-  /niucloud/extend/exception/WechatException.php:
-    newFile: null
-    oldFile: !uuid '5bd448a1b4fd211f3f0426dd4401fa0104b6d46b'
-  /niucloud/extend/util:
-    newFile: null
-    oldFile: !uuid 'd997f6daa70cc9e094dd79000329cbc4b85c6934'
-  /niucloud/extend/util/ConfigUtil.php:
-    newFile: null
-    oldFile: !uuid 'd6a4f83f0b3f7a8069e96b36370817b4038e52fc'
-  /niucloud/extend/util/TokenUtil.php:
-    newFile: null
-    oldFile: !uuid '5e39d90ab9fd71ecf329134d2f34f41f19a9e851'
-  /niucloud/route:
-    newFile: !uuid '65fe64d18c2f231d7c13f136d2e000dfcc7e4ef9'
-    oldFile: !uuid '9c9ceba16cc84cd726b107166303b4038cf2e5c8'
-  /niucloud/route/app.php:
-    newFile: !uuid '6dd67690fe3dddf8cfccd3846504d1a89b28ab69'
-    oldFile: !uuid '8bcc537a8360042944120cacb595cbe28c23d556'
-gitCommitId: !uuid '13cb6799c50fe23328ea11963f1998e819d155f0'
+    oldFile: !uuid 'bf6a6ae9c7d6887c15e56f3930c6ef9a0ebf9ac5'
+  /niucloud/vendor/yzh52521:
+    newFile: !uuid 'b8c031b68c9aff7d8dfa25e78ef3090cff9d72e0'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule:
+    newFile: !uuid '2c8383840c5e3df0f6462aad425897c4e515e7c4'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/.gitignore:
+    newFile: !uuid '485dee64bcfb48793379b200a1afd14e85a8aaf4'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/README.md:
+    newFile: !uuid '1dd23dbce1b36569551c2e3b9d81c1f7b88b7fc4'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/composer.json:
+    newFile: !uuid '179a3746f5e0d1e0dae3763f6f56a4b5122afeff'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src:
+    newFile: !uuid 'ea4280805080cfc6709d66fa0c47d47750f02699'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/Run.php:
+    newFile: !uuid '94314b18cd6c75b0a0bcb5affaacba3357980df3'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console:
+    newFile: !uuid 'a34ab40b3cc013bd529544b8e1a8f565e4dfa567'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/AbstractField.php:
+    newFile: !uuid '90faa46b82e1e4325c30edf0138f8dd6a0b024f3'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/CallbackEvent.php:
+    newFile: !uuid 'ee89c6a0cf1e3273e40b8baa0bfb1429247609f9'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/Command.php:
+    newFile: !uuid '7160932edc0ff65836cdbbfc5306e374ac7ab371'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/CronExpression.php:
+    newFile: !uuid 'c80657812e37905eb513964e851229447a3dc505'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/DayOfMonthField.php:
+    newFile: !uuid '6d17c97af1cf6d91402c1c14bfafff62d1ebf07e'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/DayOfWeekField.php:
+    newFile: !uuid '721243d4deed9c3db82c6d2f7ab907e4781c312d'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/Event.php:
+    newFile: !uuid '5471e11762d6493f26d572859cbb6001cd1553ee'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/FieldFactory.php:
+    newFile: !uuid '7fd855be9402bfb3ad5d4639a2ab11149072d3a7'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/FieldInterface.php:
+    newFile: !uuid '942fc501b674502c82082d5c03c4bdf8f3fbe500'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/HoursField.php:
+    newFile: !uuid 'e19d2c39dee14a3afe03847e0a22654b9022266a'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/ManagesFrequencies.php:
+    newFile: !uuid '4af43a2a32f233e7808fef5f89581389b484e080'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/MinutesField.php:
+    newFile: !uuid '0827bc9968303ad6bac1da69911fd63cf10b5d0c'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/MonthField.php:
+    newFile: !uuid '33b18deb4c536e7065aadaf2f4b9072c4915cd9a'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/console/YearField.php:
+    newFile: !uuid '2d3ece687a8898da7297cb4d743edbbbf2e36cd2'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/exceptions:
+    newFile: !uuid '54a6e47c6a9554713f267967bea5190dea56c9fb'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/exceptions/Exception.php:
+    newFile: !uuid 'f4543a40a39c9a444d20a3d48d15b4b30fd814ed'
+    oldFile: null
+  /niucloud/vendor/yzh52521/schedule/src/exceptions/InvalidArgumentException.php:
+    newFile: !uuid '2b96e49ea08cc9cd96025142d87d96e0c9cd7a0e'
+    oldFile: null
+gitCommitId: !uuid 'd9c2abcc3cf1b49caaa1050de5ced37bc748d1e9'
 renames: {
   }
-revisionId: 69
+revisionId: 70
