@@ -3,24 +3,24 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'ba3367756ff8fb8d5a1524fb1efe0a8dfe328a58'
-    oldFile: !uuid 'fdffb8421c0daac10551242f2716ae1d8354ec27'
-  /niucloud/core:
-    newFile: !uuid '8a190f6386ba99afd3596df07e2dbeac10d3fdb9'
-    oldFile: !uuid 'b15d59685d015189de80c799f29783389223da3e'
-  /niucloud/core/dict:
-    newFile: !uuid 'c102c7ef9da66b54fa6e034d9d32f09a786fa3bb'
-    oldFile: !uuid '4df5440946f8fac9e79cc78e43a3e718299b02e3'
-  /niucloud/core/dict/BaseDict.php:
-    newFile: !uuid 'fb73386fac7b8db331950c38f9d869a7088452da'
-    oldFile: !uuid 'c3e0604e624a73ebac22d367621de06286d77dca'
-  /web:
-    newFile: !uuid 'bc1fd53995bd5b8eda7d96ceff48b4825c6db975'
-    oldFile: !uuid 'a7f4f0a620d17af3e266b777346caa5112c964e7'
-  /web/app.vue:
-    newFile: !uuid 'e79482d5b6b325ccf37da2b0a5c023bde4f4a2b0'
-    oldFile: !uuid 'f9cbb9953bf941dbf78fefddb8450ff6c1f04512'
-gitCommitId: !uuid '8c7461a7c1c8f3a5b0022ed11aef28527a9b20e4'
+    newFile: !uuid 'a3744438944dffb7f07d1b60280ea7865b08b636'
+    oldFile: !uuid 'ba3367756ff8fb8d5a1524fb1efe0a8dfe328a58'
+  /niucloud/app:
+    newFile: !uuid '2d532e9b17100ca30bfb75afff5d55ed9a0987ab'
+    oldFile: !uuid '17bab97034ca0ef464608b6d1a9d9667cba89914'
+  /niucloud/app/install:
+    newFile: !uuid '5d1f82fcb527f8d1476ee2098093c16ba1e5d799'
+    oldFile: !uuid '57e47ae7b7c92bdebe2bde5a6edd7cbfe8a3381c'
+  /niucloud/app/install/view:
+    newFile: !uuid '96e2290f9872f5334b1904b6888dd8d9a7d40e24'
+    oldFile: !uuid '83130e26e4f21146a7db2eb6816bebd8cf0f318d'
+  /niucloud/app/install/view/index:
+    newFile: !uuid 'af0f2a5c1b7cf358ce8861cc788fe25e35927048'
+    oldFile: !uuid '0f3b80e59a4508b648104d0b6b1880694a907e5f'
+  /niucloud/app/install/view/index/step-4.html:
+    newFile: !uuid '30836fa6beb96095d603ccac62c06635c5311f5b'
+    oldFile: !uuid 'df7639b81bdb310767daa7d8244b00fdea7bab5c'
+gitCommitId: !uuid 'aac0c0ba37aebbbf3f24f9c4113fa9854e16bb17'
 renames: {
   }
-revisionId: 80
+revisionId: 81
