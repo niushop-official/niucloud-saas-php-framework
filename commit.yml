@@ -3,99 +3,15 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'bfa06845b9d7602b39b6b9005ba69c211ef8376d'
-    oldFile: !uuid '43ae92f83a24678184ae305a5dbe3b0c335e7a5c'
+    newFile: !uuid 'd8c676976caaf07bdaf42d4f3a824af78e8453a4'
+    oldFile: !uuid 'bfa06845b9d7602b39b6b9005ba69c211ef8376d'
   /niucloud/public:
-    newFile: !uuid '3fdbad5a203640a2cc8930a06476d5ff05f7e701'
-    oldFile: !uuid '73d9c3aeea7d1bed4f302a31a155e472d8eee194'
-  /niucloud/public/install:
-    newFile: !uuid '3c8ebc46129d1ad1937e44594768e51014b362af'
-    oldFile: !uuid 'a21459550d44ecf311979c4229e5b5d21c4c4755'
-  /niucloud/public/install/css:
-    newFile: !uuid 'bca546fdf59e472130ac44f4d92a1b2c9129f65f'
-    oldFile: !uuid '3daae5242e3321836374fab568212e3a9c9ad711'
-  /niucloud/public/install/css/style.css:
-    newFile: !uuid 'e5169c1c5da4b7c996edceb96c0c614fa1eddb2b'
-    oldFile: !uuid '9b9efc3603169f0fa49408e27594d375d3aed9c5'
-  /niucloud/public/install/img:
-    newFile: !uuid 'b9979468d248628a548768bcf9702a3c3b221cc8'
-    oldFile: !uuid '406f5f5afd08c13823c7dc03bad986e491ba5b6d'
-  /niucloud/public/install/img/site_h5.png:
-    newFile: !uuid '3c5dac28ad56897f56a4f66996fe88ff1c520192'
-    oldFile: null
-  /niucloud/public/install/img/site_web.png:
-    newFile: !uuid '614f5e0585daa27b24ecda238a617e2e339b153f'
-    oldFile: null
-  /niucloud/public/static:
-    newFile: !uuid '0f130494f018905750424c36192db7d2d286fc9e'
-    oldFile: !uuid 'f78ad59774cdaa7e6b438b864ee7d58eb170a975'
-  /niucloud/public/static/resource:
-    newFile: !uuid '41942629dea2ae14fc9fdc146a90a6a5f143ae8b'
-    oldFile: !uuid '99ad253da1e6997b53a47840d74f12bd10147a98'
-  /niucloud/public/static/resource/images:
-    newFile: !uuid '54243a69f75b401f6975ecd087430d2ff127ca09'
-    oldFile: !uuid '86f06509185236e765c3126e371771481ff8868c'
-  /niucloud/public/static/resource/images/app:
-    newFile: !uuid 'dddf5fabd7fd1f04369d5c55de5d21f10eab5fec'
-    oldFile: !uuid '854238ad23b82ea81c599b33c8327f13b1567612'
-  /niucloud/public/static/resource/images/app/message_cover.png:
-    newFile: !uuid 'a25687bcf5dfb75b642b93ac90dbdab897a0c03b'
-    oldFile: !uuid 'e5fba967e27eacfd49f3ecb3b5ce3af1a63b2753'
-  /niucloud/public/static/resource/images/app/recharge_cover.png:
-    newFile: !uuid 'bd6ffb27bac734a549ee4dda7ca9e918c2a1fa01'
-    oldFile: !uuid '21f31e3ac5dfdf1cd2de902299aa1dfc0e47600a'
-  /niucloud/public/static/resource/images/diy:
-    newFile: !uuid '9d751388102db866a6a676862750d8d2ac0068c3'
-    oldFile: !uuid '72955278c175197f53d30123caaea308bf87f4d6'
-  /niucloud/public/static/resource/images/diy/horz_m_balance.png:
-    newFile: !uuid 'eab1d129e966995b66b2c3b5be617ec69e782c09'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/horz_m_personal.png:
-    newFile: !uuid 'ed122ad5f20c0e4cbec3a739110e4dec980e76db'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/horz_m_point.png:
-    newFile: !uuid 'da8ab151033ab49fd53db512b7b36abffff5ea15'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/horz_m_service.png:
-    newFile: !uuid '84038a1d49e793b3f7aab012b7cefe13b946c548'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/m_balance.jpg:
-    newFile: null
-    oldFile: !uuid '1cf6be67c00662f037b06e63432ffed69048969d'
-  /niucloud/public/static/resource/images/diy/m_point.jpg:
-    newFile: null
-    oldFile: !uuid '121c14a54030b5712d289196723abe978279cab1'
-  /niucloud/public/static/resource/images/diy/m_service.jpg:
-    newFile: null
-    oldFile: !uuid '9b32cdcf6a0c77b42a29d3b42ff244d266c975d3'
-  /niucloud/public/static/resource/images/diy/member_style1_bg.png:
-    newFile: !uuid '0cadc84a431e99c27a5b8faa276fc9bb109b7a6b'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/member_style2_bg.png:
-    newFile: !uuid '22c5ae8c8d79adb21d0cd6383c36e484e7a35746'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/vert_m_balance.png:
-    newFile: !uuid '2b753612b1a425c9bf708fd8d173310eff0ad28a'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/vert_m_develop.png:
-    newFile: !uuid '4ec720c51ca6994e9f5918c7fa51c041214bfd24'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/vert_m_personal.png:
-    newFile: !uuid 'b941fade387ecfc1e71aa91a5d0313cb0b44f121'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/vert_m_point.png:
-    newFile: !uuid 'aa2e94ec92389059c5d5bafe14aba2d801a62ed4'
-    oldFile: null
-  /niucloud/public/static/resource/images/diy/vert_m_service.png:
-    newFile: !uuid 'db380cfbfba610c8c39c39a6f54419727043facc'
-    oldFile: null
-  /niucloud/public/static/resource/images/site:
-    newFile: !uuid '3225477e33b02d7b2c724fa09ce2bd4d4bfff832'
-    oldFile: null
-  /niucloud/public/static/resource/images/site/close.png:
-    newFile: !uuid 'd302a3c923e7647452ce537bc03e0b3460612ae0'
-    oldFile: null
-gitCommitId: !uuid '50a40cb4bdafb37487a645351887f5e93d19f895'
+    newFile: !uuid '857a57485137a02111ba999a31f3e9913f78a4b0'
+    oldFile: !uuid '3fdbad5a203640a2cc8930a06476d5ff05f7e701'
+  /niucloud/public/favicon.ico:
+    newFile: !uuid 'd770505a2cb0ca4f036c9646b903b41094dac050'
+    oldFile: !uuid 'e71815a6618c6ef19c78d27840b8995fb2521499'
+gitCommitId: !uuid 'c6db2a97fbf482c056dcc616fb30eac430fcac29'
 renames: {
   }
-revisionId: 71
+revisionId: 72
