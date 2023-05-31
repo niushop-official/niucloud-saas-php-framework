@@ -2,10 +2,43 @@
 branches: {
   }
 fileChange:
-  /README.md:
-    newFile: !uuid 'decc2808d9e6b812256062b135d1ac0dc09d8a93'
-    oldFile: !uuid '5b30e769c4323f2838f25199f9ab62a1ab254f33'
-gitCommitId: !uuid '8cf2e53f95aea7c8fd1a1a83562ddf5d673f29c9'
+  /niucloud:
+    newFile: !uuid '8ecad68860085e7201080a284d7389a41c8c57b6'
+    oldFile: !uuid '559df2ee7b2da5bbb92deaf7b1a51cbc652e8729'
+  /niucloud/app:
+    newFile: !uuid 'ead4c0a2883c3ff6659bf2153b849fce2b4e64b2'
+    oldFile: !uuid 'bb5f63927e8d96eb84c94cfd980f01638fec95ee'
+  /niucloud/app/install:
+    newFile: !uuid 'f8f6ee5eb3b6bd5784d191953f5f19556e115557'
+    oldFile: !uuid 'a99424dfc097eeecd7b0be20fae21d921029d8d6'
+  /niucloud/app/install/source:
+    newFile: !uuid '05c124f2d44dfffe4f7f5f721ed67e89984cfece'
+    oldFile: !uuid '178a50ffcc2f5af32d17ff9c755cf28b0bc6f8a8'
+  /niucloud/app/install/source/database.sql:
+    newFile: !uuid '04fc24658347ee7ef0ac0b7fa7d662704113c117'
+    oldFile: !uuid '5abf5f4824373e1e429826d4adea849a0ac240ca'
+  /upgrade:
+    newFile: !uuid '5c6c33bba26864b99fe663a86645f0276eef9638'
+    oldFile: !uuid 'fef615486820aa15bbc5e69011f973d6fc4e8062'
+  /upgrade/20230520.1.0.1:
+    newFile: !uuid '0083a9f10eeb2bd97dea599d2dd10c4d65c82359'
+    oldFile: !uuid '08a8d02e86b09005eeb4548518d5e300029ea7e2'
+  /upgrade/20230520.1.0.1/database.sql:
+    newFile: !uuid '5abf5f4824373e1e429826d4adea849a0ac240ca'
+    oldFile: null
+  /upgrade/20230531.1.0.2:
+    newFile: !uuid '43916f4d5766494ee906634dfb2f5d72b4d060de'
+    oldFile: null
+  /upgrade/20230531.1.0.2/database.sql:
+    newFile: !uuid '04fc24658347ee7ef0ac0b7fa7d662704113c117'
+    oldFile: null
+  /upgrade/20230531.1.0.2/upgrade.sql:
+    newFile: !uuid '0dab95072563eadd51710512ecd0dbf78d3f2799'
+    oldFile: null
+  /upgrade/20230531.1.0.2/升级日志.txt:
+    newFile: !uuid 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391'
+    oldFile: null
+gitCommitId: !uuid '5c75988bab0f48658c1d09561f657c2a06c8e7b2'
 renames: {
   }
-revisionId: 61
+revisionId: 62
