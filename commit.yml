@@ -3,15 +3,12 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'af3b1af6c3858e8696d9abc5a44652755093122a'
-    oldFile: !uuid '0e29dc0e1ec1805c0dbb94460d5ca7a5774c6d29'
-  /niucloud/.env:
-    newFile: !uuid '6659c5ccd3585d570d7c1707d55de1c377519b75'
-    oldFile: !uuid '2bd64549a1a7374a2bf31176922e898d8bef7cf1'
+    newFile: !uuid 'abbe49228baa877db759ca55bfa858a34454787a'
+    oldFile: !uuid 'af3b1af6c3858e8696d9abc5a44652755093122a'
   /niucloud/.example.env:
-    newFile: !uuid '1358f0dc00aeab34cb8e70aa5dd9ce451391b29c'
-    oldFile: !uuid 'f87bb9dfb82cbeb2aba7805f59c0af76a50ba92c'
-gitCommitId: !uuid '5f746e44b09c732c5ffe39c46f11735448ab74f1'
+    newFile: !uuid '9f143c44aef421bbed8fb7a5b5289d19aa6984c7'
+    oldFile: !uuid '1358f0dc00aeab34cb8e70aa5dd9ce451391b29c'
+gitCommitId: !uuid '2cf40a97f83d5a6e08f678014b55fc7d7240ef7e'
 renames: {
   }
-revisionId: 83
+revisionId: 84
