@@ -2,25 +2,28 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'd7f88594dbffd355c92447f9e5013ff6c2ff83d8'
-    oldFile: !uuid '3574a7dc810830a4b449e5438edaedcc9f364968'
-  /niucloud/app:
-    newFile: !uuid 'd8700c9e825df5b857ba80e5eab79e6fb4bec403'
-    oldFile: !uuid '4f935feeaf21fcd52bec79c9146a8f4320a86e0e'
-  /niucloud/app/service:
-    newFile: !uuid 'c6b3957954576d4ede757beb136ffbcf7a36597a'
-    oldFile: !uuid 'e35ee9cd149d800dd7fa280ead04733261ea4a91'
-  /niucloud/app/service/api:
-    newFile: !uuid 'de4fcf9e7a5e693cb859f202d29c40f7790fc4a7'
-    oldFile: !uuid '7a15432b7d4e0fa9936e8b442c3a713f45649466'
-  /niucloud/app/service/api/login:
-    newFile: !uuid 'c565c9cf950a3d007a339d92bdfb6a80d2bfe9d5'
-    oldFile: !uuid 'a192706db3496a273b925361687d10048c553e3e'
-  /niucloud/app/service/api/login/RegisterService.php:
-    newFile: !uuid '2c904be92b219e30a5fff06c74efa46c633d424e'
-    oldFile: !uuid '0f86b077cc84c764500c2ac6d45a03e7f6fc1227'
-gitCommitId: !uuid '8cd76874c5be09ee7da867142c66d3e211d62010'
+  /admin:
+    newFile: !uuid 'c8884b09630e1d2abafbb8e41b17c53f47453554'
+    oldFile: !uuid 'da490f75f42b96be3d1dcfdf678bd6eaf16486c1'
+  /admin/src:
+    newFile: !uuid '73ace6365f95b63241e5c8b63f3301775dde2a8d'
+    oldFile: !uuid '8ce061d5e5eebfd69543a83886eb8636c028894a'
+  /admin/src/router:
+    newFile: !uuid '9c22b924b9a44270ce15b79ea521c0f2c61d0f7b'
+    oldFile: !uuid 'bb0c8dba8572e5ee73abf2421c555aeb83873f7f'
+  /admin/src/router/index.ts:
+    newFile: !uuid '3bada10a21ede4d0062c17ddb044e9f0dd6543b3'
+    oldFile: !uuid 'e7b26eef3714be367f5d087927823b7320ad48f8'
+  /admin/src/views:
+    newFile: !uuid 'ddbd96c47bb9ae323f7c1925de8c32ba9643b4a9'
+    oldFile: !uuid '2c26fbb62ee37a6933fff2a1d5a3a07f5ca74851'
+  /admin/src/views/site:
+    newFile: !uuid '2f9d02969cbbf0d3f318b226395d85a74c169097'
+    oldFile: !uuid 'f8eb592aa5a57359a5813c2eaf74c02f971519cd'
+  /admin/src/views/site/list.vue:
+    newFile: !uuid '3cfe0fe1c8ce370fa11a8e0b178e4bc37570ab62'
+    oldFile: !uuid '2d87aae8cd0860e781075f8bc466a1d07d6d7fa4'
+gitCommitId: !uuid 'c59d011d1e132988fd605339aa00146e32a31341'
 renames: {
   }
-revisionId: 91
+revisionId: 92
