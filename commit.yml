@@ -2,34 +2,103 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid '15985bf4d60886e1a11b654d25ea9f8eb9d746c8'
-    oldFile: !uuid 'f18c9e4103db31ca241187c1b4e6e823e07f769d'
-  /niucloud/public:
-    newFile: !uuid 'f10d5d0a12e9aa360da7fcac46f58bef3453bbe5'
-    oldFile: !uuid '680eb62d1e6870ac61fc5b501716eed7c49da9d4'
-  /niucloud/public/static:
-    newFile: !uuid 'bb3968a1f922bd9696b34d273f100df71a0ba2ad'
-    oldFile: !uuid '0f130494f018905750424c36192db7d2d286fc9e'
-  /niucloud/public/static/resource:
-    newFile: !uuid '28dbebff586d3b2e219dcdb4ba4aa68263ac5c64'
-    oldFile: !uuid '41942629dea2ae14fc9fdc146a90a6a5f143ae8b'
-  /niucloud/public/static/resource/images:
-    newFile: !uuid '673c2dc745844abb9e26c324e37525e81f801c05'
-    oldFile: !uuid '54243a69f75b401f6975ecd087430d2ff127ca09'
-  /niucloud/public/static/resource/images/member:
-    newFile: !uuid '95bf35d11067464c022b6ec0fd9806e118643555'
-    oldFile: !uuid 'cd1dc3da1452263f3884c0d4f813e8d3d83acd38'
-  /niucloud/public/static/resource/images/member/balance_bg.png:
-    newFile: !uuid '07fc53d3413d9001470ffd980ff732ab6191eb37'
+  /web:
+    newFile: !uuid 'a7d7dcd6ccba937519f1774ee955c2590db41092'
+    oldFile: !uuid 'bc1fd53995bd5b8eda7d96ceff48b4825c6db975'
+  /web/components:
+    newFile: !uuid '663e4f7dbdba763b92b19a17acddebbcce20b37b'
+    oldFile: !uuid '024589749145bd95726de884c5c4c18163dae1f6'
+  /web/components/sms-code:
+    newFile: !uuid '9f20c43a9cd3c3db6679af13b370675e52c57f6e'
+    oldFile: !uuid '918834f051e0962726aa17701d3c2dddaccde787'
+  /web/components/sms-code/index.vue:
+    newFile: !uuid '72a7025cdc4d1d7168d3ff7602621beb05f7a58f'
+    oldFile: !uuid 'f958eeaccab539f00465016f4ffb4eb3a4438da2'
+  /web/lang:
+    newFile: !uuid '0843693367737715c0f7892794cd887b21ad86e7'
+    oldFile: !uuid '0761335eb56d417a6a16525593edd957a325cefa'
+  /web/lang/en:
+    newFile: !uuid 'ac15179f9e29c30566ba611e06e71a36b9438673'
+    oldFile: !uuid 'e6221ba5365d95f851412e2b40bf34e257724897'
+  /web/lang/en/common.json:
+    newFile: !uuid '7a73a41bfdf76d6f793007240d80983a52f15f97'
+    oldFile: !uuid '682723747052ff56b7d7c9aa0a128ce5d04222ee'
+  /web/lang/zh-cn:
+    newFile: !uuid 'f8def48bf2ded11658c248f2e9a33461009467a7'
+    oldFile: !uuid '404164f90c0dada6c387d866957bf1aa96b58e6b'
+  /web/lang/zh-cn/common.json:
+    newFile: !uuid '34ca927757518ecaf3c855c31766446031281fdf'
+    oldFile: !uuid 'ea46ba9738330ca702fc4835c50e32f6ba15f041'
+  /web/lang/zh-cn/pages.json:
+    newFile: !uuid 'c594145bfad0f0ab11a3edf8e1ff6a74383d7c4e'
+    oldFile: !uuid '52ae8bf69c7fe159cc5fff1715c32982b31e334d'
+  /web/layouts:
+    newFile: !uuid '71c91d4a92aa5d9511f2b3afabe75a30cdcb868b'
+    oldFile: !uuid '008fabdd138da77438d1e6f59212c3320a594944'
+  /web/layouts/components:
+    newFile: !uuid '8eee145bf1a72a4da61c116e784d0480759765e3'
+    oldFile: !uuid '0b2486f7d6352cd6070f7a8b2a2a9cb8590f831c'
+  /web/layouts/components/header:
+    newFile: !uuid '1220580e598beeb4f3d03b38275768c3e254648e'
+    oldFile: !uuid '339944144d3de5cacdf30a9c01d978013ef3db82'
+  /web/layouts/components/header/index.vue:
+    newFile: !uuid '30ec5121714cd1d5523847015bcf2f8426405dc8'
+    oldFile: !uuid '206e4764ebc05f7076675681ef11e74fe785b2ea'
+  /web/pages:
+    newFile: !uuid '737f30f1b6f686e2ff05b682f214e77e869e2e5a'
+    oldFile: !uuid '8e4ac24b4ceed4705f53493d08512019b63737f8'
+  /web/pages/article:
+    newFile: !uuid '39dd632e141f7c16863999bc5331b742ab511e6e'
+    oldFile: !uuid '6bd8a7da3710115a22143b18cdf899941c934109'
+  /web/pages/article/detail.vue:
+    newFile: !uuid '7df5aa81c12ee63b7ee8ae575587915bb52cfc47'
+    oldFile: !uuid 'd7edadfab306278ce0d4701ad3e3a644b4c4d97b'
+  /web/pages/article/list.vue:
+    newFile: !uuid '03d0d8a45d3006cc105a0b523146afdcf864f0f0'
+    oldFile: !uuid 'b7c8ecc84482eda35fabad7854620edb4df1885f'
+  /web/pages/auth:
+    newFile: !uuid 'f048d81c9f7cd9a7a26e19ce08bca44ab156cebb'
+    oldFile: !uuid '6ad9b7157d01ce221dc229c95b4fff6caccf41c2'
+  /web/pages/auth/bind.vue:
+    newFile: !uuid 'bb55d14626b458f3ec7bab517f6d0f4d4538ff5e'
+    oldFile: !uuid '605970b0be1442e8c65823151c3afe1c601ca216'
+  /web/pages/auth/login.vue:
+    newFile: !uuid 'f9e9214b22874cdbf2b50f5bab0c8da6c7efda96'
+    oldFile: !uuid 'cc070648125ca4ebf9768e8fa7fe99edf4cd9f33'
+  /web/pages/auth/register.vue:
+    newFile: !uuid '6d5d077132584c1a88971d02932f59c4644f7978'
+    oldFile: !uuid '2abcfbd3f1239e16ac0c196a99f9928499435426'
+  /web/pages/index.vue:
+    newFile: !uuid '86e9b08a821c062f4aeeedf0a7e5a8186a9d328e'
+    oldFile: !uuid 'c66bd3a6da618bb7fee96d4545c29eda2ce7b3e7'
+  /web/pages/member:
+    newFile: !uuid '48946f8afbe5fd70ae9cd802a8cae08a0f4ccf4e'
+    oldFile: !uuid '162f913e29512803870416d066b860ebbdfe8fc0'
+  /web/pages/member/balance.vue:
+    newFile: !uuid '9e388f88520a59c2db383dd6c1cebca1f3901332'
+    oldFile: !uuid '642c0c65ad73c928c82832adba8a0a10a801954d'
+  /web/pages/member/center.vue:
+    newFile: !uuid 'e078919dfdba5e476ba64934bc3d81f895354250'
+    oldFile: !uuid 'cf7c1234645eebc9b502cebf6416f8d741664d96'
+  /web/pages/member/point.vue:
+    newFile: !uuid 'bd8b767f3fa3da8823a4b438d40c8e9b2ec8f605'
+    oldFile: !uuid '5b3efe4d2bb5b35bc8f7df8e993bb035649836f2'
+  /web/pages/site:
+    newFile: !uuid '059eaa950e07021d1acd298b8c454deba326c3f4'
+    oldFile: !uuid '103755b69b7fbf8b9c66344d51b247c89aac7920'
+  /web/pages/site/nonexistence.vue:
+    newFile: null
+    oldFile: !uuid '8a8a6ab84fef2380210f6cc123c1a1f54c13cc17'
+  /web/pages/site/nosite.vue:
+    newFile: !uuid '8c1d878c43a69c8752e04f9474ffaf78f402c779'
     oldFile: null
-  /niucloud/public/static/resource/images/site:
-    newFile: !uuid '7c25686616785726a356466c2eb11c440f049879'
-    oldFile: !uuid '3225477e33b02d7b2c724fa09ce2bd4d4bfff832'
-  /niucloud/public/static/resource/images/site/close.png:
-    newFile: !uuid '65123ee9e97ea8a02848c78e38ca00d5ea084538'
-    oldFile: !uuid 'd302a3c923e7647452ce537bc03e0b3460612ae0'
-gitCommitId: !uuid 'f00a12f1dd7a476e3018fc4bb845c356dcf0dfc4'
-renames: {
-  }
-revisionId: 99
+  /web/stores:
+    newFile: !uuid '3ec301cacbca4708469706a06595d92144d26f87'
+    oldFile: !uuid '75ad06ef9a393478ebd75e72dccc7c5dd960e9b6'
+  /web/stores/system.ts:
+    newFile: !uuid '0145bb290059879f3c3a3e4300183e3d687d8c54'
+    oldFile: !uuid 'b8dd8a7ac68c974d24cfe45724bd679b462065bf'
+gitCommitId: !uuid '9d3d754ce134b63a2c69422dd3ebe32729442984'
+renames:
+  /web/pages/site/nosite.vue: /web/pages/site/nonexistence.vue
+revisionId: 100
