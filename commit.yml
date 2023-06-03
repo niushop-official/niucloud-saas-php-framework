@@ -2,103 +2,106 @@
 branches: {
   }
 fileChange:
-  /web:
-    newFile: !uuid 'a7d7dcd6ccba937519f1774ee955c2590db41092'
-    oldFile: !uuid 'bc1fd53995bd5b8eda7d96ceff48b4825c6db975'
-  /web/components:
-    newFile: !uuid '663e4f7dbdba763b92b19a17acddebbcce20b37b'
-    oldFile: !uuid '024589749145bd95726de884c5c4c18163dae1f6'
-  /web/components/sms-code:
-    newFile: !uuid '9f20c43a9cd3c3db6679af13b370675e52c57f6e'
-    oldFile: !uuid '918834f051e0962726aa17701d3c2dddaccde787'
-  /web/components/sms-code/index.vue:
-    newFile: !uuid '72a7025cdc4d1d7168d3ff7602621beb05f7a58f'
-    oldFile: !uuid 'f958eeaccab539f00465016f4ffb4eb3a4438da2'
-  /web/lang:
-    newFile: !uuid '0843693367737715c0f7892794cd887b21ad86e7'
-    oldFile: !uuid '0761335eb56d417a6a16525593edd957a325cefa'
-  /web/lang/en:
-    newFile: !uuid 'ac15179f9e29c30566ba611e06e71a36b9438673'
-    oldFile: !uuid 'e6221ba5365d95f851412e2b40bf34e257724897'
-  /web/lang/en/common.json:
-    newFile: !uuid '7a73a41bfdf76d6f793007240d80983a52f15f97'
-    oldFile: !uuid '682723747052ff56b7d7c9aa0a128ce5d04222ee'
-  /web/lang/zh-cn:
-    newFile: !uuid 'f8def48bf2ded11658c248f2e9a33461009467a7'
-    oldFile: !uuid '404164f90c0dada6c387d866957bf1aa96b58e6b'
-  /web/lang/zh-cn/common.json:
-    newFile: !uuid '34ca927757518ecaf3c855c31766446031281fdf'
-    oldFile: !uuid 'ea46ba9738330ca702fc4835c50e32f6ba15f041'
-  /web/lang/zh-cn/pages.json:
-    newFile: !uuid 'c594145bfad0f0ab11a3edf8e1ff6a74383d7c4e'
-    oldFile: !uuid '52ae8bf69c7fe159cc5fff1715c32982b31e334d'
-  /web/layouts:
-    newFile: !uuid '71c91d4a92aa5d9511f2b3afabe75a30cdcb868b'
-    oldFile: !uuid '008fabdd138da77438d1e6f59212c3320a594944'
-  /web/layouts/components:
-    newFile: !uuid '8eee145bf1a72a4da61c116e784d0480759765e3'
-    oldFile: !uuid '0b2486f7d6352cd6070f7a8b2a2a9cb8590f831c'
-  /web/layouts/components/header:
-    newFile: !uuid '1220580e598beeb4f3d03b38275768c3e254648e'
-    oldFile: !uuid '339944144d3de5cacdf30a9c01d978013ef3db82'
-  /web/layouts/components/header/index.vue:
-    newFile: !uuid '30ec5121714cd1d5523847015bcf2f8426405dc8'
-    oldFile: !uuid '206e4764ebc05f7076675681ef11e74fe785b2ea'
-  /web/pages:
-    newFile: !uuid '737f30f1b6f686e2ff05b682f214e77e869e2e5a'
-    oldFile: !uuid '8e4ac24b4ceed4705f53493d08512019b63737f8'
-  /web/pages/article:
-    newFile: !uuid '39dd632e141f7c16863999bc5331b742ab511e6e'
-    oldFile: !uuid '6bd8a7da3710115a22143b18cdf899941c934109'
-  /web/pages/article/detail.vue:
-    newFile: !uuid '7df5aa81c12ee63b7ee8ae575587915bb52cfc47'
-    oldFile: !uuid 'd7edadfab306278ce0d4701ad3e3a644b4c4d97b'
-  /web/pages/article/list.vue:
-    newFile: !uuid '03d0d8a45d3006cc105a0b523146afdcf864f0f0'
-    oldFile: !uuid 'b7c8ecc84482eda35fabad7854620edb4df1885f'
-  /web/pages/auth:
-    newFile: !uuid 'f048d81c9f7cd9a7a26e19ce08bca44ab156cebb'
-    oldFile: !uuid '6ad9b7157d01ce221dc229c95b4fff6caccf41c2'
-  /web/pages/auth/bind.vue:
-    newFile: !uuid 'bb55d14626b458f3ec7bab517f6d0f4d4538ff5e'
-    oldFile: !uuid '605970b0be1442e8c65823151c3afe1c601ca216'
-  /web/pages/auth/login.vue:
-    newFile: !uuid 'f9e9214b22874cdbf2b50f5bab0c8da6c7efda96'
-    oldFile: !uuid 'cc070648125ca4ebf9768e8fa7fe99edf4cd9f33'
-  /web/pages/auth/register.vue:
-    newFile: !uuid '6d5d077132584c1a88971d02932f59c4644f7978'
-    oldFile: !uuid '2abcfbd3f1239e16ac0c196a99f9928499435426'
-  /web/pages/index.vue:
-    newFile: !uuid '86e9b08a821c062f4aeeedf0a7e5a8186a9d328e'
-    oldFile: !uuid 'c66bd3a6da618bb7fee96d4545c29eda2ce7b3e7'
-  /web/pages/member:
-    newFile: !uuid '48946f8afbe5fd70ae9cd802a8cae08a0f4ccf4e'
-    oldFile: !uuid '162f913e29512803870416d066b860ebbdfe8fc0'
-  /web/pages/member/balance.vue:
-    newFile: !uuid '9e388f88520a59c2db383dd6c1cebca1f3901332'
-    oldFile: !uuid '642c0c65ad73c928c82832adba8a0a10a801954d'
-  /web/pages/member/center.vue:
-    newFile: !uuid 'e078919dfdba5e476ba64934bc3d81f895354250'
-    oldFile: !uuid 'cf7c1234645eebc9b502cebf6416f8d741664d96'
-  /web/pages/member/point.vue:
-    newFile: !uuid 'bd8b767f3fa3da8823a4b438d40c8e9b2ec8f605'
-    oldFile: !uuid '5b3efe4d2bb5b35bc8f7df8e993bb035649836f2'
-  /web/pages/site:
-    newFile: !uuid '059eaa950e07021d1acd298b8c454deba326c3f4'
-    oldFile: !uuid '103755b69b7fbf8b9c66344d51b247c89aac7920'
-  /web/pages/site/nonexistence.vue:
-    newFile: null
-    oldFile: !uuid '8a8a6ab84fef2380210f6cc123c1a1f54c13cc17'
-  /web/pages/site/nosite.vue:
-    newFile: !uuid '8c1d878c43a69c8752e04f9474ffaf78f402c779'
+  /uni-app:
+    newFile: !uuid '694f8ba92871d7102091e88909172399cd04329d'
+    oldFile: !uuid 'b8757e873a80c54a47eeb218492bc04df5132d04'
+  /uni-app/api:
+    newFile: !uuid 'c80a619160604b0098ddea03de1144dbdcf9c70e'
+    oldFile: !uuid '63dc95f593bc39aa504b95b9ca2fb5692948e1d3'
+  /uni-app/api/pay.ts:
+    newFile: !uuid '87d86644314e40dcf6abe35939c3870adc975686'
+    oldFile: !uuid '567f5815c16280df09819254537c9839551d1471'
+  /uni-app/components:
+    newFile: !uuid 'fb2a6f04492af3e14ed528f4191dae6bd8ccca8d'
+    oldFile: !uuid '7cd17d8547e3aae2b897d8747f04b9e83601d12e'
+  /uni-app/components/app-link:
+    newFile: !uuid 'df34f627829dd9905cd6cf9c2c386c1b94bed883'
+    oldFile: !uuid 'aa7803d48188a676c28cca7c5738bac8b645c3f4'
+  /uni-app/components/app-link/app-link.vue:
+    newFile: !uuid '35b2c9fc5ed759ddd2ec4ac2ee7ad691119da043'
+    oldFile: !uuid 'deda004428c3b65347ef89a258e6d04e54ac042b'
+  /uni-app/components/diy:
+    newFile: !uuid 'de37e0d7dfd871dc27f4dcd3c6f95ab90b03f083'
+    oldFile: !uuid '86b14b13da1af0ace3d55a3f25bec9e8f7c8bd93'
+  /uni-app/components/diy/graphic-nav:
+    newFile: !uuid '52618c76907813b7dcf5ffd0b137fda1aac067f8'
+    oldFile: !uuid '1c96276b0dc1bcc15c3e7c787d04138e27990a38'
+  /uni-app/components/diy/graphic-nav/index.vue:
+    newFile: !uuid '963fa30ffa08aceba6106a8e384d729d4a9c9ffb'
+    oldFile: !uuid 'cf481cf13f541031362f289b364150381af160e5'
+  /uni-app/components/diy/image-ads:
+    newFile: !uuid '5761d4e93c4adce5733efbb0f78df2880521bf15'
+    oldFile: !uuid '93091a90f3e0530454a63ef80d2f087421032215'
+  /uni-app/components/diy/image-ads/index.vue:
+    newFile: !uuid '46038a17256a15827476b0ca29d61871d233893e'
+    oldFile: !uuid '75803249ec3b7b99e9920f50c061a8464a9ff310'
+  /uni-app/components/diy/text:
+    newFile: !uuid 'a02c8b9f204da0d3bfdd7c2d7dedcfd65dbc0bc3'
+    oldFile: !uuid '8b225ed4de9b35e90ccac9bef3ef02c1f4d40e2c'
+  /uni-app/components/diy/text/index.vue:
+    newFile: !uuid '1fb694377ed9dd63610dd6874b9b0f3ebc875615'
+    oldFile: !uuid '8f08465ae3b540c47abeb47387c705486d85907e'
+  /uni-app/locale:
+    newFile: !uuid 'b477da64f66a2049f9a8f1c3475d56ce65af9717'
+    oldFile: !uuid '5d305af838bab3acceb9732d5915559afb5804b2'
+  /uni-app/locale/language.ts:
+    newFile: !uuid '91a116129ec9681f9d12ca154356d257e251b643'
+    oldFile: !uuid '643d11dfa3f0986060fcb3dab2651b859a089cba'
+  /uni-app/locale/zh-Hans:
+    newFile: !uuid 'e4b06c2fc618680f618cdb7ef4ce1a7dcfad764b'
+    oldFile: !uuid '8f2034a07c4c77c9ddc2954f8a00e9508265377d'
+  /uni-app/locale/zh-Hans.json:
+    newFile: !uuid '490596a86a10625051fc77f58edf2d4ffb724a43'
+    oldFile: !uuid 'c04c88ae24b07906da007ba645472e0ae02feb0e'
+  /uni-app/locale/zh-Hans/common.json:
+    newFile: !uuid '281fac53f9a3f2d3e3d4f6fc40883330e098ad6b'
+    oldFile: !uuid '0880b22036ddbbd51757d0d0eea7dbc0d04d45fc'
+  /uni-app/locale/zh-Hans/pages.member.recharge_record_detail.json:
+    newFile: !uuid '0646047580607b3e5c20ff49e7431d4db5ca49f1'
+    oldFile: !uuid '3f17229ab24c45f218f86bef21b828292cc80add'
+  /uni-app/pages:
+    newFile: !uuid '51ee4b5d1c70e79d3a5236cdf3a12176e9e7aad1'
+    oldFile: !uuid 'fcadd300ebf2ab088be4dbbab584752987dfc01d'
+  /uni-app/pages/article:
+    newFile: !uuid '443302b2cf45331da79704d03d038e263109de9e'
+    oldFile: !uuid 'e1fe112093435d08d770a4ca7aacb5d1a0f21cda'
+  /uni-app/pages/article/detail.vue:
+    newFile: !uuid 'c92a3df96151d19b4da5ea656747ed49e807e2b9'
+    oldFile: !uuid 'f428d9dedab9def3ad8b3332b5ff2b2a5308751f'
+  /uni-app/pages/index:
+    newFile: !uuid 'eaa2ef54c4122a0ef32d9db1d9255fbf2272aad0'
+    oldFile: !uuid 'bad504227b8aef47683d195f54fce14752049d81'
+  /uni-app/pages/index/nosite.vue:
+    newFile: !uuid 'a1712f5a2be9c547f9fb9eb3da5b39b06c02e759'
     oldFile: null
-  /web/stores:
-    newFile: !uuid '3ec301cacbca4708469706a06595d92144d26f87'
-    oldFile: !uuid '75ad06ef9a393478ebd75e72dccc7c5dd960e9b6'
-  /web/stores/system.ts:
-    newFile: !uuid '0145bb290059879f3c3a3e4300183e3d687d8c54'
-    oldFile: !uuid 'b8dd8a7ac68c974d24cfe45724bd679b462065bf'
-gitCommitId: !uuid '9d3d754ce134b63a2c69422dd3ebe32729442984'
-renames:
-  /web/pages/site/nosite.vue: /web/pages/site/nonexistence.vue
-revisionId: 100
+  /uni-app/pages/member:
+    newFile: !uuid 'db59bdf2d6df9a47721f3f09ccad93efedcd0d79'
+    oldFile: !uuid '7fc05bbe028a051df8533d7a0e96f50ff5c38949'
+  /uni-app/pages/member/recharge_record.vue:
+    newFile: !uuid '6b87ff1187af550bdbe1837efc9ef2cae52dabdd'
+    oldFile: !uuid 'e14497caa9fa874f0841e57656be9c8f836c0165'
+  /uni-app/pages/member/recharge_record_detail.vue:
+    newFile: !uuid '81a09ad0ed962a4d2556c1e781d6c6d382874403'
+    oldFile: !uuid '884ed11d185b45bc55ad4554c34ba6d03f1b19c5'
+  /uni-app/stores:
+    newFile: !uuid 'b35ffe62b2f0e7ec41c3567b95575ab939a1c93a'
+    oldFile: !uuid '5a80f445e933a72552f7a782cc138ee1f760848d'
+  /uni-app/stores/system.ts:
+    newFile: !uuid '3be64cd2afde589413390cebf61e951c7a6c2cbd'
+    oldFile: !uuid 'd5ad8ebb305f7cfe2a4448bf14f70b6833308664'
+  /uni-app/utils:
+    newFile: !uuid 'c645f3c1329f2d951a2bc5d9c545e1b2bd87fdf4'
+    oldFile: !uuid '0017ba4806c0fd489cbcffd461a832033376be63'
+  /uni-app/utils/auth.ts:
+    newFile: !uuid '6886f8765efa7e3d7e844ff4fc8a9eaad796e396'
+    oldFile: !uuid 'f87bddc9b7c494e740d0406d8002946f296d35df'
+  /uni-app/utils/common.ts:
+    newFile: !uuid '109858f38ec7997d75309b710a1b82bab4e8a0a4'
+    oldFile: !uuid '0ec62d37e9e6aabab62c8845c1f6b545094b1104'
+  /uni-app/utils/interceptor.ts:
+    newFile: !uuid 'a46467e59110388f70100ed4dc819c68c91da1dd'
+    oldFile: !uuid 'e253db88c3a630c4d6f1005c311c8b762324b4aa'
+gitCommitId: !uuid '4281ac05f957945285ac0efc51ef9aee8915033c'
+renames: {
+  }
+revisionId: 101
