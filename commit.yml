@@ -3,24 +3,30 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'bd3aa12156f6cf0c5711c53a7678740afbe5f595'
-    oldFile: !uuid 'b7d80800625950ef984337fc23df46de1c0aa7bd'
+    newFile: !uuid '1458c32286ecae239b666fc8d2422ec8bbda8fd2'
+    oldFile: !uuid 'bd3aa12156f6cf0c5711c53a7678740afbe5f595'
   /niucloud/app:
-    newFile: !uuid 'f119b486f95ad4099687c64a30f259c288a82568'
-    oldFile: !uuid 'cd391ca4cbfd0d847fe98151615743b8f8b70270'
-  /niucloud/app/service:
-    newFile: !uuid 'cbe7bdd0004d66b2fc4289dadad73407757c433c'
-    oldFile: !uuid 'b5f5871bda77d1ddea522f083598af7f07efa65d'
-  /niucloud/app/service/admin:
-    newFile: !uuid 'ff07e4f9f04137925e6408fd6ec77564e34e4cf8'
-    oldFile: !uuid '179f20299df46f623395f10e6872bad0ce653e3f'
-  /niucloud/app/service/admin/sys:
-    newFile: !uuid '2530dd1641c7fb17a9eaf732ae4005ff864c5356'
-    oldFile: !uuid '965375af2698f4c1f7f40bb52f71ac725617cafe'
-  /niucloud/app/service/admin/sys/SystemService.php:
-    newFile: !uuid '6d9540e388d79a3702778f4f2aca80187c17b0f4'
-    oldFile: !uuid '44ebfee6c8ff52ed1d4f491e0be7e01824ae23af'
-gitCommitId: !uuid 'f040fca995bb35c85aacf2b519ae324e850ecd99'
+    newFile: !uuid 'bf50224740e017453614856bc115b8891e582df2'
+    oldFile: !uuid 'f119b486f95ad4099687c64a30f259c288a82568'
+  /niucloud/app/install:
+    newFile: !uuid '73c68d72691f4a0352e894d6106b89e67b5487b2'
+    oldFile: !uuid 'c6fbe0dab430ca609ef81b9101df95db9777511c'
+  /niucloud/app/install/source:
+    newFile: !uuid 'ea8f0393fb1667e4ce89b08d3077923942bb1bef'
+    oldFile: !uuid 'd2e1c7ec7b3774af4e34113d189e06026b94ed8f'
+  /niucloud/app/install/source/database.sql:
+    newFile: !uuid '64d32f869f54d4fdbb3a89cf27a10b26842618f5'
+    oldFile: !uuid '08191173c6964c79df121f322bccd941d3837e37'
+  /upgrade:
+    newFile: !uuid 'a0573a7d7e7a00759b17cebc990b5f4f4185e371'
+    oldFile: !uuid '63fce8c9f3bc1a1ae25a9abf9e96316ce84dd809'
+  /upgrade/20230531.1.0.2:
+    newFile: !uuid '2c56532994860cb5593c1e51b9a6127c4ecf33bf'
+    oldFile: !uuid 'f48ebb1699de4c17eaa4c6280efb79fea1b3dc0a'
+  /upgrade/20230531.1.0.2/database.sql:
+    newFile: !uuid '57b17733ffe2270f99b585f7abbbd547c837e9dc'
+    oldFile: !uuid '103663038081317c7c07c49a892f13aa770bbbc0'
+gitCommitId: !uuid '3bef35bd486d9b4facf0d47c643389313eda5b0d'
 renames: {
   }
-revisionId: 107
+revisionId: 108
