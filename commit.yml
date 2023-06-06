@@ -3,30 +3,21 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '1458c32286ecae239b666fc8d2422ec8bbda8fd2'
-    oldFile: !uuid 'bd3aa12156f6cf0c5711c53a7678740afbe5f595'
+    newFile: !uuid 'aa8f1aee8ebb766c6829a980691cf321a33db61d'
+    oldFile: !uuid '1458c32286ecae239b666fc8d2422ec8bbda8fd2'
   /niucloud/app:
-    newFile: !uuid 'bf50224740e017453614856bc115b8891e582df2'
-    oldFile: !uuid 'f119b486f95ad4099687c64a30f259c288a82568'
+    newFile: !uuid 'd62cc1b99eeb3ba40d70996c6d539f8e57a92bcb'
+    oldFile: !uuid 'bf50224740e017453614856bc115b8891e582df2'
   /niucloud/app/install:
-    newFile: !uuid '73c68d72691f4a0352e894d6106b89e67b5487b2'
-    oldFile: !uuid 'c6fbe0dab430ca609ef81b9101df95db9777511c'
+    newFile: !uuid '24b5a230b7a51a7281cea5ed81a2167c8bc94fad'
+    oldFile: !uuid '73c68d72691f4a0352e894d6106b89e67b5487b2'
   /niucloud/app/install/source:
-    newFile: !uuid 'ea8f0393fb1667e4ce89b08d3077923942bb1bef'
-    oldFile: !uuid 'd2e1c7ec7b3774af4e34113d189e06026b94ed8f'
+    newFile: !uuid '662bd0fff72f609408567c8dc9e9e77563f57b51'
+    oldFile: !uuid 'ea8f0393fb1667e4ce89b08d3077923942bb1bef'
   /niucloud/app/install/source/database.sql:
-    newFile: !uuid '64d32f869f54d4fdbb3a89cf27a10b26842618f5'
-    oldFile: !uuid '08191173c6964c79df121f322bccd941d3837e37'
-  /upgrade:
-    newFile: !uuid 'a0573a7d7e7a00759b17cebc990b5f4f4185e371'
-    oldFile: !uuid '63fce8c9f3bc1a1ae25a9abf9e96316ce84dd809'
-  /upgrade/20230531.1.0.2:
-    newFile: !uuid '2c56532994860cb5593c1e51b9a6127c4ecf33bf'
-    oldFile: !uuid 'f48ebb1699de4c17eaa4c6280efb79fea1b3dc0a'
-  /upgrade/20230531.1.0.2/database.sql:
-    newFile: !uuid '57b17733ffe2270f99b585f7abbbd547c837e9dc'
-    oldFile: !uuid '103663038081317c7c07c49a892f13aa770bbbc0'
-gitCommitId: !uuid '3bef35bd486d9b4facf0d47c643389313eda5b0d'
+    newFile: !uuid 'd52ec1d6fbd78859d86ab6e29c7f70a94e33e2ac'
+    oldFile: !uuid '64d32f869f54d4fdbb3a89cf27a10b26842618f5'
+gitCommitId: !uuid '45fc1fd1ca367713f531bc390eaf49bc7477fb08'
 renames: {
   }
-revisionId: 108
+revisionId: 109
