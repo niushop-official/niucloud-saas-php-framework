@@ -2,13 +2,10 @@
 branches: {
   }
 fileChange:
-  /uni-app:
-    newFile: !uuid '3255cbf240ca19f789fe6d1e20704060c5cd6c6b'
-    oldFile: !uuid 'b2aa25efb8daac3d5e02accc2a8ec611fb979418'
-  /uni-app/.env.development:
-    newFile: !uuid '448ef35372b85a33e3d8c2b08c3b53602cb25e78'
-    oldFile: !uuid '4f8f6a88dd6a6d59f910e9d72dc6e41de700d7e8'
-gitCommitId: !uuid 'f296e506d09b6724ae51b1f12e965f8f6b20c9e2'
+  /.gitignore:
+    newFile: !uuid 'e900842decf1daf6ea13f9e4c0e3aa5d920ad52d'
+    oldFile: !uuid '5d947ca8879f8a9072fe485c566204e3c2929e80'
+gitCommitId: !uuid '8f2e36cfa464660c037928fe04224dc14091c662'
 renames: {
   }
-revisionId: 117
+revisionId: 118
