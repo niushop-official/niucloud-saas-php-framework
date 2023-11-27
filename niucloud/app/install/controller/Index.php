@@ -196,12 +196,12 @@ class Index extends BaseInstall
         unset($sql);
         foreach ($sql_arr as $sql) {
             $sql_query[ $num ] = '';
-            $sqls = explode("\n", trim($sql));
+            $sqls = explode("\n", trim($sql));            
             $sqls = array_filter($sqls);
             foreach ($sqls as $query) {
                 $str1 = $query[0] ?? '';
                 if ($str1 != '#' && $str1 != '-')
-                    $sql_query[ $num ] .= $query;
+                    $sql_query[ $num ] .= $query." ";
             }
             $num++;
         }
@@ -450,7 +450,7 @@ class Index extends BaseInstall
                     if ($is_write) $this->setSuccessLog([ '创建表' . $table_name, 'success' ]);
                 } catch ( Exception $e) {
                     $this->setSuccessLog([ $e->getMessage(), 'error' ]);
-                    return fail('数据库解析失败' . $e->getMessage());
+                    return fail('数据库解析失败' . $e->getMessage()." sql:".$sql);
                 }
             }
         }
