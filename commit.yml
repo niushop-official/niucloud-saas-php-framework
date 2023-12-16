@@ -2,19 +2,16 @@
 branches: {
   }
 fileChange:
-  /uni-app:
-    newFile: !uuid '207b193564f66317289d569ca0fe73edfddf3b12'
-    oldFile: !uuid '9c79d4ee27497be4babae6ef9df4ed7352b55b39'
-  /uni-app/.env.development:
-    newFile: !uuid 'bac6307dd3a8f6085f26c766e10d4d5b8fe69d6c'
-    oldFile: null
-  /uni-app/.env.production:
-    newFile: !uuid '448bf611837273492497c697b93b1a51634bb9ed'
-    oldFile: null
-  /uni-app/.gitignore:
-    newFile: !uuid '7ce6e504b5d31cb00415e1db7cade08c277ef848'
-    oldFile: !uuid 'c13e807d46b39a84040ec4a021251027e890329d'
-gitCommitId: !uuid 'ba18894a5eeff923b7d46ca91310a10a6f9f857d'
+  /niucloud:
+    newFile: !uuid '9dae2b2fb0a79a3c31af44d7e5bc2b302d25df96'
+    oldFile: !uuid '32fdba19b3cbff4d0cade0a20bf6b2d82b7735e4'
+  /niucloud/route:
+    newFile: !uuid '77cd046397d18babf6cea3ea289a90f52bd4af5b'
+    oldFile: !uuid '2df105b4c0c4c578a90a44bb4f97352ec87616b7'
+  /niucloud/route/app.php:
+    newFile: !uuid '56c52a63d53b5b83a6c6d2dfde8f2f51877ba56a'
+    oldFile: !uuid '6364a4442f47f5c43fcb58aa134889563f6b1a62'
+gitCommitId: !uuid 'ed9f84a03addbc41225a74023cea66c12ec9cb28'
 renames: {
   }
-revisionId: 136
+revisionId: 137
