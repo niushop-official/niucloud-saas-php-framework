@@ -3,15 +3,15 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '651f396b07679748d8b88c51f168c82a0497f6a8'
-    oldFile: !uuid '65f08ce474a3fe788987f68954de22002cdf96d4'
+    newFile: !uuid '32fdba19b3cbff4d0cade0a20bf6b2d82b7735e4'
+    oldFile: !uuid '651f396b07679748d8b88c51f168c82a0497f6a8'
   /niucloud/public:
-    newFile: !uuid '140fdbb59762e00b93a1c1d7af5174253a043f20'
-    oldFile: !uuid '72969fb9384f609a8bf470d68d648d2ace557727'
-  /niucloud/public/.htaccess:
-    newFile: !uuid 'f1cca9feeca571c1f3e05cf1b7ba3f442cfb7ca7'
+    newFile: !uuid '008edfd8f4d1cf3351e8b6ff22abc8177e019d6d'
+    oldFile: !uuid '140fdbb59762e00b93a1c1d7af5174253a043f20'
+  /niucloud/public/nginx.htaccess:
+    newFile: !uuid '2031820d1bac563a6c6e4ed38470c30cbf77f5a1'
     oldFile: null
-gitCommitId: !uuid '4e8d048284cd5b2ca70c44a4502765bf6bacd24c'
+gitCommitId: !uuid '08a7b1a8f5c40c138b4080572dd7a8f75ff2579f'
 renames: {
   }
-revisionId: 134
+revisionId: 135
