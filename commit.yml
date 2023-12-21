@@ -2,40 +2,10 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid '4a2883cd0ffcb37500095d01398dfb70b51817d9'
-    oldFile: !uuid '78585dff404579a6985b424166b8f0f1bfd9b3ec'
-  /niucloud/addon:
-    newFile: !uuid '1676c5e1dc805877b20159aeb46b29b8a4839928'
-    oldFile: !uuid '4cb9469643ce0d070843e911799b49840a213582'
-  /niucloud/addon/hello_world:
-    newFile: !uuid '07e8290fbd15acec0db7866dea9a62a83aefd504'
-    oldFile: !uuid '1f060fec69d74a1835ad639f41deecabea9aca33'
-  /niucloud/addon/hello_world/uni-app:
-    newFile: !uuid '89b1863583091a53f5fe16b98f5507818a3218de'
-    oldFile: !uuid '2355d2130980ea46a50e3bc0c492c59e7a34e19c'
-  /niucloud/addon/hello_world/uni-app/locale:
-    newFile: !uuid '60057cf7d0a253234f10937a472a214226fb73ed'
-    oldFile: !uuid '9b93487663c7754165bd5d164a1e47f7c307b12d'
-  /niucloud/addon/hello_world/uni-app/locale/en.json:
-    newFile: !uuid '4efc14c30dd1a101b63c33bcdae9e06d5f90a575'
-    oldFile: !uuid 'ed3c113a13e77cb5f617d2cc742b70fc65709fa4'
-  /niucloud/addon/hello_world/uni-app/locale/zh-Hans.json:
-    newFile: !uuid '39f0943ac841d3c35c44aad0bf9ba5dcecf24932'
-    oldFile: !uuid '4f1d292d6212284ac8bcc04256163be7dec144ca'
-  /niucloud/addon/hello_world/uni-app/pages:
-    newFile: !uuid 'a725a5025611b87b8e35a28c5ab74a65e41a41f4'
-    oldFile: !uuid '8d599b8ec58aadd4343b9a0c64a67e3aa24d8e77'
-  /niucloud/addon/hello_world/uni-app/pages/hello_world:
-    newFile: null
-    oldFile: !uuid 'a725a5025611b87b8e35a28c5ab74a65e41a41f4'
-  /niucloud/addon/hello_world/uni-app/pages/hello_world/index.vue:
-    newFile: null
-    oldFile: !uuid '88943acd4f4f1a5d5abe5ac091ee37a1ec87dfff'
-  /niucloud/addon/hello_world/uni-app/pages/index.vue:
-    newFile: !uuid '88943acd4f4f1a5d5abe5ac091ee37a1ec87dfff'
-    oldFile: null
-gitCommitId: !uuid 'bf678cf1d7a26bf5d5473fd8a2c53fc6e587c9f7'
-renames:
-  /niucloud/addon/hello_world/uni-app/pages/index.vue: /niucloud/addon/hello_world/uni-app/pages/hello_world/index.vue
-revisionId: 140
+  /README.md:
+    newFile: !uuid 'a3d6c4405e044f211640afc56309bdb1245e6245'
+    oldFile: !uuid '02f6a3926999162037dc904e6e628550017674a5'
+gitCommitId: !uuid '97c1099ba32215127f9ea7160a89ee9f613c3ac3'
+renames: {
+  }
+revisionId: 141
