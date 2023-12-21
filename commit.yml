@@ -2,25 +2,2829 @@
 branches: {
   }
 fileChange:
+  /README.md:
+    newFile: !uuid '02f6a3926999162037dc904e6e628550017674a5'
+    oldFile: !uuid 'f17a04ba5b34b0ea9682ca9da1b6d73ceee5b04d'
+  /admin:
+    newFile: !uuid 'c812365b77717f3e0b5a26b33441bb853528c296'
+    oldFile: !uuid 'e8ccf71673fde5b832b6e1668fe0afb4906fd446'
+  /admin/package-lock.json:
+    newFile: !uuid '80c5541900917a3c8f2dd6989bafa24c12658fc6'
+    oldFile: !uuid '5f0264c49f15cf75c81dd16ff07bafd6b920533f'
+  /admin/package.json:
+    newFile: !uuid '73358bf849a7778574675e74c694f282e5684760'
+    oldFile: !uuid 'e0522292ea6b515cdc96c6047a79942868c46425'
+  /admin/src:
+    newFile: !uuid 'ffd2093e9ca77e3fd21e1be4f1ef4eb966e07d7b'
+    oldFile: !uuid '78c0dd00ad37b5d648ca2023537e7d0d78f3aac3'
+  /admin/src/app:
+    newFile: !uuid '0dc9daa34f0b6ca5a8013fb22faa2160739eeec0'
+    oldFile: !uuid '01bf14321c1fa382ee2fc271ca060db8d8d7af88'
+  /admin/src/app/api:
+    newFile: !uuid '823cb9323dae69b32fc2c89bec1eaeba477634c6'
+    oldFile: !uuid '26c5b3b99b41ee7379020f5cb527f76df05433e3'
+  /admin/src/app/api/module.ts:
+    newFile: !uuid 'a632b364a46b840721b26767bac1f8d425047a1d'
+    oldFile: !uuid '017265d48d8e9bc79c93ea6e22f8248a27987d88'
+  /admin/src/app/api/site.ts:
+    newFile: !uuid '85e35b4522054d50759854e8d7fdfbf410f5c02d'
+    oldFile: !uuid 'e789b31cade138c585309f49838ee951b074130f'
+  /admin/src/app/api/sys.ts:
+    newFile: !uuid '57d166ea3e50d571438389ac45389ed8b824eb1b'
+    oldFile: !uuid 'bc2a8d8f14451499ddf331469b392e4f131b5d85'
+  /admin/src/app/lang:
+    newFile: !uuid 'bb4f147b6216346159e35ff5e755b424267af097'
+    oldFile: !uuid '492fcc5b253e54cdf164efdd0619fe267a3519fb'
+  /admin/src/app/lang/zh-cn:
+    newFile: !uuid '33483cc5f2a33c1e5793b2abcdbb64e6faf490f8'
+    oldFile: !uuid 'd3377bc06f8ec41ff4cdf8d119bbdee4bbd42cf9'
+  /admin/src/app/lang/zh-cn/diy.index.json:
+    newFile: !uuid '9dfcd2c564db8249e0e47cfc10b228109f013600'
+    oldFile: !uuid '3ff1eecfdee5a4e88a5f0083ea1d224a70a281b0'
+  /admin/src/app/lang/zh-cn/index.store.json:
+    newFile: !uuid '8a29a2b125407732444990ee6e15ea15ccc30cfa'
+    oldFile: !uuid '4c7d49aec86bb83214c8b6374fafc29da9158bc1'
+  /admin/src/app/lang/zh-cn/site.list.json:
+    newFile: !uuid 'e246d75ff570e5f8b8590b8a3eb6e5bd96825926'
+    oldFile: !uuid '0822832e619cd0c99d8f7b8402d8ce2ba04be143'
+  /admin/src/app/views:
+    newFile: !uuid 'c734e6d00799b1e404866534f02d739ac9f7e7bd'
+    oldFile: !uuid '9f0cae4740cb9f95f3a8e267ce0e1f245810995d'
+  /admin/src/app/views/diy:
+    newFile: !uuid '29edb03bed0f34683b40e5d0478e2285563fb363'
+    oldFile: !uuid 'b67fd779c661d6820b98f94c5fb430e508ed0803'
+  /admin/src/app/views/diy/index.vue:
+    newFile: !uuid 'f0167d1a303af310c9dadd4bbdb82e63f080df24'
+    oldFile: !uuid '14190e165e0157eb7194d45a60e541b4ff9133c7'
+  /admin/src/app/views/home:
+    newFile: !uuid '70495a4b009bcfd7482df62df2f51bb09065ba0c'
+    oldFile: !uuid 'd012de4904ac606bd810b0afaee0d9958296c1a1'
+  /admin/src/app/views/home/index.vue:
+    newFile: !uuid 'f438abdb8888bc4842102f7ade703bbde506c5ce'
+    oldFile: !uuid '61a8edd8843febae76a515179dfebf0e748ffe5b'
+  /admin/src/app/views/site:
+    newFile: !uuid '557b12d1e87eeae50f871868a7fad2d8eb4f81f4'
+    oldFile: !uuid '00d05607cb51bb916a6e75fb1edaf4ee293393ac'
+  /admin/src/app/views/site/list.vue:
+    newFile: !uuid '108ce48fbcdc9999f7f462b228e5c8129247177d'
+    oldFile: !uuid '414e85d511cca2c1d32c0df1543bdd8ca5971f56'
+  /admin/src/app/views/tools:
+    newFile: !uuid 'c3c95d66c73dbe8769682ba1823988da5f748041'
+    oldFile: !uuid '1b1db573efc8c2eb877e9b6457d7dace7cc99be3'
+  /admin/src/app/views/tools/code:
+    newFile: !uuid 'a49a4732ea4fa58c62c40211948dfda9dae16ba7'
+    oldFile: !uuid 'a16ac78ee7dcdec646468dec2dece6ff7a9a8595'
+  /admin/src/app/views/tools/code/components:
+    newFile: !uuid '8ac48c2adab51060929693fcead16dc977b315dd'
+    oldFile: !uuid '2a288d478ceafbaaee05b4954197c6e3fa861e60'
+  /admin/src/app/views/tools/code/components/edit-associated.vue:
+    newFile: !uuid '684dff6b539217894566bea3e4170e17b1ae19c4'
+    oldFile: !uuid '1c9ec0be683585a831f680d3bf1a0f5bf53fc833'
+  /admin/src/app/views/tools/code/edit.vue:
+    newFile: !uuid '70e9948ad87911b4d860529687fb9618d632605d'
+    oldFile: !uuid '691d61aa676609728be78f29f453c4cfe4bef0d4'
+  /admin/src/app/views/tools/code/index.vue:
+    newFile: !uuid 'e3644064ecb2e513c4110632400cd7ff25e37aec'
+    oldFile: !uuid 'cff312ea859daee15a34eef639d26cd7ffea7455'
+  /admin/src/lang:
+    newFile: !uuid 'b7660603f68dd7cdb1a144d7b1ab49ae756bb104'
+    oldFile: !uuid '7a9857453c954d81de5cec3ed43081ecebbad9af'
+  /admin/src/lang/zh-cn:
+    newFile: !uuid '189cbaad4217e685f62decc1f9f2db31990ff4d1'
+    oldFile: !uuid 'f1f16c55ba0a8b3275490cd49d18bc55383767cc'
+  /admin/src/lang/zh-cn/common.json:
+    newFile: !uuid '4755d7f33947f727eea3b66efc651a0f3b2a0dd0'
+    oldFile: !uuid '876d0cea5400b4e708db51a48c7a935ead5d5a57'
+  /admin/src/layout:
+    newFile: !uuid '748f550924e5942332d3ef88ba79f15fdf655db7'
+    oldFile: !uuid 'a1ecb929119d0c65753b31825fac8a7b6b44db8b'
+  /admin/src/layout/admin:
+    newFile: !uuid '6d7ab47c7c94e4ca51b78793fa8a39aa49d4129d'
+    oldFile: !uuid 'd0256b91ed0bafd8f4a6c536f0ac066d1ceaace8'
+  /admin/src/layout/admin/components:
+    newFile: !uuid '131fc6201cd6b450e1320907250abf6645f10193'
+    oldFile: !uuid 'c3d26cdc5df11bc5f7d89cd99a65b496c5e97eb4'
+  /admin/src/layout/admin/components/aside:
+    newFile: !uuid '930a44a13edb72830f071a136b00ebc39b204107'
+    oldFile: !uuid '345b79b4aaf6497b711ed18c64e70315a466fe16'
+  /admin/src/layout/admin/components/aside/side.vue:
+    newFile: !uuid 'ae91b4f18104f1267dd9d5d0dc260647a6783b27'
+    oldFile: !uuid '2ad15d855b91b569ca48ed2f9a52d9a522894642'
+  /admin/src/layout/default:
+    newFile: !uuid 'af0a6e1b6c19bb644781d9109ea6c346ae04996d'
+    oldFile: !uuid '3e1836327b6ed66d12ddfd7606ecfe856a0e6595'
+  /admin/src/layout/default/components:
+    newFile: !uuid 'ee40e6174e8718ca2a6479ee6874d6c9fd5a46b4'
+    oldFile: !uuid '6c7b960d54f4b306ec46c10e4ebca2faa364b50b'
+  /admin/src/layout/default/components/aside:
+    newFile: !uuid '7743fecb02bf309f9f7b8f4b92037ce74382e740'
+    oldFile: !uuid '56e934d7f2f82bd7f89bb000489d8cea43593aa1'
+  /admin/src/layout/default/components/aside/side.vue:
+    newFile: !uuid '7ebb7ba0777c7a157a8eb347d0225a4a42e5f1a6'
+    oldFile: !uuid '95ecadc256eb19ae78cd5cd1e070d6c898ef2ba9'
+  /admin/src/layout/home:
+    newFile: !uuid 'e6d77115759d1839f2d5bfad0973df97d36e458e'
+    oldFile: !uuid 'e92c39e83e1c85705ff486c4adba2699680697c1'
+  /admin/src/layout/home/components:
+    newFile: !uuid '6c4950a739e7e53c562a758be32e743a9c9e3a98'
+    oldFile: !uuid '35df994c45abbcec3f2153ed9b293a4015d347e7'
+  /admin/src/layout/home/components/aside:
+    newFile: !uuid '11c867bff9893226c6c220df3274a9829667324b'
+    oldFile: !uuid '6cfb8c32543738202fb68c78355a747462a82c91'
+  /admin/src/layout/home/components/aside/index.vue:
+    newFile: !uuid '42a3b98f0460e86d8b0192ff231a28cce5f728c2'
+    oldFile: !uuid 'e78b66a042bd2564799618a04f4d449057b78654'
+  /admin/src/layout/home/components/aside/side.vue:
+    newFile: !uuid '2bd8bb6bdf2d03fcfb89737725797975a35ff5ba'
+    oldFile: !uuid 'beaaafe4f8592702eda5c2c4423e660228c8f312'
+  /admin/src/router:
+    newFile: !uuid '5fc7b58f3df2a58d1b4255bbc1ee5d9076598920'
+    oldFile: !uuid '6445fd534371a5507cb8def83fc6eca15fe33fad'
+  /admin/src/router/index.ts:
+    newFile: !uuid '5ae581ff362b6346ba5e218d3f958d8fa6c5fb94'
+    oldFile: !uuid 'd4a1c1d6210ef7dc5a2c4a0330e265ee0c021b3e'
+  /admin/src/router/routers.ts:
+    newFile: !uuid 'f0e887ea04892845302ef1b16500cb66570bce12'
+    oldFile: !uuid 'f17572ad2ce0ea291b2230b9bf4598b9db4c0ae3'
+  /admin/src/stores:
+    newFile: !uuid '957964f13c30c0142a268dddf598311f55220f1a'
+    oldFile: !uuid '4e5a49dac090d81c766b32c4d87bd807b60a958a'
+  /admin/src/stores/modules:
+    newFile: !uuid '7efd7d59ea5902259898e9b2f92a5f87e96a4cac'
+    oldFile: !uuid '1e1d401cfd1a268068a80a8d3e05f801dee38c59'
+  /admin/src/stores/modules/user.ts:
+    newFile: !uuid '87930c6eccc7eeb15620a17872d66ddc05f69cee'
+    oldFile: !uuid '19debaff9521a22da21f213b4ac8523bb2668755'
+  /admin/src/utils:
+    newFile: !uuid '09f68b8f4e2426cac33fb757c6c7c19beb0b977d'
+    oldFile: !uuid '62a5626cc3eaf5ec2a24a8d272636d2ea6b32296'
+  /admin/src/utils/request.ts:
+    newFile: !uuid '267dbd5d6daba3d5d2a864c3b8df21ce6b096b42'
+    oldFile: !uuid 'bee57475f16f850ff5e6a207d9c091612471b823'
   /niucloud:
-    newFile: !uuid 'c948dcc061e459c58c6049f8dd8b0a5dfcab531d'
-    oldFile: !uuid '9dae2b2fb0a79a3c31af44d7e5bc2b302d25df96'
+    newFile: !uuid '78585dff404579a6985b424166b8f0f1bfd9b3ec'
+    oldFile: !uuid 'c948dcc061e459c58c6049f8dd8b0a5dfcab531d'
+  /niucloud/addon:
+    newFile: !uuid '4cb9469643ce0d070843e911799b49840a213582'
+    oldFile: !uuid '9d7f4c27bdc8d2cb4dd1e9a04d4b6e779167b4f1'
+  /niucloud/addon/hello_world:
+    newFile: !uuid '1f060fec69d74a1835ad639f41deecabea9aca33'
+    oldFile: !uuid 'd7c30254cae57a9c2b88b97f66df6a432d965e5b'
+  /niucloud/addon/hello_world/package:
+    newFile: !uuid '0528a412c84f4f814d64de3459966d505c2e82c8'
+    oldFile: !uuid '08a840777e1280759c1b9cf817c96e4562d6c227'
+  /niucloud/addon/hello_world/package/uni-app-pages.php:
+    newFile: !uuid '8cc5befbc4cb6e6922498b9715878a4575323b1e'
+    oldFile: !uuid 'e87db5fef6131cbc7f535686830075564b1b29d5'
+  /niucloud/addon/hello_world/uni-app:
+    newFile: !uuid '2355d2130980ea46a50e3bc0c492c59e7a34e19c'
+    oldFile: !uuid '34e1de802489be73a378449e3e0112b730696bd0'
+  /niucloud/addon/hello_world/uni-app/pages:
+    newFile: !uuid '8d599b8ec58aadd4343b9a0c64a67e3aa24d8e77'
+    oldFile: !uuid '83fa90b7e6a2bbe446370636b891bfdfb607e1b8'
+  /niucloud/addon/hello_world/uni-app/pages/hello_world:
+    newFile: !uuid 'a725a5025611b87b8e35a28c5ab74a65e41a41f4'
+    oldFile: !uuid 'e96fd17171b16351b806a24a401913b202882bf9'
+  /niucloud/addon/hello_world/uni-app/pages/hello_world/index.vue:
+    newFile: !uuid '88943acd4f4f1a5d5abe5ac091ee37a1ec87dfff'
+    oldFile: !uuid '85165f697d9823718fe552c9933efbccb0b38fe6'
+  /niucloud/addon/hello_world/uni-app/pages/hello_world/info.vue:
+    newFile: null
+    oldFile: !uuid '85165f697d9823718fe552c9933efbccb0b38fe6'
+  /niucloud/addon/hello_world/uni-app/pages/index.vue:
+    newFile: null
+    oldFile: !uuid '155dfa6783cea42eed984ed158494990e34d8548'
+  /niucloud/addon/hello_world/uni-app/pages/info.vue:
+    newFile: null
+    oldFile: !uuid '155dfa6783cea42eed984ed158494990e34d8548'
   /niucloud/app:
-    newFile: !uuid '2e1ddd49239c2a59a573de2e3986f2bf907bcb7d'
-    oldFile: !uuid '4621b4a53855703399fe1ed5c709c5eb2eb127e1'
+    newFile: !uuid '1d3bace55c56f077d753e8f848b603503b474a4c'
+    oldFile: !uuid '2e1ddd49239c2a59a573de2e3986f2bf907bcb7d'
+  /niucloud/app/adminapi:
+    newFile: !uuid '11a3b417de6cb6a0447017f05ad8ad5900ec6d1b'
+    oldFile: !uuid '01cb8e62986e45c49ef8a2985f73c12847f9b783'
+  /niucloud/app/adminapi/controller:
+    newFile: !uuid 'c82ddc88e3addc4b762f8593c30ab27f150f97cc'
+    oldFile: !uuid '427aeff716e24efee25efc0603ac503b95b06ba8'
+  /niucloud/app/adminapi/controller/addon:
+    newFile: !uuid '2af99db39ed3fd9309495d916ff9fd69fe494f05'
+    oldFile: !uuid '218155fa4e6a52b782fb185783e0cfc14fc913ff'
+  /niucloud/app/adminapi/controller/addon/Addon.php:
+    newFile: !uuid '80a669b904e12c140c5f20b6fa2508ab167e019e'
+    oldFile: !uuid '6f5fa0ce5b758bde4861f1cdcc6e12cc8aff904b'
+  /niucloud/app/adminapi/controller/login:
+    newFile: !uuid 'd5bcd23bc889a6d1119c7302031f7f2a88a404ba'
+    oldFile: !uuid '77022f2b27baa074eb3d98782e06cb044abe69f0'
+  /niucloud/app/adminapi/controller/login/Login.php:
+    newFile: !uuid 'a0c980cef1e28a878916401db4a1b8add22536bd'
+    oldFile: !uuid 'c2d629047ab99f2fbfc8cc5f6dff1eaee7166cb5'
+  /niucloud/app/adminapi/controller/niucloud:
+    newFile: !uuid '21ab0f03bc57fab745e09f8e738da8418d1b377c'
+    oldFile: !uuid '2ca5a8cf082680bf22215315b4ef817742fc37f4'
+  /niucloud/app/adminapi/controller/niucloud/Module.php:
+    newFile: !uuid '56b561e8caa1bc9828945c3d4391b091c808ec7d'
+    oldFile: !uuid '701ff519efa91f7cd7a59fc66cb826f120e06335'
+  /niucloud/app/adminapi/controller/site:
+    newFile: !uuid '1688a4989880d4c7892aa3cdfc810d2b214a44ee'
+    oldFile: !uuid '5a0a211ec8a349c4c2b94bbb73a74be5cb3cfb61'
+  /niucloud/app/adminapi/controller/site/Site.php:
+    newFile: !uuid 'e9e85171aff721064a6a6475019123ea10548995'
+    oldFile: !uuid '10ec0ac15bffd8298ba19df6c720bd1faf881bb6'
+  /niucloud/app/adminapi/controller/sys:
+    newFile: !uuid '1b693d79c0bb7e9dad4a1818e304a916f2309fef'
+    oldFile: !uuid 'ca3e66f4d704c36ce8f3dab752ea354996f99ba2'
+  /niucloud/app/adminapi/controller/sys/Menu.php:
+    newFile: !uuid 'b1cc8284f2b82c2ff742f964992544799df2bf22'
+    oldFile: !uuid '8009a394b641c9430b85f10ab22074f0569af2db'
+  /niucloud/app/adminapi/route:
+    newFile: !uuid '75af9cc1fff4b8a1c0781437f97f19ef376d693b'
+    oldFile: !uuid '6672275568e42b83db817f5d1e59444c940609df'
+  /niucloud/app/adminapi/route/addon.php:
+    newFile: !uuid '101fadca12e33d52a39e41c650268a2ccd0f561a'
+    oldFile: !uuid 'e6a70e1fda293d4a2ed8a6457b283db23942a9d5'
+  /niucloud/app/adminapi/route/niucloud.php:
+    newFile: !uuid 'ebccc9061f683f932bc19ffb98bafb05e4e6726e'
+    oldFile: !uuid 'a69c8bcfda04fc02ba20fe7bf02a3ce069bf581c'
+  /niucloud/app/adminapi/route/site.php:
+    newFile: !uuid 'ca13a605befdbf3ac8cd91f61c8d3644c484c19d'
+    oldFile: !uuid '4b0236430a69d917c14d561d06feb27a544122f2'
+  /niucloud/app/adminapi/route/sys.php:
+    newFile: !uuid '5ea9922a797a6733a1436402be569cf24bfb7fec'
+    oldFile: !uuid 'aca548afc17d27ae28f77b1c1c2579aa419762fc'
+  /niucloud/app/dict:
+    newFile: !uuid '319826659948e30cc93011c66586ecdfbb349490'
+    oldFile: !uuid '7bebf7173fb4715ae2ed1f9fefbb88eca44ccc31'
+  /niucloud/app/dict/addon:
+    newFile: !uuid '91acb73ebc0052b7440e64ab509c78210c0985f3'
+    oldFile: !uuid '82425987fbdec318a1d77fa7573d4d611f967396'
+  /niucloud/app/dict/addon/AddonDict.php:
+    newFile: !uuid 'f6e566d7acfe6a79dcb62df72b630f007c9da76c'
+    oldFile: !uuid '527cf656b82abdf84dd2c4c151132bfcced616ba'
+  /niucloud/app/dict/menu:
+    newFile: !uuid '3638e8068f4e8ade4e928f69ec030ca4fa2f4cbd'
+    oldFile: !uuid '30874a632e0de1a2f66acc10b0cb569e96b4320f'
+  /niucloud/app/dict/menu/admin.php:
+    newFile: !uuid 'a34b08ae3fbb5f41ab268e0b619713e2d9fc63b6'
+    oldFile: !uuid '0ba8edb6b4314d7e1499882929583acc37d98065'
+  /niucloud/app/lang:
+    newFile: !uuid 'b6f44a09c94df1fbccc7a3f45d0604dc9124b8e4'
+    oldFile: !uuid '38ee05b66ede21615dcba172fa2fa197567dafc0'
+  /niucloud/app/lang/zh-cn:
+    newFile: !uuid '6cffdb3ca5896e650bb147720cd4dd3d3add6bec'
+    oldFile: !uuid '50e8530be09679f6d7a74630623c2c2622bb40b0'
+  /niucloud/app/lang/zh-cn/api.php:
+    newFile: !uuid 'c6545c73804089c7c149492672f2079f97ac679e'
+    oldFile: !uuid '3cf5b3533285bca5f0a2a8110e8d8cb5adf8a6e2'
   /niucloud/app/service:
-    newFile: !uuid '4c90237f7ec3e8c96699d208e3ecc9c7c1d31150'
-    oldFile: !uuid '970981c48f41bb29a4baaf44dba8d684470e479f'
+    newFile: !uuid 'a91a757ba37c3ad169c9e91b627809d9fa75cf60'
+    oldFile: !uuid '4c90237f7ec3e8c96699d208e3ecc9c7c1d31150'
+  /niucloud/app/service/admin:
+    newFile: !uuid 'f4fb58f3fcb50eca2241fcb9bab6419350bfe572'
+    oldFile: !uuid '35526b034711d8da68474276609d68bcafe529df'
+  /niucloud/app/service/admin/addon:
+    newFile: !uuid 'b116eaf781fc46370776cb4e1db709937b02c05c'
+    oldFile: !uuid '04f66fe6f5630a1731dec628aef2c484e903aa9a'
+  /niucloud/app/service/admin/addon/AddonService.php:
+    newFile: !uuid '9b31e691b03858fa8fba123baac9f17d5708ec06'
+    oldFile: !uuid 'cadb80b5f9f54f42e0e289689cb31e4b8cb9ce0e'
+  /niucloud/app/service/admin/niucloud:
+    newFile: !uuid 'bac3c533c73db769a3d792e5029a061945ecf248'
+    oldFile: !uuid '4add11ea5593a5d73a349059521bce864f535b78'
+  /niucloud/app/service/admin/niucloud/NiucloudService.php:
+    newFile: !uuid '593dbc4821f2dd4e8df0ae1402190db9a1d45d61'
+    oldFile: !uuid '56bab5883704a5f121638b3d5166fbfad3225436'
+  /niucloud/app/service/admin/site:
+    newFile: !uuid '2d09020cf2e1709702fddb45658a18b2cab35464'
+    oldFile: !uuid 'f9749549e1bbb346e5129a8aeda9bfbbd30b62b0'
+  /niucloud/app/service/admin/site/SiteService.php:
+    newFile: !uuid '867a20fc58a1a375cbefff6b213240fecf6ca542'
+    oldFile: !uuid '9e29270fe477332ac9e043575b81e458dbc76c6c'
+  /niucloud/app/service/admin/sys:
+    newFile: !uuid 'c3f706eb9fd6f6665197a316159cee1609a18655'
+    oldFile: !uuid 'cf6164fec204e8735150a8cbcd045b2c37a5d3e0'
+  /niucloud/app/service/admin/sys/MenuService.php:
+    newFile: !uuid '10cc15372b3e6db8276acff548609a5596a53352'
+    oldFile: !uuid '140a42d66e017714281084fc1951a1c93dd3db01'
   /niucloud/app/service/core:
-    newFile: !uuid 'df1c102612d0e7e7e46b6e9f5e754a7dffe9c36e'
-    oldFile: !uuid '86e8264b1f971aa58f6d3419f56b8ae557e845d5'
+    newFile: !uuid 'd2221b819738475cb183a98b4dfe5fb2deab6f9b'
+    oldFile: !uuid 'df1c102612d0e7e7e46b6e9f5e754a7dffe9c36e'
   /niucloud/app/service/core/addon:
-    newFile: !uuid '8ba82de6e11ebe4b698bf313189e1a7632247ee1'
-    oldFile: !uuid '16768c5cba5cce03445017ed8eccd72ca11818bf'
+    newFile: !uuid '1193bdab6f97deb31e811ec472f05e8744b2d71c'
+    oldFile: !uuid '8ba82de6e11ebe4b698bf313189e1a7632247ee1'
+  /niucloud/app/service/core/addon/CoreAddonCloudService.php:
+    newFile: !uuid '33ceaef36174e3cd04c5ffc44e6873fe98151854'
+    oldFile: !uuid '6e8c17caac4fce5991c25477bbdfff58e2d2c1c7'
+  /niucloud/app/service/core/addon/CoreAddonDevelopService.php:
+    newFile: !uuid 'd98ae7ad3444e04042bf4db1dda37dd4ae0c6e83'
+    oldFile: !uuid 'a29bb9dcdb76131f67ac617e8dd4331c93504d3e'
   /niucloud/app/service/core/addon/CoreAddonInstallService.php:
-    newFile: !uuid 'abb8c76929e2ce6f936897f79a385cec0b6691a6'
-    oldFile: !uuid '368ac960bc1c25e1642f980f999d075a545f1d50'
-gitCommitId: !uuid 'ef01fcf32f349b0ca716f49bd55f3fac2b33ec32'
-renames: {
-  }
-revisionId: 138
+    newFile: !uuid 'ac534728f7a001255766f4f8d202d83f549c69aa'
+    oldFile: !uuid 'abb8c76929e2ce6f936897f79a385cec0b6691a6'
+  /niucloud/app/service/core/menu:
+    newFile: !uuid '75f86a066149850833ce874dc2a2185ede2ed768'
+    oldFile: !uuid '7104c65a2a447ef8e3df431d07d39acb2ac142b8'
+  /niucloud/app/service/core/menu/CoreMenuService.php:
+    newFile: !uuid 'b11bf63d28567b3c217c3554b8a8c8e2e58a901e'
+    oldFile: !uuid '6e62a8f7765c6a8748670e4466c4fa06536198fa'
+  /niucloud/app/service/core/niucloud:
+    newFile: !uuid '4c12033b64b6496807d41689ac175eaae5e46f49'
+    oldFile: !uuid '4e3f723ff9bc4026097825d6f3459531f9900bcd'
+  /niucloud/app/service/core/niucloud/CoreModuleService.php:
+    newFile: !uuid 'eaa63147196898edfcf1a32e9a822f6f976530e4'
+    oldFile: !uuid '8b34854acad73ac301de55d76b9671c80e2c6206'
+  /niucloud/app/service/core/site:
+    newFile: !uuid '03d5a338c478af761f92a5294e8434b03790b925'
+    oldFile: !uuid 'e9b0838adc35d2ee38753337e10faec1f1363601'
+  /niucloud/app/service/core/site/CoreSiteService.php:
+    newFile: !uuid 'ecf1a80f1bcb927d58f1cf753106b3ba6125797a'
+    oldFile: !uuid '6083e8551b06c796561406a1192b0cbc51d8d62b'
+  /niucloud/app/service/core/upgrade:
+    newFile: !uuid '67e6c83f21f87c361351782e6fcea2f3860c5792'
+    oldFile: null
+  /niucloud/app/service/core/upgrade/CoreBackupService.php:
+    newFile: !uuid 'd94df7988ba509391c23ea968e9c7a295de7b09d'
+    oldFile: null
+  /niucloud/app/service/core/upgrade/CoreRestoreService.php:
+    newFile: !uuid '5e591dc312f8d9e9d6b811b3a5569cc3d8443a3b'
+    oldFile: null
+  /niucloud/app/service/core/upgrade/CoreUpgradeService.php:
+    newFile: !uuid '59e3c763c338609593ecc257ddfcff8c85036ce8'
+    oldFile: null
+  /niucloud/config:
+    newFile: !uuid '7a93b0ffe132b918b92a1a9b1331e9600f5d0429'
+    oldFile: !uuid '6fe0e0192c1d0efe3cac1a43c43a3a78d7483f39'
+  /niucloud/config/upload.php:
+    newFile: !uuid 'a23827afeb1276b5ee0246b63c0046f1cf83640c'
+    oldFile: !uuid 'a2f771224d4c8842bf018b6204b07016452f8c6f'
+  /niucloud/config/version.php:
+    newFile: !uuid 'a64db6f26cdc09b40fdd6e2529c175ec2bdfd623'
+    oldFile: !uuid '4f2a7e9d5f685a815c3301d7cea0ec1ab3481433'
+  /niucloud/public:
+    newFile: !uuid '389b27f403c239b44a663968397c9aaa3ec405f3'
+    oldFile: !uuid '008edfd8f4d1cf3351e8b6ff22abc8177e019d6d'
+  /niucloud/public/.htaccess:
+    newFile: !uuid '81fe165fe8096b10f1e5d153ecd30e000bf1b954'
+    oldFile: !uuid 'f1cca9feeca571c1f3e05cf1b7ba3f442cfb7ca7'
+  /niucloud/public/admin:
+    newFile: !uuid '51b68217473fec64f8ae2703879a52f3ff22d034'
+    oldFile: !uuid '259ccdc7b2641aea9ddff210efb818dc97770643'
+  /niucloud/public/admin/assets:
+    newFile: !uuid 'd401f74dfb16f5939b77f00ea1c16d6fbd7a3f11'
+    oldFile: !uuid '34b1e18443ca26e2ff93af1b2bf1ee2619ed03de'
+  /niucloud/public/admin/assets/404-8a5ca9fd.js:
+    newFile: null
+    oldFile: !uuid '13cb084de599707d192dfbaa6b453f0b83a956c4'
+  /niucloud/public/admin/assets/404-d6601c30.js:
+    newFile: !uuid 'a253972d0e1236373a311c8f6674d4f6b048d71f'
+    oldFile: null
+  /niucloud/public/admin/assets/_Uint8Array-bbbfd6ac.js:
+    newFile: !uuid '3ba307cddf9bf3f0a742483c5e3a2f65199ba1fa'
+    oldFile: null
+  /niucloud/public/admin/assets/_Uint8Array-c92ffa25.js:
+    newFile: null
+    oldFile: !uuid 'fc361f72b86964e55d3bf57a7cb7a6b43ce9d66f'
+  /niucloud/public/admin/assets/_initCloneObject-41dd9efb.js:
+    newFile: null
+    oldFile: !uuid 'd20adf163a3e2e995a4a3e8c83bf947436517921'
+  /niucloud/public/admin/assets/_initCloneObject-a2c44136.js:
+    newFile: !uuid 'a4675da4445c8daef57377e18adb27c4e1203222'
+    oldFile: null
+  /niucloud/public/admin/assets/_isIterateeCall-559d3e90.js:
+    newFile: !uuid '66a3d298ebe27b581b25ec2a026c001137ade10f'
+    oldFile: null
+  /niucloud/public/admin/assets/_isIterateeCall-909b9c9e.js:
+    newFile: null
+    oldFile: !uuid 'f143b8237009e8575daa58bbcb725b35951fa6b4'
+  /niucloud/public/admin/assets/access-016651a1.js:
+    newFile: null
+    oldFile: !uuid '65a6621098d39f0e0b28ad84693ad0bfd0c7bc68'
+  /niucloud/public/admin/assets/access-1248fd29.js:
+    newFile: !uuid '3838a60c66ffbd1c224c950f2ada36f8491911b8'
+    oldFile: null
+  /niucloud/public/admin/assets/access-259cd153.js:
+    newFile: null
+    oldFile: !uuid 'c41cb2112e1efd17dc36e2444a0b85a600d70e95'
+  /niucloud/public/admin/assets/access-ca0234b7.js:
+    newFile: !uuid '94456fac8008fc2ec5a359004a8fc946da65bea3'
+    oldFile: null
+  /niucloud/public/admin/assets/access-d1629df1.js:
+    newFile: null
+    oldFile: !uuid '55bb81cd0cb0ffa0c55e6484b6f788aa7fa1ca28'
+  /niucloud/public/admin/assets/access-fd45dab5.js:
+    newFile: !uuid '4daa9611d4e8c1874464aca7cdb2b81cd3cc33a4'
+    oldFile: null
+  /niucloud/public/admin/assets/account-283c8eed.js:
+    newFile: !uuid 'a85e1d656706bb4df11ab9f3d8684ef55f297bd5'
+    oldFile: null
+  /niucloud/public/admin/assets/account-ffa684a1.js:
+    newFile: null
+    oldFile: !uuid '8416920cfb653c46ee9093586e2bdc6b948fe073'
+  /niucloud/public/admin/assets/add-member-014c5ff3.js:
+    newFile: !uuid 'cb07ae6b0c0a97f5228bc114644f717c9bf6eb61'
+    oldFile: null
+  /niucloud/public/admin/assets/add-member-04cdf9fb.js:
+    newFile: null
+    oldFile: !uuid '1ca25fadbd2081fbe8f7fee45c5ed6b6e92df98a'
+  /niucloud/public/admin/assets/add-member.vue_vue_type_script_setup_true_lang-756e228c.js:
+    newFile: !uuid '40ec204b0564da2e30b9ea0863d01662b20f9939'
+    oldFile: null
+  /niucloud/public/admin/assets/add-member.vue_vue_type_script_setup_true_lang-cade17ca.js:
+    newFile: null
+    oldFile: !uuid '37306e12647a3a8d0a3b3657790227bf917e0a95'
+  /niucloud/public/admin/assets/add-table-70775ba3.js:
+    newFile: null
+    oldFile: !uuid '69bb0e8ace67f0ff04f292de6ccec3908b619478'
+  /niucloud/public/admin/assets/add-table-9047be4c.js:
+    newFile: !uuid '428513e369ae3557dd6329a9c84584504e254ede'
+    oldFile: null
+  /niucloud/public/admin/assets/add-table.vue_vue_type_script_setup_true_lang-5daccc86.js:
+    newFile: !uuid 'ec188f728ad34e7b9382f6ad018bdc33a533c34b'
+    oldFile: null
+  /niucloud/public/admin/assets/add-table.vue_vue_type_script_setup_true_lang-93a36f1b.js:
+    newFile: null
+    oldFile: !uuid '0d1fb64c075bdc6223f25947e1670a44a245f703'
+  /niucloud/public/admin/assets/addon-3b05baad.js:
+    newFile: !uuid 'd7ef9c0f5906bfc876e8687bc260c7ea95f579d5'
+    oldFile: null
+  /niucloud/public/admin/assets/addon-48b9aa5e.js:
+    newFile: null
+    oldFile: !uuid '9477775cc74fc41abaccb679b64fededf0891861'
+  /niucloud/public/admin/assets/adminlogin-3cf24778.js:
+    newFile: null
+    oldFile: !uuid 'c8db797bc86630ed7963f6686fca160c399f255a'
+  /niucloud/public/admin/assets/adminlogin-a11c20ea.js:
+    newFile: !uuid '6f22059c80a3016277340574f4ec031c44f62112'
+    oldFile: null
+  /niucloud/public/admin/assets/agreement-532ea153.js:
+    newFile: !uuid 'b98d7b92249ea27eb69bf7913b8b5a063c9f77b7'
+    oldFile: null
+  /niucloud/public/admin/assets/agreement-83fdf1d2.js:
+    newFile: null
+    oldFile: !uuid '38283156752d4a478a385d1394f762b988a1ee8d'
+  /niucloud/public/admin/assets/agreement_edit-703f24f8.js:
+    newFile: !uuid 'a87b5ee78170d05b2df9dfc79158818f8d0279e7'
+    oldFile: null
+  /niucloud/public/admin/assets/agreement_edit-8684ebd5.js:
+    newFile: null
+    oldFile: !uuid 'c4fd497b8af75800922896653c066a36d3ffc1f5'
+  /niucloud/public/admin/assets/aliapp-6e9e36ef.js:
+    newFile: !uuid '65e1f4f46b5dfcd36a3b5025518d185341c51810'
+    oldFile: null
+  /niucloud/public/admin/assets/aliapp-c0a2df14.js:
+    newFile: null
+    oldFile: !uuid '8f5bf1cbcfd505ebbea0253a6c82cbfd35040365'
+  /niucloud/public/admin/assets/app_manage-3898731d.js:
+    newFile: null
+    oldFile: !uuid '90ae657a07a786f83d6d248eda8ad4578a450afd'
+  /niucloud/public/admin/assets/app_manage-fdecbf65.js:
+    newFile: !uuid 'fb2cbb24a5e17541ec300ea386cd7111135a0795'
+    oldFile: null
+  /niucloud/public/admin/assets/attachment-1ff0f3c9.js:
+    newFile: null
+    oldFile: !uuid '48fa7dd3b23cb4a1e83dadee880e4a395a2434f2'
+  /niucloud/public/admin/assets/attachment-75502009.js:
+    newFile: null
+    oldFile: !uuid '0f6f11e7812d8aba691fe4a9b9f2ada0ce3b20f5'
+  /niucloud/public/admin/assets/attachment-b5785570.js:
+    newFile: !uuid '1341b6d158b2b028385fb9142811f33d11d12cbf'
+    oldFile: null
+  /niucloud/public/admin/assets/attachment-c8633ff0.js:
+    newFile: !uuid 'e8e43c00e0b1e612efcbf8a063bb050304397323'
+    oldFile: null
+  /niucloud/public/admin/assets/authorize-4232a689.js:
+    newFile: null
+    oldFile: !uuid '1822cf65b3b66084bd5475f9b9912c423d0afc09'
+  /niucloud/public/admin/assets/authorize-6cc342ec.js:
+    newFile: !uuid '671aae0b81e85178e4883fbf193de1847e977db4'
+    oldFile: null
+  /niucloud/public/admin/assets/balance-356e0b90.js:
+    newFile: null
+    oldFile: !uuid 'a15ac7937d3d68d431c9f46a711b6ce603357ce8'
+  /niucloud/public/admin/assets/balance-74b22cef.js:
+    newFile: !uuid '1856cce7de915306a8986307790b9ffed7fc57e9'
+    oldFile: null
+  /niucloud/public/admin/assets/base-9962c822.js:
+    newFile: null
+    oldFile: !uuid 'fcb57eb0bb5962f54d4496c8a49627542c2f81b7'
+  /niucloud/public/admin/assets/base-d79f9f62.js:
+    newFile: !uuid 'b09160bcc0020322ae21a69ce92f7b3e3dc781cb'
+    oldFile: null
+  /niucloud/public/admin/assets/cash_out-2bcf652d.js:
+    newFile: !uuid '7a0cf63aa888304caa5bad1b25d90fcc2c1c3958'
+    oldFile: null
+  /niucloud/public/admin/assets/cash_out-c55340e5.js:
+    newFile: null
+    oldFile: !uuid 'eb21ba4a519e11dc311a70d3db75c122307aaae6'
+  /niucloud/public/admin/assets/cash_out-ccb7e635.js:
+    newFile: null
+    oldFile: !uuid '49b0c5b5fc3f16673392c5c2080c00bf93a14c8b'
+  /niucloud/public/admin/assets/cash_out-db13facd.js:
+    newFile: !uuid '503b9c072a8eebc9162b31b6a7953e566c5431b1'
+    oldFile: null
+  /niucloud/public/admin/assets/cloneDeep-15861beb.js:
+    newFile: null
+    oldFile: !uuid 'c403558655cdaf9f0acb4688f681ad174b7152ff'
+  /niucloud/public/admin/assets/cloneDeep-2aa6d741.js:
+    newFile: !uuid '380aa5e389652228bcaa7e21ae1208bca46535c8'
+    oldFile: null
+  /niucloud/public/admin/assets/code-578a1fee.js:
+    newFile: !uuid 'a4dfd4089306b8ad969fbef5662d335564f260bf'
+    oldFile: null
+  /niucloud/public/admin/assets/code-d27881a6.js:
+    newFile: null
+    oldFile: !uuid '4d52f4385ede42758677769f56585dbf4f67fece'
+  /niucloud/public/admin/assets/commission-03e504d0.js:
+    newFile: null
+    oldFile: !uuid 'c7a1279b26ce7ae6ecd1cbaa49f309aec1ab1d37'
+  /niucloud/public/admin/assets/commission-42def592.js:
+    newFile: !uuid 'f65678724cb88789a753585c2f879ef98f9a039a'
+    oldFile: null
+  /niucloud/public/admin/assets/config-20cb3a19.js:
+    newFile: !uuid 'bc374c0da8dc0c531e563483b7547bbe2fd11657'
+    oldFile: null
+  /niucloud/public/admin/assets/config-3824f11c.js:
+    newFile: null
+    oldFile: !uuid 'a4784576f4866ae8c9e42a9b8a8d6caebffb851a'
+  /niucloud/public/admin/assets/config-6e159379.js:
+    newFile: !uuid '86ff07df5bf31c91c2c5e86702cacb81a3b57b52'
+    oldFile: null
+  /niucloud/public/admin/assets/config-75d93fdb.js:
+    newFile: null
+    oldFile: !uuid 'bd11cdfd2d3d60b305926f6a76f990776092ed83'
+  /niucloud/public/admin/assets/config-79ec9e61.js:
+    newFile: !uuid '73e1b419507635d601fa3f88000271d19463923b'
+    oldFile: null
+  /niucloud/public/admin/assets/config-83181ee1.js:
+    newFile: !uuid 'aaa864529d6809dda14e8e9f24b9c5dc358bef89'
+    oldFile: null
+  /niucloud/public/admin/assets/config-9f2a9905.js:
+    newFile: null
+    oldFile: !uuid '18751c433546f958cd97144630e7a794605f1370'
+  /niucloud/public/admin/assets/config-ab7e24c5.js:
+    newFile: null
+    oldFile: !uuid '3d042c6b1052374b5a3250c7c36322cd35999922'
+  /niucloud/public/admin/assets/config-c1fcca2e.js:
+    newFile: null
+    oldFile: !uuid '945a7d9f1e8060a8bd0d294cfd5aa5a118166387'
+  /niucloud/public/admin/assets/config-ea058713.js:
+    newFile: !uuid 'c4e4b7fd30a0b8dcf36c17c7ae9b2867fe4f059a'
+    oldFile: null
+  /niucloud/public/admin/assets/copyright-7b3007dd.js:
+    newFile: null
+    oldFile: !uuid 'ee4a5a016b6f67092d41c919684d163ebe23d74e'
+  /niucloud/public/admin/assets/copyright-f12d1616.js:
+    newFile: !uuid 'a78c01b2bc1cd763c35a892a028d1211e386404c'
+    oldFile: null
+  /niucloud/public/admin/assets/course-0149beda.js:
+    newFile: !uuid '652fe995fe5bd95a74c5f32080b8d58ce1c28007'
+    oldFile: null
+  /niucloud/public/admin/assets/course-32ed629b.js:
+    newFile: null
+    oldFile: !uuid 'a21afa144063e0487e0506bc8ee4ddb764fb2bfd'
+  /niucloud/public/admin/assets/course-38fb94fb.js:
+    newFile: !uuid '641ac7adef803835da3d70d9b7153b0a25a8794b'
+    oldFile: null
+  /niucloud/public/admin/assets/course-9627baf9.js:
+    newFile: !uuid '0447e363656bf421f4a2113e413a40ebbfac597d'
+    oldFile: null
+  /niucloud/public/admin/assets/course-99219564.js:
+    newFile: null
+    oldFile: !uuid 'ee647fc9810ca5014e4b42e5f0e813171b8cc761'
+  /niucloud/public/admin/assets/course-ffd69558.js:
+    newFile: null
+    oldFile: !uuid '459a91eb549190e6acba542140e2ac25cd9ac295'
+  /niucloud/public/admin/assets/cron-1b25df1b.js:
+    newFile: null
+    oldFile: !uuid '8adcdb2b8399648457be9c4667451a6ef3b5c3fb'
+  /niucloud/public/admin/assets/cron-91714587.js:
+    newFile: !uuid 'e1ab3b8e30fabf8a51cf4b429b25d6b7ff2d00c1'
+    oldFile: null
+  /niucloud/public/admin/assets/cron-info-12a04c5d.js:
+    newFile: null
+    oldFile: !uuid '4de0d39f0b24c708ecc23c74235eba23f4b6ceb3'
+  /niucloud/public/admin/assets/cron-info-18a6614b.js:
+    newFile: !uuid 'ec17cd523603af9a9b3075340607598158652b1b'
+    oldFile: null
+  /niucloud/public/admin/assets/cron-info.vue_vue_type_script_setup_true_lang-460581ce.js:
+    newFile: null
+    oldFile: !uuid '1c26c4417324e13fa4674ad00925cb7be5b39d1f'
+  /niucloud/public/admin/assets/cron-info.vue_vue_type_script_setup_true_lang-5888c563.js:
+    newFile: !uuid '2eb134b49b8dd4d3dfa00bd8b6965fc0ded3b0a4'
+    oldFile: null
+  /niucloud/public/admin/assets/debounce-6fd93949.js:
+    newFile: !uuid '8ffcd66ca06488610b7142c78f397edf102104b1'
+    oldFile: null
+  /niucloud/public/admin/assets/debounce-9674000c.js:
+    newFile: null
+    oldFile: !uuid '1ed132c5ca855dc5978800cc9982d69d77904459'
+  /niucloud/public/admin/assets/detail-3acd97a9.js:
+    newFile: null
+    oldFile: !uuid '2fe92d90b7e3514ddd44901880b6e8632d50da54'
+  /niucloud/public/admin/assets/detail-9fd59a20.js:
+    newFile: !uuid 'c27611bab7b4e0bab64f5a271f5ba5cc3db8ceca'
+    oldFile: null
+  /niucloud/public/admin/assets/detection-0953a2ec.js:
+    newFile: !uuid 'cd46f471199eb96643baa724271149080b020ee9'
+    oldFile: null
+  /niucloud/public/admin/assets/detection-f62d0963.js:
+    newFile: null
+    oldFile: !uuid 'f453ac95673c8190d0926f080527ebe6326bc201'
+  /niucloud/public/admin/assets/dict-0591ffdb.js:
+    newFile: !uuid '23fafab2edcda1ed663452f81d533aa983b48579'
+    oldFile: null
+  /niucloud/public/admin/assets/dict-5909722d.js:
+    newFile: null
+    oldFile: !uuid '9a6cd399a33d05f454a111a82b99b568991011e2'
+  /niucloud/public/admin/assets/dict-5ee41faf.js:
+    newFile: null
+    oldFile: !uuid '0afa17df900f910aa355ef642d7f0bc4604fc6c2'
+  /niucloud/public/admin/assets/dict-e05194ab.js:
+    newFile: !uuid '90cf52218dbfa4249eead4f794fee15f65bbdc9c'
+    oldFile: null
+  /niucloud/public/admin/assets/dict.vue_vue_type_style_index_0_lang-1bd85ab6.js:
+    newFile: null
+    oldFile: !uuid '3d17b0b0bef09d85d9379d8b742a82546138e503'
+  /niucloud/public/admin/assets/dict.vue_vue_type_style_index_0_lang-38edfc74.js:
+    newFile: !uuid '361475323e784b6afb840f142912db81b00f3351'
+    oldFile: null
+  /niucloud/public/admin/assets/directive-13582d99.js:
+    newFile: !uuid 'e135dc855f1c50ee66c215e28a4fae832e0bc6b4'
+    oldFile: null
+  /niucloud/public/admin/assets/directive-f75d4a7d.js:
+    newFile: null
+    oldFile: !uuid '6ed43e336d87f8ca199ddaeac67ba055a395c26d'
+  /niucloud/public/admin/assets/diy-00fc7bfe.js:
+    newFile: null
+    oldFile: !uuid '77019968ab34ef796bdc23cb12c915da48706992'
+  /niucloud/public/admin/assets/diy-780e3fb1.js:
+    newFile: null
+    oldFile: !uuid 'ca2f3a05d0f34169ae537546ef33454f5e801b33'
+  /niucloud/public/admin/assets/diy-8086ee6b.js:
+    newFile: !uuid 'd4a598b76ae731607e7bb2900ce6a61100cb269f'
+    oldFile: null
+  /niucloud/public/admin/assets/diy-bbbdbe16.js:
+    newFile: !uuid 'e8d8ad247e6ea2e577d838a3c2ecb3905ec1905f'
+    oldFile: null
+  /niucloud/public/admin/assets/diy.index-c6ca1ad8.js:
+    newFile: !uuid 'fab1cfe90a328b2158b1b52cf1b916f9550ab35e'
+    oldFile: null
+  /niucloud/public/admin/assets/diy.index-f606003b.js:
+    newFile: null
+    oldFile: !uuid '7c4235a873309132b464f3bed5322e33d739378f'
+  /niucloud/public/admin/assets/dropdown-465e3407.js:
+    newFile: !uuid 'c5977e48771ecdfdca60831b275b36600215e36e'
+    oldFile: null
+  /niucloud/public/admin/assets/dropdown-ccb689be.js:
+    newFile: null
+    oldFile: !uuid 'aef7c8f3ab581e9ec788d66f0a1fa714522414a1'
+  /niucloud/public/admin/assets/edit-0a8aad0b.js:
+    newFile: null
+    oldFile: !uuid 'b66cad5f6bc070498e589ed5f92a1c6f91c4413b'
+  /niucloud/public/admin/assets/edit-0ca1efdb.css:
+    newFile: null
+    oldFile: !uuid 'a3810128a519ffadb62fef08c63856e8d91e502b'
+  /niucloud/public/admin/assets/edit-362d10c7.css:
+    newFile: !uuid '738c2b0aaeabfd114c63a89476727cefe11c6626'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-937728cc.js:
+    newFile: null
+    oldFile: !uuid '228e587858a6a17982ebc6652c75d8cc8a555b2d'
+  /niucloud/public/admin/assets/edit-97a6a7ba.js:
+    newFile: !uuid '5484f517124437ebf1590581634285042bc01fc2'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-addon-list-00a46b98.js:
+    newFile: null
+    oldFile: !uuid '03afac841fd6e537795c67257f585ab24dfdabf5'
+  /niucloud/public/admin/assets/edit-addon-list-baf9b6b8.js:
+    newFile: !uuid 'af85b17fd38a85ef9393d6074a565a06a48d8928'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-associated-258d7736.js:
+    newFile: !uuid 'ab6165a262b94a7b0df70fca1772c796ded92a4c'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-associated-34cba3d0.js:
+    newFile: null
+    oldFile: !uuid '6adf96c179aca61e771b77e37700cd3e1e7dac3e'
+  /niucloud/public/admin/assets/edit-associated.vue_vue_type_script_setup_true_async_true_lang-89590dfd.js:
+    newFile: !uuid '5183bcace985ceef26ca717bf18e0b8aeb1b1210'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-associated.vue_vue_type_script_setup_true_async_true_lang-af3f12dd.js:
+    newFile: null
+    oldFile: !uuid '0421b9190939c885f5cc0496391e109ab0b02b01'
+  /niucloud/public/admin/assets/edit-b2447017.js:
+    newFile: !uuid 'f8d726746a098f4314baed52b7c92369e61b3200'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-bde78572.js:
+    newFile: !uuid '3b66991fa0a4e629c9f429cab19f246f78ca2159'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-d979392d.js:
+    newFile: null
+    oldFile: !uuid '485d8718606e00f2e8e48155b82567a29b0a958d'
+  /niucloud/public/admin/assets/edit-e1820f36.js:
+    newFile: null
+    oldFile: !uuid 'd26d9a9f18b11e7e9b3b2fb9130fdf823ec31922'
+  /niucloud/public/admin/assets/edit-e93c7720.js:
+    newFile: !uuid '34c25fd978720bea36566cae2f96577922670924'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-graphic-nav-2764c7db.js:
+    newFile: !uuid 'f03dcd7ae22da5a3eb5adba1697fda8b05bae2fd'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-graphic-nav-56ed7881.js:
+    newFile: null
+    oldFile: !uuid 'd974fd431bafcea59072c2107347128b8b2eead5'
+  /niucloud/public/admin/assets/edit-horz-blank-2a64c177.js:
+    newFile: null
+    oldFile: !uuid '0119a5115bad824a654646d71bba668493cacd6e'
+  /niucloud/public/admin/assets/edit-horz-blank-7fdc44bc.css:
+    newFile: null
+    oldFile: !uuid 'c138e6055133578103e613f2a560215f9b8acc55'
+  /niucloud/public/admin/assets/edit-horz-blank-d0b3706e.js:
+    newFile: !uuid '3711ff7e2c3baceb0d2c01d4eaf369504ff3b10e'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-hot-area-6e72e26d.js:
+    newFile: null
+    oldFile: !uuid '1c23958d7bf22f5a85797d2f93c072106cb60880'
+  /niucloud/public/admin/assets/edit-hot-area-956d9e91.js:
+    newFile: !uuid 'c300f458ca2bcb4c27bc8b59c95494609cdba495'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-image-ads-3d6814e8.js:
+    newFile: !uuid 'e16662094414a1dfd40ef0f69912ad174623aa43'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-image-ads-8684debe.js:
+    newFile: null
+    oldFile: !uuid '8ef9cd36bdfb350c7b5eaa3110381b76d9efa1c5'
+  /niucloud/public/admin/assets/edit-label-63faa998.js:
+    newFile: null
+    oldFile: !uuid 'b613298b443112dabf911345bf2e7993872bae3f'
+  /niucloud/public/admin/assets/edit-label-6ba9972c.js:
+    newFile: !uuid 'fefada01154729e4aba52e22a97296520aae3bb0'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-label.vue_vue_type_script_setup_true_lang-dbd95e45.js:
+    newFile: null
+    oldFile: !uuid '92f18aaaa6205123a7f1751975b23ad285adc2da'
+  /niucloud/public/admin/assets/edit-label.vue_vue_type_script_setup_true_lang-eb91e6a2.js:
+    newFile: !uuid 'a5d8857e3900b9df30015716811a20620a4bfe76'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-member-6c003600.js:
+    newFile: null
+    oldFile: !uuid 'b19728d5774d6941b760812613e64b15409b8a12'
+  /niucloud/public/admin/assets/edit-member-9bce4cf4.js:
+    newFile: !uuid '3d6cc0fdc5372fdad08c237fd1eea1491288182e'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-member-info-7ebdf17d.js:
+    newFile: null
+    oldFile: !uuid '31c5b5ebfd2a123ec2cd7b025286c8b2dade6b53'
+  /niucloud/public/admin/assets/edit-member-info-d782471a.js:
+    newFile: !uuid '7bfa3e9fda711c882328968c62139a6778b3027f'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-member.vue_vue_type_script_setup_true_lang-11ccd4d7.js:
+    newFile: null
+    oldFile: !uuid '8f67bbe473bd99ea97b4afe46b42ad0a8c2e9d9d'
+  /niucloud/public/admin/assets/edit-member.vue_vue_type_script_setup_true_lang-1dbd7c01.js:
+    newFile: !uuid '1d3e47309d083934faf1bb7fbfd50f2fac51b726'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-menu-99b02e5e.js:
+    newFile: null
+    oldFile: !uuid 'a016d282de66901a0053ada8b6b0ebe84a2a186a'
+  /niucloud/public/admin/assets/edit-menu-aec0d01e.js:
+    newFile: !uuid 'ba6e23ffecded05c72206b079fc884096a8dd306'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-menu.vue_vue_type_script_setup_true_lang-4219da36.js:
+    newFile: !uuid '720f287974370155fb574e9f44be67405d0390cb'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-menu.vue_vue_type_script_setup_true_lang-fa0169de.js:
+    newFile: null
+    oldFile: !uuid 'f7b72d885da60a4cbbcf0ff70b7ecacd41bab63b'
+  /niucloud/public/admin/assets/edit-notice-7b323694.js:
+    newFile: !uuid '75d9fb2e0a92ce078b3cb854f2b83cc6f7e3b267'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-notice-c94ea7d4.js:
+    newFile: null
+    oldFile: !uuid '3e8e09ed107a6f1b3ac725d7159cd2aaacac5107'
+  /niucloud/public/admin/assets/edit-page-a4ebf728.js:
+    newFile: !uuid '4ca96140ab8e970a0e2ab9d253a8522c7a9a3689'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-page-e34bfc55.js:
+    newFile: null
+    oldFile: !uuid 'ca769f0cd7ea3169bd64e31094eb34c8d5ee3171'
+  /niucloud/public/admin/assets/edit-role-0d34c408.js:
+    newFile: !uuid '6c3e26b99301648d3e80baf8b2b05065984f022b'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-role-c37b36b9.js:
+    newFile: null
+    oldFile: !uuid '899584b54edbbfc1d132f7611daf144ef1f23052'
+  /niucloud/public/admin/assets/edit-role.vue_vue_type_script_setup_true_async_true_lang-d338ec6d.js:
+    newFile: !uuid 'a96054ddc6302ffb92f66cea9e95829824c1ff86'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-role.vue_vue_type_script_setup_true_async_true_lang-e852e91b.js:
+    newFile: null
+    oldFile: !uuid '84e48e65bbf2b6aaa49896958b25d138531b0183'
+  /niucloud/public/admin/assets/edit-rubik-cube-1989870d.js:
+    newFile: null
+    oldFile: !uuid '845e4436345872ebb5092690e2d0dc85ef3fadc8'
+  /niucloud/public/admin/assets/edit-rubik-cube-325d454f.js:
+    newFile: !uuid '1b6785e2c3cea548758ad369ed28986862b85ed5'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-site-267a5a1a.js:
+    newFile: !uuid '541914962f1fa3e7a3e2d3aee613e9614feda245'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-site-2e99715f.js:
+    newFile: null
+    oldFile: !uuid 'e6e7e5475c2a6c45b6460c1c259cf659b017c705'
+  /niucloud/public/admin/assets/edit-site.vue_vue_type_script_setup_true_lang-a4f90508.js:
+    newFile: null
+    oldFile: !uuid '5dd3b37b62e63204fe907047be78e80724656d9f'
+  /niucloud/public/admin/assets/edit-site.vue_vue_type_script_setup_true_lang-d3a9790e.js:
+    newFile: !uuid 'f309c473e4e385e9fba58e4b3d49de9759adf777'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-text-34565dde.js:
+    newFile: null
+    oldFile: !uuid '9d6aafddb518eb0017b8a6a4548285c0ea0428c7'
+  /niucloud/public/admin/assets/edit-text-7fdc44bc.css:
+    newFile: !uuid 'c138e6055133578103e613f2a560215f9b8acc55'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-text-f36cd473.js:
+    newFile: !uuid 'bb1905c818f0754157defae2963eb5e9ef7e4f2a'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-user-d641e1ed.js:
+    newFile: !uuid 'c027372c66cb70bff21a6d9449f6621728a2c6f7'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-user-fc655d1b.js:
+    newFile: null
+    oldFile: !uuid '64d3c1f883198cf0e30070ad98406e6a37b7e5ce'
+  /niucloud/public/admin/assets/edit-user.vue_vue_type_script_setup_true_lang-0e7eedb3.js:
+    newFile: !uuid '231e73bdb51a519c5875eebfe5f1610f7b3a1bc2'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-user.vue_vue_type_script_setup_true_lang-9d33f807.js:
+    newFile: null
+    oldFile: !uuid '461705a3b06e60ce2255c5fac58947e453af2fe3'
+  /niucloud/public/admin/assets/edit-verify-1d1e1a41.js:
+    newFile: !uuid '98ee8ea5f3f36a0cccb0679e4dea3cfee52d373c'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-verify-c193174d.js:
+    newFile: null
+    oldFile: !uuid 'bc058ae9c0762dab990ceee57aa5b2bf812407c7'
+  /niucloud/public/admin/assets/edit-verify.vue_vue_type_script_setup_true_async_true_lang-00e2e23a.js:
+    newFile: null
+    oldFile: !uuid '999d1976ea4b0e694085760ca827dc3d29b0328d'
+  /niucloud/public/admin/assets/edit-verify.vue_vue_type_script_setup_true_async_true_lang-9eef933f.js:
+    newFile: !uuid '6a11f9866c62f5ef2d3cff12633c28e3bbe2530d'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-view-type-e3545378.js:
+    newFile: null
+    oldFile: !uuid '6f1b86cfd3e73798bd8ae1ba8922a2325c17ec32'
+  /niucloud/public/admin/assets/edit-view-type-e3902eae.js:
+    newFile: !uuid '9d33eb835cbf410fa743ca34787c15878d928988'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-view-type.vue_vue_type_script_setup_true_async_true_lang-c792702d.js:
+    newFile: !uuid '91898f60f7b14842667d3c56e5d7618c53a39a70'
+    oldFile: null
+  /niucloud/public/admin/assets/edit-view-type.vue_vue_type_script_setup_true_async_true_lang-e57f991d.js:
+    newFile: null
+    oldFile: !uuid '8f7b40e58e527b178f06e2d3eac06649c309bc27'
+  /niucloud/public/admin/assets/edit.vue_vue_type_style_index_0_lang-15ec0a83.js:
+    newFile: null
+    oldFile: !uuid 'edbca98517f2f3c82a0be674e4b3c9ccef1c4ea1'
+  /niucloud/public/admin/assets/edit.vue_vue_type_style_index_0_lang-9b7eed61.js:
+    newFile: !uuid 'de56327f985490d38dee20cd7a650d8444950491'
+    oldFile: null
+  /niucloud/public/admin/assets/edit_personal-3554e8ad.js:
+    newFile: !uuid '62a0844a69b5d38e73a2b1da49bc8bac6ee81924'
+    oldFile: null
+  /niucloud/public/admin/assets/edit_personal-5a6ce2b0.js:
+    newFile: !uuid 'ed20fc8265d9431dcbab773d3db8a280c4d5c176'
+    oldFile: null
+  /niucloud/public/admin/assets/edit_personal-918604bf.js:
+    newFile: !uuid 'a56d968ae99bf067014d0ae8045542f2439be223'
+    oldFile: null
+  /niucloud/public/admin/assets/edit_personal-be35e33f.js:
+    newFile: null
+    oldFile: !uuid 'bb24cb8175658502cba6021af9f2f4cdb7de65b3'
+  /niucloud/public/admin/assets/edit_personal-f718474b.js:
+    newFile: null
+    oldFile: !uuid '78e3678e9fda888ffededdccc5ce42e92af0e5a2'
+  /niucloud/public/admin/assets/edit_personal-fd42e05e.js:
+    newFile: null
+    oldFile: !uuid '31aa4df1401ef168568040cdd0a18fa185cda78f'
+  /niucloud/public/admin/assets/flatten-0bbd547a.js:
+    newFile: !uuid '22f792b28280e1b221229396480ffd8e9834e6a7'
+    oldFile: null
+  /niucloud/public/admin/assets/flatten-940b9f2c.js:
+    newFile: null
+    oldFile: !uuid 'bb3e0221e97d88e73538114586efe5cebe61b712'
+  /niucloud/public/admin/assets/focus-trap-50fa5770.js:
+    newFile: !uuid 'f4267e454aff54bcad2cc915f4e1cee7ed35b751'
+    oldFile: null
+  /niucloud/public/admin/assets/focus-trap-d0fc8554.js:
+    newFile: null
+    oldFile: !uuid '77bc8012fd439b2065db190cbb951fb07a65f1ca'
+  /niucloud/public/admin/assets/form-20861fe1.js:
+    newFile: null
+    oldFile: !uuid '9eb090cb511c857aa88abcc047b7b69beadeffb8'
+  /niucloud/public/admin/assets/form-3b9b1416.js:
+    newFile: !uuid '5f631e3a66a1f1f56f937d75f6afbf449125c46f'
+    oldFile: null
+  /niucloud/public/admin/assets/group-68b3d57f.js:
+    newFile: null
+    oldFile: !uuid 'edf9ae51df4f9c5a2da12e6b02b94b0f862b4f68'
+  /niucloud/public/admin/assets/group-8d36aa4e.js:
+    newFile: !uuid 'cd682d0a4e165f16aabd4ef144d523fa0ee2c246'
+    oldFile: null
+  /niucloud/public/admin/assets/group_edit-71556f85.js:
+    newFile: null
+    oldFile: !uuid '178b4590f0ee3a902783674abcfccc6f9a554ca9'
+  /niucloud/public/admin/assets/group_edit-a05b51a8.js:
+    newFile: !uuid '8d764b97cbc41459b05622de344c2fc80bcec274'
+    oldFile: null
+  /niucloud/public/admin/assets/index-014848fe.js:
+    newFile: !uuid '4f34ab4c88374628370ed78a265dfcb7fd4bdc41'
+    oldFile: null
+  /niucloud/public/admin/assets/index-01d52664.css:
+    newFile: !uuid 'b7aa021b57bcadac2311b5a60996a6b1c91da0ba'
+    oldFile: null
+  /niucloud/public/admin/assets/index-0211a8f4.js:
+    newFile: null
+    oldFile: !uuid '232c47088f2b3bcf2e855729b678bea2c7f97a58'
+  /niucloud/public/admin/assets/index-03649f16.js:
+    newFile: !uuid 'b4c36df9cea8cb7b95a962b670f874f86f0a5975'
+    oldFile: null
+  /niucloud/public/admin/assets/index-07248937.js:
+    newFile: null
+    oldFile: !uuid 'a923e64e226481f85373ed5f3dae06d3cef56166'
+  /niucloud/public/admin/assets/index-0751469c.js:
+    newFile: !uuid 'a73362951e5faa79f813308ac9bad5685c476113'
+    oldFile: null
+  /niucloud/public/admin/assets/index-0b4254d8.js:
+    newFile: !uuid '12a00f242b64c72d4b3ec4e06c11e010d6a507b4'
+    oldFile: null
+  /niucloud/public/admin/assets/index-0b47ca0d.js:
+    newFile: !uuid 'f6237ee24feda56f8750f9e38cda97215754c6af'
+    oldFile: null
+  /niucloud/public/admin/assets/index-0c098f78.js:
+    newFile: null
+    oldFile: !uuid 'c7ec37ed1ecabb23f7ffd1a3ecdc8cb5a4cb6f0d'
+  /niucloud/public/admin/assets/index-10dd36be.js:
+    newFile: !uuid '9817100b6b275e591170fbac27f1bec2d44e4db8'
+    oldFile: null
+  /niucloud/public/admin/assets/index-1136bcde.js:
+    newFile: !uuid '6714789400d60abc002c765702e1f962f18e696d'
+    oldFile: null
+  /niucloud/public/admin/assets/index-11687fbd.js:
+    newFile: !uuid 'b63fe10020611afb47bc4c80ad18a012229edf24'
+    oldFile: null
+  /niucloud/public/admin/assets/index-1370ab44.js:
+    newFile: null
+    oldFile: !uuid 'c5a499d8319a72eb2ca235df123763a019be4435'
+  /niucloud/public/admin/assets/index-13fd1eb5.js:
+    newFile: null
+    oldFile: !uuid '566124954a5d86ed2f5a039dc1f7b1928e15ded5'
+  /niucloud/public/admin/assets/index-149c966e.js:
+    newFile: !uuid '6141b6ae3b64d66c61ecf0c5f30cba96db92ae31'
+    oldFile: null
+  /niucloud/public/admin/assets/index-1500755b.js:
+    newFile: !uuid '3a82debc402221835a82f84459641b0e12952e4e'
+    oldFile: null
+  /niucloud/public/admin/assets/index-163ddc5b.js:
+    newFile: null
+    oldFile: !uuid 'd1667847ad099361439df50ba6866964ca5ce42a'
+  /niucloud/public/admin/assets/index-189f302e.js:
+    newFile: null
+    oldFile: !uuid 'f58e0a433008209529013a8b9bc10e1a7a45ac79'
+  /niucloud/public/admin/assets/index-19251c17.js:
+    newFile: null
+    oldFile: !uuid '9a4d6d71d5170d0f8e5e784d64a6ddc117ad1123'
+  /niucloud/public/admin/assets/index-201a345c.js:
+    newFile: !uuid 'e2ef70762ef84ad50a3edd842f03bbd6896a6f94'
+    oldFile: null
+  /niucloud/public/admin/assets/index-2048a34f.js:
+    newFile: !uuid 'a1dc218084a9c86452f1b30eb5a7079265ab8df3'
+    oldFile: null
+  /niucloud/public/admin/assets/index-20ef35a7.js:
+    newFile: null
+    oldFile: !uuid 'c6e6f2e602dfe2fad0ea6a09fabd6c1ffc76d390'
+  /niucloud/public/admin/assets/index-22970d5d.js:
+    newFile: null
+    oldFile: !uuid 'd2186948f013f6766469a86e1df7f85550f4a36a'
+  /niucloud/public/admin/assets/index-2462875f.js:
+    newFile: !uuid '1f56f13d1923702dd54cfa7101cb36e2b2c10e69'
+    oldFile: null
+  /niucloud/public/admin/assets/index-26709bbd.js:
+    newFile: null
+    oldFile: !uuid '5c92ae5850448433307b465d1b9758b96ef31b22'
+  /niucloud/public/admin/assets/index-2748cefd.js:
+    newFile: null
+    oldFile: !uuid 'bad1ed57518bd33162550a21351215ebcd443c15'
+  /niucloud/public/admin/assets/index-27b24a76.css:
+    newFile: !uuid '4c73163bcdb9ab7eff3b88b9650ef9b5089b0196'
+    oldFile: null
+  /niucloud/public/admin/assets/index-27e64573.js:
+    newFile: null
+    oldFile: !uuid 'abb5e3cdf56ec7e3a57d1ecabfdb3f26add4f87a'
+  /niucloud/public/admin/assets/index-28a638e7.js:
+    newFile: !uuid '2a6753507a16fd4cd47fa7473d3924094815dc0b'
+    oldFile: null
+  /niucloud/public/admin/assets/index-2b5d43b9.js:
+    newFile: !uuid '35364527f0794fbf49fff56bcc5544739d1e8377'
+    oldFile: null
+  /niucloud/public/admin/assets/index-2cabf788.js:
+    newFile: null
+    oldFile: !uuid '035b27ca82224e5df2cfc4a3e6a16e6b87c3412a'
+  /niucloud/public/admin/assets/index-2ec2a5b9.css:
+    newFile: !uuid '8822c6df80b0e24b9d302cf1c8035d542040919c'
+    oldFile: null
+  /niucloud/public/admin/assets/index-2ee99ba1.js:
+    newFile: null
+    oldFile: !uuid '25bb4eb15e069b89dff223b4bdc5bb9e2fe7301a'
+  /niucloud/public/admin/assets/index-31f07e06.js:
+    newFile: null
+    oldFile: !uuid '6db7b968e354d6816b0ec99802a576bb1ad501ed'
+  /niucloud/public/admin/assets/index-32659270.js:
+    newFile: !uuid '896d47a6cf847899bc22b2566d7a3d8bd771bdfe'
+    oldFile: null
+  /niucloud/public/admin/assets/index-3427fe17.js:
+    newFile: null
+    oldFile: !uuid '7350b3fb120822fa7de377eec20e5b3e48072698'
+  /niucloud/public/admin/assets/index-34cd7f55.js:
+    newFile: !uuid '13307d6c3f47b476297a9423a3997724e02d4db0'
+    oldFile: null
+  /niucloud/public/admin/assets/index-35c5a824.js:
+    newFile: null
+    oldFile: !uuid '34286a2f8fb3207d2fd2d51a072b43d69c45568b'
+  /niucloud/public/admin/assets/index-38f1bd29.js:
+    newFile: null
+    oldFile: !uuid 'c5ff7d2924add18b2489024c443648e8fcd916fc'
+  /niucloud/public/admin/assets/index-39bdd76d.js:
+    newFile: null
+    oldFile: !uuid '477176802c6b4e3138e0d8dd8e841c1ded282f76'
+  /niucloud/public/admin/assets/index-3a5faaeb.js:
+    newFile: !uuid 'f3c5e4dc79b072c735bb7fb9cb828054477799b0'
+    oldFile: null
+  /niucloud/public/admin/assets/index-3a9059e1.js:
+    newFile: null
+    oldFile: !uuid '4630a0a56abf3e20a3dca7c4843d5b713d053d66'
+  /niucloud/public/admin/assets/index-3e7fefe7.css:
+    newFile: null
+    oldFile: !uuid '44ceff8505f6ae6735e8a16050af81fba56b7403'
+  /niucloud/public/admin/assets/index-3f47b227.js:
+    newFile: !uuid '6c26e119201c6fd53f03855068d80d11d1634ca0'
+    oldFile: null
+  /niucloud/public/admin/assets/index-3fd412a3.js:
+    newFile: !uuid 'cbc9b5bc96a85e04bf61ae1c9d1f9c2e3e6b94bb'
+    oldFile: null
+  /niucloud/public/admin/assets/index-3ffefb7f.js:
+    newFile: !uuid 'e01e827081ffac7a47b31ef82cadc1c54ca413ea'
+    oldFile: null
+  /niucloud/public/admin/assets/index-40716d69.js:
+    newFile: !uuid '0d77449a2096a3dd0da8b1b16dc83aefe3ad2230'
+    oldFile: null
+  /niucloud/public/admin/assets/index-4234d299.js:
+    newFile: null
+    oldFile: !uuid '41695e37c66e232c3bcfae60d2653d166911d898'
+  /niucloud/public/admin/assets/index-427f5a83.js:
+    newFile: !uuid '355679d0b360a1b6ebf179bf6c34e798239fe9f2'
+    oldFile: null
+  /niucloud/public/admin/assets/index-4557c81a.js:
+    newFile: null
+    oldFile: !uuid '2bde97319d033869a33fbdcf9c47a6e1a904329a'
+  /niucloud/public/admin/assets/index-455ade26.js:
+    newFile: null
+    oldFile: !uuid 'f08fe9dff36d0bf249f4be4af6b1fce17cb95cde'
+  /niucloud/public/admin/assets/index-48558072.js:
+    newFile: !uuid 'bf4558b4cc712be90cf72535f6d7ef03ea1f72cd'
+    oldFile: null
+  /niucloud/public/admin/assets/index-4906bae6.js:
+    newFile: null
+    oldFile: !uuid 'f9f0ab5a48671d676489c8b5ce1b1b7070aa28ab'
+  /niucloud/public/admin/assets/index-4937003d.js:
+    newFile: null
+    oldFile: !uuid '90895506aa0369c8e02e890d5223d984b7093685'
+  /niucloud/public/admin/assets/index-500ed4b6.js:
+    newFile: null
+    oldFile: !uuid 'a371388009e4710ae135a03758290cb7f99447c6'
+  /niucloud/public/admin/assets/index-50edbf04.js:
+    newFile: !uuid '65086648feff8b4c98896d1ec75eebf01a00618e'
+    oldFile: null
+  /niucloud/public/admin/assets/index-51305aa3.js:
+    newFile: !uuid '4cb20cd0290a2aeed848084144912e5864bdec24'
+    oldFile: null
+  /niucloud/public/admin/assets/index-53c95057.css:
+    newFile: !uuid 'd4e952a3f0154b2845e8fac505b424d2c93f8f84'
+    oldFile: null
+  /niucloud/public/admin/assets/index-542aa78e.js:
+    newFile: !uuid '925c020d8442f9cf25c078f27b42be9c4d4ddafa'
+    oldFile: null
+  /niucloud/public/admin/assets/index-54a839cc.js:
+    newFile: !uuid '50b21fbf6c5f370a8aa2906530ae358cac96b463'
+    oldFile: null
+  /niucloud/public/admin/assets/index-5516aed6.js:
+    newFile: null
+    oldFile: !uuid '22d1e786a3b29b82c840197ac1faf3fd5baeb1ff'
+  /niucloud/public/admin/assets/index-55a4bbf1.js:
+    newFile: !uuid 'f7cb82ced156a7bfafd66138dc86d2e116253732'
+    oldFile: null
+  /niucloud/public/admin/assets/index-55e8256c.js:
+    newFile: !uuid '30097c1d2a854be3d0b9c8019d33667730878a4d'
+    oldFile: null
+  /niucloud/public/admin/assets/index-565a3bc8.js:
+    newFile: !uuid 'b8e24871a7ced71e996e1d7aca8198decb0bb7ba'
+    oldFile: null
+  /niucloud/public/admin/assets/index-57446bef.js:
+    newFile: null
+    oldFile: !uuid 'c060ca2844a0129df896a644ffd5d11df0b72141'
+  /niucloud/public/admin/assets/index-57e03d9e.js:
+    newFile: null
+    oldFile: !uuid 'e723cfeb2f4f415ccdfcb348337b9ffc3c3d35b8'
+  /niucloud/public/admin/assets/index-583337db.js:
+    newFile: !uuid '14bd6b7f1fd522cdadb936a3d093db134fa3dd17'
+    oldFile: null
+  /niucloud/public/admin/assets/index-59972a15.js:
+    newFile: null
+    oldFile: !uuid '6a963767cdb5bc7456e61bdadb975e44cdf2d9ff'
+  /niucloud/public/admin/assets/index-59eacbf0.js:
+    newFile: !uuid '37ff03c0229efc293802507677a34187d900da0b'
+    oldFile: null
+  /niucloud/public/admin/assets/index-5b670ffa.js:
+    newFile: !uuid '088dd00f83f8e55f2e6e7d22c551d907b45612c3'
+    oldFile: null
+  /niucloud/public/admin/assets/index-5c4817f4.js:
+    newFile: null
+    oldFile: !uuid 'f7cd8d901c141ec3eab089192b14826d08be6b08'
+  /niucloud/public/admin/assets/index-5dbb8f83.js:
+    newFile: !uuid 'b3b5d5a4ecf334170119f11f78fd36b6adec8dd4'
+    oldFile: null
+  /niucloud/public/admin/assets/index-5ec7f715.js:
+    newFile: null
+    oldFile: !uuid 'b2af39ebe4e22c41e7eb470ac2ccf9d82780862f'
+  /niucloud/public/admin/assets/index-5fc48b46.js:
+    newFile: null
+    oldFile: !uuid '1bfd7a56e06d12edadc252b3540815ac818a0594'
+  /niucloud/public/admin/assets/index-6036b781.js:
+    newFile: null
+    oldFile: !uuid 'c9d134b93ac31256af80408c6d05b1e3e5bb3113'
+  /niucloud/public/admin/assets/index-619ac704.js:
+    newFile: null
+    oldFile: !uuid 'f1f8e9b75e04c4974adef26b46531bc72a378f55'
+  /niucloud/public/admin/assets/index-6229e0fd.js:
+    newFile: !uuid '63906fd7330e8b5d9160468c7fb6c7a40c834eb9'
+    oldFile: null
+  /niucloud/public/admin/assets/index-643d8d8e.js:
+    newFile: !uuid '620322394385e585e0e2ca2e75b6ac27b6e364d3'
+    oldFile: null
+  /niucloud/public/admin/assets/index-65bc84a3.js:
+    newFile: null
+    oldFile: !uuid '792f989564eae55feb5e5914736ac6774daba82b'
+  /niucloud/public/admin/assets/index-6a75ed24.css:
+    newFile: null
+    oldFile: !uuid 'f1018197c3d7c29f02b3fa5c665f95166d4c4985'
+  /niucloud/public/admin/assets/index-6b77b11a.js:
+    newFile: null
+    oldFile: !uuid 'da243f3794aa5c6f2a1d51738584651fb4697e11'
+  /niucloud/public/admin/assets/index-6befecc6.js:
+    newFile: !uuid '635b1281a55548e032589005f36d0c1e9b5fdfa8'
+    oldFile: null
+  /niucloud/public/admin/assets/index-6d156531.js:
+    newFile: !uuid '5a7b52ed0def6ad0ebdb8fa3ec137b692f63b80a'
+    oldFile: null
+  /niucloud/public/admin/assets/index-6d647c6f.js:
+    newFile: null
+    oldFile: !uuid '5cdef37b3596d8826ac927c5a6921e70c49adb13'
+  /niucloud/public/admin/assets/index-6edd46fb.js:
+    newFile: null
+    oldFile: !uuid '1095d04365fd218bcb596ce63fecd1ded0a9d534'
+  /niucloud/public/admin/assets/index-6fcaf7b3.js:
+    newFile: !uuid '035bf4de39319d747cf4d0110d6714543c98d9ff'
+    oldFile: null
+  /niucloud/public/admin/assets/index-71aec1df.js:
+    newFile: !uuid 'ba848de903ab1f0817903391331ca1b58aa78fff'
+    oldFile: null
+  /niucloud/public/admin/assets/index-71b7d8f4.js:
+    newFile: null
+    oldFile: !uuid '2f3342936fc73f6014b391b197c0ac0eed82a159'
+  /niucloud/public/admin/assets/index-7332c216.js:
+    newFile: null
+    oldFile: !uuid '279ffd40d210518ee0a5cea4884565c4f3e9b8e7'
+  /niucloud/public/admin/assets/index-746243e9.js:
+    newFile: !uuid '2a908575d5e9d2d1b216e648647e42e972c32742'
+    oldFile: null
+  /niucloud/public/admin/assets/index-797616f3.js:
+    newFile: !uuid '708b2ee1b9838ced5613f7d675bc4b1860aa0851'
+    oldFile: null
+  /niucloud/public/admin/assets/index-799df148.js:
+    newFile: !uuid '91a8e7c585d378ff8512ccde2dddf239e8705ed7'
+    oldFile: null
+  /niucloud/public/admin/assets/index-7ab57426.js:
+    newFile: null
+    oldFile: !uuid '7541b2751ea36a3b114dd170f57a3112638c4ea0'
+  /niucloud/public/admin/assets/index-7b05b657.js:
+    newFile: !uuid '94d188746fc61a602d4e174b1329ad4a17510cf4'
+    oldFile: null
+  /niucloud/public/admin/assets/index-7c833df7.js:
+    newFile: null
+    oldFile: !uuid '7a107d7f8951f0196bda3ff075bd0582fcdeee43'
+  /niucloud/public/admin/assets/index-7d2f3ba9.js:
+    newFile: !uuid '4401c10b054cd8b1a7301c31d91946c9b30b5564'
+    oldFile: null
+  /niucloud/public/admin/assets/index-83924071.js:
+    newFile: null
+    oldFile: !uuid '3a394c97449b7be8f88a0ab9adf8f983bb7cf9b8'
+  /niucloud/public/admin/assets/index-85f612a4.js:
+    newFile: !uuid '20d055a8c8bef80dc10b61fdf01feb993c6b1643'
+    oldFile: null
+  /niucloud/public/admin/assets/index-8774d4a8.js:
+    newFile: !uuid 'edb103d0a72d20e99a2b911a2e3812084deb81dd'
+    oldFile: null
+  /niucloud/public/admin/assets/index-886a23f9.js:
+    newFile: null
+    oldFile: !uuid '270b9ea624081b471b9d7028cbd907c5344a1d53'
+  /niucloud/public/admin/assets/index-91fda20f.js:
+    newFile: null
+    oldFile: !uuid 'fde0a75bb4dedb90bf9e52bb7a7ed8c723951f3a'
+  /niucloud/public/admin/assets/index-967f94ef.js:
+    newFile: null
+    oldFile: !uuid 'f901cd26e5c891a65b480098f319f6b9e33fe798'
+  /niucloud/public/admin/assets/index-980bd272.js:
+    newFile: !uuid 'c988d6c568e168b08ec60cc9650eac4f50eb0f09'
+    oldFile: null
+  /niucloud/public/admin/assets/index-9e0d1e6c.js:
+    newFile: !uuid '3f6afe4d3ffe2f1aa18b969ef4e6bd3b3cbe5a8c'
+    oldFile: null
+  /niucloud/public/admin/assets/index-9ef99368.js:
+    newFile: !uuid 'a93c9c4a774cafcfc66e39357137871353194bc4'
+    oldFile: null
+  /niucloud/public/admin/assets/index-a03bb343.css:
+    newFile: null
+    oldFile: !uuid 'a58a9dfcf96017d03a4114c93e8d708a991a3547'
+  /niucloud/public/admin/assets/index-a1a91c72.js:
+    newFile: !uuid 'ad92f7a2be89fe30a48ed2228b86fdd7393eeaca'
+    oldFile: null
+  /niucloud/public/admin/assets/index-a6829e03.js:
+    newFile: null
+    oldFile: !uuid '5bf770f8142ec43d0a7055b78e0987c777043886'
+  /niucloud/public/admin/assets/index-ab38878f.js:
+    newFile: null
+    oldFile: !uuid '248a1df6200dbf2bd68dc633d34b9ddf11825041'
+  /niucloud/public/admin/assets/index-ac5f4536.css:
+    newFile: null
+    oldFile: !uuid '8a545f93c36dbc19ab7d55de93ff45ac4c738623'
+  /niucloud/public/admin/assets/index-af085fbd.js:
+    newFile: !uuid '9ed44c0c0acb72367eb301c1fe83e73e4fdb08f3'
+    oldFile: null
+  /niucloud/public/admin/assets/index-b529eb0c.js:
+    newFile: null
+    oldFile: !uuid 'c3b4173b0d01968e85f1366c4f43bc488c2e0baa'
+  /niucloud/public/admin/assets/index-b6ca69fd.js:
+    newFile: !uuid '1fb4daadb29c1e2efac9627c3bd0bc578afb147d'
+    oldFile: null
+  /niucloud/public/admin/assets/index-ba59a1dc.js:
+    newFile: !uuid 'bc633c6025388e7cfdb8bdfd173b62f052e03ba2'
+    oldFile: null
+  /niucloud/public/admin/assets/index-bb86585c.js:
+    newFile: null
+    oldFile: !uuid '28291df6228f8bc3e1be69eae49639d05ff3290b'
+  /niucloud/public/admin/assets/index-bdfee32a.js:
+    newFile: !uuid 'd9b4e39bbaf682684f0afca968404e49e9a00439'
+    oldFile: null
+  /niucloud/public/admin/assets/index-c25955fe.js:
+    newFile: null
+    oldFile: !uuid '79a2e9f0973ce4b38ce50516ee36444114671c96'
+  /niucloud/public/admin/assets/index-c499df69.js:
+    newFile: null
+    oldFile: !uuid '60035a1b7b0a9a102b5cae37dba99cbb08b0337a'
+  /niucloud/public/admin/assets/index-c4e33d8d.js:
+    newFile: null
+    oldFile: !uuid '58e72802827884ba6a8356369f1437bb921afe83'
+  /niucloud/public/admin/assets/index-c58e144c.js:
+    newFile: !uuid '7698db0d01f44711126709fcf980a4d73477b923'
+    oldFile: null
+  /niucloud/public/admin/assets/index-c5baed8b.js:
+    newFile: !uuid '5ba032187d037975c040de005e51ce8ea1662254'
+    oldFile: null
+  /niucloud/public/admin/assets/index-c6adf92e.js:
+    newFile: !uuid '317f04be39b6b817d001f5dcc0cd3c8aed4bb3ca'
+    oldFile: null
+  /niucloud/public/admin/assets/index-c7e6c4d3.js:
+    newFile: null
+    oldFile: !uuid '07fb75e6d3e0583ff9f8f1602e16664209422589'
+  /niucloud/public/admin/assets/index-c98e204a.js:
+    newFile: null
+    oldFile: !uuid '23eb0f281e2aac30c28393f2300a3e269cfc392d'
+  /niucloud/public/admin/assets/index-cf3a42e3.js:
+    newFile: !uuid '7bb84772f58482e64f3045fc6e4b5a13bdefe3d4'
+    oldFile: null
+  /niucloud/public/admin/assets/index-d0ada8fb.js:
+    newFile: !uuid '62686516fc5879bd01855a95bc3dd439cc2584a8'
+    oldFile: null
+  /niucloud/public/admin/assets/index-d1262e7a.js:
+    newFile: !uuid 'e161f3448cc311dec0749330c7081d45746f9eaf'
+    oldFile: null
+  /niucloud/public/admin/assets/index-d15db6e2.css:
+    newFile: null
+    oldFile: !uuid '8e8826f9249e57f4f8b1dd030435b3ab8b48682a'
+  /niucloud/public/admin/assets/index-d3fc16e5.js:
+    newFile: !uuid '932c8ef3267020c29a6bcc40149d1c48d1cd3281'
+    oldFile: null
+  /niucloud/public/admin/assets/index-d4057e2a.js:
+    newFile: !uuid 'eb871190f17d58a31e83255b449cce3bedd1c01b'
+    oldFile: null
+  /niucloud/public/admin/assets/index-d40667c9.js:
+    newFile: null
+    oldFile: !uuid '283f8c662c837200d30905e983bcb03ca9de5892'
+  /niucloud/public/admin/assets/index-d5900ec8.js:
+    newFile: null
+    oldFile: !uuid '1a0aa03e4495456cfac591ebebef20de148a58ee'
+  /niucloud/public/admin/assets/index-d657effb.js:
+    newFile: null
+    oldFile: !uuid 'dc26776b3b71e44ab6570e18552b9c0e846cb0b1'
+  /niucloud/public/admin/assets/index-da093955.js:
+    newFile: null
+    oldFile: !uuid 'db6915c72b4170d49f6c0f24433d379c69423177'
+  /niucloud/public/admin/assets/index-df16e899.js:
+    newFile: null
+    oldFile: !uuid '5d9957d87ba79471cc66bafc9095cac7a3a139d8'
+  /niucloud/public/admin/assets/index-e026a545.js:
+    newFile: null
+    oldFile: !uuid '3795781c09931abcaf17bf263e3e9ae77e681060'
+  /niucloud/public/admin/assets/index-e059001a.js:
+    newFile: null
+    oldFile: !uuid '20443022bd6146a87ce11f107c9faa5c0ff63b10'
+  /niucloud/public/admin/assets/index-e2acd187.js:
+    newFile: null
+    oldFile: !uuid '958a3ef467b119542aeb8b96e9cc5dbcfc9b86d5'
+  /niucloud/public/admin/assets/index-e3c69a8e.js:
+    newFile: !uuid 'baed282c5d64a039bdab7e31441f66e702c84705'
+    oldFile: null
+  /niucloud/public/admin/assets/index-e5c4df7a.js:
+    newFile: !uuid '0fb364e74222f37e3319e5d51c6e4e98dde33685'
+    oldFile: null
+  /niucloud/public/admin/assets/index-e5d89f47.css:
+    newFile: !uuid '035854482efcf0bcd69d1cc2314e7fc5488cb19c'
+    oldFile: null
+  /niucloud/public/admin/assets/index-ec548bfb.js:
+    newFile: null
+    oldFile: !uuid '72fe594420866225f5b92a3efbeda85cd58ea874'
+  /niucloud/public/admin/assets/index-ec9f9fb2.js:
+    newFile: !uuid 'a8be032a0b16c4da522c97c34456bbc7cab888b8'
+    oldFile: null
+  /niucloud/public/admin/assets/index-f0623d20.js:
+    newFile: null
+    oldFile: !uuid 'ed6986b3c3bc8dde62de77daf7ea0a04b32778c0'
+  /niucloud/public/admin/assets/index-f249e665.js:
+    newFile: !uuid 'ce4b0fa087e0a95b93cf56870451764c977a7227'
+    oldFile: null
+  /niucloud/public/admin/assets/index-f3bad52c.js:
+    newFile: !uuid 'ebf10c53ff194d5dcfc8c523e2bf792b6f8f79f4'
+    oldFile: null
+  /niucloud/public/admin/assets/index-f705a408.js:
+    newFile: null
+    oldFile: !uuid 'f882fe81a17bcee071c9d40d85d5cce79695e2e8'
+  /niucloud/public/admin/assets/index-f7cbfd82.js:
+    newFile: !uuid '6f228be2a6ad0f710edd97fa46cb5e44aa5b473f'
+    oldFile: null
+  /niucloud/public/admin/assets/index-fb470cc8.js:
+    newFile: null
+    oldFile: !uuid '41b314b8935f186f14f0a4d69af61800f7635b9b'
+  /niucloud/public/admin/assets/index-fb8b7863.js:
+    newFile: null
+    oldFile: !uuid 'fb1a74e32b8314cd6db7667af39e42e10d0d7a54'
+  /niucloud/public/admin/assets/index-fc574226.js:
+    newFile: null
+    oldFile: !uuid '6c2a0f680c259ddaa178d04f5c78e5cdc01cc786'
+  /niucloud/public/admin/assets/index-fd362e05.js:
+    newFile: !uuid 'c9cfd59ab7a90a2883621e05bd2e982476fd3d03'
+    oldFile: null
+  /niucloud/public/admin/assets/index.store-98c369b7.js:
+    newFile: !uuid '1669a77fbabd3792947061a5baba3edd6c027bb4'
+    oldFile: null
+  /niucloud/public/admin/assets/index.store-d93d6cd1.js:
+    newFile: null
+    oldFile: !uuid '4868fb03fab28267073f08c064dbd9fc81bed3d7'
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-1767d980.js:
+    newFile: null
+    oldFile: !uuid '2a95963fe9b8773eca725f3b1fd0904da9d80c75'
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-772fa486.js:
+    newFile: !uuid 'fcaacf217a3b7b17245a46e5bd51a73e19e15e6e'
+    oldFile: null
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-780dd221.js:
+    newFile: null
+    oldFile: !uuid '18e3be8f55c3d6e7a14d84e2053674cb65a7e7e4'
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-ba8884ed.js:
+    newFile: !uuid '631b083237b70e98f085c87efccabff5823e338d'
+    oldFile: null
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-cdeb4e0c.js:
+    newFile: null
+    oldFile: !uuid '96afbbdacae635c5a02c6425ef38585517a3909e'
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-e6518208.js:
+    newFile: !uuid 'f6b93731390b9e2b5256fbf7f0c085c25d09ad17'
+    oldFile: null
+  /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-3748a185.js:
+    newFile: !uuid '627c117214a1beaf8919d30685aca8370d4a3e18'
+    oldFile: null
+  /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-92d4efb2.js:
+    newFile: null
+    oldFile: !uuid '2c9b34d4f0eccd716cffbf8cbf966bb48e1917e8'
+  /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-9fd1bcaf.js:
+    newFile: !uuid 'a65fd9d4e33cb142cf746ffd15c89420dc533eb8'
+    oldFile: null
+  /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-f28cbb83.js:
+    newFile: null
+    oldFile: !uuid '4085247964000ca679c3d5660f38ab3d52de7f42'
+  /niucloud/public/admin/assets/info-6e7fe720.js:
+    newFile: !uuid '7ae01047d0d32422e11c0a95e77344f74e8205a1'
+    oldFile: null
+  /niucloud/public/admin/assets/info-c0519d99.js:
+    newFile: null
+    oldFile: !uuid '59f8199d13e11689e6cd0ff8fc39d36221ba3e37'
+  /niucloud/public/admin/assets/isEqual-240b5e0a.js:
+    newFile: null
+    oldFile: !uuid 'ddd2a01b4ad390e8cb5107e4ee0463659933a69c'
+  /niucloud/public/admin/assets/isEqual-3f50b221.js:
+    newFile: !uuid 'dd821d7b1c4e7aa5dc12732543e132231b9255bf'
+    oldFile: null
+  /niucloud/public/admin/assets/label-ccf43170.js:
+    newFile: !uuid '56c5ac383c68bb543f3d0c1fb614dad08626a21a'
+    oldFile: null
+  /niucloud/public/admin/assets/label-d7c618c7.js:
+    newFile: null
+    oldFile: !uuid '1e0fade6e355fa43e47fb4975391eb4b45066386'
+  /niucloud/public/admin/assets/list-0c53d893.js:
+    newFile: !uuid '669b437370e7383232e69adbf1fd299c8930a3fd'
+    oldFile: null
+  /niucloud/public/admin/assets/list-19e9de54.css:
+    newFile: !uuid 'c162e921994ec6b2d8ad0e7e7661f26b8dc6d7cb'
+    oldFile: null
+  /niucloud/public/admin/assets/list-274b7d81.js:
+    newFile: null
+    oldFile: !uuid 'c4c81e03c1e228bdddbbbf2aefcb90e72f4f0b0c'
+  /niucloud/public/admin/assets/list-43e44343.js:
+    newFile: null
+    oldFile: !uuid '2db9766104c0981b30d64c7ba67fbd0dd2ab4825'
+  /niucloud/public/admin/assets/list-45c6449b.js:
+    newFile: !uuid 'acf271781235bf0641c24248da1b26a32de1607d'
+    oldFile: null
+  /niucloud/public/admin/assets/list-7eba0ce1.js:
+    newFile: !uuid '0f64decdd01269d51a9c2b36881ce2bbde0af1d7'
+    oldFile: null
+  /niucloud/public/admin/assets/list-9fdf8db0.css:
+    newFile: null
+    oldFile: !uuid 'ea53a06e8e8ff70a53a8ef4b7c30fcc88f395bdd'
+  /niucloud/public/admin/assets/list-a0b8fcec.js:
+    newFile: !uuid '570fed07d646ea3ffb67c9fca61ec6b3040421d4'
+    oldFile: null
+  /niucloud/public/admin/assets/list-dba30721.css:
+    newFile: !uuid '98e27b3892f592e6bab38215b7620b23f5bacceb'
+    oldFile: null
+  /niucloud/public/admin/assets/list-ea882162.js:
+    newFile: null
+    oldFile: !uuid 'f6e11b11873863b659c8ff2ec94ae9615eb5d88c'
+  /niucloud/public/admin/assets/list-fbaa5fc2.js:
+    newFile: null
+    oldFile: !uuid '6acaea58cc812f0934a8a386ba87d1cb5107d949'
+  /niucloud/public/admin/assets/log-9e1107cf.js:
+    newFile: null
+    oldFile: !uuid '8e1b547f277edac78bbe272d16e79a1aa13096a7'
+  /niucloud/public/admin/assets/log-b94e2274.js:
+    newFile: !uuid 'd67a268473b863a5e851da1656b771e9000890a5'
+    oldFile: null
+  /niucloud/public/admin/assets/login-5f8bda6a.js:
+    newFile: null
+    oldFile: !uuid '659a6b738f1e556c64de7d12ebafb1827ebbfb6a'
+  /niucloud/public/admin/assets/login-6ce7048e.js:
+    newFile: !uuid '576371d9fd8028ec3d93dfed4c317d98802e6631'
+    oldFile: null
+  /niucloud/public/admin/assets/map-6b260818.js:
+    newFile: null
+    oldFile: !uuid '1edadb6103830919913dbb5f4fcb9676fc8302b7'
+  /niucloud/public/admin/assets/map-a5181094.js:
+    newFile: !uuid '56da0b4b8e8b099100e4ba8160e2310561f1f98d'
+    oldFile: null
+  /niucloud/public/admin/assets/member-16777dad.js:
+    newFile: null
+    oldFile: !uuid 'e033fdc9ee04257d8d8fab14c17f82abf1fe4ec2'
+  /niucloud/public/admin/assets/member-598e703d.js:
+    newFile: !uuid '52b539251b1885affafdf7c3c43eed8091250c26'
+    oldFile: null
+  /niucloud/public/admin/assets/member-5b79e301.js:
+    newFile: !uuid 'c2107bbf9e0c0b48320a9ae19ef326cc0044aea6'
+    oldFile: null
+  /niucloud/public/admin/assets/member-64d3c793.js:
+    newFile: !uuid 'c61849569bbf61f31a5b4364248bc935800679bb'
+    oldFile: null
+  /niucloud/public/admin/assets/member-8490bdef.js:
+    newFile: null
+    oldFile: !uuid '8e19525be0fcffec727e8c53e3668407ea67d000'
+  /niucloud/public/admin/assets/member-balance-edit-703d2f86.js:
+    newFile: !uuid 'b72e2d0d34421fed393e3f4146535fc1df6901ea'
+    oldFile: null
+  /niucloud/public/admin/assets/member-balance-edit-7eb43efd.js:
+    newFile: null
+    oldFile: !uuid '843705a79459fda5eb427dfc469e1dd0a96bbc53'
+  /niucloud/public/admin/assets/member-balance-edit.vue_vue_type_script_setup_true_lang-94138469.js:
+    newFile: !uuid '1c6c3c3a6f1345c7bad6ab768ea6da72c9a00dee'
+    oldFile: null
+  /niucloud/public/admin/assets/member-balance-edit.vue_vue_type_script_setup_true_lang-96fc7533.js:
+    newFile: null
+    oldFile: !uuid 'a7f5b8d8183b905954205e3e1fd58ae4a14025fe'
+  /niucloud/public/admin/assets/member-balance-info-6c976bfe.js:
+    newFile: !uuid 'a0d445c455085a43605bda8ae16b63cd2d692fc3'
+    oldFile: null
+  /niucloud/public/admin/assets/member-balance-info-7358d908.js:
+    newFile: null
+    oldFile: !uuid '9c882c9c0f6d800cbef4962e39854ad338443ea9'
+  /niucloud/public/admin/assets/member-balance-info.vue_vue_type_script_setup_true_lang-66591945.js:
+    newFile: !uuid '1d19ab43752d4a2b85c184d3bb30450df4cfd4bc'
+    oldFile: null
+  /niucloud/public/admin/assets/member-balance-info.vue_vue_type_script_setup_true_lang-ef580c8f.js:
+    newFile: null
+    oldFile: !uuid '7d10aad359c50fa80385c7790a22acf911f9e9e6'
+  /niucloud/public/admin/assets/member-c3f742b9.js:
+    newFile: null
+    oldFile: !uuid 'e451f42bbd209b39eb56b0199769fd9a7202b9bc'
+  /niucloud/public/admin/assets/member-commission-info-74ee6a2b.js:
+    newFile: null
+    oldFile: !uuid '48c74abb1db1669cdaf8766d85d76fe0da779a63'
+  /niucloud/public/admin/assets/member-commission-info-fc1979c6.js:
+    newFile: !uuid '89efdee7cfda3d5405835a3eb9fc28a315c56af7'
+    oldFile: null
+  /niucloud/public/admin/assets/member-commission-info.vue_vue_type_script_setup_true_lang-3c5c746b.js:
+    newFile: null
+    oldFile: !uuid '6a1458740d8d3396fb97d76c6512114a0a765b6f'
+  /niucloud/public/admin/assets/member-commission-info.vue_vue_type_script_setup_true_lang-a91095bb.js:
+    newFile: !uuid '487e09388a323567f5476b7bb80fe3850fff1a44'
+    oldFile: null
+  /niucloud/public/admin/assets/member-money-info-e6d058c4.js:
+    newFile: !uuid 'a12aa4f603dcd979c6a4bc287cefaa62cde299bc'
+    oldFile: null
+  /niucloud/public/admin/assets/member-money-info-ea8269c9.js:
+    newFile: null
+    oldFile: !uuid '6a9d439255dd5b16b29f75275aaf21255077af3c'
+  /niucloud/public/admin/assets/member-point-edit-2e0903bb.js:
+    newFile: null
+    oldFile: !uuid 'c7cdc789742f9e996e22b31e3ff5af2522dd36d7'
+  /niucloud/public/admin/assets/member-point-edit-3d8b422f.js:
+    newFile: !uuid 'ebc670c52fd71d405f8ebd267b3544810a21422d'
+    oldFile: null
+  /niucloud/public/admin/assets/member-point-edit.vue_vue_type_script_setup_true_lang-0132e934.js:
+    newFile: null
+    oldFile: !uuid '051de58a9d8dd3f14abe2cb69a0d201d272fc18e'
+  /niucloud/public/admin/assets/member-point-edit.vue_vue_type_script_setup_true_lang-d4db018b.js:
+    newFile: !uuid 'ecf7e4f6d2f4cc91bb23975eafef8a9637721619'
+    oldFile: null
+  /niucloud/public/admin/assets/member-point-info-590c96e5.js:
+    newFile: null
+    oldFile: !uuid 'e091b6bba2ebc8d99e483e38e4e9716d6167b734'
+  /niucloud/public/admin/assets/member-point-info-ec130b34.js:
+    newFile: !uuid '3531c01f5b05a74c34aa77a2ac1c5e251c1dacc3'
+    oldFile: null
+  /niucloud/public/admin/assets/member-point-info.vue_vue_type_script_setup_true_lang-23cf72da.js:
+    newFile: !uuid '87e0fa0de2dfe4d2c165bd69b2f43f39a9ae2eb5'
+    oldFile: null
+  /niucloud/public/admin/assets/member-point-info.vue_vue_type_script_setup_true_lang-33d4e46c.js:
+    newFile: null
+    oldFile: !uuid 'ea10d762da3f8febe248865e55604c8c3b40a925'
+  /niucloud/public/admin/assets/member_detail-58c14d0e.js:
+    newFile: !uuid 'c5715d6b46966d5e6f9956b3bc1cbd6fb86f8a97'
+    oldFile: null
+  /niucloud/public/admin/assets/member_detail-87e36b3a.js:
+    newFile: null
+    oldFile: !uuid '72d71ca2533ff5a9375cfafd33882a2bb48ae11c'
+  /niucloud/public/admin/assets/menu-25f9ff1d.js:
+    newFile: !uuid 'f2520003071e554668b598b8983b00563f1d73ab'
+    oldFile: null
+  /niucloud/public/admin/assets/menu-2698ab0d.js:
+    newFile: null
+    oldFile: !uuid '599b797991015c978002ad9ddca36b9aebf32f5a'
+  /niucloud/public/admin/assets/menu-bb3477e3.js:
+    newFile: null
+    oldFile: !uuid '3cb0964a24ca57b0c9b40ebcf78295e36076a4ce'
+  /niucloud/public/admin/assets/menu-f88e450f.js:
+    newFile: !uuid '0d5161d6e2ee33fa434202fa97bda62d74792bf2'
+    oldFile: null
+  /niucloud/public/admin/assets/menu-form-3141555f.js:
+    newFile: null
+    oldFile: !uuid '8939d5ca27d70cd967165ba70b935d9ef2ed07b5'
+  /niucloud/public/admin/assets/menu-form-e9b70202.js:
+    newFile: !uuid 'f85ff071dcbbebb2ce6ba5b98402266e7c5cbb90'
+    oldFile: null
+  /niucloud/public/admin/assets/menu-form.vue_vue_type_script_setup_true_lang-3b097fea.js:
+    newFile: null
+    oldFile: !uuid '68de7cec47775aa5da23b4965bad29a8b1ce0ed3'
+  /niucloud/public/admin/assets/menu-form.vue_vue_type_script_setup_true_lang-4483f4c6.js:
+    newFile: !uuid '5fdace6e82798ceab1060a6f9b3bd5d2f4e8f3a3'
+    oldFile: null
+  /niucloud/public/admin/assets/module-23f036a6.js:
+    newFile: null
+    oldFile: !uuid 'a8b669fce1dd0b9d20115299d09072b94b0b046e'
+  /niucloud/public/admin/assets/module-c4c1e190.js:
+    newFile: !uuid 'cea78c1230ffb48413066f11e7912cb6c0028908'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-2b44e053.js:
+    newFile: null
+    oldFile: !uuid '82980a3d289491f138a5e57581253ed07a2d99cd'
+  /niucloud/public/admin/assets/notice-73688b00.js:
+    newFile: null
+    oldFile: !uuid '0b9964673fc641c3f82d6f78be7819f99fa6c4b2'
+  /niucloud/public/admin/assets/notice-c5b19d77.js:
+    newFile: !uuid 'd33ebc6ea17b28309ed33fdf9cbfa8e5998623d0'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-eb33ea40.js:
+    newFile: !uuid 'd76591855037f6f6a4bfded8c7f647bc6c287a08'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-records-info-5ebeae15.js:
+    newFile: null
+    oldFile: !uuid '64b970d6dce809b66a6e9d6cbeb2d2d0e0873b59'
+  /niucloud/public/admin/assets/notice-records-info-7f322956.js:
+    newFile: !uuid 'f634dad03db40c4104146ccc26ce42f183b6b339'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-records-info.vue_vue_type_script_setup_true_lang-05360d49.js:
+    newFile: null
+    oldFile: !uuid '2f8480dd1ea612f85238103dab372335327eb78b'
+  /niucloud/public/admin/assets/notice-records-info.vue_vue_type_script_setup_true_lang-9ae4d8e2.js:
+    newFile: !uuid 'a292362d16339d75eace4245a753e404755df36c'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-sms-3c45e23c.js:
+    newFile: !uuid 'ec67c1d01714d6cb4f2a6c2cf1c70a698e2e83ef'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-sms-97d697a6.js:
+    newFile: null
+    oldFile: !uuid 'd91ef61be5f640edb96ce44054a9c8ae092a85eb'
+  /niucloud/public/admin/assets/notice-sms.vue_vue_type_script_setup_true_lang-114598e4.js:
+    newFile: null
+    oldFile: !uuid 'fad80f92c87e820eec2578cdb28a74b665eaf14c'
+  /niucloud/public/admin/assets/notice-sms.vue_vue_type_script_setup_true_lang-ca6b1908.js:
+    newFile: !uuid '50c1f1d81576b05d36767e2a426c3ea2fcfdb89e'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-weapp-df527d74.js:
+    newFile: null
+    oldFile: !uuid '07b6898bc2dc799f44b6e8e566161b12d5a16006'
+  /niucloud/public/admin/assets/notice-weapp-e1864e4c.js:
+    newFile: !uuid '58d1b834a250162a619b042fadd3dddb1a61bb26'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-weapp.vue_vue_type_script_setup_true_lang-15a554f1.js:
+    newFile: !uuid '80b30541a4516cd0962357c025a69616c37c4730'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-weapp.vue_vue_type_script_setup_true_lang-ab348405.js:
+    newFile: null
+    oldFile: !uuid '194974d7b7c613e87740e6166e8584857f34c356'
+  /niucloud/public/admin/assets/notice-wechat-141b4cde.js:
+    newFile: null
+    oldFile: !uuid '9d983f84dace94bf0b61beb39762f85a6cd9f8c3'
+  /niucloud/public/admin/assets/notice-wechat-295b9e9c.js:
+    newFile: !uuid '8737b9313018e3abc224fd5fc5f942753d45fcb7'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-wechat.vue_vue_type_script_setup_true_lang-28244278.js:
+    newFile: !uuid 'a72a49eb98f11fc2f9dd386737fc482f6cdae313'
+    oldFile: null
+  /niucloud/public/admin/assets/notice-wechat.vue_vue_type_script_setup_true_lang-3e4e5338.js:
+    newFile: null
+    oldFile: !uuid '237ec03402c9468bdcb6f48483567f5e641ce00b'
+  /niucloud/public/admin/assets/notice_records-2ea5e9ef.js:
+    newFile: !uuid 'e449458082d2789c74901ebd17310a549251e98a'
+    oldFile: null
+  /niucloud/public/admin/assets/notice_records-fb460231.js:
+    newFile: null
+    oldFile: !uuid '3b34fbca757d2fc304786af9a0e4cde41c1f8152'
+  /niucloud/public/admin/assets/offlinepay-12b0f681.js:
+    newFile: !uuid '752b6aae1aade2c15956dba6a826c43ac572cb9d'
+    oldFile: null
+  /niucloud/public/admin/assets/offlinepay-9ea2e34e.js:
+    newFile: null
+    oldFile: !uuid 'e2037ef31cfbcb528efce84880e305de9f0cfc6b'
+  /niucloud/public/admin/assets/order-7a384c42.js:
+    newFile: null
+    oldFile: !uuid '3bf267c5feb41edd1027e289bedb16bf4a4d3be8'
+  /niucloud/public/admin/assets/order-7b5c1f7f.js:
+    newFile: !uuid '815d6e6a453e91d06c07317d0a10188a8e242f26'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-320aeb54.js:
+    newFile: !uuid '95368f9d77a9c8173059ee6d09c1a5561a01716d'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-3a5862f9.js:
+    newFile: null
+    oldFile: !uuid 'cb1f2ab017b8fba53c5f2de721592c5de64db841'
+  /niucloud/public/admin/assets/pay-4f8d8507.js:
+    newFile: null
+    oldFile: !uuid '7a98e6d9cdfc5dd887c0fda4c5cb64ca48db5b43'
+  /niucloud/public/admin/assets/pay-alipay-1642fd8c.js:
+    newFile: null
+    oldFile: !uuid 'f1a7e92e1f3aec380ff00bf3fe17a73737409344'
+  /niucloud/public/admin/assets/pay-alipay-e9b9ccbe.js:
+    newFile: !uuid 'fb2f584ba5a9124f61daa43a47d6bcc01750635d'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-alipay.vue_vue_type_script_setup_true_lang-43c2ac85.js:
+    newFile: !uuid '5cdc77cb62657cbc33939729b26702938870eff9'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-alipay.vue_vue_type_script_setup_true_lang-831bf5f1.js:
+    newFile: null
+    oldFile: !uuid '4a29c567df5842ef691c9694547ad9a7df20e181'
+  /niucloud/public/admin/assets/pay-b8ae08a2.js:
+    newFile: !uuid 'c2e918bcac0583e9d81a395bd004f68a7f3ce6b4'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-offlinepay-0e4ba186.js:
+    newFile: null
+    oldFile: !uuid '17b0b5003db94acd3dd47636e96f12868338e2e6'
+  /niucloud/public/admin/assets/pay-offlinepay-bd7d8732.js:
+    newFile: !uuid '551b0fd4bcd958382583cb5fbdca674e783769e5'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-offlinepay.vue_vue_type_script_setup_true_lang-c9c54e26.js:
+    newFile: null
+    oldFile: !uuid 'afef0ddb3213b7ad56ab8b69c9e8a3dbbbbccd80'
+  /niucloud/public/admin/assets/pay-offlinepay.vue_vue_type_script_setup_true_lang-d4a16127.js:
+    newFile: !uuid '826f18bb30a22595506c4d1639fe78e679cba6f6'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-wechatpay-15e3ff4c.js:
+    newFile: null
+    oldFile: !uuid 'f2371a80cf94802745ea93f87669619e472da7f3'
+  /niucloud/public/admin/assets/pay-wechatpay-795e3095.js:
+    newFile: !uuid 'a3e5a64539b57a858b209656f9438cdaa6026d37'
+    oldFile: null
+  /niucloud/public/admin/assets/pay-wechatpay.vue_vue_type_script_setup_true_lang-45a11ae4.js:
+    newFile: null
+    oldFile: !uuid 'c317355bcb93793795d841a37d5ee4fe9758ebc9'
+  /niucloud/public/admin/assets/pay-wechatpay.vue_vue_type_script_setup_true_lang-a095ea2f.js:
+    newFile: !uuid 'b6cdbdb928bd8332c3227719f8091135af5ea6d3'
+    oldFile: null
+  /niucloud/public/admin/assets/pay_detail-17a7a4d2.js:
+    newFile: !uuid '75309fe649c5d1d5fcac09d86f9a2213218e955b'
+    oldFile: null
+  /niucloud/public/admin/assets/pay_detail-42f84f5c.js:
+    newFile: null
+    oldFile: !uuid '0cbc1830f2d0f47eaf668e170d3cf387c79359b9'
+  /niucloud/public/admin/assets/pay_refund-5db83074.js:
+    newFile: !uuid '6bd7c211af8458acb7e941e49e4ebbca8b2a4ea6'
+    oldFile: null
+  /niucloud/public/admin/assets/pay_refund-952949fb.js:
+    newFile: null
+    oldFile: !uuid '2d3e5fe9f6eb098f1992c1b4d036fb7a56d6b586'
+  /niucloud/public/admin/assets/personal-331e943c.js:
+    newFile: !uuid 'c8cd7509e1c30cf4a98c31b578cd8fd35f2f50cb'
+    oldFile: null
+  /niucloud/public/admin/assets/personal-446a7602.js:
+    newFile: !uuid '1d2c322f04464853c26b44ded758236cb90e39a7'
+    oldFile: null
+  /niucloud/public/admin/assets/personal-6ae8a2fc.js:
+    newFile: null
+    oldFile: !uuid 'b1ddc716858012545b0c34fb875dfd6be1542d92'
+  /niucloud/public/admin/assets/personal-79c478f1.js:
+    newFile: !uuid '71e4b79e49c317679f6ed5b799876bfd3f3ebc19'
+    oldFile: null
+  /niucloud/public/admin/assets/personal-9f608de4.js:
+    newFile: null
+    oldFile: !uuid '86c27caac4035fd3c0179572dbca1856d9b7e4ba'
+  /niucloud/public/admin/assets/personal-ca9de20f.js:
+    newFile: !uuid '233d1c4163cb833141c2671827c7b831ca5dc9b7'
+    oldFile: null
+  /niucloud/public/admin/assets/personal-cfa7cad1.js:
+    newFile: null
+    oldFile: !uuid '8511992c584a7197eb0f39138eff212c3dac5bdb'
+  /niucloud/public/admin/assets/personal-e212c99f.js:
+    newFile: null
+    oldFile: !uuid 'e1848f165a89fdb7607e17f9fc05b94316d58165'
+  /niucloud/public/admin/assets/pinia-55149fa9.js:
+    newFile: !uuid 'f34d49aecd630ce4dab7d3eef46998d248ccc493'
+    oldFile: null
+  /niucloud/public/admin/assets/pinia-a9fc3924.js:
+    newFile: null
+    oldFile: !uuid '4ecc1bc30069cbcc57f82d95c1f53f291e4b971e'
+  /niucloud/public/admin/assets/point-3f9b541b.js:
+    newFile: !uuid 'da57ce5a0099a471b3bc47d588396decc0793b67'
+    oldFile: null
+  /niucloud/public/admin/assets/point-886e3069.js:
+    newFile: null
+    oldFile: !uuid '9731ab0df5eefb86824b38662cfcb7916bc32f14'
+  /niucloud/public/admin/assets/position-4bcbb4c8.js:
+    newFile: !uuid 'a6458e9f9ce9b905fba0c4ffe88ab8e5f020caa3'
+    oldFile: null
+  /niucloud/public/admin/assets/position-8e494ab3.js:
+    newFile: null
+    oldFile: !uuid '300314f23fcd861414f6f71ca7950559b985aa67'
+  /niucloud/public/admin/assets/preview-1587d3fd.js:
+    newFile: !uuid '1826f4089208d21341937a54d2446b8f20cc86f7'
+    oldFile: null
+  /niucloud/public/admin/assets/preview-2dbb39e5.js:
+    newFile: null
+    oldFile: !uuid '0acff5dc348ff487521f9c387848a218dde6c6ca'
+  /niucloud/public/admin/assets/preview-635fbb2a.js:
+    newFile: null
+    oldFile: !uuid '57de78950af05321267b6f209ef4964c55cd8d3d'
+  /niucloud/public/admin/assets/preview-f3e7f7bd.js:
+    newFile: !uuid '428085b13292e827f1e655b48ec4682fa43c5f3e'
+    oldFile: null
+  /niucloud/public/admin/assets/range-2c2e612e.js:
+    newFile: !uuid 'ffadc4c2c9985ad7b0d92395d9ac403b8b0870d4'
+    oldFile: null
+  /niucloud/public/admin/assets/range-d4dd345f.js:
+    newFile: null
+    oldFile: !uuid '2c6ff0aeec4ef5a25abdd4530bda703729a7c553'
+  /niucloud/public/admin/assets/refund-12e399cb.js:
+    newFile: null
+    oldFile: !uuid '54c202cbacfedc5b069908a755b92d5aec35e286'
+  /niucloud/public/admin/assets/refund-f64a9d61.js:
+    newFile: !uuid 'fbd3666d42e9b07721513d72d6831e8a578784a0'
+    oldFile: null
+  /niucloud/public/admin/assets/refund_detail-71a78b54.js:
+    newFile: !uuid 'f193b32a560efca20dc6f84bf53199c179d68f03'
+    oldFile: null
+  /niucloud/public/admin/assets/refund_detail-a1112701.js:
+    newFile: null
+    oldFile: !uuid '1705100c808bc16c97f031c0a93e541b882e9182'
+  /niucloud/public/admin/assets/role-ad801a98.js:
+    newFile: !uuid '69c25efa39f5c35c42161733ae033a68bc3268c3'
+    oldFile: null
+  /niucloud/public/admin/assets/role-d0902669.js:
+    newFile: null
+    oldFile: !uuid 'dcf93138fdc729cfc738921eef2e9e1380dd08be'
+  /niucloud/public/admin/assets/route-608320fd.js:
+    newFile: !uuid '113c17b0d5cfbad5ba08024c689fc220400ab716'
+    oldFile: null
+  /niucloud/public/admin/assets/route-953d1564.js:
+    newFile: null
+    oldFile: !uuid '9b629abea04d88a142ae91bad557ee83803c02f6'
+  /niucloud/public/admin/assets/route-dba30721.css:
+    newFile: null
+    oldFile: !uuid '98e27b3892f592e6bab38215b7620b23f5bacceb'
+  /niucloud/public/admin/assets/schedule-14f5c604.js:
+    newFile: !uuid 'ac8dfd473513a4fe2b85dea58fa7ff1cfd0324c2'
+    oldFile: null
+  /niucloud/public/admin/assets/schedule-a60a27f3.js:
+    newFile: null
+    oldFile: !uuid '167860b22fa35971defb4a192b4c3d00e97b3cc6'
+  /niucloud/public/admin/assets/scroll-aa5f3aa0.js:
+    newFile: !uuid 'bdde429a1eac9f883c078d6e191f4e5a30ee33d9'
+    oldFile: null
+  /niucloud/public/admin/assets/scroll-d85c8f38.js:
+    newFile: null
+    oldFile: !uuid '16b1b22ee04f5fd66f142480883ddc0c99a61904'
+  /niucloud/public/admin/assets/select-menu-item-1c5bd2be.js:
+    newFile: null
+    oldFile: !uuid '9334876182ab26da860f0983e4e14ebb18cb508a'
+  /niucloud/public/admin/assets/select-menu-item-4f035519.js:
+    newFile: !uuid 'a83b539452466962c6146d6ed6c6dfbbb4662550'
+    oldFile: null
+  /niucloud/public/admin/assets/select-menu-item.vue_vue_type_script_setup_true_lang-cea4fdd1.js:
+    newFile: !uuid '06399af385421e6d1ac548022535f816dd95dc70'
+    oldFile: null
+  /niucloud/public/admin/assets/select-menu-item.vue_vue_type_script_setup_true_lang-fa454072.js:
+    newFile: null
+    oldFile: !uuid '7cf023adfe92eec0fb33fe9f7dd3ab4f264e9350'
+  /niucloud/public/admin/assets/site-a042abc5.js:
+    newFile: !uuid '24cf03ed5f16d2972444100abb5b28d2cb761683'
+    oldFile: null
+  /niucloud/public/admin/assets/site-a8df7d1b.js:
+    newFile: null
+    oldFile: !uuid 'c9bd57c7bc28e082e4c2d83f63bbfd21ffd114ec'
+  /niucloud/public/admin/assets/site.list-46790c6f.js:
+    newFile: !uuid 'bc29e40f43b7b29fad3d0d49d1abb03c4c951250'
+    oldFile: null
+  /niucloud/public/admin/assets/site.list-b74a0ee8.js:
+    newFile: null
+    oldFile: !uuid '022cd42792b425382c79a962eb9358a39fcc84e8'
+  /niucloud/public/admin/assets/site_index-e8ac8f02.js:
+    newFile: null
+    oldFile: !uuid '3fd56f206e9f95858b4c0f54d926d2576c98e890'
+  /niucloud/public/admin/assets/site_index-ef86bef1.js:
+    newFile: !uuid '9ea8db7589fa8618ef2e1b092e31d7d6ea497149'
+    oldFile: null
+  /niucloud/public/admin/assets/site_index__-595923ba.js:
+    newFile: null
+    oldFile: !uuid '3d2fab47defc05718865bd2e3fc40433693a5757'
+  /niucloud/public/admin/assets/site_index__-a906d3dc.js:
+    newFile: !uuid '4729cbfb41c0b450e7409e7f5e4f767e583e26b3'
+    oldFile: null
+  /niucloud/public/admin/assets/site_menu-1de867b4.js:
+    newFile: !uuid '2be8828594e2260e69dee6dccbf4547b9447dfe3'
+    oldFile: null
+  /niucloud/public/admin/assets/site_menu-cd64a452.js:
+    newFile: null
+    oldFile: !uuid '5013948500c4f214d16a065bb940ff15ac051c84'
+  /niucloud/public/admin/assets/sms-74cc9977.js:
+    newFile: null
+    oldFile: !uuid '2a0f9cb967a8e35fe5be301997ca003d906c3dfa'
+  /niucloud/public/admin/assets/sms-ali-b784e703.js:
+    newFile: !uuid 'ac48c6424f421a0d239e06eecf6f55da17399928'
+    oldFile: null
+  /niucloud/public/admin/assets/sms-ali-e9ffd87e.js:
+    newFile: null
+    oldFile: !uuid 'bd747d67b2b61eece7c4e2b3ed96d67c689de58a'
+  /niucloud/public/admin/assets/sms-ali.vue_vue_type_script_setup_true_lang-896fc89f.js:
+    newFile: null
+    oldFile: !uuid 'a217d398217b9f61d2d9d3c9121ae000b0d66e34'
+  /niucloud/public/admin/assets/sms-ali.vue_vue_type_script_setup_true_lang-e8dd5a50.js:
+    newFile: !uuid '731ad65aa17dc9fab116a79e5e2ae4b49f5ba80e'
+    oldFile: null
+  /niucloud/public/admin/assets/sms-bfb719de.js:
+    newFile: !uuid '751be7196fec61a6e71997efd3e22308c3069db8'
+    oldFile: null
+  /niucloud/public/admin/assets/sms-tencent-a96498de.js:
+    newFile: !uuid 'ad831d06c9c2dc2a91b8245478b863ed56ecd06e'
+    oldFile: null
+  /niucloud/public/admin/assets/sms-tencent-ed85eb55.js:
+    newFile: null
+    oldFile: !uuid 'c5da3bdad39856a12dc142ab395f63ca3a7fec41'
+  /niucloud/public/admin/assets/sms-tencent.vue_vue_type_script_setup_true_lang-88faec6c.js:
+    newFile: !uuid 'e7f9e16d1018e27eabc24613737dd4452c46407c'
+    oldFile: null
+  /niucloud/public/admin/assets/sms-tencent.vue_vue_type_script_setup_true_lang-caaadeab.js:
+    newFile: null
+    oldFile: !uuid '8d4a6dc107120b2a122f5286122eacaaaf49250c'
+  /niucloud/public/admin/assets/sms_records-3d082789.js:
+    newFile: null
+    oldFile: !uuid '85a2bc6c3681b118e05ff397ee93dfe4bcb227dc'
+  /niucloud/public/admin/assets/sms_records-c3f1a4b8.js:
+    newFile: !uuid '4cfdf3351ff6a5ff82f3f23291328cf6f45dc61e'
+    oldFile: null
+  /niucloud/public/admin/assets/stat-b2407376.js:
+    newFile: null
+    oldFile: !uuid 'a64a8573fb15e58e60c97a26229f80cb811af90c'
+  /niucloud/public/admin/assets/stat-e8e14424.js:
+    newFile: !uuid 'c7537f4626c89474ac1eb272af0d5d302fa4402b'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-0874d153.js:
+    newFile: null
+    oldFile: !uuid 'dc526da9300d5dbca2409a90b9660d99fdec4ea8'
+  /niucloud/public/admin/assets/storage-1d067670.js:
+    newFile: null
+    oldFile: !uuid 'f6921570e6f545720905d68aea420c77c6337ec6'
+  /niucloud/public/admin/assets/storage-5316d819.js:
+    newFile: !uuid '2e6312ac6d5e45bccc83cddc1cfd14f51b3465f5'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-ali-300dff64.js:
+    newFile: !uuid '5ef7016c3c939b0cc1c49e3f5277113d317537bb'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-ali-467a3203.js:
+    newFile: null
+    oldFile: !uuid '041496754db38c40c554379ecf6480b864387fd2'
+  /niucloud/public/admin/assets/storage-ali.vue_vue_type_script_setup_true_lang-407e9d5e.js:
+    newFile: !uuid '54db5ba61fe87761d45fa75059288f030c8577a1'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-ali.vue_vue_type_script_setup_true_lang-e4db0540.js:
+    newFile: null
+    oldFile: !uuid 'd58e02500f593cd762ab80910a0ef74a829095b7'
+  /niucloud/public/admin/assets/storage-e511e96f.js:
+    newFile: !uuid 'bcd780d02ac0c1dcd09851ddf3c0a9eadfdda88f'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-local-4acab7c7.js:
+    newFile: null
+    oldFile: !uuid '18f288cb1d9110f4c6f33f375a1f323065f47b06'
+  /niucloud/public/admin/assets/storage-local-fbc8fdfb.js:
+    newFile: !uuid '1c0636086334bcef59be53fa54a13e084f12a12b'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-local.vue_vue_type_script_setup_true_lang-7dbbd4ef.js:
+    newFile: !uuid '51e95a96a475ffe473f1478d6ce9e0b228e527c8'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-local.vue_vue_type_script_setup_true_lang-7dd712ca.js:
+    newFile: null
+    oldFile: !uuid '604ed446e506a28af3bbb8724c3d1b826793d55c'
+  /niucloud/public/admin/assets/storage-qiniu-0004865f.js:
+    newFile: null
+    oldFile: !uuid '3b1ce4fe504248325cd8ce032d5c76d00728a982'
+  /niucloud/public/admin/assets/storage-qiniu-fdd2c946.js:
+    newFile: !uuid 'd86c35039f2f1eb080d335393d3b82829ceb1ef1'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-qiniu.vue_vue_type_script_setup_true_lang-7a5c8525.js:
+    newFile: !uuid 'f954a9cf6724d5bb70d33c9e49a214b0df8112fd'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-qiniu.vue_vue_type_script_setup_true_lang-c4dc1289.js:
+    newFile: null
+    oldFile: !uuid '7f0d4b0cd9c4ef87f68964a50f4505e399f6d047'
+  /niucloud/public/admin/assets/storage-tencent-33c1296f.js:
+    newFile: !uuid '749d4c5fd8e967c1a87581ba3cc6fa9a64b13a02'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-tencent-6dc0c88b.js:
+    newFile: null
+    oldFile: !uuid '12c1a260a450f4659c221aaedceecfc30b4edb3e'
+  /niucloud/public/admin/assets/storage-tencent.vue_vue_type_script_setup_true_lang-9cbed69d.js:
+    newFile: !uuid 'fb56b8a8c68b2fe61b4f7af64d4f97730114bf06'
+    oldFile: null
+  /niucloud/public/admin/assets/storage-tencent.vue_vue_type_script_setup_true_lang-a17336cf.js:
+    newFile: null
+    oldFile: !uuid '6446c86d1abb054c6a1dc6a9926ba57ff9e08c14'
+  /niucloud/public/admin/assets/store-04549a48.js:
+    newFile: !uuid '845317c9f38451bfc092b7ce79f959498d12a0f4'
+    oldFile: null
+  /niucloud/public/admin/assets/store-55a208bb.js:
+    newFile: null
+    oldFile: !uuid '0b257d0f007d3a5fc48d0ef10589357f5421fea0'
+  /niucloud/public/admin/assets/store-5b402dec.js:
+    newFile: null
+    oldFile: !uuid '972b047e5c4af700da3fe1c8a6aad2b6d2a29262'
+  /niucloud/public/admin/assets/store-c9983c45.js:
+    newFile: !uuid 'b74c8b5ac9d69d00934a52eed7bd65f975fed5be'
+    oldFile: null
+  /niucloud/public/admin/assets/strings-66191554.js:
+    newFile: null
+    oldFile: !uuid '90fd275771bdbfa32cd8469dd5895dc734dc67d7'
+  /niucloud/public/admin/assets/strings-d73e3c52.js:
+    newFile: !uuid '88db320e150125a514b05e2d63921acf3662b2ed'
+    oldFile: null
+  /niucloud/public/admin/assets/style-18eab70b.js:
+    newFile: null
+    oldFile: !uuid '0efca3ea524347b13032031cb7d8da91cf430c23'
+  /niucloud/public/admin/assets/style-ff6c5269.js:
+    newFile: !uuid '36b4d0cb2877ee23d8f0315c8a7dffc0b036d81d'
+    oldFile: null
+  /niucloud/public/admin/assets/sys-3d5b784a.js:
+    newFile: !uuid 'e899fa9bdcf65fbcf65b2a56a8e0841ec9263e16'
+    oldFile: null
+  /niucloud/public/admin/assets/sys-7988dced.js:
+    newFile: null
+    oldFile: !uuid '609fb0fadfe989bd150ee9dc22ddbf6b0d4e446d'
+  /niucloud/public/admin/assets/system-1108e5c1.js:
+    newFile: null
+    oldFile: !uuid 'd933d2fa95e4b49d78bda5a8e6453784a8b32bb5'
+  /niucloud/public/admin/assets/system-8638efbd.js:
+    newFile: null
+    oldFile: !uuid 'c40a9fe12563a2a22526f8d5877cb82d587dbb1e'
+  /niucloud/public/admin/assets/system-d23898e7.js:
+    newFile: !uuid '842f3439f6f082cd116a153968ebf32e4cc55a47'
+    oldFile: null
+  /niucloud/public/admin/assets/system-d46ef710.js:
+    newFile: !uuid 'aec426f7c09152e90da75a65177c8493919f7782'
+    oldFile: null
+  /niucloud/public/admin/assets/tabbar-648b9dbf.js:
+    newFile: !uuid '9acbcda4c52359347164d0174fdb38aaa624782b'
+    oldFile: null
+  /niucloud/public/admin/assets/tabbar-cf24cf57.js:
+    newFile: null
+    oldFile: !uuid '57444503c479703bb30414d33be1b7fa32e7bec7'
+  /niucloud/public/admin/assets/template-7da6ac43.js:
+    newFile: null
+    oldFile: !uuid 'df35ed1a4297fcc66f73c96fe66817577fa004db'
+  /niucloud/public/admin/assets/template-8402086c.js:
+    newFile: !uuid 'dc9769f3f24091b16d0f3da5faff98dca34376e8'
+    oldFile: null
+  /niucloud/public/admin/assets/template-ca51c45f.js:
+    newFile: !uuid 'a42dc195c9a436e8de7595870e8f1083ea4835e7'
+    oldFile: null
+  /niucloud/public/admin/assets/template-ec7b055e.js:
+    newFile: null
+    oldFile: !uuid '06cded870699cebfe90e505d9c2f346c4977e0e6'
+  /niucloud/public/admin/assets/tools-1ddbfc4b.js:
+    newFile: null
+    oldFile: !uuid '354524818188f5a9dc6fdd1aa250bea4b685fd4f'
+  /niucloud/public/admin/assets/tools-6d0ea037.js:
+    newFile: !uuid '707e7645024e814844ab557b495f9380edc015d7'
+    oldFile: null
+  /niucloud/public/admin/assets/tools-db2d0aa0.js:
+    newFile: null
+    oldFile: !uuid 'b6de6d0e8c5549b5b02e003887d89fa4c75a3573'
+  /niucloud/public/admin/assets/tools-ea53014f.js:
+    newFile: !uuid '02fafe6ed5509cc3614de623d8987aca47c8c82e'
+    oldFile: null
+  /niucloud/public/admin/assets/transfer-22e1450b.js:
+    newFile: null
+    oldFile: !uuid '8e0dfd011bfbb307df942f31ebfe8515fdb58ab6'
+  /niucloud/public/admin/assets/transfer-ffc22493.js:
+    newFile: !uuid 'e48c32a502c72441aea0f1db5cba77bcd0958f73'
+    oldFile: null
+  /niucloud/public/admin/assets/updatecache-2db4e7a9.js:
+    newFile: null
+    oldFile: !uuid '669590ff1a30d53a80c547e3eeabf310deb74de9'
+  /niucloud/public/admin/assets/updatecache-9e6acb05.js:
+    newFile: !uuid '371d3c29dda01d41d84725af2099edb7f25af51b'
+    oldFile: null
+  /niucloud/public/admin/assets/user-0141238c.js:
+    newFile: !uuid '229aa05e881d751eeeb4731a28ef62b4d1e99526'
+    oldFile: null
+  /niucloud/public/admin/assets/user-160c2ff0.js:
+    newFile: null
+    oldFile: !uuid 'cfe39ac32fd838f5f92386338962640c36c7b717'
+  /niucloud/public/admin/assets/user-2660f436.js:
+    newFile: null
+    oldFile: !uuid '1f41e5623cf74ebab8f110da435e46fcba9c6184'
+  /niucloud/public/admin/assets/user-67aee5bb.js:
+    newFile: !uuid '0078a6489259a1488f81df2201fb9b1f815d7078'
+    oldFile: null
+  /niucloud/public/admin/assets/user-9d55ddbd.js:
+    newFile: null
+    oldFile: !uuid 'ccb1c35d6f3a3c6a81b8f1f16f55f55be4133555'
+  /niucloud/public/admin/assets/user-af72dee4.js:
+    newFile: !uuid '793ce79f4144aa9e096ba42ded6c12967d36afcd'
+    oldFile: null
+  /niucloud/public/admin/assets/user-info-ece27d67.js:
+    newFile: !uuid 'cefcc02871ce2101c1dd7f10a373750c0ea7ea56'
+    oldFile: null
+  /niucloud/public/admin/assets/user-info-f0d313e3.js:
+    newFile: null
+    oldFile: !uuid '0df014be920b67b8a48e7033df84eaafb52e4d59'
+  /niucloud/public/admin/assets/user-log-detail-50655580.js:
+    newFile: !uuid '0b01e9f6cc382c0e4344e49ec01a9844c0c20807'
+    oldFile: null
+  /niucloud/public/admin/assets/user-log-detail-5f2cdae3.js:
+    newFile: null
+    oldFile: !uuid '7a7b6a0f2fdad8c0696b270fb42267d0da56ff43'
+  /niucloud/public/admin/assets/user-log-detail.vue_vue_type_script_setup_true_lang-6a01a18c.js:
+    newFile: null
+    oldFile: !uuid 'eab5775851d95341907195707655db26f7e3a5ad'
+  /niucloud/public/admin/assets/user-log-detail.vue_vue_type_script_setup_true_lang-e280da6c.js:
+    newFile: !uuid '0c731804a20536885ed0fac223c3cc3dfe802e9d'
+    oldFile: null
+  /niucloud/public/admin/assets/user_info-82049489.js:
+    newFile: null
+    oldFile: !uuid '955c1185c147fc875b72f2026d6eb175f82dc418'
+  /niucloud/public/admin/assets/user_info-e7ba36c1.js:
+    newFile: !uuid '90982866a652b007c73dc6fc2549432b54315ec4'
+    oldFile: null
+  /niucloud/public/admin/assets/validator-00f31ee7.js:
+    newFile: null
+    oldFile: !uuid '7ce2256d17967eb3cec4c8a823c34c4f3ae77d76'
+  /niucloud/public/admin/assets/validator-8f1b170d.js:
+    newFile: !uuid 'c7dc8cd6057fc07c185e9eaef03ae609658c58ba'
+    oldFile: null
+  /niucloud/public/admin/assets/vnode-562dae50.js:
+    newFile: null
+    oldFile: !uuid '1dc647d639e027e4b54970b7b58ea07a710d7219'
+  /niucloud/public/admin/assets/vnode-772b0c47.js:
+    newFile: !uuid '97eea23fe84c4d128fa259310161ee8812156aee'
+    oldFile: null
+  /niucloud/public/admin/assets/vue-router-d7e63612.js:
+    newFile: null
+    oldFile: !uuid '7496af5ba6ae0c627a3b4d7238a36af613296812'
+  /niucloud/public/admin/assets/vue-router-fc35ac55.js:
+    newFile: !uuid '1f5eaf002d346cca55d806c51db77348544b32ba'
+    oldFile: null
+  /niucloud/public/admin/assets/vue-web-terminal-19b71868.js:
+    newFile: null
+    oldFile: !uuid '872364bf15cb08b98ff05978d80298363042197c'
+  /niucloud/public/admin/assets/vue-web-terminal-e12a168b.js:
+    newFile: !uuid '45914731b3da31d00b56537213d4d61ebc13bfdc'
+    oldFile: null
+  /niucloud/public/admin/assets/weapp-6fcef875.js:
+    newFile: null
+    oldFile: !uuid 'f1ea3ae7dffc612b21957c567dbbb1e00faa8c6e'
+  /niucloud/public/admin/assets/weapp-8f782902.js:
+    newFile: !uuid '47245819bfd855768c535c65e831e39de9232fc8'
+    oldFile: null
+  /niucloud/public/admin/assets/weapp-96ac131c.js:
+    newFile: !uuid '03a04f137397597b56530776b056ad63b0da13f9'
+    oldFile: null
+  /niucloud/public/admin/assets/weapp-c468de0a.js:
+    newFile: null
+    oldFile: !uuid '7c067fd7526ef1432262d68140c2a97cb6cb7e8a'
+  /niucloud/public/admin/assets/wechat-83a3b216.js:
+    newFile: null
+    oldFile: !uuid '6056e976f2c9f8b0606b7ba37e9fa44349444ff2'
+  /niucloud/public/admin/assets/wechat-b0462a06.js:
+    newFile: !uuid '0b2c3d3512c19605ac7f5e15b0570178f189ed29'
+    oldFile: null
+  /niucloud/public/admin/assets/wxoplatform-429843e6.js:
+    newFile: !uuid '142532faaa735526a9aec679f08215d0fa86bd90'
+    oldFile: null
+  /niucloud/public/admin/assets/wxoplatform-9eec8211.js:
+    newFile: null
+    oldFile: !uuid '6c119686e4e57b8e1869bfae4dd27e3505fb55dd'
+  /niucloud/public/admin/index.html:
+    newFile: !uuid '5296d9e33826638ef75dcf5171ee2e1e5a9e5eba'
+    oldFile: !uuid 'c18deb0eea9986ca06a3d77af28d0e655a69f560'
+  /niucloud/public/nginx.htaccess:
+    newFile: !uuid 'efe22b99e7b11edd808b28f99c531bf80ca5d1d2'
+    oldFile: !uuid '2031820d1bac563a6c6e4ed38470c30cbf77f5a1'
+  /niucloud/public/wap:
+    newFile: !uuid '831f6a4b962a4ffd9e9627543ac620946a97179b'
+    oldFile: !uuid 'b4605e6dd4a208d13a03b4e08a92a5926b5b9971'
+  /niucloud/public/wap/assets:
+    newFile: !uuid 'f97c6a4b0389fe98028155dc0d4f1a3915f709d3'
+    oldFile: !uuid 'b95314f31a7acbc7e94db92134aed74f8dc1ad94'
+  /niucloud/public/wap/assets/app-link.vue_vue_type_script_setup_true_lang.1c80d142.js:
+    newFile: !uuid 'f63604f6593acdeddbdd30c41c2a07d05c7deaff'
+    oldFile: null
+  /niucloud/public/wap/assets/app-link.vue_vue_type_script_setup_true_lang.b5d47e0f.js:
+    newFile: null
+    oldFile: !uuid 'a9798db610919051f8dcfd7162c8a141613ede94'
+  /niucloud/public/wap/assets/app-pages-auth-agreement.86a3eebd.js:
+    newFile: !uuid 'e1a503151bd3d93dcf04a21d93333b0df545df0e'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-auth-agreement.95c24d05.js:
+    newFile: null
+    oldFile: !uuid 'a9b77a53bd54a8ed93a855091094815443523716'
+  /niucloud/public/wap/assets/app-pages-auth-bind.02a1c71b.js:
+    newFile: !uuid '72ae7dea6758612791816b5812dd0653d1a8e9d0'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-auth-bind.09834f18.js:
+    newFile: null
+    oldFile: !uuid '054db80553a9f7a0f1e3972be491d9cd37998dbf'
+  /niucloud/public/wap/assets/app-pages-auth-login.a4d039e8.js:
+    newFile: !uuid '084ecfbfd880e39a77b3f244723100a541bea6ac'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-auth-login.cbebd239.js:
+    newFile: null
+    oldFile: !uuid '0edc0088f71ed83922a850dcc07ae9174c77ef23'
+  /niucloud/public/wap/assets/app-pages-auth-register.6917f708.js:
+    newFile: null
+    oldFile: !uuid 'fa78b93ec10b8e8d756fa9a94f23256bda54133c'
+  /niucloud/public/wap/assets/app-pages-auth-register.dbe3a4b1.js:
+    newFile: !uuid '24d6a81537b1f0567fbc0269401a388fe824bcd6'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-auth-resetpwd.16daaea3.js:
+    newFile: null
+    oldFile: !uuid '5c521d04b1680d5d7f1a873200b8e9e3fde1f6cc'
+  /niucloud/public/wap/assets/app-pages-auth-resetpwd.a1a5158c.js:
+    newFile: !uuid 'f07bf2b87c5af811d67067056d7edbe311b76d5f'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-index-close.4b94604d.js:
+    newFile: !uuid '04c6e609db90ef9be6048c1a61f07183fd2f8bd0'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-index-close.9888e163.js:
+    newFile: null
+    oldFile: !uuid '1579f84362b4edb29bd552ee443486635b9aceca'
+  /niucloud/public/wap/assets/app-pages-index-develop.272f09b5.js:
+    newFile: !uuid '72032468d217c5c09fb5271547b6c4b13fb77f4c'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-index-develop.74f40783.js:
+    newFile: null
+    oldFile: !uuid '52d4426bee4038a2dbbc1e85807dfcba1ce0af85'
+  /niucloud/public/wap/assets/app-pages-index-diy.a3a15bdc.js:
+    newFile: !uuid '6e8a6ce6df3583d1b48bcaa80653ad23e9f81e47'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-index-diy.f4456b21.js:
+    newFile: null
+    oldFile: !uuid 'ac6538977507b01de561fea15dde984f9cae0569'
+  /niucloud/public/wap/assets/app-pages-index-index.83394378.js:
+    newFile: !uuid '000d41e3ce5edd7a03628f1066b8092b095e17bd'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-index-index.d9585c28.js:
+    newFile: null
+    oldFile: !uuid '9e319684a0b4067f7ffd12b9e3450419f369fe5c'
+  /niucloud/public/wap/assets/app-pages-index-nosite.5d833b06.js:
+    newFile: !uuid '4a00122781edeaeed9e6e385c72feef82087a7d1'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-index-nosite.ae2f0525.js:
+    newFile: null
+    oldFile: !uuid '5d241dcea1730e74787aa6473c0863ac1ff09e3c'
+  /niucloud/public/wap/assets/app-pages-member-account.4f7e4d75.js:
+    newFile: null
+    oldFile: !uuid '932bc7caadb889a75e1b218da9a33874f2739ab7'
+  /niucloud/public/wap/assets/app-pages-member-account.9c487ada.js:
+    newFile: !uuid '23f1d02f378ed061145e2e7633b0fe84c6f5adba'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-account_edit.0872ce2e.js:
+    newFile: !uuid '40b386fe3f290a139a76e4f0f29cb4713906801e'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-account_edit.c5faee3b.js:
+    newFile: null
+    oldFile: !uuid 'e2030ae693951e617661eb8458494a71ba759835'
+  /niucloud/public/wap/assets/app-pages-member-address.68110b0d.js:
+    newFile: !uuid '733dc3139e229501b419690443f06a0ad2a5ebfb'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-address.acbd89b6.js:
+    newFile: null
+    oldFile: !uuid '8b01508dfe827ccff9fb605405075ced4a317e67'
+  /niucloud/public/wap/assets/app-pages-member-address_edit.1905f03b.js:
+    newFile: !uuid 'c40aba990b93b8dd079f4470c7555941c0eb3f80'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-address_edit.5c44ad51.js:
+    newFile: null
+    oldFile: !uuid '120b1bf8ca67bd6b2d9fd51e320007390fb907a3'
+  /niucloud/public/wap/assets/app-pages-member-apply_cash_out.22ea0e19.js:
+    newFile: !uuid '5a3443b419be053502ea5031a245471257c821d0'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-apply_cash_out.be899568.js:
+    newFile: null
+    oldFile: !uuid '853bcb58043369346beedf0be5d0c1a247a44462'
+  /niucloud/public/wap/assets/app-pages-member-balance.6a28463b.js:
+    newFile: null
+    oldFile: !uuid 'd68c0be5ef062bb43694366e4849d5458492affd'
+  /niucloud/public/wap/assets/app-pages-member-balance.a000c0fc.js:
+    newFile: !uuid 'ba2dc4b13a904c8eca7f36dca32c9f82b3194556'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-cash_out.0409a48e.js:
+    newFile: null
+    oldFile: !uuid '830f17bd5976f466fa58c98c8512e10cd672bca7'
+  /niucloud/public/wap/assets/app-pages-member-cash_out.866f5a0b.js:
+    newFile: !uuid '7a07862ade6722eb430e41bd13f72b6a1df29c33'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-cash_out_detail.5073886b.js:
+    newFile: !uuid 'f696ee26e22f1768593cb2734fc3b9e095af54b2'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-cash_out_detail.b5048c81.js:
+    newFile: null
+    oldFile: !uuid 'b132371255ae7496b3c5b8e68eb1be8e3af2689f'
+  /niucloud/public/wap/assets/app-pages-member-commission.6ec66a13.js:
+    newFile: null
+    oldFile: !uuid '4a620044e31804d160e35c8abf24ce8b2d80d14b'
+  /niucloud/public/wap/assets/app-pages-member-commission.e7227859.js:
+    newFile: !uuid '44797fd82be311ca3b81bbe3752c91b7cc19af81'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-detailed_account.4d04081b.js:
+    newFile: null
+    oldFile: !uuid 'd22aa3b79c8033883be5b90408b96c5765d8df35'
+  /niucloud/public/wap/assets/app-pages-member-detailed_account.dd097dbc.js:
+    newFile: !uuid '42993664259290e84892e2c8345081e3a0ec5791'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-index.3cf6a775.js:
+    newFile: null
+    oldFile: !uuid 'b421abd1ce7416ee9e7730a9f34d8a1ebca7a207'
+  /niucloud/public/wap/assets/app-pages-member-index.d015a0ab.js:
+    newFile: !uuid '74507be4cccdac1fd86c8a14c13138242ac74c60'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-location_address_edit.b55e7ac5.js:
+    newFile: null
+    oldFile: !uuid '69c2e89dccfa6c1ee4786fc5b5a2e290d27970e9'
+  /niucloud/public/wap/assets/app-pages-member-location_address_edit.dde253b7.js:
+    newFile: !uuid 'd2b1d70c03728cd665b7f116bf969a90227990fb'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-personal.57e30f34.js:
+    newFile: !uuid 'b89c7ccb363b200253c49e7da58d94664f84a2d1'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-personal.9fac1b05.js:
+    newFile: null
+    oldFile: !uuid '7fa1e432e3352dede6907f59639d4f0de4162375'
+  /niucloud/public/wap/assets/app-pages-member-point.5b82c2d7.js:
+    newFile: null
+    oldFile: !uuid 'e7ac431f04ee87ecf5808a6bbdf58b0ea02e8067'
+  /niucloud/public/wap/assets/app-pages-member-point.bc2677e7.js:
+    newFile: !uuid '046a8f043fac5528827d33d4b7b65573e06e7c2c'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-recharge_record.96cde353.js:
+    newFile: !uuid 'e4095196ea8c44911e2858c16ae4db86fc37ae2f'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-recharge_record.c33e3d75.js:
+    newFile: null
+    oldFile: !uuid '9a329a9580eaecf425354de46d9c58ecb77a87f9'
+  /niucloud/public/wap/assets/app-pages-member-recharge_record_detail.4bc4cb63.js:
+    newFile: !uuid '9bce670ef86656e67e373075979d5d3c1cdfee93'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-member-recharge_record_detail.bc68f913.js:
+    newFile: null
+    oldFile: !uuid '5181b7ce9610f48e7199b1f7f553d188a9300f00'
+  /niucloud/public/wap/assets/app-pages-pay-browser.2412463e.js:
+    newFile: null
+    oldFile: !uuid '3a92e69a20f020d28ac2854f89d6bfb8e203e1dc'
+  /niucloud/public/wap/assets/app-pages-pay-browser.e5ef9d50.js:
+    newFile: !uuid 'f5091b298ec535517ba197a6015f1916736b30ba'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-pay-result.8abd8a2f.js:
+    newFile: null
+    oldFile: !uuid 'e56b487ef1703e0840ba1921490557565570566f'
+  /niucloud/public/wap/assets/app-pages-pay-result.ed4ab27d.js:
+    newFile: !uuid '2457c42fdfd0c0372d7d2ab48384988086b06a1f'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-setting-index.1c0d7831.js:
+    newFile: !uuid '83465becf5ca041eafbeef1211c4de846f332e63'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-setting-index.ac959353.js:
+    newFile: null
+    oldFile: !uuid '6a31826e2dc5c44acd5808f7f2f69e457b80b841'
+  /niucloud/public/wap/assets/app-pages-webview-index.16595e7a.js:
+    newFile: !uuid 'a3d850db6a3abd23768e1d26d71bb4bd269853a9'
+    oldFile: null
+  /niucloud/public/wap/assets/app-pages-webview-index.92a1bb14.js:
+    newFile: null
+    oldFile: !uuid '3a225a2c5cce24a7133b8a0fb74327a84e31afa6'
+  /niucloud/public/wap/assets/index-69a013d4.js:
+    newFile: !uuid 'e1ea33d4a0ac1c1e14a180486525ef2df495b28d'
+    oldFile: null
+  /niucloud/public/wap/assets/index-e4516e00.js:
+    newFile: null
+    oldFile: !uuid 'ba0e3aa48ddb94b79207909b70030c71f47d1523'
+  /niucloud/public/wap/assets/index.3869150c.js:
+    newFile: !uuid '1fea35cc4b87f63c65526a1c7b460106d4d8fad6'
+    oldFile: null
+  /niucloud/public/wap/assets/index.d2f0349b.js:
+    newFile: null
+    oldFile: !uuid '22b70d1026bdafdeb7515d2ed09c825b27da26ea'
+  /niucloud/public/wap/assets/mescroll-empty.17c4845c.js:
+    newFile: !uuid 'cff3005d84f3ad8641bb182ac7884b526d40b674'
+    oldFile: null
+  /niucloud/public/wap/assets/mescroll-empty.dd82bb82.js:
+    newFile: null
+    oldFile: !uuid '9c34ddb9cac5084adf119fea735910e6832f96bf'
+  /niucloud/public/wap/assets/pay.3fb151c2.js:
+    newFile: !uuid '6dface8f01684d7a146441a6dfbbfad4cce79d7d'
+    oldFile: null
+  /niucloud/public/wap/assets/pay.f1f14e93.js:
+    newFile: null
+    oldFile: !uuid 'e2495a19aa5ad9ffe0bc07d40fbe431aadc7a549'
+  /niucloud/public/wap/assets/sms-code.vue_vue_type_script_setup_true_lang.55b881e3.js:
+    newFile: !uuid 'f4102215754f4ded88ed6c35e318146c3e11f362'
+    oldFile: null
+  /niucloud/public/wap/assets/sms-code.vue_vue_type_script_setup_true_lang.fbf0433e.js:
+    newFile: null
+    oldFile: !uuid '8158f3f45194a44eb519e7ccfc420bbc614f89cf'
+  /niucloud/public/wap/assets/u-action-sheet.a0a4df28.js:
+    newFile: !uuid '9d8a54acc1bf78cfa53179dcb26a458180b76fa7'
+    oldFile: null
+  /niucloud/public/wap/assets/u-action-sheet.f43f6b50.js:
+    newFile: null
+    oldFile: !uuid '50a70a91961f87b460831fcbbc9c74dbdc06aa9e'
+  /niucloud/public/wap/assets/u-avatar.38901231.js:
+    newFile: null
+    oldFile: !uuid '006f26a52ce57cc2fa1d67f3321fa344fd12ce29'
+  /niucloud/public/wap/assets/u-avatar.d306c1cb.js:
+    newFile: !uuid '533ac2b3baddd333e033632a9dc528942dc9640f'
+    oldFile: null
+  /niucloud/public/wap/assets/u-button.68ca80eb.js:
+    newFile: null
+    oldFile: !uuid '9c901fea850c02841ceb17956028dd3881eef425'
+  /niucloud/public/wap/assets/u-button.ce207350.js:
+    newFile: !uuid '21d896f8d9a5f1c41d331d169138b3c07c9fda33'
+    oldFile: null
+  /niucloud/public/wap/assets/u-empty.40cefed1.js:
+    newFile: null
+    oldFile: !uuid 'abc1d376f11344c25b33b66d653812ea0223073e'
+  /niucloud/public/wap/assets/u-empty.50881d77.js:
+    newFile: !uuid '998c804c588c07860aac4d0658bd99b602ed3635'
+    oldFile: null
+  /niucloud/public/wap/assets/u-form.1ca8cc70.js:
+    newFile: !uuid '07b11f540438da00abeb2339fdccdbfb78044ce9'
+    oldFile: null
+  /niucloud/public/wap/assets/u-form.2c63b107.js:
+    newFile: null
+    oldFile: !uuid '8d29fb9a1bc2a0291e0eb5cec3341d9a4f3fd18d'
+  /niucloud/public/wap/assets/u-icon.800a0d37.js:
+    newFile: null
+    oldFile: !uuid '2f16ee0f0b54208ff88305a95689c848f924906c'
+  /niucloud/public/wap/assets/u-icon.e94881e5.js:
+    newFile: !uuid '36ed2344d5ef86bf664d38a977fa0e91c3e3f2e8'
+    oldFile: null
+  /niucloud/public/wap/assets/u-input.723cc421.js:
+    newFile: !uuid 'fe36f91a96e3c4170cad9dc02833f13e14754de5'
+    oldFile: null
+  /niucloud/public/wap/assets/u-input.c48dbab3.js:
+    newFile: null
+    oldFile: !uuid '4bda586dd9d774c3c0a2913119ef14e3348bf7c1'
+  /niucloud/public/wap/assets/u-line.482fd0b9.js:
+    newFile: null
+    oldFile: !uuid '3741a6fd5ea3fcf66ec66e9edc902215cef7a1ae'
+  /niucloud/public/wap/assets/u-line.67c4366a.js:
+    newFile: !uuid '4d722981d642ef6e26d14e998d2c4f34754e66d4'
+    oldFile: null
+  /niucloud/public/wap/assets/u-loading-icon.41e2cb8e.js:
+    newFile: null
+    oldFile: !uuid 'd9bd60c34d436a159260f431cc91bce9991114ca'
+  /niucloud/public/wap/assets/u-loading-icon.68f04ddb.js:
+    newFile: !uuid '14cdc0cd55d4fe7433a2cc825d3453ac526a3480'
+    oldFile: null
+  /niucloud/public/wap/assets/u-loading-page.98779073.js:
+    newFile: null
+    oldFile: !uuid '787e10120f0db1958f3e93771e641e6d70162cd6'
+  /niucloud/public/wap/assets/u-loading-page.d9d2b59d.js:
+    newFile: !uuid '77c507ff3f17054b098438a57ac8a785c7552d95'
+    oldFile: null
+  /niucloud/public/wap/assets/u-modal.22e025d9.js:
+    newFile: !uuid 'd55332dfe724091429940e83cf12ace6e7211013'
+    oldFile: null
+  /niucloud/public/wap/assets/u-modal.a9c92e79.js:
+    newFile: null
+    oldFile: !uuid 'c7762effa056832fc76d608c988c974687594167'
+  /niucloud/public/wap/assets/u-popup.27fcbe62.js:
+    newFile: null
+    oldFile: !uuid 'e817a37bf4132ce0ec89e7e149553b4f25d22b19'
+  /niucloud/public/wap/assets/u-popup.d3cd3276.js:
+    newFile: !uuid '65bbb19094ea2c979a5e0896e376ee0c10408701'
+    oldFile: null
+  /niucloud/public/wap/assets/u-safe-bottom.e1029ab3.js:
+    newFile: !uuid '40b82df58acc370b0268fc4fb0cd779a59d080ad'
+    oldFile: null
+  /niucloud/public/wap/assets/u-safe-bottom.e98411e2.js:
+    newFile: null
+    oldFile: !uuid '3f56e7ba05ba852bede010f30ccfa907722c776b'
+  /niucloud/public/wap/assets/u-switch.6d294abb.js:
+    newFile: null
+    oldFile: !uuid '08a5605fd3a6de71e762e1f81089450637473dd5'
+  /niucloud/public/wap/assets/u-switch.74e53b27.js:
+    newFile: !uuid 'a5bf2c92e818cc2fe9be214d97b8b4bb995c5bb7'
+    oldFile: null
+  /niucloud/public/wap/assets/u-tabbar.2b953c74.js:
+    newFile: null
+    oldFile: !uuid 'bdedfc9cd0d0035bf1bec5be3ab68d787e2f47a3'
+  /niucloud/public/wap/assets/u-tabbar.cb7a5868.js:
+    newFile: !uuid '8bfdcf27e99083a2c18aaf44031c189e89a73ccb'
+    oldFile: null
+  /niucloud/public/wap/assets/u-transition.44bb65c7.js:
+    newFile: null
+    oldFile: !uuid 'e830944d541856e77ddb194028610c68f8dda4d3'
+  /niucloud/public/wap/assets/u-transition.df2420bf.js:
+    newFile: !uuid '172c8c18cfedc13f17adda33000c551f0ab7a7b7'
+    oldFile: null
+  /niucloud/public/wap/assets/useMescroll.aeb7910f.js:
+    newFile: null
+    oldFile: !uuid '9bbbfe4e81413f50af85402d3989240f0d5b4709'
+  /niucloud/public/wap/assets/useMescroll.e5657dd6.js:
+    newFile: !uuid 'ea8627852890b5ebf45321963bbc8dd10d77cc73'
+    oldFile: null
+  /niucloud/public/wap/assets/useShare.e3114b44.js:
+    newFile: null
+    oldFile: !uuid 'ef6bc09209c3653b678f8a025a888b1e23e4091b'
+  /niucloud/public/wap/assets/useShare.f6537b84.js:
+    newFile: !uuid '4dbb258703cc4c35dcc0a36db3aaa13f95702c4e'
+    oldFile: null
+  /niucloud/public/wap/assets/wechat.5c50648b.js:
+    newFile: !uuid '841e986f517e62fffad83e91b75841f5c88a6e70'
+    oldFile: null
+  /niucloud/public/wap/assets/wechat.717f80c2.js:
+    newFile: null
+    oldFile: !uuid '32db23343dd1bac1fc256602c8b3d52f78da5170'
+  /niucloud/public/wap/index.html:
+    newFile: !uuid '3c68f4c39ca9ff086a916ea18c34b2d1ba943b85'
+    oldFile: !uuid '2cd2a066801b5e2407f6891e737eb6aacab800b0'
+  /niucloud/route:
+    newFile: !uuid '2df105b4c0c4c578a90a44bb4f97352ec87616b7'
+    oldFile: !uuid '77cd046397d18babf6cea3ea289a90f52bd4af5b'
+  /niucloud/route/app.php:
+    newFile: !uuid '6364a4442f47f5c43fcb58aa134889563f6b1a62'
+    oldFile: !uuid '56c52a63d53b5b83a6c6d2dfde8f2f51877ba56a'
+  /uni-app:
+    newFile: !uuid 'd16c1a99e2be482f02e144aa8d1cfdfbf2d9fbf5'
+    oldFile: !uuid '207b193564f66317289d569ca0fe73edfddf3b12'
+  /uni-app/src:
+    newFile: !uuid 'd124c5756d70e4f3d7bb62d848f316985f8fc6e0'
+    oldFile: !uuid 'd7686861db71a7af6fbdd928079aa5f5829cdbe5'
+  /uni-app/src/app:
+    newFile: !uuid '8346396cefe5703c4b7a0ef6cc00aa9f0f9ccad2'
+    oldFile: !uuid '55b5bf674785930b81f6fa6c04f79aadad1a655e'
+  /uni-app/src/app/pages:
+    newFile: !uuid '00b82b434c34d8f47804597176d344eba15ff474'
+    oldFile: !uuid '3d7346ac16959aca6828bdb837d1e5639cea8dfe'
+  /uni-app/src/app/pages/auth:
+    newFile: !uuid '1df70bdd4b74d8ab38a6163100dc82422d08608d'
+    oldFile: !uuid 'c228a7d5a81d8f658682c3f44e0f1a6e41710fc8'
+  /uni-app/src/app/pages/auth/bind.vue:
+    newFile: !uuid '465bd32f7d24cbdf210f6fba20933973f4b6ca66'
+    oldFile: !uuid '77fd7461525041a8dc1b3d2f3cd1cd2f143a94ef'
+  /uni-app/src/app/pages/auth/login.vue:
+    newFile: !uuid '8453764ebb2dfadf2b5ed7788fc6c8a85dfb39bf'
+    oldFile: !uuid '18df7423e83e2db3b2bb599ce6f9ac401c558984'
+  /uni-app/src/app/pages/auth/register.vue:
+    newFile: !uuid '4ae0ce215c8135896ce8661cecc78d0ad7c390ac'
+    oldFile: !uuid '57d69054eafa1f0401991a52d2b29ee92003a8e2'
+  /uni-app/src/hooks:
+    newFile: !uuid '182ea632ccab4d87ef9ee09ed94c1ad8e9191006'
+    oldFile: !uuid 'a50d3ec225aa47fdc4b241815e34975bca8f72bc'
+  /uni-app/src/hooks/useShare.ts:
+    newFile: !uuid '7c0c4b76bb143232658c174e89ca957e1cdc2821'
+    oldFile: !uuid 'f66aebe0df8aac4e88f6434da14e5c33d33e821c'
+  /uni-app/src/locale:
+    newFile: !uuid 'd6db2466e297981691182995dbd440b7c812bca1'
+    oldFile: !uuid 'a3a9771b0422ba9679df520a2a15b8273732c137'
+  /uni-app/src/locale/zh-Hans:
+    newFile: !uuid 'd39cf260870309e0434fcc853f263c39de4787e5'
+    oldFile: !uuid '926bb944510ddcf7736411ea0b44cd6d4ef7c500'
+  /uni-app/src/locale/zh-Hans.json:
+    newFile: !uuid '2754fc1866fe0620a6422095a834f0561701e9fd'
+    oldFile: !uuid '850554e264af32c4a58f2f570d3e29658b2584df'
+  /uni-app/src/locale/zh-Hans/common.json:
+    newFile: !uuid '37e40f1ded3d9ea8f8a8b4346025e76d20b1e7ae'
+    oldFile: !uuid '5f2c8ef987f2d6b7c4080cd8de5580e7ffdcf0c7'
+  /uni-app/src/pages.json:
+    newFile: !uuid 'c3dc821834e4fe2ccc809a47bb1a226cbfbdb1f2'
+    oldFile: !uuid 'afd53ef22fca6ab664eac349807cb8839c18da31'
+gitCommitId: !uuid 'f4f9f311cb8c42b0ee04254ad64593eef08719a4'
+renames:
+  /niucloud/public/admin/assets/404-d6601c30.js: /niucloud/public/admin/assets/404-8a5ca9fd.js
+  /niucloud/public/admin/assets/access-1248fd29.js: /niucloud/public/admin/assets/access-016651a1.js
+  /niucloud/public/admin/assets/access-ca0234b7.js: /niucloud/public/admin/assets/access-259cd153.js
+  /niucloud/public/admin/assets/access-fd45dab5.js: /niucloud/public/admin/assets/access-d1629df1.js
+  /niucloud/public/admin/assets/add-member.vue_vue_type_script_setup_true_lang-756e228c.js: /niucloud/public/admin/assets/add-member.vue_vue_type_script_setup_true_lang-cade17ca.js
+  /niucloud/public/admin/assets/add-table.vue_vue_type_script_setup_true_lang-5daccc86.js: /niucloud/public/admin/assets/add-table.vue_vue_type_script_setup_true_lang-93a36f1b.js
+  /niucloud/public/admin/assets/addon-3b05baad.js: /niucloud/public/admin/assets/addon-48b9aa5e.js
+  /niucloud/public/admin/assets/aliapp-6e9e36ef.js: /niucloud/public/admin/assets/aliapp-c0a2df14.js
+  /niucloud/public/admin/assets/app_manage-fdecbf65.js: /niucloud/public/admin/assets/app_manage-3898731d.js
+  /niucloud/public/admin/assets/attachment-b5785570.js: /niucloud/public/admin/assets/attachment-75502009.js
+  /niucloud/public/admin/assets/authorize-6cc342ec.js: /niucloud/public/admin/assets/authorize-4232a689.js
+  /niucloud/public/admin/assets/balance-74b22cef.js: /niucloud/public/admin/assets/balance-356e0b90.js
+  /niucloud/public/admin/assets/cash_out-2bcf652d.js: /niucloud/public/admin/assets/cash_out-ccb7e635.js
+  /niucloud/public/admin/assets/cash_out-db13facd.js: /niucloud/public/admin/assets/cash_out-c55340e5.js
+  /niucloud/public/admin/assets/commission-42def592.js: /niucloud/public/admin/assets/commission-03e504d0.js
+  /niucloud/public/admin/assets/config-20cb3a19.js: /niucloud/public/admin/assets/config-75d93fdb.js
+  /niucloud/public/admin/assets/config-6e159379.js: /niucloud/public/admin/assets/config-9f2a9905.js
+  /niucloud/public/admin/assets/config-79ec9e61.js: /niucloud/public/admin/assets/config-ab7e24c5.js
+  /niucloud/public/admin/assets/config-83181ee1.js: /niucloud/public/admin/assets/config-c1fcca2e.js
+  /niucloud/public/admin/assets/config-ea058713.js: /niucloud/public/admin/assets/config-3824f11c.js
+  /niucloud/public/admin/assets/copyright-f12d1616.js: /niucloud/public/admin/assets/copyright-7b3007dd.js
+  /niucloud/public/admin/assets/course-0149beda.js: /niucloud/public/admin/assets/course-99219564.js
+  /niucloud/public/admin/assets/course-38fb94fb.js: /niucloud/public/admin/assets/course-ffd69558.js
+  /niucloud/public/admin/assets/course-9627baf9.js: /niucloud/public/admin/assets/course-32ed629b.js
+  /niucloud/public/admin/assets/cron-91714587.js: /niucloud/public/admin/assets/cron-1b25df1b.js
+  /niucloud/public/admin/assets/cron-info.vue_vue_type_script_setup_true_lang-5888c563.js: /niucloud/public/admin/assets/cron-info.vue_vue_type_script_setup_true_lang-460581ce.js
+  /niucloud/public/admin/assets/debounce-6fd93949.js: /niucloud/public/admin/assets/debounce-9674000c.js
+  /niucloud/public/admin/assets/detail-9fd59a20.js: /niucloud/public/admin/assets/detail-3acd97a9.js
+  /niucloud/public/admin/assets/detection-0953a2ec.js: /niucloud/public/admin/assets/detection-f62d0963.js
+  /niucloud/public/admin/assets/dict-e05194ab.js: /niucloud/public/admin/assets/dict-5909722d.js
+  /niucloud/public/admin/assets/dict.vue_vue_type_style_index_0_lang-38edfc74.js: /niucloud/public/admin/assets/dict.vue_vue_type_style_index_0_lang-1bd85ab6.js
+  /niucloud/public/admin/assets/directive-13582d99.js: /niucloud/public/admin/assets/directive-f75d4a7d.js
+  /niucloud/public/admin/assets/diy-8086ee6b.js: /niucloud/public/admin/assets/diy-780e3fb1.js
+  /niucloud/public/admin/assets/diy-bbbdbe16.js: /niucloud/public/admin/assets/diy-00fc7bfe.js
+  /niucloud/public/admin/assets/dropdown-465e3407.js: /niucloud/public/admin/assets/dropdown-ccb689be.js
+  /niucloud/public/admin/assets/edit-362d10c7.css: /niucloud/public/admin/assets/edit-0ca1efdb.css
+  /niucloud/public/admin/assets/edit-97a6a7ba.js: /niucloud/public/admin/assets/edit-937728cc.js
+  /niucloud/public/admin/assets/edit-addon-list-baf9b6b8.js: /niucloud/public/admin/assets/edit-addon-list-00a46b98.js
+  /niucloud/public/admin/assets/edit-associated.vue_vue_type_script_setup_true_async_true_lang-89590dfd.js: /niucloud/public/admin/assets/edit-associated.vue_vue_type_script_setup_true_async_true_lang-af3f12dd.js
+  /niucloud/public/admin/assets/edit-graphic-nav-2764c7db.js: /niucloud/public/admin/assets/edit-graphic-nav-56ed7881.js
+  /niucloud/public/admin/assets/edit-horz-blank-d0b3706e.js: /niucloud/public/admin/assets/edit-horz-blank-2a64c177.js
+  /niucloud/public/admin/assets/edit-hot-area-956d9e91.js: /niucloud/public/admin/assets/edit-hot-area-6e72e26d.js
+  /niucloud/public/admin/assets/edit-image-ads-3d6814e8.js: /niucloud/public/admin/assets/edit-image-ads-8684debe.js
+  /niucloud/public/admin/assets/edit-label.vue_vue_type_script_setup_true_lang-eb91e6a2.js: /niucloud/public/admin/assets/edit-label.vue_vue_type_script_setup_true_lang-dbd95e45.js
+  /niucloud/public/admin/assets/edit-member-info-d782471a.js: /niucloud/public/admin/assets/edit-member-info-7ebdf17d.js
+  /niucloud/public/admin/assets/edit-member.vue_vue_type_script_setup_true_lang-1dbd7c01.js: /niucloud/public/admin/assets/edit-member.vue_vue_type_script_setup_true_lang-11ccd4d7.js
+  /niucloud/public/admin/assets/edit-menu.vue_vue_type_script_setup_true_lang-4219da36.js: /niucloud/public/admin/assets/edit-menu.vue_vue_type_script_setup_true_lang-fa0169de.js
+  /niucloud/public/admin/assets/edit-notice-7b323694.js: /niucloud/public/admin/assets/edit-notice-c94ea7d4.js
+  /niucloud/public/admin/assets/edit-page-a4ebf728.js: /niucloud/public/admin/assets/edit-page-e34bfc55.js
+  /niucloud/public/admin/assets/edit-role.vue_vue_type_script_setup_true_async_true_lang-d338ec6d.js: /niucloud/public/admin/assets/edit-role.vue_vue_type_script_setup_true_async_true_lang-e852e91b.js
+  /niucloud/public/admin/assets/edit-rubik-cube-325d454f.js: /niucloud/public/admin/assets/edit-rubik-cube-1989870d.js
+  /niucloud/public/admin/assets/edit-site.vue_vue_type_script_setup_true_lang-d3a9790e.js: /niucloud/public/admin/assets/edit-site.vue_vue_type_script_setup_true_lang-a4f90508.js
+  /niucloud/public/admin/assets/edit-text-7fdc44bc.css: /niucloud/public/admin/assets/edit-horz-blank-7fdc44bc.css
+  /niucloud/public/admin/assets/edit-text-f36cd473.js: /niucloud/public/admin/assets/edit-text-34565dde.js
+  /niucloud/public/admin/assets/edit-user.vue_vue_type_script_setup_true_lang-0e7eedb3.js: /niucloud/public/admin/assets/edit-user.vue_vue_type_script_setup_true_lang-9d33f807.js
+  /niucloud/public/admin/assets/edit-verify.vue_vue_type_script_setup_true_async_true_lang-9eef933f.js: /niucloud/public/admin/assets/edit-verify.vue_vue_type_script_setup_true_async_true_lang-00e2e23a.js
+  /niucloud/public/admin/assets/edit-view-type.vue_vue_type_script_setup_true_async_true_lang-c792702d.js: /niucloud/public/admin/assets/edit-view-type.vue_vue_type_script_setup_true_async_true_lang-e57f991d.js
+  /niucloud/public/admin/assets/edit.vue_vue_type_style_index_0_lang-9b7eed61.js: /niucloud/public/admin/assets/edit.vue_vue_type_style_index_0_lang-15ec0a83.js
+  /niucloud/public/admin/assets/flatten-0bbd547a.js: /niucloud/public/admin/assets/flatten-940b9f2c.js
+  /niucloud/public/admin/assets/focus-trap-50fa5770.js: /niucloud/public/admin/assets/focus-trap-d0fc8554.js
+  /niucloud/public/admin/assets/form-3b9b1416.js: /niucloud/public/admin/assets/form-20861fe1.js
+  /niucloud/public/admin/assets/group_edit-a05b51a8.js: /niucloud/public/admin/assets/group_edit-71556f85.js
+  /niucloud/public/admin/assets/index-014848fe.js: /niucloud/public/admin/assets/index-26709bbd.js
+  /niucloud/public/admin/assets/index-03649f16.js: /niucloud/public/admin/assets/index-7ab57426.js
+  /niucloud/public/admin/assets/index-0751469c.js: /niucloud/public/admin/assets/index-bb86585c.js
+  /niucloud/public/admin/assets/index-0b4254d8.js: /niucloud/public/admin/assets/index-d5900ec8.js
+  /niucloud/public/admin/assets/index-0b47ca0d.js: /niucloud/public/admin/assets/index-500ed4b6.js
+  /niucloud/public/admin/assets/index-11687fbd.js: /niucloud/public/admin/assets/index-a6829e03.js
+  /niucloud/public/admin/assets/index-2048a34f.js: /niucloud/public/admin/assets/index-57446bef.js
+  /niucloud/public/admin/assets/index-2462875f.js: /niucloud/public/admin/assets/index-2ee99ba1.js
+  /niucloud/public/admin/assets/index-27b24a76.css: /niucloud/public/admin/assets/index-a03bb343.css
+  /niucloud/public/admin/assets/index-28a638e7.js: /niucloud/public/admin/assets/index-5fc48b46.js
+  /niucloud/public/admin/assets/index-2b5d43b9.js: /niucloud/public/admin/assets/index-4906bae6.js
+  /niucloud/public/admin/assets/index-2ec2a5b9.css: /niucloud/public/admin/assets/index-d15db6e2.css
+  /niucloud/public/admin/assets/index-34cd7f55.js: /niucloud/public/admin/assets/index-c98e204a.js
+  /niucloud/public/admin/assets/index-3a5faaeb.js: /niucloud/public/admin/assets/index-fb8b7863.js
+  /niucloud/public/admin/assets/index-3f47b227.js: /niucloud/public/admin/assets/index-da093955.js
+  /niucloud/public/admin/assets/index-3ffefb7f.js: /niucloud/public/admin/assets/index-27e64573.js
+  /niucloud/public/admin/assets/index-40716d69.js: /niucloud/public/admin/assets/index-fc574226.js
+  /niucloud/public/admin/assets/index-427f5a83.js: /niucloud/public/admin/assets/index-6b77b11a.js
+  /niucloud/public/admin/assets/index-48558072.js: /niucloud/public/admin/assets/index-e059001a.js
+  /niucloud/public/admin/assets/index-50edbf04.js: /niucloud/public/admin/assets/index-4937003d.js
+  /niucloud/public/admin/assets/index-51305aa3.js: /niucloud/public/admin/assets/index-57e03d9e.js
+  /niucloud/public/admin/assets/index-542aa78e.js: /niucloud/public/admin/assets/index-2cabf788.js
+  /niucloud/public/admin/assets/index-54a839cc.js: /niucloud/public/admin/assets/index-ab38878f.js
+  /niucloud/public/admin/assets/index-55a4bbf1.js: /niucloud/public/admin/assets/index-f705a408.js
+  /niucloud/public/admin/assets/index-55e8256c.js: /niucloud/public/admin/assets/index-2748cefd.js
+  /niucloud/public/admin/assets/index-565a3bc8.js: /niucloud/public/admin/assets/index-c7e6c4d3.js
+  /niucloud/public/admin/assets/index-583337db.js: /niucloud/public/admin/assets/index-39bdd76d.js
+  /niucloud/public/admin/assets/index-59eacbf0.js: /niucloud/public/admin/assets/index-13fd1eb5.js
+  /niucloud/public/admin/assets/index-5b670ffa.js: /niucloud/public/admin/assets/index-f0623d20.js
+  /niucloud/public/admin/assets/index-5dbb8f83.js: /niucloud/public/admin/assets/index-c4e33d8d.js
+  /niucloud/public/admin/assets/index-6229e0fd.js: /niucloud/public/admin/assets/index-df16e899.js
+  /niucloud/public/admin/assets/index-643d8d8e.js: /niucloud/public/admin/assets/index-d40667c9.js
+  /niucloud/public/admin/assets/index-6befecc6.js: /niucloud/public/admin/assets/index-7c833df7.js
+  /niucloud/public/admin/assets/index-6d156531.js: /niucloud/public/admin/assets/index-c25955fe.js
+  /niucloud/public/admin/assets/index-746243e9.js: /niucloud/public/admin/assets/index-6d647c6f.js
+  /niucloud/public/admin/assets/index-797616f3.js: /niucloud/public/admin/assets/index-83924071.js
+  /niucloud/public/admin/assets/index-799df148.js: /niucloud/public/admin/assets/index-07248937.js
+  /niucloud/public/admin/assets/index-7b05b657.js: /niucloud/public/admin/assets/index-59972a15.js
+  /niucloud/public/admin/assets/index-7d2f3ba9.js: /niucloud/public/admin/assets/index-20ef35a7.js
+  /niucloud/public/admin/assets/index-85f612a4.js: /niucloud/public/admin/assets/index-b529eb0c.js
+  /niucloud/public/admin/assets/index-8774d4a8.js: /niucloud/public/admin/assets/index-7332c216.js
+  /niucloud/public/admin/assets/index-980bd272.js: /niucloud/public/admin/assets/index-c499df69.js
+  /niucloud/public/admin/assets/index-9e0d1e6c.js: /niucloud/public/admin/assets/index-5516aed6.js
+  /niucloud/public/admin/assets/index-9ef99368.js: /niucloud/public/admin/assets/index-5ec7f715.js
+  /niucloud/public/admin/assets/index-a1a91c72.js: /niucloud/public/admin/assets/index-0c098f78.js
+  /niucloud/public/admin/assets/index-af085fbd.js: /niucloud/public/admin/assets/index-6edd46fb.js
+  /niucloud/public/admin/assets/index-b6ca69fd.js: /niucloud/public/admin/assets/index-ec548bfb.js
+  /niucloud/public/admin/assets/index-ba59a1dc.js: /niucloud/public/admin/assets/index-189f302e.js
+  /niucloud/public/admin/assets/index-bdfee32a.js: /niucloud/public/admin/assets/index-1370ab44.js
+  /niucloud/public/admin/assets/index-c58e144c.js: /niucloud/public/admin/assets/index-6036b781.js
+  /niucloud/public/admin/assets/index-c6adf92e.js: /niucloud/public/admin/assets/index-163ddc5b.js
+  /niucloud/public/admin/assets/index-d0ada8fb.js: /niucloud/public/admin/assets/index-e2acd187.js
+  /niucloud/public/admin/assets/index-d1262e7a.js: /niucloud/public/admin/assets/index-35c5a824.js
+  /niucloud/public/admin/assets/index-d3fc16e5.js: /niucloud/public/admin/assets/index-38f1bd29.js
+  /niucloud/public/admin/assets/index-e3c69a8e.js: /niucloud/public/admin/assets/index-3427fe17.js
+  /niucloud/public/admin/assets/index-e5c4df7a.js: /niucloud/public/admin/assets/index-455ade26.js
+  /niucloud/public/admin/assets/index-ec9f9fb2.js: /niucloud/public/admin/assets/index-886a23f9.js
+  /niucloud/public/admin/assets/index-f249e665.js: /niucloud/public/admin/assets/index-19251c17.js
+  /niucloud/public/admin/assets/index-f3bad52c.js: /niucloud/public/admin/assets/index-22970d5d.js
+  /niucloud/public/admin/assets/index-f7cbfd82.js: /niucloud/public/admin/assets/index-967f94ef.js
+  /niucloud/public/admin/assets/index-fd362e05.js: /niucloud/public/admin/assets/index-619ac704.js
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-772fa486.js: /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-780dd221.js
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-ba8884ed.js: /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-1767d980.js
+  /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-e6518208.js: /niucloud/public/admin/assets/index.vue_vue_type_script_setup_true_lang-cdeb4e0c.js
+  /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-3748a185.js: /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-92d4efb2.js
+  /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-9fd1bcaf.js: /niucloud/public/admin/assets/index.vue_vue_type_style_index_0_lang-f28cbb83.js
+  /niucloud/public/admin/assets/info-6e7fe720.js: /niucloud/public/admin/assets/info-c0519d99.js
+  /niucloud/public/admin/assets/isEqual-3f50b221.js: /niucloud/public/admin/assets/isEqual-240b5e0a.js
+  /niucloud/public/admin/assets/list-7eba0ce1.js: /niucloud/public/admin/assets/list-43e44343.js
+  /niucloud/public/admin/assets/list-dba30721.css: /niucloud/public/admin/assets/route-dba30721.css
+  /niucloud/public/admin/assets/log-b94e2274.js: /niucloud/public/admin/assets/log-9e1107cf.js
+  /niucloud/public/admin/assets/login-6ce7048e.js: /niucloud/public/admin/assets/login-5f8bda6a.js
+  /niucloud/public/admin/assets/member-598e703d.js: /niucloud/public/admin/assets/member-c3f742b9.js
+  /niucloud/public/admin/assets/member-5b79e301.js: /niucloud/public/admin/assets/member-8490bdef.js
+  /niucloud/public/admin/assets/member-64d3c793.js: /niucloud/public/admin/assets/member-16777dad.js
+  /niucloud/public/admin/assets/member-balance-edit.vue_vue_type_script_setup_true_lang-94138469.js: /niucloud/public/admin/assets/member-balance-edit.vue_vue_type_script_setup_true_lang-96fc7533.js
+  /niucloud/public/admin/assets/member-balance-info.vue_vue_type_script_setup_true_lang-66591945.js: /niucloud/public/admin/assets/member-balance-info.vue_vue_type_script_setup_true_lang-ef580c8f.js
+  /niucloud/public/admin/assets/member-commission-info.vue_vue_type_script_setup_true_lang-a91095bb.js: /niucloud/public/admin/assets/member-commission-info.vue_vue_type_script_setup_true_lang-3c5c746b.js
+  /niucloud/public/admin/assets/member-money-info-e6d058c4.js: /niucloud/public/admin/assets/member-money-info-ea8269c9.js
+  /niucloud/public/admin/assets/member-point-edit.vue_vue_type_script_setup_true_lang-d4db018b.js: /niucloud/public/admin/assets/member-point-edit.vue_vue_type_script_setup_true_lang-0132e934.js
+  /niucloud/public/admin/assets/member-point-info.vue_vue_type_script_setup_true_lang-23cf72da.js: /niucloud/public/admin/assets/member-point-info.vue_vue_type_script_setup_true_lang-33d4e46c.js
+  /niucloud/public/admin/assets/menu-form.vue_vue_type_script_setup_true_lang-4483f4c6.js: /niucloud/public/admin/assets/menu-form.vue_vue_type_script_setup_true_lang-3b097fea.js
+  /niucloud/public/admin/assets/module-c4c1e190.js: /niucloud/public/admin/assets/module-23f036a6.js
+  /niucloud/public/admin/assets/notice-c5b19d77.js: /niucloud/public/admin/assets/notice-2b44e053.js
+  /niucloud/public/admin/assets/notice-eb33ea40.js: /niucloud/public/admin/assets/notice-73688b00.js
+  /niucloud/public/admin/assets/notice-records-info.vue_vue_type_script_setup_true_lang-9ae4d8e2.js: /niucloud/public/admin/assets/notice-records-info.vue_vue_type_script_setup_true_lang-05360d49.js
+  /niucloud/public/admin/assets/notice-sms.vue_vue_type_script_setup_true_lang-ca6b1908.js: /niucloud/public/admin/assets/notice-sms.vue_vue_type_script_setup_true_lang-114598e4.js
+  /niucloud/public/admin/assets/notice-weapp.vue_vue_type_script_setup_true_lang-15a554f1.js: /niucloud/public/admin/assets/notice-weapp.vue_vue_type_script_setup_true_lang-ab348405.js
+  /niucloud/public/admin/assets/notice-wechat.vue_vue_type_script_setup_true_lang-28244278.js: /niucloud/public/admin/assets/notice-wechat.vue_vue_type_script_setup_true_lang-3e4e5338.js
+  /niucloud/public/admin/assets/notice_records-2ea5e9ef.js: /niucloud/public/admin/assets/notice_records-fb460231.js
+  /niucloud/public/admin/assets/offlinepay-12b0f681.js: /niucloud/public/admin/assets/offlinepay-9ea2e34e.js
+  /niucloud/public/admin/assets/order-7b5c1f7f.js: /niucloud/public/admin/assets/order-7a384c42.js
+  /niucloud/public/admin/assets/pay-320aeb54.js: /niucloud/public/admin/assets/pay-4f8d8507.js
+  /niucloud/public/admin/assets/pay-alipay.vue_vue_type_script_setup_true_lang-43c2ac85.js: /niucloud/public/admin/assets/pay-alipay.vue_vue_type_script_setup_true_lang-831bf5f1.js
+  /niucloud/public/admin/assets/pay-b8ae08a2.js: /niucloud/public/admin/assets/pay-3a5862f9.js
+  /niucloud/public/admin/assets/pay-offlinepay.vue_vue_type_script_setup_true_lang-d4a16127.js: /niucloud/public/admin/assets/pay-offlinepay.vue_vue_type_script_setup_true_lang-c9c54e26.js
+  /niucloud/public/admin/assets/pay-wechatpay.vue_vue_type_script_setup_true_lang-a095ea2f.js: /niucloud/public/admin/assets/pay-wechatpay.vue_vue_type_script_setup_true_lang-45a11ae4.js
+  /niucloud/public/admin/assets/pay_detail-17a7a4d2.js: /niucloud/public/admin/assets/pay_detail-42f84f5c.js
+  /niucloud/public/admin/assets/personal-331e943c.js: /niucloud/public/admin/assets/personal-6ae8a2fc.js
+  /niucloud/public/admin/assets/personal-446a7602.js: /niucloud/public/admin/assets/personal-e212c99f.js
+  /niucloud/public/admin/assets/personal-79c478f1.js: /niucloud/public/admin/assets/personal-9f608de4.js
+  /niucloud/public/admin/assets/personal-ca9de20f.js: /niucloud/public/admin/assets/personal-cfa7cad1.js
+  /niucloud/public/admin/assets/pinia-55149fa9.js: /niucloud/public/admin/assets/pinia-a9fc3924.js
+  /niucloud/public/admin/assets/point-3f9b541b.js: /niucloud/public/admin/assets/point-886e3069.js
+  /niucloud/public/admin/assets/position-4bcbb4c8.js: /niucloud/public/admin/assets/position-8e494ab3.js
+  /niucloud/public/admin/assets/preview-1587d3fd.js: /niucloud/public/admin/assets/preview-2dbb39e5.js
+  /niucloud/public/admin/assets/preview-f3e7f7bd.js: /niucloud/public/admin/assets/preview-635fbb2a.js
+  /niucloud/public/admin/assets/range-2c2e612e.js: /niucloud/public/admin/assets/range-d4dd345f.js
+  /niucloud/public/admin/assets/refund-f64a9d61.js: /niucloud/public/admin/assets/refund-12e399cb.js
+  /niucloud/public/admin/assets/refund_detail-71a78b54.js: /niucloud/public/admin/assets/refund_detail-a1112701.js
+  /niucloud/public/admin/assets/scroll-aa5f3aa0.js: /niucloud/public/admin/assets/scroll-d85c8f38.js
+  /niucloud/public/admin/assets/select-menu-item.vue_vue_type_script_setup_true_lang-cea4fdd1.js: /niucloud/public/admin/assets/select-menu-item.vue_vue_type_script_setup_true_lang-fa454072.js
+  /niucloud/public/admin/assets/site_index-ef86bef1.js: /niucloud/public/admin/assets/site_index-e8ac8f02.js
+  /niucloud/public/admin/assets/site_index__-a906d3dc.js: /niucloud/public/admin/assets/site_index__-595923ba.js
+  /niucloud/public/admin/assets/sms-ali.vue_vue_type_script_setup_true_lang-e8dd5a50.js: /niucloud/public/admin/assets/sms-ali.vue_vue_type_script_setup_true_lang-896fc89f.js
+  /niucloud/public/admin/assets/sms-bfb719de.js: /niucloud/public/admin/assets/sms-74cc9977.js
+  /niucloud/public/admin/assets/sms-tencent.vue_vue_type_script_setup_true_lang-88faec6c.js: /niucloud/public/admin/assets/sms-tencent.vue_vue_type_script_setup_true_lang-caaadeab.js
+  /niucloud/public/admin/assets/sms_records-c3f1a4b8.js: /niucloud/public/admin/assets/sms_records-3d082789.js
+  /niucloud/public/admin/assets/storage-5316d819.js: /niucloud/public/admin/assets/storage-0874d153.js
+  /niucloud/public/admin/assets/storage-ali.vue_vue_type_script_setup_true_lang-407e9d5e.js: /niucloud/public/admin/assets/storage-ali.vue_vue_type_script_setup_true_lang-e4db0540.js
+  /niucloud/public/admin/assets/storage-e511e96f.js: /niucloud/public/admin/assets/storage-1d067670.js
+  /niucloud/public/admin/assets/storage-local.vue_vue_type_script_setup_true_lang-7dbbd4ef.js: /niucloud/public/admin/assets/storage-local.vue_vue_type_script_setup_true_lang-7dd712ca.js
+  /niucloud/public/admin/assets/storage-qiniu.vue_vue_type_script_setup_true_lang-7a5c8525.js: /niucloud/public/admin/assets/storage-qiniu.vue_vue_type_script_setup_true_lang-c4dc1289.js
+  /niucloud/public/admin/assets/storage-tencent.vue_vue_type_script_setup_true_lang-9cbed69d.js: /niucloud/public/admin/assets/storage-tencent.vue_vue_type_script_setup_true_lang-a17336cf.js
+  /niucloud/public/admin/assets/store-04549a48.js: /niucloud/public/admin/assets/store-5b402dec.js
+  /niucloud/public/admin/assets/store-c9983c45.js: /niucloud/public/admin/assets/store-55a208bb.js
+  /niucloud/public/admin/assets/style-ff6c5269.js: /niucloud/public/admin/assets/style-18eab70b.js
+  /niucloud/public/admin/assets/system-d23898e7.js: /niucloud/public/admin/assets/system-1108e5c1.js
+  /niucloud/public/admin/assets/system-d46ef710.js: /niucloud/public/admin/assets/system-8638efbd.js
+  /niucloud/public/admin/assets/tabbar-648b9dbf.js: /niucloud/public/admin/assets/tabbar-cf24cf57.js
+  /niucloud/public/admin/assets/template-8402086c.js: /niucloud/public/admin/assets/template-ec7b055e.js
+  /niucloud/public/admin/assets/template-ca51c45f.js: /niucloud/public/admin/assets/template-7da6ac43.js
+  /niucloud/public/admin/assets/tools-6d0ea037.js: /niucloud/public/admin/assets/tools-db2d0aa0.js
+  /niucloud/public/admin/assets/tools-ea53014f.js: /niucloud/public/admin/assets/tools-1ddbfc4b.js
+  /niucloud/public/admin/assets/transfer-ffc22493.js: /niucloud/public/admin/assets/transfer-22e1450b.js
+  /niucloud/public/admin/assets/updatecache-9e6acb05.js: /niucloud/public/admin/assets/updatecache-2db4e7a9.js
+  /niucloud/public/admin/assets/user-0141238c.js: /niucloud/public/admin/assets/user-160c2ff0.js
+  /niucloud/public/admin/assets/user-67aee5bb.js: /niucloud/public/admin/assets/user-9d55ddbd.js
+  /niucloud/public/admin/assets/user-af72dee4.js: /niucloud/public/admin/assets/user-2660f436.js
+  /niucloud/public/admin/assets/user-info-ece27d67.js: /niucloud/public/admin/assets/user-info-f0d313e3.js
+  /niucloud/public/admin/assets/user-log-detail.vue_vue_type_script_setup_true_lang-e280da6c.js: /niucloud/public/admin/assets/user-log-detail.vue_vue_type_script_setup_true_lang-6a01a18c.js
+  /niucloud/public/admin/assets/user_info-e7ba36c1.js: /niucloud/public/admin/assets/user_info-82049489.js
+  /niucloud/public/admin/assets/vue-router-fc35ac55.js: /niucloud/public/admin/assets/vue-router-d7e63612.js
+  /niucloud/public/admin/assets/vue-web-terminal-e12a168b.js: /niucloud/public/admin/assets/vue-web-terminal-19b71868.js
+  /niucloud/public/admin/assets/weapp-96ac131c.js: /niucloud/public/admin/assets/weapp-6fcef875.js
+  /niucloud/public/admin/assets/wechat-b0462a06.js: /niucloud/public/admin/assets/wechat-83a3b216.js
+  /niucloud/public/admin/assets/wxoplatform-429843e6.js: /niucloud/public/admin/assets/wxoplatform-9eec8211.js
+  /niucloud/public/wap/assets/app-pages-auth-agreement.86a3eebd.js: /niucloud/public/wap/assets/app-pages-auth-agreement.95c24d05.js
+  /niucloud/public/wap/assets/app-pages-auth-resetpwd.a1a5158c.js: /niucloud/public/wap/assets/app-pages-auth-resetpwd.16daaea3.js
+  /niucloud/public/wap/assets/app-pages-index-close.4b94604d.js: /niucloud/public/wap/assets/app-pages-index-close.9888e163.js
+  /niucloud/public/wap/assets/app-pages-index-develop.272f09b5.js: /niucloud/public/wap/assets/app-pages-index-develop.74f40783.js
+  /niucloud/public/wap/assets/app-pages-index-diy.a3a15bdc.js: /niucloud/public/wap/assets/app-pages-index-diy.f4456b21.js
+  /niucloud/public/wap/assets/app-pages-index-index.83394378.js: /niucloud/public/wap/assets/app-pages-index-index.d9585c28.js
+  /niucloud/public/wap/assets/app-pages-index-nosite.5d833b06.js: /niucloud/public/wap/assets/app-pages-index-nosite.ae2f0525.js
+  /niucloud/public/wap/assets/app-pages-member-account.9c487ada.js: /niucloud/public/wap/assets/app-pages-member-account.4f7e4d75.js
+  /niucloud/public/wap/assets/app-pages-member-account_edit.0872ce2e.js: /niucloud/public/wap/assets/app-pages-member-account_edit.c5faee3b.js
+  /niucloud/public/wap/assets/app-pages-member-address.68110b0d.js: /niucloud/public/wap/assets/app-pages-member-address.acbd89b6.js
+  /niucloud/public/wap/assets/app-pages-member-address_edit.1905f03b.js: /niucloud/public/wap/assets/app-pages-member-address_edit.5c44ad51.js
+  /niucloud/public/wap/assets/app-pages-member-apply_cash_out.22ea0e19.js: /niucloud/public/wap/assets/app-pages-member-apply_cash_out.be899568.js
+  /niucloud/public/wap/assets/app-pages-member-balance.a000c0fc.js: /niucloud/public/wap/assets/app-pages-member-balance.6a28463b.js
+  /niucloud/public/wap/assets/app-pages-member-cash_out.866f5a0b.js: /niucloud/public/wap/assets/app-pages-member-cash_out.0409a48e.js
+  /niucloud/public/wap/assets/app-pages-member-cash_out_detail.5073886b.js: /niucloud/public/wap/assets/app-pages-member-cash_out_detail.b5048c81.js
+  /niucloud/public/wap/assets/app-pages-member-commission.e7227859.js: /niucloud/public/wap/assets/app-pages-member-commission.6ec66a13.js
+  /niucloud/public/wap/assets/app-pages-member-detailed_account.dd097dbc.js: /niucloud/public/wap/assets/app-pages-member-detailed_account.4d04081b.js
+  /niucloud/public/wap/assets/app-pages-member-index.d015a0ab.js: /niucloud/public/wap/assets/app-pages-member-index.3cf6a775.js
+  /niucloud/public/wap/assets/app-pages-member-location_address_edit.dde253b7.js: /niucloud/public/wap/assets/app-pages-member-location_address_edit.b55e7ac5.js
+  /niucloud/public/wap/assets/app-pages-member-personal.57e30f34.js: /niucloud/public/wap/assets/app-pages-member-personal.9fac1b05.js
+  /niucloud/public/wap/assets/app-pages-member-point.bc2677e7.js: /niucloud/public/wap/assets/app-pages-member-point.5b82c2d7.js
+  /niucloud/public/wap/assets/app-pages-member-recharge_record.96cde353.js: /niucloud/public/wap/assets/app-pages-member-recharge_record.c33e3d75.js
+  /niucloud/public/wap/assets/app-pages-member-recharge_record_detail.4bc4cb63.js: /niucloud/public/wap/assets/app-pages-member-recharge_record_detail.bc68f913.js
+  /niucloud/public/wap/assets/app-pages-pay-browser.e5ef9d50.js: /niucloud/public/wap/assets/app-pages-pay-browser.2412463e.js
+  /niucloud/public/wap/assets/app-pages-pay-result.ed4ab27d.js: /niucloud/public/wap/assets/app-pages-pay-result.8abd8a2f.js
+  /niucloud/public/wap/assets/app-pages-webview-index.16595e7a.js: /niucloud/public/wap/assets/app-pages-webview-index.92a1bb14.js
+  /niucloud/public/wap/assets/index-69a013d4.js: /niucloud/public/wap/assets/index-e4516e00.js
+  /niucloud/public/wap/assets/index.3869150c.js: /niucloud/public/wap/assets/index.d2f0349b.js
+  /niucloud/public/wap/assets/mescroll-empty.17c4845c.js: /niucloud/public/wap/assets/mescroll-empty.dd82bb82.js
+  /niucloud/public/wap/assets/pay.3fb151c2.js: /niucloud/public/wap/assets/pay.f1f14e93.js
+  /niucloud/public/wap/assets/sms-code.vue_vue_type_script_setup_true_lang.55b881e3.js: /niucloud/public/wap/assets/sms-code.vue_vue_type_script_setup_true_lang.fbf0433e.js
+  /niucloud/public/wap/assets/u-action-sheet.a0a4df28.js: /niucloud/public/wap/assets/u-action-sheet.f43f6b50.js
+  /niucloud/public/wap/assets/u-avatar.d306c1cb.js: /niucloud/public/wap/assets/u-avatar.38901231.js
+  /niucloud/public/wap/assets/u-button.ce207350.js: /niucloud/public/wap/assets/u-button.68ca80eb.js
+  /niucloud/public/wap/assets/u-empty.50881d77.js: /niucloud/public/wap/assets/u-empty.40cefed1.js
+  /niucloud/public/wap/assets/u-form.1ca8cc70.js: /niucloud/public/wap/assets/u-form.2c63b107.js
+  /niucloud/public/wap/assets/u-icon.e94881e5.js: /niucloud/public/wap/assets/u-icon.800a0d37.js
+  /niucloud/public/wap/assets/u-input.723cc421.js: /niucloud/public/wap/assets/u-input.c48dbab3.js
+  /niucloud/public/wap/assets/u-line.67c4366a.js: /niucloud/public/wap/assets/u-line.482fd0b9.js
+  /niucloud/public/wap/assets/u-loading-icon.68f04ddb.js: /niucloud/public/wap/assets/u-loading-icon.41e2cb8e.js
+  /niucloud/public/wap/assets/u-loading-page.d9d2b59d.js: /niucloud/public/wap/assets/u-loading-page.98779073.js
+  /niucloud/public/wap/assets/u-modal.22e025d9.js: /niucloud/public/wap/assets/u-modal.a9c92e79.js
+  /niucloud/public/wap/assets/u-popup.d3cd3276.js: /niucloud/public/wap/assets/u-popup.27fcbe62.js
+  /niucloud/public/wap/assets/u-safe-bottom.e1029ab3.js: /niucloud/public/wap/assets/u-safe-bottom.e98411e2.js
+  /niucloud/public/wap/assets/u-switch.74e53b27.js: /niucloud/public/wap/assets/u-switch.6d294abb.js
+  /niucloud/public/wap/assets/u-tabbar.cb7a5868.js: /niucloud/public/wap/assets/u-tabbar.2b953c74.js
+  /niucloud/public/wap/assets/u-transition.df2420bf.js: /niucloud/public/wap/assets/u-transition.44bb65c7.js
+  /niucloud/public/wap/assets/useMescroll.e5657dd6.js: /niucloud/public/wap/assets/useMescroll.aeb7910f.js
+  /niucloud/public/wap/assets/wechat.5c50648b.js: /niucloud/public/wap/assets/wechat.717f80c2.js
+revisionId: 139
