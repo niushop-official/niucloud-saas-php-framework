@@ -2,10 +2,19 @@
 branches: {
   }
 fileChange:
-  /README.md:
-    newFile: !uuid '3d13b6a7a4400980b7bc9e6c0922ccc1a8712b8a'
-    oldFile: !uuid 'a3d6c4405e044f211640afc56309bdb1245e6245'
-gitCommitId: !uuid '80ec9412e666aac5197e7298633e24893568b9b7'
+  /uni-app:
+    newFile: !uuid 'f9244bbcf1b6f7cb90fdccf002ff300005064627'
+    oldFile: !uuid 'd16c1a99e2be482f02e144aa8d1cfdfbf2d9fbf5'
+  /uni-app/src:
+    newFile: !uuid '66a0b8c7cb29150fb98036b338f4d8e77bd596dc'
+    oldFile: !uuid 'd124c5756d70e4f3d7bb62d848f316985f8fc6e0'
+  /uni-app/src/utils:
+    newFile: !uuid '49ce63608c24bfcbc0eb536beef3a0cc4ab053f3'
+    oldFile: !uuid 'b37f211002b59600d0bf7b00b213bbe45f42bef4'
+  /uni-app/src/utils/wechat.ts:
+    newFile: !uuid '8e6aeaf5c436fdee2efbbe14068762f577f6f4cb'
+    oldFile: !uuid '6dfd61afe9cd43047e150c1c229b219fe75c4a52'
+gitCommitId: !uuid '83169f4f5692786cb6befad69b16535a04bb7861'
 renames: {
   }
-revisionId: 142
+revisionId: 143
