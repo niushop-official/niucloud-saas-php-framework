@@ -116,4 +116,14 @@ class Dict extends BaseAdminController
         $res = (new DictService())->getKeyInfo($type);
         return success($res);
     }
+
+
+    /**
+     * 获取字典数据 缓存
+     */
+    public function getDict(string $key){
+        $res = (new DictService)->getDictData($key);
+        return success($res);
+    }
+
 }
