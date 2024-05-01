@@ -13,6 +13,7 @@ namespace app\service\admin\dict;
 
 use app\model\dict\Dict;
 use core\base\BaseAdminService;
+use think\facade\Cache;
 
 
 /**
@@ -69,6 +70,7 @@ class DictService extends BaseAdminService
     {
 
         $res = $this->model->create($data);
+        Cache::tag('sys_dict')->clear();
         return $res->id;
 
     }
@@ -83,6 +85,7 @@ class DictService extends BaseAdminService
     {
         $data['update_time'] = time();
         $this->model->where([['id', '=', $id]])->update($data);
+        Cache::tag('sys_dict')->clear();
         return true;
     }
 
@@ -94,6 +97,7 @@ class DictService extends BaseAdminService
     public function del(int $id)
     {
         $res = $this->model->where([['id', '=', $id]])->delete();
+        Cache::tag('sys_dict')->clear();
         return $res;
     }
 
@@ -121,5 +125,27 @@ class DictService extends BaseAdminService
         return $info;
     }
 
+
+    public function getDictData($key)
+    {
+
+        $cache_name = 'dict_' . __FUNCTION__ . '_' . serialize(func_get_args());
+
+        $cache = Cache::get($cache_name);
+
+        if (!empty($cache)) return $cache;
+
+        $value = $this->model->field('dictionary')->where('key', $key)->column('dictionary');
+
+        if (empty($value)){
+            $list = [];
+        }else{
+            $list = array_column($value,null,'value');
+        }
+
+        Cache::tag('sys_dict')->set($cache_name, $list, 24 * 3600);
+
+        return $list;
+    }
 
 }

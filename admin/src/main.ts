@@ -9,11 +9,13 @@ import { useElementIcon } from './utils/common'
 import 'highlight.js/styles/stackoverflow-light.css';
 import hljs from 'highlight.js/lib/common'
 import hljsVuePlugin from '@highlightjs/vue-plugin'
+import { useDict } from './utils/dict'
 
 window.hl = hljs
 
 async function run() {
     const app = createApp(App)
+    app.config.globalProperties.useDict = useDict
     app.use(pinia)
     app.use(lang)
     app.use(roter)
