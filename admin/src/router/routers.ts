@@ -1,5 +1,5 @@
-import { toRaw } from 'vue'
-import { RouteRecordRaw, RouterView } from 'vue-router'
+import {toRaw} from 'vue'
+import {RouteRecordRaw, RouterView} from 'vue-router'
 import Default from '@/layout/index.vue'
 import Decorate from '@/layout/decorate/index.vue'
 
@@ -109,10 +109,12 @@ interface Route {
 
 /**
  * 创建路由
- * @param data
  * @returns
+ * @param route
+ * @param parentRoute
+ * @param level
  */
-const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null = null): RouteRecordRaw {
+const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null = null, level: number = 1): RouteRecordRaw {
     const record: RouteRecordRaw = {
         path: `/${route.app_type}/${route.router_path}`,
         name: route.menu_key,
@@ -126,7 +128,8 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
             app: route.app_type,
             view: route.view_path,
             addon: route.addon,
-            parent_route: parentRoute ? parentRoute.meta : parentRoute
+            parent_route: parentRoute ? parentRoute.meta : parentRoute,
+            class: level
         }
     }
     if (route.menu_type == 0) {
@@ -141,13 +144,15 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
 /**
  * 格式化路由
  * @param routes
+ * @param parentRoute
+ * @param level
  * @returns
  */
-export function formatRouters(routes: Route[], parentRoute: RouteRecordRaw | null = null) {
+export function formatRouters(routes: Route[], parentRoute: RouteRecordRaw | null = null, level: number = 1) {
     return routes.map((route) => {
-        const routeRecord = createRoute(route, parentRoute)
+        const routeRecord = createRoute(route, parentRoute, level)
         if (route.children != null && route.children && route.children.length) {
-            routeRecord.children = formatRouters(route.children, routeRecord)
+            routeRecord.children = formatRouters(route.children, routeRecord, level + 1)
         }
         return routeRecord
     })
