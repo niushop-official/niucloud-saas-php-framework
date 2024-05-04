@@ -136,6 +136,7 @@ class CoreMenuService extends BaseCoreService
                     'menu_short_name' => $value['menu_short_name'] ?? '',
                     'menu_key' => $value['menu_key'],
                     'app_type' => $app_type,
+                    'redirect' => $value['redirect'] ?? '',
                     'addon' => $addon,
                     'parent_key' => $value['parent_key'] ?? $parent_key,
                     'menu_type' => $value['menu_type'],

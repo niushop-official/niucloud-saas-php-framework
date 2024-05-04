@@ -100,6 +100,7 @@ interface Route {
         name: string,
         type: string
     },
+    redirect: string,
     children?: [],
     is_show: boolean,
     app_type: string,
@@ -115,6 +116,7 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
     const record: RouteRecordRaw = {
         path: `/${route.app_type}/${route.router_path}`,
         name: route.menu_key,
+        redirect: route.redirect,
         meta: {
             title: route.menu_name,
             short_title: route.menu_short_name,
