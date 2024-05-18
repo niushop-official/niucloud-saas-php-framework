@@ -24,7 +24,7 @@ const userStore = defineStore('user', {
             siteInfo: null,
             routers: [],
             rules: [],
-            addonIndexRoute: {}
+            addonIndexRoute: {},
         }
     },
     actions: {

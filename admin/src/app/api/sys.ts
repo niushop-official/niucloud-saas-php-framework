@@ -700,3 +700,10 @@ export function getDeveloperToken() {
 export function setDeveloperToken(params: Record<string, any>) {
     return request.put(`sys/config/developer_token`, params, { showSuccessMessage: true })
 }
+
+/**
+ * 获取字典数据
+ */
+export function getDictData(key: string) {
+    return request.get('sys/dict/' + key)
+}

@@ -220,4 +220,7 @@ Route::group('sys', function () {
     Route::get('web/website', 'sys.Config/getWebsite');
     // 获取版权信息
     Route::get('web/copyright', 'sys.Config/getCopyright');
+    // 获取字典
+    Route::get('dict/:key', 'dict.Dict/getDictItem');
+
 });
