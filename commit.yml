@@ -2,232 +2,859 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'e217f0081e8345d9a30455cff938f09e48074e76'
-    oldFile: !uuid '219d5d124b2bd545f27fcd8d39fa8716f9e8e9ad'
-  /niucloud/addon:
-    newFile: null
-    oldFile: !uuid '0c5dcd94aa8408eb168d17ec5a1d8068853eb7c9'
-  /niucloud/addon/hello_world:
-    newFile: null
-    oldFile: !uuid '41e126850b08441d042f27beb7098813e9344057'
-  /niucloud/addon/hello_world/Addon.php:
-    newFile: null
-    oldFile: !uuid 'e4a8850a5dda363ef61d1c2233198575f09f4ae5'
-  /niucloud/addon/hello_world/admin:
-    newFile: null
-    oldFile: !uuid 'c01098be44f036760259650049d4d6820bb2ea34'
-  /niucloud/addon/hello_world/admin/views:
-    newFile: null
-    oldFile: !uuid 'cf3627c4f7f9c4ca766ac2f995e7ca9c8cb32e70'
-  /niucloud/addon/hello_world/admin/views/diy:
-    newFile: null
-    oldFile: !uuid 'd310108e69080acd5513c91cae11eabfa9aad1ba'
-  /niucloud/addon/hello_world/admin/views/diy/components:
-    newFile: null
-    oldFile: !uuid '9d4ff53434a59e6f45aa91319e9bd3ad39de3ca4'
-  /niucloud/addon/hello_world/admin/views/diy/components/edit-hello-text.vue:
-    newFile: null
-    oldFile: !uuid '24c95da0b5f234c63a2341ce80495b4284799f7e'
-  /niucloud/addon/hello_world/admin/views/hello_world:
-    newFile: null
-    oldFile: !uuid '3e8e2e7abab57094c2792249e97c080ede88de9e'
-  /niucloud/addon/hello_world/admin/views/hello_world/index.vue:
-    newFile: null
-    oldFile: !uuid '51963a943bf9aa00549375d3d2ce6f76a7804009'
-  /niucloud/addon/hello_world/admin/views/hello_world/site.vue:
-    newFile: null
-    oldFile: !uuid '405437b345a3a0f770dd2b0ea98ef6b05aa018d1'
-  /niucloud/addon/hello_world/app:
-    newFile: null
-    oldFile: !uuid '19783ced4d1adb8b16deaaa4cabd7e51962ee3b6'
-  /niucloud/addon/hello_world/app/adminapi:
-    newFile: null
-    oldFile: !uuid '7b7d9fa50f3fc8337b31b206bb5c6a5a2bbda0df'
-  /niucloud/addon/hello_world/app/adminapi/controller:
-    newFile: null
-    oldFile: !uuid 'd5bf6370146d954ddfb48b464f53f910296bb17d'
-  /niucloud/addon/hello_world/app/adminapi/controller/Index.php:
-    newFile: null
-    oldFile: !uuid 'b1ef12988798f4d2180b4c7fb0ee5f550f1b5aee'
-  /niucloud/addon/hello_world/app/adminapi/route:
-    newFile: null
-    oldFile: !uuid 'cad6ecf63d3d29138252ef3531dc6e6adcf49d7b'
-  /niucloud/addon/hello_world/app/adminapi/route/route.php:
-    newFile: null
-    oldFile: !uuid '9817dfff8c6336457d6122a41db35769db63c55e'
-  /niucloud/addon/hello_world/app/api:
-    newFile: null
-    oldFile: !uuid 'cb340e9936d89366913cbfc22e396a6274f7d239'
-  /niucloud/addon/hello_world/app/api/route:
-    newFile: null
-    oldFile: !uuid '0da679bb974c837766f50e48582ebe6c79e08b4e'
-  /niucloud/addon/hello_world/app/api/route/route.php:
-    newFile: null
-    oldFile: !uuid '8b137891791fe96927ad78e64b0aad7bded08bdc'
-  /niucloud/addon/hello_world/app/dict:
-    newFile: null
-    oldFile: !uuid 'fe14af0a42ca9e00f6a2792e0fff1a430d22adce'
-  /niucloud/addon/hello_world/app/dict/diy:
-    newFile: null
-    oldFile: !uuid 'e7c7bde517848cbc60cf2f069c0a57c0f89453af'
-  /niucloud/addon/hello_world/app/dict/diy/components.php:
-    newFile: null
-    oldFile: !uuid 'd692c14d9fe7110f2f87db385a93007540aaa568'
-  /niucloud/addon/hello_world/app/dict/diy/links.php:
-    newFile: null
-    oldFile: !uuid '8712584d00f4a5923039ab766b190970b788e965'
-  /niucloud/addon/hello_world/app/dict/diy/pages.php:
-    newFile: null
-    oldFile: !uuid '12de102610545a633ab75e2da82e87d96f23cc6e'
-  /niucloud/addon/hello_world/app/dict/diy/template.php:
-    newFile: null
-    oldFile: !uuid '6858cfb106b1ace5994217af706b278bc870d94c'
-  /niucloud/addon/hello_world/app/dict/member:
-    newFile: null
-    oldFile: !uuid 'ba80759e296c885133a1ea4aad596375d4ea5c60'
-  /niucloud/addon/hello_world/app/dict/member/account_change_type.php:
-    newFile: null
-    oldFile: !uuid '6898597fb037d9556e38371ce5c9ee6edf2c2b8c'
-  /niucloud/addon/hello_world/app/dict/menu:
-    newFile: null
-    oldFile: !uuid 'dfa9290afc0291e09e4f1a5ac9e29f878e2e7da2'
-  /niucloud/addon/hello_world/app/dict/menu/admin.php:
-    newFile: null
-    oldFile: !uuid '60c0351d31e89e4315a69c39aa8707ce59863744'
-  /niucloud/addon/hello_world/app/dict/menu/site.php:
-    newFile: null
-    oldFile: !uuid 'ccb3762c2d5ef9eda823bff993836405c18116b9'
-  /niucloud/addon/hello_world/app/dict/notice:
-    newFile: null
-    oldFile: !uuid '8c59f3b59984a85aa848dbabe0c5cad96c778bed'
-  /niucloud/addon/hello_world/app/dict/notice/notice.php:
-    newFile: null
-    oldFile: !uuid '2cb6e4e9aa47d0e13c7b213e37ec09530845f6de'
-  /niucloud/addon/hello_world/app/dict/notice/sms.php:
-    newFile: null
-    oldFile: !uuid '6047ba41664814a25b19f4f6922c2122b96ebc71'
-  /niucloud/addon/hello_world/app/dict/notice/weapp.php:
-    newFile: null
-    oldFile: !uuid 'c07c422b190c7a81c3606bb7cca9c5cc5f3e7fb7'
-  /niucloud/addon/hello_world/app/dict/notice/wechat.php:
-    newFile: null
-    oldFile: !uuid 'f3ad7698fb151fac930b2dc2a2da88b6f7c61cb4'
-  /niucloud/addon/hello_world/app/dict/schedule:
-    newFile: null
-    oldFile: !uuid '16da8e97f37557fd28fcd5b3b9c08035bca01927'
-  /niucloud/addon/hello_world/app/dict/schedule/schedule.php:
-    newFile: null
-    oldFile: !uuid '57867a985db5b365dd85db03c54355a1d00d5f83'
-  /niucloud/addon/hello_world/app/event.php:
-    newFile: null
-    oldFile: !uuid 'ae85b7ce36cc9fb83e6d4ceb7a15a904398ece00'
-  /niucloud/addon/hello_world/app/job:
-    newFile: null
-    oldFile: !uuid '372bbcf3fa852ceb2ddec446ab542bae2887e837'
-  /niucloud/addon/hello_world/app/job/AddonSchedule.php:
-    newFile: null
-    oldFile: !uuid 'a3037da3d5f2f563ba7277e95a6312dab5340e45'
-  /niucloud/addon/hello_world/app/lang:
-    newFile: null
-    oldFile: !uuid 'c2a35c3f65df3a6b5c8607b85b623b453d3b3e23'
-  /niucloud/addon/hello_world/app/lang/zh-cn:
-    newFile: null
-    oldFile: !uuid '4bf074fc291ce263734252f870e734067c1ffbb9'
-  /niucloud/addon/hello_world/app/lang/zh-cn/api.php:
-    newFile: null
-    oldFile: !uuid '80fd57241739461dc2236e27776558b0d0da933f'
-  /niucloud/addon/hello_world/app/lang/zh-cn/dict.php:
-    newFile: null
-    oldFile: !uuid '4d3a6f528998e00f2bfe53392763398bfc7c0fc0'
-  /niucloud/addon/hello_world/app/lang/zh-cn/validate.php:
-    newFile: null
-    oldFile: !uuid 'f970c298b092bcdf80540650d4b749b90fced0d3'
-  /niucloud/addon/hello_world/app/listener:
-    newFile: null
-    oldFile: !uuid 'c546b230c92ca2188523ac7dd13ff4164181c1d2'
-  /niucloud/addon/hello_world/app/listener/AppManageListener.php:
-    newFile: null
-    oldFile: !uuid '38379665045a38efe79b046f7b01842d4d1e9b9a'
-  /niucloud/addon/hello_world/app/listener/SiteLayout.php:
-    newFile: null
-    oldFile: !uuid 'dea2eb6bbb76c29c35ea8be075c8815489881a2a'
-  /niucloud/addon/hello_world/info.json:
-    newFile: null
-    oldFile: !uuid '79f13f610e30f4cc1fbb08ef2665ab35175a632a'
-  /niucloud/addon/hello_world/package:
-    newFile: null
-    oldFile: !uuid 'c50c905ec54185ad9a522b1d90700966d3c1f323'
-  /niucloud/addon/hello_world/package/admin-package.json:
-    newFile: null
-    oldFile: !uuid '526aca60573f334a6b6bd536fa5be9c26d678e0f'
-  /niucloud/addon/hello_world/package/composer.json:
-    newFile: null
-    oldFile: !uuid '8c8051f3826a8d0260b03b34aff6ec45a9b078f5'
-  /niucloud/addon/hello_world/package/uni-app-package.json:
-    newFile: null
-    oldFile: !uuid 'c91f0d264a85ffe16aecbc3c42f25ec8a8a49f86'
-  /niucloud/addon/hello_world/package/uni-app-pages.php:
-    newFile: null
-    oldFile: !uuid '843369b6d46c864af92c989944cc609013454942'
-  /niucloud/addon/hello_world/package/web-package.json:
-    newFile: null
-    oldFile: !uuid '526aca60573f334a6b6bd536fa5be9c26d678e0f'
-  /niucloud/addon/hello_world/sql:
-    newFile: null
-    oldFile: !uuid '7b3a494d40413a6590e0281e5233e81485f3d2d2'
-  /niucloud/addon/hello_world/sql/install.sql:
-    newFile: null
-    oldFile: !uuid '5287466d1354c9bce5bbc09ccc8170030a6b8030'
-  /niucloud/addon/hello_world/sql/uninstall.sql:
-    newFile: null
-    oldFile: !uuid '1f1678c70cc8692abcadc3a86b75728fae6ceb72'
-  /niucloud/addon/hello_world/uni-app:
-    newFile: null
-    oldFile: !uuid '6b4dba9eabf3a6c6565b20e8a6a284fe148bab39'
-  /niucloud/addon/hello_world/uni-app/components:
-    newFile: null
-    oldFile: !uuid 'cf6d113bfa0cf0b037bcf7a3777065d14280cfc0'
-  /niucloud/addon/hello_world/uni-app/components/diy:
-    newFile: null
-    oldFile: !uuid 'a4e982684458cb660aab16b431aef989561675e0'
-  /niucloud/addon/hello_world/uni-app/components/diy/hello-text:
-    newFile: null
-    oldFile: !uuid '54f5937ade8714b05b1173c3339b00b5232a171f'
-  /niucloud/addon/hello_world/uni-app/components/diy/hello-text/index.vue:
-    newFile: null
-    oldFile: !uuid 'e414b18d5f3fecea788d65eae79ec15b948ea421'
-  /niucloud/addon/hello_world/uni-app/components/fixed:
-    newFile: null
-    oldFile: !uuid 'fa284ad1882a3fc4477689fcc409d9f9caec2f18'
-  /niucloud/addon/hello_world/uni-app/components/fixed/hello-index:
-    newFile: null
-    oldFile: !uuid '35a1d3111b51ccff64ac128c66ca1b634923e4aa'
-  /niucloud/addon/hello_world/uni-app/components/fixed/hello-index/index.vue:
-    newFile: null
-    oldFile: !uuid 'd02fe27cd7a24ce810669362a4feb6d886321cbd'
-  /niucloud/addon/hello_world/uni-app/locale:
-    newFile: null
-    oldFile: !uuid 'a707d6d71f8a5eeba84c7f5a1f5194a5624ec8a7'
-  /niucloud/addon/hello_world/uni-app/locale/en.json:
-    newFile: null
-    oldFile: !uuid '4efc14c30dd1a101b63c33bcdae9e06d5f90a575'
-  /niucloud/addon/hello_world/uni-app/locale/zh-Hans:
-    newFile: null
-    oldFile: !uuid '9046b2a17405bef668dff3c44a504ff38adf57ed'
-  /niucloud/addon/hello_world/uni-app/locale/zh-Hans.json:
-    newFile: null
-    oldFile: !uuid '47eaa2c6c61d86f40bbbb579bd615bd1dec694e8'
-  /niucloud/addon/hello_world/uni-app/locale/zh-Hans/pages.index.json:
-    newFile: null
-    oldFile: !uuid '1770d8c577175c8c577b863f2f47376b60dd4b5c'
-  /niucloud/addon/hello_world/uni-app/pages:
-    newFile: null
-    oldFile: !uuid 'a725a5025611b87b8e35a28c5ab74a65e41a41f4'
-  /niucloud/addon/hello_world/uni-app/pages/index.vue:
-    newFile: null
-    oldFile: !uuid '88943acd4f4f1a5d5abe5ac091ee37a1ec87dfff'
-gitCommitId: !uuid '1e068a53ef41bff7d3b7f656e541e7cb7818a7ef'
+  /admin:
+    newFile: !uuid '41ef323fe0ff46858372956ca2fcda073b2ce208'
+    oldFile: !uuid 'd15cddda996d836eed3608d41f6f15080dfa4640'
+  /admin/.env.development:
+    newFile: !uuid 'f920f9258c110384e1b1c8589196a79da32918c1'
+    oldFile: !uuid '82f8ea08db39d721feca3145fbdabc36246b162b'
+  /admin/.env.production:
+    newFile: !uuid '82b9c2c1516decf686ff875511e5acbcfaa2ce80'
+    oldFile: !uuid '4290f9e315280777fb2b409ba9f4c1831a184e9d'
+  /admin/components.d.ts:
+    newFile: !uuid '45910c142532a168a649da6c2722d9c3172b21a0'
+    oldFile: !uuid '81753e85175a1fb65a60bc7baa09c6c3f35926b8'
+  /admin/index.html:
+    newFile: !uuid 'c5f4452b43e691e52ceb5a1c497fdefbb5f9f014'
+    oldFile: !uuid '5ea97a166881a0d310f8104d9162d2eabaa631d1'
+  /admin/package-lock.json:
+    newFile: !uuid '7e513abfcafa718965d558490771882ff66e17e7'
+    oldFile: !uuid '06174509df322512fe7534e04bb7e55d099eaf57'
+  /admin/package.json:
+    newFile: !uuid '09c92e48e0512f5d713b530b2b3b188d7d93fb39'
+    oldFile: !uuid 'c459ef0bf23ce372e0bf10bf95664d6a2aee6e80'
+  /admin/public:
+    newFile: !uuid '6c455e54c10f57d355d509946515b800eb80504d'
+    oldFile: null
+  /admin/public/niucloud.ico:
+    newFile: !uuid 'd770505a2cb0ca4f036c9646b903b41094dac050'
+    oldFile: null
+  /admin/public/ueditor:
+    newFile: !uuid '22b188cf77f79e21d6398b0a72afdece7fee1d11'
+    oldFile: null
+  /admin/public/ueditor/dialogs:
+    newFile: !uuid '7563a5e8af3111b5515fbd65a015f8e5fc6dc9c1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/anchor:
+    newFile: !uuid '5fb90f1c7a6f1290ab38ccd8936ef4810ef79ec8'
+    oldFile: null
+  /admin/public/ueditor/dialogs/anchor/anchor.html:
+    newFile: !uuid 'c7f389fdf613a7dd93ec49f54c5a5973c6586a66'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment:
+    newFile: !uuid '443bab13b6b1608bf966b35aa2b7496d79635ca1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/attachment.css:
+    newFile: !uuid 'cbfc8722eff2664742207d4d1397240566b49358'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/attachment.html:
+    newFile: !uuid 'd549f11bbb745548e9b4ac7d271f2b0656fafe31'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/attachment.js:
+    newFile: !uuid 'b72c37bcbe1db56bed72707a315d7b5fee6e5600'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images:
+    newFile: !uuid 'f33b990623f580373836996b2df9fb495535c212'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/alignicon.gif:
+    newFile: !uuid '005a5ac65a3ddc9cdac037abdb5fe92267155a0d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/alignicon.png:
+    newFile: !uuid '4b6c444b78f31f4e9b381ce440ef5c0231bcec1f'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/bg.png:
+    newFile: !uuid '580be0a01dff4c70c72f78a3f40186660ee8eee0'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/file-icons.gif:
+    newFile: !uuid 'd8c02c27e242f0584fc6b214f35b4f6d8caec332'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/file-icons.png:
+    newFile: !uuid '3ff82c8c488f53a7aff67fbe39742e3321183eca'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/icons.gif:
+    newFile: !uuid '78459dea7b12ccbeec81d19ecdab22b1658e93b4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/icons.png:
+    newFile: !uuid '12e4700163ac87fa38ae3d92a2c39d0fb4690fed'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/image.png:
+    newFile: !uuid '19699f6a9c6b09cb18ec0f488242d9753d2e341b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/progress.png:
+    newFile: !uuid '717c4865c90a959c6a0e9ad1af9c777d900a2e9c'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/success.gif:
+    newFile: !uuid '8d4f3112b9d1df2147ed3b67d9736163dedd11e1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/attachment/images/success.png:
+    newFile: !uuid '94f968dc8fd3c7ca8f6cb599d006ef3f23b62c7d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio:
+    newFile: !uuid '76da972071e81b8e3806b93031160ed22e32e021'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/audio.css:
+    newFile: !uuid 'fe64ce7eeb957a788b9b66ecbd43f2303ba97bc0'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/audio.html:
+    newFile: !uuid '2219e2f5b79b9b17b2ec99f60fd9839129da3c4e'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/audio.js:
+    newFile: !uuid 'ab2bc03f27f05a24325593caad153d19d2c843ec'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images:
+    newFile: !uuid '336ceafe8bee10ff61efed8124841728a3698bf3'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/bg.png:
+    newFile: !uuid '580be0a01dff4c70c72f78a3f40186660ee8eee0'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/center_focus.jpg:
+    newFile: !uuid '262b02916c51c01ab71f942b7ea9d02382b0df07'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/file-icons.gif:
+    newFile: !uuid 'd8c02c27e242f0584fc6b214f35b4f6d8caec332'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/file-icons.png:
+    newFile: !uuid '3ff82c8c488f53a7aff67fbe39742e3321183eca'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/icons.gif:
+    newFile: !uuid '78459dea7b12ccbeec81d19ecdab22b1658e93b4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/icons.png:
+    newFile: !uuid '12e4700163ac87fa38ae3d92a2c39d0fb4690fed'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/image.png:
+    newFile: !uuid '19699f6a9c6b09cb18ec0f488242d9753d2e341b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/left_focus.jpg:
+    newFile: !uuid '7886d276dda2e0aecdae22393eac534ed507babf'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/none_focus.jpg:
+    newFile: !uuid '7c768dcb47aaa289135afd2bd0e8eb0b6ecb7536'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/progress.png:
+    newFile: !uuid '717c4865c90a959c6a0e9ad1af9c777d900a2e9c'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/right_focus.jpg:
+    newFile: !uuid '173e10d2d91026c7283566993afb2f3a0267ea40'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/success.gif:
+    newFile: !uuid '8d4f3112b9d1df2147ed3b67d9736163dedd11e1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/audio/images/success.png:
+    newFile: !uuid '94f968dc8fd3c7ca8f6cb599d006ef3f23b62c7d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background:
+    newFile: !uuid '39806dce84f21b5398a27709c7c8ca77cd8376c2'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background/background.css:
+    newFile: !uuid '73e3f8b7429fb5bf251102ef96938151d862da46'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background/background.html:
+    newFile: !uuid 'a71786f7ada6f98176baf397c2675211a2e4e98f'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background/background.js:
+    newFile: !uuid 'd40a25261077aa8b165c82b07d33ffc56db43efe'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background/images:
+    newFile: !uuid '482e1439933fdc723a8e697d79f5d317faadf10b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background/images/bg.png:
+    newFile: !uuid '580be0a01dff4c70c72f78a3f40186660ee8eee0'
+    oldFile: null
+  /admin/public/ueditor/dialogs/background/images/success.png:
+    newFile: !uuid '94f968dc8fd3c7ca8f6cb599d006ef3f23b62c7d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/contentimport:
+    newFile: !uuid '657fca1275b7bca2805d995b91230a56b0d876a8'
+    oldFile: null
+  /admin/public/ueditor/dialogs/contentimport/contentimport.html:
+    newFile: !uuid 'e8df0328b5014e947fabae1a17b16ec6c320f5fb'
+    oldFile: null
+  /admin/public/ueditor/dialogs/contentimport/contentimport.js:
+    newFile: !uuid 'aaa28f0163cd77fb82b3ea7658eac1bba8a5c3d4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion:
+    newFile: !uuid '3c492438b0424aa6c7f2377583b23063738af2b1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/emotion.css:
+    newFile: !uuid '6bfee851dd1d0753072223bfec18ffe58416c849'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/emotion.html:
+    newFile: !uuid 'a37edd66ffb58dc8348ce04cbe0f8d963e3b15bf'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/emotion.js:
+    newFile: !uuid '5e907f0b804c275049999198c000e11f3ec81398'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images:
+    newFile: !uuid '5692fea9e2c601f22c53d11731d136ab22159b32'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/0.gif:
+    newFile: !uuid '6964168b947afc2cf76780a85f43d4f77c257b77'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/bface.gif:
+    newFile: !uuid '14fe618ab58a9d46fee90074386b5581d47b92c9'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/cface.gif:
+    newFile: !uuid 'bff947f5216a49d8cd7fdd8d4e825808b3d14f6e'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/fface.gif:
+    newFile: !uuid '0d8a6afeb1cb2cc40c5d76f90630d8a9c1323ffe'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/jxface2.gif:
+    newFile: !uuid 'a959c90f7eb17adc455982b040244fd583eed888'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/neweditor-tab-bg.png:
+    newFile: !uuid '8f398b0958cdc5136a23b9745becc23a833aa325'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/tface.gif:
+    newFile: !uuid '1354f54b961211fb0253ccbd27a81da5dab5a639'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/wface.gif:
+    newFile: !uuid '5667160d8b6228d301fccb56a8c1441b4c4e4b58'
+    oldFile: null
+  /admin/public/ueditor/dialogs/emotion/images/yface.gif:
+    newFile: !uuid '51608be0e74434388bcfe1f55da5c3c019f0a708'
+    oldFile: null
+  /admin/public/ueditor/dialogs/formula:
+    newFile: !uuid 'f26b912d08e56fe30aa05d3698ed5e7d623fb43d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/formula/formula.html:
+    newFile: !uuid '12294f420c8848e0a3367eeb153c0772100f94bc'
+    oldFile: null
+  /admin/public/ueditor/dialogs/formula/formula.js:
+    newFile: !uuid 'de47bfeef567d40767ebe90fe5ccecab14dadf50'
+    oldFile: null
+  /admin/public/ueditor/dialogs/help:
+    newFile: !uuid '3d9f927648b95f48073713d06d55158732a894a4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/help/help.css:
+    newFile: !uuid '3f48f9d22c8416ef965fa247ec638a971c508f17'
+    oldFile: null
+  /admin/public/ueditor/dialogs/help/help.html:
+    newFile: !uuid '64136453e038d41c458df7ed5c1cef10c9900620'
+    oldFile: null
+  /admin/public/ueditor/dialogs/help/help.js:
+    newFile: !uuid '87e2c6ab397291a1c342c98e4b4d7ea3024e7398'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image:
+    newFile: !uuid '649869d1f343ba25beb619dd7e866aa2d662bff3'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/image.css:
+    newFile: !uuid 'bf35d20d2e878c4696de1d6e9ee5841910fc8d06'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/image.html:
+    newFile: !uuid '758a27e318b278b3fa7612e1874e2974cb279e96'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/image.js:
+    newFile: !uuid '82c7cc17a472e9b5d2fa82059838ad05e83d0bd4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images:
+    newFile: !uuid '7e9e2a12d7f1fcb6fa48d3c772c5a7d9f543330c'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/alignicon.jpg:
+    newFile: !uuid '754755b1b6e2b37d6090f68b80e91867fdcf1042'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/bg.png:
+    newFile: !uuid '580be0a01dff4c70c72f78a3f40186660ee8eee0'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/icons.gif:
+    newFile: !uuid '78459dea7b12ccbeec81d19ecdab22b1658e93b4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/icons.png:
+    newFile: !uuid '12e4700163ac87fa38ae3d92a2c39d0fb4690fed'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/image.png:
+    newFile: !uuid '19699f6a9c6b09cb18ec0f488242d9753d2e341b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/progress.png:
+    newFile: !uuid '717c4865c90a959c6a0e9ad1af9c777d900a2e9c'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/success.gif:
+    newFile: !uuid '8d4f3112b9d1df2147ed3b67d9736163dedd11e1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/image/images/success.png:
+    newFile: !uuid '94f968dc8fd3c7ca8f6cb599d006ef3f23b62c7d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/insertframe:
+    newFile: !uuid 'f19e6d953dce8cf824eba5f6d2b81a5384681dd8'
+    oldFile: null
+  /admin/public/ueditor/dialogs/insertframe/insertframe.html:
+    newFile: !uuid 'de0e375662586f185e18d9f9d5856cac0bb4aaa7'
+    oldFile: null
+  /admin/public/ueditor/dialogs/internal.js:
+    newFile: !uuid 'e1eec2c9f68626ee37deec257333e8e3aa470395'
+    oldFile: null
+  /admin/public/ueditor/dialogs/link:
+    newFile: !uuid 'f70fba77bbd9b7e1b806de6a7a12bba7a717069b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/link/link.html:
+    newFile: !uuid 'e75e685cd077b370b182356a95909ce15f984bca'
+    oldFile: null
+  /admin/public/ueditor/dialogs/preview:
+    newFile: !uuid 'c13ae70c6ec1a5ba6f84a194c50ea0a885018b6d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/preview/preview.html:
+    newFile: !uuid '97041df21703f27e5db72036cfde0d8f891346a1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl:
+    newFile: !uuid 'e1f0208e2f00914b1005f59d1121fab3c62ea6ca'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images:
+    newFile: !uuid 'bb974bdaa93d3104afa4d7b29bb7feba8d7fc3a7'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/addimg.png:
+    newFile: !uuid '03a87135bab65fa2633156789ed0f4a906d6c48b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/brush.png:
+    newFile: !uuid 'efa6fdb01a8e5cf161dc62bfb20894689a1730bd'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/delimg.png:
+    newFile: !uuid '5a892e40ad3257f632b34a873b517dd5d590cc9f'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/delimgH.png:
+    newFile: !uuid '2f0c5c9de33a431d1c8e50cd12da74505921ad7e'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/empty.png:
+    newFile: !uuid '0375196257ac3c859373b3ebebbabe6f16105587'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/emptyH.png:
+    newFile: !uuid '838ca723119499465f29e881a745f4d8a051e22c'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/eraser.png:
+    newFile: !uuid '63e87cecb90ed3ac0e4acbc257c6dddae5311e09'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/redo.png:
+    newFile: !uuid '12cd9bbefc637c7c0a394d00e9d70333ac0f6ea5'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/redoH.png:
+    newFile: !uuid 'd9f33d38a3d11ce10447830ce409a0890ecad264'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/scale.png:
+    newFile: !uuid '935a3f3e1eee04b8a3aa6f70681376298d11e22a'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/scaleH.png:
+    newFile: !uuid '72e64a9d0f3ef081ffda153c755600dc4a758e5b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/size.png:
+    newFile: !uuid '8366845059c94089aef92aa3aeeee79e242732eb'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/undo.png:
+    newFile: !uuid '084c7cc73f4058c8084e5ea3ab4e51fd105b7991'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/images/undoH.png:
+    newFile: !uuid 'fde7eb3c2e8080be0224b603f65c3fa5552418be'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/scrawl.css:
+    newFile: !uuid '4a4c1b3365655736b8e26d99d9f22b141b6e1eff'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/scrawl.html:
+    newFile: !uuid '6c27867ef9f2f1bcace1a8b6b89256eb86308647'
+    oldFile: null
+  /admin/public/ueditor/dialogs/scrawl/scrawl.js:
+    newFile: !uuid '6cb3bf239d93f6b26aca858b46a0b13ebef94e0e'
+    oldFile: null
+  /admin/public/ueditor/dialogs/searchreplace:
+    newFile: !uuid 'a466ba631c18192283cdb135f5356432482fef85'
+    oldFile: null
+  /admin/public/ueditor/dialogs/searchreplace/searchreplace.html:
+    newFile: !uuid 'dd96293cfd1792c1f6ef433ce92be408624c440b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/searchreplace/searchreplace.js:
+    newFile: !uuid 'c0ce80aa96ab21cbbaad5fa13a3f9a6eda1b39ea'
+    oldFile: null
+  /admin/public/ueditor/dialogs/spechars:
+    newFile: !uuid 'd14c65e6bcf62804402b1d7e4b8efc9b4544a406'
+    oldFile: null
+  /admin/public/ueditor/dialogs/spechars/spechars.html:
+    newFile: !uuid '3e7203557c56e163afb941d5ae4539ef88a36a93'
+    oldFile: null
+  /admin/public/ueditor/dialogs/spechars/spechars.js:
+    newFile: !uuid 'be1902d398b616559af3bb6c1c0e223e6df520b9'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table:
+    newFile: !uuid 'ba0545fae1d69a60e17beeefff1cb69b3a4ec10b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table/dragicon.png:
+    newFile: !uuid 'f26203bf3f0026891fc8374f109724a69eb38b22'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table/edittable.css:
+    newFile: !uuid '241849b4096ad64f1cc6689cb3c3174b820cfe78'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table/edittable.html:
+    newFile: !uuid 'dbc6a4f25642619434f45ee3c971affbfd0b16de'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table/edittable.js:
+    newFile: !uuid 'bb209538ed49921f2cef24d7a79c0eafd3cda107'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table/edittd.html:
+    newFile: !uuid '5a0be07932385d3bc9811aa872d1459911ea892f'
+    oldFile: null
+  /admin/public/ueditor/dialogs/table/edittip.html:
+    newFile: !uuid 'de519ce345eb59b705ae585e1d7fe149bf702b1f'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template:
+    newFile: !uuid '262a01fe444481316d7c9fc65336a509029d2b70'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/config.js:
+    newFile: !uuid 'b4cf379d8c6f9be690178650d1106cb3225db931'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images:
+    newFile: !uuid '57b9db0028bee512f186342ae5b93d542edac850'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images/bg.gif:
+    newFile: !uuid '8c1d10ad1933e02086e8a1b3c807c7d1e57d51db'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images/pre0.png:
+    newFile: !uuid '8f3c16ab121c6c9b6add955fd3de78247ccfd9a6'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images/pre1.png:
+    newFile: !uuid '5a03f9699886deef9aa0f52a7d252dea84baafef'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images/pre2.png:
+    newFile: !uuid '5a55672c1f9c4d41d5b5cf52d76bb2b7e7c6b186'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images/pre3.png:
+    newFile: !uuid 'd852d29f13bcf743e15df824901ab568123a5aae'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/images/pre4.png:
+    newFile: !uuid '0d7bc72ab99fe2c0ed9de1d89fd1c3e82ac3fd43'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/template.css:
+    newFile: !uuid 'f02dd7a4b08068eee86bd335760e4a4f0fd37bf1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/template.html:
+    newFile: !uuid '79020ce1f8013cc7ab01c6573180c678105b2fc1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/template/template.js:
+    newFile: !uuid '937228a9228ac000a80e2a8d0781236d9beb962d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video:
+    newFile: !uuid '77e104d68c99aeb4dc247bc6dbeff1ba823708a2'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images:
+    newFile: !uuid '336ceafe8bee10ff61efed8124841728a3698bf3'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/bg.png:
+    newFile: !uuid '580be0a01dff4c70c72f78a3f40186660ee8eee0'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/center_focus.jpg:
+    newFile: !uuid '262b02916c51c01ab71f942b7ea9d02382b0df07'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/file-icons.gif:
+    newFile: !uuid 'd8c02c27e242f0584fc6b214f35b4f6d8caec332'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/file-icons.png:
+    newFile: !uuid '3ff82c8c488f53a7aff67fbe39742e3321183eca'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/icons.gif:
+    newFile: !uuid '78459dea7b12ccbeec81d19ecdab22b1658e93b4'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/icons.png:
+    newFile: !uuid '12e4700163ac87fa38ae3d92a2c39d0fb4690fed'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/image.png:
+    newFile: !uuid '19699f6a9c6b09cb18ec0f488242d9753d2e341b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/left_focus.jpg:
+    newFile: !uuid '7886d276dda2e0aecdae22393eac534ed507babf'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/none_focus.jpg:
+    newFile: !uuid '7c768dcb47aaa289135afd2bd0e8eb0b6ecb7536'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/progress.png:
+    newFile: !uuid '717c4865c90a959c6a0e9ad1af9c777d900a2e9c'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/right_focus.jpg:
+    newFile: !uuid '173e10d2d91026c7283566993afb2f3a0267ea40'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/success.gif:
+    newFile: !uuid '8d4f3112b9d1df2147ed3b67d9736163dedd11e1'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/images/success.png:
+    newFile: !uuid '94f968dc8fd3c7ca8f6cb599d006ef3f23b62c7d'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/video.css:
+    newFile: !uuid '8bcd7f3d5ce4057ec5a86d53c5678d5a9ab21315'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/video.html:
+    newFile: !uuid '28669a7dd6a7eb9d4051187c2bc9842fc2f4d95b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/video/video.js:
+    newFile: !uuid 'a22f5fd142571cd7dd975f05ce934c59eb519965'
+    oldFile: null
+  /admin/public/ueditor/dialogs/wordimage:
+    newFile: !uuid 'cc250d86b82cd633c296612c03a5a424f72c41df'
+    oldFile: null
+  /admin/public/ueditor/dialogs/wordimage/wordimage.html:
+    newFile: !uuid '92c02c649096132c0e13f30a50701ed12643911b'
+    oldFile: null
+  /admin/public/ueditor/dialogs/wordimage/wordimage.js:
+    newFile: !uuid '39dacd2da396fdaa9a93b381af25418546c48331'
+    oldFile: null
+  /admin/public/ueditor/index.html:
+    newFile: !uuid 'de084beb41c4c3040227380c1bf3820f54f8faff'
+    oldFile: null
+  /admin/public/ueditor/lang:
+    newFile: !uuid 'c5798d1b84279c94e5da20cb61f225aba993f29a'
+    oldFile: null
+  /admin/public/ueditor/lang/en:
+    newFile: !uuid 'f689ab890d8126c816fa82887ec55675c9b7f150'
+    oldFile: null
+  /admin/public/ueditor/lang/en/en.js:
+    newFile: !uuid '7ba4a565a7109f2548cad1e358cc23a3d46a18d7'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images:
+    newFile: !uuid '1c6a541e8f52942ea1010d068b2d930cf9d5e816'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/addimage.png:
+    newFile: !uuid '3a2fd17121b9e0d435b2ca082d696c33b9f27b79'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/alldeletebtnhoverskin.png:
+    newFile: !uuid '355eeabbd8fc611ec984889883a2ec46e1cb6bb1'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/alldeletebtnupskin.png:
+    newFile: !uuid '61658ce6f10164478ce293c05f1f0485a8fa1fc4'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/background.png:
+    newFile: !uuid 'd5bf5fdd8ae94b603832031134b208c9bc72edf4'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/button.png:
+    newFile: !uuid '098874cb1fa85852d77ba9acbb5850c91c341fb7'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/copy.png:
+    newFile: !uuid 'f982e8bcbc6e0d6dde115a2cd5d094b12ad50f4f'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/deletedisable.png:
+    newFile: !uuid 'c8ee75094f59f0c1262806fd294d361f30f64f58'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/deleteenable.png:
+    newFile: !uuid '26acc883567c5d7fde8de3ba052d7754a5b1c539'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/listbackground.png:
+    newFile: !uuid '4f82ccd88fca215709827937769cb4c9216323b1'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/localimage.png:
+    newFile: !uuid 'dcecad477b3e75d0adec4f5edd6f97645ca0f4d2'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/music.png:
+    newFile: !uuid '2f495fe92ffecdce42b74fd57dca2687414711fb'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/rotateleftdisable.png:
+    newFile: !uuid '741526e0d5e6eb5c30eb0a62c9b1d6d558ed9cdf'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/rotateleftenable.png:
+    newFile: !uuid 'e164ddbd62a232f3a89826158c9795f6c082cc89'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/rotaterightdisable.png:
+    newFile: !uuid '5a78c26062ae546b046ca58d1c2b6647f62d2368'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/rotaterightenable.png:
+    newFile: !uuid 'd768531fca400de87d148dca3b9b7ae88bce4b61'
+    oldFile: null
+  /admin/public/ueditor/lang/en/images/upload.png:
+    newFile: !uuid '7bb15b3d6d6799504cf7093a1600bd7ece0d9ef5'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn:
+    newFile: !uuid '971b94688198800241c57c6e206df3ec57da404a'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn/images:
+    newFile: !uuid 'cf40cfac21e992e45b0a0a555da254bdab7a098a'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn/images/copy.png:
+    newFile: !uuid 'b2536aac72e763b9a872b507462458ecb96990f0'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn/images/localimage.png:
+    newFile: !uuid 'ba5f07af36d1b04d1aeb308d900b5e351d451dcc'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn/images/music.png:
+    newFile: !uuid '354edebc341b43e56a5e809686e17c279125b026'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn/images/upload.png:
+    newFile: !uuid '08d4d9268204a20ca343bf75784302cc706d2417'
+    oldFile: null
+  /admin/public/ueditor/lang/zh-cn/zh-cn.js:
+    newFile: !uuid 'a49e91d8212514f2cd06b5679ecee9d7b0c59cc8'
+    oldFile: null
+  /admin/public/ueditor/plugins:
+    newFile: !uuid 'b98074efa8532f2f065c84615293c28b18616afd'
+    oldFile: null
+  /admin/public/ueditor/plugins/demo:
+    newFile: !uuid 'd3a4cd7f20202e6f85817fe81206851c94b11399'
+    oldFile: null
+  /admin/public/ueditor/plugins/demo/demo.js:
+    newFile: !uuid 'addd6e0fd3a37d612e96adba5f3f825f355f83a1'
+    oldFile: null
+  /admin/public/ueditor/themes:
+    newFile: !uuid 'ce9c74b1e7302f5575f8cb03755d7605486748de'
+    oldFile: null
+  /admin/public/ueditor/themes/default:
+    newFile: !uuid 'ff2558143df14deb8cdbdb3b35036eb285ca9d1e'
+    oldFile: null
+  /admin/public/ueditor/themes/default/css:
+    newFile: !uuid '71fff9cec271ee3dc4ca2d3d53cb5703037f3cf1'
+    oldFile: null
+  /admin/public/ueditor/themes/default/css/ueditor.css:
+    newFile: !uuid '1544b010b081f8bfd9518091b56277ddede78efb'
+    oldFile: null
+  /admin/public/ueditor/themes/default/dialog.css:
+    newFile: !uuid 'b7130fb4a1795da29ff2e8ccd5fd4820ff49e81e'
+    oldFile: null
+  /admin/public/ueditor/themes/default/dialogbase.css:
+    newFile: !uuid '6b78254f58c124cc94c71ce8a7de99f87b2a661e'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts:
+    newFile: !uuid '7fa906f6579533810facf21b86a5e3d9fd486f18'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/ai.svg:
+    newFile: !uuid '80c5afed4092433bf6066938ec53dbb45996f6dd'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/apk.svg:
+    newFile: !uuid '96bef1ac280f5adf43d49010aec24b73054c5157'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/chm.svg:
+    newFile: !uuid '84325304ed856d5073d11fa82282a13f6cf68ff6'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/css.svg:
+    newFile: !uuid '94361c75892442e123812f24d41f21bb6a632244'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/doc.svg:
+    newFile: !uuid '30dd86058c79feaf5eaf995ac606e19ed687f513'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/docx.svg:
+    newFile: !uuid '30dd86058c79feaf5eaf995ac606e19ed687f513'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/dwg.svg:
+    newFile: !uuid 'e7eff1aa0ed908fd3888d1e60084232fcf2c3a3c'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/folder.svg:
+    newFile: !uuid '02e8edcbdb4b74f7dfa6820dda607ca4d496a0b9'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/gif.svg:
+    newFile: !uuid '6b749243587ff42246d529a447f19e876f7d6e53'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/html.svg:
+    newFile: !uuid '293584939978add1d7b6e7ad0b41813c762796f6'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/jpeg.svg:
+    newFile: !uuid 'd951ef4479ae7263a4c44a6948ff51bda191efb7'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/jpg.svg:
+    newFile: !uuid 'b3bcb680141bf0be99ece51b8a0355d1eb9c3677'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/log.svg:
+    newFile: !uuid 'f1f92366a2498ef43e69b9671b62b50a4d5efa8c'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/mp3.svg:
+    newFile: !uuid '6cc0e356aa55ec3ed8d2fd472b5ad4878e9e1920'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/mp4.svg:
+    newFile: !uuid '20c579de7f2381d7d6d722942ed9dfd61d900661'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/pdf.svg:
+    newFile: !uuid '335b9f769c39baf0c08a481953f892a0ed1fdbc7'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/png.svg:
+    newFile: !uuid '4f147d91574d258351bc77c511448b72cfd7d7fc'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/ppt.svg:
+    newFile: !uuid '4ea923e8138339fe47aee8a46430fb1034e20a0b'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/pptx.svg:
+    newFile: !uuid '4ea923e8138339fe47aee8a46430fb1034e20a0b'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/psd.svg:
+    newFile: !uuid '52fa08c4c8112024f868497c19404ba5499be8c4'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/rar.svg:
+    newFile: !uuid '2541fecafb3cb469ccaef86fb113ad880eb4b73f'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/svg.svg:
+    newFile: !uuid '8f7f37c0c116ce877b849a82b2da4f0183d1e181'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/torrent.svg:
+    newFile: !uuid '64296878540c73252485f7a5220a8362ce695b37'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/txt.svg:
+    newFile: !uuid '5b4c797f61832d02b1219e907fffe43602d6ea6b'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/unknown.svg:
+    newFile: !uuid '214a6f3968f4d60c8e8ddefb8b2245816f20f2df'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/xls.svg:
+    newFile: !uuid 'e4bd05fbfb432cde5d8f48cc0a27b17a300d9ac3'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/xlsx.svg:
+    newFile: !uuid 'e4bd05fbfb432cde5d8f48cc0a27b17a300d9ac3'
+    oldFile: null
+  /admin/public/ueditor/themes/default/exts/zip.svg:
+    newFile: !uuid '2541fecafb3cb469ccaef86fb113ad880eb4b73f'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images:
+    newFile: !uuid 'aaccd0ab6d0d7d99531d3bac7acbd6979e201c1e'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/anchor.gif:
+    newFile: !uuid '5aa797b2240a432d9f3f1d166ed5542eaf684937'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/arrow.png:
+    newFile: !uuid 'd9008866ba56c4a4715a3f883ccb3be941031206'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/arrow_down.png:
+    newFile: !uuid 'e9257e83b00375259f2f724c7cbac03d0df5ceb2'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/arrow_up.png:
+    newFile: !uuid '74277af1e6a8ef91f8fe664efde11377a5292dbc'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/button-bg.gif:
+    newFile: !uuid 'ec7fa2eabf0705226fe0c488d65198508bf547e9'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/cancelbutton.gif:
+    newFile: !uuid 'df4bc2c06d485df4403d689c98ee745a4cde8e97'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/charts.png:
+    newFile: !uuid '713965cc4c6971759c80a52290ddef9ab32776b6'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/cursor_h.gif:
+    newFile: !uuid 'd7c3e7e9eb5755d57ec03c34097c258244abe61a'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/cursor_h.png:
+    newFile: !uuid '2088fc24077a214aab0e758d571678a11dd41ce9'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/cursor_v.gif:
+    newFile: !uuid 'bb508db552b6ac3f670f9ce1fcb1e55669db0dd6'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/cursor_v.png:
+    newFile: !uuid '6f39ca3d84d5e3c2cea3639b4d97c43df32aa4d7'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/dialog-title-bg.png:
+    newFile: !uuid 'f744f267f797ebf9993b746ecaff21b85d556e83'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/filescan.png:
+    newFile: !uuid '1d271588692c1726e3521032f71d8354b66fab0e'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/highlighted.gif:
+    newFile: !uuid '9272b4915ad2b8d4052a19b4c80a41b7c71cf1f1'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/icons-all.gif:
+    newFile: !uuid '21915e59dede0aa22cda8c7097a14f0f1f68906c'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/icons.gif:
+    newFile: !uuid '7abd30a1c6516cda6376f335902e3cadbae64c89'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/icons.png:
+    newFile: !uuid 'c015e3aac9a84ebad11b932e84722124772d9641'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/img-cracked.png:
+    newFile: !uuid '3b1d38965486452bf9a13a913109299ec713c8f8'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/loaderror.png:
+    newFile: !uuid '35ff3336457d48dbecbc11698ef8245441a94f82'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/loading.gif:
+    newFile: !uuid 'b713e27dfba708a01c380e7c731a13b52a34edfc'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/lock.gif:
+    newFile: !uuid 'b4e6d7822a5af54c19e555f449a461baf464dc5e'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/neweditor-tab-bg.png:
+    newFile: !uuid '8f398b0958cdc5136a23b9745becc23a833aa325'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/pagebreak.gif:
+    newFile: !uuid '8d1cffd64af72709b1180b3b0a51bbfe30bcb8c6'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/scale.png:
+    newFile: !uuid 'f45adb585717879be556fc978daf9f951de45e57'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/sortable.png:
+    newFile: !uuid '1bca649698e187a80e1b1951fde99ddea3d7b038'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/spacer.gif:
+    newFile: !uuid '5bfd67a2d6f72ac3a55cbfcea5866e841d22f5d9'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/sparator_v.png:
+    newFile: !uuid '8cf5662da8c36a446e1e08eb71b992c730ab8d15'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/table-cell-align.png:
+    newFile: !uuid 'ddf42853ea5c00663e74d9195d1f1264ab684252'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/tangram-colorpicker.png:
+    newFile: !uuid '738e500cfcf2c746f977189b05a7fe43544e80f0'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/toolbar_bg.png:
+    newFile: !uuid '7ab685f4236ad543601b0d7dc43e429e041bee98'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/unhighlighted.gif:
+    newFile: !uuid '7ad0b67ae634d41e76848ec0b6696e8ac7e06983'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/upload.png:
+    newFile: !uuid '08d4d9268204a20ca343bf75784302cc706d2417'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/videologo.gif:
+    newFile: !uuid '555af7417d797f962b4990f437a9330b8caf59a4'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/word.gif:
+    newFile: !uuid '9ef5d09b7b30c4f3225f77788462e429cc494b9b'
+    oldFile: null
+  /admin/public/ueditor/themes/default/images/wordpaste.png:
+    newFile: !uuid '936775810b9ca1531a0973e73f9c3772eb6d69af'
+    oldFile: null
+  /admin/public/ueditor/themes/iframe.css:
+    newFile: !uuid '0131ced3eb00d3898bd79f8b8db4ad4d6fc3da51'
+    oldFile: null
+  /admin/public/ueditor/third-party:
+    newFile: !uuid 'db140add7d3056a22dd6e7252dd0e2b72e0a1297'
+    oldFile: null
+  /admin/public/ueditor/third-party/SyntaxHighlighter:
+    newFile: !uuid '9c00c7fdb3a9724e8166ae619e77283ef8103239'
+    oldFile: null
+  /admin/public/ueditor/third-party/SyntaxHighlighter/shCore.js:
+    newFile: !uuid '32491842526a32527bb92877f312b7dd2e94e5ee'
+    oldFile: null
+  /admin/public/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css:
+    newFile: !uuid 'e156a6f43a256b052703a062806dabeede52934a'
+    oldFile: null
+  /admin/public/ueditor/third-party/clipboard:
+    newFile: !uuid '73c1dfb6fd072f6011b7b537542dc14aa16a47fe'
+    oldFile: null
+  /admin/public/ueditor/third-party/clipboard/clipboard.js:
+    newFile: !uuid '3af718184080ed1129c87c7652a78aa21d7189cc'
+    oldFile: null
+  /admin/public/ueditor/third-party/codemirror:
+    newFile: !uuid '954b39cdadeada8689b8123a2a3de5bc0a3156a5'
+    oldFile: null
+  /admin/public/ueditor/third-party/codemirror/codemirror.css:
+    newFile: !uuid '3aa09b49636f4f816750e0a104f0704673363bea'
+    oldFile: null
+  /admin/public/ueditor/third-party/codemirror/codemirror.js:
+    newFile: !uuid '966c3207646e88639958b18f253893f7eef57e7a'
+    oldFile: null
+  /admin/public/ueditor/third-party/jquery-1.10.2.js:
+    newFile: !uuid 'da4170647dd102aa92a57cb4936ff6dfa58d78c2'
+    oldFile: null
+  /admin/public/ueditor/third-party/webuploader:
+    newFile: !uuid 'bc3e6faea28eedaeb8d901069b21b05817bbe571'
+    oldFile: null
+  /admin/public/ueditor/third-party/webuploader/webuploader.css:
+    newFile: !uuid 'f9d6db25b1198f5c8f1f1e5010b02882f1f91045'
+    oldFile: null
+  /admin/public/ueditor/third-party/webuploader/webuploader.js:
+    newFile: !uuid '50d95ce91c8ab1730fbea11198273767479807c1'
+    oldFile: null
+  /admin/public/ueditor/third-party/zeroclipboard:
+    newFile: !uuid 'd33d2173a5224379a00df4311b3543ec33997167'
+    oldFile: null
+  /admin/public/ueditor/third-party/zeroclipboard/ZeroClipboard.js:
+    newFile: !uuid '1d5d868d75056ea3564ba01ea4f835ec6a7511f9'
+    oldFile: null
+  /admin/public/ueditor/ueditor.all.js:
+    newFile: !uuid '8ae195e9f6b68623f45535a24c13ac1a1290f97c'
+    oldFile: null
+  /admin/public/ueditor/ueditor.config.js:
+    newFile: !uuid '5612c5b6dc4a69496811d25533ff555ac87815ed'
+    oldFile: null
+  /admin/public/ueditor/ueditor.parse.js:
+    newFile: !uuid '12cc71909e775a014e3a02f941984dc1c474042f'
+    oldFile: null
+gitCommitId: !uuid 'd7fa4d55d994d76a9b8c316416a6dce039383e22'
 renames: {
   }
-revisionId: 167
+revisionId: 168
