@@ -2,25 +2,19 @@
 branches: {
   }
 fileChange:
-  /web:
-    newFile: !uuid '277a1706af8100a043a1c60036d08435eb4a2e94'
-    oldFile: !uuid '987f55a79104cec8e222aa060d06211f082862d2'
-  /web/app:
-    newFile: !uuid '4240cebefc5b977bf7f0b5d4254c7d6098ed3033'
-    oldFile: !uuid '841487f4005d5dbef84c1ebaf08d9a8cf2172c44'
-  /web/app/pages:
-    newFile: !uuid 'e4f0543bd85ea7c7fec9747f8f8b65eaab28d401'
-    oldFile: !uuid '44cf1e95d61b799d1203b12b6f6d2726ca4e9d6f'
-  /web/app/pages/article:
-    newFile: !uuid '1a29c13c1bced4a02f82662a9b8eb15009ababf8'
-    oldFile: !uuid '71ab95c013d28dc4ae0fb290c101ce2de94840ff'
-  /web/app/pages/article/detail.vue:
-    newFile: !uuid '8884226e60605fcff7f5bab2ea6ab35ffce365d3'
-    oldFile: !uuid 'dfccdc05f36bc4e15945b337747116906fa5fd8a'
-  /web/package-lock.json:
-    newFile: !uuid '4dd7ab607ca7b6ab69ba64a74ad32801c542be56'
-    oldFile: !uuid 'e5899a62aefa7289c5df543dc5c9991d40aa49f1'
-gitCommitId: !uuid '9bf4dc983091bb41fa92e9cb9f68bdd627c2ca14'
+  /niucloud:
+    newFile: !uuid '807f39f8daed6a485f024ef0e6fe9fbe18dbd178'
+    oldFile: !uuid 'd2bec0d023530fb53cc6868c02ecc69806f4076e'
+  /niucloud/.gitignore:
+    newFile: !uuid '5269144f179ecd2ca6c8f4ed05e6a59858cfcc20'
+    oldFile: !uuid '5c6f5b639fd59eb46fe5969384b5691ae9f5d769'
+  /niucloud/runtime:
+    newFile: !uuid '82e3a754b6a0fcb238b03c0e47d05219fbf9cf89'
+    oldFile: null
+  /niucloud/runtime/.gitignore:
+    newFile: !uuid 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391'
+    oldFile: null
+gitCommitId: !uuid 'f48db0ef8f457bbbe19581b510dba7cc0e9eac94'
 renames: {
   }
-revisionId: 190
+revisionId: 191
