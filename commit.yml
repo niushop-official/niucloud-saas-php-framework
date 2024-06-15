@@ -2,22 +2,22 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid '730a773569a1ec6221accb49b3b7c9368fc9e0cb'
-    oldFile: !uuid 'd3d7d53ec52fe7682aa23b2a8551682a8d2123ec'
-  /niucloud/app:
-    newFile: !uuid '301e2267f50e3f286b0a1683733afd255dae2d0a'
-    oldFile: !uuid 'ba72dc8ff81d7b045ba5ab6422ddc4c601c737eb'
-  /niucloud/app/install:
-    newFile: !uuid '04b8a11cf22473c6f66582862cbfaeb77b649a06'
-    oldFile: !uuid '92601aefa83cb57606862eddb9e8918b8c9465cf'
-  /niucloud/app/install/source:
-    newFile: !uuid '9fd3ddcbaabe0babe35ace00812f1095d639215e'
-    oldFile: !uuid '2fdc250a2aea56cd5453e48dccf035bf4992b35b'
-  /niucloud/app/install/source/database.sql:
-    newFile: !uuid 'ff614229dfc1dfbb39fbe7a5924527618e6302af'
-    oldFile: !uuid 'fe605e4b5afd751f2ad52365352bec37fc1d430a'
-gitCommitId: !uuid 'fb606e9d868650a0690d65b80d9b80a8769e83dd'
+  /admin:
+    newFile: !uuid '4980138fd66d752a48435d8d5ba7a722922103e0'
+    oldFile: !uuid '6d0577c8ac8781cf33d059d6cc63bb70336603bb'
+  /admin/components.d.ts:
+    newFile: !uuid '2d55690b8326802a70c212b66e6374178bfd21b7'
+    oldFile: !uuid '45910c142532a168a649da6c2722d9c3172b21a0'
+  /admin/package-lock.json:
+    newFile: !uuid '0160f293b6d598fd8c43b38267c466729827744c'
+    oldFile: !uuid '7e513abfcafa718965d558490771882ff66e17e7'
+  /admin/package.json:
+    newFile: !uuid 'b0dfeb7c667c104d1b35eee7a88f5f40039c1ba4'
+    oldFile: !uuid '09c92e48e0512f5d713b530b2b3b188d7d93fb39'
+  /admin/vite.config.ts:
+    newFile: !uuid '4857267053964c1153573013553fe5ae58c15b86'
+    oldFile: !uuid '6d2f7e62d2dc7cb698f68d243869ac20ed61d6bb'
+gitCommitId: !uuid 'd3c47201ec3685f53dc143ec8aea66039a735b7d'
 renames: {
   }
-revisionId: 181
+revisionId: 182
