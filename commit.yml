@@ -2,238 +2,37 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'd2bec0d023530fb53cc6868c02ecc69806f4076e'
-    oldFile: !uuid '146dea5357bf96c26c6ac4c46a1b723605132023'
-  /niucloud/composer.json:
-    newFile: !uuid '84f5d32f6bf28b37ad1ebcc6db0ea849418e5a0c'
-    oldFile: !uuid '7bb3cfcd2cc8a14852877a1357e414c0b57aaa9e'
-  /niucloud/composer.lock:
-    newFile: !uuid '324dd5e00a4fe6b46dbcdce73bf7b7b80f220a6c'
-    oldFile: !uuid 'f3030a57ce972b3583b8ae3947c4ef29fdecf60e'
-  /niucloud/route:
-    newFile: !uuid '31c5280729dbfd61b2c2ece34f0d82e5e9835d79'
-    oldFile: !uuid 'a6ebcdfdaa7567828c1253471bb751c4b8cd0e83'
-  /niucloud/route/app.php:
-    newFile: !uuid 'c23d60478c27c1e48c304a0d4985d66b7b5f5ca7'
-    oldFile: !uuid 'a2588ecf3076b7173b85146f5eade8c0c48544b1'
-  /niucloud/vendor:
-    newFile: !uuid '36da25bf3566a49aba40eeea90db773b6a62c9b5'
-    oldFile: !uuid 'bc2a3f15300795c34a54460a3fdea56cf9c3e548'
-  /niucloud/vendor/365taofang:
-    newFile: !uuid '74b2ff7fd0c365d8e406a537f9bb269d24747869'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs:
-    newFile: !uuid 'd10ee781e7e8a70c02940208f7d1e479b0e79294'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/.gitignore:
-    newFile: !uuid '8f2077f70d275860fa89f2ae57129374faedf7af'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Help on License:
-    newFile: !uuid '1e4325ba9a0c35e0109047e7ed17e364024ab74e'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/LICENSE:
-    newFile: !uuid '4cd54f94ec02f83157521a51dde2bf532c5c499c'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Notice.MD:
-    newFile: !uuid '8a89435143ae02be6e1c56682042f4218ac8a451'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs:
-    newFile: !uuid '80f05ce873472c3835a41f9c38f46f51581df5d6'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal:
-    newFile: !uuid '340840d7d4f5e2414b1724fdd9f40231bdd7b671'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common:
-    newFile: !uuid '9338419a95dd40a1cf00479e95eaeb932833a1e2'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/CheckoutStream.php:
-    newFile: !uuid '6fbeebbb90b85592cadabb71a6ee3df2b32bc4df'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/ITransform.php:
-    newFile: !uuid 'a0c369c3247cd32ca30e8dc6ae07fe1286623600'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/Model.php:
-    newFile: !uuid '511e5f4c1cf290123438b16fdf150cba80e9841a'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/ObsTransform.php:
-    newFile: !uuid '03d42b69f55622bdcb08f1ec1ccf4b9a2c427af7'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/SchemaFormatter.php:
-    newFile: !uuid '46b896b14b5728b92486242b272f72edfea10187'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/SdkCurlFactory.php:
-    newFile: !uuid 'af563618af3e9216a26c7a29cf486fb4c68f103a'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/SdkStreamHandler.php:
-    newFile: !uuid 'c7075aca09f40db6c60e53db166d429dc2caa84e'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/ToArrayInterface.php:
-    newFile: !uuid 'e8d517739ab21a3b41a9f2da5677d01b50dd9e43'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/V2Transform.php:
-    newFile: !uuid 'b1ae4e82706ac56b4db95bd3df2c21bb0f278720'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/GetResponseTrait.php:
-    newFile: !uuid '90b842204090d589b547b376ff670c405b80f73d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource:
-    newFile: !uuid '158e9b7aa957e4b3654f005ddfede70cca72521d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/Constants.php:
-    newFile: !uuid '6f99d809b5d4987329647c2127358527dd1eada9'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/OBSConstants.php:
-    newFile: !uuid '490dd2134ce107bb9d087b97e23c80e40200dc71'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/OBSRequestResource.php:
-    newFile: !uuid '38ceb4227c5019909b6aa80b1ae205e2c8a45c84'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/V2Constants.php:
-    newFile: !uuid '57cb93d46b49f3705e9317f03fa21d1bb268b92b'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/V2RequestResource.php:
-    newFile: !uuid 'a59c9952108bb5d72a0e6f5fb0c90eeb76c30e7f'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/SendRequestTrait.php:
-    newFile: !uuid '6bfe5830acf8483462e87a29c2eb2fe92072d0e1'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature:
-    newFile: !uuid '9b5b718eaa8329df9656eaa1c304a8073da135bb'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/AbstractSignature.php:
-    newFile: !uuid '3d36604168e986904842936886ecce70bbd8c56a'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/DefaultSignature.php:
-    newFile: !uuid 'd83c230ff3623d6ea787235e067e516b105f3d56'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/SignatureInterface.php:
-    newFile: !uuid 'ae11c788c9976416a6838d54a37ad54ed457550d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/V4Signature.php:
-    newFile: !uuid 'f2a18575bb2c889e8ce6c4c0f5f35681ce6c1cad'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Log:
-    newFile: !uuid 'e03a31aba50edc5a7c1b42d120a90230edc76c38'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Log/ObsConfig.php:
-    newFile: !uuid 'aea8213916906e63a5c2d9ac706d18ef0ad7577e'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Log/ObsLog.php:
-    newFile: !uuid '7cc8c5df9b80a7ca03e7430e6f49958de33d5de1'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/ObsClient.php:
-    newFile: !uuid '41dc4bd6a1b704058fa2f53d86504ff5672a7196'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/ObsException.php:
-    newFile: !uuid '29d555e32bf77b0028e93c78170a14f7d4793be5'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/ObsImageClient.php:
-    newFile: !uuid '31f3ebd173af7b08e5fd2de856e22d138cd3dfc5'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/README.md:
-    newFile: !uuid '3348eccbfc53b4aaad77de6200bef69bf49e5e55'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/composer.json:
-    newFile: !uuid '90257d9fd64d2b302eb3fc7d2fbe5f1515f6995d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples:
-    newFile: !uuid 'aea3df46c8a1bc03999b03cac41c544af7a436da'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/BucketOperationsSample.php:
-    newFile: !uuid '4c98e55ec6bd10a3c73b5b1858e0c892859bddee'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ConcurrentCopyPartSample.php:
-    newFile: !uuid '4e1809055cc85492a497b0b649a69e1a72702d0d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ConcurrentDownloadObjectSample.php:
-    newFile: !uuid '17ff984cab5cc0d62d0ca5c359f623373c60478b'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ConcurrentUploadPartSample.php:
-    newFile: !uuid '7d558a786e344170c3744c7d88fa38d30a026a8f'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/CreateFolderSample.php:
-    newFile: !uuid '99ef7a54d35e885a8e60a707c8105deaa95e9f50'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/DeleteObjectsSample.php:
-    newFile: !uuid '66966006e7199d5ea970803e9036c570a95ab82a'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/DownloadSample.php:
-    newFile: !uuid '9e2ede07ffb582f0234a5f54fc710517f54cd554'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ListObjectsInFolderSample.php:
-    newFile: !uuid 'dcb7e38e4b07382e441cdea584ea4f975300ebd1'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ListObjectsSample.php:
-    newFile: !uuid '2087d9f888f8f88f5d42d999d4a3870f0d35ed33'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ListVersionsSample.php:
-    newFile: !uuid '3364ee0477831b2e365df53dc79455e20e0eaeb2'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ObjectMetaSample.php:
-    newFile: !uuid '55edf927ac7b1799cf8ff4879f14cd837b8fc53d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ObjectOperationsSample.php:
-    newFile: !uuid 'f1878808980bc1c057279deacda7f19a191b7d09'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ObsPhpDemo.php:
-    newFile: !uuid 'a80c2e8ccee4075ee7c44e08197616d5761e2ceb'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/PostObjectSample.php:
-    newFile: !uuid '2f1d32759929e5b9ca5fa60a808dc15e9642c33d'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/RestoreObjectSample.php:
-    newFile: !uuid 'a4bbb0e1d46e5f4b0292b86d50429da61cf14dd5'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/SimpleMultipartUploadSample.php:
-    newFile: !uuid '950f2699583320a8122de2a4e1ffe60bbd891322'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/TemporarySignatureSample.php:
-    newFile: !uuid 'cea21bfbfc45af79badacbbe1d908af8e332c499'
-    oldFile: null
-  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/obs-autoloader.php:
-    newFile: !uuid '98bef9aa4a76b886a45508f27191f05c35d7743d'
-    oldFile: null
-  /niucloud/vendor/composer:
-    newFile: !uuid 'eb944c1e19dde384e0e07585e3f52f72e10fbd32'
-    oldFile: !uuid '4c88d74be755f6b1602a327ce24e9e5b604249c7'
-  /niucloud/vendor/composer/InstalledVersions.php:
-    newFile: !uuid 'c6b54af7ba2e1e3e960134233321efe47aa4528c'
-    oldFile: !uuid '51e734a774b3ed9ca110a921cb40a74f8c7905c2'
-  /niucloud/vendor/composer/autoload_psr4.php:
-    newFile: !uuid '5ac1441af80b2dbb5ee77199697515abc2f9da7e'
-    oldFile: !uuid 'e6a5263f2b1ebb0a6081764084d59d83802b47e2'
-  /niucloud/vendor/composer/autoload_static.php:
-    newFile: !uuid '9808f331ed31f5fc3b585383b4998bb38d096a4f'
-    oldFile: !uuid 'c7be02155dc56768da62a5410ab13cb4d0e5219e'
-  /niucloud/vendor/composer/installed.json:
-    newFile: !uuid '19e1cb4cc5884ed15be8278d7312d17bbf880eb1'
-    oldFile: !uuid 'd2c047459c89cad44f1d6cea25340d5846450e25'
-  /niucloud/vendor/composer/installed.php:
-    newFile: !uuid '95e0a186caca075914bea9f47a21b03e4383c84f'
-    oldFile: !uuid '6b241505e4d069c58bdb0aedb777bd1d64e3e520'
-  /niucloud/vendor/kosinix:
-    newFile: !uuid '69edbec1e2365cea38951b08a8eaac386d54a490'
-    oldFile: !uuid '3d2c615ae74a84f578f763f829a36ba6ccf8b2a4'
-  /niucloud/vendor/kosinix/grafika:
-    newFile: !uuid 'd8d13ffbf5c565c10194c472789e0de995bc35fb'
-    oldFile: !uuid '233e55abee2464c8deac25c9f23c116fc7c36b00'
-  /niucloud/vendor/kosinix/grafika/src:
-    newFile: !uuid '16a2701b544e50c6f3439f52fc555e83ea18d3f1'
-    oldFile: !uuid 'a300b7cd8a71eca3b6a91c66241cdf184925cb25'
-  /niucloud/vendor/kosinix/grafika/src/Grafika:
-    newFile: !uuid '4973f84aaa914f03f2eb299793e7509d4991dc46'
-    oldFile: !uuid 'd20098929518b226bb4d4c7a68f08e43e04b0ca8'
-  /niucloud/vendor/kosinix/grafika/src/Grafika/Gd:
-    newFile: !uuid '3663f97ae66575082459fddb45e4efae8204f65f'
-    oldFile: !uuid '8223cb09ad9931b266b923c32e8c99da21b8bc24'
-  /niucloud/vendor/kosinix/grafika/src/Grafika/Gd/Editor.php:
-    newFile: !uuid 'f51b8d2df071940180302c0e280aaabc87b51500'
-    oldFile: !uuid '1fb29a57fd4025a22e42ed474018f264f81b4da2'
-  /niucloud/vendor/services.php:
-    newFile: !uuid 'f383fad85afe15a312776bb4cc07708c02fc2548'
-    oldFile: !uuid 'bea9f7bd2f5c1f0d334d580e7abce1fec8165564'
-gitCommitId: !uuid '96533ab7b00a2c43858b5400a84ff1133b1bb9c2'
+  /uni-app:
+    newFile: !uuid 'a3a1e5c9992fc58407f5ad246853b15b01b6fd8f'
+    oldFile: !uuid '6d4ecd0f529a66dcd1e02038c7fbce38dd7278d7'
+  /uni-app/src:
+    newFile: !uuid '8f41e6a6d70090ce160fe40983d7ba49d3602dda'
+    oldFile: !uuid 'c216e26b2b06759e21ed47ee02791ba0aa3f0c58'
+  /uni-app/src/App.vue:
+    newFile: !uuid 'ca856c82b2137f80f126a4f76f219fe150eb5775'
+    oldFile: !uuid '199f525865b694b7cf1328a3830f8b1478ef12d4'
+  /uni-app/src/addon:
+    newFile: !uuid 'c735d4da99475620ae4871b515ba3b5444c3363c'
+    oldFile: !uuid 'c202dc6d48f60f0a5c3150811bd7d84ecb231d28'
+  /uni-app/src/addon/components:
+    newFile: !uuid 'e82e133a9b487c99dbc46210c41ce7b89fe54d10'
+    oldFile: !uuid '796d1df17762ffb432e8fa2a3c71c63beb7f6347'
+  /uni-app/src/addon/components/diy:
+    newFile: !uuid '4d516228973bc3dc5d486d755a8d51254d948f81'
+    oldFile: !uuid 'a909331baf2cdd5e8872917d3c8c0bbe9c184ddb'
+  /uni-app/src/addon/components/diy/group:
+    newFile: !uuid 'eb1198bca74decb7865ef5282ce01122c3f9783c'
+    oldFile: !uuid '1fa1a0fd28b8acbdb3e1be9a43a79b8aeff4a68e'
+  /uni-app/src/addon/components/diy/group/index.vue:
+    newFile: !uuid '1e09a79bb99a311b0db1fc27c16d8fe08821bef4'
+    oldFile: !uuid '0cd1466e4005a6af89a51d04059046a88fbc50a6'
+  /uni-app/src/manifest.json:
+    newFile: !uuid '3e9ba82c9fd0d9b855a617b6128b14516797c873'
+    oldFile: !uuid 'f3a46c5049fcf0efa05cd9ee20d73e649a8a9960'
+  /uni-app/src/pages.json:
+    newFile: !uuid '3c259f73d134bea22d00a7a0a02512a9f85347a6'
+    oldFile: !uuid '9d6a20c254bb2a7a0eccb600aaf64133f128fc98'
+gitCommitId: !uuid '8a1dea9ea9f0286f20b8df7d5a3e5c6a0883ffad'
 renames: {
   }
-revisionId: 187
+revisionId: 188
