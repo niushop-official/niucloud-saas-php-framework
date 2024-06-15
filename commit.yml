@@ -3,291 +3,237 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '146dea5357bf96c26c6ac4c46a1b723605132023'
-    oldFile: !uuid '7adde85ca40235845575d2c37bd4775ad8fc2cbb'
-  /niucloud/public:
-    newFile: !uuid '02b8b27a43373a8dc1d70a8b5ba082c6bd133d70'
-    oldFile: !uuid 'e77a1ca3312df7560e33530e69b8ecc685d9467f'
-  /niucloud/public/static:
-    newFile: !uuid 'd184b8a4b1701224752f8c89460c82cf19b3e069'
-    oldFile: !uuid '2df47dab9cf56deb1060803608b9020e3eed80ad'
-  /niucloud/public/static/resource:
-    newFile: !uuid '6670b0c7ec8972ea3c93ee21362a954e711b587d'
-    oldFile: !uuid 'b67a40f174433299fc151686b9cb242facdfa9d1'
-  /niucloud/public/static/resource/images:
-    newFile: !uuid 'a93357d3fdbc6a72c8f6b4fd9c55965ffa07e55b'
-    oldFile: !uuid '4f6e858a7ff6a3aa8920bf2e86ebc7d148fc984a'
-  /niucloud/public/static/resource/images/app:
-    newFile: !uuid '7edfb5be20f71376be2ddb18b7816f0bfad4c0ed'
-    oldFile: !uuid '7ed06a7579b9dd62fcdefcea80f21083b22de5c5'
-  /niucloud/public/static/resource/images/app/button.png:
-    newFile: !uuid '90591b91677e503dee2fe989e96d3947ee50c98f'
-    oldFile: !uuid '7b0c655445804f007e5b86ce9161d8f2e9c79c65'
-  /niucloud/public/static/resource/images/app/button_bg1.png:
-    newFile: !uuid 'f2710d2507ddfad297d9edd751fa48a26e6b0403'
-    oldFile: !uuid 'f51cbeeafc6b9d3612cf2bb0af12b6ac4c540194'
-  /niucloud/public/static/resource/images/app/button_bg2.png:
-    newFile: !uuid '7bd6690b58b8300c5a30c3e466ac3ea8b0acb422'
-    oldFile: !uuid '3fade0e3200e098ea318435c26e8bfb522e63da8'
-  /niucloud/public/static/resource/images/app/coupon.png:
-    newFile: null
-    oldFile: !uuid 'f334283b3ac3607f370a470f5538f9e7c6a0b5c1'
-  /niucloud/public/static/resource/images/app/packet01.png:
-    newFile: null
-    oldFile: !uuid 'a8d301f15e9fbc4acd51d8e159c6623f7638c20e'
-  /niucloud/public/static/resource/images/app/point.png:
-    newFile: null
-    oldFile: !uuid '0611d4056428c435b4720b9190d99ad53197bd8a'
-  /niucloud/public/static/resource/images/diy:
-    newFile: !uuid '1ac0b8b9dd786ab8a3ef655586e8e2ff0a83237a'
-    oldFile: !uuid '0213fe0ce44c1c0e0571c1161fe9f50da86d74c3'
-  /niucloud/public/static/resource/images/diy/notice:
-    newFile: !uuid 'fd627468aa779d4176082119245818b90469389c'
-    oldFile: !uuid 'd8afc7b75bff7245cdac04945c7f5daf91d5dc1d'
-  /niucloud/public/static/resource/images/diy/notice/style_2_new.png:
-    newFile: !uuid '02c2156f83f94cb9a851a6cd7cd7418da150650f'
+    newFile: !uuid 'd2bec0d023530fb53cc6868c02ecc69806f4076e'
+    oldFile: !uuid '146dea5357bf96c26c6ac4c46a1b723605132023'
+  /niucloud/composer.json:
+    newFile: !uuid '84f5d32f6bf28b37ad1ebcc6db0ea849418e5a0c'
+    oldFile: !uuid '7bb3cfcd2cc8a14852877a1357e414c0b57aaa9e'
+  /niucloud/composer.lock:
+    newFile: !uuid '324dd5e00a4fe6b46dbcdce73bf7b7b80f220a6c'
+    oldFile: !uuid 'f3030a57ce972b3583b8ae3947c4ef29fdecf60e'
+  /niucloud/route:
+    newFile: !uuid '31c5280729dbfd61b2c2ece34f0d82e5e9835d79'
+    oldFile: !uuid 'a6ebcdfdaa7567828c1253471bb751c4b8cd0e83'
+  /niucloud/route/app.php:
+    newFile: !uuid 'c23d60478c27c1e48c304a0d4985d66b7b5f5ca7'
+    oldFile: !uuid 'a2588ecf3076b7173b85146f5eade8c0c48544b1'
+  /niucloud/vendor:
+    newFile: !uuid '36da25bf3566a49aba40eeea90db773b6a62c9b5'
+    oldFile: !uuid 'bc2a3f15300795c34a54460a3fdea56cf9c3e548'
+  /niucloud/vendor/365taofang:
+    newFile: !uuid '74b2ff7fd0c365d8e406a537f9bb269d24747869'
     oldFile: null
-  /niucloud/public/static/resource/images/diy/vert_m_balance.png:
-    newFile: !uuid 'bc5680aa9b03eea7795a3180df6b44c5b8a30dfc'
-    oldFile: !uuid '2b753612b1a425c9bf708fd8d173310eff0ad28a'
-  /niucloud/public/static/resource/images/diy/vert_m_develop.png:
-    newFile: !uuid '4c19a7ade30d224791698854f5af8c17e9a70f67'
-    oldFile: !uuid '4ec720c51ca6994e9f5918c7fa51c041214bfd24'
-  /niucloud/public/static/resource/images/diy/vert_m_personal.png:
-    newFile: !uuid 'ea104dd7d2675ca9c4d7ff2592145278ffaa7570'
-    oldFile: !uuid 'b941fade387ecfc1e71aa91a5d0313cb0b44f121'
-  /niucloud/public/static/resource/images/diy/vert_m_point.png:
-    newFile: !uuid 'd0c05ae9d287fa0b16cd641bf8e56eb02614c63a'
-    oldFile: !uuid 'aa2e94ec92389059c5d5bafe14aba2d801a62ed4'
-  /niucloud/public/static/resource/images/diy/vert_m_service.png:
-    newFile: !uuid '82d975fac7d42638b30641e26f88414660d2aab1'
-    oldFile: !uuid 'db380cfbfba610c8c39c39a6f54419727043facc'
-  /niucloud/public/static/resource/images/member:
-    newFile: !uuid '9e44254abf0498c4257bafe83a5bdfacf819368e'
-    oldFile: !uuid '784cbc3000310f0833a4200ecd01b03a5ed77adb'
-  /niucloud/public/static/resource/images/member/apply_withdrawal:
-    newFile: !uuid '9de9234577ec30668c578d5410942693f1ad6991'
-    oldFile: !uuid '9c45538022a0ecdacc632a4e595b1774c61cf2cb'
-  /niucloud/public/static/resource/images/member/apply_withdrawal/alipay-icon.png:
-    newFile: !uuid '502f893e43848a1c58be50893e3bc47e7a0d8a11'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs:
+    newFile: !uuid 'd10ee781e7e8a70c02940208f7d1e479b0e79294'
     oldFile: null
-  /niucloud/public/static/resource/images/member/apply_withdrawal/bank-icon.png:
-    newFile: !uuid '8068a476bbd86a2c679de220bbae36e2340b601e'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/.gitignore:
+    newFile: !uuid '8f2077f70d275860fa89f2ae57129374faedf7af'
     oldFile: null
-  /niucloud/public/static/resource/images/member/apply_withdrawal/wechat.png:
-    newFile: !uuid 'b6be562f2523f45c5e3bab2503e0d7fc8dd059f2'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Help on License:
+    newFile: !uuid '1e4325ba9a0c35e0109047e7ed17e364024ab74e'
     oldFile: null
-  /niucloud/public/static/resource/images/member/balance_bg.png:
-    newFile: !uuid 'f7f82914c3850f56dd4940121e9062aa3e54a4d0'
-    oldFile: !uuid '07fc53d3413d9001470ffd980ff732ab6191eb37'
-  /niucloud/public/static/resource/images/member/benefits:
-    newFile: !uuid 'b8f454fdce738f2d40087405262425cdad3eea83'
-    oldFile: !uuid '9a517df1489384e1a27f3c5f7a54a4172b2bfc4a'
-  /niucloud/public/static/resource/images/member/benefits/benefits_badge.png:
-    newFile: !uuid 'e485d9caf6c703e0ebfce2c64f8bdbe80ab12bc3'
-    oldFile: !uuid '01e426cb312dab0ddfeec3d0f2225380799856ef'
-  /niucloud/public/static/resource/images/member/benefits/benefits_discount.png:
-    newFile: !uuid '945aaa4938b9e806f4883da7acd85154900e31f1'
-    oldFile: !uuid 'ee69f744e1ff11bedc4382947dd9624137fe9ed2'
-  /niucloud/public/static/resource/images/member/benefits/benefits_experience.png:
-    newFile: !uuid 'a7ebe50a0abe5a606b5c9a3540d201bb0d10c800'
-    oldFile: !uuid 'be65ccb6f8bd7e621902cd0141eeba9c32aa2f74'
-  /niucloud/public/static/resource/images/member/benefits/benefits_kefu.png:
-    newFile: !uuid '92c926557c0a3651c47c03d23600d3ddb1117976'
-    oldFile: !uuid '005005aa822adff917cdc1b20908611e97a5bc16'
-  /niucloud/public/static/resource/images/member/commission:
-    newFile: !uuid '65d92ecc9a3696f5cbd10f4f74eaa373fdfe4c86'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/LICENSE:
+    newFile: !uuid '4cd54f94ec02f83157521a51dde2bf532c5c499c'
     oldFile: null
-  /niucloud/public/static/resource/images/member/commission/account_bg.png:
-    newFile: !uuid '23174cbb7de7a4ba32540818b2072deb7215c96a'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Notice.MD:
+    newFile: !uuid '8a89435143ae02be6e1c56682042f4218ac8a451'
     oldFile: null
-  /niucloud/public/static/resource/images/member/commission/commission_bg.png:
-    newFile: !uuid '263c5277d7bfa53e171a1917fdc683a7f8037409'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs:
+    newFile: !uuid '80f05ce873472c3835a41f9c38f46f51581df5d6'
     oldFile: null
-  /niucloud/public/static/resource/images/member/commission/level_icon.png:
-    newFile: !uuid 'a59cbfe336f205aaadf9bca13f24445ebd360e52'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal:
+    newFile: !uuid '340840d7d4f5e2414b1724fdd9f40231bdd7b671'
     oldFile: null
-  /niucloud/public/static/resource/images/member/gift:
-    newFile: !uuid 'b5f6c4c588c0d60cf5df2f4366faf7772a2608e0'
-    oldFile: !uuid '512902d10b6de550b72555cca4f86426e5f398f7'
-  /niucloud/public/static/resource/images/member/gift/gift_balance_bg.png:
-    newFile: !uuid '14d9bc88e1d90b0716d7f9df9120cf1f6f589cba'
-    oldFile: !uuid '4572c290f9927257f02581538ac23f3dbedb7fcd'
-  /niucloud/public/static/resource/images/member/gift/gift_point_bg.png:
-    newFile: !uuid '8f05a83a73022d9973c1a802b5b60a73770c72a7'
-    oldFile: !uuid '22c90f04ba41cab25ea3d04bf77df390c7ade0d7'
-  /niucloud/public/static/resource/images/member/level:
-    newFile: !uuid '935065b9a09d1767b47b11903eb16b0e13d52bf5'
-    oldFile: !uuid '76248e98d048ff1a6504b1b8a7b31d90a9d174eb'
-  /niucloud/public/static/resource/images/member/level/bg.png:
-    newFile: !uuid '21e03dddbdebcbe7c2bc51d887de49d358a2dbc3'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common:
+    newFile: !uuid '9338419a95dd40a1cf00479e95eaeb932833a1e2'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/bg_1.png:
-    newFile: !uuid '21edefa5e4cac34ba9388e7070ccb26b895e27a1'
-    oldFile: !uuid 'd38f8b66f36f1a0f4f14aed74203d7664ae2d634'
-  /niucloud/public/static/resource/images/member/level/bg_2.png:
-    newFile: !uuid 'ce4e8422e91b9c901b6262d345a2fcd17a710249'
-    oldFile: !uuid 'bd64bdf4f65f4ce47885f670fca27cc1c268745a'
-  /niucloud/public/static/resource/images/member/level/bg_3.png:
-    newFile: !uuid '813b266ea0ab600b5c8907a290edc317ac51d68f'
-    oldFile: !uuid '7d12c70ea2fdb2983925c493ee9d581b5453e46a'
-  /niucloud/public/static/resource/images/member/level/bg_4.png:
-    newFile: !uuid 'a9dbf761f71558ac344c2615cde43e11b238304c'
-    oldFile: !uuid '00ca860e5bc296a17e1fcbc29536bb5e79564c7c'
-  /niucloud/public/static/resource/images/member/level/bg_5.png:
-    newFile: !uuid '727340ebc6c2a1ba9ab54353be55de46fa501c5e'
-    oldFile: !uuid '3fd213eaa6dbf498416d6ee67892519582b73cc1'
-  /niucloud/public/static/resource/images/member/level/bg_6.png:
-    newFile: !uuid 'bf4b4247f363708db2ffde2c8ddbeb954fbb3bc9'
-    oldFile: !uuid 'a53b72509af3eca83f97f18ee58827f377b854cc'
-  /niucloud/public/static/resource/images/member/level/bg_7.png:
-    newFile: !uuid '27637445ad3aa656edc07a719c3354cb03a829a2'
-    oldFile: !uuid '75e8b3041b1154e2b8f4ba86093d3a081bd33773'
-  /niucloud/public/static/resource/images/member/level/bg_8.png:
-    newFile: !uuid '9e92d72a8c20efe178c4f21c917ad1dd660f99fd'
-    oldFile: !uuid '2678dce6b664957e150b1cc60474996b5667efb3'
-  /niucloud/public/static/resource/images/member/level/default.png:
-    newFile: !uuid '09dc848688f52daeff582fd55aa3baf91e860966'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/CheckoutStream.php:
+    newFile: !uuid '6fbeebbb90b85592cadabb71a6ee3df2b32bc4df'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_1.png:
-    newFile: !uuid '176e76f7bdacede93679792d0b27e503a19be20e'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/ITransform.php:
+    newFile: !uuid 'a0c369c3247cd32ca30e8dc6ae07fe1286623600'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_2.png:
-    newFile: !uuid '2aef19ecbe9f1d14c3615091d1e75790a29310a0'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/Model.php:
+    newFile: !uuid '511e5f4c1cf290123438b16fdf150cba80e9841a'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_3.png:
-    newFile: !uuid 'a1eaf74affe2666d8bd899e315bc484ca77df777'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/ObsTransform.php:
+    newFile: !uuid '03d42b69f55622bdcb08f1ec1ccf4b9a2c427af7'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_4.png:
-    newFile: !uuid 'b1cc7ca23d65a5cd9c3b29a42aa8bf903a8a4605'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/SchemaFormatter.php:
+    newFile: !uuid '46b896b14b5728b92486242b272f72edfea10187'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_5.png:
-    newFile: !uuid '83c7f2e2dc10bb0e4d9d82b4cc27e7445713f997'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/SdkCurlFactory.php:
+    newFile: !uuid 'af563618af3e9216a26c7a29cf486fb4c68f103a'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_6.png:
-    newFile: !uuid '1fb846d5d811915a7b92ae9c9ed087e3f5064ef1'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/SdkStreamHandler.php:
+    newFile: !uuid 'c7075aca09f40db6c60e53db166d429dc2caa84e'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_7.png:
-    newFile: !uuid '0934f2c1f447e1f5ffe2672402b007ec8ab4cc1d'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/ToArrayInterface.php:
+    newFile: !uuid 'e8d517739ab21a3b41a9f2da5677d01b50dd9e43'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_8.png:
-    newFile: !uuid '3e85ea5e33987e5e4a338ef5431d26ecfafb0c09'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Common/V2Transform.php:
+    newFile: !uuid 'b1ae4e82706ac56b4db95bd3df2c21bb0f278720'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon1.png:
-    newFile: !uuid '2cfc0a23fff7c04fa202c872fa0a16043def2722'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/GetResponseTrait.php:
+    newFile: !uuid '90b842204090d589b547b376ff670c405b80f73d'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon2.png:
-    newFile: !uuid '09dc848688f52daeff582fd55aa3baf91e860966'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource:
+    newFile: !uuid '158e9b7aa957e4b3654f005ddfede70cca72521d'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon3.png:
-    newFile: !uuid '44a61ac680fe540e397d553976d863cbf570167f'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/Constants.php:
+    newFile: !uuid '6f99d809b5d4987329647c2127358527dd1eada9'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon4.png:
-    newFile: !uuid 'e6daee3a4cc04080ad0fb0240094a0f51fa3e21b'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/OBSConstants.php:
+    newFile: !uuid '490dd2134ce107bb9d087b97e23c80e40200dc71'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon5.png:
-    newFile: !uuid '5d2fc5f1bc8764cc6b9a30830650b3aa0a5d9cc8'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/OBSRequestResource.php:
+    newFile: !uuid '38ceb4227c5019909b6aa80b1ae205e2c8a45c84'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon6.png:
-    newFile: !uuid 'c56e46dd89ddc3b12fccb33118dde305a16d24cd'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/V2Constants.php:
+    newFile: !uuid '57cb93d46b49f3705e9317f03fa21d1bb268b92b'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon7.png:
-    newFile: !uuid '04cb03d6211b611403c22f29fe3c63dff967e6f2'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Resource/V2RequestResource.php:
+    newFile: !uuid 'a59c9952108bb5d72a0e6f5fb0c90eeb76c30e7f'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/level_icon8.png:
-    newFile: !uuid 'c4eff9cc45e56fcc1607f611fcc2fc52dda205b8'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/SendRequestTrait.php:
+    newFile: !uuid '6bfe5830acf8483462e87a29c2eb2fe92072d0e1'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_1.png:
-    newFile: !uuid '7ba07f794afa854ee172e3d54cc7b9f3c0aaffd3'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature:
+    newFile: !uuid '9b5b718eaa8329df9656eaa1c304a8073da135bb'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_2.png:
-    newFile: !uuid '4dfdd9b1526894fe828cbc2d1f2e3c8ad87fe5fe'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/AbstractSignature.php:
+    newFile: !uuid '3d36604168e986904842936886ecce70bbd8c56a'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_3.png:
-    newFile: !uuid '63e4b0c01d0ff00437113cb4c02b4d83eec57908'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/DefaultSignature.php:
+    newFile: !uuid 'd83c230ff3623d6ea787235e067e516b105f3d56'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_4.png:
-    newFile: !uuid '7be1332e11f5151087ffe6b30dd5cc45c37f989f'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/SignatureInterface.php:
+    newFile: !uuid 'ae11c788c9976416a6838d54a37ad54ed457550d'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_5.png:
-    newFile: !uuid 'cf6e80389beace3233b2bd04c29e74451fc04f45'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Internal/Signature/V4Signature.php:
+    newFile: !uuid 'f2a18575bb2c889e8ce6c4c0f5f35681ce6c1cad'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_6.png:
-    newFile: !uuid '3c020040dda3d839ef34f3ce069a68f318408d0a'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Log:
+    newFile: !uuid 'e03a31aba50edc5a7c1b42d120a90230edc76c38'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_7.png:
-    newFile: !uuid 'ba7931fa26c9308e3da26cb6a45ee0f49cd9d4ed'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Log/ObsConfig.php:
+    newFile: !uuid 'aea8213916906e63a5c2d9ac706d18ef0ad7577e'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/member_8.png:
-    newFile: !uuid 'c22edcde6c055a9551a2de4e5c5be5a764d415f0'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/Log/ObsLog.php:
+    newFile: !uuid '7cc8c5df9b80a7ca03e7430e6f49958de33d5de1'
     oldFile: null
-  /niucloud/public/static/resource/images/member/level/not_reach.png:
-    newFile: !uuid '97e2cc6f41f73cd5f10a2f348b461ddba2da19f4'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/ObsClient.php:
+    newFile: !uuid '41dc4bd6a1b704058fa2f53d86504ff5672a7196'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point:
-    newFile: !uuid 'e22b977cc9a516c741b0125660f137792c50ef57'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/ObsException.php:
+    newFile: !uuid '29d555e32bf77b0028e93c78170a14f7d4793be5'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/activity_1.png:
-    newFile: !uuid '172109ae04c676234d42c45d16d43856b5bc452a'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/Obs/ObsImageClient.php:
+    newFile: !uuid '31f3ebd173af7b08e5fd2de856e22d138cd3dfc5'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/activity_2.png:
-    newFile: !uuid 'b000f9bdc67ab831ce449e4d2f497b6672a85013'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/README.md:
+    newFile: !uuid '3348eccbfc53b4aaad77de6200bef69bf49e5e55'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/activity_3.png:
-    newFile: !uuid '9c31641329e220b5dd4a4ee6372ed5cb014ca782'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/composer.json:
+    newFile: !uuid '90257d9fd64d2b302eb3fc7d2fbe5f1515f6995d'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/activity_icon_1.png:
-    newFile: !uuid '18dbbe5a647036815dfaf557f422b935b4a9048f'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples:
+    newFile: !uuid 'aea3df46c8a1bc03999b03cac41c544af7a436da'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/activity_icon_2.png:
-    newFile: !uuid '950c4662b12cb37a5832658030751950d63184e6'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/BucketOperationsSample.php:
+    newFile: !uuid '4c98e55ec6bd10a3c73b5b1858e0c892859bddee'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/icon.png:
-    newFile: !uuid 'f999699efecc0aa632ffe7bad543c7c49238e7d0'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ConcurrentCopyPartSample.php:
+    newFile: !uuid '4e1809055cc85492a497b0b649a69e1a72702d0d'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/mask_group.png:
-    newFile: !uuid '626c79007e5cb2590d3fe0bb261fab7129f8544a'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ConcurrentDownloadObjectSample.php:
+    newFile: !uuid '17ff984cab5cc0d62d0ca5c359f623373c60478b'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/point_bg.png:
-    newFile: !uuid '9e1bd59d9f25e969ae87ef7f8822721d53b01e18'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ConcurrentUploadPartSample.php:
+    newFile: !uuid '7d558a786e344170c3744c7d88fa38d30a026a8f'
     oldFile: null
-  /niucloud/public/static/resource/images/member/point/top_bg.png:
-    newFile: !uuid '228053fa2a923b5eb06ed2e750b475e7c1d5cf97'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/CreateFolderSample.php:
+    newFile: !uuid '99ef7a54d35e885a8e60a707c8105deaa95e9f50'
     oldFile: null
-  /niucloud/public/static/resource/images/member/sign:
-    newFile: !uuid 'da87ac4530cf80f1f3bf3f91be4bb1aab9948c42'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/DeleteObjectsSample.php:
+    newFile: !uuid '66966006e7199d5ea970803e9036c570a95ab82a'
     oldFile: null
-  /niucloud/public/static/resource/images/member/sign/pack01.png:
-    newFile: !uuid '5e9946ec1b7722b0b859214159e806a6d82a3b56'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/DownloadSample.php:
+    newFile: !uuid '9e2ede07ffb582f0234a5f54fc710517f54cd554'
     oldFile: null
-  /niucloud/public/static/resource/images/member/sign/packet.png:
-    newFile: !uuid '7f7500a8544074c1ddc6fcc537e4c19c906f9906'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ListObjectsInFolderSample.php:
+    newFile: !uuid 'dcb7e38e4b07382e441cdea584ea4f975300ebd1'
     oldFile: null
-  /niucloud/public/static/resource/images/member/sign/packet01.png:
-    newFile: !uuid 'b0e5d9193be5fb3a1160c7c44b313d66b77f3d27'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ListObjectsSample.php:
+    newFile: !uuid '2087d9f888f8f88f5d42d999d4a3870f0d35ed33'
     oldFile: null
-  /niucloud/public/static/resource/images/member/sign/point.png:
-    newFile: !uuid '7dffcdd77fa082a2a2efc37f9c77d8a5ad71896c'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ListVersionsSample.php:
+    newFile: !uuid '3364ee0477831b2e365df53dc79455e20e0eaeb2'
     oldFile: null
-  /niucloud/public/static/resource/images/member/sign/point01.png:
-    newFile: !uuid '90ad9fbb80f5d98360cacc69298a7fd16247e4f9'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ObjectMetaSample.php:
+    newFile: !uuid '55edf927ac7b1799cf8ff4879f14cd837b8fc53d'
     oldFile: null
-  /niucloud/public/static/resource/images/system:
-    newFile: !uuid '517bbc114744925db556da27da28f8d3ef756774'
-    oldFile: !uuid 'f84bdb68c36a2d40bcdf56606181368332f620a2'
-  /niucloud/public/static/resource/images/system/layout_bussiness.png:
-    newFile: !uuid '74d9267f8ed70f30f8ab91d030a042cf0bd3ce8a'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ObjectOperationsSample.php:
+    newFile: !uuid 'f1878808980bc1c057279deacda7f19a191b7d09'
     oldFile: null
-  /niucloud/public/static/resource/images/system/layout_darkside.png:
-    newFile: !uuid '8984746a17a7abc8eeb00e3c59ea952967d2bf9f'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/ObsPhpDemo.php:
+    newFile: !uuid 'a80c2e8ccee4075ee7c44e08197616d5761e2ceb'
     oldFile: null
-  /niucloud/public/static/resource/images/system/layout_default.png:
-    newFile: !uuid 'cdfdd4f9a25920d52744f6f4167852e38a68b090'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/PostObjectSample.php:
+    newFile: !uuid '2f1d32759929e5b9ca5fa60a808dc15e9642c33d'
     oldFile: null
-  /niucloud/public/static/resource/images/system/layout_profession.png:
-    newFile: !uuid '85c01ad84a7524c41824f1f629c1f57e05067fef'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/RestoreObjectSample.php:
+    newFile: !uuid 'a4bbb0e1d46e5f4b0292b86d50429da61cf14dd5'
     oldFile: null
-gitCommitId: !uuid '1e8685100dcb813db499645daacf70b16db11882'
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/SimpleMultipartUploadSample.php:
+    newFile: !uuid '950f2699583320a8122de2a4e1ffe60bbd891322'
+    oldFile: null
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/examples/TemporarySignatureSample.php:
+    newFile: !uuid 'cea21bfbfc45af79badacbbe1d908af8e332c499'
+    oldFile: null
+  /niucloud/vendor/365taofang/huaweicloud-sdk-php-obs/obs-autoloader.php:
+    newFile: !uuid '98bef9aa4a76b886a45508f27191f05c35d7743d'
+    oldFile: null
+  /niucloud/vendor/composer:
+    newFile: !uuid 'eb944c1e19dde384e0e07585e3f52f72e10fbd32'
+    oldFile: !uuid '4c88d74be755f6b1602a327ce24e9e5b604249c7'
+  /niucloud/vendor/composer/InstalledVersions.php:
+    newFile: !uuid 'c6b54af7ba2e1e3e960134233321efe47aa4528c'
+    oldFile: !uuid '51e734a774b3ed9ca110a921cb40a74f8c7905c2'
+  /niucloud/vendor/composer/autoload_psr4.php:
+    newFile: !uuid '5ac1441af80b2dbb5ee77199697515abc2f9da7e'
+    oldFile: !uuid 'e6a5263f2b1ebb0a6081764084d59d83802b47e2'
+  /niucloud/vendor/composer/autoload_static.php:
+    newFile: !uuid '9808f331ed31f5fc3b585383b4998bb38d096a4f'
+    oldFile: !uuid 'c7be02155dc56768da62a5410ab13cb4d0e5219e'
+  /niucloud/vendor/composer/installed.json:
+    newFile: !uuid '19e1cb4cc5884ed15be8278d7312d17bbf880eb1'
+    oldFile: !uuid 'd2c047459c89cad44f1d6cea25340d5846450e25'
+  /niucloud/vendor/composer/installed.php:
+    newFile: !uuid '95e0a186caca075914bea9f47a21b03e4383c84f'
+    oldFile: !uuid '6b241505e4d069c58bdb0aedb777bd1d64e3e520'
+  /niucloud/vendor/kosinix:
+    newFile: !uuid '69edbec1e2365cea38951b08a8eaac386d54a490'
+    oldFile: !uuid '3d2c615ae74a84f578f763f829a36ba6ccf8b2a4'
+  /niucloud/vendor/kosinix/grafika:
+    newFile: !uuid 'd8d13ffbf5c565c10194c472789e0de995bc35fb'
+    oldFile: !uuid '233e55abee2464c8deac25c9f23c116fc7c36b00'
+  /niucloud/vendor/kosinix/grafika/src:
+    newFile: !uuid '16a2701b544e50c6f3439f52fc555e83ea18d3f1'
+    oldFile: !uuid 'a300b7cd8a71eca3b6a91c66241cdf184925cb25'
+  /niucloud/vendor/kosinix/grafika/src/Grafika:
+    newFile: !uuid '4973f84aaa914f03f2eb299793e7509d4991dc46'
+    oldFile: !uuid 'd20098929518b226bb4d4c7a68f08e43e04b0ca8'
+  /niucloud/vendor/kosinix/grafika/src/Grafika/Gd:
+    newFile: !uuid '3663f97ae66575082459fddb45e4efae8204f65f'
+    oldFile: !uuid '8223cb09ad9931b266b923c32e8c99da21b8bc24'
+  /niucloud/vendor/kosinix/grafika/src/Grafika/Gd/Editor.php:
+    newFile: !uuid 'f51b8d2df071940180302c0e280aaabc87b51500'
+    oldFile: !uuid '1fb29a57fd4025a22e42ed474018f264f81b4da2'
+  /niucloud/vendor/services.php:
+    newFile: !uuid 'f383fad85afe15a312776bb4cc07708c02fc2548'
+    oldFile: !uuid 'bea9f7bd2f5c1f0d334d580e7abce1fec8165564'
+gitCommitId: !uuid '96533ab7b00a2c43858b5400a84ff1133b1bb9c2'
 renames: {
   }
-revisionId: 186
+revisionId: 187
