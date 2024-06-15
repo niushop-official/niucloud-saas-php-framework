@@ -3,21 +3,39 @@ branches: {
   }
 fileChange:
   /admin:
-    newFile: !uuid '4980138fd66d752a48435d8d5ba7a722922103e0'
-    oldFile: !uuid '6d0577c8ac8781cf33d059d6cc63bb70336603bb'
-  /admin/components.d.ts:
-    newFile: !uuid '2d55690b8326802a70c212b66e6374178bfd21b7'
-    oldFile: !uuid '45910c142532a168a649da6c2722d9c3172b21a0'
-  /admin/package-lock.json:
-    newFile: !uuid '0160f293b6d598fd8c43b38267c466729827744c'
-    oldFile: !uuid '7e513abfcafa718965d558490771882ff66e17e7'
-  /admin/package.json:
-    newFile: !uuid 'b0dfeb7c667c104d1b35eee7a88f5f40039c1ba4'
-    oldFile: !uuid '09c92e48e0512f5d713b530b2b3b188d7d93fb39'
-  /admin/vite.config.ts:
-    newFile: !uuid '4857267053964c1153573013553fe5ae58c15b86'
-    oldFile: !uuid '6d2f7e62d2dc7cb698f68d243869ac20ed61d6bb'
-gitCommitId: !uuid 'd3c47201ec3685f53dc143ec8aea66039a735b7d'
+    newFile: !uuid '994359f8415070a4a91c5b0128440ec35683b583'
+    oldFile: !uuid '4980138fd66d752a48435d8d5ba7a722922103e0'
+  /admin/public:
+    newFile: !uuid '4534bdc9b71f5ef62ac3dcff6890503d29f3fdb7'
+    oldFile: !uuid '6c455e54c10f57d355d509946515b800eb80504d'
+  /admin/public/ueditor:
+    newFile: !uuid 'b11fe05345c5c86bee050beb0a104ec3c0d40bf0'
+    oldFile: !uuid '22b188cf77f79e21d6398b0a72afdece7fee1d11'
+  /admin/public/ueditor/dialogs:
+    newFile: !uuid 'b199e02e208e2bd36d752bc3d84f3803eff55963'
+    oldFile: !uuid '7563a5e8af3111b5515fbd65a015f8e5fc6dc9c1'
+  /admin/public/ueditor/dialogs/image:
+    newFile: !uuid '70e6fe4a689c9437c1bbc91207cdceccdf6ae19a'
+    oldFile: !uuid '649869d1f343ba25beb619dd7e866aa2d662bff3'
+  /admin/public/ueditor/dialogs/image/image.js:
+    newFile: !uuid 'aad6bae333a03e02da5333922193674ea43a9c23'
+    oldFile: !uuid '82c7cc17a472e9b5d2fa82059838ad05e83d0bd4'
+  /admin/public/ueditor/dialogs/video:
+    newFile: !uuid '73bca87bbe6d5c1dd461fffd438570b62feded94'
+    oldFile: !uuid '77e104d68c99aeb4dc247bc6dbeff1ba823708a2'
+  /admin/public/ueditor/dialogs/video/video.js:
+    newFile: !uuid '8ced40b889143ac3715bac31b313819a361f0947'
+    oldFile: !uuid 'a22f5fd142571cd7dd975f05ce934c59eb519965'
+  /admin/public/ueditor/dialogs/wordimage:
+    newFile: !uuid '3639e634e1caea0e7fb4fb216a84bf45cdcb850b'
+    oldFile: !uuid 'cc250d86b82cd633c296612c03a5a424f72c41df'
+  /admin/public/ueditor/dialogs/wordimage/wordimage.js:
+    newFile: !uuid '11dd1c63fe3050890118a5a269f1872309badb81'
+    oldFile: !uuid '39dacd2da396fdaa9a93b381af25418546c48331'
+  /admin/public/ueditor/ueditor.all.js:
+    newFile: !uuid '0b32c24f79a7ab64bf894521d54cddb5f46c507a'
+    oldFile: !uuid '8ae195e9f6b68623f45535a24c13ac1a1290f97c'
+gitCommitId: !uuid 'af96bb867b459161e7a2d84647e8c51804817ce5'
 renames: {
   }
-revisionId: 182
+revisionId: 183
