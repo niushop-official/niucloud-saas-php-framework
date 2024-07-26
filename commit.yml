@@ -3,912 +3,1680 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '4294ef377416c6521a3979e39ac2f9ea1646e19b'
-    oldFile: !uuid '2be73c3c4d1645a7538df6838e18218f0230482d'
-  /niucloud/app:
-    newFile: !uuid 'affc836e1fa4081059660112d644afa70278625c'
-    oldFile: !uuid 'b411c5ea066accf1be28b5d6a2b737c8269f0f2f'
-  /niucloud/app/Request.php:
-    newFile: !uuid 'd1dfe161ab9e1ca4d36004befad56bee4294054a'
-    oldFile: !uuid '6920dc91b360e65e2b8afb9430d8f65ef9ddd43f'
-  /niucloud/app/adminapi:
-    newFile: !uuid 'cfbad9a29a1ef7ebbbebee959aa7f846ff0721ae'
-    oldFile: !uuid 'dd7d02117e260e49cf9c9757ab0e342f105f7518'
-  /niucloud/app/adminapi/controller:
-    newFile: !uuid '5f2d81d70a1bd7a423ee341ded35a0f8d4bcb759'
-    oldFile: !uuid '7c15f0692d0650c1c1c5ac014fc7c0f39ad032ab'
-  /niucloud/app/adminapi/controller/addon:
-    newFile: !uuid '9ffbec157648a4f9c35afbf9418258aacc98fb44'
-    oldFile: !uuid '9bc1e8ac61d934dd1dc6d3a6fcca5b81cfdfa174'
-  /niucloud/app/adminapi/controller/addon/AddonDevelop.php:
-    newFile: !uuid '1358287386549047e4130cb4122bd0da526800d8'
-    oldFile: !uuid 'bf5e0896b948c7a05abfe37252c4f2a17d995a6e'
-  /niucloud/app/adminapi/controller/addon/Upgrade.php:
-    newFile: !uuid 'b374ebdd78b32b5fef856d76dc353ee236cdfc6c'
-    oldFile: !uuid 'af6e860c90bda218a7b006fe4402b9e3e0c7d087'
-  /niucloud/app/adminapi/controller/auth:
-    newFile: !uuid '1b4cac0bc023d68eb5cd8bfc199120bc081d85fb'
-    oldFile: !uuid 'd4ce588e16d6d487283ddf3bb286575cd5648a2a'
-  /niucloud/app/adminapi/controller/auth/Auth.php:
-    newFile: !uuid 'c0428ebf867adcd4f506dea81f3b946bf8c45863'
-    oldFile: !uuid '66a4c532493e1e54b55f559fa9f4cc4c09914771'
-  /niucloud/app/adminapi/controller/login:
-    newFile: !uuid '00493507e6ec447bfe0d294dc11a6609a6611f66'
-    oldFile: !uuid '43d3b16978f8034085fd191c10775c3289cd7534'
-  /niucloud/app/adminapi/controller/login/Config.php:
-    newFile: !uuid '68782788e037c59883d40760ba3cba186c248861'
-    oldFile: !uuid '1391d80079076be9d471617daabfa370007382a6'
-  /niucloud/app/adminapi/controller/login/Login.php:
-    newFile: !uuid 'a4f1408c41d414b008e9eaab1acd3112d342cc98'
-    oldFile: !uuid 'a98daf9290126b72338c294427acd002bdfe669d'
-  /niucloud/app/adminapi/controller/member:
-    newFile: !uuid 'e07bb237d3c3561c15ce9ae5cedde1214dcccb38'
-    oldFile: !uuid '302fa59c11606c03151c4617e90baf08517b87f1'
-  /niucloud/app/adminapi/controller/member/Account.php:
-    newFile: !uuid '861418da39f815b6a536f6df4145ad137b84fdcb'
-    oldFile: !uuid '8bcbb5bd868b3a146d021debbf92caec416244ca'
-  /niucloud/app/adminapi/controller/member/Member.php:
-    newFile: !uuid '9b6e4929f15523eafc2eafc21a3164d383fc5afe'
-    oldFile: !uuid '00d6461ff702ee6f5b9d8de2b51b8ceb2202c341'
-  /niucloud/app/adminapi/controller/member/MemberLevel.php:
-    newFile: !uuid '9c75cb989d4140acf34c4ec6db8b656ee8b6aea0'
-    oldFile: !uuid '765c64e8972a6e7d51e0d0ae6b2ee83bc381afc9'
-  /niucloud/app/adminapi/controller/pay:
-    newFile: !uuid '03af9ba094ad994dc010f4d119866d93f83d45ca'
-    oldFile: !uuid 'dcbc096291408c7dedd3bc40367e499c6b6e1c3b'
-  /niucloud/app/adminapi/controller/pay/Pay.php:
-    newFile: !uuid '53ca9070b321c6d2b39541a591b450a120b2f5f3'
-    oldFile: !uuid '84beda237e233f7e31db401b7760a1d2948ba5bc'
-  /niucloud/app/adminapi/controller/pay/PayChannel.php:
-    newFile: !uuid '712157291d3112354618a853ea1f17c4d5de1380'
-    oldFile: !uuid 'a8b6660751c5d07facd7d38a16fa272c54a530bf'
-  /niucloud/app/adminapi/controller/site:
-    newFile: !uuid '7073d156688c4a223615315b1effec1728efa70d'
-    oldFile: !uuid '40b782fa886f49c109fbb73ee1dc4fcfc7fa6be2'
-  /niucloud/app/adminapi/controller/site/SiteGroup.php:
-    newFile: !uuid '663ddfef38796308edfb066d9d5a3382e7a4f218'
-    oldFile: !uuid 'f96274bf9be26c6d975e23f50efec4bf4162b67f'
-  /niucloud/app/adminapi/controller/site/User.php:
-    newFile: !uuid '4e35b60d3a758b0bc5baec882623c36ff2d93ce1'
-    oldFile: !uuid 'c7a699909015870390ee715af383ead2c5118c8c'
-  /niucloud/app/adminapi/controller/sys:
-    newFile: !uuid 'aa3abfc7208e911372056f49b94cfab41987e3e6'
-    oldFile: !uuid '082536fabf18607c2b487672cd3691d11d0d8c6c'
-  /niucloud/app/adminapi/controller/sys/Agreement.php:
-    newFile: !uuid '154fb415d473f2d171b65fe78ffcc29f2aa0bc66'
-    oldFile: !uuid '7228475104ea3ae94852b856b1ad38445ce2ad77'
-  /niucloud/app/adminapi/controller/sys/App.php:
-    newFile: !uuid 'ffefd82692a84d3819375f1b7a3b368bba108661'
-    oldFile: !uuid '8dc6fadeb3f99c62976782c0272ce85805d1bddb'
-  /niucloud/app/adminapi/controller/sys/Common.php:
-    newFile: !uuid '2fb4ec6ca7da1bd3aeeee76ad3016baf1c2c96a6'
-    oldFile: !uuid 'c14f08f778e72881794e88aa4be0e459dfb981d7'
-  /niucloud/app/adminapi/controller/sys/Config.php:
-    newFile: !uuid '9b4964d6f683bfe5afa3d37b384fa13f2e5e69c4'
-    oldFile: !uuid 'c5d5da15018920cd4d5a278752e60e9607353a74'
-  /niucloud/app/adminapi/controller/sys/Menu.php:
-    newFile: !uuid '5bb9e33075df495c95ac97830112d5aa6e22131d'
-    oldFile: !uuid '1171de3344386a64f0f4e8116a0c2d9f5b05bd88'
-  /niucloud/app/adminapi/controller/sys/Printer.php:
-    newFile: !uuid '878b2c5f6d6ecc1c1a5ce9069d595e119ee495d4'
+    newFile: !uuid 'b4fa245100c04d471c0522a319fb4d82223360a4'
+    oldFile: !uuid '4294ef377416c6521a3979e39ac2f9ea1646e19b'
+  /niucloud/vendor:
+    newFile: !uuid 'a83801ff6ad120292a2564efcd106ee72021ae5f'
+    oldFile: !uuid '36da25bf3566a49aba40eeea90db773b6a62c9b5'
+  /niucloud/vendor/composer:
+    newFile: !uuid 'dfe8091868f30acfc48e417a2a072ddef3b2a5af'
+    oldFile: !uuid 'eb944c1e19dde384e0e07585e3f52f72e10fbd32'
+  /niucloud/vendor/composer/InstalledVersions.php:
+    newFile: !uuid '51e734a774b3ed9ca110a921cb40a74f8c7905c2'
+    oldFile: !uuid 'c6b54af7ba2e1e3e960134233321efe47aa4528c'
+  /niucloud/vendor/composer/autoload_psr4.php:
+    newFile: !uuid 'a234978f95bd6e096d22cfd1daa995cfe96b2bff'
+    oldFile: !uuid '5ac1441af80b2dbb5ee77199697515abc2f9da7e'
+  /niucloud/vendor/composer/autoload_static.php:
+    newFile: !uuid 'fe89f840e31cceecbb892424276cb9191700f34e'
+    oldFile: !uuid '9808f331ed31f5fc3b585383b4998bb38d096a4f'
+  /niucloud/vendor/composer/installed.json:
+    newFile: !uuid 'b4af6ae1ddf345b1549d5a5fdfd89dd5eb3c239b'
+    oldFile: !uuid '19e1cb4cc5884ed15be8278d7312d17bbf880eb1'
+  /niucloud/vendor/composer/installed.php:
+    newFile: !uuid '04dceec4db96ce6dd13d299c1d524d300f506cd2'
+    oldFile: !uuid '95e0a186caca075914bea9f47a21b03e4383c84f'
+  /niucloud/vendor/kkokk:
+    newFile: !uuid '0a216b8ae5abb96ea65a7a5a5c9bb5f2964ef922'
     oldFile: null
-  /niucloud/app/adminapi/controller/user:
-    newFile: !uuid 'c6025a30f231a29d36546888a7a7a30358163ed7'
-    oldFile: !uuid 'b4a4c9370eabf4973d5592eca7b051713fb69a2b'
-  /niucloud/app/adminapi/controller/user/User.php:
-    newFile: !uuid '97db5f002e633e6a80859cd5d3b8f704a066bf23'
-    oldFile: !uuid 'f13b58ea605d66cdd5ccd100ae94d4cffd56e089'
-  /niucloud/app/adminapi/controller/weapp:
-    newFile: !uuid 'c424263ccf8cce60f6623ea3237e92da6367cf77'
-    oldFile: !uuid '635d993ec872d20fd2bb54db0fab8695d77de88b'
-  /niucloud/app/adminapi/controller/weapp/Config.php:
-    newFile: !uuid '65109cd1d6452855d0b654ea7f4eeaefb34b7a30'
-    oldFile: !uuid '58fb4ae7e23376b783c87b43a8c27c49e90ebd1c'
-  /niucloud/app/adminapi/controller/weapp/Delivery.php:
-    newFile: !uuid '2c2a3b99678edfc6c3479711adc51566f4af1a1b'
-    oldFile: !uuid '51eee4a9026ebc89de7c1764207ed08195c06d7a'
-  /niucloud/app/adminapi/controller/weapp/Template.php:
-    newFile: !uuid 'fb52d78184e768b5ce62e6499a1ee8a4a32a9903'
-    oldFile: !uuid '216c2342d3d0a7a43c0c667964c977a10374476b'
-  /niucloud/app/adminapi/controller/weapp/Version.php:
-    newFile: !uuid 'e64af89889c46dbe98bc12ce44d503a68962ecfd'
-    oldFile: !uuid '86be2e640da98e4f2c382df715e3de7ccf9c44de'
-  /niucloud/app/adminapi/controller/wechat:
-    newFile: !uuid '25a627634e2909621ed64e0c38e7a92c7c3a2b94'
-    oldFile: !uuid '886dedf98696cb3f83b19faf80ea161762ceef84'
-  /niucloud/app/adminapi/controller/wechat/Reply.php:
-    newFile: !uuid '491ae71455d0f07183f72609f4cbfc0bdc08c4d7'
-    oldFile: !uuid '676bbe0db3ed0cf0e6e55ce2961a72f8df54f90f'
-  /niucloud/app/adminapi/controller/wechat/Template.php:
-    newFile: !uuid 'c8aa42c69500d98c0695d2767406697a8ef9e418'
-    oldFile: !uuid 'd450591b3d3ae2ff2b1d7a809ce5d9c0a23c1861'
-  /niucloud/app/adminapi/controller/wxoplatform:
-    newFile: !uuid '6159c2ba2077f83c78a247a256928ed2fe6b75db'
-    oldFile: !uuid 'f48029732882891b07245b44e40586db769c226f'
-  /niucloud/app/adminapi/controller/wxoplatform/Config.php:
-    newFile: !uuid '11d651e6c3ade7542bb4e004a8fe9cbee50cb880'
-    oldFile: !uuid '23acdb103aaaccedbe842de1bad911a6cbd3192e'
-  /niucloud/app/adminapi/route:
-    newFile: !uuid '793f130b898efc07c31dfea77a4922dd2d3b07c1'
-    oldFile: !uuid 'b2d228e152f519b5f372a63d14215405d12de054'
-  /niucloud/app/adminapi/route/diy.php:
-    newFile: !uuid 'd6ecef716822bdf15544399ea98c27c0e82cc671'
-    oldFile: !uuid 'f5282dc8b2dd9f3d367d3a745c9050084f6d334d'
-  /niucloud/app/adminapi/route/member.php:
-    newFile: !uuid 'c19f77cf28eb33c4225a251df1e6a3e86b57c833'
-    oldFile: !uuid 'a2259be9d1b2212c65aefe9f361d4c67e7588b33'
-  /niucloud/app/adminapi/route/sys.php:
-    newFile: !uuid '8898f87e0502f848a396960b5160649e7abd8d98'
-    oldFile: !uuid '31e336ec7eda43a3a3b88cdde41b68b7ff64f169'
-  /niucloud/app/adminapi/route/user.php:
-    newFile: !uuid 'fe67d49f1ca5a89dc9d923614d165502c2c72201'
-    oldFile: !uuid 'a69c0618f3dfadc70a624860921c80245ae52c36'
-  /niucloud/app/api:
-    newFile: !uuid 'a1a83a9793ac1947f02e0115ff09dac504184199'
-    oldFile: !uuid 'c3ffe4d051f351a99acb31bf71cea6dca2142c0f'
-  /niucloud/app/api/controller:
-    newFile: !uuid '4a853ee7c97375fadba3acc2ec614bf6206bd9a7'
-    oldFile: !uuid 'e44ea157688d9143c4af85cdd382b53fe64fd827'
-  /niucloud/app/api/controller/agreement:
-    newFile: !uuid 'fc16d0fce3a7b5cc2919a643772c8bf4d504180a'
-    oldFile: !uuid '43bdd1ddb6192e8b0351492f9d9ee9be7d530ed1'
-  /niucloud/app/api/controller/agreement/Agreement.php:
-    newFile: !uuid 'ca9c2e9be1cbe972f20c9bb7365ad83d308c1ac5'
-    oldFile: !uuid 'f3407c427ca0e506d0dfd60c1be6c4ae0004c393'
-  /niucloud/app/api/controller/article:
+  /niucloud/vendor/kkokk/poster:
+    newFile: !uuid '287f4db732c614129cb7c65e6b89fde43fa8516d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/.gitignore:
+    newFile: !uuid '382f7d1fc2208b0e94a4a3892760997b4ccdeca5'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/LICENSE:
+    newFile: !uuid '261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/README.md:
+    newFile: !uuid 'a60c2aaaff5b3a20d31e3c9f12408f138aeb29bb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/composer.json:
+    newFile: !uuid '2223d3cbb10ed00b4d3e85d596f4eb868682a9b0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src:
+    newFile: !uuid '6654b575c4cda262af2832752e8f4ae2d601c94b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Cache:
+    newFile: !uuid 'b40c7e9d3d8c65ac3a2c0376e7c5aa76aa7f9c4d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Cache/Repository.php:
+    newFile: !uuid '3d7966bd776e0bac7a18144178e2200282e251e9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha:
+    newFile: !uuid '4f361a9cc3ea05d665d578c5f0a383a777587e96'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/CaptchaGeneratorFactory.php:
+    newFile: !uuid 'c2aae7ab69a3bf2b8f1f96b4fc8be1ba54d9f3d3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/CaptchaGeneratorInterface.php:
+    newFile: !uuid '0660a81ec54f7773170d43a650a584d4a6e0c13a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/CaptchaManager.php:
+    newFile: !uuid '2b18efacd94c37966dd7d1e05fe4db11bd56c473'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Generators:
+    newFile: !uuid 'af53f34a40765ed078fa20a30eebf12a0ed2bf2e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Generators/CaptchaGenerator.php:
+    newFile: !uuid 'c59a887881c76f2b1c51b96aee892485a2b89747'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Generators/ClickGenerator.php:
+    newFile: !uuid '60f7d38d662f347c6593e886a20b6d65fc0e2b62'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Generators/InputGenerator.php:
+    newFile: !uuid '47b5482f26fcc27623b3e32c81955410273393fc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Generators/RotateGenerator.php:
+    newFile: !uuid 'd0eb4fbe83bb16150261f8510e25232e6732acec'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Generators/SliderGenerator.php:
+    newFile: !uuid 'e963f0ba603db6be61a74f34ea3105978fb4d15e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Traits:
+    newFile: !uuid 'd5d542e8c0a0798a92e6704c45c14427d1fe7da0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Traits/ClickTrait.php:
+    newFile: !uuid 'c6b1c58faaddc97f4dedd8f7934d3e5aec2552ad'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Traits/InputTrait.php:
+    newFile: !uuid '5783565d948b5f16189f9965f72f79ab4638c8b2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Traits/RotateTrait.php:
+    newFile: !uuid '6992f720c497a4b21961ef9ae453a0511377fa10'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Captcha/Traits/SliderTrait.php:
+    newFile: !uuid '7dde6dda024507d2741911e51c051d5f4058d3f9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Common:
+    newFile: !uuid '3fcc2823410193c28e36ab338ef693747b63e097'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Common/Common.php:
+    newFile: !uuid 'c6d4f5f2b8571434d1d8fbdceef1f86bf6582c46'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Exception:
+    newFile: !uuid 'eb50503f79985480b963a322a9747919e60cebef'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Exception/Exception.php:
+    newFile: !uuid '79a1fde56b6621238f42cd68c54f61ddbc7a378c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Exception/PosterException.php:
+    newFile: !uuid '6cc0258edd4836a03fb1225bf522f80f26d98aa6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Exception/SystemException.php:
+    newFile: !uuid 'f5d41d9608a90c1561471264ea0a1b065d5a22ca'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Facades:
+    newFile: !uuid '3624556bc88c95bbb178494c022c7471196569cb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Facades/Cache.php:
+    newFile: !uuid '4794474199c74e6581f0ff9641e56ce49ebfa944'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Facades/Captcha.php:
+    newFile: !uuid '6e619135bd542bcc439cbb8f8ac719a74ed8fbce'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Facades/Facade.php:
+    newFile: !uuid '41e70947178c0318f9bf9cf82375e2ffe8d178d1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Facades/Html.php:
+    newFile: !uuid 'a113f5b908ddf35715bc32a4b161810adb932a63'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Facades/Poster.php:
+    newFile: !uuid '30e259e2c24111e56513bfda2a35535ccb4c73ed'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html:
+    newFile: !uuid '6b2380f13f2362c4d3706822813f48b2580cb1be'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Builder.php:
+    newFile: !uuid '3615fc63f93f833e9bd574383931fcfd51eff1fd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Drivers:
+    newFile: !uuid '142afb2c86930f4572e13534869d1416df96d8aa'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Drivers/Driver.php:
+    newFile: !uuid 'fe303870cd5e5ef2f3c062dbc41467021d16841e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Drivers/DriverInterface.php:
+    newFile: !uuid '2884a0bd8228c0bdf90fe8d0485cbb7a0ac7d1eb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Drivers/WkDriver.php:
+    newFile: !uuid '0a09031f36e432338c06f9881c2a1fbb6d197b4e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Html.php:
+    newFile: !uuid '9bf4776e0e10a902419df5c0aa71416d2e14660a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/HtmlFactory.php:
+    newFile: !uuid '8c609e78f0c492434c540c9fa3288273089dac51'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/HtmlInterface.php:
+    newFile: !uuid 'b4f359ddc92d2405eaf49e966d2d6fd5202ca85d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/HtmlManager.php:
+    newFile: !uuid 'bbaa3dfe7ad69a95e08010a06edc6bf5ed33c91b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Queries:
+    newFile: !uuid '7544f92abe123cbad12e6241bfb761ec5893719d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Queries/Query.php:
+    newFile: !uuid '5a4f7750e01e912c7e38b7ce8ce2fc6e1f55e667'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/Queries/WkQuery.php:
+    newFile: !uuid '9a66213371ba6aed5dc850b220cc1480de19e161'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Html/WkHtml.php:
+    newFile: !uuid '19c2672fd5383c29cdc47cc298c894f4d38efc41'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image:
+    newFile: !uuid '679b996c8d61c1655ab6f65d79eeb3d50d169e0c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Builder.php:
+    newFile: !uuid '0eecb3a170fbc64ef466635e3bf6c145eab8468c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Drivers:
+    newFile: !uuid '5e055576875d938ae51a017e9766d0ccee92ec8f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Drivers/Driver.php:
+    newFile: !uuid '4ab68b87e8aeba402165096bff9d6dca036babd7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Drivers/DriverInterface.php:
+    newFile: !uuid '58b24266c6350e488494d5d7a30610836924b56d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Drivers/GdDriver.php:
+    newFile: !uuid 'b57801f2273b9b5905ea133229c86ddf4c39cd51'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Drivers/ImagickDriver.php:
+    newFile: !uuid '77b1c35bbc6cbbcc4291a7c3f32e643106775f6b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Extension.php:
+    newFile: !uuid '6c3c21eb6cff030ad532bf6abef2633782d18c1a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/ExtensionFactory.php:
+    newFile: !uuid '31a961f20f4e912808e0e6f92fcc9451aa1ad275'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/ExtensionInterface.php:
+    newFile: !uuid 'd418f4caa629fadad66b6aae57cfda156d80cb73'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/GdExtension.php:
+    newFile: !uuid 'f65e46adb60934332ab9f117fac2d5d8c6719fdc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/ImagickExtension.php:
+    newFile: !uuid '54bb68cb80f66a9c79b91638e04e2d6de4e689f0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/PosterManager.php:
+    newFile: !uuid '6beaf3ed94f695cf288df654b99cd9f56587f1a1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Queries:
+    newFile: !uuid '9d3ea9faeb09d8a23e3ec0dff4a848db2b86f8e9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Queries/GdQuery.php:
+    newFile: !uuid '0792a975872d2f1b0bd7bc5695f501d55e63d90c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Queries/ImagickQuery.php:
+    newFile: !uuid 'ec64bebdca2a25ccbca2915368a9654dfa68b943'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Queries/Query.php:
+    newFile: !uuid 'd2489762108522a05a4ce62322d8d2976178c86d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Traits:
+    newFile: !uuid '2e2d7d336a3dbc36e986fa6c5b4020ef85f11556'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Traits/GdTrait.php:
+    newFile: !uuid '4808cbfd3a29e9b6c289f8f1360a0802fa12c5a5'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Image/Traits/ImagickTrait.php:
+    newFile: !uuid '4c8667481b5d573321478d5bbfead70b54ff892e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Lang:
+    newFile: !uuid '27b088223a6f0069f44927d7a4113c70fd48ce5f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Lang/Captcha.php:
+    newFile: !uuid '4d424863de18db283d418127e89566fdd87cc187'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/Lang/Poster.php:
+    newFile: !uuid '1125409244bd4d948e0eb237ebadc654208f8372'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode:
+    newFile: !uuid '448d7563b3f002e071a58e23e92aa7cb5166fb7a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/CHANGELOG:
+    newFile: !uuid 'a6c53d2618aca7938617d1c6afff2552e4d2a7dc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/INSTALL:
+    newFile: !uuid '945c95ae5c957f9b6999dc83e5904b4bb9fd3aa4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/LICENSE:
+    newFile: !uuid '31afd6d8aafe857fb3a7f596018766329f5c03d1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/README:
+    newFile: !uuid 'dd598f0619d7069b79907bac560640c6043fc5b3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/VERSION:
+    newFile: !uuid '2677b3628cfc78c8a98dd942442b93fbaffab3d2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/bindings:
+    newFile: !uuid '2b0ccda72cf6cf5410c6ac7de73019db33c5750c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/bindings/tcpdf:
+    newFile: !uuid 'b5467f103f9ab105729940c529404a0c9ada8cd1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/bindings/tcpdf/qrcode.php:
+    newFile: !uuid '4e91e8cf906796b50f44d81f4ec757447943e9c2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache:
+    newFile: !uuid 'a8ecd8cb2329868e0dc684f36e4be7ebbf5b0df5'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_1.dat:
+    newFile: !uuid 'be28feac47ec7baeb0915a659dcef32fea3887f7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_1.png:
+    newFile: !uuid '86ce6e98d8cf7071291d5e5bb39bc3080511c8b8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_10.dat:
+    newFile: !uuid 'aff163f6882e1c842881c539160539ee97221e5b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_10.png:
+    newFile: !uuid 'dbfcd70b588c9cc508d210d761ca285c962e70c7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_11.dat:
+    newFile: !uuid '95af68a47f44029bab67ec8672cbd9e93d1db388'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_11.png:
+    newFile: !uuid 'c07c761f19e13b99f2b3271e3c6a494a98ddedbb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_12.dat:
+    newFile: !uuid '73228b3621ffadae4f60766395a1481ebb5ec8e0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_12.png:
+    newFile: !uuid '8ba67822cdbeb547858ff6fc50cacee24a1b7d39'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_13.dat:
+    newFile: !uuid '2256f0e34541826effd2df0bacb3ab30acefc512'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_13.png:
+    newFile: !uuid '6e49d35a02fdca84cbce7cbdcc4455a8f6c7a3bc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_14.dat:
+    newFile: !uuid 'e9ae093296aa29fab5e9902b6f08c589fb0ada98'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_14.png:
+    newFile: !uuid 'efc36c034f1a851498e5afad249adcce3d9fb04a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_15.dat:
+    newFile: !uuid '18727818d76dba4873f5993f6c9ba948ca4646af'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_15.png:
+    newFile: !uuid 'a9f416c7cf6d12d66b42288ca30634bd231620ed'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_16.dat:
+    newFile: !uuid '60af678453b720c0f73a866bfadf072f1e27e60f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_16.png:
+    newFile: !uuid '6ac8fe890573bd9ec52af39a315ac3ab4ea2821f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_17.dat:
+    newFile: !uuid '87f0cf593bab1049b794e2cd5af31a03aed5ae4e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_17.png:
+    newFile: !uuid '5b929ac736efe8f6d1985337c1177744c1269ea7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_18.dat:
+    newFile: !uuid 'bb7138c1d7251d1e63c6591d9a5bc7393ef0763d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_18.png:
+    newFile: !uuid 'ee0d6a35e2e6a84e715d5eb5b4fdc9b5d2749abb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_19.dat:
+    newFile: !uuid '95e26adc1b1ec826a017449326134f05ec3b171c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_19.png:
+    newFile: !uuid '20fddd84c87b089846e770d1f605bb2ad7f57c71'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_2.dat:
+    newFile: !uuid '7e42f31cae348ffb3f11abc0e5d36548e88d5917'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_2.png:
+    newFile: !uuid '9c150ebe3c6343f6eb7549ec855a85c65de7604d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_20.dat:
+    newFile: !uuid 'd5ecc1d8a0be752c422607ca863710fb41e89f29'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_20.png:
+    newFile: !uuid '23a061d5442e5950dc57ae4e3f754a72b18ff53a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_21.dat:
+    newFile: !uuid '1974dd9d4b4815001fd81ab4448b3afbf60377b8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_21.png:
+    newFile: !uuid '291598c72d21bac6548d649a4c0ae361a3f3c281'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_22.dat:
+    newFile: !uuid '0f01802d2fe569dd5d731552870d02c01a3e211f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_22.png:
+    newFile: !uuid 'bc97bd01bed5618ff281852dc819cfd9c2862c91'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_23.dat:
+    newFile: !uuid 'ee3b37073c3721a24974b60feb96b967eabb569d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_23.png:
+    newFile: !uuid 'b8f16ae239dd9f4c18c18191589b0f98e896c750'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_24.dat:
+    newFile: !uuid '7b92e29c4db522d16d7820123752a5de15d6796c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_24.png:
+    newFile: !uuid '397c64f8533159fe3c792420d93cab3ec64c673c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_25.dat:
+    newFile: !uuid 'ba125182e51538e6235ee47ad57fb22bfc45d3ac'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_25.png:
+    newFile: !uuid '25bc4454afbe21949bfd01d1a8bbab713486ae65'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_26.dat:
+    newFile: !uuid 'd34a73f15e28d1944572eee96c1c5dbd331e7374'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_26.png:
+    newFile: !uuid 'f4a6b393861525908d76f29c6d8a3bfc2ba4f747'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_27.dat:
+    newFile: !uuid 'b4d9ffd4f12599ec1ff53e3c72826989978fc8aa'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_27.png:
+    newFile: !uuid '8419ec2301e8c0278f9f86d97417d51d3df000bb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_28.dat:
+    newFile: !uuid '8cbaa1961bed61c3d774192448857480eb49762f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_28.png:
+    newFile: !uuid '7609d8e1f472f18438ee60bde32068d556d45ed4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_29.dat:
+    newFile: !uuid '5e4a71103f1f94bac967d74bc803a76d24460f1f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_29.png:
+    newFile: !uuid 'ffe072c868268ea77f05f71c17088021d549090d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_3.dat:
+    newFile: !uuid '188d531c2feb6c39f5759be88f920f2aa67da5b8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_3.png:
+    newFile: !uuid '945ee7cb993022c3ba0081cdd6b833b92395b30c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_30.dat:
+    newFile: !uuid '44cf3d317022ca75456ead34e4449c2f77c0746e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_30.png:
+    newFile: !uuid '75dbddd2416814ef91b71363c859c3dbe86f0802'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_31.dat:
+    newFile: !uuid 'ce429d0a677873029815e065a1f76ed83ef397ac'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_31.png:
+    newFile: !uuid 'b14d1fa267f229a5b21beb06401aaea3c7ee4673'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_32.dat:
+    newFile: !uuid 'aaa0808e296fcb5479d532815465918b6e235f5d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_32.png:
+    newFile: !uuid '58d42db3c5b755228c7565cdf8128438559cfe1b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_33.dat:
+    newFile: !uuid 'a2613755ae50a63b8100e1ae969cd65b6a517291'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_33.png:
+    newFile: !uuid '924c728e0aa0b3c22b7537d833d53f072a923640'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_34.dat:
+    newFile: !uuid '7ceb0259d4a6f14ad6d9e5d76eb87c07b034c711'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_34.png:
+    newFile: !uuid 'a477042d8bd164b290b4fafc01503fe0ba86c8b0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_35.dat:
+    newFile: !uuid '56bc3e28ee83b24767b00391773560ca842f0b44'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_35.png:
+    newFile: !uuid 'd29806c6037dea38b05d8211a0a45c2e0c1ff1d0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_36.dat:
+    newFile: !uuid '282c60d23bca6a7c3ac2c3da0744992f3415d8d0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_36.png:
+    newFile: !uuid '96ecb421354bec386b535fe1e2cf4fd753142013'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_37.dat:
+    newFile: !uuid '015c0f24b1fcf3596e1911371b84ea8f6d3ab4d7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_37.png:
+    newFile: !uuid 'fcc51627d75b1195d79e915e5ba5a26accff30b6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_38.dat:
+    newFile: !uuid '71cf53eb5cc7df24899c34ac3f45348ffdfb2757'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_38.png:
+    newFile: !uuid '89238f3c5bd6d3fa6aea44d2037dfd3bc0a34723'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_39.dat:
+    newFile: !uuid '53511f736c747e194b36366e032be5ce856f931e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_39.png:
+    newFile: !uuid '1dc9cd1bc53a2e27ad5b61791c7a76cdab408123'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_4.dat:
+    newFile: !uuid '67b30e82abc420a4c59447ab3a6e607697739eb4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_4.png:
+    newFile: !uuid 'b72f9e70d374741d1d4ec4537b7a379088325669'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_40.dat:
+    newFile: !uuid '90d36dd135b740399e1c370bd2f7a98f22acd3eb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_40.png:
+    newFile: !uuid '8034d862d60aed55180914d323aa4557f39c036f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_5.dat:
+    newFile: !uuid 'd5dafe18605a17bf429778a212348cfa3643dbfd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_5.png:
+    newFile: !uuid '96b6494f35ba71741f72bc32599a359f5ff9798e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_6.dat:
+    newFile: !uuid '0fc3d039ef34050cc5d15da680a1a5cb4af979d4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_6.png:
+    newFile: !uuid '05ca358b0ebc0c3a0b76df7bc0411af2d596f586'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_7.dat:
+    newFile: !uuid '43375960f2759be566effc22dce1727eb0243e1a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_7.png:
+    newFile: !uuid '7d2ff4f3e0068cd8b20d341ea49a671c37eaa660'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_8.dat:
+    newFile: !uuid '669b325f39ef4be17c0801f3fd93d9f4cb39d296'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_8.png:
+    newFile: !uuid 'db1f1877ab3aa0f221156a6c8ab461cf548b7c22'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_9.dat:
+    newFile: !uuid 'd79295ee0f93bf3b101c220b436cc0d302b3dd72'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/frame_9.png:
+    newFile: !uuid '74ddf08da2f671de67f1fed645afe705662e8424'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0:
+    newFile: !uuid '87a6ba9e60fb7ded83eeab2b7017341832454a79'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_101_0.dat:
+    newFile: !uuid '51deabaef6a1432e6dcbfd3852f259f984ebdb95'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_105_0.dat:
+    newFile: !uuid '97e9e5dfff667572d9451add45a3a5e05c157625'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_109_0.dat:
+    newFile: !uuid 'eadf83a2c3a092bd0b80645041556e934930d3ad'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_113_0.dat:
+    newFile: !uuid '5eb7f5de201b93aafa62e6203e0426e80758b8bf'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_117_0.dat:
+    newFile: !uuid '781c7f875b77174e0e7dfefc83b713c7546f5201'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_121_0.dat:
+    newFile: !uuid '68810c347bf34ca5a7ead829252e40468be45f70'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_125_0.dat:
+    newFile: !uuid '2c73ef1a89082c854c2b2cc42cf66aa5ebf8d957'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_129_0.dat:
+    newFile: !uuid '812ee8a664d4c6e18b9ae5774e4e97fcfa0d4438'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_133_0.dat:
+    newFile: !uuid '03b41d36d7a9236a422773a27e67fa2caffec2a4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_137_0.dat:
+    newFile: !uuid 'f6d993b0332d4b09a3ed5afe56eab0945c138351'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_141_0.dat:
+    newFile: !uuid '8c685c8ead7a79ce43eca83f82ce129c649f15a3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_145_0.dat:
+    newFile: !uuid '9c9c1ae19ded5597bc9ad0e57c37b813542d53cb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_149_0.dat:
+    newFile: !uuid 'd25835029784d1588a25ca483e23acd81574dc08'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_153_0.dat:
+    newFile: !uuid 'fc79e9ededa44a2154cb62c2789842ec14ca43d6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_157_0.dat:
+    newFile: !uuid 'ad749f3059e6ada7683a011ef85de48f850097a4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_161_0.dat:
+    newFile: !uuid '4bdc5fdd3fd5b8d7ec11a534cb9a2cb1f58b87f9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_165_0.dat:
+    newFile: !uuid '3a17a0510a33078bb9075c5ca90dd0d9ea6b40ad'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_169_0.dat:
+    newFile: !uuid 'c4787d9db8807c4787c8d0011c7724b5ecb50532'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_173_0.dat:
+    newFile: !uuid '5ef85e7ad40d8d08cd094d4ee76bf7c69825d09b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_177_0.dat:
+    newFile: !uuid '78a26a77b964767bec8490143331bd25f2ff636c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_21_0.dat:
+    newFile: !uuid '368c9941fd09f695d58934eb0de062a54fd74c02'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_25_0.dat:
+    newFile: !uuid 'e4a5b6d8afc4516779d7d246ebfcf7ced36029d4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_29_0.dat:
+    newFile: !uuid '74a216b4fe9874d40e30e41c6d93b0c4f946dc2e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_33_0.dat:
+    newFile: !uuid '2ec712a7adcd6edf1ce2c785adf00e3ca7c5b729'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_37_0.dat:
+    newFile: !uuid '1588cfce1318608538dbde89fa7f04d05ff574e4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_41_0.dat:
+    newFile: !uuid 'e369027e3831ce2d9ac858eaa2cdfa5e5498df07'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_45_0.dat:
+    newFile: !uuid '452f126c81f5ea42e5850e51c3059560860fc423'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_49_0.dat:
+    newFile: !uuid 'fdd2aac15a134f71dc3c280991275513188245c3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_53_0.dat:
+    newFile: !uuid '572d279efb92741e92eb65daaf8474adb85de9f7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_57_0.dat:
+    newFile: !uuid 'ea81e6dc619eced5082202ff120bb8cc7c54eed6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_61_0.dat:
+    newFile: !uuid '93d2444d8249bf3c534223bc1bb339d54f7af957'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_65_0.dat:
+    newFile: !uuid 'df29d7bfb3af5a237dc6082816cde70b156f3e43'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_69_0.dat:
+    newFile: !uuid '8a2cfbd7c9dc3a0e3e0d8e44d9678e9bf8ea8fbb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_73_0.dat:
+    newFile: !uuid '3de4606625d2671430acb5a1c33bccce3cbbe8be'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_77_0.dat:
+    newFile: !uuid '2717fd86ba0602fbe8d972f6c0a26227b3a12fdb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_81_0.dat:
+    newFile: !uuid '2d9a052fc77a223b51c595ca569c278d5f12d358'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_85_0.dat:
+    newFile: !uuid 'eb8197b20560a65a241b40142ad5c044dd069d9f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_89_0.dat:
+    newFile: !uuid 'aaa4c5267dafe0c2749baec37032d0e70afa4f8e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_93_0.dat:
+    newFile: !uuid 'e218fa0ef34640f4382eb9e8f5b48bbbbc204514'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_0/mask_97_0.dat:
+    newFile: !uuid '74ac719d06e7ba35f7b749e668c884f291daefb7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1:
+    newFile: !uuid 'fefbf24f59f6c36af09062b3fe47b18a0fa19ffc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_101_1.dat:
+    newFile: !uuid 'ec939b5219aa7a11ff0b8fe466e63c2475a9c458'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_105_1.dat:
+    newFile: !uuid 'e1f5c99b409c07b8e0a3e337e0ed9f0541386802'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_109_1.dat:
+    newFile: !uuid '7e0d6d164f3f4aa326cea28c6b9376f31b4e9a2e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_113_1.dat:
+    newFile: !uuid '1dd666d9b9fe7121077eb4498e3f425b6b612d6b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_117_1.dat:
+    newFile: !uuid '8921f643771416df60595448b3a61fff3f9ea1bd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_121_1.dat:
+    newFile: !uuid '64bd8ba04c396bbf595bc020a36647574b27789f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_125_1.dat:
+    newFile: !uuid 'd5881dd5da2d5e5fccd4a6b832b03d5b969ac34f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_129_1.dat:
+    newFile: !uuid '62cd1c9a18c2367d1c2c4a125b0c7bfb7647cd07'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_133_1.dat:
+    newFile: !uuid '18d68dce8534ce904e785afe7940de0159fa3800'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_137_1.dat:
+    newFile: !uuid '284d7beabfd780017d0e9814682f9cbfcaa668ad'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_141_1.dat:
+    newFile: !uuid '83220ddb4b44b860a7002b8511bfb8b35c208de6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_145_1.dat:
+    newFile: !uuid '6a9950f7a77977a006845180b01ee5a6b2b9dd2d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_149_1.dat:
+    newFile: !uuid '02a3cdc6ed62a284091310fce32c5928a974ee30'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_153_1.dat:
+    newFile: !uuid '2abfca20bf01e87efe7608c38299b4913623e9f3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_157_1.dat:
+    newFile: !uuid '17344b8911ca2c69468d3d1f0e17725e986bb304'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_161_1.dat:
+    newFile: !uuid '669ade1b84830bbccee17a58bb766258b11af447'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_165_1.dat:
+    newFile: !uuid 'abb48f0b1e6e1169ce61dbae54ceddc1211975e9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_169_1.dat:
+    newFile: !uuid 'ba21b710b07b914eb38f2b00d7169efddf517171'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_173_1.dat:
+    newFile: !uuid '436918c0bf5b4522a52c64a55d81d97e5c361e24'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_177_1.dat:
+    newFile: !uuid '12e2e522f94c34928606df1cbda52b7d9fe90cff'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_21_1.dat:
+    newFile: !uuid 'f87e0a11227bb4e1e6f46a1dbb133ca9b1cc8109'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_25_1.dat:
+    newFile: !uuid '3a225e30f03ec0c36f772070fa0ef04cbcdb9f2b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_29_1.dat:
+    newFile: !uuid '0a1cb3b5dfbc333104ca1a161639855bf781b54b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_33_1.dat:
+    newFile: !uuid '318949df07745528a680a428ac74ea85f016c2aa'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_37_1.dat:
+    newFile: !uuid '5bd9e3aa0d08230508938e61404749c9ae72e32d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_41_1.dat:
+    newFile: !uuid '52e9e58f49a0c9c8cc8050bd20d5425abbd6eac6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_45_1.dat:
+    newFile: !uuid 'b35c567dca6aa84fbd8758e1fba4ba2feb397de2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_49_1.dat:
+    newFile: !uuid 'd20d71710eecee1842e3fc1535a09df5a9bc8761'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_53_1.dat:
+    newFile: !uuid 'a676d7dfa2092a94b7a81322980eb4def98fba74'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_57_1.dat:
+    newFile: !uuid '896ed43575bbcdf0ad49fbfabe490f0645a69df4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_61_1.dat:
+    newFile: !uuid '4165a4bd2e28b2a09bde12f184c0db0f6b4c989d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_65_1.dat:
+    newFile: !uuid 'db8db88a83075fd497defc7d8495161f7095dad0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_69_1.dat:
+    newFile: !uuid '03bba657f6d0df2a65ab63bc13715660ffc4ba1b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_73_1.dat:
+    newFile: !uuid 'a729fdf0469cfd98e21fd9398e06fffc66e76364'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_77_1.dat:
+    newFile: !uuid '0fe0b03e868a00c5cc8f97a40528a7873b189a78'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_81_1.dat:
+    newFile: !uuid 'eacbdb1a2cc576180854b5de58eeae033e39300a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_85_1.dat:
+    newFile: !uuid 'b8a20c754302e01462c81ee8dd708efcb253b7eb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_89_1.dat:
+    newFile: !uuid 'e9d226f35f45446c36d0b8513fa940de82ea9c61'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_93_1.dat:
+    newFile: !uuid 'f37836c610c182b4d146983956c7f34427a6318e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_1/mask_97_1.dat:
+    newFile: !uuid '24fa60fc3189ef61627ec1969e16e24bd59b7de6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2:
+    newFile: !uuid '0d20927b4fb27bdff11c05fc40ccc781cf5d0224'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_101_2.dat:
+    newFile: !uuid 'e39fd2cf1c0bed1c86801ebdf45b5216d8ce954e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_105_2.dat:
+    newFile: !uuid '7b63e31ba80280c4a5c27df7b6eaed349df6b808'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_109_2.dat:
+    newFile: !uuid '252f6d807f4bc41b1039f9c615033b9b2ebd5115'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_113_2.dat:
+    newFile: !uuid '26b5d7eabc38adcc87f290a3d80cebae0bc8226e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_117_2.dat:
+    newFile: !uuid 'b4dcce46f74fb9df20fd29fbb92449fb13e19be0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_121_2.dat:
+    newFile: !uuid 'a2a0097b1fd803424ccf0a741277066f44b04dae'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_125_2.dat:
+    newFile: !uuid '0ea40fdaec0cfb2da9a05c1e28fffef509b3eb74'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_129_2.dat:
+    newFile: !uuid 'bf048394b6ffd766f82cdff4ec9d6dee19311e69'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_133_2.dat:
+    newFile: !uuid '9e78b6de5d2860750d89a55bec9d82507323ea7f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_137_2.dat:
+    newFile: !uuid '95c3c48cd43eac010d43c4ce02d11b855ba4a620'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_141_2.dat:
+    newFile: !uuid 'da07da2e8e907140f4a5b0b2eb138512c54cb578'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_145_2.dat:
+    newFile: !uuid '9ff2bbf3f48bc4154e5e8a2000e9d52b1c08d2c7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_149_2.dat:
+    newFile: !uuid 'd52e0484b20eb1fda93ea2ec6076bed55477cd49'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_153_2.dat:
+    newFile: !uuid '3b060410199c4d43cf7f6ef345c54f8a7ed1c589'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_157_2.dat:
+    newFile: !uuid '2baf535e27a1d103392a65ddfc0cff1e74beab0a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_161_2.dat:
+    newFile: !uuid 'd2df7594eafccef2dacee35dfd7b2fa20d22e1dc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_165_2.dat:
+    newFile: !uuid '2e6cd7c6f07a7eb028ca6562d9caf75dd88d390e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_169_2.dat:
+    newFile: !uuid '4052062b8db42699eecf910b9792afd64d0db84b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_173_2.dat:
+    newFile: !uuid '0a30ba530c5d26d0f0e35fd32f7fd1bc96097b69'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_177_2.dat:
+    newFile: !uuid 'd2c52f9909224942dcb9e8f8d56e8c5ef862d114'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_21_2.dat:
+    newFile: !uuid '7466be4bb0d101b2fa9f7dc158bfee6f90b9ade9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_25_2.dat:
+    newFile: !uuid '0bc44c034ecf1b47b233c27f265b2c063e527fc3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_29_2.dat:
+    newFile: !uuid '5112d11eff0ce0631ba1000e8823e0592ee3230e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_33_2.dat:
+    newFile: !uuid '5bac0c80d2fd997d753427178c6294dd3dd9184a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_37_2.dat:
+    newFile: !uuid 'bdfc0bd43411fef5115da9c0820cd8900b6ca05a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_41_2.dat:
+    newFile: !uuid 'c55c63e8c0e8d8ed5d1e00fc3cc9196754177754'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_45_2.dat:
+    newFile: !uuid 'ad44ff1885f2c4e0d2158824e4d2b5537e0e8eb5'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_49_2.dat:
+    newFile: !uuid '6e8edff24b9344b19623318f9e10802439cf2b40'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_53_2.dat:
+    newFile: !uuid '682cae2aa6532baf02d2aa3e0c1dd2ab5227a34e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_57_2.dat:
+    newFile: !uuid '66a5c056b5175084f867019043714bf10751b37c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_61_2.dat:
+    newFile: !uuid '77d3815eb51a7feb77ebf8fa7001e8428c252db7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_65_2.dat:
+    newFile: !uuid 'caf184ada35d51a15ac622c0b7547448f5d001dd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_69_2.dat:
+    newFile: !uuid '6a3801bf50a5d9f2f4630301073bc5b7f4255dc9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_73_2.dat:
+    newFile: !uuid '74945b718b6b7357fefc47c954da9fc87f219f4d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_77_2.dat:
+    newFile: !uuid '903cba4a0ffcd02784d3738406dba9fd5321c354'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_81_2.dat:
+    newFile: !uuid '17a9ac2a1e7645d05fe167aa1bedc06f2f7c7d78'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_85_2.dat:
+    newFile: !uuid '72c74ff9ada0690230eec9fa8979aa7d7fc0fc7d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_89_2.dat:
+    newFile: !uuid '06c9a4fe345e98af602b54929f1069494421510d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_93_2.dat:
+    newFile: !uuid 'f5202963d69964d6d402d87515855f97fb868039'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_2/mask_97_2.dat:
+    newFile: !uuid '38842b9899c87b102951313372eba2a1f8a0d6c1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3:
+    newFile: !uuid '235f984c79dda5a7bf09777c37a72f636afc3bed'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_101_3.dat:
+    newFile: !uuid 'fa9925121d0abca3a0ac7824d78c4bb63eb84dc7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_105_3.dat:
+    newFile: !uuid 'd8a28ce989eaf3b38d8e1651a83bbf32ebe4404b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_109_3.dat:
+    newFile: !uuid '48d94040e64302b76730f4a3284bac18acb7a4a8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_113_3.dat:
+    newFile: !uuid '023b27304d22eef919427e6ac14f88faca78ae65'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_117_3.dat:
+    newFile: !uuid '79cc04d145c7ba2dc1e719de6557353be33978d2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_121_3.dat:
+    newFile: !uuid 'aff5a7be5dbb2ea59135b972a31de3dec3877f89'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_125_3.dat:
+    newFile: !uuid 'e2febdbdd132d2bd3e1657a8c3125cacfd6ae6be'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_129_3.dat:
+    newFile: !uuid 'b1ce63b7410c72a41c48cfeee6716f6f8c445469'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_133_3.dat:
+    newFile: !uuid 'f4181507afdaefc5ac1db444c311e4b863d5eecb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_137_3.dat:
+    newFile: !uuid 'e24ac5b512b2317fcfb7a71e455095f9ee2215ae'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_141_3.dat:
+    newFile: !uuid 'a3f6a2480385e3f48599015d01af55a43cdfe2ed'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_145_3.dat:
+    newFile: !uuid '338b7e7a85432022d29c1993b9cdb1bb88dc2d9b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_149_3.dat:
+    newFile: !uuid '30bc5fabcd3c28a0f6fb40f57e5ece5fc4ea60a0'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_153_3.dat:
+    newFile: !uuid '89cdec031fcdadb9b12a8c225e4596cceacaea02'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_157_3.dat:
+    newFile: !uuid '167e6f84427c30814f29aeec40f00f657249176e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_161_3.dat:
+    newFile: !uuid '72a26a4fc94962a3172a24c7b8d2870ff144ce82'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_165_3.dat:
+    newFile: !uuid '870af8f4f02407e3afa6158d918e302b6be0a18c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_169_3.dat:
+    newFile: !uuid '943109526394d810c96475e5b989c2b2b56e0741'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_173_3.dat:
+    newFile: !uuid '746698627c7a2b1ea8a500be6785de2b8e6f6896'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_177_3.dat:
+    newFile: !uuid '9586979a1f9d74c4e115757feeeabb74819df45b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_21_3.dat:
+    newFile: !uuid 'bcb4eec4919b60e2c25c4e18ebb9c34423536b63'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_25_3.dat:
+    newFile: !uuid '0ffc375fc4d561f9d952e6af1572e68f2db95944'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_29_3.dat:
+    newFile: !uuid '6150ac1289809bad7646c662dd9cf836311f47f8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_33_3.dat:
+    newFile: !uuid '6053b5e396ca957ae26193aceb85d08a43dacd9c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_37_3.dat:
+    newFile: !uuid '5dea5b9cbe14fcff482e0fe9a647359aca07547b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_41_3.dat:
+    newFile: !uuid 'ca9ddc2aaa83c5ac8415e7fa4f2b020190eb7b9a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_45_3.dat:
+    newFile: !uuid '3daad97f89d460982fdfca61a84d089c81f353b7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_49_3.dat:
+    newFile: !uuid '7f6508dddf7dac2cb4abd0cd4f46018adadb99b1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_53_3.dat:
+    newFile: !uuid '8800beab1a0e65178c53493e3807a11093a47a57'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_57_3.dat:
+    newFile: !uuid '4e1e5da386a57dacaf76f93d05473ff922574488'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_61_3.dat:
+    newFile: !uuid 'bf1a3cc7f505f50e8b9d8b293bee4bfbdec3fec4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_65_3.dat:
+    newFile: !uuid '85892089bf0a0ab2bb2ebe61be5e5028af6ef9fd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_69_3.dat:
+    newFile: !uuid '55318a87bed2d7673dcc143bbe71ed21080f3548'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_73_3.dat:
+    newFile: !uuid '15be77f64beb770c1a033d1fff2168c02ecbfab7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_77_3.dat:
+    newFile: !uuid 'ec78280442916d06eb429bb8cdf698ea253c673c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_81_3.dat:
+    newFile: !uuid '47bc0f79300bead59f6df66d8a639f497c2eebcb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_85_3.dat:
+    newFile: !uuid '02c4f8cdbbe43a99de71a77162d811d36ad4f51b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_89_3.dat:
+    newFile: !uuid '2b4cb59fcd1021788dfba34b94db037552febaa3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_93_3.dat:
+    newFile: !uuid 'b4cc8a971d67c0d255cdcdd33d212e0f8c7e51ea'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_3/mask_97_3.dat:
+    newFile: !uuid '7adc9ebaa77cfc3c6f7a54307a831fbeee0c87db'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4:
+    newFile: !uuid '097cce74617dce0529ac3745a30da33641ac292e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_101_4.dat:
+    newFile: !uuid '1c97dc0483610e351568840625eb02d8a8a384cd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_105_4.dat:
+    newFile: !uuid '0211cdb3ae2399004044ab09538376d1e4073e6e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_109_4.dat:
+    newFile: !uuid '2cc0c815d47f45a3da5c534dd63c24ebd87aaa8d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_113_4.dat:
+    newFile: !uuid '99bd73f69e7c950e1ba320e787de0a02614a4e73'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_117_4.dat:
+    newFile: !uuid '386725918a835be3b41156ade4a596b7767482ee'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_121_4.dat:
+    newFile: !uuid '84957eb7babaf5fb377779a9733d38820e1dec85'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_125_4.dat:
+    newFile: !uuid 'b98dc813afe773cdcd71a8779391ca295c0d3a51'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_129_4.dat:
+    newFile: !uuid '8ecfa250845e8ef1add89a66c88fc9f31250a436'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_133_4.dat:
+    newFile: !uuid '69f83acbd13626b91536e0e15a3503f238d836c6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_137_4.dat:
+    newFile: !uuid '0c09c487c2e85488f8caf2dcc863e260cfd077d4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_141_4.dat:
+    newFile: !uuid '62b03f2432ed82cc2053e9113d0b8e90fc811b98'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_145_4.dat:
+    newFile: !uuid '33fb211249fd13955f9481a5af91416b0850c79f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_149_4.dat:
+    newFile: !uuid 'de99310f3b1988c61ae8f3104aa657fa6a6dfd80'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_153_4.dat:
+    newFile: !uuid 'e827dd16f58c27140b0a3932f1727f4e2a5c52df'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_157_4.dat:
+    newFile: !uuid 'ad5fcf69deecb83e5ad64abc2766387346970520'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_161_4.dat:
+    newFile: !uuid '7604c4540a819e3bbb989306665c053a7ba70322'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_165_4.dat:
+    newFile: !uuid 'd83d631656260d1e68d62b1940ab17a72f255fee'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_169_4.dat:
+    newFile: !uuid '4aac95c1e3fc9ba5257f331564b211fab568c376'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_173_4.dat:
+    newFile: !uuid '9df4d865d4e57802d736efe7c70fe17864d87f7d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_177_4.dat:
+    newFile: !uuid '6437d251177eed368b24815eca99690e911f96d4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_21_4.dat:
+    newFile: !uuid 'e006b67e4419e056f5a3fb4b7232769ee9976232'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_25_4.dat:
+    newFile: !uuid '0c7c44bbb5bb50a1f060373ea3ca14d083fe686e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_29_4.dat:
+    newFile: !uuid 'c28dc20e8248d196503c88e3e58b9048de750a16'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_33_4.dat:
+    newFile: !uuid '5834b6fb5672ddd54227a5229ad248efb56f9931'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_37_4.dat:
+    newFile: !uuid '4bf2e26ed0238cb7f0fa88b4a2e8d9f607c6c465'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_41_4.dat:
+    newFile: !uuid 'b75b7d052490a5be6722c1fe41989334fe274e3c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_45_4.dat:
+    newFile: !uuid '1b921f3009656cf429e67486e59237b8dd15ff5f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_49_4.dat:
+    newFile: !uuid 'e417f947655bab36a10378cef072e9acb7928fac'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_53_4.dat:
+    newFile: !uuid '7e88826dd67c8eed58a77ecc7bd6326cd996537c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_57_4.dat:
+    newFile: !uuid '84669c7d65c97c0b040497b32d3d3037c70d826e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_61_4.dat:
+    newFile: !uuid 'd127c3be20adafc0276e2bd2b375eb3b4fa1fd0a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_65_4.dat:
+    newFile: !uuid 'c24343d947e6cb2db45407ca9428e8d03c2a3ead'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_69_4.dat:
+    newFile: !uuid 'a73b1144d951b4c05df5f9a243ed8d4a6a3a1113'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_73_4.dat:
+    newFile: !uuid '72f89227e7f219e1d86948b0bca70b7e73e17f07'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_77_4.dat:
+    newFile: !uuid '993c48608e427ff9b51cd9da99beef5ff3fda02f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_81_4.dat:
+    newFile: !uuid 'dd65216133e4f9e98f6280d69d2d73e813c1a16e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_85_4.dat:
+    newFile: !uuid 'c8d5123e26909726dbd71694e1f6697cad51529e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_89_4.dat:
+    newFile: !uuid '5b9bd7ec367d380799907af8e48e45391ec6ec29'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_93_4.dat:
+    newFile: !uuid 'be7f5e525a9d31f3f6918bb28e93b02be0ab1965'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_4/mask_97_4.dat:
+    newFile: !uuid '5d848caade31141b6a6d238828e0513940b9aec8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5:
+    newFile: !uuid '935ddbf17b71a99d1ba66372ae6c4b3d6a411412'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_101_5.dat:
+    newFile: !uuid 'c21869e83ccd1c488db29bb1ef6e090ab40e2294'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_105_5.dat:
+    newFile: !uuid 'bc8798c64015b6595105a07645625a572c839c0c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_109_5.dat:
+    newFile: !uuid '25a394402fb8b1d0ebf02b85473522a21235736d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_113_5.dat:
+    newFile: !uuid '25f42b8b2690e8f0f70bf1f198ce1e8b51386fdc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_117_5.dat:
+    newFile: !uuid 'f236940ded4bbff83db98a8b8ba599868d76697b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_121_5.dat:
+    newFile: !uuid '9bb5c4158981760f99c1831c03ccf11a664e6053'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_125_5.dat:
+    newFile: !uuid '2161c50a457a73e0ae4c16d262c55df6d6933f2a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_129_5.dat:
+    newFile: !uuid 'f0c1d65020884c517fcba84b94191eaac350aaa5'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_133_5.dat:
+    newFile: !uuid '46be8b09480fdebe1b1420b3da77ddbc748df5a2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_137_5.dat:
+    newFile: !uuid '064e7f2f3b1c9ad50f974abc3c74f7d318a7cc38'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_141_5.dat:
+    newFile: !uuid '60c1a8e81acb9a104b1003fe8c362588b053abac'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_145_5.dat:
+    newFile: !uuid '9303c07f9cd2d765f6760cf933db6a923e0985bc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_149_5.dat:
+    newFile: !uuid '4256cefd0d3edfa2c153d0ee0ffca89e7cd7969a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_153_5.dat:
+    newFile: !uuid 'deea09d77c43ef17245e3d528d71b3660eaeb556'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_157_5.dat:
+    newFile: !uuid '176e2a69ffa33c6959b3f06ca96d8f138ff3fdbe'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_161_5.dat:
+    newFile: !uuid '70d5fb008b942e8fdd5b99e40faa714ea939d397'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_165_5.dat:
+    newFile: !uuid '94af813d90326e83dcb4898dffd47eebd3120cc8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_169_5.dat:
+    newFile: !uuid '921a7707677321b9e64cfddbd3e378bb04f80312'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_173_5.dat:
+    newFile: !uuid 'f9a67413617d28b6b16297bf3aa85212098a6145'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_177_5.dat:
+    newFile: !uuid 'b07c636b62b272a4141b4564276ef5615df94072'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_21_5.dat:
+    newFile: !uuid '04f97ea6983c85e1cf6e68150ea02bffa30a4f4b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_25_5.dat:
+    newFile: !uuid 'c20b59b1ffa51d0c2323b2654414c73644ee7677'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_29_5.dat:
+    newFile: !uuid '217ec1b8a1851945fa05303cf817cdf42d3de865'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_33_5.dat:
+    newFile: !uuid '726d7fd75da51d6bd7737a41e0120162ad66f42d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_37_5.dat:
+    newFile: !uuid '6d32ca6fa8ca286c4a559db8653f722274c6503b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_41_5.dat:
+    newFile: !uuid 'e07c6172a0afdea83519c348ecf999ce85cdbd7b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_45_5.dat:
+    newFile: !uuid '5168a17f9e4c95a5c9c01d7651337fce34e99d1f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_49_5.dat:
+    newFile: !uuid '9f3f3cd7d60bcba44d9223f52747c1cc9a9feb52'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_53_5.dat:
+    newFile: !uuid '449807bae170fba4a394d0a346dd2d0bb8ca4324'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_57_5.dat:
+    newFile: !uuid 'c7dd81f390ae673e43eeaf1beec00f57c26bbd79'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_61_5.dat:
+    newFile: !uuid 'dee749fbf9f45d7c8dd8a05dffa877225d423707'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_65_5.dat:
+    newFile: !uuid 'ecd9380682523494a1f5577c6e22eff92571b446'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_69_5.dat:
+    newFile: !uuid 'ead4edc1f8a2087626b772df149e54b827722e2f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_73_5.dat:
+    newFile: !uuid '00001176d018bd72f9f2128f2f0bf775aab99aa8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_77_5.dat:
+    newFile: !uuid '1652cdc2d6cd6982057402d340287b36a19826df'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_81_5.dat:
+    newFile: !uuid '71215e9525a995cc71b400039a8af2ed4b797907'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_85_5.dat:
+    newFile: !uuid '09cf0e28127934862f45b0f155ede22e48833cd2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_89_5.dat:
+    newFile: !uuid '5fff53069626b5fa457d9e7f663fbc2575f3b0b7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_93_5.dat:
+    newFile: !uuid 'ec4240bd37c95f45e71d08913867d1f3801816ec'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_5/mask_97_5.dat:
+    newFile: !uuid '509d1174f85ab34e3eaf88d16e1551872f2b329e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6:
+    newFile: !uuid 'e9f5e90c8a24a4bed1f5831b1348fc6f181b0bbf'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_101_6.dat:
+    newFile: !uuid '13f97a0fd65ae4ae354e350283338b3b1e48783b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_105_6.dat:
+    newFile: !uuid 'a58fec749a53aa1bc67ad43243310045193acc12'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_109_6.dat:
+    newFile: !uuid 'be7b4749e0166fb0a72c1d4c29cf63b8e469749b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_113_6.dat:
+    newFile: !uuid '397f5274170ed47141bc90cfaa9c5cf9781bb7a2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_117_6.dat:
+    newFile: !uuid '99108bef78d5d57c35e03d2d56b2dd80f2f5e670'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_121_6.dat:
+    newFile: !uuid 'f3c329945daabf6ceb6ab0e6142db4e6260a8837'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_125_6.dat:
+    newFile: !uuid 'ff64d44fc1248fab366a9f5487c861bf4ccb6ac2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_129_6.dat:
+    newFile: !uuid 'b4695c3ff0d8ebd6925d8af5e0b403d5974ed46b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_133_6.dat:
+    newFile: !uuid '40911dc575dbbb17a4a057a46521c47b159138ca'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_137_6.dat:
+    newFile: !uuid '43ccb68c627798d20574aded44497e3832c98e8e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_141_6.dat:
+    newFile: !uuid '0340409a46ae0a315bd178f557b2cc2a325728d1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_145_6.dat:
+    newFile: !uuid '6c142151340a9c4221c8b63d969e5894d1302bac'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_149_6.dat:
+    newFile: !uuid '69e9883504a650ff9409608ef9e72618b05bee00'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_153_6.dat:
+    newFile: !uuid '3ab6130edd889298419b702ce1dcfddfda30cf2f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_157_6.dat:
+    newFile: !uuid 'b45c0ceec6e24dc15e16e0012b70894d4772dc19'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_161_6.dat:
+    newFile: !uuid 'ecec68b1ac0f7ae45685bed5d752ef54a48f0f3e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_165_6.dat:
+    newFile: !uuid 'd641dfa3dde2565c932c7234b4521d35c4a1af0d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_169_6.dat:
+    newFile: !uuid 'ae689723d4e81c26c18f96101295a284a38bd097'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_173_6.dat:
+    newFile: !uuid '95fa97c7bce99b97806724ec644516b6789844d6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_177_6.dat:
+    newFile: !uuid 'e9f0476f0103b7b8bf1773bb1715d2d22cbc44fa'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_21_6.dat:
+    newFile: !uuid '6bd505b4ae530dc9f713ecb755ee49fa929099df'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_25_6.dat:
+    newFile: !uuid 'd45083aab303651af80f5fa19cfa17f0eccec9bf'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_29_6.dat:
+    newFile: !uuid '0408e224004c64af49c1e6cca80442704701b4bc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_33_6.dat:
+    newFile: !uuid '8de4ba5c9ba9a264cf4ecdce048414a103ca9a4c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_37_6.dat:
+    newFile: !uuid 'b37ff0ab68a796b6c967e12a21ec3e8e40353354'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_41_6.dat:
+    newFile: !uuid 'c1535f785075590372cac9f7c7689197a1b58d55'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_45_6.dat:
+    newFile: !uuid 'a7da7ee0297b6371bd3ebf57467f009712e40cd6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_49_6.dat:
+    newFile: !uuid '64ded709384ad4186fe39e0f4d087b1753d1ca55'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_53_6.dat:
+    newFile: !uuid '9139e325901037a409a2a2d317141cbd9bb27807'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_57_6.dat:
+    newFile: !uuid '61e7e24280d7f470cc5aa830ae073f0e7f62a417'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_61_6.dat:
+    newFile: !uuid 'f2d3f10dff740158b2b0eae24a8ae85f1bba92c6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_65_6.dat:
+    newFile: !uuid '550fc8fe7c66088279f34c45c3446af8467d93b2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_69_6.dat:
+    newFile: !uuid 'a3e4fa0f28d347d146898a7e85f063905411e733'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_73_6.dat:
+    newFile: !uuid 'ab71b70ae59ccfb23e9c4185b1e919d531fb040f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_77_6.dat:
+    newFile: !uuid 'ad5a660e30c78b176c89dd26071f19edc125c993'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_81_6.dat:
+    newFile: !uuid '28a6d0752a368147c5ffb19b94622f8cd3bb9d77'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_85_6.dat:
+    newFile: !uuid 'd5403e49a80cd825886b9cf067587297c22542b2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_89_6.dat:
+    newFile: !uuid 'eeeb5d1975726db479315433df630a4a8e589dbb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_93_6.dat:
+    newFile: !uuid '6ff38db6816cb1dd00791479e808b47d506863bc'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_6/mask_97_6.dat:
+    newFile: !uuid '3a2072efd6b1c962c747d72ec39561a192f33a61'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7:
+    newFile: !uuid '7dec417dcaec1feadf9962a69f833e7c3910f1b9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_101_7.dat:
+    newFile: !uuid '1f6bc5129121ca076259b06efc6cc63d84d31b67'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_105_7.dat:
+    newFile: !uuid '6b0cacfe942f4f8fb9df659f5aa12030488bb9c3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_109_7.dat:
+    newFile: !uuid '9875cbe8ce9127d8e0e675ea7391f4d988b634c5'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_113_7.dat:
+    newFile: !uuid 'b6e21598228228fd32f6cfc4114c0e16d55f3f60'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_117_7.dat:
+    newFile: !uuid 'cde78c10d749237127b0ec364f2596822a35ba6d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_121_7.dat:
+    newFile: !uuid 'd5d577f7ee589a434b05ecf3640f60af272f21a1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_125_7.dat:
+    newFile: !uuid 'f9ec0887b05d63190cd6ebe1bb181252db240a5b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_129_7.dat:
+    newFile: !uuid '9bf51d5296d16b3c4108c0d8d5131376c4750146'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_133_7.dat:
+    newFile: !uuid 'b643ffedad796ded72ee2b50faad70b04ecf7057'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_137_7.dat:
+    newFile: !uuid '11d212bf4b821839032e856edb1144ae0c769b5a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_141_7.dat:
+    newFile: !uuid '98dffab003b9cbb0d301fc4c945861890ab3b1d7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_145_7.dat:
+    newFile: !uuid '4aa2bac11745c0d14075e014e8dbac8a74223c67'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_149_7.dat:
+    newFile: !uuid '809f00554327b8c5d07e2856d1e6bef06b939c4a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_153_7.dat:
+    newFile: !uuid 'c1ab27664f6a4e40c6d2c8dcaa0ffef4946fa0f7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_157_7.dat:
+    newFile: !uuid '2db27f6856b1a211bb41d9959faee3bf334d3e67'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_161_7.dat:
+    newFile: !uuid '35ba8ff488c93af552f8715b5bd6d1ff1ffd8e71'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_165_7.dat:
+    newFile: !uuid 'e27fb8edf17ad33ef8859b44ebc3e7db932ce805'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_169_7.dat:
+    newFile: !uuid 'ef1a181f2cfd4fb995864843d58efd1a33443bcf'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_173_7.dat:
+    newFile: !uuid '3b513712525695a2264519039824664042fd49a7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_177_7.dat:
+    newFile: !uuid '068477c92af080afb53465a651dd7d1815d562c2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_21_7.dat:
+    newFile: !uuid '4f9f1386d62b2b50da5ecb4f26af205164f2a5c2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_25_7.dat:
+    newFile: !uuid 'cefe1b97289cd71b2aa0ec91a480918c964bfc04'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_29_7.dat:
+    newFile: !uuid 'e3d7391b7d3f00dad1410f5b04e6a2ef41284298'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_33_7.dat:
+    newFile: !uuid '1763f42862bdac831c2426be1be9356a4c1ae6ec'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_37_7.dat:
+    newFile: !uuid '87d9a1a9d2c57b346aa4a8a2e03754a7f7668ab3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_41_7.dat:
+    newFile: !uuid '8acec04f0f7951dba4660949ad65b645c5b72386'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_45_7.dat:
+    newFile: !uuid 'dbba31d0bfddcbed98ea5d7a9f6ee59f976e0421'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_49_7.dat:
+    newFile: !uuid 'be5dce8b7bf6b78061dbeb395b6a0c9ce84e90de'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_53_7.dat:
+    newFile: !uuid '7028ef6d7a573e39704f435b56e934bd51f8fa4d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_57_7.dat:
+    newFile: !uuid 'ee3107a3c91d0964fe094a4fbe161a64505d9eb8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_61_7.dat:
+    newFile: !uuid '76f8d727122b19a067992caee5efb5546eddf460'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_65_7.dat:
+    newFile: !uuid 'd8b920626455716e06d57db9446e1f0b6321dbe9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_69_7.dat:
+    newFile: !uuid 'c2db0204a624dfd9d7f8f75331a9d50abab1fd6f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_73_7.dat:
+    newFile: !uuid 'f414e4a5877861bd45e439125a47c52b70a0ca12'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_77_7.dat:
+    newFile: !uuid '3e52bfd3f66a3fae5771bd21c098addcfe4dd829'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_81_7.dat:
+    newFile: !uuid '78e08dfc60c5b707a04c667efa682c57ecec9889'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_85_7.dat:
+    newFile: !uuid 'a53824aeed0bdcefcc66825c1b64dbdfff28273a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_89_7.dat:
+    newFile: !uuid '32934a4414fb6434bccea768263fad25ce55f63a'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_93_7.dat:
+    newFile: !uuid '1955f6b7d3bd7e77653d0369168827b6c2425114'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/cache/mask_7/mask_97_7.dat:
+    newFile: !uuid 'b277368bdbfa1a01ced4df7c1ee625e10fb8fa12'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/phpqrcode.php:
+    newFile: !uuid 'fd4f0d1d78e72e8782faa3fac029a34015f87845'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrbitstream.php:
+    newFile: !uuid 'c8d116614ae7c688fd645b945637903c0c234957'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrconfig.php:
+    newFile: !uuid '62e7f97456af36275f6d44a48b00b69e994efdab'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrconst.php:
+    newFile: !uuid 'af2d6cd5e6adbc0ba93cf6b7bf6558ab1aee6d3e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrencode.php:
+    newFile: !uuid '441972a31bfa29ea29f5c6039bf8bab298221b52'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrimage.php:
+    newFile: !uuid '0bc1c3a31aea3ce03e0fb19323e6dd63f5609664'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrinput.php:
+    newFile: !uuid '171558eeeac316204188a014f2d0c7a1263ff007'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrlib.php:
+    newFile: !uuid '43059b9de81f563f3694c6d1c53b97e91ffd4e73'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrmask.php:
+    newFile: !uuid '2d388e0ead85e90b38219dc46d20f1e9f95d7a7d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrrscode.php:
+    newFile: !uuid 'd7a97d9a1ced6e9ca3eecb391c14ab244c23798d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrspec.php:
+    newFile: !uuid '5a0c4b3c192a4d7f0013edd86c338ae663a1a003'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrsplit.php:
+    newFile: !uuid '6399f53e4061dde7649c856d1880f4e8f149268b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/qrtools.php:
+    newFile: !uuid 'e0412c43073b151d256ab30d3fdc654ff1500f9c'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/tools:
+    newFile: !uuid '8df0fb86e456c15d024085baa18de95b811626cd'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/tools/merge.bat:
+    newFile: !uuid '2b5eebbea73db542c59fab3f92a17354487e1741'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/tools/merge.php:
+    newFile: !uuid '9e809c8e315af367c55de12334abb5ca9eb936a9'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/tools/merge.sh:
+    newFile: !uuid '1a2515ba8a423b7602d25199b7a3929adf87b462'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/tools/merged_config.php:
+    newFile: !uuid '8cd917dbc687ce9fd0eee3b4749e874ccb0e5fc4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/tools/merged_header.php:
+    newFile: !uuid 'd5875fcba205431efd5b2c75ec25128988a3b3c2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/PosterManager.php:
+    newFile: !uuid '2d6453e9fdd11036c1a402a049251b72f6d2adca'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style:
+    newFile: !uuid '10590fd45323b8c91fcf1d67b8738263838574e4'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/rotate_bg:
+    newFile: !uuid '6694af78b1eea65258dcd9d50f2f7ed5985b8534'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/rotate_bg/rotate01.jpg:
+    newFile: !uuid '5f36ee1cd616ffaeb761c14a459453ea219828a6'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/rotate_bg/rotate02.jpg:
+    newFile: !uuid '3fd96f61195d5718cc036e09b3f1f3f520b59e4f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/rotate_bg/rotate03.jpg:
+    newFile: !uuid '38556cc1ddccc9275ae1c2c2d0cd9f929a43a0b3'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/rotate_bg/rotate04.jpg:
+    newFile: !uuid 'ee4c5afeb9ee5441eff6ddbbdb850a3cb5f1ab58'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/rotate_bg/rotate05.jpg:
+    newFile: !uuid '68e4c0035993d9bf00e214b64073ce2844275da7'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/simkai.ttf:
+    newFile: !uuid '1aa018b6d348c757a77f70067304df8b567ed549'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/slider_bg:
+    newFile: !uuid 'de6b64d2b64b6fac7174b95722e56fc9d03315b2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/slider_bg/layer01.jpg:
+    newFile: !uuid '9fae437cb05f0ffbd5685083197c4ac745de5b83'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/slider_bg/layer02.jpg:
+    newFile: !uuid '7b8b13641ac4a6acda31664d1d4b68223d194959'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/slider_bg/layer03.jpg:
+    newFile: !uuid '8a735bb77e8c57315868110c3a60ef4c46363502'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/style/zhankukuheiti.ttf:
+    newFile: !uuid '8d2a1d7f36632aa84f0841a843af97724f72e71e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/tmp:
+    newFile: !uuid 'dacba70ec3594668f5b156aaa84db6254cf646c2'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/src/tmp/.gitignore:
+    newFile: !uuid 'd59519736db132c5b3eaf70d18d840e54eea422f'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests:
+    newFile: !uuid '0b5d46fe7e3f13e8b25d9c9ef7e93096c00161bb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/1223015613610230151165.gif:
+    newFile: !uuid '89f88c82c3203b58b086488b56420ae9a23eef16'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/1223015613615230151165.gif:
+    newFile: !uuid '7b7042b9c77e9f71456a2188cd08094a2f0a5f07'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/122301561368230151165-1.gif:
+    newFile: !uuid 'd645e3469996466e2695b1573fae11a8dd18ee29'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/JoJhekR1um.png:
+    newFile: !uuid 'a2eb3e46dd5b634d843021179ac54ea5a10ca6c1'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/Kvt1cV5ygB.png:
+    newFile: !uuid '8d6b6b4e0c13c3891ec1066176d1521c1dfebabf'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/YRG3X4WgSZ3lLlwULkxZ3W3LLGgZ4b.jpeg:
+    newFile: !uuid '3988c3a54cac2051be4e42e523acb84efb702260'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/htmlToImage.php:
+    newFile: !uuid '637b01508f5ce09838a4a99ef73a823207384a5b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/imagick.php:
+    newFile: !uuid '4fb06fde8d264592c1d4dcfa0215d1c6e062868e'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/index.php:
+    newFile: !uuid '65eb8c66d0f2b49b9f63bba909b8c296b7ffe682'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server:
+    newFile: !uuid '6e5e20c69bb535428eeefef1a555f2d2b28b8238'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server/bg.php:
+    newFile: !uuid '8346571ec5d9751c7ec8bf065e8fcdea272dc4eb'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server/captcha.php:
+    newFile: !uuid '674c63023563f4683efb4302f1c648b08fa5c62d'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server/html.php:
+    newFile: !uuid 'a1612ead8d954fc13503686415ff8f828caba00b'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server/index.php:
+    newFile: !uuid 'e5f74d28e5bbf3eb71e279539c4d4def6c440ba8'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server/qr.php:
+    newFile: !uuid 'def98270bcf832ec3d23611ba50feddfa2568914'
+    oldFile: null
+  /niucloud/vendor/kkokk/poster/tests/server/server.php:
+    newFile: !uuid '747fa528badb8c9d3be55a45161a7fb02866ad60'
+    oldFile: null
+  /niucloud/vendor/services.php:
+    newFile: !uuid '2bbc02f037b442e95d7b1149037a3a7c4264bd1b'
+    oldFile: !uuid 'f383fad85afe15a312776bb4cc07708c02fc2548'
+  /niucloud/vendor/w7corp:
+    newFile: !uuid 'de53cfb40227c959d008b2e768b42c8d904da5f9'
+    oldFile: !uuid '979d48c737226e9b54b0b96abeb4c9ce3c12a104'
+  /niucloud/vendor/w7corp/easywechat:
+    newFile: !uuid '6b626e16345a6751fbc72a1ca8b2d8735670929b'
+    oldFile: !uuid '2e22a04d58db9a086fa737308e7a2a895efcf2c8'
+  /niucloud/vendor/w7corp/easywechat/src:
+    newFile: !uuid 'ee53ac1f1e9b7a7f65fdd9062ca482dbd2d3761c'
+    oldFile: !uuid '32d4405fb1777768ee6a0620005e754adb3e069d'
+  /niucloud/vendor/w7corp/easywechat/src/Kernel:
+    newFile: !uuid '696a17917ce771c4b4dace7d7c337d3ca6fe65c9'
+    oldFile: !uuid '71d0ceef75e457c3b1e56a412c4c353eee6046dc'
+  /niucloud/vendor/w7corp/easywechat/src/Kernel/Support:
+    newFile: !uuid 'b442fb5282576c87031dad36905152aa1531d22f'
+    oldFile: !uuid 'd2b8bf552ab42c4d140f65522cce52654c2660e1'
+  /niucloud/vendor/w7corp/easywechat/src/Kernel/Support/XML.php:
     newFile: null
-    oldFile: !uuid '10b642aa63f4e46a0eaa312ffc7984ee888c7d6c'
-  /niucloud/app/api/controller/article/Article.php:
-    newFile: null
-    oldFile: !uuid '7631382d861dcca9f3dba87ca07f0d691691ec85'
-  /niucloud/app/api/controller/article/ArticleCategory.php:
-    newFile: null
-    oldFile: !uuid '2e550f9b9449f2391823364794995302e2578171'
-  /niucloud/app/api/controller/login:
-    newFile: !uuid '8f1a71d1a9f74dee539d45df6c454737d8093f4d'
-    oldFile: !uuid 'bcd970db4b7c6fbcc7e040ac1277465d87422990'
-  /niucloud/app/api/controller/login/Config.php:
-    newFile: !uuid '22115b5435f7e296428a81b3999281d1b834dcb9'
-    oldFile: !uuid '182ddcf4417f322e813ecde68243189f11d63487'
-  /niucloud/app/api/controller/login/Login.php:
-    newFile: !uuid 'ea355839e1ae76d0d5f51b1cb1ae012df8c40dbe'
-    oldFile: !uuid '3f4dd3734be5b3c50ea9e34524b0469b822d04f2'
-  /niucloud/app/api/controller/login/Register.php:
-    newFile: !uuid 'ad76a15454e262a3fe5fc6d210e7bf5b086bde3b'
-    oldFile: !uuid 'f8681ef47dbc1a576d17fbc50ed5fe0f6a63279e'
-  /niucloud/app/api/controller/member:
-    newFile: !uuid 'da72918718517f0ca3cc3fd18bc813fcb09936a4'
-    oldFile: !uuid 'f2142d540cf66bcf4fd634e40d9f872e3543df9f'
-  /niucloud/app/api/controller/member/Account.php:
-    newFile: !uuid '8495a60242b289a1911cd6fb67bec9376d77c5fa'
-    oldFile: !uuid '9d82212066e120926b68a046a92b2982523914ac'
-  /niucloud/app/api/controller/member/Member.php:
-    newFile: !uuid 'bdb468d06114e8bf900bd85d537322bada4789d4'
-    oldFile: !uuid 'aab444afb16adf1b23c715191ad09465244dce94'
-  /niucloud/app/api/controller/sys:
-    newFile: !uuid '84b75ebb6ea5434680acc6ac070e3eeb977c0d01'
-    oldFile: !uuid '33e757c1f818740ee483b576fd52390ff4041d39'
-  /niucloud/app/api/controller/sys/Verify.php:
-    newFile: !uuid 'fce8e99331f86b1cbb3e46628b19f2ea70d4d754'
-    oldFile: !uuid '9bf177f30d9c7315a4a8d3efd6b30abd416eb536'
-  /niucloud/app/api/controller/weapp:
-    newFile: !uuid '1888c0cf977939530741726cfedbea24258f2284'
-    oldFile: !uuid 'b8d2cf720585c70085431b35e2c077fe367d71b1'
-  /niucloud/app/api/controller/weapp/Weapp.php:
-    newFile: !uuid 'fcf515789ff6c0c1ef5ef740a677ae03613c1c74'
-    oldFile: !uuid 'd6bc314d778ffd9ce23e21f3976d5f315fabe1c7'
-  /niucloud/app/api/controller/wechat:
-    newFile: !uuid '7cc76f1b63bd59ee7fe4feb3a80a02f535abfe9e'
-    oldFile: !uuid '82beeef29171ece1650cbbb4f8d583fe77a5e2bd'
-  /niucloud/app/api/controller/wechat/Wechat.php:
-    newFile: !uuid '100b14d0a15a25e38aa4e68d2f3d795b0b77c33c'
-    oldFile: !uuid 'b332dccd4909f0306c028a8a69fe07ac187e62c5'
-  /niucloud/app/api/route:
-    newFile: !uuid '463da0e6278f004d3c778227c9d595bf3a745ef7'
-    oldFile: !uuid '26a1216f8edbed60fabde85363ff144ddae6575e'
-  /niucloud/app/api/route/article.php:
-    newFile: null
-    oldFile: !uuid 'ee4cd0b94feb5ac7097da8f23d8349496bf76b22'
-  /niucloud/app/api/route/member.php:
-    newFile: !uuid '83e7fb005d3f7a1e0e128deff57829b25468aeba'
-    oldFile: !uuid 'b4fcc1926ed2d61172231830321dcf6c688d68a0'
-  /niucloud/app/api/route/route.php:
-    newFile: !uuid 'de7faa7d25c75e6777eeda863f214a2b7f8eaa99'
-    oldFile: !uuid '61586c58394618a0a8ff727d748a1fdc56407dba'
-  /niucloud/app/command:
-    newFile: !uuid '396fa31890d8fe5da572ee42ddd3a9fcefed68a5'
-    oldFile: !uuid 'b801ccca42405aab5785966e9ff4131034193b60'
-  /niucloud/app/command/Menu.php:
-    newFile: !uuid '3f3bcf7b43f6f6a08a6d0dcfe928ffb55d048bfb'
-    oldFile: !uuid 'fa1eed5e1b8bcd6eb986ce935fa3a419d2de95e0'
-  /niucloud/app/command/WorkerCommand.php:
-    newFile: !uuid '9e58135823bb824962ccc1b16c6ae8ac153dfae7'
-    oldFile: !uuid 'fe5dda1524bf4ffca06f6eddf501b26a6c7b9d76'
-  /niucloud/app/command/queue:
-    newFile: !uuid 'c44216eb02c2eceb4435033df08aa45c121d60d8'
-    oldFile: !uuid '9daf5ddefbd687be795d424c4eade30646dcfef6'
-  /niucloud/app/command/queue/Queue.php:
-    newFile: !uuid '4ad808dd1dbb577e603eb46a1fda6286c28d85a4'
-    oldFile: !uuid 'c5210cb7f01659a79883482f134009d796d3c831'
-  /niucloud/app/command/schedule:
-    newFile: !uuid '5be93569bda5288850fb82fe33955933e792e038'
-    oldFile: !uuid 'e87913f9af67ba4cc0d18ac12bcdd995666b7e62'
-  /niucloud/app/command/schedule/Schedule.php:
-    newFile: !uuid '9e90b141de9476ae33e3030618ba7b64cd29c4f7'
-    oldFile: !uuid '4ca17e915479731a56d967878fbf274aa7909d19'
-  /niucloud/app/command/workerman:
-    newFile: !uuid '3b7d3c67f001052ae20414d48b49fdab139c2abb'
-    oldFile: !uuid '2ff43ce06fc100beea2dd0cb397e819a703dbd9e'
-  /niucloud/app/command/workerman/Workerman.php:
-    newFile: !uuid '4cfce6da27353aa75b44efc33604bb75a0e46e50'
-    oldFile: !uuid 'f37e749d8efbd9a46cf7fe9bbfa4fcd356c6aa51'
-  /niucloud/app/dict:
-    newFile: !uuid 'f792814d5c108d72a309068878e53ddfdba4057b'
-    oldFile: !uuid 'edb015924079c2c764c1bbf40b9f0559b5fe930d'
-  /niucloud/app/dict/addon:
-    newFile: !uuid '2994d85d4d2ec224530fd59d9b48f63f3e97d06a'
-    oldFile: !uuid '886c574813be82b2bf742e56f9f3e809df66306b'
-  /niucloud/app/dict/addon/AddonDict.php:
-    newFile: !uuid '44cb08985a58c011fca7099ead586cfed6f924ab'
-    oldFile: !uuid '9ab98a22bdac578db85ce685b2fb42fe9d15cf2d'
-  /niucloud/app/dict/diy:
-    newFile: !uuid '856b23ccaef4e7443327ceddadd082210df3f9dd'
-    oldFile: !uuid '42fc05e4ec6c7e5a65f755128bf6d7f3b8a60754'
-  /niucloud/app/dict/diy/ComponentDict.php:
-    newFile: !uuid '5035fe981d359b77bdc984bc5e2e0eb31ebf4a7b'
-    oldFile: !uuid '27662de223b31fd89883ebb8a7e640737ac93d9f'
-  /niucloud/app/dict/diy/LinkDict.php:
-    newFile: !uuid 'e149ded70f91cb63ffc22b0209c200160d7f2cc5'
-    oldFile: !uuid '5b77d18881576cddf371fe71988ecdce11f36dac'
-  /niucloud/app/dict/diy/PagesDict.php:
-    newFile: !uuid '31a896502e00838f6e68100da2055cd7d7b1fe82'
-    oldFile: !uuid '3da0fdf78a57c42aaf849518d155d9e6be148079'
-  /niucloud/app/dict/member:
-    newFile: !uuid '3b6af2c065a7139f113acab6cd8e21d54eb2df97'
-    oldFile: !uuid '429af044bbbec3229ed8d8734fd792885e7f9608'
-  /niucloud/app/dict/member/MemberLevelDict.php:
-    newFile: !uuid 'c978989ff7b8750240b435216b0cbcac8b016293'
-    oldFile: !uuid 'f03195ea4a37848f32bea79d87eabd1564b33a24'
-  /niucloud/app/dict/member/MemberRegisterChannelDict.php:
-    newFile: !uuid 'f5f17cd934c926ff5669817bbfb8dead53d6b7bd'
-    oldFile: !uuid 'fc5489c2e75ebc19ffbc3fbfbc8e49765ddfe486'
-  /niucloud/app/dict/member/account_change_type.php:
-    newFile: !uuid 'a88c53535451c5c7dde8c007049c9153d5b83b33'
-    oldFile: !uuid 'c24df63baa9b34847c2ee1080aefddb4cbfb564e'
-  /niucloud/app/dict/menu:
-    newFile: !uuid '15ad8dbeec4145b7867e3ac49bc9337e838a3a23'
-    oldFile: !uuid '978126ddde0c2d404e918b61500d34b62421033a'
-  /niucloud/app/dict/menu/site.php:
-    newFile: !uuid '45657c5ccf7bb702515c7d18e82b70425b1362c6'
-    oldFile: !uuid '9f026e23afc12c3a68a69fc98c62cacb7c36bef0'
-  /niucloud/app/dict/poster:
-    newFile: !uuid '0201f4ec7b6664ef705bb1d036fbae47891deef9'
-    oldFile: !uuid 'f6a765cc40bf420925e8cc3aee816e6c78ab0bad'
-  /niucloud/app/dict/poster/ComponentDict.php:
-    newFile: !uuid '691d4536f71cfa4547e9f9dd11f85e3b671e7a52'
-    oldFile: !uuid 'f8f206941dc7f37a185d078205e31157a794541f'
-  /niucloud/app/dict/sys:
-    newFile: !uuid 'c836c4365c11fcbb87949ad373dde4189dc387a0'
-    oldFile: !uuid 'a9672ba06e912edb6a8d496955f7dfd42c63afbc'
-  /niucloud/app/dict/sys/FileDict.php:
-    newFile: !uuid '8b8210cdaf19e589bcdfe08e6a2ec3c7d2574c88'
-    oldFile: !uuid '67cfe0c31b4fd743f1baf2174ad7c1ee551f44c4'
-  /niucloud/app/dict/sys/PrinterDict.php:
-    newFile: !uuid 'a2b4be8d8ab1c11f54fe4bf992cc7b0c2e9f4290'
-    oldFile: null
-  /niucloud/app/install:
-    newFile: !uuid 'a79e0d1bd72ab9a44c17504422f8d138172f5bd3'
-    oldFile: !uuid '5476f0df4eca5dadaa3859b53d3e8b60686a5748'
-  /niucloud/app/install/controller:
-    newFile: !uuid '8987b400034b36074a5a43831c209abd6517255d'
-    oldFile: !uuid '29b1b823cf205be3ee39195aaa3f609cdc597b2c'
-  /niucloud/app/install/controller/Index.php:
-    newFile: !uuid '003dfb28891126660dad1b176cc4b0b8265edc23'
-    oldFile: !uuid 'a4fd7f7a2ca68359cd366c7cee8f51d78f2e81b3'
-  /niucloud/app/install/source:
-    newFile: !uuid '0524b2d402aa3bdaf346cbb9eb4530068248d7c9'
-    oldFile: !uuid '15416554406fdbe14ce093b361d0b2e324d7fb40'
-  /niucloud/app/install/source/database.sql:
-    newFile: !uuid '33f32f75d57d3257b1ed7dd7ea9f7ef68fad410c'
-    oldFile: !uuid 'c7c80249057310b8ccf9d362175582e711a5ae91'
-  /niucloud/app/job:
-    newFile: !uuid '509539c37ff64ffc3f09d51fd9cd5f70533977c5'
-    oldFile: !uuid '88ca22d78bf5b68ee4fe695f1108b89d698ed3fd'
-  /niucloud/app/job/member:
-    newFile: !uuid '21d897bcce3165292b779d24fb90e717957dff41'
-    oldFile: !uuid '153a1ae09f743712fac5ec78966a8f52a9f152d6'
-  /niucloud/app/job/member/SetMemberNoJob.php:
-    newFile: !uuid 'c393d3532f2398967509b463835623ee6dfc8401'
-    oldFile: null
-  /niucloud/app/lang:
-    newFile: !uuid '20b0eae388fd3984116bb01e2cb95f5f815d6251'
-    oldFile: !uuid 'f9dfda6df706567f32f6a45d5e7d97fe8a6f1239'
-  /niucloud/app/lang/zh-cn:
-    newFile: !uuid '4e342c89b49bb871bd195e91a508985e2d66cc3b'
-    oldFile: !uuid '02c91657bc54e96a03f275d01572c9e36ff998df'
-  /niucloud/app/lang/zh-cn/api.php:
-    newFile: !uuid '78db3358c5a6c72660f70e6d46b337036cefe7ce'
-    oldFile: !uuid '934c46508e00bbf9cf30b3b5755a5e6dd4665d2b'
-  /niucloud/app/lang/zh-cn/dict.php:
-    newFile: !uuid 'f721c7f87460f8db565e893ff1d71eff614f35f0'
-    oldFile: !uuid '975349bc1f745f6237e262f9a001fd969210cf41'
-  /niucloud/app/lang/zh-cn/validate.php:
-    newFile: !uuid '047d75657f2c3355c36465ca71631116f1a639cd'
-    oldFile: !uuid 'cc3325ae5e0dfdde0ffc07d07716fd84639f7755'
-  /niucloud/app/listener:
-    newFile: !uuid '11675b550ae7f79d0f82b4f6859de1640a083294'
-    oldFile: !uuid '17b14f5eda2adfecc9058333fb24879c7f94a159'
-  /niucloud/app/listener/member:
-    newFile: !uuid '99b53e5c8825801c3ad9fc5efc324f39864b659f'
-    oldFile: !uuid 'e2c68eb6df2a4bfd0fa0077de5c5c9d8f084a43a'
-  /niucloud/app/listener/member/MemberRegisterListener.php:
-    newFile: !uuid '522487f55fd6505c80356008025c8109f1b14ba4'
-    oldFile: !uuid '8f52c90f72cedcb1cde675c493fb4c19e8500763'
-  /niucloud/app/listener/system:
-    newFile: !uuid '10a59059751b8eb8aa852e3a5a3c1e6cbce1fadf'
-    oldFile: !uuid '052fcfe13c63f4700984d2cc4c8d9162cd546f1b'
-  /niucloud/app/listener/system/Poster.php:
-    newFile: !uuid '0a67e710c09b240299e976a9502e579575082853'
-    oldFile: !uuid '22201120a83e382e72d39343ffa79cc1d34f5bf3'
-  /niucloud/app/model:
-    newFile: !uuid '082f362087bc30a031eaab200f62a3a6028894b3'
-    oldFile: !uuid '61633a7e8a89bf3f713eabcd31c94d8a452b54cd'
-  /niucloud/app/model/addon:
-    newFile: !uuid '5b10b37f4890b0023655fa60894b0c027c32bb6d'
-    oldFile: !uuid '5c35aafc6e00d594556b0791338439594a9f4556'
-  /niucloud/app/model/addon/Addon.php:
-    newFile: !uuid '2803d1f44ba30a58a091b559981f1c3b723573dc'
-    oldFile: !uuid '69ad3f5501f29c6a4a540e844e8a94759b5eb272'
-  /niucloud/app/model/dict:
-    newFile: !uuid 'ae8a84419f63ad95f22ab1db39622f741410b8c0'
-    oldFile: !uuid '380113f28ab085c0d30cbd409cc79bc344d2cf3a'
-  /niucloud/app/model/dict/Dict.php:
-    newFile: !uuid '25dca1927a9c8cee2c394988b7d43e6089e966be'
-    oldFile: !uuid '3e7e46e7fe2902ed81b1f8089edfb01dd7b90420'
-  /niucloud/app/model/diy:
-    newFile: !uuid '34e4537292ef5aa47b5eee12e35051e45bc05521'
-    oldFile: !uuid '9907c7da9b8131e04433af61c4bb243e3daadb45'
-  /niucloud/app/model/diy/Diy.php:
-    newFile: !uuid 'cd515fee7b3f173126a6ee64fe023d42ba745e31'
-    oldFile: !uuid '65ee05abef49680349c9a98332b2214b38508f7e'
-  /niucloud/app/model/diy/DiyRoute.php:
-    newFile: !uuid '7edb19ba4b06d51fbaf4bb334d6165fd56bf109d'
-    oldFile: !uuid '92c6e4c38bcf84c60bc9b31090a82a32a2717394'
-  /niucloud/app/model/generator:
-    newFile: !uuid 'dca28844975945aadda277c9babb9934c86e1352'
-    oldFile: !uuid '5e713138b75a2283f35e11dcde7e833676153554'
-  /niucloud/app/model/generator/GenerateTable.php:
-    newFile: !uuid 'fdbc5eadc5858b2e4c9607d16bff391ca7da5755'
-    oldFile: !uuid '7c4a367c6eab3c3260d809b7e28fc35cb0ce91b4'
-  /niucloud/app/model/member:
-    newFile: !uuid 'c8015b144a5c3cddd525b09e46fab444b2eb577b'
-    oldFile: !uuid 'f9fb7cdfd6b0742af7a8f250fef36fac2d9a2c49'
-  /niucloud/app/model/member/Member.php:
-    newFile: !uuid 'afa6cd79341a8787cab0021e0ecb524822c04d91'
-    oldFile: !uuid '66a627b8ee4928575e3eb930a96a6905c54a73f7'
-  /niucloud/app/model/member/MemberAccountLog.php:
-    newFile: !uuid '7f9017c650a18dd496643b223c7a16fddefdf7cd'
-    oldFile: !uuid '2f74697941e2b4df962740ec3e46b1b1f6448f63'
-  /niucloud/app/model/member/MemberCashOut.php:
-    newFile: !uuid '0daa209b9838e7de9d5dd0e31226ee7ca60c6d12'
-    oldFile: !uuid 'a03818c2157094ed5b6ba2d30ef54c31bd03b725'
-  /niucloud/app/model/member/MemberLabel.php:
-    newFile: !uuid '323d03fadbf78633709a498027906b7810fd9a8e'
-    oldFile: !uuid '7ff6afe5936e01bffcb7f2adf63609a875ef4d39'
-  /niucloud/app/model/member/MemberLevel.php:
-    newFile: !uuid '9039d4219905780b8d493f42a3ef100c2e17ad1d'
-    oldFile: !uuid 'c40fe2aeb863b29a960e9668970e35aef7aaff9e'
-  /niucloud/app/model/site:
-    newFile: !uuid '3a6e18cfa2f91c6f5a2a968459b0072d65e17375'
-    oldFile: !uuid '13b7e4fd7c6d27db60467e5debb0c556e0968e6b'
-  /niucloud/app/model/site/Site.php:
-    newFile: !uuid '876d214d7e7e951911fd8c1428bf6548d426eeaa'
-    oldFile: !uuid 'd1f2527a2a396cfc613b3509ed283bf4183ea248'
-  /niucloud/app/model/site/SiteAccountLog.php:
-    newFile: !uuid 'a514a46e8c5f0e8e4310ff3ad8b2540406bd8832'
-    oldFile: !uuid 'b87b5f24208749c2322ff59190cfe63b126a2f33'
-  /niucloud/app/model/site/SiteGroup.php:
-    newFile: !uuid '6885527cfb0b126cf9c3ac43b404af593788c255'
-    oldFile: !uuid '5a3b50aca4b7c57eae25b21b9da84fdcdbcdd644'
-  /niucloud/app/model/sys:
-    newFile: !uuid '3750dcfcb3d1a9de43024bf11245c187f9d0ce7c'
-    oldFile: !uuid '5219bc6129539990b221be66512803df5f34bf4a'
-  /niucloud/app/model/sys/Poster.php:
-    newFile: !uuid '025c9964507bfe448a3ad70245c5616f13fdfef4'
-    oldFile: !uuid 'dfd692ea63b9056c1fb8016961641a6d629f9db8'
-  /niucloud/app/model/sys/SysExport.php:
-    newFile: !uuid '3d78fba9e5f474af817b268ac953ace8feca08e8'
-    oldFile: !uuid '2e541b0efcf20162b07d3adeb721967eb148b00e'
-  /niucloud/app/model/sys/SysNoticeLog.php:
-    newFile: !uuid '9a2cf1f9f945c35a5aef79ca5e984ea1f67dc146'
-    oldFile: !uuid '41a48e6da747eda465127510fe5fa7c55c41a222'
-  /niucloud/app/model/sys/SysNoticeSmsLog.php:
-    newFile: !uuid '928ddd5e4f34b67fcb6fd829cb6ec0226b25af75'
-    oldFile: !uuid '19205e4b4a51476ce3a1a54a1efb99b62ee788c9'
-  /niucloud/app/model/sys/SysPrinter.php:
-    newFile: !uuid '1acea478bd184f609a0248b5e9ef517828b1f522'
-    oldFile: null
-  /niucloud/app/model/sys/SysPrinterTemplate.php:
-    newFile: !uuid '4ec10d75c343669079c745d39d234b752a413b69'
-    oldFile: null
-  /niucloud/app/model/sys/SysUser.php:
-    newFile: !uuid 'e52fef2fe014de27a24acb7c6fc3ba9e20809e78'
-    oldFile: !uuid '72b28b604c026fe4db0cd1e240b5cc7d58764c57'
-  /niucloud/app/model/sys/SysUserLog.php:
-    newFile: !uuid '6defc7fee4ea2095a2daec38c53797aac883844c'
-    oldFile: !uuid '9eb831866096c4476d219eacebb2a37935a05c1b'
-  /niucloud/app/model/sys/WxOplatfromWeappVersion.php:
-    newFile: !uuid '8bae91dac1581032e7b47871729772b9561f5005'
-    oldFile: !uuid 'b4dc8423b5f35ac1dd5bf1de47e70b0f6c0ae67a'
-  /niucloud/app/model/verify:
-    newFile: !uuid 'cd985c2dad952b0a205eeaed3cc2b1c1be81afa4'
-    oldFile: !uuid 'f911e6637a13842ca8b3dd1d8a11bbc5685cff7b'
-  /niucloud/app/model/verify/Verify.php:
-    newFile: !uuid 'c6dd1a6500697124311b548b0579e49085872907'
-    oldFile: !uuid '2edf899309eb12466852888b90075b5238f7181e'
-  /niucloud/app/model/wechat:
-    newFile: !uuid '514ae56baacf11c5c715baaae6bbf2a4001a5e86'
-    oldFile: !uuid '196170b5552382955ba6f9da4c5f36b2836e1d2c'
-  /niucloud/app/model/wechat/WechatReply.php:
-    newFile: !uuid 'f5acf8b2a054ec56ac71bb6e8d85b3140f277235'
-    oldFile: !uuid '62213f1be3fc3cfa8cdb9b57c0b2d46240251238'
-  /niucloud/app/service:
-    newFile: !uuid '7438f7d77ffedd201188d7bed9d2565471243d70'
-    oldFile: !uuid 'faac57b95893f76194ec5e47b8815373c6fe0214'
-  /niucloud/app/service/admin:
-    newFile: !uuid 'f8cbcd513d02f648660ce9fa87e23f73efd9b318'
-    oldFile: !uuid '5ae27da325490b9d10e27e648472da836aef4d33'
-  /niucloud/app/service/admin/addon:
-    newFile: !uuid '74f338a483c1eb9b7d088b5abdd1c0fe73818517'
-    oldFile: !uuid '406ff93bac55fb4afa71cec353a539bf03be4639'
-  /niucloud/app/service/admin/addon/AddonDevelopService.php:
-    newFile: !uuid '4f23fb3f898faa3eb45b28615c691a8df92b52a2'
-    oldFile: !uuid '92d3e728c6f04beabc480555f1ec145b2bb131f8'
-  /niucloud/app/service/admin/diy:
-    newFile: !uuid 'c2a7a7eb3a1fbd5b7a39154e88d0b9576f242f11'
-    oldFile: !uuid '7dfcb09d414c5e9f520f238856568bd3bfcb8346'
-  /niucloud/app/service/admin/diy/DiyConfigService.php:
-    newFile: !uuid '36db928fe7f5cd8f8e677012bc0e8be5b915a5c5'
-    oldFile: !uuid '4cdc13bfe73fdd4967a7ba48a1dfa1beba0a373e'
-  /niucloud/app/service/admin/diy/DiyRouteService.php:
-    newFile: !uuid 'e6b15b2ff2ca58590aa5353ab08c5e9ac2836ca8'
-    oldFile: !uuid '4ebe1e1aee119d8a0cfe7887200ee6173a5de638'
-  /niucloud/app/service/admin/generator:
-    newFile: !uuid '416054d7c43143591e5e62cd5a354b60b1b7e867'
-    oldFile: !uuid '0f2bfd46a701ab19e3ce5c0b8f28109826e13acc'
-  /niucloud/app/service/admin/generator/vm:
-    newFile: !uuid 'f35008c4ea1af8b4967f85a4eb42cd6bc821b2d7'
-    oldFile: !uuid '5c622b2b617eabd7e8e0497143575138564969d1'
-  /niucloud/app/service/admin/generator/vm/site_service.vm:
-    newFile: !uuid '0d7b5d91c1c3a1146983979f8a084d5da159f861'
-    oldFile: !uuid 'b2ceef6ff937263e5517f1b9b26b76014b57ae7a'
-  /niucloud/app/service/admin/install:
-    newFile: !uuid '576a31f9f809eee49705a85d754c49d4f6bacc8f'
-    oldFile: !uuid '78443bc3aa945e2489ffcdeb7a4ab8316e425415'
-  /niucloud/app/service/admin/install/InstallArticleService.php:
-    newFile: null
-    oldFile: !uuid 'ba77f92e23c26cbddcb1c2265e34e4b197f17cff'
-  /niucloud/app/service/admin/member:
-    newFile: !uuid 'b214c51aee776bfa20d5b8d857920a222f1142bf'
-    oldFile: !uuid '7f68efcd4e9a6361b66c5507a0111f7374a9a6f1'
-  /niucloud/app/service/admin/member/MemberAccountService.php:
-    newFile: !uuid '4695815ffe4afefcc3df909a50be40bf47b78cd9'
-    oldFile: !uuid '9334e763e5e33a658669261d3ffbfd4666d2bd2c'
-  /niucloud/app/service/admin/member/MemberCashOutConfigService.php:
-    newFile: null
-    oldFile: !uuid 'c10d26de8c0ea11a2c897883722b2645ccf42457'
-  /niucloud/app/service/admin/member/MemberService.php:
-    newFile: !uuid 'cf73d0e3232605c628f1a201441b8c0739a2d649'
-    oldFile: !uuid '40a65f4c466c26f768a730509380bc40411869eb'
-  /niucloud/app/service/admin/member/MemberSignService.php:
-    newFile: !uuid 'b2868761be00771caa76000ceeba992f76ce4b3a'
-    oldFile: !uuid 'f697389581934862f4186056796cf1727115ece2'
-  /niucloud/app/service/admin/notice:
-    newFile: !uuid '1a79677085cbd4de7c82279a14f8601eb9b4d207'
-    oldFile: !uuid '1726afff1185662718720266dae70b1cf0d607aa'
-  /niucloud/app/service/admin/notice/SmsService.php:
-    newFile: !uuid '7ade5e2b658dff05f4d2245e70cae4365c2bb9b4'
-    oldFile: !uuid '1aef65c5adc8097a33535b769a3fd2137956d69d'
-  /niucloud/app/service/admin/pay:
-    newFile: !uuid '4bef247111055bf92b2656b3e2849c9b1787f4ae'
-    oldFile: !uuid '1f70d332f693a49ca7ebe8e18de732e4dafa7008'
-  /niucloud/app/service/admin/pay/PayChannelService.php:
-    newFile: !uuid 'ceacc70fafdf0210572a11459f8a3f9e2fdb4b9d'
-    oldFile: !uuid 'c4cce8d3a94ed0d3f5b2395ef38e46a1721377ee'
-  /niucloud/app/service/admin/site:
-    newFile: !uuid '68a23e2f4471c0855549b959ed96517c4d2967fe'
-    oldFile: !uuid 'df8834044ff46a7f8fd2f5cbaf102f70f5992b6c'
-  /niucloud/app/service/admin/site/SiteUserService.php:
-    newFile: !uuid 'ba16d51a84089c930d135505e27919cac58c9267'
-    oldFile: !uuid '84ba4b12c8f2b09fc28f1ecd6034bde122d8efc8'
-  /niucloud/app/service/admin/sys:
-    newFile: !uuid 'b01b2fa24f91426f1d390a6c97d2f48f406ca8b8'
-    oldFile: !uuid '5112d57fa1e2ce0f5cd75aa5e12d4840638884b2'
-  /niucloud/app/service/admin/sys/AttachmentService.php:
-    newFile: !uuid '0388f413717e0b1332a0bd346f9b7af6960dafb0'
-    oldFile: !uuid '4a4498228ea70a65b4e96ad7c42761c1b1b8e526'
-  /niucloud/app/service/admin/sys/ConfigService.php:
-    newFile: !uuid 'c68a0f53ad1b0fc50bc57b9691ac323b75eb9a5d'
-    oldFile: !uuid 'af02b537edf98012e77ecda54cf7ee0eed5baf98'
-  /niucloud/app/service/admin/sys/PrinterService.php:
-    newFile: !uuid 'aa3d30d8d1d909a73da96a7a365d9dba6ec3e178'
-    oldFile: null
-  /niucloud/app/service/admin/sys/PrinterTemplateService.php:
-    newFile: !uuid '9770b9c950c6e27a2fee3ec08ed15dca153f2776'
-    oldFile: null
-  /niucloud/app/service/admin/sys/RoleService.php:
-    newFile: !uuid '44d21e17515274a9a7e54c058148971c728e10a6'
-    oldFile: !uuid 'b09ae5801a32d24301c5471a4c2d68c3fe5f72e3'
-  /niucloud/app/service/admin/upgrade:
-    newFile: !uuid '1560221c10fe7dc3499e47666b21f5923dbac5c8'
-    oldFile: !uuid '9e5dcd5d7ad8ddb107da0f8523a517ecc70cd789'
-  /niucloud/app/service/admin/upgrade/BackupService.php:
-    newFile: !uuid 'b265e4aebbc35f528ead5489e8ea389da29023b6'
-    oldFile: !uuid '5417f9217188d23820e475c288f21f0e2d4d813f'
-  /niucloud/app/service/admin/user:
-    newFile: !uuid 'fad7fcb50e4c93fc4f084d5ae6b2b427a58d9f5d'
-    oldFile: !uuid '5d8373d3dc83a339b5099e629a07047001e66005'
-  /niucloud/app/service/admin/user/UserService.php:
-    newFile: !uuid 'cc3863d78375eba2afcabd5d1cba8a0af488aa10'
-    oldFile: !uuid '03dbe4b1fba4b65b952078a4f9c7815725bcd9d9'
-  /niucloud/app/service/admin/weapp:
-    newFile: !uuid 'ee286ea01708805f99fdfe409f621e2c2e20c97f'
-    oldFile: !uuid 'd256f4ae756cb50db62f23b7fe0f6dc9715ef705'
-  /niucloud/app/service/admin/weapp/WeappDeliveryService.php:
-    newFile: !uuid '29b9725c86ba5d42e85736e650aa31d984ca8d9e'
-    oldFile: !uuid '6782ab350164676774b2f685dcd1a49ab2b58e1d'
-  /niucloud/app/service/admin/weapp/WeappVersionService.php:
-    newFile: !uuid '586e11456524ed286dddbff0289b1b6e4befb7bf'
-    oldFile: !uuid 'eb3e306364feed5b0597a441ea72dc796df5b890'
-  /niucloud/app/service/api:
-    newFile: !uuid '52b88abc093704075632968470b10cc7c85cfdd2'
-    oldFile: !uuid '9420ccd1bc0063efcd393942d55e56eac3ae0151'
-  /niucloud/app/service/api/diy:
-    newFile: !uuid 'e4acbfcfec7991057aac135828c21e1286007dca'
-    oldFile: !uuid 'dfa9edd47b9ea9af37fe2f968bdcc96b541456f8'
-  /niucloud/app/service/api/diy/DiyConfigService.php:
-    newFile: !uuid 'e7ddbf8aed530718c8077e86e24498f9df381e30'
-    oldFile: !uuid 'fae00cd3a3f4419cb3214e6f56e4d7acfc39c71a'
-  /niucloud/app/service/api/login:
-    newFile: !uuid '3e52ae8032bc4f60c5fc17d71d1d44fb3f440d4d'
-    oldFile: !uuid '6b1fc8c253c638366e2d4b0457720fcd2d25b2f8'
-  /niucloud/app/service/api/login/AuthService.php:
-    newFile: !uuid '0071d92c10873781d5b3ef74d651d44443730510'
-    oldFile: !uuid '730ba029a1c7db514b0864d340425c0dae5f5e91'
-  /niucloud/app/service/api/login/ConfigService.php:
-    newFile: !uuid '5217fa1d272e41444d691f9ba0df3c8e90f8cfe9'
-    oldFile: null
-  /niucloud/app/service/api/login/LoginService.php:
-    newFile: !uuid '126ffbd24882a519c0d10d908112b3b273e0c0e1'
-    oldFile: !uuid '7bb1e6305a9d20e6cb175d1c1cd5bc65e3da6e66'
-  /niucloud/app/service/api/login/RegisterService.php:
-    newFile: !uuid 'c1ecd55db4ce992cfdc02e3da1110e64f3e80f38'
-    oldFile: !uuid '8ed2fa6248c5fe0afd492c68fd12c605e08482df'
-  /niucloud/app/service/api/member:
-    newFile: !uuid 'b88999c237df40561c249baabaf5b3fb43de69ea'
-    oldFile: !uuid 'a85a6f07cec31811ca9a3edc6eee39f7d82daa18'
-  /niucloud/app/service/api/member/MemberAccountService.php:
-    newFile: !uuid 'a11b86ad1fcc62bbac5bdecbedf276ae6bd51900'
-    oldFile: !uuid '617cff5bf82884359bb637e9860b3839278e359b'
-  /niucloud/app/service/api/member/MemberLevelService.php:
-    newFile: !uuid '84247dfbd0f934a58a4ed972506333744350dcf3'
-    oldFile: !uuid '61de81ffbc8ab8ef822a66f935a3349419fc1b6e'
-  /niucloud/app/service/api/member/MemberSignService.php:
-    newFile: !uuid '9289796d22df2484f6131b71cd3695b5e510e59e'
-    oldFile: !uuid '9898a93c4f323fad7ecbeb8a5b01e4c786645e79'
-  /niucloud/app/service/api/verify:
-    newFile: !uuid 'd83e62f198e380c524088898af44707aa8a83b41'
-    oldFile: !uuid '7eb7918234a5c0e2bc39511a7dad3357e9974f9e'
-  /niucloud/app/service/api/verify/VerifyService.php:
-    newFile: !uuid 'e7f6de380f548ce0c1031efefd3b7ba78d7974ee'
-    oldFile: !uuid 'f553a502236f0f1b4838f16c8139884cde856917'
-  /niucloud/app/service/api/weapp:
-    newFile: !uuid 'e7beb1e5aea2a2fa91c45dc0a7ec90fd7e5f3f61'
-    oldFile: !uuid 'd583ce3d8afd4cd4849367420a20a805f54db904'
-  /niucloud/app/service/api/weapp/WeappAuthService.php:
-    newFile: !uuid '680dd9a09ce6df8e9dcb9144597ad82b0d3a3006'
-    oldFile: !uuid '1afeb7f5b59fedb31a9d94488194c46f19e89b80'
-  /niucloud/app/service/api/wechat:
-    newFile: !uuid '6ef7f73d677ba2c4eb891b3c53cd80e39901acac'
-    oldFile: !uuid '30ad980576cab4772e7353d5fd827ba68b99f0dd'
-  /niucloud/app/service/api/wechat/WechatAuthService.php:
-    newFile: !uuid '05c4cca05520b68b9a5ea783fcc5b8d7d0b4423c'
-    oldFile: !uuid 'c06a7adf879183dca9e6ee42bb3a347d76ca3412'
-  /niucloud/app/service/core:
-    newFile: !uuid '40f0ce186dec8375dcbe3562df7c802ace5296f1'
-    oldFile: !uuid '7ee4217162bc7eba48009a8270dfb3a96e58c0ce'
-  /niucloud/app/service/core/addon:
-    newFile: !uuid '6214e90362b24baa8eb970e33e5a3f56c0cdfed5'
-    oldFile: !uuid 'e6fc5e8c39003eaf0f045041ede273a8986fb272'
-  /niucloud/app/service/core/addon/CoreAddonCloudService.php:
-    newFile: !uuid '58a68fdc5c7227278c8ea99eb0a51600338d619d'
-    oldFile: !uuid 'e6b835a8abfc62781b3d47f4ddd1e421334e11a6'
-  /niucloud/app/service/core/addon/WapTrait.php:
-    newFile: !uuid 'c1d8120cb61e943aabf7c21fd06c1c10791da0b2'
-    oldFile: !uuid '80bf6810cfc530c551fd4faadf3ec31dff2bae12'
-  /niucloud/app/service/core/diy:
-    newFile: !uuid 'd58f3289210b1a882edf2aa1706dfc3542204079'
-    oldFile: !uuid '1e2f1fad4150a080725f27ab9162ae19038f4f8a'
-  /niucloud/app/service/core/diy/CoreDiyConfigService.php:
-    newFile: !uuid 'e829947e4bb7519c4704f55d7872e7e43338ceeb'
-    oldFile: !uuid 'f6b33b30ab8fbc8f48b0bb7876e0346fb1438113'
-  /niucloud/app/service/core/member:
-    newFile: !uuid '8604c566b2b0fc79c8ac31bbd657a3c6a440773a'
-    oldFile: !uuid 'cc1e97d44c78ae376200d373d55f51f21451af1e'
-  /niucloud/app/service/core/member/CoreMemberAccountService.php:
-    newFile: !uuid '6f19db7fd51eb607c28e276d6765f5044f19698c'
-    oldFile: !uuid 'ca44c37332a2f61a6b605d148a35dba125368d71'
-  /niucloud/app/service/core/member/CoreMemberService.php:
-    newFile: !uuid '70ced591194f2cfda544bcfd6eab7760d244ee3e'
-    oldFile: !uuid '5e0dcd32d3af0c6a0a31bbd62184843391a369f7'
-  /niucloud/app/service/core/niucloud:
-    newFile: !uuid '8b06db738f5e63d5bbab51b3754c51f23212ddd1'
-    oldFile: !uuid '80b3eb678fbb9ee02c26542ff903c91e80ff02f4'
-  /niucloud/app/service/core/niucloud/CoreCloudBuildService.php:
-    newFile: !uuid '571042476b74cb2513388243a27228188f16d9c0'
-    oldFile: !uuid '76d203db4dabbe6b6bf8a3dc2a576b415179f5b4'
-  /niucloud/app/service/core/pay:
-    newFile: !uuid '42602a7c459a8a067b520a82f0c289f3bdd89b52'
-    oldFile: !uuid 'ea5fb01f0a0e1c34c3cbd68fb65f2c6e7cf174e1'
-  /niucloud/app/service/core/pay/CorePayService.php:
-    newFile: !uuid '9196ed2a86e2f248b6cad0504e8ac4b99d366961'
-    oldFile: !uuid '5eb1f710a9a4489e29847013962eb64e192e9306'
-  /niucloud/app/service/core/poster:
-    newFile: !uuid 'ef5d9a22bce53ce7c7959713d8ac3b04b0bd9885'
-    oldFile: !uuid '119b618610d9415726566e7829a362b06d53e9fe'
-  /niucloud/app/service/core/poster/CorePosterService.php:
-    newFile: !uuid '737fa977b3e7d9902017ea7928b6b4924f293c1b'
-    oldFile: !uuid '2e17ac1ad47d3b556862cc0c033d78d28c7a8b76'
-  /niucloud/app/service/core/printer:
-    newFile: !uuid 'd9f669e30fb0eed31ef8a5dc46555246220702b0'
-    oldFile: null
-  /niucloud/app/service/core/printer/CorePrinterService.php:
-    newFile: !uuid 'f530c10bac38069f6fb433f34f19d3bb7852c4e8'
-    oldFile: null
-  /niucloud/app/service/core/schedule:
-    newFile: !uuid '7e7f6b0bb20339a29b1ff6bc14245ac33a3cf849'
-    oldFile: !uuid 'eeab14855bec3c87ff44a847a0211d770abddd39'
-  /niucloud/app/service/core/schedule/CoreScheduleService.php:
-    newFile: !uuid '4615bd2edd9357d7ae7900dd8b173a8b51627ff3'
-    oldFile: !uuid '429879b5545ebce3bc1752b38205aebc7b35e826'
-  /niucloud/app/service/core/sys:
-    newFile: !uuid '76294c30b84b5031c778a4f25d29cfd6227feccd'
-    oldFile: !uuid '170bfe97c374454c700d5d904d659a101ecf750c'
-  /niucloud/app/service/core/sys/CoreConfigService.php:
-    newFile: !uuid '332673a34eb421214bdc7166b6c9a7db98098d34'
-    oldFile: !uuid '6bd5dd6fffd204ecc153b2377196719d815c9918'
-  /niucloud/app/service/core/weapp:
-    newFile: !uuid '7e3d37a29488b35a45d72f0abf34bf0dc5e03c8d'
-    oldFile: !uuid '21b3ebbce1b462fef41f658e5c406719067875c5'
-  /niucloud/app/service/core/weapp/CoreWeappAuthService.php:
-    newFile: !uuid 'ecae42c562c086b579d2a6348e3b1d32b0168093'
-    oldFile: !uuid '9d34a4df19106a5200e7873065493b65ac851d0d'
-  /niucloud/app/service/core/weapp/CoreWeappCloudService.php:
-    newFile: !uuid '34fec1d8846c3aa38e07aa2559683bb5e8125289'
-    oldFile: !uuid '2b192ac2d519166f43caaa4b92c2778f2afb36cc'
-  /niucloud/app/service/core/weapp/CoreWeappConfigService.php:
-    newFile: !uuid '961e9a3a98cf8780e3c54998cfc0ec98770239b3'
-    oldFile: !uuid '99e83861b1c2b3385911d167bc9e4791571a64a9'
-  /niucloud/app/service/core/weapp/CoreWeappDeliveryService.php:
-    newFile: !uuid '68cd9f7ef8a673fc219b1801d780e5c4d4736f3f'
-    oldFile: !uuid 'e46c737f9c1aa432d2f7604e880b59b96766b09d'
-  /niucloud/app/service/core/wechat:
-    newFile: !uuid '616b016a7ea96de7a6d60aa4ca33fd924072ce72'
-    oldFile: !uuid 'ffce7bf9babe36b7c5cc5f8416884c54145b3833'
-  /niucloud/app/service/core/wechat/CoreWechatApiService.php:
-    newFile: !uuid 'c27ec73b555c5f1a45e738ce396dc90e17c9bd8e'
-    oldFile: !uuid '3d2d5a380fcf955a5bf7d1f511bb4710797e1c6c'
-  /niucloud/app/service/core/wechat/CoreWechatConfigService.php:
-    newFile: !uuid 'fb991052b7998666d80e5444990e462a6c7808e2'
-    oldFile: !uuid 'e8c5a7f7bd6006d9958fe5d8d8b692c975d497c1'
-  /niucloud/app/service/core/wechat/CoreWechatFansService.php:
-    newFile: !uuid '2df7f33f458edf350db109b6a069097685297790'
-    oldFile: !uuid '757a23cd00a596967b851fb57fa6e1b57a6e5895'
-  /niucloud/app/service/core/wechat/CoreWechatMediaService.php:
-    newFile: !uuid '4d1e7837af51818d6ca51967c131b5cf4260082b'
-    oldFile: !uuid '7ce0f6ae641bd0c93132834b20c758f30c015cc5'
-  /niucloud/app/service/core/wechat/CoreWechatMessageService.php:
-    newFile: !uuid 'ddb70cc20ee577fec6570ef90bb7aadcdffd2ae7'
-    oldFile: !uuid '18776a9811870130398006b70442dfd93d0539c0'
-  /niucloud/app/service/core/wechat/CoreWechatServeService.php:
-    newFile: !uuid 'f6a76dc1ea12fdb1eaf52ed510ce94fa5e2f7e37'
-    oldFile: !uuid 'aab826d3fd939459379b0d4a35c38fafc446d3f4'
-  /niucloud/app/service/core/wxoplatform:
-    newFile: !uuid '8156330a3c45b6cb44a624e105cdc15041fb1656'
-    oldFile: !uuid '609ae500c730354251f2d7ad02af89fddbcbc18f'
-  /niucloud/app/service/core/wxoplatform/CoreOplatformService.php:
-    newFile: !uuid 'a9d640cef3421c6d25b7de9780423e3540ce8065'
-    oldFile: !uuid '1abf1a1760eb98847f3d95b514b3e4da05ca26ca'
-  /niucloud/app/upgrade:
-    newFile: !uuid '4f35ae9b620bdbcd174e2169cab8c0ea57bd6cd0'
-    oldFile: !uuid 'bc53d4ce3d3ff1e1140496ef619d9b4f470ea10f'
-  /niucloud/app/upgrade/v050:
-    newFile: !uuid '4b0f23c862accd1c9a3009c0f07fa0775e45144e'
-    oldFile: null
-  /niucloud/app/upgrade/v050/Upgrade.php:
-    newFile: !uuid '2290959ae38b62947c53f705b6e7b989c6e9de76'
-    oldFile: null
-  /niucloud/app/upgrade/v050/upgrade.sql:
-    newFile: !uuid 'fe744c33329df5352511eeb38ec9d92b05751393'
-    oldFile: null
-  /niucloud/app/validate:
-    newFile: !uuid '0472e838baff32eea5bd6e36c7c1ecf5fd54723a'
-    oldFile: !uuid 'fb881f98e28eb9ad72260182ab69b7799f3fce3a'
-  /niucloud/app/validate/sys:
-    newFile: !uuid '22e1b9c78ea455f1bc1e19e227f47b8de3396766'
-    oldFile: !uuid '177336940ec10c9efa9db41f1a660fa3b86fd037'
-  /niucloud/app/validate/sys/Printer.php:
-    newFile: !uuid '18f0f374ba184e8c43bbe992cefc5a595e919b17'
-    oldFile: null
-  /niucloud/app/validate/sys/PrinterTemplate.php:
-    newFile: !uuid 'cce63971087bf8062add67c4f9bfa17bae03836b'
-    oldFile: null
-  /niucloud/config:
-    newFile: !uuid 'fe43bb91a89dc7e091b73eb5d5d1d59c66e93f28'
-    oldFile: !uuid '9afc6a9d88e96cd21550e02593a70b595e58a7ac'
-  /niucloud/config/niucloud.php:
-    newFile: !uuid '1d15de69406d560877b29c3adcd5cd46c3d91d00'
-    oldFile: !uuid 'b811532a0ae39c1fc24996974c15965fe41e13a6'
-  /niucloud/config/upload.php:
-    newFile: !uuid 'a26034809bf23c8597d846238856614f30ee46f7'
-    oldFile: !uuid '7c828cbb23ffb63e29762f05d7844e0089fc5757'
-  /niucloud/config/version.php:
-    newFile: !uuid 'e9d690852ab1f1e7818a8229a538c25f1f6b223d'
-    oldFile: !uuid '251801150735dc5a0eda17ba8d3f5a1452148482'
-  /niucloud/core:
-    newFile: !uuid '30cb6b9b22ac54c1b0ce5408bc978c71ecd2f53f'
-    oldFile: !uuid '936c3c57d450f1a108297943f843fc9492d0713f'
-  /niucloud/core/base:
-    newFile: !uuid '1579c114b0611d14f303737aaad60332a2b74b99'
-    oldFile: !uuid 'fb0ed783acad04f2795c1586e3b6de44146105b7'
-  /niucloud/core/base/BaseModel.php:
-    newFile: !uuid '7d9ede1f44561bdda72f9e15e4e41929b5f96253'
-    oldFile: !uuid '240d4cb948ac59532fd0486b14707fe1d75bca41'
-  /niucloud/core/dict:
-    newFile: !uuid '537b8783a244db9f9bdcb2a07e8ce823cf4d4463'
-    oldFile: !uuid '8e59ae0f22630c2caab301d14565f2ec58c4139f'
-  /niucloud/core/dict/Config.php:
-    newFile: !uuid 'de2da3eb016074bbb6c5fd4befe6170064ca71cb'
-    oldFile: !uuid 'c96062001159baeb61a40a729c681272a2034a8d'
-  /niucloud/core/dict/Printer.php:
-    newFile: !uuid '27099e940d6928422dbfcd68fd0cb3ed20dbfd80'
-    oldFile: null
-  /niucloud/core/exception:
-    newFile: !uuid '1f1ec383cf8d7f167800ca1f881b69418fc301b4'
-    oldFile: !uuid '794eca5019c74a281fa40c39b6ab023f8a01184a'
-  /niucloud/core/exception/AddonException.php:
-    newFile: !uuid '34a085214c30281a924e51c9d10e6a7b36baa7ed'
-    oldFile: !uuid 'f10b1545976339a15ca50a52cdef4ad38b2edea6'
-  /niucloud/core/exception/AdminException.php:
-    newFile: !uuid '8a286c0200bb3057c73ecf39f99b28019aaeb1be'
-    oldFile: !uuid '4725e0226e72feaeba13be7ae1abc76255df58af'
-  /niucloud/core/pay:
-    newFile: !uuid '152ede4e31df612b73584f540396d409757750df'
-    oldFile: !uuid '4ca0e41d2ec635e17c9dfe4b9cbee361420ed251'
-  /niucloud/core/pay/Wechatpay.php:
-    newFile: !uuid '5aa7595cdceaff9fd49e194068c293077870097a'
-    oldFile: !uuid '8671fc7ec9dc496b3e44dafe779361ea6b96623e'
-  /niucloud/core/poster:
-    newFile: !uuid '9686ddb706984369acbd77ecf9b59374c38d2a56'
-    oldFile: !uuid 'e03a41aff64d49b14ba7fe251ba4d926a109432c'
-  /niucloud/core/poster/Poster.php:
-    newFile: !uuid '0dfe65a346a6aeae5c56690fd691293858e282de'
-    oldFile: !uuid '306242e3da6190e0d0c324ec01a851bbfe846f98'
-  /niucloud/core/poster/PosterLoader.php:
-    newFile: !uuid '8c078af53b9f5e3197b2e5fe2bd57ba80eeaff70'
-    oldFile: !uuid '2a67d6873f7c6b03a7a16b8b85f74ebcdef9b1bb'
-  /niucloud/core/printer:
-    newFile: !uuid '0d015098c80dd4cf9f9aba4b1559d4a6b9350bcf'
-    oldFile: null
-  /niucloud/core/printer/BasePrinter.php:
-    newFile: !uuid '03db1b1b081b9d16718b8ebd7f0e87a10f3d3aa9'
-    oldFile: null
-  /niucloud/core/printer/KdniaoPrinter.php:
-    newFile: !uuid '64787fc5e2ae7da0cf91a6f501cdd3e2e1f2f211'
-    oldFile: null
-  /niucloud/core/printer/PrinterLoader.php:
-    newFile: !uuid '28c2f9c829e940e22018f161ff3f95ed49a15f7a'
-    oldFile: null
-  /niucloud/core/printer/sdk:
-    newFile: !uuid '473351327fd13b9279054c6edd407815195e4c85'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun:
-    newFile: !uuid '753d9e4dddedfdeaa91dd1e7796586923341cfad'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/Autoloader.php:
-    newFile: !uuid '0bd49dcdab9b20b3485565039e6e5cb546124b8c'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api:
-    newFile: !uuid '002c493b6b7a4f3a9b429392fd76dcb2c9ec9a43'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/ExpressPrintService.php:
-    newFile: !uuid 'aa62a99c7a1537b25b5570474d2927cd099ae7e2'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/OauthService.php:
-    newFile: !uuid 'c712be220fbfbe6a307e31b64c064f539cacfdce'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/PicturePrintService.php:
-    newFile: !uuid 'dfb4b4c46bc4c8c2534a1cc0f45d1db80b7c1360'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/PrintMenuService.php:
-    newFile: !uuid '6f4a5ede83c70cff6c5afce2da113e4ce7e783b2'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/PrintService.php:
-    newFile: !uuid '7ff2309ec629c381e250d3d203c377eb8c0196f9'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/PrinterService.php:
-    newFile: !uuid 'd7b6bd66e73a8f8243052edbe28c983f61a0ab61'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/api/RpcService.php:
-    newFile: !uuid '22596e68405d2cbd81211c3b7aa842d21938c7b2'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/config:
-    newFile: !uuid '3438609700e0e9123780a3f1c8fab71422fc99a1'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/config/YlyConfig.php:
-    newFile: !uuid 'cdf00b9ed08d8e68360965774b2eb5df8a46bc2c'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo:
-    newFile: !uuid 'f8b64bf9e3234af089bbb759a679c8c65c3e95b8'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo/authorization_code_mode:
-    newFile: !uuid 'a00080c007c2281caa22a438dc8a84c00195b433'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo/authorization_code_mode/callback.php:
-    newFile: !uuid 'aa8786c36fab88fa7856b22304df8ee9c212e09e'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo/client_mode:
-    newFile: !uuid '96b747168efe88e717d89d92fbe8f7faa54b517f'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo/client_mode/callback.php:
-    newFile: !uuid 'bba4a61e8c969817c3eca647fd861d2539e5f081'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo/index.php:
-    newFile: !uuid '30cabdd087111f5ed78b54b75503b0ee7f288892'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/demo/init.php:
-    newFile: !uuid 'e02c6334db4b8f93987203729da6daf49eeb80c9'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/oauth:
-    newFile: !uuid '9bdf4f373b6c3411542157f4680e9748f2a395a0'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/oauth/YlyOauthClient.php:
-    newFile: !uuid 'ffc8510dd7b5b59ea6e2eaa531fd94101051b1d2'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/protocol:
-    newFile: !uuid 'c487c56c2a98028b26f908c49ea60e43d9c6ab7b'
-    oldFile: null
-  /niucloud/core/printer/sdk/yilianyun/protocol/YlyRpcClient.php:
-    newFile: !uuid '4099af9b2e459ae23dc46fcb270ce3c6cbd25fa1'
-    oldFile: null
-  /niucloud/core/sms:
-    newFile: !uuid 'cdabb6b45b12659415ab75f5a38c4256f851c82b'
-    oldFile: !uuid 'e0c0fb40d75a984263478355f65fb15f4f5a6eea'
-  /niucloud/core/sms/Aliyun.php:
-    newFile: !uuid '56199833353e929cd8abdbc84dc66908c2f09669'
-    oldFile: !uuid 'b0ee853d5c5031f1bba4256bf4c08fce723b3541'
-  /niucloud/core/sms/BaseSms.php:
-    newFile: !uuid '98ad7ceb71279aaac2d902db29acac2e3a71feae'
-    oldFile: !uuid '1b89a6ccd1e1d49acba741cf8516beaf488784e6'
-  /niucloud/core/sms/SmsLoader.php:
-    newFile: !uuid '0a031101a64a5931e3ab54301b21418a7839822e'
-    oldFile: !uuid '3c0e615d54c4665940d62d0e42778b0c79e8ef47'
-  /niucloud/core/sms/Tencent.php:
-    newFile: !uuid '0bd9d0aac19f1e3058d6dc94d9a3d44f60743374'
-    oldFile: !uuid '7c0a32f116e5948e0412beff319e89cc304d9ebb'
-  /niucloud/core/template:
-    newFile: !uuid 'bdaa6f7a1e9a3879d6fc86e3963ddc5403b5639e'
-    oldFile: !uuid 'febc9ea7044a4ba02b200e3c5b03f17d4b25a830'
-  /niucloud/core/template/BaseTemplate.php:
-    newFile: !uuid '4811992dce0c235809e40670f194f687b8d7c2c2'
-    oldFile: !uuid '064e7ad1b9dadde5685f8c5537f8d1d640fda64c'
-  /niucloud/core/util:
-    newFile: !uuid '49cf6698f6310ad054fa6b4d7932ebca1065f4d8'
-    oldFile: !uuid 'bcc832e0db3434a819b1269b3f6d98c1b4fcad6f'
-  /niucloud/core/util/Barcode.php:
-    newFile: !uuid '09a4228e2b7abab093bcd4bbaa07b3f4b3bc156c'
-    oldFile: !uuid 'b49915c1983e64660f27b67ead3091992d556738'
-gitCommitId: !uuid '77d9446299d4eaeccefbdc67218006ca3d758073'
+    oldFile: !uuid '785da795efc51d7d8f20a4245ff350d6b0c2925f'
+gitCommitId: !uuid 'eb16e41dc440d617952ebdfd140ea48479da788b'
 renames: {
   }
-revisionId: 197
+revisionId: 198
