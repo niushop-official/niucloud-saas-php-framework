@@ -2,16 +2,22 @@
 branches: {
   }
 fileChange:
-  /admin:
-    newFile: !uuid '234f0ba4487c26c12a27e7a69a418ee5d85c4674'
-    oldFile: !uuid '696624c2aaa0a0b291e4aa76d6d3fe5b8490c556'
-  /admin/.env.development:
-    newFile: !uuid 'a1db89feab1f475db0983747ddaff81acdf4e49c'
-    oldFile: !uuid 'f920f9258c110384e1b1c8589196a79da32918c1'
-  /admin/.env.production:
-    newFile: !uuid 'a1db89feab1f475db0983747ddaff81acdf4e49c'
-    oldFile: !uuid '82b9c2c1516decf686ff875511e5acbcfaa2ce80'
-gitCommitId: !uuid '02099fb4e036f03a5610c3b8539fd852ea2b7a38'
+  /niucloud:
+    newFile: !uuid '685348ea58548e1b0ec0c1f2b0442c19e0eb8dda'
+    oldFile: !uuid '52d0f23c2606bb63d7a5482b1cd6df918d2ff6e3'
+  /niucloud/app:
+    newFile: !uuid '1be9314a3d0be050c70fa907d962241bfa9eca17'
+    oldFile: !uuid 'affc836e1fa4081059660112d644afa70278625c'
+  /niucloud/app/install:
+    newFile: !uuid 'c92bd35188968aecbfc37efcd618f9730e66fe38'
+    oldFile: !uuid 'a79e0d1bd72ab9a44c17504422f8d138172f5bd3'
+  /niucloud/app/install/source:
+    newFile: !uuid '07047b2222f7187f1ba31f880560b8c37cf332b5'
+    oldFile: !uuid '0524b2d402aa3bdaf346cbb9eb4530068248d7c9'
+  /niucloud/app/install/source/database.sql:
+    newFile: !uuid '42e724c0f8c680028439c90b41c4189d76aff8a6'
+    oldFile: !uuid '33f32f75d57d3257b1ed7dd7ea9f7ef68fad410c'
+gitCommitId: !uuid 'f7ae283835a6623ec08e676a8ed1440045ac54d4'
 renames: {
   }
-revisionId: 203
+revisionId: 204
