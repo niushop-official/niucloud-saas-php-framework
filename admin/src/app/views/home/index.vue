@@ -35,8 +35,7 @@
 
             <div class="min-h-[580px]">
                 <div class="flex flex-wrap mt-[30px]" v-loading="loading">
-                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)"
-                        :class="['home-item w-[285px] box-border mb-[20px] cursor-pointer',{'mr-[20px]': index ==0 || (index+1)%4 != 0}]">
+                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)" :class="['home-item w-[285px] box-border mb-[20px] cursor-pointer',{'mr-[20px]': index ==0 || (index+1)%4 != 0}]">
                         <div class="flex items-center px-[24px] pt-[22px] pb-[16px] bg-[#F0F2F4] home-item-head relative">
                             <div class="absolute h-[5px] w-full z-1 left-0 top-0" :style="{'background-color': item.theme_color}" v-if="item.theme_color"></div>
                             <img v-if="item.icon" class="w-[48px] h-[48px] mr-[15px] rounded-[50%] overflow-hidden" :src="img(item.icon)" />

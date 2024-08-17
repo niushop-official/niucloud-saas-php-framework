@@ -114,7 +114,6 @@ const formRules = computed(() => {
     return {
         label_name: [
             { required: true, message: t('labelNamePlaceholder'), trigger: 'blur' }
-
         ]
     }
 })

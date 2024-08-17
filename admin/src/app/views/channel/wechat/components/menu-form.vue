@@ -39,7 +39,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { t } from '@/lang'
-import { strByteLength } from '@/utils/common'
+import { strByteLength, isUrl } from '@/utils/common'
 
 const prop = defineProps({
     data: {
@@ -84,7 +84,20 @@ const formRules = computed(() => {
             }
         ],
         url: [
-            { required: !buttonData.value.sub_button || !buttonData.value.sub_button.length, message: t('webpageUrlPlaceholder'), trigger: 'blur' }
+            { required: !buttonData.value.sub_button || !buttonData.value.sub_button.length, message: t('webpageUrlPlaceholder'), trigger: 'blur' },
+            {
+                validator: (rule: any, value: string, callback: any) => {
+                    if (!buttonData.value.sub_button || !buttonData.value.sub_button.length) {
+                        if (!isUrl(value)) {
+                            callback(new Error(t('menuUrlErrorTips')))
+                        } else {
+                            callback()
+                        }
+                    } else {
+                        callback()
+                    }
+                }
+            }
         ],
         appid: [
             { required: ((!buttonData.value.sub_button || !buttonData.value.sub_button.length) && buttonData.value.type == 'miniprogram'), message: t('weappAppidPlaceholder'), trigger: 'blur' }

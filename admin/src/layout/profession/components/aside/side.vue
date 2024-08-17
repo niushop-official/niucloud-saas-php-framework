@@ -61,6 +61,7 @@ import useUserStore from '@/stores/modules/user'
 import { img, isUrl } from '@/utils/common'
 import { findFirstValidRoute } from '@/router/routers'
 import menuItem from './menu-item.vue'
+import { cloneDeep } from 'lodash-es'
 
 const route = useRoute()
 const router = useRouter()
@@ -145,7 +146,7 @@ const menuOption = ref([])
 watch(twoMenuData.value, () => {
     menuOption.value = [];
     if(twoMenuData.value && Object.values(twoMenuData.value).length){
-        let data = JSON.parse(JSON.stringify(twoMenuData.value));
+        let data = cloneDeep(twoMenuData.value);
         for(let key in data){
             menuOption.value.push(data[key].name);
         }

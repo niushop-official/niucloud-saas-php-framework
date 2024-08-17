@@ -109,6 +109,7 @@ const getCloudBuildLogFn = () => {
             if (showDialog.value && cloudBuildLog.length) {
                 active.value = 'complete'
                 terminalRef.value.execute('clear')
+                clearCloudBuildTask()
             }
             notificationEl && notificationEl.close()
             cloudBuildTask.value = null

@@ -18,6 +18,13 @@
                         <el-color-picker v-model="theme" />
                     </div>
                 </div>
+                <!-- 标签栏 -->
+                <div class="setting-item flex items-center justify-between mb-[10px]">
+                    <div class="title text-base text-tx-secondary">{{ t('layout.tab') }}</div>
+                    <div>
+                        <el-switch v-model="tab" :active-value="true" :inactive-value="false" />
+                    </div>
+                </div>
             </el-scrollbar>
         </el-drawer>
     </div>
@@ -29,6 +36,7 @@ import useSystemStore from '@/stores/modules/system'
 import { useDark, useToggle } from '@vueuse/core'
 import { setThemeColor } from '@/utils/common'
 import { t } from '@/lang'
+import storage from "@/utils/storage";
 
 const drawer = ref(false)
 const systemStore = useSystemStore()
@@ -44,6 +52,18 @@ const dark = computed({
         systemStore.setTheme('dark', val)
         toggleDark(val)
         setThemeColor(systemStore.theme, systemStore.dark ? 'dark' : 'light')
+    }
+})
+
+const tab = computed({
+    get () {
+        return systemStore.tab
+    },
+    set (val) {
+        systemStore.$patch((state) => {
+            state.tab = val
+            storage.set({ key: 'tab', data: val })
+        })
     }
 })
 

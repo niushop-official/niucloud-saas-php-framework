@@ -194,7 +194,6 @@
                                                 </el-form-item>
                                             </template>
 
-
 <!--                                            <el-form-item :label="t('旋转角度')">-->
 <!--                                                <el-slider v-model="posterStore.editComponent.angle" show-input size="small" class="ml-[10px]" :min="0" :max="360" />-->
 <!--                                            </el-form-item>-->
@@ -249,7 +248,6 @@ if(route && route.query){
     route.query.back = route.query.back || '/site/poster/list'
 }
 
-
 const backPath:any = route.query.back
 const template = ref('');
 const oldTemplate = ref('');
@@ -262,8 +260,8 @@ const activeNames = ref(componentType)
 const handleChange = (val: string[]) => {
 }
 
-const previewIframeStyle = (data)=>{
-    let style = {
+const previewIframeStyle = (data: any)=>{
+    let style: any = {
         transform: '',
         zIndex: '',
         top: '',
@@ -323,6 +321,7 @@ const xAlignList = ref([
         className: 'right'
     }
 ])
+
 // 水平方向对齐
 const yAlignList = ref([
     {
@@ -341,9 +340,8 @@ const yAlignList = ref([
         className: 'bottom'
     },
 ])
-const alignChangeFn = (type,data)=>{
+const alignChangeFn = (type: any,data: any)=>{
     posterStore.editComponent[type] = data.className;
-    
 }
 
 // 返回上一页

@@ -35,8 +35,7 @@
 
                     <el-table-column :label="t('response')" min-width="180">
                         <template #default="{ row }">
-                            <div v-for="(item, index) in row.weapp.content" :key="'a' + index" class="text-left">
-                                {{ item.join(":") }}</div>
+                            <div v-for="(item, index) in row.weapp.content" :key="'a' + index" class="text-left">{{ item.join(":") }}</div>
                         </template>
                     </el-table-column>
 

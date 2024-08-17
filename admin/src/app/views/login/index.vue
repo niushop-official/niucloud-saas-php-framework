@@ -14,9 +14,7 @@
                     <h3 class="text-center text-2xl font-bold mb-[26px]">{{ t('platform') }}</h3>
                     <el-form :model="form" ref="formRef" :rules="formRules">
                         <el-form-item prop="username">
-                            <el-input v-model="form.username" :placeholder="t('userPlaceholder')"
-                                autocomplete="off"
-                                @keyup.enter="handleLogin(formRef)" class="h-[40px] input-with-select">
+                            <el-input v-model="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" @keyup.enter="handleLogin(formRef)" class="h-[40px] input-with-select">
                                 <template #prepend>
                                     <icon name="element User" />
                                 </template>
@@ -162,7 +160,7 @@ const form = reactive({
 
 // 获取登录配置信息
 const loginConfig = ref(null)
-const getLoginConfigFn = async (id: number = 0) => {
+const getLoginConfigFn = async () => {
     imgLoading.value = true
     const data = await (await getLoginConfig()).data
     loginConfig.value = data

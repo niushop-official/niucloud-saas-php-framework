@@ -59,7 +59,7 @@
                     <el-form-item :label="t('fromType')" prop="from_type">
                         <el-select v-model="memberAccountLogTableData.searchParam.from_type" clearable :placeholder="t('fromTypePlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
-                            <el-option :label="item.name" :value="key" v-for="(item, key) in fromTypeList"  :key="key"/>
+                            <el-option :label="item.name" :value="key" v-for="(item, key) in fromTypeList" :key="key"/>
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="t('createTime')" prop="create_time">

@@ -11,6 +11,8 @@
             </el-header>
             <!-- 顶部 end -->
 
+            <layout-tab />
+
             <!-- 主体 -->
             <el-main class="h-full p-0 bg-page">
                 <el-scrollbar>
@@ -32,6 +34,7 @@
 import { computed } from 'vue'
 import layoutHeader from './components/header/index.vue'
 import layoutAside from './components/aside/index.vue'
+import layoutTab from './components/tabs.vue'
 import useAppStore from '@/stores/modules/app'
 import useTabbarStore from '@/stores/modules/tabbar'
 import useSystemStore from '@/stores/modules/system'

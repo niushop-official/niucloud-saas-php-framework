@@ -106,7 +106,7 @@ getInstalledAddonList().then(({ data }) => {
         item.type == 'app' && addonList.value.push(item)
     })
     loading.value = false
-}).catch()
+})
 
 const getLayoutConfig = () => {
     getLayout().then(({ data }) => {

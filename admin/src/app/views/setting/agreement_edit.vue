@@ -13,7 +13,7 @@
                 <el-form-item :label="t('title')" prop="title">
                     <el-input v-model.trim="formData.title" clearable :placeholder="t('titlePlaceholder')" class="input-width" maxlength="20" />
                 </el-form-item>
-                <el-form-item :label="t('content')">
+                <el-form-item :label="t('content')" prop="content">
                     <editor v-model="formData.content" />
                 </el-form-item>
             </el-form>
@@ -73,7 +73,23 @@ const formRules = computed(() => {
     return {
         title: [
             { required: true, message: t('titlePlaceholder'), trigger: 'blur' }
-        ]
+        ],
+        content: [
+                {
+                    required: true,
+                    trigger: ['blur', 'change'],
+                    validator: (rule: any, value: any, callback: any) => {
+                        if (value === '') {
+                            callback(new Error(t('contentPlaceholder')))
+                        } else if (value.length < 5 || value.length > 50000) {
+                            callback(new Error(t('contentMaxTips')))
+                            return false
+                        } else {
+                            callback()
+                        }
+                    }
+                }
+            ]
     }
 })
 

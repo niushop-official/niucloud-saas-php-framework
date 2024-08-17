@@ -1,8 +1,8 @@
-import {defineStore} from 'pinia'
-import {t} from '@/lang'
-import {toRaw} from 'vue'
-import {ElMessage, ElMessageBox} from 'element-plus'
-import {cloneDeep} from 'lodash-es'
+import { defineStore } from 'pinia'
+import { t } from '@/lang'
+import { toRaw } from 'vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { cloneDeep } from 'lodash-es'
 
 const useDiyStore = defineStore('diy', {
     state: () => {
@@ -39,8 +39,8 @@ const useDiyStore = defineStore('diy', {
                 'hsla(209, 100%, 56%, 0.73)',
                 '#c7158577'
             ],
-            components: [], // 组件集合
-            position: ['top_fixed','right_fixed','bottom_fixed','left_fixed','fixed'],
+            components: <any>[], // 组件集合
+            position: ['top_fixed', 'right_fixed', 'bottom_fixed', 'left_fixed', 'fixed'],
             global: {
                 title: "页面", // 页面标题（用于前台展示）
 
@@ -58,12 +58,12 @@ const useDiyStore = defineStore('diy', {
                     bgColor: "#ffffff", // 头部背景颜色
                     rollBgColor: "#ffffff", // 滚动时，头部背景颜色
                     style: 'style-1', // 导航栏风格样式（style-1：文字，style-2：图片+文字，style-3：图片+搜索，style-4：定位）
-                    styleName: '风格1', 
+                    styleName: '风格1',
                     textColor: "#333333", // 文字颜色
                     rollTextColor: "#333333", // 滚动时，头部文字颜色
                     textAlign: 'center', // 文字对齐方式
-                    inputPlaceholder : '请输入搜索关键词',
-                    imgUrl:'', // 图片
+                    inputPlaceholder: '请输入搜索关键词',
+                    imgUrl: '', // 图片
                     link: { // 跳转链接
                         name: ""
                     }
@@ -111,7 +111,7 @@ const useDiyStore = defineStore('diy', {
 
             },
             // 组件集合
-            value: []
+            value: <any>[]
         }
     },
     getters: {
@@ -143,12 +143,12 @@ const useDiyStore = defineStore('diy', {
                     bgColor: "#ffffff", // 头部背景颜色
                     rollBgColor: "#ffffff", // 滚动时，头部背景颜色
                     style: 'style-1', // 导航栏风格样式（style-1：文字，style-2：图片+文字，style-3：图片+搜索，style-4：定位）
-                    styleName: '风格1', 
+                    styleName: '风格1',
                     textColor: "#333333", // 文字颜色
                     rollTextColor: "#333333", // 滚动时，头部文字颜色
                     textAlign: 'center', // 文字对齐方式
-                    inputPlaceholder : '请输入搜索关键词',
-                    imgUrl:'', // 图片
+                    inputPlaceholder: '请输入搜索关键词',
+                    imgUrl: '', // 图片
                     link: { // 跳转链接
                         name: ""
                     }
@@ -220,7 +220,7 @@ const useDiyStore = defineStore('diy', {
             let template = cloneDeep(this.global.template);
             Object.assign(component, template);
 
-            if(component.template){
+            if (component.template) {
                 // 按照组件初始的属性覆盖默认值
                 Object.assign(component, component.template);
                 delete component.template;
@@ -230,19 +230,19 @@ const useDiyStore = defineStore('diy', {
                 // 组件最多只能添加n个
                 ElMessage({
                     type: 'warning',
-                    message: `${component.componentTitle}${t('componentCanOnlyAdd')}${component.uses}${t('piece')}`,
+                    message: `${ component.componentTitle }${ t('componentCanOnlyAdd') }${ component.uses }${ t('piece') }`,
                 });
                 return;
             }
 
             // 置顶组件，只能在第一个位置中添加
-            if(component.position && this.position.indexOf(component.position) != -1){
+            if (component.position && this.position.indexOf(component.position) != -1) {
 
                 this.currentIndex = 0;
                 // 指定位置添加组件
                 this.value.splice(0, 0, component);
 
-            }else if (this.currentIndex === -99) {
+            } else if (this.currentIndex === -99) {
 
                 this.value.push(component);
                 // 添加组件后（不是编辑调用的），选择最后一个
@@ -317,16 +317,16 @@ const useDiyStore = defineStore('diy', {
             var temp = cloneDeep(this.value[this.currentIndex]); // 当前选中组件
             let prevIndex = this.currentIndex - 1;
             var temp2 = cloneDeep(this.value[prevIndex]); // 上个组件
-            
+
             if ((this.currentIndex - 1) < 0 || temp2.position && this.position.indexOf(temp2.position) != -1) return; // 从0开始
 
             temp.id = this.generateRandom(); // 更新id，刷新组件数据
             temp2.id = this.generateRandom(); // 更新id，刷新组件数据
 
-            if(temp.position && this.position.indexOf(temp.position) != -1){
+            if (temp.position && this.position.indexOf(temp.position) != -1) {
                 ElMessage({
                     type: 'warning',
-                    message: `${t('componentNotMoved')}`,
+                    message: `${ t('componentNotMoved') }`,
                 });
                 return;
             }
@@ -348,10 +348,10 @@ const useDiyStore = defineStore('diy', {
             var temp2 = cloneDeep(this.value[nextIndex]); // 下个组件
             temp2.id = this.generateRandom(); // 更新id，刷新组件数据
 
-            if(temp.position && this.position.indexOf(temp.position) != -1){
+            if (temp.position && this.position.indexOf(temp.position) != -1) {
                 ElMessage({
                     type: 'warning',
-                    message: `${t('componentNotMoved')}`,
+                    message: `${ t('componentNotMoved') }`,
                 });
                 return;
             }
@@ -372,15 +372,15 @@ const useDiyStore = defineStore('diy', {
             if (!this.checkComponentIsAdd(component)) {
                 ElMessage({
                     type: 'warning',
-                    message: `${t('notCopy')}，${component.componentTitle}${t('componentCanOnlyAdd')}${component.uses}${t('piece')}`,
+                    message: `${ t('notCopy') }，${ component.componentTitle }${ t('componentCanOnlyAdd') }${ component.uses }${ t('piece') }`,
                 });
                 return;
             }
 
-            if(component.position && this.position.indexOf(component.position) != -1){
+            if (component.position && this.position.indexOf(component.position) != -1) {
                 ElMessage({
                     type: 'warning',
-                    message: `${t('notCopy')}，${component.componentTitle}${t('componentCanOnlyAdd')}1${t('piece')}`,
+                    message: `${ t('notCopy') }，${ component.componentTitle }${ t('componentCanOnlyAdd') }1${ t('piece') }`,
                 });
                 return;
             }

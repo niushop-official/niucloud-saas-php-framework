@@ -151,7 +151,7 @@ const addEvent = async (formEl: FormInstance | undefined) => {
 }
 
 // 获取自定义海报类型
-const loadPosterType = (addon = '')=> {
+const loadPosterType = ()=> {
     getPosterType({}).then((res:any)=>{
         for (let key in posterType) {
             delete posterType[key];

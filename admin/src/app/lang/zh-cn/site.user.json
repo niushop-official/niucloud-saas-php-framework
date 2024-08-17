@@ -5,7 +5,6 @@
     "lastLoginIP": "最后登录IP",
     "userNamePlaceholder": "请输入账号/用户名",
     "detail": "详情",
-    "siteNum": "站点数量",
     "endDate": "结束时间",
     "startDate": "开始时间",
     "loginTime": "最后登录时间",
@@ -19,10 +18,12 @@
     "userCreateSiteLimit": "套餐权限",
     "siteGroup": "站点套餐",
     "siteMonth": "站点效期限",
-    "siteNum": "建站数量",
+    "siteNum": "站点数量",
     "month": "月",
     "siteMonthPlaceholder": "请输入站点效期限",
     "siteNumPlaceholder": "请输入建站数量",
     "siteMonthCannotLtOne": "站点效期限不能小于1",
-    "siteNumCannotLtOne": "建站数量不能小于1"
+    "siteNumCannotLtOne": "建站数量不能小于1",
+    "userDeleteTips": "确定要删除该用户吗？",
+    "createSiteNum": "可创建站点数量"
 }

@@ -11,7 +11,7 @@ import { setWindowTitle, getAppType, urlToRouteRaw } from '@/utils/common'
 const ADDON_ROUTE = []
 const addonRoutes = import.meta.globEager('@/addon/**/router/index.ts')
 for (const key in addonRoutes) {
-    const addon = addonRoutes[key]
+    const addon: any = addonRoutes[key]
     addon.ROUTE && ADDON_ROUTE.push(...addon.ROUTE)
     addon.NO_LOGIN_ROUTES && NO_LOGIN_ROUTES.push(...addon.NO_LOGIN_ROUTES)
 }
@@ -26,7 +26,7 @@ const router = createRouter({
  */
 const originPush = router.push
 router.push = (to: RouteLocationRaw) => {
-    const route = typeof to == 'string' ? urlToRouteRaw(to) : to
+    const route: any = typeof to == 'string' ? urlToRouteRaw(to) : to
     if (route.path) {
         const paths = route.path.split('/').filter((item: string) => { return item })
         route.path = ['admin', 'site', 'home'].indexOf(paths[0]) == -1 ? `/${getAppType()}${route.path}` : route.path
@@ -39,7 +39,7 @@ router.push = (to: RouteLocationRaw) => {
  */
 const originResolve = router.resolve
 router.resolve = (to: RouteLocationRaw, currentLocation?: RouteLocationNormalizedLoaded) => {
-    const route = typeof to == 'string' ? urlToRouteRaw(to) : to
+    const route: any = typeof to == 'string' ? urlToRouteRaw(to) : to
     if (route.path) {
         const paths = route.path.split('/').filter((item: string) => { return item })
         route.path = ['admin', 'site', 'home'].indexOf(paths[0]) == -1 ? `/${getAppType()}${route.path}` : route.path
@@ -48,7 +48,7 @@ router.resolve = (to: RouteLocationRaw, currentLocation?: RouteLocationNormalize
 }
 
 // 全局前置守卫
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to: any, from, next) => {
     NProgress.configure({ showSpinner: false })
     NProgress.start()
 
@@ -106,7 +106,7 @@ router.beforeEach(async (to, from, next) => {
                         next({ path: '/home/index', replace: true })
                     }
                 } else {
-                    await userStore.getAuthMenus()
+                    await userStore.getAuthMenusFn()
 
                     // 设置首页路由
                     let firstRoute: symbol | string | undefined = findFirstValidRoute(userStore.routers)

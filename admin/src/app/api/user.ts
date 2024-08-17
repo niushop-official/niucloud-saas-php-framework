@@ -19,7 +19,7 @@ export function getUserList(params: Record<string, any>) {
  * @returns
  */
 export function getUserInfo(uid: number) {
-    return request.get(`user/user/${uid}`);
+    return request.get(`user/user/${ uid }`);
 }
 
 /**
@@ -29,6 +29,14 @@ export function getUserInfo(uid: number) {
  */
 export function addUser(params: Record<string, any>) {
     return request.post('user/user', params, { showSuccessMessage: true })
+}
+
+/**
+ * 删除用户
+ * @param uid
+ */
+export function deleteUser(uid: number) {
+    return request.delete(`user/user/${uid}`, { showSuccessMessage: true })
 }
 
 /**
@@ -63,7 +71,7 @@ export function checkUsernameIsExist(username: string) {
  * @param uid
  */
 export function getUserCreateSiteLimit(uid: number) {
-    return request.get(`user/user/create_site_limit/${uid}`)
+    return request.get(`user/user/create_site_limit/${ uid }`)
 }
 
 /**
@@ -71,7 +79,7 @@ export function getUserCreateSiteLimit(uid: number) {
  * @param id
  */
 export function getUserCreateSiteLimitInfo(id: number) {
-    return request.get(`user/user/create_site_limit/info/${id}`)
+    return request.get(`user/user/create_site_limit/info/${ id }`)
 }
 
 /**
@@ -87,7 +95,7 @@ export function addUserCreateSiteLimit(params: Record<string, any>) {
  * @param params
  */
 export function editUserCreateSiteLimit(params: Record<string, any>) {
-    return request.put(`user/user/create_site_limit/${params.id}`, params, { showSuccessMessage: true })
+    return request.put(`user/user/create_site_limit/${ params.id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -95,5 +103,5 @@ export function editUserCreateSiteLimit(params: Record<string, any>) {
  * @param id
  */
 export function delUserCreateSiteLimit(id: number) {
-    return request.delete(`user/user/create_site_limit/${id}`, { showSuccessMessage: true })
+    return request.delete(`user/user/create_site_limit/${ id }`, { showSuccessMessage: true })
 }

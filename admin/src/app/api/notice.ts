@@ -11,21 +11,21 @@ export function getNoticeList(params: any) {
 }
 
 /**
- * 消息详情
- * @param key
- * @returns
- */
-export function getNoticeInfo(key: string) {
-    return request.get(`notice/notice/${key}`)
-}
-
-/**
  * 消息发送记录
  * @param params
  * @returns
  */
 export function getNoticeLog(params: any) {
     return request.get(`notice/log`, {params})
+}
+
+/**
+ * 消息详情
+ * @param key
+ * @returns
+ */
+export function getNoticeInfo(key: string) {
+    return request.get(`notice/notice/${key}`)
 }
 
 /**

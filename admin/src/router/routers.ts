@@ -129,7 +129,7 @@ interface Route {
  */
 const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null = null): RouteRecordRaw {
     const record: RouteRecordRaw = {
-        path: `/${route.app_type}/${route.router_path}`,
+        path: `/${ route.app_type }/${ route.router_path }`,
         name: route.menu_key,
         meta: {
             title: route.menu_name,
@@ -146,7 +146,7 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
     if (route.menu_type == 0) {
         record.component = parentRoute ? RouterView : () => Promise.resolve(Default)
     } else {
-        record.component = route.addon ? addonModules[`/src/addon/${route.addon}/views/${route.view_path}.vue`] : modules[`/src/app/views/${route.view_path}.vue`]
+        record.component = route.addon ? addonModules[`/src/addon/${ route.addon }/views/${ route.view_path }.vue`] : modules[`/src/app/views/${ route.view_path }.vue`]
     }
     return record
 }

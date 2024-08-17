@@ -108,8 +108,8 @@
                 "touppercase",         // 字母大写
                 "tolowercase",         // 字母小写
                 "|",
-                // "link",                // 超链接
-                // "unlink",              // 取消链接
+                "link",                // 超链接
+                "unlink",              // 取消链接
                 // "anchor",              // 锚点
                 "|",
                 "imagenone",           // 图片默认

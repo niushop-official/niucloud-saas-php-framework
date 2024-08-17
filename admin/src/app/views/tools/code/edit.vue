@@ -10,10 +10,10 @@
                 <el-tab-pane :label="t('basicSettings')" name="basicSettings">
                     <el-form :model="formData" label-width="70px" class="page-form">
                         <el-form-item :label="t('tableName')">
-                            <el-input v-model="formData.table_name" disabled :placeholder="t('tableNamePlaceholder')" class="input-width" maxlength="64" />
+                            <el-input v-model.trim="formData.table_name" disabled :placeholder="t('tableNamePlaceholder')" class="input-width" maxlength="64" />
                         </el-form-item>
                         <el-form-item :label="t('tableContent')">
-                            <el-input v-model="formData.table_content" clearable :placeholder="t('tableContentPlaceholder')" class="input-width" maxlength="64" />
+                            <el-input v-model.trim="formData.table_content" clearable :placeholder="t('tableContentPlaceholder')" class="input-width" maxlength="64" />
                         </el-form-item>
                         <el-form-item :label="t('addon')">
                             <el-select class="input-width" :placeholder="t('addonPlaceholder1')" v-model="formData.addon_name" filterable remote clearable :remote-method="getAddonDevelopFn" @change="addonChange">
@@ -22,7 +22,7 @@
                         </el-form-item>
                         <el-form-item :label="t('moduleName')">
                             <div>
-                                <el-input v-model="formData.module_name" clearable :placeholder="t('moduleNamePlaceholder')" class="input-width" />
+                                <el-input v-model.trim="formData.module_name" clearable :placeholder="t('moduleNamePlaceholder')" class="input-width" />
                                 <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">生成代码所属功能模块，对应路由名称，例如会员模块，充值模块，订单模块等</p>
                                 <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">命名规范，小写，多个单词使用下划线连接,例如: member，article_category</p>
                             </div>
@@ -30,7 +30,7 @@
                         </el-form-item>
                         <el-form-item :label="t('className')">
                             <div>
-                                <el-input v-model="formData.class_name" clearable :placeholder="t('classNamePlaceholder')" class="input-width" />
+                                <el-input v-model.trim="formData.class_name" clearable :placeholder="t('classNamePlaceholder')" class="input-width" />
                                 <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">生成代码所属文件名称，controller，model，service，等类型文件名</p>
                                 <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">命名规范，小写，多个单词使用下划线连接,例如: article_category</p>
                             </div>
@@ -47,7 +47,7 @@
                         <el-table-column :label="t('columnName')" prop="column_name" min-width="130px" />
                         <el-table-column :label="t('columnComment')" prop="" min-width="220px">
                             <template #default="{ row }">
-                                <el-input v-model="row.column_comment" :placeholder="t('columnCommentPlaceholder')" />
+                                <el-input v-model.trim="row.column_comment" :placeholder="t('columnCommentPlaceholder')" />
                             </template>
                         </el-table-column>
                         <el-table-column :label="t('columnType')" prop="column_type" width="100px" />
@@ -326,6 +326,14 @@ const viewType = [
     {
         label: t('formImageSelect'),
         value: 'imageSelect'
+    },
+    {
+        label: t('formFileSelect'),
+        value: 'fileSelect'
+    },
+    {
+        label: t('formVideoSelect'),
+        value: 'videoSelect'
     },
     {
         label: t('formEditor'),

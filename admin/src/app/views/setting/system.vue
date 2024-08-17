@@ -104,7 +104,7 @@ const formData = reactive<Record<string, string>>({
     tel: ''
 })
 
-const setFormData = async (id: number = 0) => {
+const setFormData = async () => {
     const data = await (await getWebsite()).data
     Object.keys(formData).forEach((key: string) => {
         if (data[key] != undefined) formData[key] = data[key]

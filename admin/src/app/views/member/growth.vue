@@ -106,7 +106,7 @@ const memberAccountLogTableData = reactive({
         from_type: '',
         create_time: '',
         mobile: '',
-        member_id: memberId
+        member_id
     }
 })
 

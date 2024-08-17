@@ -135,7 +135,7 @@
                         </p>
                     </template>
                 </el-empty>
-                <div v-if="!localList.all.length && !loading && !authinfo && activeName == 'all'&&!authLoading" class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6">
+                <div v-if="!localList.all.length && !loading && !authinfo && activeName == 'all' && !authLoading" class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6">
                     <div class="mb-[20px] text-sm text-[#888]">检测到当前账号尚未绑定授权，请先绑定授权！</div>
                     <div class="flex flex-1  flex-wrap justify-center relative">
                         <el-button class="w-[154px] !h-[48px] mt-[8px]" type="primary" @click="authCodeApproveFn">授权码认证</el-button>
@@ -154,7 +154,7 @@
                         </el-popover>
                     </div>
                 </div>
-                <el-empty class="mx-auto overview-empty" v-if="!localList.all.length && !loading && authinfo && activeName == 'all'&&!authLoading">
+                <el-empty class="mx-auto overview-empty" v-if="!localList.all.length && !loading && authinfo && activeName == 'all' && !authLoading">
                     <template #image>
                         <div class="w-[230px] mx-auto">
                             <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="">
@@ -366,7 +366,7 @@
         </el-card>
     </div>
 
-    <upgrade ref="upgradeRef" @complete="localListFn"/>
+    <upgrade ref="upgradeRef" @complete="localListFn" @cloudbuild="handleCloudBuild"/>
     <cloud-build ref="cloudBuildRef" />
 </template>
 
@@ -687,25 +687,23 @@ const authElMessageBox = () => {
 
 let installLog: string[] = []
 const getCloudInstallLog = () => {
-    getAddonCloudInstallLog(currAddon.value)
-        .then(res => {
-            const data = res.data.data ?? []
-            if (data[0] && data[0].length && installShowDialog.value == true) {
-                data[0].forEach(item => {
-                    if (!installLog.includes(item.action)) {
-                        terminalRef.value.pushMessage({ content: `正在执行：${item.action}` })
-                        installLog.push(item.action)
+    getAddonCloudInstallLog(currAddon.value).then(res => {
+        const data = res.data.data ?? []
+        if (data[0] && data[0].length && installShowDialog.value == true) {
+            data[0].forEach(item => {
+                if (!installLog.includes(item.action)) {
+                    terminalRef.value.pushMessage({ content: `正在执行：${ item.action }` })
+                    installLog.push(item.action)
 
-                        if (item.code == 0) {
-                            terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
-                        }
+                    if (item.code == 0) {
+                        terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
                     }
-                })
-            }
-        })
-        .catch(() => {
-            notificationEl?.close()
-        })
+                }
+            })
+        }
+    }).catch(() => {
+        notificationEl?.close()
+    })
 }
 
 watch(currAddon, (nval) => {
@@ -805,11 +803,14 @@ const installShowDialogClose = (done: () => {}) => {
         ).then(() => {
             cancelInstall(currAddon.value)
             done()
-        }).catch(() => { })
+        }).catch(() => {
+        })
     } else if (installStep.value == 3) {
         activeNameTabFn('installed')
         location.reload()
-    } else done()
+    } else {
+        done()
+    }
 
     flashInterval && clearInterval(flashInterval)
 }
@@ -866,20 +867,18 @@ const formRules = reactive<FormRules>({
 const save = async (formEl: FormInstance | undefined) => {
     if (saveLoading.value || !formEl) return
 
-    await formEl.validate(async (valid) => {
+    await formEl.validate(async(valid) => {
         if (valid) {
             saveLoading.value = true
 
-            setAuthInfo(formData)
-                .then(() => {
-                    saveLoading.value = false
-                    setTimeout(() => {
-                        location.reload()
-                    }, 1000)
-                })
-                .catch(() => {
-                    saveLoading.value = false
-                })
+            setAuthInfo(formData).then(() => {
+                saveLoading.value = false
+                setTimeout(() => {
+                    location.reload()
+                }, 1000)
+            }).catch(() => {
+                saveLoading.value = false
+            })
         }
     })
 }

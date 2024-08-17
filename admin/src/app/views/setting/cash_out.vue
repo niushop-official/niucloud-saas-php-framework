@@ -11,7 +11,7 @@
                 <el-card class="box-card !border-none" shadow="never">
 
                     <el-form-item :label="t('isOpen')">
-                        <el-switch v-model="formData.is_open" />
+                        <el-switch v-model="formData.is_open" active-value="1" inactive-value="0" />
                     </el-form-item>
 
                     <el-form-item :label="t('cashWithdrawalAmount')" v-if="formData.is_open" prop="min">
@@ -67,7 +67,7 @@ const pageName = route.meta.title
 
 const loading = ref(true)
 const ruleFormRef = ref<FormInstance>()
-const formData = reactive<Record<string, string | boolean | Array<string> >>({
+const formData = reactive({
     is_auto_transfer: '0',
     is_auto_verify: '0',
     is_open: '0',
@@ -84,12 +84,11 @@ const getTransfertypeFn = async () => {
 getTransfertypeFn()
 
 // 获取会员的配置信息
-const setFormData = async (id: number = 0) => {
+const setFormData = async () => {
     const data = await (await getCashOutConfig()).data
     Object.keys(formData).forEach((key: string) => {
         if (data[key] != undefined) formData[key] = data[key]
     })
-    formData.is_open = Boolean(Number(formData.is_open))
     loading.value = false
 }
 setFormData()
@@ -124,7 +123,6 @@ const onSave = async (formEl: FormInstance | undefined) => {
     await formEl.validate((valid) => {
         if (valid) {
             const save = { ...formData }
-            save.is_open = Number(save.is_open).toString()
 
             setCashOutConfig(save).then(() => {
                 loading.value = false

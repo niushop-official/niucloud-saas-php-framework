@@ -159,7 +159,7 @@ export function strByteLength(str: string = ''): number {
  * @param url
  */
 export function urlToRouteRaw(url: string) {
-    const query = {}
+    const query: any = {}
     const [path, param] = url.split('?')
 
     param && param.split('&').forEach((str: string) => {
@@ -204,7 +204,7 @@ export function deepClone(obj: object) {
  * @param {Boolean} firstU
  * @param {Number} radix
  */
-export function guid(len = 10, firstU = true, radix = null) {
+export function guid(len = 10, firstU = true, radix: any = null) {
     const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
     const uuid = []
     radix = radix || chars.length
@@ -244,19 +244,19 @@ export function moneyFormat(money : string) : string {
 /**
  * 时间戳转日期格式
  */
-export function timeStampTurnTime(timeStamp, type = "") {
+export function timeStampTurnTime(timeStamp: any, type = "") {
 	if (timeStamp != undefined && timeStamp != "" && timeStamp > 0) {
 		var date = new Date();
 		date.setTime(timeStamp * 1000);
-		var y = date.getFullYear();
-		var m = date.getMonth() + 1;
+		var y: any = date.getFullYear();
+		var m: any = date.getMonth() + 1;
 		m = m < 10 ? ('0' + m) : m;
-		var d = date.getDate();
+		var d: any = date.getDate();
 		d = d < 10 ? ('0' + d) : d;
-		var h = date.getHours();
+		var h: any = date.getHours();
 		h = h < 10 ? ('0' + h) : h;
-		var minute = date.getMinutes();
-		var second = date.getSeconds();
+		var minute: any = date.getMinutes();
+		var second: any = date.getSeconds();
 		minute = minute < 10 ? ('0' + minute) : minute;
 		second = second < 10 ? ('0' + second) : second;
 		if (type) {
@@ -304,4 +304,48 @@ export function filterNumber(event:any){
 export function filterSpecial(event:any){
     event.target.value = event.target.value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '')
     event.target.value = event.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g,'')
+}
+
+export function importIconFontCss() {
+    // const modulesFiles = {}; // import.meta.glob('@/styles/icon/official-iconfont.css', { eager: true })
+    // const modulesFiles = import.meta.glob('@/addon/**/assets/icon/*.css', { eager: true })
+    // // console.log('modulesFiles',modulesFiles)
+    //
+    // const modules:any = {}
+    // for (const [key, value] of Object.entries(modulesFiles)) {
+    //     const moduleName:any = key.split('/').pop()
+    //     const name = moduleName.split('.')[0]
+    //     modules[name] = value.default
+    // }
+    //
+    // // console.log('modules',modules)
+    //
+    // for(let key in modules) {
+    //     // console.log('modules[key]',modules[key])
+    //     import(modules[key]).then((module) => {
+    //         // console.log('module', module.default);
+    //     }).catch((e) => {
+    //         // console.log('caca', e)
+    //     });
+    // }
+}
+
+export function getIcon() {
+    // const modulesFiles = import.meta.glob('@/styles/icon/*.json', { eager: true })
+    // const addonModulesFiles = import.meta.glob('@/addon/**/assets/icon/*.json', { eager: true })
+    // addonModulesFiles && Object.assign(modulesFiles, addonModulesFiles)
+    //
+    // // const modulesFiles = {}; // import.meta.glob('@/styles/icon/official-iconfont.css', { eager: true })
+    // // const modulesFiles = import.meta.glob('@/styles/icon/*.json', { eager: true })
+    // console.log('modulesFiles', modulesFiles)
+    //
+    // const modules = {}
+    // for (const [key, value] of Object.entries(modulesFiles)) {
+    //     const moduleName = key.split('/').pop()
+    //     console.log('moduleName',moduleName)
+    //     const name = moduleName.split('.')[0]
+    //     modules[name] = value.default
+    // }
+    // console.log('modules', modules)
+    // // const addonModulesFiles = import.meta.glob('@/addon/**/assets/icon/*.json', { eager: true })
 }

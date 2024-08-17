@@ -8,7 +8,7 @@
                     本次升级将从<span class="font-bold">{{ upgradeContent.version }}</span>升级到<span class="font-bold">{{ upgradeContent.upgrade_version }}</span>版本
                 </div>
                 <div class="mt-[10px]" v-if="upgradeContent.upgrade_version != upgradeContent.last_version">
-                    <el-alert type="info" show-icon >
+                    <el-alert type="info" show-icon>
                         <template #title>
                             当前最新版本为{{ upgradeContent.last_version }}，您的服务已于{{ upgradeContent.expire_time }}到期。如需升级到最新版可在<a class="text-primary" href="https://www.niucloud.com" target="_blank">niucloud-admin官网</a>购买相关服务后再进行升级
                         </template>
@@ -22,7 +22,7 @@
                     </div>
                 </el-scrollbar>
             </div>
-            <div class="flex justify-end">
+            <div class="flex justify-end" v-if="upgradeContent.version_list.length">
                 <el-button type="primary" @click="handleUpgrade" :loading="uploading">{{ t('upgrade.upgradeButton') }}</el-button>
             </div>
         </div>
@@ -109,20 +109,17 @@
             </div>
         </template>
     </el-dialog>
-
-    <cloud-build ref="cloudBuildRef" />
 </template>
 
 <script lang="ts" setup>
 import { ref, h, watch } from 'vue'
 import { t } from '@/lang'
 import { getVersions } from '@/app/api/auth'
-import { getFrameworkVersionList } from '@/app/api/module'
+import { getFrameworkNewVersion } from '@/app/api/module'
 import { getUpgradeContent, getUpgradeTask, upgradeAddon, executeUpgrade, preUpgradeCheck, clearUpgradeTask } from '@/app/api/upgrade'
 import { Terminal, TerminalFlash } from 'vue-web-terminal'
 import 'vue-web-terminal/lib/theme/dark.css'
 import { AnyObject } from '@/types/global'
-import CloudBuild from '@/app/components/cloud-build/index.vue'
 import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
 import Storage from '@/utils/storage'
 
@@ -132,12 +129,11 @@ const upgradeTask = ref<null | AnyObject>(null)
 const active = ref('content')
 const upgradeCheck = ref<null | AnyObject>(null)
 const uploading = ref(false)
-const terminalRef = ref(null)
-const emits = defineEmits(['complete'])
-const cloudBuildRef = ref(null)
+const terminalRef: any = ref(null)
+const emits = defineEmits(['complete', 'cloudbuild'])
 const upgradeTipsShowDialog = ref<boolean>(false)
 
-let upgradeLog = []
+let upgradeLog: any = []
 /**
  * 查询升级任务
  */
@@ -172,6 +168,7 @@ const getUpgradeTaskFn = () => {
             active.value = 'complete'
             notificationEl && notificationEl.close()
             emits('complete')
+            clearUpgradeTask()
             return
         }
         upgradeTask.value = data
@@ -210,13 +207,14 @@ const elNotificationClick = () => {
     notificationEl && notificationEl.close()
 }
 
-const versions = ref('')
-const getVersionsInfo = () => {
-    getVersions().then(res => {
-        versions.value = res.data.version.version
-    })
-}
-getVersionsInfo()
+const frameworkVersion = ref('')
+getVersions().then(res => {
+    frameworkVersion.value = res.data.version.version
+})
+const newFrameworkVersion = ref("")
+getFrameworkNewVersion().then(({ data }) => {
+    newFrameworkVersion.value = data.last_version
+})
 
 /**
  * 执行升级
@@ -247,33 +245,25 @@ const open = (addonKey: string = '') => {
         ElMessage({ message: '已有正在执行中的升级任务', type: 'error' })
         showDialog.value = true
     } else {
-        getFrameworkVersionList().then(({ data }) => {
-            const newVersion = data.length ? data[0] : null
-            if (addonKey && newVersion && newVersion.version_no !== versions.value) {
-                ElMessage({ message: '存在新版本框架，请先升级框架', type: 'error' })
-                return
+        if (addonKey && frameworkVersion.value != newFrameworkVersion.value) {
+            ElMessage({ message: '存在新版本框架，请先升级框架', type: 'error' })
+            return
+        }
+        getUpgradeContent(addonKey).then(({ data }) => {
+            upgradeContent.value = data
+            if (Storage.get('upgradeTipsLock')) {
+                showDialog.value = true
             } else {
-                getUpgradeContent(addonKey).then(({ data }) => {
-                    upgradeContent.value = data
-                    if (!data.version_list.length) {
-                        ElMessage({ message: '已经是最新版本了', type: 'error' })
-                        return
-                    }
-                    if (Storage.get('upgradeTipsLock')) {
-                        showDialog.value = true
-                    } else {
-                        upgradeTipsShowDialog.value = true
-                    }
-                }).catch()
+                upgradeTipsShowDialog.value = true
             }
-        })
+        }).catch()
     }
 }
 
 /**
  * 升级进度动画
  */
-let flashInterval = null
+let flashInterval: any = null
 const terminalFlash = new TerminalFlash()
 const onExecCmd = (key, command, success, failed, name) => {
     if (command == '开始升级') {
@@ -335,7 +325,7 @@ const clearUpgradeTaskFn = () => {
  */
 const handleCloudBuild = () => {
     showDialog.value = false
-    cloudBuildRef.value?.open()
+    emits('cloudbuild')
 }
 
 const upgradeTipsConfirm = (isLock: boolean = false) => {

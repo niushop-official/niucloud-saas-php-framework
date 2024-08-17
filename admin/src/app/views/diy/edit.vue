@@ -54,12 +54,12 @@
                     <el-button class="page-btn absolute right-[20px]" @click="diyStore.changeCurrentIndex(-99)">{{ t('pageSet') }}</el-button>
                     <div class="diy-view-wrap w-[375px] shadow-lg mx-auto">
                         <div class="preview-head bg-no-repeat bg-center bg-cover cursor-pointer h-[64px]" :class="[diyStore.global.topStatusBar.style]" :style="{backgroundColor :diyStore.global.topStatusBar.bgColor}" @click="diyStore.changeCurrentIndex(-99)">
-                            <div v-if="diyStore.global.topStatusBar.style == 'style-1'" class="content-wrap">
+                            <div v-if="diyStore.global.topStatusBar.style == 'style-1' && diyStore.global.topStatusBar.isShow" class="content-wrap">
                                 <div class="title-wrap" :style="{ fontSize: '14px', color: diyStore.global.topStatusBar.textColor, textAlign: diyStore.global.topStatusBar.textAlign }">
                                     {{ diyStore.global.title }}
                                 </div>
                             </div>
-                            <div v-if="diyStore.global.topStatusBar.style == 'style-2'" class="content-wrap">
+                            <div v-if="diyStore.global.topStatusBar.style == 'style-2' && diyStore.global.topStatusBar.isShow" class="content-wrap">
                                 <div class="title-wrap" :style="{ color: diyStore.global.topStatusBar.textColor }">
                                     <div class="h-[28px] max-w-[150px] mr-[8px]" v-if="diyStore.global.topStatusBar.imgUrl">
                                         <img class="max-w-[100%] max-h-[100%]" :src="img(diyStore.global.topStatusBar.imgUrl)" mode="heightFix" />
@@ -67,16 +67,16 @@
                                     <div :style="{ color: diyStore.global.topStatusBar.textColor }">{{ diyStore.global.title }}</div>
                                 </div>
                             </div>
-                            <div v-if="diyStore.global.topStatusBar.style == 'style-3'" class="content-wrap">
+                            <div v-if="diyStore.global.topStatusBar.style == 'style-3' && diyStore.global.topStatusBar.isShow" class="content-wrap">
                                 <div class="title-wrap" v-if="diyStore.global.topStatusBar.imgUrl">
                                     <img class="max-w-[100%] max-h-[100%]" :src="img(diyStore.global.topStatusBar.imgUrl)" />
                                 </div>
                                 <div class="search">
-                                    <span class="iconfont iconsousuo absolute left-[10px]"></span>
-                                    <span class="text-[14px]">{{diyStore.global.topStatusBar.inputPlaceholder}}</span>
+                                    <span class="nc-iconfont nc-icon-sousuo-duanV6xx1 !text-[12px] absolute left-[10px]"></span>
+                                    <span class="text-[12px]">{{diyStore.global.topStatusBar.inputPlaceholder}}</span>
                                 </div>
                             </div>
-                            <div v-if="diyStore.global.topStatusBar.style == 'style-4'" class="content-wrap">
+                            <div v-if="diyStore.global.topStatusBar.style == 'style-4' && diyStore.global.topStatusBar.isShow" class="content-wrap">
                                 <span class="iconfont iconxiazai19 !text-[14px]" :style="{ color: diyStore.global.topStatusBar.textColor }"></span>
                                 <div class="title-wrap" :style="{ color: diyStore.global.topStatusBar.textColor }">我的位置</div>
                                 <span class="iconfont iconxiangyoujiantou !text-[12px]" :style="{ color: diyStore.global.topStatusBar.textColor }"></span>
@@ -337,15 +337,14 @@ const changeTemplatePage = (value:any)=> {
             type: 'warning'
         }).then(() => {
             diyStore.changeCurrentIndex(-99)
+            diyStore.init(); // 清空
             if (value) {
-                let data = templatePages[value].data;
+                let data = cloneDeep(templatePages[value].data);
                 diyStore.global = data.global;
                 if (data.value.length) {
                     diyStore.value = data.value
                 }
             } else {
-                // 清空
-                diyStore.init();
                 if (route.query.title) diyStore.global.title = diyStore.typeName
             }
         }).catch(() => {
@@ -353,15 +352,14 @@ const changeTemplatePage = (value:any)=> {
             template.value = oldTemplate.value;
         });
     } else {
+        diyStore.init(); // 清空
         if (value) {
-            let data = templatePages[value].data;
+            let data = cloneDeep(templatePages[value].data);
             diyStore.global = data.global;
             if (data.value.length) {
                 diyStore.value = data.value
             }
         } else {
-            // 清空
-            diyStore.init();
             if (route.query.title) diyStore.global.title = diyStore.typeName
         }
     }
@@ -793,6 +791,7 @@ const settingTips = () => {
                 align-items: center;
                 margin-right: 105px;
                 overflow: hidden;
+                box-sizing: border-box;
 
                 span {
                     overflow: hidden; //超出的文本隐藏

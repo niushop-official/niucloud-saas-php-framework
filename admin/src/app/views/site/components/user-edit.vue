@@ -30,7 +30,7 @@
                                         {{ siteGroup[row.group_id] ? siteGroup[row.group_id].group_name : '' }}
                                     </template>
                                 </el-table-column>
-                                <el-table-column :label="t('siteNum')">
+                                <el-table-column :label="t('createSiteNum')">
                                     <template #default="{ $index }">
                                         <el-input v-model.number="formData.create_site_limit[$index].num">
                                         </el-input>

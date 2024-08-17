@@ -5,7 +5,7 @@ import request from '@/utils/request'
  * @returns
  */
 export function getAddonLocal(params: Record<string, any>) {
-    return request.get('addon/local', params, { showSuccessMessage: true })
+    return request.get('addon/local', params)
 }
 
 /**
@@ -13,7 +13,7 @@ export function getAddonLocal(params: Record<string, any>) {
  * @returns
  */
 export function getAddonDetial(id: number) {
-    return request.get(`addon/${id}`)
+    return request.get(`addon/${ id }`)
 }
 
 /**
@@ -22,7 +22,7 @@ export function getAddonDetial(id: number) {
  * @returns
  */
 export function installAddon(params: Record<string, any>) {
-    return request.post(`addon/install/${params.addon}`, params)
+    return request.post(`addon/install/${ params.addon }`, params)
 }
 
 /**
@@ -31,7 +31,7 @@ export function installAddon(params: Record<string, any>) {
  * @returns
  */
 export function cloudInstallAddon(params: Record<string, any>) {
-    return request.post(`addon/cloudinstall/${params.addon}`, params)
+    return request.post(`addon/cloudinstall/${ params.addon }`, params)
 }
 
 /**
@@ -40,7 +40,7 @@ export function cloudInstallAddon(params: Record<string, any>) {
  * @returns
  */
 export function uninstallAddon(params: Record<string, any>) {
-    return request.post(`addon/uninstall/${params.addon}`, params, { showSuccessMessage: true })
+    return request.post(`addon/uninstall/${ params.addon }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -49,7 +49,7 @@ export function uninstallAddon(params: Record<string, any>) {
  * @returns
  */
 export function preInstallCheck(addon: string) {
-    return request.get(`addon/install/check/${addon}`)
+    return request.get(`addon/install/check/${ addon }`)
 }
 
 /**
@@ -66,7 +66,7 @@ export function getAddonInstalltask() {
  * @returns
  */
 export function getAddonCloudInstallLog(addon: string) {
-    return request.get(`addon/cloudinstall/${addon}`)
+    return request.get(`addon/cloudinstall/${ addon }`)
 }
 
 /**
@@ -75,7 +75,7 @@ export function getAddonCloudInstallLog(addon: string) {
  * @returns
  */
 export function preUninstallCheck(addon: string) {
-    return request.get(`addon/uninstall/check/${addon}`)
+    return request.get(`addon/uninstall/check/${ addon }`)
 }
 
 /**
@@ -84,7 +84,7 @@ export function preUninstallCheck(addon: string) {
  * @returns
  */
 export function cancelInstall(addon: string) {
-    return request.put(`addon/install/cancel/${addon}`, {}, { showErrorMessage: false })
+    return request.put(`addon/install/cancel/${ addon }`, {}, { showErrorMessage: false })
 }
 
 export function getInstalledAddonList() {

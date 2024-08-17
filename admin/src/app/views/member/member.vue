@@ -130,7 +130,7 @@
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { img } from '@/utils/common'
-import { addMember, getRegisterChannelType, getMemberList, getMemberLabelAll, editMemberStatus, deleteMember, getMemberLevelAll } from '@/app/api/member'
+import { getRegisterChannelType, getMemberList, getMemberLabelAll, editMemberStatus, deleteMember, getMemberLevelAll } from '@/app/api/member'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import AddMember from '@/app/views/member/components/add-member.vue'

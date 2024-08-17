@@ -64,12 +64,12 @@ const detectionExportFn = () => {
                 setTimeout(() => {
                     window.open(url.href)
                 }, 100)
-            }).catch(() => { })
+            })
         } else {
             emit('close', false)
             ElMessage.error(res.msg)
         }
-    }).catch(() => { })
+    })
 }
 // 关闭弹框
 const close = () => {

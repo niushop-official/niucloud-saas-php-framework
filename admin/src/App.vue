@@ -35,6 +35,11 @@ onMounted(() => {
     // 设置主题色
     toggleDark(systemStore.dark)
     setThemeColor(systemStore.theme, systemStore.dark ? 'dark' : 'light')
+
+    // importIconFontCss();
+
+    // getIcon()
+
 })
 </script>
 

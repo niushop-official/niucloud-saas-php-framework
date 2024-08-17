@@ -40,7 +40,7 @@ import { FormInstance } from 'element-plus'
 
 const loading = ref(false)
 const formRef = ref<FormInstance>()
-const formData = reactive<Record<string, string>>({
+const formData = reactive({
     key: '',
     is_open: 1,
     valid_time: 0

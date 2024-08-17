@@ -20,5 +20,6 @@
     "customMenu": "自定义菜单",
     "wechatTemplate": "模板消息",
     "menusEmptyTips": "空菜单，不能保存与发布。",
-    "reply": "自动回复"
+    "reply": "自动回复",
+    "menuUrlErrorTips": "请输入完整的网页链接，如https://www.baidu.com"
 }

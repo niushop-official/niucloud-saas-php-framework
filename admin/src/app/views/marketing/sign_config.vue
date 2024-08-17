@@ -116,6 +116,7 @@ import signDay from '@/app/views/marketing/components/sign-day.vue'
 import signContinue from '@/app/views/marketing/components/sign-continue.vue'
 import { FormInstance, FormRules } from 'element-plus'
 import { useRoute } from 'vue-router'
+import { cloneDeep } from 'lodash-es'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -188,11 +189,11 @@ const setFormData = async () => {
     if (formData.continue_award) {
         formData.continue_award.forEach((item: any, index: number) => {
 
-            continueSignAwardTableData.data.push(JSON.parse(JSON.stringify(item)))
+            continueSignAwardTableData.data.push(cloneDeep(item))
 
             contentData.gifts = [];
 
-            const val = JSON.parse(JSON.stringify(item))
+            const val = cloneDeep(item)
 
             delete val['continue_sign'];
             delete val['continue_tag'];
@@ -242,12 +243,12 @@ const setMemberBenefitsContents = async (content: any, item: any, index: number 
 
     if (!isEdit) {
         if (tag == 0) {
-            continueSignAwardTableData.data.splice(index, 1, JSON.parse(JSON.stringify(newArr)))
+            continueSignAwardTableData.data.splice(index, 1, cloneDeep(newArr))
         } else {
-            continueSignAwardTableData.data.push(JSON.parse(JSON.stringify(newArr)))
+            continueSignAwardTableData.data.push(cloneDeep(newArr))
         }
     } else {
-        continueSignAwardTableData.data.splice(editIndex, 1, JSON.parse(JSON.stringify(newArr)))
+        continueSignAwardTableData.data.splice(editIndex, 1, cloneDeep(newArr))
     }
 
     isEdit = false
@@ -262,7 +263,7 @@ const onSave = async (formEl: FormInstance | undefined) => {
     if (loading.value || !formEl) return
     await formEl.validate((valid) => {
         if (valid) {
-            const save = JSON.parse(JSON.stringify(formData))
+            const save = cloneDeep(formData)
             setSignConfig(save).then(() => {
                 loading.value = false
             }).catch(() => {
@@ -334,7 +335,7 @@ const setContinueSignAward = async () => {
     }
 
     if (Object.keys(continue_award.value).length > 0) {
-        const val = JSON.parse(JSON.stringify(continue_award.value))
+        const val = cloneDeep(continue_award.value)
 
         delete val['continue_sign'];
         delete val['continue_tag'];
@@ -351,9 +352,9 @@ const setContinueSignAward = async () => {
         setMemberBenefitsContents(contentData, continue_award.value, 0, 1)
 
         if (!isEdit) {
-            formData.continue_award.push(JSON.parse(JSON.stringify(continue_award.value)))
+            formData.continue_award.push(cloneDeep(continue_award.value))
         } else {
-            formData.continue_award.splice(editIndex, 1, JSON.parse(JSON.stringify(continue_award.value)))
+            formData.continue_award.splice(editIndex, 1, cloneDeep(continue_award.value))
         }
     }
 }

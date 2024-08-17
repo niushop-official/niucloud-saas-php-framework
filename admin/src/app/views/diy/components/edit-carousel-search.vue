@@ -248,7 +248,7 @@ import useDiyStore from '@/stores/modules/diy'
 import { ref, reactive, watch, onMounted, nextTick } from 'vue'
 import { ElTable } from 'element-plus'
 import Sortable from 'sortablejs'
-import { range } from 'lodash-es'
+import { range,cloneDeep } from 'lodash-es'
 
 import { getDiyPageListByCarouselSearch } from '@/app/api/diy'
 
@@ -427,6 +427,8 @@ const loadDiyPageList = (page: number = 1) => {
                     newData.push(data[i]);
                 }
             }
+        } else {
+            newData = cloneDeep(data); // 添加
         }
         if (isExistCount) {
             res.data.total = res.data.total - isExistCount;

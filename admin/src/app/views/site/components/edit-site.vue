@@ -38,18 +38,15 @@
 
                 <div v-show="formData.uid === 0">
                     <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" 
-                        @click="inputClick('user_name_input')" @blur="user_name_input = true" />
+                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" 
-                        @click="inputClick('password_input')" @blur="password_input = true" />
+                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" 
-                        @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
+                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
                     </el-form-item>
                 </div>
             </div>

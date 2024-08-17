@@ -16,12 +16,12 @@ const test = {
      */
     url(value: string) {
         return /^((https|http|ftp|rtsp|mms):\/\/)(([0-9a-zA-Z_!~*'().&=+$%-]+: )?[0-9a-zA-Z_!~*'().&=+$%-]+@)?(([0-9]{1,3}.){3}[0-9]{1,3}|([0-9a-zA-Z_!~*'()-]+.)*([0-9a-zA-Z][0-9a-zA-Z-]{0,61})?[0-9a-zA-Z].[a-zA-Z]{2,6})(:[0-9]{1,4})?((\/?)|(\/[0-9a-zA-Z_!~*'().;?:@&=+$,%#-]+)+\/?)$/
-            .test(value)
+        .test(value)
     },
     /**
      * 验证日期格式
      */
-    date(value: string) {
+    date(value: any) {
         if (!value) return false
         // 判断是否数值或者字符串数值(意味着为时间戳)，转为数值，否则new Date无法识别字符串时间戳
         if (this.number(value)) value = +value
@@ -69,7 +69,8 @@ const test = {
         const creg = /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-HJ-NP-Z0-9]{4}[A-HJ-NP-Z0-9挂学警港澳]{1}$/
         if (value.length === 7) {
             return creg.test(value)
-        } if (value.length === 8) {
+        }
+        if (value.length === 8) {
             return xreg.test(value)
         }
         return false
@@ -85,7 +86,7 @@ const test = {
      * 验证小数
      */
     decimal(value: string, digit: number) {
-        const regexPattern = `^\\d+(?:\\.\\d{1,${digit}})?$`
+        const regexPattern = `^\\d+(?:\\.\\d{1,${ digit }})?$`
         // 金额，只允许保留两位小数
         return new RegExp(regexPattern).test(value)
     },
@@ -196,7 +197,7 @@ const test = {
      * 是否短信验证码
      */
     code(value: string, len = 6) {
-        return new RegExp(`^\\d{${len}}$`).test(value)
+        return new RegExp(`^\\d{${ len }}$`).test(value)
     },
     /**
      * 是否函数方法

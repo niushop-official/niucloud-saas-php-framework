@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import type { RouteLocationNormalizedLoaded, RouteRecordName } from 'vue-router'
 
 interface Tabbar {
     curr: string,
     tabs: {
-        [key: string]: any
+        [key: RouteRecordName]: any
     }
 }
 
@@ -18,11 +18,11 @@ const useTabbarStore = defineStore('tabbar', {
     actions: {
         addTab(roter: RouteLocationNormalizedLoaded) {
             if (roter.meta && roter.meta.type != 1) return
-            if (this.tabs[roter.path]) {
-                this.tabs[roter.path].query = roter.query || {}
+            if (this.tabs[roter.name]) {
+                this.tabs[roter.name].query = roter.query || {}
                 return
             }
-            this.tabs[roter.path] = {
+            this.tabs[roter.name] = {
                 path: roter.path,
                 title: roter.meta ? roter.meta.title : '',
                 name: roter.name,

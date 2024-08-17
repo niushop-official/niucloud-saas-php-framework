@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-center w-[110px] select-none">
-                            <el-switch v-if="isEdit" v-model="childrenItem.status" :active-text="t('isEnable')" @change="enablePaymentMode(childrenItem)" />
+                            <el-switch v-if="isEdit" v-model="childrenItem.status" :active-value="1" :inactive-value="0" :active-text="t('isEnable')" @change="enablePaymentMode(childrenItem)" />
                             <div v-else>
                                 <el-tag v-if="childrenItem.status" class="ml-2" type="success">{{ t('open') }}</el-tag>
                                 <el-tag v-else class="ml-2" type="info">{{ t('notOpen') }}</el-tag>
@@ -69,6 +69,7 @@ import { img } from '@/utils/common'
 import { ElMessage } from 'element-plus'
 import Sortable, { SortableEvent } from 'sortablejs'
 import { useRoute } from 'vue-router'
+import { cloneDeep } from 'lodash-es'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -109,8 +110,6 @@ const checkPayConfigList = () => {
                 if (item.is_default == 1) {
                     default_key = item.redio_key
                 }
-
-                item.status = Boolean(item.status)
                 pay_type.push(item)
             })
 
@@ -144,13 +143,13 @@ const configPayFn = (data:any) => {
 }
 
 // 开启支付方式
-const enablePaymentMode = async (data: object) => {
+const enablePaymentMode = async (data: any) => {
     if (payTypeRefs.value[data.key] && typeof payTypeRefs.value[data.key].enableVerify == 'function') {
         payTypeRefs.value[data.key].setFormData(data)
 
         const verify = payTypeRefs.value[data.key].enableVerify()
         if (!verify) {
-            data.status = false
+            data.status = 0
             ElMessage(t('configurePaymentMethod'))
             return false
         }
@@ -193,11 +192,10 @@ const sortableFn = (item, index) => {
 // 保存
 const saveFn = () => {
     payLoading.value = true
-    const data = JSON.parse(JSON.stringify(payConfigData.value))
+    const data = cloneDeep(payConfigData.value)
     Object.values(data).forEach((item, index) => {
         item.pay_type.forEach((subItem:any, subIndex:any) => {
             subItem.sort = subIndex
-            subItem.status = Number(subItem.status)
         })
     })
 

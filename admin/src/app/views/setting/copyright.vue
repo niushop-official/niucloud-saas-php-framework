@@ -68,7 +68,7 @@ const formData = reactive<Record<string, string>>({
     copyright_desc: ''
 })
 
-const setFormData = async (id: number = 0) => {
+const setFormData = async () => {
     const data = await (await getCopyright()).data
     Object.keys(formData).forEach((key: string) => {
         if (data[key] != undefined) formData[key] = data[key]

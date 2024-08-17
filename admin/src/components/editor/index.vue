@@ -51,6 +51,7 @@ const baseUrl = import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.met
 const editorConfig = ref({
     debug: false,
     UEDITOR_HOME_URL: import.meta.env.MODE == 'development' ? '/public/ueditor/' : '/admin/ueditor/',
+    UEDITOR_CORS_URL: import.meta.env.MODE == 'development' ? location.origin + '/ueditor/' : location.origin + '/admin/ueditor/',
     serverUrl: `${baseUrl}sys/ueditor`,
     serverHeaders,
     // 编辑器不自动被内容撑高

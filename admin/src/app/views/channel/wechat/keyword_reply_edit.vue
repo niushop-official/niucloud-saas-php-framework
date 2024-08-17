@@ -94,7 +94,7 @@ const router = useRouter()
 const pageName = route.meta.title
 const showDialog = ref(false)
 
-const formData = reactive<Record<string, string>>({
+const formData: any = reactive({
     id: 0,
     name: '',
     keyword: '',

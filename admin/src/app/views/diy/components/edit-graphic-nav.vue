@@ -74,7 +74,7 @@
 					</div>
 				</div>
 
-				<el-button v-show="diyStore.editComponent.list.length < 10" class="w-full" @click="addGraphicNav">{{ t('addGraphicNav') }}</el-button>
+				<el-button v-show="diyStore.editComponent.list.length < 50" class="w-full" @click="addGraphicNav">{{ t('addGraphicNav') }}</el-button>
 
 			</el-form>
 		</div>

@@ -13,7 +13,8 @@ interface System {
     sidebarStyle: string,
     currHeadMenuName: any,
     website: Object,
-    layoutConfig: Object
+    layoutConfig: Object,
+    tab: Boolean
 }
 
 const theme = storage.get('theme') ?? {}
@@ -30,7 +31,8 @@ const useSystemStore = defineStore('system', {
             sidebarStyle: theme.sidebarStyle ?? 'threeType',
             currHeadMenuName: '',
             website: {},
-            layoutConfig: {}
+            layoutConfig: {},
+            tab: storage.get('tab') ?? false
         }
     },
     actions: {

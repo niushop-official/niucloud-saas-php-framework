@@ -261,6 +261,8 @@ const attachmentParam = reactive({
  * 查询分组
  */
 const getAttachmentCategoryList = debounce(() => {
+    // todo js实现
+
     const getFn = prop.type == 'icon' ? getIconCategoryList : attachmentCategoryList
     getFn({
         type: prop.type,

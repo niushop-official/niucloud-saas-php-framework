@@ -46,25 +46,19 @@
                     <el-table-column :label="t('operation')" align="right" fixed="right" min-width="300">
                         <template #default="{ row }">
                             <div class="flex">
-                                <div class="text-sm mr-1 flex items-center cursor-pointer"
-                                     v-if="row.support_type.indexOf('sms') != -1"
-                                     @click="setNotice(row, 'sms')">
+                                <div class="text-sm mr-1 flex items-center cursor-pointer" v-if="row.support_type.indexOf('sms') != -1" @click="setNotice(row, 'sms')">
                                     <el-icon class="text-[15px] mr-[3px]" :class="row.is_sms ? 'open' : ''">
                                         <SuccessFilled />
                                     </el-icon>
                                     <span class="ml-0.5">{{ t('sms') }}</span>
                                 </div>
-                                <div class="text-sm  flex items-center cursor-pointer ml-[20px]"
-                                     v-if="row.support_type.indexOf('wechat') != -1"
-                                     @click="setNotice(row, 'wechat')">
+                                <div class="text-sm  flex items-center cursor-pointer ml-[20px]" v-if="row.support_type.indexOf('wechat') != -1" @click="setNotice(row, 'wechat')">
                                     <el-icon class="text-[15px] mr-[3px]" :class="row.is_wechat ? 'open' : ''">
                                         <SuccessFilled />
                                     </el-icon>
                                     <span class="ml-0.5">{{ t('wechat') }}</span>
                                 </div>
-                                <div class="text-sm  flex items-center cursor-pointer ml-[20px]"
-                                     v-if="row.support_type.indexOf('weapp') != -1"
-                                     @click="setNotice(row, 'weapp')">
+                                <div class="text-sm  flex items-center cursor-pointer ml-[20px]" v-if="row.support_type.indexOf('weapp') != -1" @click="setNotice(row, 'weapp')">
                                     <el-icon class="text-[15px] mr-[3px]" :class="row.is_weapp ? 'open' : ''">
                                         <SuccessFilled />
                                     </el-icon>
@@ -135,7 +129,6 @@ const loadNoticeList = () => {
         })
         noticeTableData.loading = false
     }).catch((e) => {
-        console.log(e)
         noticeTableData.loading = false
     })
 }

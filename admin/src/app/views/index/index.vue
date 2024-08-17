@@ -164,7 +164,7 @@ const statInfo = ref<StatInfo>({
     app: {}
 })
 
-const getStatInfoFn = async (id: number = 0) => {
+const getStatInfoFn = async () => {
     statInfo.value = await (await getStatInfo()).data
     loading.value = false
     setTimeout(() => {

@@ -29,5 +29,8 @@
 	"visitTimePlaceholder":"请输入访问时间",
 	"createTimePlaceholder":"请输入消息时间",
 	"buyerNotice": "会员消息",
+	"messageKey":"消息模版",
+	"messageInfo":"发送记录详情",
+	"smsType":"短信类型",
 	"sellerNotice":"平台消息"
 }

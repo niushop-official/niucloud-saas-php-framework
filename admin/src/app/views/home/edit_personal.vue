@@ -1,5 +1,5 @@
 <template>
-    <div class="main-container w-full pt-[64px] " v-loading="loading">
+    <div class="main-container w-full pt-[64px]" v-loading="loading">
         <div class="flex justify-between items-center h-[32px] mb-4">
             <span class="text-page-title">{{ t('editPersonal') }}</span>
         </div>

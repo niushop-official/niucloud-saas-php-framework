@@ -61,6 +61,8 @@
       "formCheckbox":"复选框",
       "formDateTime":"日期",
       "formImageSelect":"图片上传",
+      "formFileSelect":"文件上传",
+      "formVideoSelect":"视频上传",
       "formEditor":"富文本",
       "formNumber":"数字框",
       "pk":"主键",

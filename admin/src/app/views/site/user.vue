@@ -65,10 +65,13 @@
                             {{ row.last_ip || '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="150">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="200">
                         <template #default="{ row }">
                             <el-button type="primary" link @click="detailEvent(row.uid)">{{ t('detail') }}</el-button>
-                            <el-button type="primary" link @click="detailEvent(row.uid, 'userCreateSiteLimit')" v-if="!row.is_super_admin">{{ t('userCreateSiteLimit') }}</el-button>
+                            <template v-if="!row.is_super_admin">
+                                <el-button type="primary" link @click="detailEvent(row.uid, 'userCreateSiteLimit')" >{{ t('userCreateSiteLimit') }}</el-button>
+                                <el-button type="primary" link @click="deleteEvent(row.uid)" >{{ t('delete') }}</el-button>
+                            </template>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -89,11 +92,13 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { getUserList } from '@/app/api/user'
+import { getUserList, deleteUser } from '@/app/api/user'
 import { img } from '@/utils/common'
 import type { FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import userEdit from './components/user-edit.vue'
+import {ElMessageBox} from "element-plus";
+import {deleteSite} from "@/app/api/site";
 
 const router = useRouter()
 const route = useRoute()
@@ -150,6 +155,24 @@ loadUserList()
  */
 const detailEvent = (uid: number, tab: string = '') => {
     router.push({ path: '/admin/site/user_info', query: { uid, tab } })
+}
+
+/**
+ * 删除用户
+ */
+const deleteEvent = (uid: number) => {
+    ElMessageBox.confirm(t('userDeleteTips'), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        deleteUser(uid).then(res => {
+            loadUserList()
+        }).catch(() => {
+        })
+    })
 }
 </script>
 

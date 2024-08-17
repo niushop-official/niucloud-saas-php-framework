@@ -32,7 +32,7 @@ const formData = ref({
 getDeveloperToken().then(({ data }) => {
     loading.value = false
     data.token && (formData.value = data)
-}).catch()
+})
 
 const formRef = ref<FormInstance>()
 

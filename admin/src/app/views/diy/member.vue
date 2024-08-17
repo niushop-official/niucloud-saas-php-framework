@@ -105,7 +105,7 @@ const page: any = reactive({})
 const router = useRouter()
 const wapDomain = ref('')
 const wapImage = ref('')
-const link = ref({
+const link: any = ref({
     name: ''
 })
 

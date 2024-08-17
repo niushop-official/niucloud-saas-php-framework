@@ -6,7 +6,6 @@ import router from '@/router'
 import { formatRouters, findFirstValidRoute } from '@/router/routers'
 import useTabbarStore from './tabbar'
 import Test from '@/utils/test'
-import { setUserInfo } from '@/app/api/personal'
 
 interface User {
     token: string,
@@ -41,8 +40,7 @@ const userStore = defineStore('user', {
         },
         login(form: object, app_type: any) {
             return new Promise((resolve, reject) => {
-                login(form, app_type)
-                .then(async(res) => {
+                login(form, app_type).then(async(res) => {
                     if (app_type == 'admin' && Test.empty(res.data.userrole)) {
                         storage.setPrefix('site')
                     }
@@ -56,8 +54,7 @@ const userStore = defineStore('user', {
                     storage.set({ key: 'comparisonSiteIdStorage', data: res.data.site_id || 0 })
                     storage.set({ key: 'comparisonTokenStorage', data: res.data.token })
                     resolve(res)
-                })
-                .catch((error) => {
+                }).catch((error) => {
                     reject(error)
                 })
             })
@@ -76,7 +73,7 @@ const userStore = defineStore('user', {
             const login = getAppType() == 'admin' ? '/admin/login' : '/site/login'
             router.push(login)
         },
-        getAuthMenus() {
+        getAuthMenusFn() {
             return new Promise((resolve, reject) => {
                 getAuthMenus({}).then((res) => {
                     this.routers = formatRouters(res.data)

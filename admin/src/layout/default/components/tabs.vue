@@ -1,15 +1,15 @@
 <template>
-    <div class="tab-wrap w-full px-[16px]">
-        <el-tabs :closable="tabbarStore.tabLength > 1" :model-value="route.path" @tab-click="tabClick" @tab-remove="removeTab">
-            <el-tab-pane v-for="(tab, key, index) in tabbarStore.tabs" :name="tab.path" :key="index">
+    <div class="tab-wrap w-full px-[16px]" v-show="systemStore.tab">
+        <el-tabs :closable="tabbarStore.tabLength > 1" :model-value="route.name" @tab-click="tabClick" @tab-remove="removeTab">
+            <el-tab-pane v-for="(tab, key, index) in tabbarStore.tabs" :name="tab.name" :key="index">
                 <template #label>
                     <el-dropdown trigger="contextmenu" placement="bottom-start">
-                        <span :class="{ 'text-primary': route.path == tab.path }" class="tab-name">{{ tab.title }}</span>
+                        <span :class="{ 'text-primary': route.name == tab.name }" class="tab-name">{{ tab.title }}</span>
                         <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item icon="Back" :disabled="index == 0" @click="closeLeft(tab.path)">{{t('tabs.closeLeft') }}</el-dropdown-item>
-                                <el-dropdown-item icon="Right" :disabled="index == (tabbarStore.tabLength - 1)" @click="closeRight(tab.path)">{{t('tabs.closeRight') }}</el-dropdown-item>
-                                <el-dropdown-item icon="Close" :disabled="tabbarStore.tabLength == 1" @click="closeOther(tab.path)">{{t('tabs.closeOther') }}</el-dropdown-item>
+                                <el-dropdown-item icon="Back" :disabled="index == 0" @click="closeLeft(tab.name)">{{t('tabs.closeLeft') }}</el-dropdown-item>
+                                <el-dropdown-item icon="Right" :disabled="index == (tabbarStore.tabLength - 1)" @click="closeRight(tab.name)">{{t('tabs.closeRight') }}</el-dropdown-item>
+                                <el-dropdown-item icon="Close" :disabled="tabbarStore.tabLength == 1" @click="closeOther(tab.name)">{{t('tabs.closeOther') }}</el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
@@ -22,10 +22,12 @@
 <script lang="ts" setup>
 import { watch, onMounted } from 'vue'
 import useTabbarStore from '@/stores/modules/tabbar'
+import useSystemStore from '@/stores/modules/system'
 import { useRoute, useRouter } from 'vue-router'
 import { t } from '@/lang'
 
 const tabbarStore = useTabbarStore()
+const systemStore = useSystemStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -43,7 +45,7 @@ watch(route, (nval: any) => {
  */
 const tabClick = (content: any) => {
     const tabRoute = tabbarStore.tabs[content.props.name]
-    router.push({ path: tabRoute.path, query: tabRoute.query })
+    router.push({ name: tabRoute.name, query: tabRoute.query })
 }
 
 /**
@@ -51,9 +53,13 @@ const tabClick = (content: any) => {
  * @param content
  */
 const removeTab = (content: any) => {
-    if (route.path == content) {
+    if (route.name == content) {
         const tabs = Object.keys(tabbarStore.tabs)
-        router.push({ path: tabs[tabs.indexOf(content) - 1] })
+        if (tabs.indexOf(content) == 0) {
+            router.push({ name: tabs[1] })
+        } else {
+            router.push({ name: tabs[tabs.indexOf(content) - 1] })
+        }
     }
     tabbarStore.removeTab(content)
 }
@@ -62,34 +68,34 @@ const removeTab = (content: any) => {
  * 关闭左侧
  * @param path
  */
-const closeLeft = (path: string) => {
+const closeLeft = (name: string) => {
     const tabs = Object.keys(tabbarStore.tabs)
-    for (let i = tabs.indexOf(path) - 1; i >= 0; i--) {
+    for (let i = tabs.indexOf(name) - 1; i >= 0; i--) {
         delete tabbarStore.tabs[tabs[i]]
     }
-    router.push({ path })
+    router.push({ name })
 }
 
 /**
  * 关闭右侧
  * @param path
  */
-const closeRight = (path: string) => {
+const closeRight = (name: string) => {
     const tabs = Object.keys(tabbarStore.tabs)
-    for (let i = tabs.indexOf(path) + 1; i < tabs.length; i++) {
+    for (let i = tabs.indexOf(name) + 1; i < tabs.length; i++) {
         delete tabbarStore.tabs[tabs[i]]
     }
-    router.push({ path })
+    router.push({ name })
 }
 
 /**
  * 关闭其他
  * @param path
  */
-const closeOther = (path: string) => {
+const closeOther = (name: string) => {
     const tabs = Object.keys(tabbarStore.tabs)
-    tabs.forEach((key: string) => { key != path && delete tabbarStore.tabs[key] })
-    router.push({ path })
+    tabs.forEach((key: string) => { key != name && delete tabbarStore.tabs[key] })
+    router.push({ name })
 }
 </script>
 
