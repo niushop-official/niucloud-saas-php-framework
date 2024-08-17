@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58d9753b0d3af0e968c66bbe65ae92ed",
+    "content-hash": "7ce02f7b56e5f1a75c34705be3a3c1f2",
     "packages": [
         {
             "name": "365taofang/huaweicloud-sdk-php-obs",
@@ -1616,6 +1616,56 @@
                 }
             ],
             "time": "2022-05-21T17:30:32+00:00"
+        },
+        {
+            "name": "kkokk/poster",
+            "version": "v2.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kkokk/poster.git",
+                "reference": "6fa26bb225d0d7bcd654c93d342abf5284803203"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kkokk/poster/zipball/6fa26bb225d0d7bcd654c93d342abf5284803203",
+                "reference": "6fa26bb225d0d7bcd654c93d342abf5284803203",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-gd": "*",
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.6.0"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Kkokk\\Poster\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "lang",
+                    "email": "732853989@qq.com"
+                }
+            ],
+            "description": "PHP生成海报",
+            "support": {
+                "issues": "https://github.com/kkokk/poster/issues",
+                "source": "https://github.com/kkokk/poster/tree/v2.3.2"
+            },
+            "time": "2024-04-02T09:33:45+00:00"
         },
         {
             "name": "kosinix/grafika",

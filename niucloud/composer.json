@@ -59,7 +59,8 @@
         "workerman/redis-queue": "v1.2.0",
         "workerman/crontab": "v1.0.6",
         "hyperf/pimple": "~2.2.0",
-        "365taofang/huaweicloud-sdk-php-obs": "^3.23"
+        "365taofang/huaweicloud-sdk-php-obs": "^3.23",
+        "kkokk/poster": "^2.3"
     },
     "require-dev": {
         "symfony/var-dumper": "v6.0.19",
