@@ -1,0 +1,1 @@
+const n="电脑端信息",c="预览图",o="复制",e="点击访问",i="pc域名",p="最新消息",s="是否开启",t={pcInfo:n,preview:c,copy:o,clickVisit:e,pCDomainName:i,newInfo:p,isOpen:s};export{e as clickVisit,o as copy,t as default,s as isOpen,p as newInfo,i as pCDomainName,n as pcInfo,c as preview};

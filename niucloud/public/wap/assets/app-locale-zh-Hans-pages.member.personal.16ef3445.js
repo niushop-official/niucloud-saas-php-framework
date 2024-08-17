@@ -1,0 +1,1 @@
+const a="昵称",e="性别",n="手机号",m="生日",d="未知",i="头像",t="更换头像",o="修改昵称",u="男",c="女",k={nickname:"昵称",sex:"性别",mobile:"手机号",birthday:"生日",unknown:"未知",headimg:"头像",updateHeadimg:t,updateNickname:o,man:"男",woman:"女"};export{m as birthday,k as default,i as headimg,u as man,n as mobile,a as nickname,e as sex,d as unknown,t as updateHeadimg,o as updateNickname,c as woman};
