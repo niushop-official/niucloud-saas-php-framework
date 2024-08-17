@@ -3,15 +3,69 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '96b4d6e1c6212e1b08a0ee81853ab1db37bae709'
-    oldFile: !uuid '1c35ace10cb9c6c4e65cf1c2f660ae9062331473'
-  /niucloud/composer.json:
-    newFile: !uuid '087bcb5bfefb2672bd551412c6dafcba8f6d6383'
-    oldFile: !uuid '84f5d32f6bf28b37ad1ebcc6db0ea849418e5a0c'
-  /niucloud/composer.lock:
-    newFile: !uuid 'caec6fafa60682c2028b0ff52ba358c6866533ea'
-    oldFile: !uuid '324dd5e00a4fe6b46dbcdce73bf7b7b80f220a6c'
-gitCommitId: !uuid '6c471906d0e7362d1f2bddc87ae692e48f2e439c'
+    newFile: !uuid 'c62539a71fa1c7a5542ec9b9aa8bd604a2ddb745'
+    oldFile: !uuid '96b4d6e1c6212e1b08a0ee81853ab1db37bae709'
+  /niucloud/vendor:
+    newFile: !uuid 'b8460094088eabaf372fd91e535a719d2f20dfcc'
+    oldFile: !uuid '84ca674c4bd2f6d52a6550c3365fe30b1550889d'
+  /niucloud/vendor/kkokk:
+    newFile: !uuid '7b9a9764eed3495d99006ffe8de8c58dbb7ed511'
+    oldFile: !uuid '0a216b8ae5abb96ea65a7a5a5c9bb5f2964ef922'
+  /niucloud/vendor/kkokk/poster:
+    newFile: !uuid '622d0b211ad219cb7cb372cd6fe339e4b70bfed3'
+    oldFile: !uuid '287f4db732c614129cb7c65e6b89fde43fa8516d'
+  /niucloud/vendor/kkokk/poster/tests:
+    newFile: null
+    oldFile: !uuid '0b5d46fe7e3f13e8b25d9c9ef7e93096c00161bb'
+  /niucloud/vendor/kkokk/poster/tests/1223015613610230151165.gif:
+    newFile: null
+    oldFile: !uuid '89f88c82c3203b58b086488b56420ae9a23eef16'
+  /niucloud/vendor/kkokk/poster/tests/1223015613615230151165.gif:
+    newFile: null
+    oldFile: !uuid '7b7042b9c77e9f71456a2188cd08094a2f0a5f07'
+  /niucloud/vendor/kkokk/poster/tests/122301561368230151165-1.gif:
+    newFile: null
+    oldFile: !uuid 'd645e3469996466e2695b1573fae11a8dd18ee29'
+  /niucloud/vendor/kkokk/poster/tests/JoJhekR1um.png:
+    newFile: null
+    oldFile: !uuid 'a2eb3e46dd5b634d843021179ac54ea5a10ca6c1'
+  /niucloud/vendor/kkokk/poster/tests/Kvt1cV5ygB.png:
+    newFile: null
+    oldFile: !uuid '8d6b6b4e0c13c3891ec1066176d1521c1dfebabf'
+  /niucloud/vendor/kkokk/poster/tests/YRG3X4WgSZ3lLlwULkxZ3W3LLGgZ4b.jpeg:
+    newFile: null
+    oldFile: !uuid '3988c3a54cac2051be4e42e523acb84efb702260'
+  /niucloud/vendor/kkokk/poster/tests/htmlToImage.php:
+    newFile: null
+    oldFile: !uuid '637b01508f5ce09838a4a99ef73a823207384a5b'
+  /niucloud/vendor/kkokk/poster/tests/imagick.php:
+    newFile: null
+    oldFile: !uuid '4fb06fde8d264592c1d4dcfa0215d1c6e062868e'
+  /niucloud/vendor/kkokk/poster/tests/index.php:
+    newFile: null
+    oldFile: !uuid '65eb8c66d0f2b49b9f63bba909b8c296b7ffe682'
+  /niucloud/vendor/kkokk/poster/tests/server:
+    newFile: null
+    oldFile: !uuid '6e5e20c69bb535428eeefef1a555f2d2b28b8238'
+  /niucloud/vendor/kkokk/poster/tests/server/bg.php:
+    newFile: null
+    oldFile: !uuid '8346571ec5d9751c7ec8bf065e8fcdea272dc4eb'
+  /niucloud/vendor/kkokk/poster/tests/server/captcha.php:
+    newFile: null
+    oldFile: !uuid '674c63023563f4683efb4302f1c648b08fa5c62d'
+  /niucloud/vendor/kkokk/poster/tests/server/html.php:
+    newFile: null
+    oldFile: !uuid 'a1612ead8d954fc13503686415ff8f828caba00b'
+  /niucloud/vendor/kkokk/poster/tests/server/index.php:
+    newFile: null
+    oldFile: !uuid 'e5f74d28e5bbf3eb71e279539c4d4def6c440ba8'
+  /niucloud/vendor/kkokk/poster/tests/server/qr.php:
+    newFile: null
+    oldFile: !uuid 'def98270bcf832ec3d23611ba50feddfa2568914'
+  /niucloud/vendor/kkokk/poster/tests/server/server.php:
+    newFile: null
+    oldFile: !uuid '747fa528badb8c9d3be55a45161a7fb02866ad60'
+gitCommitId: !uuid 'bbc08b404e30b56b6da0e3bdd094b5c9b80dd4c9'
 renames: {
   }
-revisionId: 209
+revisionId: 210
