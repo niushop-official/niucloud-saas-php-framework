@@ -27,7 +27,6 @@ $system_event = [
         'MemberAccount' => [ 'app\listener\member\MemberAccountListener' ],
         //扫码事件
         'Scan' => [ 'app\listener\scan\ScanListener' ],
-        'AddSiteAfter' => [ 'app\listener\site\AddSiteAfterListener' ],
         /**
          * 支付相关事件
          */
@@ -89,12 +88,12 @@ $system_event = [
         //导出数据类型
         'ExportDataType' => [
             //会员导出
-            'app\listener\member\MemberExportTypeListener',
+            'app\listener\member_export\MemberExportTypeListener',
         ],
         //导出数据源
         'ExportData' => [
             //会员导出
-            'app\listener\member\MemberExportDataListener',
+            'app\listener\member_export\MemberExportDataListener',
         ],
         //统计执行
         'StatExecute' => [],
@@ -102,10 +101,10 @@ $system_event = [
         'StatField' => [],
 
         // 获取海报数据
-        'GetPosterData' => ['app\listener\system\Poster'],
+        'GetPosterData' => [ 'app\listener\system\Poster' ],
 
         // 小程序授权变更事件
-        'WeappAuthChangeAfter' => ['app\listener\system\WeappAuthChangeAfter']
+        'WeappAuthChangeAfter' => [ 'app\listener\system\WeappAuthChangeAfter' ]
     ],
     'subscribe' => [
     ],

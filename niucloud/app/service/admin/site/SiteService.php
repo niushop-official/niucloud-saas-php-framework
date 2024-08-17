@@ -20,6 +20,7 @@ use app\model\site\SiteGroup;
 use app\model\sys\SysUserRole;
 use app\service\admin\addon\AddonService;
 use app\service\admin\auth\AuthService;
+use app\service\admin\diy\DiyService;
 use app\service\admin\generator\GenerateService;
 use app\service\admin\sys\MenuService;
 use app\service\admin\sys\RoleService;
@@ -65,11 +66,11 @@ class SiteService extends BaseAdminService
         $condition = [
             [ 'app_type', '<>', 'admin' ]
         ];
-        $search_model = $this->model->where($condition)->withSearch([ 'create_time', 'expire_time', 'keywords', 'status', 'group_id', 'app', 'site_domain' ], $where)->with(['groupName'])->field($field)->append([ 'status_name' ])->order('create_time desc');
-        return $this->pageQuery($search_model, function ($item){
-            $item['admin'] = (new SysUserRole())->where([ ['site_id', '=', $item['site_id'] ], ['is_admin', '=', 1] ])
+        $search_model = $this->model->where($condition)->withSearch([ 'create_time', 'expire_time', 'keywords', 'status', 'group_id', 'app', 'site_domain' ], $where)->with([ 'groupName' ])->field($field)->append([ 'status_name' ])->order('create_time desc');
+        return $this->pageQuery($search_model, function($item) {
+            $item[ 'admin' ] = ( new SysUserRole() )->where([ [ 'site_id', '=', $item[ 'site_id' ] ], [ 'is_admin', '=', 1 ] ])
                 ->field('uid')
-                ->with(['userinfo'])
+                ->with([ 'userinfo' ])
                 ->find()->toArray();
         });
     }
@@ -85,8 +86,8 @@ class SiteService extends BaseAdminService
         district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain';
         $info = $this->model->where([ [ 'site_id', '=', $site_id ] ])->with([ 'groupName' ])->field($field)->append([ 'status_name' ])->findOrEmpty()->toArray();
         if (!empty($info)) {
-            $site_addons = (new CoreSiteService())->getAddonKeysBySiteId($site_id);
-            $info['site_addons'] = (new Addon())->where([ ['key', 'in', $site_addons]])->field('key,title,desc,icon,type')->select()->toArray();
+            $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId($site_id);
+            $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ] ])->field('key,title,desc,icon,type')->select()->toArray();
         }
         return $info;
     }
@@ -100,7 +101,7 @@ class SiteService extends BaseAdminService
      */
     public function add(array $data)
     {
-        $site_group = (new SiteGroup())->where([ ['group_id', '=', $data[ 'group_id' ] ] ])->field('app,addon')->findOrEmpty();
+        $site_group = ( new SiteGroup() )->where([ [ 'group_id', '=', $data[ 'group_id' ] ] ])->field('app,addon')->findOrEmpty();
         if ($site_group->isEmpty()) throw new CommonException('SITE_GROUP_NOT_EXIST');
 
         $data[ 'app_type' ] = 'site';
@@ -111,7 +112,7 @@ class SiteService extends BaseAdminService
             'group_id' => $data[ 'group_id' ],
             'create_time' => time(),
             'expire_time' => $data[ 'expire_time' ],
-            'app' => $site_group['app'],
+            'app' => $site_group[ 'app' ],
             'addons' => ''
         ];
         Db::startTrans();
@@ -119,8 +120,8 @@ class SiteService extends BaseAdminService
             $site = $this->model->create($data_site);
             $site_id = $site->site_id;
 
-            if ($data['uid']) {
-                (new UserRoleService())->add($data['uid'], ['role_ids' => '', 'is_admin' => 1], $site_id);
+            if ($data[ 'uid' ]) {
+                ( new UserRoleService() )->add($data[ 'uid' ], [ 'role_ids' => '', 'is_admin' => 1 ], $site_id);
             } else {
                 //添加用户
                 $data_user = [
@@ -132,19 +133,23 @@ class SiteService extends BaseAdminService
                     'role_ids' => '',
                     'is_admin' => 1
                 ];
-                $data['uid'] = ( new UserService() )->addSiteUser($data_user, $site_id);
+                $data[ 'uid' ] = ( new UserService() )->addSiteUser($data_user, $site_id);
             }
 
             //添加站点成功事件
-            event("AddSiteAfter", [ 'site_id' => $site_id, 'main_app' => $site_group['app'], 'site_addons' => $site_group['addon'] ]);
+            event("AddSiteAfter", [ 'site_id' => $site_id, 'main_app' => $site_group[ 'app' ], 'site_addons' => $site_group[ 'addon' ] ]);
 
-            Cache::delete('user_role_list_' . $data['uid']);
+            // 更新微页面数据
+            $diy_service = new DiyService();
+            $diy_service->loadDiyData([ 'site_id' => $site_id, 'main_app' => $site_group[ 'app' ] ]);
+
+            Cache::delete('user_role_list_' . $data[ 'uid' ]);
 
             Db::commit();
             return $site_id;
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             Db::rollback();
-            throw new AdminException($e->getMessage().$e->getFile().$e->getLine());
+            throw new AdminException($e->getMessage() . $e->getFile() . $e->getLine());
         }
     }
 
@@ -156,37 +161,37 @@ class SiteService extends BaseAdminService
      */
     public function edit(int $site_id, array $data)
     {
-        $site = $this->model->where([ [ 'site_id', '=', $site_id ] ])->with(['site_group'])->findOrEmpty();
+        $site = $this->model->where([ [ 'site_id', '=', $site_id ] ])->with([ 'site_group' ])->findOrEmpty();
         if ($site->isEmpty()) throw new AdminException('SITE_NOT_EXIST');
 
         Db::startTrans();
         try {
-            if (isset($data[ 'group_id' ]) && $site['group_id'] != $data[ 'group_id' ]) {
-                $old_site_group = $site['site_group'];
+            if (isset($data[ 'group_id' ]) && $site[ 'group_id' ] != $data[ 'group_id' ]) {
+                $old_site_group = $site[ 'site_group' ];
 
-                $site_group = (new SiteGroup())->where([ ['group_id', '=', $data[ 'group_id' ] ] ])->field('app,addon')->findOrEmpty();
-                $data['app'] = $site_group['app'];
+                $site_group = ( new SiteGroup() )->where([ [ 'group_id', '=', $data[ 'group_id' ] ] ])->field('app,addon')->findOrEmpty();
+                $data[ 'app' ] = $site_group[ 'app' ];
 
                 if (empty($site->initalled_addon)) {
-                    $site->initalled_addon = array_merge($old_site_group['app'], $old_site_group['addon']);
+                    $site->initalled_addon = array_merge($old_site_group[ 'app' ], $old_site_group[ 'addon' ]);
                 }
                 //添加站点成功事件
-                event("AddSiteAfter", [ 'site_id' => $site_id, 'main_app' => array_diff($site_group['app'], $site->initalled_addon) , 'site_addons' => array_diff($site_group['addon'], $site->initalled_addon) ]);
+                event("AddSiteAfter", [ 'site_id' => $site_id, 'main_app' => array_diff($site_group[ 'app' ], $site->initalled_addon), 'site_addons' => array_diff($site_group[ 'addon' ], $site->initalled_addon) ]);
 
-                $data['initalled_addon'] = array_values(array_unique(array_merge($site->initalled_addon, $site_group['app'], $site_group['addon'])));
+                $data[ 'initalled_addon' ] = array_values(array_unique(array_merge($site->initalled_addon, $site_group[ 'app' ], $site_group[ 'addon' ])));
             }
 
-            if (isset($data['expire_time']) && $site['status'] != SiteDict::CLOSE) {
-                $data['status'] = strtotime($data['expire_time']) > time() ? SiteDict::ON : SiteDict::EXPIRE;
+            if (isset($data[ 'expire_time' ]) && !empty($data[ 'expire_time' ])) {
+                $data[ 'status' ] = strtotime($data[ 'expire_time' ]) > time() ? SiteDict::ON : SiteDict::EXPIRE;
             }
             $site->save($data);
 
             Cache::tag(self::$cache_tag_name . $site_id)->clear();
             Db::commit();
             return true;
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             Db::rollback();
-            throw new AdminException($e->getMessage().$e->getFile().$e->getLine());
+            throw new AdminException($e->getMessage() . $e->getFile() . $e->getLine());
         }
     }
 
@@ -194,17 +199,18 @@ class SiteService extends BaseAdminService
      * 删除站点
      * @param int $site_id
      */
-    public function del(int $site_id) {
+    public function del(int $site_id)
+    {
         Db::startTrans();
         try {
             $site = $this->model->where([ [ 'site_id', '=', $site_id ] ])->findOrEmpty()->toArray();
 
             // 删除站点相关数据
-            $sys_models = (new GenerateService())->getModels(['addon' => 'system']);
+            $sys_models = ( new GenerateService() )->getModels([ 'addon' => 'system' ]);
             $addon_models = [];
-            $addons = (new CoreSiteService())->getAddonKeysBySiteId($site_id);
-            foreach($addons as $addon) {
-                $addon_models[] = (new GenerateService())->getModels(['addon' => $addon ]);
+            $addons = ( new CoreSiteService() )->getAddonKeysBySiteId($site_id);
+            foreach ($addons as $addon) {
+                $addon_models[] = ( new GenerateService() )->getModels([ 'addon' => $addon ]);
             }
             $models = array_merge($sys_models, ...$addon_models);
 
@@ -213,7 +219,7 @@ class SiteService extends BaseAdminService
                 $class = new $name();
 
                 if (in_array('site_id', $class->getTableFields())) {
-                    $class->where([ ['site_id', '=', $site['site_id'] ] ])->delete();
+                    $class->where([ [ 'site_id', '=', $site[ 'site_id' ] ] ])->delete();
                 }
             }
 
@@ -243,7 +249,7 @@ class SiteService extends BaseAdminService
      */
     public function getSiteCache(int $site_id)
     {
-        return (new CoreSiteService())->getSiteCache($site_id);
+        return ( new CoreSiteService() )->getSiteCache($site_id);
     }
 
 
@@ -268,16 +274,16 @@ class SiteService extends BaseAdminService
         if (AuthService::isSuperAdmin()) {
             $is_admin = 1;
         } else {
-            $user_role_info = (new AuthService())->getAuthRole($this->site_id);
-            if(empty($user_role_info))
+            $user_role_info = ( new AuthService() )->getAuthRole($this->site_id);
+            if (empty($user_role_info))
                 return [];
-            $is_admin = $user_role_info['is_admin'];//是否是超级管理员组
+            $is_admin = $user_role_info[ 'is_admin' ];//是否是超级管理员组
         }
 
         if ($is_admin) {
             return ( new MenuService() )->getAllMenuList($app_type, $status, $is_tree, $is_button);
         } else {
-            $user_role_ids = $user_role_info['role_ids'];
+            $user_role_ids = $user_role_info[ 'role_ids' ];
             $role_service = new RoleService();
             $menu_keys = $role_service->getMenuIdsByRoleIds($this->site_id, $user_role_ids);
             return ( new MenuService() )->getMenuListByMenuKeys($this->site_id, $menu_keys, $this->app_type, 1, is_button:$is_button);
@@ -342,17 +348,19 @@ class SiteService extends BaseAdminService
      * 获取站点的插件
      * @return array
      */
-    public function getSiteAddons(array $where) {
-        $site_addon = (new CoreSiteService())->getAddonKeysBySiteId($this->site_id);
-        return (new Addon())->where([['type', '=', AddonDict::ADDON], ['status', '=', AddonDict::ON], ['key', 'in', $site_addon ]])->withSearch(['title'], $where)->append(['status_name'])->field('title, icon, key, desc, status, type, support_app')->select()->toArray();
+    public function getSiteAddons(array $where)
+    {
+        $site_addon = ( new CoreSiteService() )->getAddonKeysBySiteId($this->site_id);
+        return ( new Addon() )->where([ [ 'type', '=', AddonDict::ADDON ], [ 'status', '=', AddonDict::ON ], [ 'key', 'in', $site_addon ] ])->withSearch([ 'title' ], $where)->append([ 'status_name' ])->field('title, icon, key, desc, status, type, support_app')->select()->toArray();
     }
 
     /**
      * 获取站点支持的应用插件
      * @return array
      */
-    public function getAddonKeysBySiteId() {
-        $site_addon = (new CoreSiteService())->getAddonKeysBySiteId($this->site_id);
+    public function getAddonKeysBySiteId()
+    {
+        $site_addon = ( new CoreSiteService() )->getAddonKeysBySiteId($this->site_id);
         return $site_addon;
     }
 }

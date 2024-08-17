@@ -36,15 +36,15 @@ class CoreMemberAccountService extends BaseCoreService
         $member_info = $member_model->where([
             [ 'member_id', '=', $member_id ],
             [ 'site_id', '=', $site_id ]
-        ])->field($account_type .','.$account_type."_get" .', username, mobile, nickname')->lock(true)->find();
-        if(empty($member_info)) throw new CommonException('MEMBER_NOT_EXIST');
+        ])->field($account_type . ',' . $account_type . "_get" . ', username, mobile, nickname')->lock(true)->find();
+        if (empty($member_info)) throw new CommonException('MEMBER_NOT_EXIST');
         $account_new_data = round((float) $member_info[ $account_type ] + (float) $account_data, 2);
 
         if ($account_new_data < 0) {
             throw new CommonException('ACCOUNT_INSUFFICIENT');
         }
 
-        $data = array (
+        $data = array(
             'site_id' => $site_id,
             'member_id' => $member_id,
             'account_type' => $account_type,
@@ -55,7 +55,7 @@ class CoreMemberAccountService extends BaseCoreService
             'nickname' => $member_info[ 'nickname' ],
             'mobile' => $member_info[ 'mobile' ],
             'memo' => $memo,
-            'related_id'=>$related_id,
+            'related_id' => $related_id,
         );
 
         Db::startTrans();
@@ -63,37 +63,36 @@ class CoreMemberAccountService extends BaseCoreService
 
             $res = $member_account_log_model->create($data);
             //账户更新
-            if($account_data > 0)
-            {
+            if ($account_data > 0) {
                 if ($account_type == MemberAccountTypeDict::GROWTH) {
-                    $account_type_get = $member_info[ $account_type."_get" ] + $account_data;
+                    $account_type_get = $member_info[ $account_type . "_get" ] + $account_data;
                 } else {
-                    $from_type_arr = MemberAccountChangeTypeDict::getType($account_type)[$from_type];
-                    $is_change_get = $from_type_arr['is_change_get'] ?? 1;
+                    $from_type_arr = MemberAccountChangeTypeDict::getType($account_type)[ $from_type ];
+                    $is_change_get = $from_type_arr[ 'is_change_get' ] ?? 1;
                     if ($is_change_get) {
-                        $account_type_get = $member_info[ $account_type."_get" ] + $account_data;
+                        $account_type_get = $member_info[ $account_type . "_get" ] + $account_data;
                     } else {
-                        $account_type_get = $member_info[ $account_type."_get" ];
+                        $account_type_get = $member_info[ $account_type . "_get" ];
                     }
                 }
-            }else{
-                $account_type_get = $member_info[ $account_type."_get" ];
+            } else {
+                $account_type_get = $member_info[ $account_type . "_get" ];
             }
             $member_model->update([
                 $account_type => $account_new_data,
-                $account_type."_get" => $account_type_get
+                $account_type . "_get" => $account_type_get
             ], [
                 'member_id' => $member_id
             ]);
             //账户变化事件
             $data[] = [
                 $account_type => $account_new_data,
-                $account_type."_get" => $account_type_get
+                $account_type . "_get" => $account_type_get
             ];
             event("MemberAccount", $data);
             Db::commit();
             return $res->id;
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             Db::rollback();
             throw new CommonException($e->getMessage());
         }

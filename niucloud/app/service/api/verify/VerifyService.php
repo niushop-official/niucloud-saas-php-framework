@@ -29,11 +29,11 @@ class VerifyService extends BaseApiService
      * @param $data = ['order_id' => , 'goods_id' => ]
      * @return string
      */
-    public function getVerifyCode(string|int $type, array $data)
+    public function getVerifyCode($type, array $data)
     {
-        $list = (new CoreVerifyService())->create($this->site_id, $this->member_id, $type, $data);
+        $list = ( new CoreVerifyService() )->create($this->site_id, $this->member_id, $type, $data);
         $temp = [];
-        foreach($list as $item){
+        foreach ($list as $item) {
             $temp[] = [
                 'code' => $item,
                 'qrcode' => qrcode($item, '', [], $this->site_id, outfile: false)
@@ -47,8 +47,9 @@ class VerifyService extends BaseApiService
      * @param $code
      * @return bool
      */
-    public function getInfoByCode($code){
-        return (new CoreVerifyService())->getInfoByCode($this->site_id, $code);
+    public function getInfoByCode($code)
+    {
+        return ( new CoreVerifyService() )->getInfoByCode($this->site_id, $code);
     }
 
     /**
@@ -56,17 +57,19 @@ class VerifyService extends BaseApiService
      * @param $code
      * @return bool
      */
-    public function verify($code){
-        return (new CoreVerifyService())->verify($this->site_id, $code, $this->member_id);
+    public function verify($code)
+    {
+        return ( new CoreVerifyService() )->verify($this->site_id, $code, $this->member_id);
     }
 
     /**
      * 校验是否是核销员
      * @return bool
      */
-    public function checkVerifier(){
-        $verifier = (new Verifier())->where([['member_id', '=', $this->member_id], ['site_id', '=', $this->site_id]])->findOrEmpty();
-        if(!$verifier->isEmpty()) return true;
+    public function checkVerifier()
+    {
+        $verifier = ( new Verifier() )->where([ [ 'member_id', '=', $this->member_id ], [ 'site_id', '=', $this->site_id ] ])->findOrEmpty();
+        if (!$verifier->isEmpty()) return true;
         return false;
     }
 
@@ -76,21 +79,21 @@ class VerifyService extends BaseApiService
      * @return array
      * @throws \think\db\exception\DbException
      */
-    public function getRecordsPageByVerifier(array $data){
+    public function getRecordsPageByVerifier(array $data)
+    {
         $field = '*';
-        $search_model = (new Verify())->where([
-            ['site_id', '=', $this->site_id],
-            ['verifier_member_id', '=', $this->member_id]
-        ])
-        ->withSearch(['code', 'type', 'create_time', 'relate_tag', 'keyword'], $data)
-        ->with([
-            'member' =>  function($query){
-                $query->field('member_id, nickname, mobile, headimg');
-            }
-        ])
-        ->field($field)
-        ->order('create_time desc')
-        ->append(['type_name']);
+        $search_model = ( new Verify() )->where([
+            [ 'site_id', '=', $this->site_id ],
+            [ 'verifier_member_id', '=', $this->member_id ]
+        ])->withSearch([ 'code', 'type', 'create_time', 'relate_tag', 'keyword' ], $data)
+            ->with([
+                'member' => function($query) {
+                    $query->field('member_id, nickname, mobile, headimg');
+                }
+            ])
+            ->field($field)
+            ->order('create_time desc')
+            ->append([ 'type_name' ]);
         return $this->pageQuery($search_model);
     }
 
@@ -99,20 +102,18 @@ class VerifyService extends BaseApiService
      * @param int $id
      * @return array
      */
-    public function getRecordsDetailByVerifier(string|int $code){
+    public function getRecordsDetailByVerifier($code)
+    {
         $field = '*';
-        return (new Verify())->where([
-            ['site_id', '=', $this->site_id],
-            ['verifier_member_id', '=', $this->member_id],
-            ['code', '=', $code]
-        ])
-            ->with([
-                'member' => function($query){
-                    $query->field('member_id, nickname, mobile, headimg');
-                }
-            ])
-            ->field($field)
-            ->append(['type_name'])->findOrEmpty()->toArray();
+        return ( new Verify() )->where([
+            [ 'site_id', '=', $this->site_id ],
+            [ 'verifier_member_id', '=', $this->member_id ],
+            [ 'code', '=', $code ]
+        ])->with([
+            'member' => function($query) {
+                $query->field('member_id, nickname, mobile, headimg');
+            }
+        ])->field($field)->append([ 'type_name' ])->findOrEmpty()->toArray();
     }
 
 }

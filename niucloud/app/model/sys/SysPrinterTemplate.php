@@ -13,9 +13,6 @@ namespace app\model\sys;
 
 use app\dict\sys\PrinterDict;
 use core\base\BaseModel;
-use think\model\concern\SoftDelete;
-use think\model\relation\HasMany;
-use think\model\relation\HasOne;
 
 /**
  * 小票打印模板模型

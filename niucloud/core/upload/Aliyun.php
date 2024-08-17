@@ -62,7 +62,7 @@ class Aliyun extends BaseUpload
         $bucket = $this->config['bucket'];
         try {
             $base64_file = base64_decode($base64_data);
-            if (!$base64_file) throw new UploadFileException('FILE_ERROE');
+            if (!$base64_file) throw new UploadFileException('FILE_ERROR');
             $this->client()->putObject(
                 $bucket,
                 $key,

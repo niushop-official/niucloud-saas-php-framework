@@ -12,6 +12,7 @@
 namespace app\service\admin\user;
 
 
+use app\dict\sys\RoleStatusDict;
 use app\dict\sys\UserDict;
 use app\model\sys\SysRole;
 use app\model\sys\SysUserRole;
@@ -139,11 +140,12 @@ class UserRoleService extends BaseAdminService
             function() use($role_ids, $site_id) {
                 $where = array(
                     ['role_id', 'in', $role_ids],
-                    ['site_id', '=', $site_id]
+                    ['site_id', '=', $site_id],
+                    ['status', '=', RoleStatusDict::ON ]
                 );
                 return SysRole::where($where)->column('role_name');
             },
-            [self::$role_cache_name, RoleService::$cache_tag_name.$this->site_id]
+            [self::$role_cache_name, RoleService::$cache_tag_name.$site_id]
         );
     }
 

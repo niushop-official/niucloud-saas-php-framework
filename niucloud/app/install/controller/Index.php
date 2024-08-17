@@ -6,8 +6,6 @@ namespace app\install\controller;
 use app\model\site\Site;
 use app\model\sys\SysUser;
 use app\service\admin\install\InstallSystemService;
-use app\service\admin\site\SiteGroupService;
-use app\service\admin\site\SiteService;
 use app\service\core\schedule\CoreScheduleInstallService;
 use Exception;
 use think\facade\Cache;
@@ -39,7 +37,7 @@ class Index extends BaseInstall
             $host = ( empty($_SERVER[ 'REMOTE_ADDR' ]) ? $_SERVER[ 'REMOTE_HOST' ] : $_SERVER[ 'REMOTE_ADDR' ] );
             $name = $_SERVER[ 'SERVER_NAME' ];
 
-            $verison = !(version_compare(PHP_VERSION, '8.0.0') == -1);
+            $verison = !( version_compare(PHP_VERSION, '8.0.0') == -1 );
             //pdo
             $pdo = extension_loaded('pdo') && extension_loaded('pdo_mysql');
             $system_variables[] = [ "name" => "pdo", "need" => "开启", "status" => $pdo ];
@@ -65,9 +63,9 @@ class Index extends BaseInstall
                 [ "path" => $root_path . DIRECTORY_SEPARATOR, "path_name" => "niucloud/", "name" => "网站目录" ],
                 [ "path" => $root_path . DIRECTORY_SEPARATOR . ".env", "path_name" => "niucloud/.env", "name" => "env" ],
                 [ "path" => $root_path . DIRECTORY_SEPARATOR . ".example.env", "path_name" => "niucloud/.example_env", "name" => "env" ],
-                [ "path" => $root_path . DIRECTORY_SEPARATOR . 'runtime'.DIRECTORY_SEPARATOR, "path_name" => "niucloud/runtime", "name" => "runtime" ],
-                [ "path" => $root_path . DIRECTORY_SEPARATOR . 'public'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR, "path_name" => "niucloud/public/upload", "name" => "upload" ],
-                [ "path" => $root_path . DIRECTORY_SEPARATOR . 'app'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR, "path_name" => "niucloud/app/install", "name" => "安装目录" ]
+                [ "path" => $root_path . DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR, "path_name" => "niucloud/runtime", "name" => "runtime" ],
+                [ "path" => $root_path . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR, "path_name" => "niucloud/public/upload", "name" => "upload" ],
+                [ "path" => $root_path . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR, "path_name" => "niucloud/app/install", "name" => "安装目录" ]
             ];
             //目录 可读 可写检测
             $is_dir = true;
@@ -164,7 +162,7 @@ class Index extends BaseInstall
                                 "message" => "数据库不存在,系统将自动创建"
                             ];
                         }
-                    } catch ( Exception $e) {
+                    } catch (Exception $e) {
                         $result = [
                             "status" => 1,
                             "message" => "数据库不存在,系统将自动创建"
@@ -182,7 +180,7 @@ class Index extends BaseInstall
             }
 
             return success($result);
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             $result = [
                 "status" => -1,
                 "message" => $e->getMessage()
@@ -210,7 +208,7 @@ class Index extends BaseInstall
             $sqls = explode("\n", trim($sql));
             $sqls = array_filter($sqls);
             foreach ($sqls as $query) {
-                $str1 = $query[0] ?? '';
+                $str1 = $query[ 0 ] ?? '';
                 if ($str1 != '#' && $str1 != '-')
                     $sql_query[ $num ] .= $query;
             }
@@ -263,7 +261,7 @@ class Index extends BaseInstall
 //            return fail('平台信息不能为空!');
 //        }
 
-        if($site_username == $username) {
+        if ($site_username == $username) {
             $this->setSuccessLog([ '站点账号不能跟平台账号一致', 'error' ]);
             return fail('站点账号不能跟平台账号一致!');
         }
@@ -289,7 +287,7 @@ class Index extends BaseInstall
 
             Cache::set('install_status', 1);//成功
             return success();
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             $this->setSuccessLog([ '安装失败' . $e->getMessage(), 'error' ]);
             return fail('安装失败' . $e->getMessage());
         }
@@ -315,7 +313,7 @@ class Index extends BaseInstall
             return fail('平台两次密码输入不一样，请重新输入');
         }
 
-        if($site_username == $username) {
+        if ($site_username == $username) {
             return fail('站点账号不能跟平台账号一致');
         }
 
@@ -331,12 +329,11 @@ class Index extends BaseInstall
                 return fail('菜单初始化失败');
             }
             //初始化计划任务
-            $res = ( new CoreScheduleInstallService())->installSystemSchedule();
+            $res = ( new CoreScheduleInstallService() )->installSystemSchedule();
             if (!$res) {
                 $this->setSuccessLog([ '计划任务初始化失败', 'error' ]);
                 return fail('计划任务初始化失败');
             }
-
 
             $user = ( new SysUser() )->where([ [ 'uid', '=', 1 ] ])->findOrEmpty();
             if (!$user->isEmpty()) {
@@ -345,7 +342,7 @@ class Index extends BaseInstall
                     'password' => create_password($password),
                 ]);
             }
-            ( new Site() )->where([ [ 'site_id', '=', 1 ] ])->update(['site_id' => 0]);
+            ( new Site() )->where([ [ 'site_id', '=', 1 ] ])->update([ 'site_id' => 0 ]);
             $site = ( new Site() )->where([ [ 'site_id', '=', 0 ] ])->findOrEmpty();
             if (!$site->isEmpty()) {
                 $site->save([
@@ -353,7 +350,7 @@ class Index extends BaseInstall
                 ]);
             }
             //修改自增主键默认值
-            Db::execute("alter table ".env('database.prefix', '')."site auto_increment = 100000");
+            Db::execute("alter table " . env('database.prefix', '') . "site auto_increment = 100000");
             //获取默认套餐
 
             $fp = fopen($this->lock_file, 'wb');
@@ -367,7 +364,7 @@ class Index extends BaseInstall
             Cache::set('install_status', 2);//成功
 //            Cache::tag(MenuService::$cache_tag_name)->clear();
             return success();
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             $this->setSuccessLog([ '安装失败' . $e->getMessage(), 'error' ]);
             return fail('安装失败' . $e->getMessage());
         }
@@ -445,7 +442,7 @@ class Index extends BaseInstall
                     $sql_item = $this->str_replace_first($table_name, $new_table_name, $sql);
                     @mysqli_query($conn, $sql_item);
                     if ($is_write) $this->setSuccessLog([ '创建表' . $table_name, 'success' ]);
-                } catch ( Exception $e) {
+                } catch (Exception $e) {
                     $this->setSuccessLog([ $e->getMessage(), 'error' ]);
                     return fail('数据库解析失败' . $e->getMessage());
                 }
@@ -517,7 +514,7 @@ class Index extends BaseInstall
         if ($data[ 1 ] == 'error') {
             Cache::set('install_status', -1);
         }
-        $time = @(int)microtime(true);
+        $time = @(int) microtime(true);
         $data[] = date('Y-m-d H:i:s', $time);
         $install_data = Cache::get('install_data') ?? [];
         $install_data[] = $data;

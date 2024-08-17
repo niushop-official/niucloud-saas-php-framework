@@ -12,10 +12,7 @@
 namespace core\util;
 
 use Exception;
-use think\cache\driver\Redis;
-use think\facade\Cache;
 use think\facade\Log;
-use think\facade\Queue as ThinkQueue;
 
 /**
  * Class Queue

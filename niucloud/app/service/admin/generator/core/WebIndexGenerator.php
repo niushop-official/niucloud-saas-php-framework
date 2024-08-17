@@ -15,7 +15,6 @@ namespace app\service\admin\generator\core;
 
 
 
-use app\service\core\menu\CoreMenuService;
 use think\helper\Str;
 
 /**

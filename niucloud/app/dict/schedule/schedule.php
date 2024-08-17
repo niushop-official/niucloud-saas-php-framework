@@ -25,15 +25,15 @@ return [
         'class' => 'app\job\schedule\SiteExpireClose',
         'function' => ''
     ],
-    [
-        'key' => 'site_stat',
-        'name' => '站点统计',
-        'desc' => '',
-        'time' => [
-            'type' => 'hour',
-            'hour' => 1,
-        ],
-        'class' => 'app\job\schedule\SiteStatJob',
-        'function' => ''
-    ]
+//    [
+//        'key' => 'site_stat',
+//        'name' => '站点统计',
+//        'desc' => '',
+//        'time' => [
+//            'type' => 'hour',
+//            'hour' => 1,
+//        ],
+//        'class' => 'app\job\schedule\SiteStatJob',
+//        'function' => ''
+//    ]
 ];

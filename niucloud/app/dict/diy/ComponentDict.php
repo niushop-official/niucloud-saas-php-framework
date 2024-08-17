@@ -550,7 +550,7 @@ class ComponentDict
                         'sort' => 10014,
                         'position' => 'fixed',
                         'value' => [
-                            "imageSize" => 80,
+                            "imageSize" => 40,
                             "aroundRadius" => 0,
                             'style' => 'style-1',
                             "styleName" => "风格一",

@@ -51,6 +51,7 @@ class MemberLevelService extends BaseApiService
 
                 $length = empty($item['level_benefits']) ? 0 : count($item['level_benefits']);
                 if ($length < 4) {
+                    if (empty($item['level_benefits'])) $list[$k]['level_benefits'] = [];
                     foreach ($filling as $key => $content) {
                         if (count($list[$k]['level_benefits']) == 4) break;
                         $list[$k]['level_benefits'][$key] = [

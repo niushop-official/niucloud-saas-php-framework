@@ -41,23 +41,9 @@ class SysNoticeLog extends BaseModel
     ];
 
     // 设置json类型字段
-    protected $json = ['params', 'content'];
+    protected $json = [ 'params', 'content' ];
     // 设置JSON数据返回数组
     protected $jsonAssoc = true;
-
-    /**
-     * 名称
-     * @param $value
-     * @param $data
-     * @return string
-     */
-    public function getContentAttr($value, $data)
-    {
-        if ($value) {
-            $temp = json_decode($value, true);
-        }
-        return $temp ?? $value;
-    }
 
     /**
      * 名称
@@ -68,9 +54,9 @@ class SysNoticeLog extends BaseModel
     public function getNameAttr($value, $data)
     {
         $name = '';
-        if (!empty($data['key'])) {
-            $temp = NoticeDict::getNotice()[$data['key']] ?? [];
-            $name = $temp['name'] ?? '';
+        if (!empty($data[ 'key' ])) {
+            $temp = NoticeDict::getNotice()[ $data[ 'key' ] ] ?? [];
+            $name = $temp[ 'name' ] ?? '';
         }
         return $name;
     }
@@ -84,9 +70,9 @@ class SysNoticeLog extends BaseModel
     public function getNoticeTypeNameAttr($value, $data)
     {
         $name = '';
-        if (!empty($data['notice_type'])) {
-            $temp = NoticeTypeDict::getType()[$data['notice_type']] ?? [];
-            $name = $temp['name'] ?? '';
+        if (!empty($data[ 'notice_type' ])) {
+            $temp = NoticeTypeDict::getType()[ $data[ 'notice_type' ] ] ?? [];
+            $name = $temp[ 'name' ] ?? '';
         }
         return $name;
     }
@@ -125,14 +111,14 @@ class SysNoticeLog extends BaseModel
      */
     public function searchCreateTimeAttr(Query $query, $value, $data)
     {
-        $start_time = empty($value[0]) ? 0 : strtotime($value[0]);
-        $end_time = empty($value[1]) ? 0 : strtotime($value[1]);
+        $start_time = empty($value[ 0 ]) ? 0 : strtotime($value[ 0 ]);
+        $end_time = empty($value[ 1 ]) ? 0 : strtotime($value[ 1 ]);
         if ($start_time > 0 && $end_time > 0) {
             $query->whereBetweenTime('create_time', $start_time, $end_time);
         } else if ($start_time > 0 && $end_time == 0) {
-            $query->where([['create_time', '>=', $start_time]]);
+            $query->where([ [ 'create_time', '>=', $start_time ] ]);
         } else if ($start_time == 0 && $end_time > 0) {
-            $query->where([['create_time', '<=', $end_time]]);
+            $query->where([ [ 'create_time', '<=', $end_time ] ]);
         }
     }
 

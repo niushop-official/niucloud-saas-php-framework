@@ -13,9 +13,7 @@ namespace app\service\api\sys;
 
 use app\service\core\member\CoreMemberConfigService;
 use app\service\core\member\CoreMemberService;
-use app\service\core\scan\CoreScanService;
 use core\base\BaseApiService;
-use core\dict\DictLoader;
 
 /**
  * Class BaseService

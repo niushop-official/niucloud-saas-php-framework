@@ -21,8 +21,8 @@ class SiteStatJob extends BaseJob
 {
     public function doJob()
     {
-        event('Stat');
-        Log::write('站点统计' . date('Y-m-d h:i:s'));
+//        event('Stat');
+//        Log::write('站点统计' . date('Y-m-d h:i:s'));
         return true;
     }
 }

@@ -29,8 +29,6 @@ class SiteService extends BaseApiService
         $this->model = new Site();
     }
 
-
-
     /**
      * 获取授权当前站点信息(用做缓存)
      * @return mixed

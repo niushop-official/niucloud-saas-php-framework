@@ -302,7 +302,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '70',
+        'sort' => '89',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -715,7 +715,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '60',
+        'sort' => '88',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -801,7 +801,7 @@ return [
                 'router_path' => 'finance/refund',
                 'view_path' => 'finance/pay_refund',
                 'methods' => 'get',
-                'sort' => '9',
+                'sort' => '96',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -831,7 +831,7 @@ return [
                 'router_path' => 'finance/refund/detail',
                 'view_path' => 'finance/refund_detail',
                 'methods' => 'get',
-                'sort' => '9',
+                'sort' => '95',
                 'status' => '1',
                 'is_show' => '0',
             ],
@@ -848,7 +848,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '56',
+        'sort' => '87',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -1013,7 +1013,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '55',
+        'sort' => '86',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -1044,7 +1044,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '50',
+        'sort' => '85',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -1517,7 +1517,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '40',
+        'sort' => '84',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -1631,7 +1631,7 @@ return [
                 'router_path' => 'setting/auth/role',
                 'view_path' => 'auth/role',
                 'methods' => 'get',
-                'sort' => '70',
+                'sort' => '99',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -1689,7 +1689,7 @@ return [
                 'router_path' => 'setting/auth/log',
                 'view_path' => 'auth/log',
                 'methods' => 'get',
-                'sort' => '60',
+                'sort' => '98',
                 'status' => '1',
                 'is_show' => '1',
             ],
@@ -1706,7 +1706,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '30',
+        'sort' => '83',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -1786,7 +1786,6 @@ return [
                     ],
                 ]
             ],
-
             [
                 'menu_name' => '会员设置',
                 'menu_key' => 'setting_member',

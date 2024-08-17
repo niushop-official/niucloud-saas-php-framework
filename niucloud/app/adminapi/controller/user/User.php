@@ -87,6 +87,16 @@ class User extends BaseAdminController
     }
 
     /**
+     * 删除用户
+     * @param $uid
+     * @return Response
+     */
+    public function del($uid) {
+        (new UserService())->del($uid);
+        return success("DELETE_SUCCESS");
+    }
+
+    /**
      * 获取用户站点创建限制
      * @param $uid
      * @return Response

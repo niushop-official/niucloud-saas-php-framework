@@ -15,7 +15,7 @@ use think\facade\Route;
 /**
  * 路由
  */
-Route::group(function () {
+Route::group(function() {
     //用户登录
     Route::get('login/:app_type', 'login.Login/login');
 
@@ -26,9 +26,7 @@ Route::group(function () {
     Route::get('captcha/create', 'login.Captcha/create');
     //一次校验验证码
     Route::get('captcha/check', 'login.Captcha/check');
-
-    Route::get('test', 'login.Login/test');
 });
 
 //加载插件路由
-(new DictLoader("Route"))->load(['app_type' => 'adminapi']);
+( new DictLoader("Route") )->load([ 'app_type' => 'adminapi' ]);

@@ -11,7 +11,6 @@
 
 namespace app\model\verify;
 
-use app\dict\verify\VerifyDict;
 use app\model\member\Member;
 use core\base\BaseModel;
 

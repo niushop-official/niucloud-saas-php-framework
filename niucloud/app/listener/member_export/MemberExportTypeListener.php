@@ -9,7 +9,7 @@
 // | Author: Niucloud Team
 // +----------------------------------------------------------------------
 
-namespace app\listener\member;
+namespace app\listener\member_export;
 
 /**
  * 会员导出数据类型查询
@@ -25,7 +25,6 @@ class MemberExportTypeListener
             'member' => [
                 'name' => '会员列表',
                 'column' => [
-                    'username' => [ 'name' => '真实姓名'],
                     'nickname' => [ 'name' => '会员昵称'],
                     'mobile' => [ 'name' => '手机号'],
                     'member_level_name' => [ 'name' => '会员等级'],

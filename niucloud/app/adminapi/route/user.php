@@ -28,6 +28,8 @@ Route::group('user', function () {
     Route::get('user_select', 'user.User/getUserSelect');
     //用户详情
     Route::get('user/:uid', 'user.User/info');
+    // 删除用户
+    Route::delete('user/:uid', 'user.User/del');
     // 查询账号是否存在
     Route::get('isexist', 'user.User/checkUserIsExist');
     //添加用户

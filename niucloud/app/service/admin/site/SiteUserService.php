@@ -51,7 +51,7 @@ class SiteUserService extends BaseAdminService
                 $condition = [];
                 if (isset($where['username']) && $where['username'] !== '') $condition[] = ['username', 'like', "%{$this->model->handelSpecialCharacter($where['username'])}%"];
                 $query->where($condition);
-            })->where([ ['SysUserRole.site_id', '=', $this->site_id ], ['is_admin', '=', 0 ] ]);
+            })->where([ ['SysUserRole.site_id', '=', $this->site_id ]]);
         return $this->pageQuery($search_model, function ($item){
             if (!empty($item['role_ids'])) {
                 $item['role_array'] = (new SysRole())->where([ ['role_id', 'in', $item['role_ids'] ] ])->column('role_name');

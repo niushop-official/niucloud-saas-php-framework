@@ -16,7 +16,6 @@ use app\adminapi\middleware\AdminCheckToken;
 use app\adminapi\middleware\AdminLog;
 
 
-// USER_CODE_BEGIN -- sys_dict
 Route::group('dict', function () {
 
     //数据字典列表
@@ -40,4 +39,3 @@ Route::group('dict', function () {
     AdminCheckRole::class,
     AdminLog::class
 ]);
-// USER_CODE_END -- sys_dict

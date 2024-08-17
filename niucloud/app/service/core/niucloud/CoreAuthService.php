@@ -11,12 +11,10 @@
 
 namespace app\service\core\niucloud;
 
-use app\service\admin\niucloud\NiucloudService;
 use core\util\niucloud\BaseNiucloudClient;
 use core\util\niucloud\http\Response;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
 
 /**
  * 官网授权管理服务层

@@ -14,7 +14,6 @@ namespace app\service\core\niucloud;
 use app\model\addon\Addon;
 use app\service\core\addon\CoreAddonBaseService;
 use app\service\core\addon\CoreAddonDevelopDownloadService;
-use app\service\core\addon\CoreAddonInstallService;
 use core\base\BaseCoreService;
 use core\exception\CommonException;
 use core\util\niucloud\BaseNiucloudClient;

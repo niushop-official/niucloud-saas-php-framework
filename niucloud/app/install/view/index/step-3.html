@@ -159,13 +159,13 @@
     </div>
     <div class="btn-box">
         <input type="button" class="btn-back" value="后退" onclick="window.location.href='{$root_url}/install.php/index/index?step=2'" />
-        <input type="button" class="btn-next" lay-submit lay-filter="install"value="开始安装" id="form_submit">
+        <input type="button" class="btn-next" lay-submit lay-filter="install" value="开始安装" id="form_submit">
     </div>
 </div>
 
 {/block}
 {block name='script'}
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
     ControlContent(2);
     var is_existdb = 1;//数据库是否存在
     var message = '数据库账号或密码不能为空';

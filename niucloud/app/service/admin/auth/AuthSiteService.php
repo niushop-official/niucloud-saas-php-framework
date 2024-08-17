@@ -18,9 +18,7 @@ use app\model\site\Site;
 use app\model\sys\SysMenu;
 use app\service\admin\addon\AddonService;
 use app\service\admin\site\SiteService;
-use app\service\core\addon\CoreAddonService;
 use core\base\BaseAdminService;
-use think\Collection;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
@@ -41,9 +39,10 @@ class AuthSiteService extends BaseAdminService
     /**
      * 获取授权当前的站点信息
      */
-    public function getSiteInfo(){
+    public function getSiteInfo()
+    {
         //通过用户id获取
-        return (new SiteService())->getSiteCache($this->site_id);
+        return ( new SiteService() )->getSiteCache($this->site_id);
     }
 
 
@@ -53,8 +52,9 @@ class AuthSiteService extends BaseAdminService
      * @param int|string $status
      * @return mixed
      */
-    public function getMenuList(int $is_tree, int|string $status, $addon = 'all', int $is_button = 1){
-        return (new SiteService())->getMenuList($this->site_id, $is_tree, $status, $addon, $is_button);
+    public function getMenuList(int $is_tree, $status, $addon = 'all', int $is_button = 1)
+    {
+        return ( new SiteService() )->getMenuList($this->site_id, $is_tree, $status, $addon, $is_button);
     }
 
     /**
@@ -62,8 +62,9 @@ class AuthSiteService extends BaseAdminService
      * @param int|string $status
      * @return mixed
      */
-    public function getApiList(int|string $status){
-        return (new SiteService())->getApiList($this->site_id, $status);
+    public function getApiList($status)
+    {
+        return ( new SiteService() )->getApiList($this->site_id, $status);
     }
 
     /**
@@ -73,9 +74,10 @@ class AuthSiteService extends BaseAdminService
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public function getShowMenuList(){
-        $menu_keys = (new SiteService())->getMenuIdsBySiteId($this->site_id, 1);
-        return (new SysMenu())->where([['menu_key', 'in', $menu_keys], ['menu_type', '=', MenuTypeDict::MENU], ['app_type', '=', AppTypeDict::SITE],['is_show', '=', 1]])->select()->toArray();
+    public function getShowMenuList()
+    {
+        $menu_keys = ( new SiteService() )->getMenuIdsBySiteId($this->site_id, 1);
+        return ( new SysMenu() )->where([ [ 'menu_key', 'in', $menu_keys ], [ 'menu_type', '=', MenuTypeDict::MENU ], [ 'app_type', '=', AppTypeDict::SITE ], [ 'is_show', '=', 1 ] ])->select()->toArray();
     }
 
     /**
@@ -85,7 +87,8 @@ class AuthSiteService extends BaseAdminService
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public function getAuthAddonList(){
-        return (new AddonService())->getAddonListBySiteId($this->site_id);
+    public function getAuthAddonList()
+    {
+        return ( new AddonService() )->getAddonListBySiteId($this->site_id);
     }
 }

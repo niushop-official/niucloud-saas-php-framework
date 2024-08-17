@@ -11,9 +11,6 @@
 
 namespace app\service\admin\generator\core;
 
-use app\dict\sys\MenuDict;
-use app\model\sys\SysMenu;
-use think\facade\Cache;
 use think\helper\Str;
 
 /**

@@ -16,7 +16,6 @@ use app\dict\member\MemberRegisterTypeDict;
 use app\model\member\Member;
 use app\service\admin\sys\ExportService;
 use app\service\core\member\CoreMemberService;
-use app\service\core\sys\CoreExportService;
 use core\base\BaseAdminService;
 use core\dict\DictLoader;
 use core\exception\AdminException;

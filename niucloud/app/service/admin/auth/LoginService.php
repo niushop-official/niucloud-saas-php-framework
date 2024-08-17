@@ -73,13 +73,18 @@ class LoginService extends BaseAdminService
         $this->request->uid($userinfo->uid);
 
         $auth_site_service = (new HomeAuthSiteService());
+        $user_role_service = new UserRoleService();
 
         $default_site_id = 0;
         if($app_type == AppTypeDict::ADMIN){
             $default_site_id = $this->request->defaultSiteId();
-            $userrole = (new UserRoleService())->getUserRole($default_site_id, $userinfo->uid);
+            $userrole = $user_role_service->getUserRole($default_site_id, $userinfo->uid);
             if (!empty($userrole)) {
                 if (!$userrole['status']) throw new AuthException('USER_LOCK');
+                if (!$userrole['is_admin']) {
+                    $rules = $user_role_service->getRoleByUserRoleIds($userrole['role_ids'], $default_site_id);
+                    if (empty($rules) || count($rules) == 0) throw new AuthException('USER_LOCK');
+                }
             } else {
                 $app_type = AppTypeDict::SITE;
             }
@@ -87,6 +92,16 @@ class LoginService extends BaseAdminService
             $site_ids = $auth_site_service->getSiteIds();
             if(!empty($site_ids)){
                 $default_site_id = in_array($this->site_id, $site_ids) || AuthService::isSuperAdmin() ? $this->site_id : $site_ids[0];
+            }
+            if (!empty($default_site_id)) {
+                $userrole = $user_role_service->getUserRole($default_site_id, $userinfo->uid);
+                if (!empty($userrole)) {
+                    if (!$userrole['status']) throw new AuthException('USER_LOCK');
+                    if (!$userrole['is_admin']) {
+                        $rules = $user_role_service->getRoleByUserRoleIds($userrole['role_ids'], $default_site_id);
+                        if (empty($rules) || count($rules) == 0) throw new AuthException('USER_LOCK');
+                    }
+                }
             }
         } else {
             throw new AuthException('APP_TYPE_NOT_EXIST');

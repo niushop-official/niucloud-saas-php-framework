@@ -250,13 +250,15 @@ class UserService extends BaseAdminService
      * @return true
      */
     public function del(int $uid){
-        $where = [
-            ['uid', '=', $uid],
-            ['site_id', '=', $this->site_id]
-        ];
-        (new SysUserRole())->where($where)->delete();
-        return true;
+        AuthService::isSuperAdmin();
+        $super_admin_uid = Cache::get('super_admin_uid');
+        if ($super_admin_uid == $uid) throw new CommonException("SUPER_ADMIN_NOT_ALLOW_DEL");
 
+        $site_num = (new SysUserRole())->where([['uid', '=', $uid], ['site_id', '<>', request()->defaultSiteId() ] ])->count();
+        if ($site_num) throw new CommonException("USER_NOT_ALLOW_DEL");
+
+        $this->model->where([ ['uid', '=', $uid] ])->delete();
+        return true;
     }
 
     /**

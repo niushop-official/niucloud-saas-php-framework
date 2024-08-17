@@ -12,9 +12,6 @@
 namespace app\model\dict;
 
 use core\base\BaseModel;
-use think\model\concern\SoftDelete;
-use think\model\relation\HasMany;
-use think\model\relation\HasOne;
 
 /**
  * 数据字典模型
@@ -23,8 +20,6 @@ use think\model\relation\HasOne;
  */
 class Dict extends BaseModel
 {
-
-
 
     /**
      * 数据表主键
@@ -43,7 +38,7 @@ class Dict extends BaseModel
     ];
 
     // 设置json类型字段
-    protected $json = ['dictionary'];
+    protected $json = [ 'dictionary' ];
     // 设置JSON数据返回数组
     protected $jsonAssoc = true;
 
@@ -70,8 +65,5 @@ class Dict extends BaseModel
             $query->where("key", $value);
         }
     }
-
-
-
 
 }

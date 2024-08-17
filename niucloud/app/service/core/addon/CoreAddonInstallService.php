@@ -11,11 +11,9 @@
 
 namespace app\service\core\addon;
 
-use app\dict\addon\AddonDict;
-use app\job\sys\AddonInstall;
 use app\model\site\Site;
+use app\model\site\SiteGroup;
 use app\service\admin\sys\MenuService;
-use app\service\admin\sys\SystemService;
 use app\service\core\menu\CoreMenuService;
 use app\service\core\schedule\CoreScheduleInstallService;
 use core\exception\AddonException;
@@ -25,7 +23,6 @@ use think\db\exception\DbException;
 use think\db\exception\PDOException;
 use think\facade\Cache;
 use think\facade\Db;
-use think\Response;
 
 /**
  * 安装服务层
@@ -525,8 +522,11 @@ class CoreAddonInstallService extends CoreAddonBaseService
      */
     public function uninstall()
     {
-        $site_num = (new Site())->where([ ['app', 'like', "%$this->addon%"] ])->count('site_id');
-        if ($site_num) throw new CommonException('APP_NOT_ALLOW_UNINSTALL');
+        $site_groups = (new SiteGroup())->where([ ['app|addon', 'like', "%\"$this->addon\"%"] ])->column("group_id");
+        if (!empty($site_groups)) {
+            $site_num = (new Site())->where([ ['group_id', 'in', $site_groups] ])->count('site_id');
+            if ($site_num) throw new CommonException('APP_NOT_ALLOW_UNINSTALL');
+        }
 
         (new CoreAddonDevelopBuildService())->build($this->addon);
 

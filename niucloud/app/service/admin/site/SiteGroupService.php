@@ -15,6 +15,8 @@ use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
 use app\model\sys\SysMenu;
+use app\service\admin\diy\DiyService;
+use app\service\admin\sys\ConfigService;
 use app\service\admin\sys\MenuService;
 use app\service\core\addon\CoreAddonService;
 use app\service\core\site\CoreSiteService;
@@ -36,6 +38,7 @@ class SiteGroupService extends BaseAdminService
 {
     public static $cache_tag_name = 'site_group_cache';
     public static $cache_name = 'site_group_menu_ids';
+
     public function __construct()
     {
         parent::__construct();
@@ -50,7 +53,7 @@ class SiteGroupService extends BaseAdminService
     public function getPage(array $where = [])
     {
         $field = 'group_id, group_name, group_desc, app, addon, create_time, update_time';
-        $search_model = $this->model->withSearch(['keywords'],$where)->field($field)->append(['app_name', 'addon_name'])->order('create_time desc');
+        $search_model = $this->model->withSearch([ 'keywords' ], $where)->field($field)->append([ 'app_name', 'addon_name' ])->order('create_time desc');
         $list = $this->pageQuery($search_model);
         return $list;
     }
@@ -65,7 +68,7 @@ class SiteGroupService extends BaseAdminService
     public function getAll()
     {
         $field = 'group_id, group_name, group_desc, create_time, update_time, app';
-        return $this->model->field($field)->select()->toArray();
+        return $this->model->field($field)->order('create_time desc')->select()->toArray();
     }
 
     /**
@@ -76,7 +79,7 @@ class SiteGroupService extends BaseAdminService
     public function getInfo(int $group_id)
     {
         $field = 'group_id, group_name, group_desc, app, addon, create_time, update_time';
-        return $this->model->where([['group_id', '=', $group_id]])->field($field)->findOrEmpty()->toArray();
+        return $this->model->where([ [ 'group_id', '=', $group_id ] ])->field($field)->findOrEmpty()->toArray();
 
     }
 
@@ -88,7 +91,7 @@ class SiteGroupService extends BaseAdminService
     public function add(array $data)
     {
         //判断应用是否全部是有效的已安装应用
-        $this->checkAddon(array_merge($data['app'], $data['addon']));
+        $this->checkAddon(array_merge($data[ 'app' ], $data[ 'addon' ]));
         $res = $this->model->create($data);
         return $res->group_id;
     }
@@ -99,24 +102,32 @@ class SiteGroupService extends BaseAdminService
      * @param array $data
      * @return true
      */
-    public function edit(int $group_id, array $data){
-        $group = $this->model->where([['group_id', '=', $group_id]])->findOrEmpty()->toArray();
+    public function edit(int $group_id, array $data)
+    {
+        $group = $this->model->where([ [ 'group_id', '=', $group_id ] ])->findOrEmpty()->toArray();
 
         //判断应用是否全部是有效的已安装应用
-        $this->checkAddon(array_merge($data['app'], $data['addon']));
-        $this->model->update($data, [['group_id', '=', $group_id]]);
+        $this->checkAddon(array_merge($data[ 'app' ], $data[ 'addon' ]));
+        $this->model->update($data, [ [ 'group_id', '=', $group_id ] ]);
         //删除缓存
         $cache_name = self::$cache_name . $group_id;
         Cache::delete($cache_name);
 
-        $site_list = (new Site())->field('site_id,initalled_addon')->where([ ['group_id', '=', $group_id] ])->select()->toArray();
+        $site_list = ( new Site() )->field('site_id,initalled_addon')->where([ [ 'group_id', '=', $group_id ] ])->select()->toArray();
         if (!empty($site_list)) {
-            sort($data['app']); sort($group['app']); sort($data['addon']); sort($group['addon']);
+            sort($data[ 'app' ]);
+            sort($group[ 'app' ]);
+            sort($data[ 'addon' ]);
+            sort($group[ 'addon' ]);
 
-            if (json_encode($data['app']) != json_encode($group['app']) || json_encode($data['addon']) != json_encode($group['addon'])) {
+            if (json_encode($data[ 'app' ]) != json_encode($group[ 'app' ]) || json_encode($data[ 'addon' ]) != json_encode($group[ 'addon' ])) {
                 foreach ($site_list as $site) {
                     $this->siteAddonsChange($site, $group, $data);
-                    Cache::tag(CoreSiteService::$cache_tag_name . $site['site_id'])->clear();
+                    Cache::tag(CoreSiteService::$cache_tag_name . $site[ 'site_id' ])->clear();
+
+                    // 更新微页面数据
+                    $diy_service = new DiyService();
+                    $diy_service->loadDiyData([ 'site_id' => $site[ 'site_id' ], 'main_app' => $data[ 'app' ] ]);
                 }
             }
         }
@@ -131,25 +142,28 @@ class SiteGroupService extends BaseAdminService
      * @param $new_group
      * @return void
      */
-    public function siteAddonsChange($site_info, $old_group, $new_group) {
-        $initalled_addon = $site_info['initalled_addon'];
+    public function siteAddonsChange($site_info, $old_group, $new_group)
+    {
+        $initalled_addon = $site_info[ 'initalled_addon' ];
         if (empty($initalled_addon)) {
-            $initalled_addon = array_merge($old_group['app'], $old_group['addon']);
+            $initalled_addon = array_merge($old_group[ 'app' ], $old_group[ 'addon' ]);
         }
 
-        //添加站点成功事件
-        event("AddSiteAfter", [ 'site_id' => $site_info['site_id'], 'main_app' => array_diff($new_group['app'], $initalled_addon) , 'site_addons' => array_diff($new_group['addon'], $initalled_addon) ]);
+        // 添加站点成功事件
+        event("AddSiteAfter", [ 'site_id' => $site_info[ 'site_id' ], 'main_app' => array_diff($new_group[ 'app' ], $initalled_addon), 'site_addons' => array_diff($new_group[ 'addon' ], $initalled_addon) ]);
 
-        $initalled_addon = array_values(array_unique(array_merge($initalled_addon, $new_group['app'], $new_group['addon'])));
-        (new Site())->update(['app' => $new_group['app'], 'initalled_addon' => $initalled_addon], [ ['site_id', '=', $site_info['site_id'] ] ]);
+        $initalled_addon = array_values(array_unique(array_merge($initalled_addon, $new_group[ 'app' ], $new_group[ 'addon' ])));
+        ( new Site() )->update([ 'app' => $new_group[ 'app' ], 'initalled_addon' => $initalled_addon ], [ [ 'site_id', '=', $site_info[ 'site_id' ] ] ]);
     }
 
-    public function checkAddon($group_roles){
-        $install_addon_list = (new CoreAddonService())->getInstallAddonList();
+    public function checkAddon($group_roles)
+    {
+        $install_addon_list = ( new CoreAddonService() )->getInstallAddonList();
         $install_addon_keys = array_column($install_addon_list, 'key');
-        if(count(array_intersect($install_addon_keys, $group_roles)) != count($group_roles)) throw new AdminException('SITE_GROUP_APP_NOT_EXIST');
+        if (count(array_intersect($install_addon_keys, $group_roles)) != count($group_roles)) throw new AdminException('SITE_GROUP_APP_NOT_EXIST');
         return true;
     }
+
     /**
      * 删除分组
      * @param int $group_id
@@ -158,12 +172,11 @@ class SiteGroupService extends BaseAdminService
      */
     public function del(int $group_id)
     {
-        $count = (new Site())->where([['group_id', '=', $group_id]])->count();
-        if($count > 0)
-        {
+        $count = ( new Site() )->where([ [ 'group_id', '=', $group_id ] ])->count();
+        if ($count > 0) {
             throw new CommonException('SITE_GROUP_IS_EXIST');
         }
-        $res = $this->model->where([['group_id', '=', $group_id]])->delete();
+        $res = $this->model->where([ [ 'group_id', '=', $group_id ] ])->delete();
 
         $cache_name = self::$cache_name . $group_id;
         Cache::delete($cache_name);
@@ -175,19 +188,20 @@ class SiteGroupService extends BaseAdminService
      * @param $group_id
      * @return void
      */
-    public function getGroupAddon($group_id){
+    public function getGroupAddon($group_id)
+    {
         $cache_name = self::$cache_name . $group_id;
         return cache_remember(
             $cache_name,
-            function () use ($group_id) {
+            function() use ($group_id) {
                 $group = $this->model->findOrEmpty($group_id);
                 $addon = [];
                 if (!$group->isEmpty()) {
-                    $addon = array_merge($group['app'], $group['addon']);
+                    $addon = array_merge($group[ 'app' ], $group[ 'addon' ]);
                 }
                 return $addon;
             },
-            [MenuService::$cache_tag_name,self::$cache_tag_name]
+            [ MenuService::$cache_tag_name, self::$cache_tag_name ]
         );
     }
 
@@ -214,11 +228,12 @@ class SiteGroupService extends BaseAdminService
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public function getUserSiteGroupAll($uid) {
+    public function getUserSiteGroupAll($uid)
+    {
         $field = 'group_id, group_name, group_desc, create_time, update_time, app';
         $list = $this->model->field($field)->select()->toArray();
         foreach ($list as &$item) {
-            $item['site_num'] = self::getUserSiteGroupSiteNum($uid, $item['group_id']);
+            $item[ 'site_num' ] = self::getUserSiteGroupSiteNum($uid, $item[ 'group_id' ]);
         }
         return $list;
     }
@@ -229,13 +244,14 @@ class SiteGroupService extends BaseAdminService
      * @param $group_id
      * @return void
      */
-    public static function getUserSiteGroupSiteNum($uid, $group_id) {
+    public static function getUserSiteGroupSiteNum($uid, $group_id)
+    {
         return Db::name("sys_user_role")->alias('sur')
             ->join('site s', 'sur.site_id = s.site_id')
             ->where([
-                ['sur.uid', '=', $uid],
-                ['sur.is_admin', '=', 1],
-                ['s.group_id', '=', $group_id]
+                [ 'sur.uid', '=', $uid ],
+                [ 'sur.is_admin', '=', 1 ],
+                [ 's.group_id', '=', $group_id ]
             ])->count();
     }
 

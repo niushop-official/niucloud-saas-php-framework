@@ -95,21 +95,6 @@ class Notice extends BaseAdminController
     }
 
     /**
-     * 消息列表
-     * @return Response
-     */
-    public function getLogList()
-    {
-        $data = $this->request->params([
-            ['key', ''],
-            ['receiver', ''],
-        ]);
-
-        $res = (new NoticeService())->getLogPage($data);
-        return success($res);
-    }
-
-    /**
      * 消息修改
      * @return Response
      */

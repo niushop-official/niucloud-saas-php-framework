@@ -16,7 +16,6 @@ use app\dict\common\ChannelDict;
 class PayChannelDict
 {
 
-
     /**
      * 支付渠道类型
      * @return array
@@ -42,6 +41,5 @@ class PayChannelDict
         }
         return $list;
     }
-
 
 }

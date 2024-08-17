@@ -17,8 +17,6 @@ use app\dict\sys\AppTypeDict;
 use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
-use app\service\admin\site\SiteGroupService;
-use app\service\admin\site\SiteService;
 use core\base\BaseCoreService;
 use core\exception\CommonException;
 use think\db\exception\DataNotFoundException;
@@ -55,11 +53,11 @@ class CoreSiteService extends BaseCoreService
                 $where = [
                     [ 'site_id', '=', $site_id ],
                 ];
-                $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain')->append([ 'status_name' ])->findOrEmpty()->toArray();
+                $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo,front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain')->append([ 'status_name' ])->findOrEmpty()->toArray();
                 if (!empty($info)) {
-                    $site_addons = (new CoreSiteService())->getAddonKeysBySiteId((int)$site_id);
-                    $info['apps'] = (new Addon())->where([ ['key', 'in', $site_addons], ['type', '=', AddonDict::APP]])->field('key,title,desc,icon,type')->select()->toArray();
-                    $info['site_addons'] = (new Addon())->where([ ['key', 'in', $site_addons], ['type', '=', AddonDict::ADDON]])->field('key,title,desc,icon,type')->select()->toArray();
+                    $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId((int) $site_id);
+                    $info[ 'apps' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::APP ] ])->field('key,title,desc,icon,type')->select()->toArray();
+                    $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::ADDON ] ])->field('key,title,desc,icon,type')->select()->toArray();
                 }
                 return $info;
             },
@@ -72,14 +70,15 @@ class CoreSiteService extends BaseCoreService
      * @param string $domain
      * @return mixed|string
      */
-    public function getSiteIdByDomain(string $domain) {
+    public function getSiteIdByDomain(string $domain)
+    {
         if (empty($domain)) return;
 
         $cache_name = 'site_domain';
         return cache_remember(
             $cache_name . $domain,
             function() use ($domain) {
-                return $this->model->where([ ['site_domain', '=', $domain] ])->value('site_id');
+                return $this->model->where([ [ 'site_domain', '=', $domain ] ])->value('site_id');
             },
             self::$cache_tag_name
         );
@@ -135,12 +134,13 @@ class CoreSiteService extends BaseCoreService
      * @param int $site_id
      * @return array
      */
-    public function getAddonKeysBySiteId(int $site_id){
+    public function getAddonKeysBySiteId(int $site_id)
+    {
         $cache_name = 'site_addon_key_cache';
         return cache_remember(
             $cache_name . $site_id,
             function() use ($site_id) {
-                $site_info = (new Site())->where([ ['site_id', '=', $site_id] ])->field('group_id,app_type,addons')->findOrEmpty();
+                $site_info = ( new Site() )->where([ [ 'site_id', '=', $site_id ] ])->field('group_id,app_type,addons')->findOrEmpty();
                 if ($site_info->isEmpty()) return [];
 
                 $app_type = $site_info[ 'app_type' ];
@@ -149,14 +149,14 @@ class CoreSiteService extends BaseCoreService
                 if ($app_type == AppTypeDict::SITE) {
                     $group_id = $site_info[ 'group_id' ] ?? 0;
                     if ($group_id > 0) {
-                        $group = (new SiteGroup())->field('app,addon')->findOrEmpty($group_id);
+                        $group = ( new SiteGroup() )->field('app,addon')->findOrEmpty($group_id);
                         if (!$group->isEmpty()) {
-                            $group_addon_keys = array_merge($group['app'], $group['addon']);
+                            $group_addon_keys = array_merge($group[ 'app' ], $group[ 'addon' ]);
                         }
                     }
                 }
                 //在查询站点所拥有的应用插件,两者结合
-                $site_addon_keys = is_array($site_info['addons']) ? $site_info['addons'] : [];
+                $site_addon_keys = is_array($site_info[ 'addons' ]) ? $site_info[ 'addons' ] : [];
                 return array_merge($group_addon_keys ?? [], $site_addon_keys);
             },
             self::$cache_tag_name . $site_id

@@ -13,7 +13,6 @@ namespace app\adminapi\controller\login;
 
 use app\service\admin\auth\ConfigService;
 use app\service\admin\auth\LoginService;
-use app\service\admin\upgrade\UpgradeService;
 use app\service\core\addon\WapTrait;
 use core\base\BaseAdminController;
 use think\Response;
@@ -61,15 +60,5 @@ class Login extends BaseAdminController
     public function getConfig()
     {
         return success(( new ConfigService() )->getConfig());
-    }
-
-    public function test()
-    {
-        ( new UpgradeService() )->executeSql(root_path() . 'app/upgrade/v011/upgrade.sql');
-    }
-
-    public function geAddonPackagePath(string $addon)
-    {
-        return root_path() . 'addon' . DIRECTORY_SEPARATOR . $addon . DIRECTORY_SEPARATOR . 'package' . DIRECTORY_SEPARATOR;
     }
 }

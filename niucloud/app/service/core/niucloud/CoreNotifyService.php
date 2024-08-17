@@ -11,11 +11,7 @@
 
 namespace app\service\core\niucloud;
 
-use app\service\admin\niucloud\NiucloudService;
 use core\util\niucloud\BaseNiucloudClient;
-use core\util\niucloud\http\Response;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * 官网授权管理服务层
@@ -39,7 +35,5 @@ class CoreNotifyService extends BaseNiucloudClient
         }
         return success();
     }
-
-
 
 }

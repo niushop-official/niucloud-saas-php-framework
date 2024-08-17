@@ -13,9 +13,7 @@ namespace app\service\admin\sys;
 
 use app\job\sys\CheckJob;
 use app\service\core\site\CoreSiteService;
-use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
-use core\exception\CommonException;
 use think\facade\Db;
 use Throwable;
 

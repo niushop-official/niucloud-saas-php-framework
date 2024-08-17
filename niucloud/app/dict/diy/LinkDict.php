@@ -63,63 +63,63 @@ class LinkDict
                         'name' => 'MEMBER_PERSONAL',
                         'title' => get_lang('dict_diy.member_my_personal'),
                         'url' => '/app/pages/member/personal',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_BALANCE',
                         'title' => get_lang('dict_diy.member_my_balance'),
                         'url' => '/app/pages/member/balance',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_POINT',
                         'title' => get_lang('dict_diy.member_my_point'),
                         'url' => '/app/pages/member/point',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_COMMISSION',
                         'title' => get_lang('dict_diy.member_my_commission'),
                         'url' => '/app/pages/member/commission',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_ADDRESS',
                         'title' => get_lang('dict_diy.member_my_address'),
                         'url' => '/app/pages/member/address',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_MY_LEVEL',
                         'title' => get_lang('dict_diy.member_my_level'),
                         'url' => '/app/pages/member/level',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_MY_SIGN_IN',
                         'title' => get_lang('dict_diy.member_my_sign_in'),
                         'url' => '/app/pages/member/sign_in',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_VERIFY_INDEX',
                         'title' => get_lang('dict_diy.member_verify_index'),
                         'url' => '/app/pages/verify/index',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                     [
                         'name' => 'MEMBER_CONTACT',
                         'title' => get_lang('dict_diy.member_contact'),
                         'url' => '/app/pages/member/contact',
-                        'is_share' => 1,
+                        'is_share' => 0,
                         'action' => ''
                     ],
                 ]

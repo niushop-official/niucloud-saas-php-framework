@@ -132,7 +132,7 @@ return [
                 'router_path' => '',
                 'view_path' => '',
                 'methods' => '',
-                'sort' => '40',
+                'sort' => '75',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -320,7 +320,7 @@ return [
                 'router_path' => 'setting/storage',
                 'view_path' => 'setting/storage',
                 'methods' => 'get',
-                'sort' => '30',
+                'sort' => '70',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -364,7 +364,7 @@ return [
                 'router_path' => 'setting/adminlogin',
                 'view_path' => 'setting/adminlogin',
                 'methods' => 'get',
-                'sort' => '20',
+                'sort' => '65',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -394,7 +394,7 @@ return [
                 'router_path' => '',
                 'view_path' => '',
                 'methods' => 'get',
-                'sort' => '20',
+                'sort' => '60',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -408,7 +408,7 @@ return [
                         'router_path' => 'setting/oplatform',
                         'view_path' => 'wxoplatform/setting',
                         'methods' => 'get',
-                        'sort' => '20',
+                        'sort' => '100',
                         'status' => '1',
                         'is_show' => '1',
                         'children' => [
@@ -438,7 +438,7 @@ return [
                         'router_path' => 'wxoplatform/weapp_version',
                         'view_path' => 'wxoplatform/weapp_version',
                         'methods' => 'get',
-                        'sort' => '10',
+                        'sort' => '99',
                         'status' => '1',
                         'is_show' => '1',
                         'children' => [
@@ -470,7 +470,7 @@ return [
                 'router_path' => 'setting/attachment',
                 'view_path' => 'tools/attachment',
                 'methods' => 'get',
-                'sort' => '10',
+                'sort' => '55',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -570,7 +570,7 @@ return [
                 'router_path' => 'setting/map',
                 'view_path' => 'setting/map',
                 'methods' => 'get',
-                'sort' => '9',
+                'sort' => '50',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -600,7 +600,7 @@ return [
                 'router_path' => 'setting/layout',
                 'view_path' => 'setting/layout',
                 'methods' => 'get',
-                'sort' => '8',
+                'sort' => '45',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [
@@ -856,6 +856,20 @@ return [
                 'is_show' => '1',
             ],
             [
+                'menu_name' => '删除站点用户',
+                'menu_key' => 'add_user',
+                'menu_short_name' => '',
+                'menu_type' => '2',
+                'icon' => '',
+                'api_url' => 'user/user/<uid>',
+                'router_path' => '',
+                'view_path' => '',
+                'methods' => 'delete',
+                'sort' => '100',
+                'status' => '1',
+                'is_show' => '1',
+            ],
+            [
                 'menu_name' => '获取用户套餐权限',
                 'menu_key' => 'get_user_create_site_limit',
                 'menu_short_name' => '',
@@ -938,7 +952,7 @@ return [
         'router_path' => 'app_manage/app_store',
         'view_path' => 'index/store',
         'methods' => 'get',
-        'sort' => '70',
+        'sort' => '78',
         'status' => '1',
         'is_show' => '1',
         'children' => [
@@ -1038,7 +1052,7 @@ return [
         'router_path' => 'app_manage/tools',
         'view_path' => 'index/tools',
         'methods' => 'get',
-        'sort' => '70',
+        'sort' => '77',
         'status' => '1',
         'is_show' => '1',
     ],
@@ -1053,7 +1067,7 @@ return [
         'router_path' => '',
         'view_path' => '',
         'methods' => '',
-        'sort' => '60',
+        'sort' => '76',
         'status' => '1',
         'is_show' => '0',
         'children' => [

@@ -62,6 +62,7 @@ class Account extends BaseApiController
     {
         $data = $this->request->params([
             ['from_type', ''],
+            ['trade_type', ''],
             ['create_time', []]
         ]);
         return success((new MemberAccountService())->getBalancePage($data));

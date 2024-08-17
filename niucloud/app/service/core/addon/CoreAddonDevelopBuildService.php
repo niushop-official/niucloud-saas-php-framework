@@ -13,7 +13,6 @@ namespace app\service\core\addon;
 
 use app\dict\sys\MenuDict;
 use app\model\sys\SysMenu;
-use app\service\admin\sys\MenuService;
 use core\base\BaseCoreService;
 use core\exception\AddonException;
 

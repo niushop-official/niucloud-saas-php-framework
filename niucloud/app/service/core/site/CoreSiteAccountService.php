@@ -32,14 +32,14 @@ class CoreSiteAccountService extends BaseCoreService
      */
     public function addPayLog(array $pay_info)
     {
-        $pay_info = (new Pay())->where([['out_trade_no', '=', $pay_info['out_trade_no']], ['site_id', '=', $pay_info['site_id']]])->findOrEmpty()->toArray();
+        $pay_info = ( new Pay() )->where([ [ 'out_trade_no', '=', $pay_info[ 'out_trade_no' ] ], [ 'site_id', '=', $pay_info[ 'site_id' ] ] ])->findOrEmpty()->toArray();
         $data = [
-            'site_id' => $pay_info['site_id'],
+            'site_id' => $pay_info[ 'site_id' ],
             'type' => 'pay',
-            'money' => $pay_info['money'],
-            'trade_no' => $pay_info['out_trade_no'],
+            'money' => $pay_info[ 'money' ],
+            'trade_no' => $pay_info[ 'out_trade_no' ],
         ];
-        $res = (new SiteAccountLog())->create($data);
+        $res = ( new SiteAccountLog() )->create($data);
         return $res->id;
     }
 
@@ -51,14 +51,14 @@ class CoreSiteAccountService extends BaseCoreService
      */
     public function addRefundLog(int $site_id, string $refund_no)
     {
-        $refund_info = (new Refund())->where([['refund_no', '=', $refund_no], ['site_id', '=', $site_id]])->findOrEmpty()->toArray();
+        $refund_info = ( new Refund() )->where([ [ 'refund_no', '=', $refund_no ], [ 'site_id', '=', $site_id ] ])->findOrEmpty()->toArray();
         $data = [
-            'site_id' => $refund_info['site_id'],
+            'site_id' => $refund_info[ 'site_id' ],
             'type' => 'refund',
-            'money' => $refund_info['money'] *(-1),
-            'trade_no' => $refund_info['refund_no'],
+            'money' => $refund_info[ 'money' ] * ( -1 ),
+            'trade_no' => $refund_info[ 'refund_no' ],
         ];
-        $res = (new SiteAccountLog())->create($data);
+        $res = ( new SiteAccountLog() )->create($data);
         return $res->id;
     }
 
@@ -70,14 +70,14 @@ class CoreSiteAccountService extends BaseCoreService
      */
     public function addTransferLog(int $site_id, string $transfer_no)
     {
-        $transfer_info = (new Transfer())->where([['transfer_no', '=', $transfer_no], ['site_id', '=', $site_id]])->findOrEmpty()->toArray();
+        $transfer_info = ( new Transfer() )->where([ [ 'transfer_no', '=', $transfer_no ], [ 'site_id', '=', $site_id ] ])->findOrEmpty()->toArray();
         $data = [
-            'site_id' => $transfer_info['site_id'],
+            'site_id' => $transfer_info[ 'site_id' ],
             'type' => 'transfer',
-            'money' => $transfer_info['money'] *(-1),
-            'trade_no' => $transfer_info['transfer_no'],
+            'money' => $transfer_info[ 'money' ] * ( -1 ),
+            'trade_no' => $transfer_info[ 'transfer_no' ],
         ];
-        $res = (new SiteAccountLog())->create($data);
+        $res = ( new SiteAccountLog() )->create($data);
         return $res->id;
     }
 

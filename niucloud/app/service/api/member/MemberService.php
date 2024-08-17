@@ -16,9 +16,6 @@ use app\service\core\member\CoreMemberService;
 use core\base\BaseApiService;
 use core\exception\ApiException;
 use core\util\Barcode;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
 use think\Model;
 
 /**

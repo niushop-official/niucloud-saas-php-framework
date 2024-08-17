@@ -12,9 +12,7 @@
 namespace app\service\core\addon;
 
 use app\dict\addon\AddonDict;
-use app\dict\sys\AppTypeDict;
 use app\model\addon\Addon;
-use app\service\admin\site\SiteGroupService;
 use app\service\core\niucloud\CoreModuleService;
 use think\db\exception\DbException;
 use Throwable;
@@ -50,7 +48,7 @@ class CoreAddonService extends CoreAddonBaseService
                     'desc' => $v['app']['app_desc'],
                     'key' => $v['app']['app_key'] ?? '',
                     'version' => $v['version'] ?? '',
-                    'author' => $v['app']['app_name'],
+                    'author' => $v['site_name'],
                     'type' => $v['app']['app_type'],
                     'support_app' => $v['app']['support_channel'] ?? [],
                     'is_download' => false,
@@ -266,7 +264,7 @@ class CoreAddonService extends CoreAddonBaseService
         $data = $core_addon_service->getAddonConfig($key);
         if (isset($data['key'])) {
             $data['icon'] = is_file($data['icon']) ? image_to_base64($data['icon']) : '';
-            $data['cover'] = is_file($data['icon']) ? image_to_base64($data['cover']) : '';
+            $data['cover'] = is_file($data['cover']) ? image_to_base64($data['cover']) : '';
             $data['type_name'] = empty($data['type']) ? '' : AddonDict::getType()[$data['type']] ?? '';
         }
         if(isset($data['support_app']) && !empty($data['support_app']))

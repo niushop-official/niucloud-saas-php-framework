@@ -34,6 +34,7 @@ class MenuService extends BaseAdminService
 {
 
     public static $cache_tag_name = 'menu_cache';
+
     public function __construct()
     {
         parent::__construct();
@@ -47,12 +48,12 @@ class MenuService extends BaseAdminService
      */
     public function add(array $data)
     {
-        $menu = $this->find($data['menu_key'], $data['app_type']);
-        if(!$menu->isEmpty()) throw new AdminException('validate_menu.exit_menu_key');//创建失败
+        $menu = $this->find($data[ 'menu_key' ], $data[ 'app_type' ]);
+        if (!$menu->isEmpty()) throw new AdminException('validate_menu.exit_menu_key');//创建失败
 
-        $data['source'] = MenuDict::CREATE;
+        $data[ 'source' ] = MenuDict::CREATE;
         $res = $this->model->create($data);
-        if(!$res) throw new AdminException('ADD_FAIL');//创建失败
+        if (!$res) throw new AdminException('ADD_FAIL');//创建失败
 
         Cache::tag(self::$cache_tag_name)->clear();
         return $res;
@@ -68,8 +69,8 @@ class MenuService extends BaseAdminService
     public function edit(string $app_type, string $menu_key, array $data)
     {
         $where = array(
-            ['app_type', '=', $app_type],
-            ['menu_key', '=', $menu_key]
+            [ 'app_type', '=', $app_type ],
+            [ 'menu_key', '=', $menu_key ]
         );
         $res = $this->model->update($data, $where);
         Cache::tag(self::$cache_tag_name)->clear();
@@ -81,8 +82,9 @@ class MenuService extends BaseAdminService
      * @param string $menu_key
      * @return array
      */
-    public function get(string $app_type, string $menu_key){
-        return $this->model->where([['app_type', '=', $app_type],['menu_key', '=', $menu_key]])->findOrEmpty()->toArray();
+    public function get(string $app_type, string $menu_key)
+    {
+        return $this->model->where([ [ 'app_type', '=', $app_type ], [ 'menu_key', '=', $menu_key ] ])->findOrEmpty()->toArray();
     }
 
     /**
@@ -90,12 +92,13 @@ class MenuService extends BaseAdminService
      * @param string $app_type
      * @return SysMenu|array|mixed|Model
      */
-    public function find(string $menu_key, string $app_type = ''){
+    public function find(string $menu_key, string $app_type = '')
+    {
         $where = array(
-            ['menu_key', '=', $menu_key]
+            [ 'menu_key', '=', $menu_key ]
         );
-        if(!empty($app_type)){
-            $where[] = ['app_type', '=', $app_type];
+        if (!empty($app_type)) {
+            $where[] = [ 'app_type', '=', $app_type ];
         }
         $menu = $this->model->where($where)->findOrEmpty();
         return $menu;
@@ -107,15 +110,16 @@ class MenuService extends BaseAdminService
      * @return bool
      * @throws DbException
      */
-    public function del(string $app_type, string $menu_key){
+    public function del(string $app_type, string $menu_key)
+    {
         //查询是否有下级菜单或按钮
         $menu = $this->find($menu_key, $app_type);
-        if($this->model->where([['parent_key', '=', $menu_key], ['app_type', '=', $app_type]])->count() > 0)
+        if ($this->model->where([ [ 'parent_key', '=', $menu_key ], [ 'app_type', '=', $app_type ] ])->count() > 0)
             throw new AdminException('MENU_NOT_ALLOW_DELETE');
 
         $res = $menu->delete();
         Cache::tag(self::$cache_tag_name)->clear();
-        return  $res;
+        return $res;
     }
 
     /**
@@ -133,12 +137,12 @@ class MenuService extends BaseAdminService
     public function getMenuListByMenuKeys(int $site_id, array $menu_keys, string $app_type, int $is_tree = 0, $addon = 'all', $is_button = 1)
     {
         sort($menu_keys);
-        $cache_name = 'menu' . md5(implode("_", $menu_keys)) . $is_tree.$addon.$site_id;
+        $cache_name = 'menu' . md5(implode("_", $menu_keys)) . $is_tree . $addon . $site_id;
         $menu_list = cache_remember(
             $cache_name,
-            function () use ($site_id, $menu_keys, $app_type, $is_tree, $addon) {
+            function() use ($site_id, $menu_keys, $app_type, $is_tree, $addon) {
                 $where = [
-                    ['menu_key', 'in', $menu_keys],
+                    [ 'menu_key', 'in', $menu_keys ],
                 ];
                 $addons = ( new AddonService() )->getAddonKeysBySiteId($site_id);
                 $addons[] = '';
@@ -146,16 +150,16 @@ class MenuService extends BaseAdminService
                 $delete_menu_addon = [];
                 $addon_loader = new DictLoader("Menu");
 
-                if($addon != 'all'){
-                    $where[] = ['addon', '=', $addon];
+                if ($addon != 'all') {
+                    $where[] = [ 'addon', '=', $addon ];
 
-                    $delete_menu = $addon_loader->load(["addon" => $addon, "app_type" => $app_type])['delete'] ?? [];
+                    $delete_menu = $addon_loader->load([ "addon" => $addon, "app_type" => $app_type ])[ 'delete' ] ?? [];
                     if (!empty($delete_menu) && is_array($delete_menu)) $delete_menu_addon[] = $delete_menu;
                 } else {
-                    $where[] = ['addon', 'in', $addons];
+                    $where[] = [ 'addon', 'in', $addons ];
 
                     foreach ($addons as $addon) {
-                        $delete_menu = $addon_loader->load(["addon" => $addon, "app_type" => $app_type])['delete'] ?? [];
+                        $delete_menu = $addon_loader->load([ "addon" => $addon, "app_type" => $app_type ])[ 'delete' ] ?? [];
                         if (!empty($delete_menu) && is_array($delete_menu)) $delete_menu_addon[] = $delete_menu;
                     }
                 }
@@ -164,24 +168,22 @@ class MenuService extends BaseAdminService
                 if (!empty($delete_menu_addon)) {
                     $delete_intersect = array_intersect(...$delete_menu_addon);
                     if (!empty($delete_intersect)) {
-                        $where[] = ['menu_key', 'not in', $delete_intersect];
+                        $where[] = [ 'menu_key', 'not in', $delete_intersect ];
                     }
                 }
-                if(!empty($app_type)){
-                    $where[] = ['app_type', '=', $app_type];
+                if (!empty($app_type)) {
+                    $where[] = [ 'app_type', '=', $app_type ];
                 }
                 return $this->model->where($where)->order('sort', 'desc')->select()->toArray();
             },
             self::$cache_tag_name
         );
-        foreach ($menu_list as &$v)
-        {
-            $lang_menu_key = "dict_menu_". $v['app_type']. '.'. $v['menu_key'];
-            $lang_menu_name = get_lang("dict_menu_". $v['app_type']. '.'. $v['menu_key']);
+        foreach ($menu_list as &$v) {
+            $lang_menu_key = "dict_menu_" . $v[ 'app_type' ] . '.' . $v[ 'menu_key' ];
+            $lang_menu_name = get_lang("dict_menu_" . $v[ 'app_type' ] . '.' . $v[ 'menu_key' ]);
             //语言已定义
-            if($lang_menu_key != $lang_menu_name)
-            {
-                $v['menu_name'] = $lang_menu_name;
+            if ($lang_menu_key != $lang_menu_name) {
+                $v[ 'menu_name' ] = $lang_menu_name;
             }
         }
 
@@ -195,44 +197,42 @@ class MenuService extends BaseAdminService
     public function getAllMenuList($app_type = '', $status = 'all', $is_tree = 0, $is_button = 0)
     {
         $site_id = $this->site_id;
-        $cache_name = 'site_menu_api_' .$app_type.'_'. $status . '_' . $is_tree . '_' . $is_button . '_' . $this->site_id;
+        $cache_name = 'site_menu_api_' . $app_type . '_' . $status . '_' . $is_tree . '_' . $is_button . '_' . $this->site_id;
         $menu_list = cache_remember(
             $cache_name,
-            function () use ($status, $is_tree, $is_button, $app_type, $site_id) {
+            function() use ($status, $is_tree, $is_button, $app_type, $site_id) {
                 $where = [
-                    ['app_type', '=', $app_type],
-                    ['addon', 'in', array_merge([''], get_site_addons($site_id)) ]
+                    [ 'app_type', '=', $app_type ],
+                    [ 'addon', 'in', array_merge([ '' ], get_site_addons($site_id)) ]
                 ];
                 if ($status != 'all') {
-                    $where[] = ['status', '=', $status];
+                    $where[] = [ 'status', '=', $status ];
                 }
 
                 // 排除菜单
                 $delete_menu_addon = [];
                 $addon_loader = new DictLoader("Menu");
                 foreach (get_site_addons($site_id) as $addon) {
-                    $delete_menu = $addon_loader->load(["addon" => $addon, "app_type" => $app_type])['delete'] ?? [];
+                    $delete_menu = $addon_loader->load([ "addon" => $addon, "app_type" => $app_type ])[ 'delete' ] ?? [];
                     if (!empty($delete_menu) && is_array($delete_menu)) $delete_menu_addon[] = $delete_menu;
                 }
                 if (!empty($delete_menu_addon)) {
                     $delete_intersect = array_intersect(...$delete_menu_addon);
                     if (!empty($delete_intersect)) {
-                        $where[] = ['menu_key', 'not in', $delete_intersect];
+                        $where[] = [ 'menu_key', 'not in', $delete_intersect ];
                     }
                 }
 
                 return $this->model->where($where)->order('sort desc')->select()->toArray();
             },
-            [self::$cache_tag_name, SiteService::$cache_tag_name]
+            [ self::$cache_tag_name, SiteService::$cache_tag_name ]
         );
-        foreach ($menu_list as &$v)
-        {
-            $lang_menu_key = "dict_menu_". $v['app_type']. '.'. $v['menu_key'];
-            $lang_menu_name = get_lang("dict_menu_". $v['app_type']. '.'. $v['menu_key']);
+        foreach ($menu_list as &$v) {
+            $lang_menu_key = "dict_menu_" . $v[ 'app_type' ] . '.' . $v[ 'menu_key' ];
+            $lang_menu_name = get_lang("dict_menu_" . $v[ 'app_type' ] . '.' . $v[ 'menu_key' ]);
             //语言已定义
-            if($lang_menu_key != $lang_menu_name)
-            {
-                $v['menu_name'] = $lang_menu_name;
+            if ($lang_menu_key != $lang_menu_name) {
+                $v[ 'menu_name' ] = $lang_menu_name;
             }
         }
         return $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
@@ -251,16 +251,16 @@ class MenuService extends BaseAdminService
         $cache_name = 'api' . md5(implode("_", $menu_keys));
         return cache_remember(
             $cache_name,
-            function () use ($menu_keys, $app_type) {
+            function() use ($menu_keys, $app_type) {
                 $where = [
-                    ['menu_key', 'in', $menu_keys]
+                    [ 'menu_key', 'in', $menu_keys ]
                 ];
-                if(!empty($app_type)){
-                    $where[] = ['app_type', '=', $app_type];
+                if (!empty($app_type)) {
+                    $where[] = [ 'app_type', '=', $app_type ];
                 }
-                $menu_list = (new SysMenu())->where($where)->order('sort', 'desc')->column('api_url,methods');
+                $menu_list = ( new SysMenu() )->where($where)->order('sort', 'desc')->column('api_url,methods');
                 foreach ($menu_list as $v) {
-                    $auth_menu_list[$v['methods']][] = $v['api_url'];
+                    $auth_menu_list[ $v[ 'methods' ] ][] = $v[ 'api_url' ];
                 }
                 return $auth_menu_list ?? [];
             },
@@ -281,13 +281,13 @@ class MenuService extends BaseAdminService
         $cache_name = 'button' . md5(implode("_", $menu_keys));
         return cache_remember(
             $cache_name,
-            function () use ($menu_keys, $app_type) {
+            function() use ($menu_keys, $app_type) {
                 $where = [
-                    ['menu_key', 'in', $menu_keys],
-                    ['menu_type', '=', MenuTypeDict::BUTTON]
+                    [ 'menu_key', 'in', $menu_keys ],
+                    [ 'menu_type', '=', MenuTypeDict::BUTTON ]
                 ];
-                if(!empty($app_type)){
-                    $where[] = ['app_type', '=', $app_type];
+                if (!empty($app_type)) {
+                    $where[] = [ 'app_type', '=', $app_type ];
                 }
                 return $this->model->where($where)->order('sort', 'desc')->column('menu_key');
             },
@@ -303,21 +303,21 @@ class MenuService extends BaseAdminService
      */
     public function getAllApiList($app_type = '', $status = 'all')
     {
-        $cache_name = 'all_api'  .$app_type.'_'. $status;
+        $cache_name = 'all_api' . $app_type . '_' . $status;
         return cache_remember(
             $cache_name,
-            function () use ($status, $app_type) {
+            function() use ($status, $app_type) {
                 $where = [
-                    ['api_url', '<>', ''],
-                    ['app_type', '=', $app_type],
+                    [ 'api_url', '<>', '' ],
+                    [ 'app_type', '=', $app_type ],
                 ];
                 if ($status != 'all') {
-                    $where[] = ['status', '=', $status];
+                    $where[] = [ 'status', '=', $status ];
                 }
                 $menu_list = $this->model->where($where)->order('sort', 'desc')->column('methods, api_url');
                 $auth_menu_list = [];
                 foreach ($menu_list as $v) {
-                    $auth_menu_list[$v['methods']][] = $v['api_url'];
+                    $auth_menu_list[ $v[ 'methods' ] ][] = $v[ 'api_url' ];
                 }
                 return $auth_menu_list;
             },
@@ -331,17 +331,18 @@ class MenuService extends BaseAdminService
      * @param $status
      * @return mixed|string
      */
-    public function getAllMenuIdsByAppType(string $app_type, $status = 'all'){
-        $cache_name = 'menu_id_by_app_type_' .$app_type;
+    public function getAllMenuIdsByAppType(string $app_type, $status = 'all')
+    {
+        $cache_name = 'menu_id_by_app_type_' . $app_type;
         return cache_remember(
             $cache_name,
-            function () use ($app_type, $status) {
+            function() use ($app_type, $status) {
                 $where = [
 //
-                    ['app_type', '=', $app_type],
+                    [ 'app_type', '=', $app_type ],
                 ];
                 if ($status != 'all') {
-                    $where[] = ['status', '=', $status];
+                    $where[] = [ 'status', '=', $status ];
                 }
                 return $this->model->where($where)->order('sort desc')->column('menu_key');
             },
@@ -350,22 +351,21 @@ class MenuService extends BaseAdminService
     }
 
 
-
     /**
      * 获取所有按钮菜单
      */
     public function getAllButtonList($app_type = '', $status = 'all', $is_tree = 0)
     {
-        $cache_name = 'menu_api_' .$app_type.'_' . $status . '_' . $is_tree;
+        $cache_name = 'menu_api_' . $app_type . '_' . $status . '_' . $is_tree;
         return cache_remember(
             $cache_name,
-            function () use ($status, $is_tree, $app_type) {
+            function() use ($status, $is_tree, $app_type) {
                 $where = [
-                    ['menu_type', '=', MenuTypeDict::BUTTON],
-                    ['app_type', '=', $app_type],
+                    [ 'menu_type', '=', MenuTypeDict::BUTTON ],
+                    [ 'app_type', '=', $app_type ],
                 ];
                 if ($status != 'all') {
-                    $where[] = ['status', '=', $status];
+                    $where[] = [ 'status', '=', $status ];
                 }
                 return $this->model->where($where)->order('sort', 'desc')->column('menu_key');
             },
@@ -390,20 +390,20 @@ class MenuService extends BaseAdminService
             // 创建基于主键的数组引用
             $refer = array();
             foreach ($list as $key => $data) {
-                $refer[$data[$pk]] =& $list[$key];
+                $refer[ $data[ $pk ] ] =& $list[ $key ];
             }
             foreach ($list as $key => $data) {
                 // 判断是否存在parent
-                $parent_id = $data[$pid];
+                $parent_id = $data[ $pid ];
                 if ($root == $parent_id) {
-                    $tree[] =& $list[$key];
+                    $tree[] =& $list[ $key ];
                 } else {
-                    if (isset($refer[$parent_id])) {
-                        $parent =& $refer[$parent_id];
-                        if ($list[$key]['menu_type'] == 2 && $is_button == 1) {
-                            $parent[$button_name][] =& $list[$key]['menu_key'];
+                    if (isset($refer[ $parent_id ])) {
+                        $parent =& $refer[ $parent_id ];
+                        if ($list[ $key ][ 'menu_type' ] == 2 && $is_button == 1) {
+                            $parent[ $button_name ][] =& $list[ $key ][ 'menu_key' ];
                         } else {
-                            $parent[$child][] =& $list[$key];
+                            $parent[ $child ][] =& $list[ $key ];
                         }
 
                     }
@@ -419,17 +419,18 @@ class MenuService extends BaseAdminService
      * @param $menu_key
      * @return string
      */
-    public function getFullRouterPath($menu_key){
-        $menu = $this->model->where([['menu_key', '=', $menu_key]])->findOrEmpty($menu_key);
-        if($menu->isEmpty()) return '';
+    public function getFullRouterPath($menu_key)
+    {
+        $menu = $this->model->where([ [ 'menu_key', '=', $menu_key ] ])->findOrEmpty($menu_key);
+        if ($menu->isEmpty()) return '';
         $parents = [];
         $this->getParentDirectory($menu, $parents);
         $parents = array_reverse($parents);
         $router_path = implode('/', $parents);
-        if(!empty($router_path)){
-            $router_path .= '/'.$menu['router_path'];
-        }else{
-            $router_path = $menu['router_path'];
+        if (!empty($router_path)) {
+            $router_path .= '/' . $menu[ 'router_path' ];
+        } else {
+            $router_path = $menu[ 'router_path' ];
         }
         return $router_path;
     }
@@ -440,11 +441,12 @@ class MenuService extends BaseAdminService
      * @param $parents
      * @return void
      */
-    public function getParentDirectory(SysMenu $menu, &$parents){
-        if(!$menu->isEmpty() && !empty($menu['parent_key'])){
-            $parent_menu = $this->model->where([['menu_key', '=', $menu['parent_key']]])->findOrEmpty();
-            if(!empty($parent_menu)){
-                if(!empty($parent_menu['router_path'])) $parents[] = $parent_menu['router_path'];
+    public function getParentDirectory(SysMenu $menu, &$parents)
+    {
+        if (!$menu->isEmpty() && !empty($menu[ 'parent_key' ])) {
+            $parent_menu = $this->model->where([ [ 'menu_key', '=', $menu[ 'parent_key' ] ] ])->findOrEmpty();
+            if (!empty($parent_menu)) {
+                if (!empty($parent_menu[ 'router_path' ])) $parents[] = $parent_menu[ 'router_path' ];
                 $this->getParentDirectory($parent_menu, $parents);
             }
         }
@@ -460,20 +462,20 @@ class MenuService extends BaseAdminService
     public function getApiListBySystem(string $app_type = '', array $addons = [])
     {
         sort($addons);
-        $cache_name = 'system_menu_api_' . $app_type.implode("_", $addons);
+        $cache_name = 'system_menu_api_' . $app_type . implode("_", $addons);
         return cache_remember(
             $cache_name,
-            function () use ($app_type, $addons) {
+            function() use ($app_type, $addons) {
                 $addons[] = '';
                 $where = [
-                    ['addon', 'in', $addons]
+                    [ 'addon', 'in', $addons ]
                 ];
-                if(!empty($app_type)){
-                    $where[] = ['app_type', '=', $app_type];
+                if (!empty($app_type)) {
+                    $where[] = [ 'app_type', '=', $app_type ];
                 }
-                $menu_list = (new SysMenu())->where($where)->order('sort', 'desc')->column('api_url,methods');
+                $menu_list = ( new SysMenu() )->where($where)->order('sort', 'desc')->column('api_url,methods');
                 foreach ($menu_list as $v) {
-                    $auth_menu_list[$v['methods']][] = $v['api_url'];
+                    $auth_menu_list[ $v[ 'methods' ] ][] = $v[ 'api_url' ];
                 }
                 return $auth_menu_list ?? [];
             },
@@ -497,25 +499,25 @@ class MenuService extends BaseAdminService
         $cache_name = 'menu' . md5(implode("_", $addons)) . $is_tree . $status;
         $menu_list = cache_remember(
             $cache_name,
-            function () use ($addons, $app_type, $is_tree, $status) {
+            function() use ($addons, $app_type, $is_tree, $status) {
                 $where = [
-                    ['addon', 'in', $addons]
+                    [ 'addon', 'in', $addons ]
                 ];
-                if(!empty($app_type)){
-                    $where[] = ['app_type', '=', $app_type];
+                if (!empty($app_type)) {
+                    $where[] = [ 'app_type', '=', $app_type ];
                 }
-                if ($status != 'all') $where[] = ['status', '=', $status];
+                if ($status != 'all') $where[] = [ 'status', '=', $status ];
                 // 排除插件中delete的菜单
                 $delete_menu_addon = [];
                 $addon_loader = new DictLoader("Menu");
                 foreach ($addons as $addon) {
-                    $delete_menu = $addon_loader->load(["addon" => $addon, "app_type" => $app_type])['delete'] ?? [];
+                    $delete_menu = $addon_loader->load([ "addon" => $addon, "app_type" => $app_type ])[ 'delete' ] ?? [];
                     if (!empty($delete_menu) && is_array($delete_menu)) $delete_menu_addon[] = $delete_menu;
                 }
                 if (!empty($delete_menu_addon)) {
                     $delete_intersect = array_intersect(...$delete_menu_addon);
                     if (!empty($delete_intersect)) {
-                        $where[] = ['menu_key', 'not in', $delete_intersect];
+                        $where[] = [ 'menu_key', 'not in', $delete_intersect ];
                     }
                 }
                 return $this->model->where($where)->order('sort', 'desc')->select()->toArray();
@@ -523,14 +525,12 @@ class MenuService extends BaseAdminService
             self::$cache_tag_name
         );
 
-        foreach ($menu_list as &$v)
-        {
-            $lang_menu_key = "dict_menu_". $v['app_type']. '.'. $v['menu_key'];
-            $lang_menu_name = get_lang("dict_menu_". $v['app_type']. '.'. $v['menu_key']);
+        foreach ($menu_list as &$v) {
+            $lang_menu_key = "dict_menu_" . $v[ 'app_type' ] . '.' . $v[ 'menu_key' ];
+            $lang_menu_name = get_lang("dict_menu_" . $v[ 'app_type' ] . '.' . $v[ 'menu_key' ]);
             //语言已定义
-            if($lang_menu_key != $lang_menu_name)
-            {
-                $v['menu_name'] = $lang_menu_name;
+            if ($lang_menu_key != $lang_menu_name) {
+                $v[ 'menu_name' ] = $lang_menu_name;
             }
         }
         return $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
@@ -543,20 +543,21 @@ class MenuService extends BaseAdminService
      * @param array $addons
      * @return mixed|string
      */
-    public function getMenuKeysBySystem(string $app_type, array $addons){
+    public function getMenuKeysBySystem(string $app_type, array $addons)
+    {
         sort($addons);
-        $cache_name = 'menu_keys_' . $app_type.implode("_", $addons);
+        $cache_name = 'menu_keys_' . $app_type . implode("_", $addons);
         return cache_remember(
             $cache_name,
-            function () use ($app_type, $addons) {
+            function() use ($app_type, $addons) {
                 $addons[] = '';
                 $where = [
-                    ['addon', 'in', $addons]
+                    [ 'addon', 'in', $addons ]
                 ];
-                if(!empty($app_type)){
-                    $where[] = ['app_type', '=', $app_type];
+                if (!empty($app_type)) {
+                    $where[] = [ 'app_type', '=', $app_type ];
                 }
-                return (new SysMenu())->where($where)->order('sort', 'desc')->column('menu_key');
+                return ( new SysMenu() )->where($where)->order('sort', 'desc')->column('menu_key');
             },
             self::$cache_tag_name
         );
@@ -565,46 +566,42 @@ class MenuService extends BaseAdminService
     public function getSystemMenu($status = 'all', $is_tree = 0, $is_button = 0)
     {
 
-        if($is_button == 0)
-        {
+        if ($is_button == 0) {
             $where = [
-                ['menu_type', 'in', [0,1]]
+                [ 'menu_type', 'in', [ 0, 1 ] ]
             ];
         }
 
         if ($status != 'all') {
-            $where[] = ['status', '=', $status];
+            $where[] = [ 'status', '=', $status ];
         }
-        $where[] = [ 'addon', '=',''];
-        $menu_list = (new SysMenu())->where($where)->order('sort desc')->select()->toArray();
-        foreach ($menu_list as &$v)
-        {
-            $lang_menu_key = 'dict_menu_admin' . '.'. $v['menu_key'];
+        $where[] = [ 'addon', '=', '' ];
+        $menu_list = ( new SysMenu() )->where($where)->order('sort desc')->select()->toArray();
+        foreach ($menu_list as &$v) {
+            $lang_menu_key = 'dict_menu_admin' . '.' . $v[ 'menu_key' ];
             $lang_menu_name = get_lang($lang_menu_key);
             //语言已定义
-            if($lang_menu_key != $lang_menu_name)
-            {
-                $v['menu_name'] = $lang_menu_name;
+            if ($lang_menu_key != $lang_menu_name) {
+                $v[ 'menu_name' ] = $lang_menu_name;
             }
         }
         return $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
     }
 
-    public function getAddonMenu($app_key,$status = 'all', $is_tree = 0, $is_button = 0)
+    public function getAddonMenu($app_key, $status = 'all', $is_tree = 0, $is_button = 0)
     {
 
-        if($is_button == 0)
-        {
+        if ($is_button == 0) {
             $where = [
-                ['menu_type', 'in', [0,1]]
+                [ 'menu_type', 'in', [ 0, 1 ] ]
             ];
         }
 
         if ($status != 'all') {
-            $where[] = ['status', '=', $status];
+            $where[] = [ 'status', '=', $status ];
         }
-        $where[] = [ 'addon', '=',$app_key];
-        $menu_list = (new SysMenu())->where($where)->select()->toArray();
+        $where[] = [ 'addon', '=', $app_key ];
+        $menu_list = ( new SysMenu() )->where($where)->select()->toArray();
         return $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
     }
 
@@ -612,29 +609,28 @@ class MenuService extends BaseAdminService
      * 查询菜单类型为目录的菜单
      * @param string $addon
      */
-    public function getMenuByTypeDir(string $addon = 'system') {
+    public function getMenuByTypeDir(string $addon = 'system')
+    {
         $cache_name = 'menu_api_by_type_dir' . $addon;
         $menu_list = cache_remember(
             $cache_name,
-            function () use ($addon) {
+            function() use ($addon) {
                 $where = [
-                    ['menu_type', '=', 0 ],
-                    ['app_type', '=', 'site']
+                    [ 'menu_type', '=', 0 ],
+                    [ 'app_type', '=', 'site' ]
                 ];
                 //查询应用
-                $where[] = ['addon', '=', $addon == 'system' ? '' : $addon ];
-                return (new SysMenu())->where($where)->order('sort desc')->select()->toArray();
+                $where[] = [ 'addon', '=', $addon == 'system' ? '' : $addon ];
+                return ( new SysMenu() )->where($where)->order('sort desc')->select()->toArray();
             },
             self::$cache_tag_name
         );
-        foreach ($menu_list as &$v)
-        {
-            $lang_menu_key = 'dict_menu_admin' . '.'. $v['menu_key'];
+        foreach ($menu_list as &$v) {
+            $lang_menu_key = 'dict_menu_admin' . '.' . $v[ 'menu_key' ];
             $lang_menu_name = get_lang($lang_menu_key);
             //语言已定义
-            if($lang_menu_key != $lang_menu_name)
-            {
-                $v['menu_name'] = $lang_menu_name;
+            if ($lang_menu_key != $lang_menu_name) {
+                $v[ 'menu_name' ] = $lang_menu_name;
             }
         }
 

@@ -11,8 +11,6 @@
 
 namespace app\dict\member;
 
-use app\dict\common\ChannelDict;
-
 /**
  * 会员签到状态枚举类
  * Class MemberDict

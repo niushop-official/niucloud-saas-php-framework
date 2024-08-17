@@ -11,7 +11,6 @@
 
 namespace app\model\member;
 
-use app\service\core\member\CoreMemberService;
 use core\base\BaseModel;
 
 /**

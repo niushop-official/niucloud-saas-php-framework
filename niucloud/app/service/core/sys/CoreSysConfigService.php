@@ -74,7 +74,7 @@ class CoreSysConfigService extends BaseCoreService
      */
     public function getWapIndexList($data = [])
     {
-        $result = array_filter(event("WapIndex"));
+        $result = array_filter(event("WapIndex", [ 'site_id' => $data[ 'site_id' ] ?? 0 ]));
         if (empty($result)) return [];
 
         $index_list = [];

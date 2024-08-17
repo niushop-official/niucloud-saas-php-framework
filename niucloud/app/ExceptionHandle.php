@@ -2,7 +2,6 @@
 namespace app;
 
 use app\dict\sys\AppTypeDict;
-use core\exception\AdminException;
 use core\exception\AuthException;
 use core\exception\ServerException;
 use think\db\exception\DataNotFoundException;

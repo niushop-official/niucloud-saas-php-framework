@@ -25,6 +25,9 @@ class Stat extends BaseAdminController
     /**
      * 首页数据
      * @return Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     public function index()
     {

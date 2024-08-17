@@ -61,6 +61,7 @@ class CoreScheduleInstallService extends BaseCoreService
         $this->model->where([['addon', '=', $addon]])->delete();
         return true;
     }
+
     /**
      * 安装计划任务
      * @param array $data
@@ -70,14 +71,17 @@ class CoreScheduleInstallService extends BaseCoreService
     public function install(array $data, string $addon = ''){
         $schedule_list = [];
         foreach($data as $v){
-            $schedule_list[] = array(
-                'key' => $v['key'],
-                'status' => ScheduleDict::ON,
-                'time' => $v['time'],
-                'addon' => $addon
-            );
+            $isExist = $this->model->where([["key", "=", $v['key']], ['addon', '=', $addon]])->count();
+            if (!$isExist) {
+                $schedule_list[] = array(
+                    'key' => $v['key'],
+                    'status' => ScheduleDict::ON,
+                    'time' => $v['time'],
+                    'addon' => $addon
+                );
+            }
         }
-        $this->model->replace()->insertAll($schedule_list);
+        if (!empty($schedule_list)) $this->model->replace()->insertAll($schedule_list);
         return true;
     }
 

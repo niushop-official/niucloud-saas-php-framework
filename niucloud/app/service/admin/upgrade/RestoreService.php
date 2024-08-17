@@ -28,10 +28,9 @@ class RestoreService extends UpgradeService
         $backup_dir = $this->upgrade_dir .$this->upgrade_task['key'] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         if (is_dir($backup_dir)) {
             // 删除前端文件
-            if (is_dir(public_path() . 'admin')) del_target_dir(public_path() . 'admin', true);
-            if (is_dir(public_path() . 'wap')) del_target_dir(public_path() . 'wap', true);
-            if (is_dir(public_path() . 'web')) del_target_dir(public_path() . 'web', true);
-
+//            if (is_dir(public_path() . 'admin')) del_target_dir(public_path() . 'admin', true);
+//            if (is_dir(public_path() . 'wap')) del_target_dir(public_path() . 'wap', true);
+//            if (is_dir(public_path() . 'web')) del_target_dir(public_path() . 'web', true);
             dir_copy($backup_dir, rtrim($this->root_path, DIRECTORY_SEPARATOR));
         }
         return true;

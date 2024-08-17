@@ -11,7 +11,6 @@
 
 namespace app\service\admin\generator;
 
-use app\model\addon\Addon;
 use app\model\generator\GenerateColumn;
 use app\model\generator\GenerateTable;
 use core\base\BaseAdminService;
@@ -23,7 +22,6 @@ use think\db\exception\ModelNotFoundException;
 use think\facade\Db;
 use think\helper\Str;
 use think\Model;
-use think\model\relation\HasOne;
 
 
 /**

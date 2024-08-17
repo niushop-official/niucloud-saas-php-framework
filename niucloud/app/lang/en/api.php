@@ -28,7 +28,7 @@ return [
     'DOWNLOAD_FAIL' => 'download fail',
     'SET_SUCCESS' => 'set success',
     'AGREEMENT_TYPE_NOT_EXIST' => 'agreement type is not exit',
-    'FIELD_NOT_FOUND' => 'cloumn is not exit',
+    'FIELD_NOT_FOUND' => 'column is not exit',
     'REFRESH_SUCCESS' => 'refresh success',
     'CAPTCHA_ERROR' => 'captcha fail',
 
@@ -101,7 +101,7 @@ return [
     'MEMBER_TYPE_NOT_EXIST' => '账户类型不存在',
     'MEMBER_IS_EXIST' => '账号已存在',
     'REG_CHANNEL_NOT_EXIST' => '无效的注册渠道',
-    'MEMBER_USERNAME_LOGIN_NOT_OPEN' => '未开始账号登录注册',
+    'MEMBER_USERNAME_LOGIN_NOT_OPEN' => '未开启账号登录注册',
     'AUTH_LOGIN_NOT_OPEN' => '未开启第三方登录注册',
     'MOBILE_NEEDED' => '手机号必须填写',
     'MOBILE_CAPTCHA_ERROR' => '手机验证码有误',

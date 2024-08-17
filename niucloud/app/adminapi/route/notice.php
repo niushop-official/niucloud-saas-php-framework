@@ -32,8 +32,6 @@ Route::group('notice', function () {
     Route::get('notice/sms/:sms_type', 'notice.Notice/smsConfig');
     //短信配置修改
     Route::put('notice/sms/:sms_type', 'notice.Notice/editSms');
-    //消息发送记录
-    Route::get('notice/log', 'notice.Notice/getLogList');
     //消息修改
     Route::post('notice/edit', 'notice.Notice/edit');
 

@@ -18,7 +18,7 @@ use think\facade\Route;
 /**
  * 路由
  */
-Route::group('member', function () {
+Route::group('member', function() {
     /***************************************************** 会员管理 ****************************************************/
     //会员列表
     Route::get('member', 'member.Member/lists');

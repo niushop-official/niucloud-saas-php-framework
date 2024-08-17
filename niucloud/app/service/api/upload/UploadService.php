@@ -63,9 +63,9 @@ class UploadService extends BaseApiService
      */
     public function document($file, string $type = '')
     {
-        if(!in_array($type, FileDict::getSceneType()))
+        if (!in_array($type, FileDict::getSceneType()))
             throw new UploadFileException('UPLOAD_TYPE_ERROR');
-        $dir = $this->root_path.'/document/'.$type.'/'.$this->site_id.'/'.date('Ym').'/'.date('d');
+        $dir = $this->root_path . '/document/' . $type . '/' . $this->site_id . '/' . date('Ym') . '/' . date('d');
         $core_upload_service = new CoreUploadService();
         return $core_upload_service->document($file, $this->site_id, $type, $dir, StorageDict::LOCAL);
     }

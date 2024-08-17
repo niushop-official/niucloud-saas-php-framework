@@ -84,7 +84,7 @@ class Tencent extends BaseUpload
         $bucket = $this->config['bucket'];
         try {
             $base64_file = base64_decode($base64_data);
-            if (!$base64_file) throw new UploadFileException('FILE_ERROE');
+            if (!$base64_file) throw new UploadFileException('FILE_ERROR');
             $result = $this->client()->putObject(array(
                 'Bucket' => $bucket, //存储桶名称，由BucketName-Appid 组成，可以在COS控制台查看 https://console.tencentcloud.com/cos5/bucket
                 'Key' => $key,

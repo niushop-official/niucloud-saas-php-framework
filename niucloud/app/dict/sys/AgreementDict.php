@@ -32,8 +32,8 @@ class AgreementDict
             'privacy' => get_lang('dict_agreement.privacy'),//隐私协议
         ];
         $addon_data = event("AgreementType");
-        Log::write("检测数据");
-        Log::write($addon_data);
+//        Log::write("检测数据");
+//        Log::write($addon_data);
         foreach ($addon_data as $k => $v)
         {
             $data = array_merge($data, $v);

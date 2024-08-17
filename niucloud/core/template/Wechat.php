@@ -15,7 +15,6 @@ use app\service\core\wechat\CoreWechatService;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Support\Collection;
-use EasyWeChat\OfficialAccount\TemplateMessage\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 

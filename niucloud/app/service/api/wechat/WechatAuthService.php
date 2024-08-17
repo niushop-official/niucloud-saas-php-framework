@@ -121,13 +121,14 @@ class WechatAuthService extends BaseApiService
         }
         if ($member_info->isEmpty()) {
             $config = ( new MemberConfigService() )->getLoginConfig();
-            $is_auth_register = $config[ 'is_auth_register' ];
+//            $is_auth_register = $config[ 'is_auth_register' ];
             // 去掉强制绑定手机号判断，否则开启强制绑定的情况下公众号第三方注册无法注册
-            if ($is_auth_register == 1) {
-                return $this->register($openid, '', $nickname, $avatar, $unionid);
-            } else {
-                return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
-            }
+            // 现在不需要控制自动注册，分为两种情况，一种自动注册，另一种手动点击授权登录注册
+            return $this->register($openid, '', $nickname, $avatar, $unionid);
+//            if ($is_auth_register == 1) {
+//            } else {
+//                return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
+//            }
         } else {
             //可能会更新用户和粉丝表
             $login_service = new LoginService();

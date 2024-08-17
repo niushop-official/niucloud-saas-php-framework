@@ -9,14 +9,14 @@
 // | Author: Niucloud Team
 // +----------------------------------------------------------------------
 
-namespace app\listener\member;
+namespace app\listener\member_export;
 
 use app\model\member\Member;
 
 /**
  * 会员导出数据源查询
- * Class MemberExportTypeListener
- * @package app\listener\member
+ * Class MemberExportDataListener
+ * @package app\listener\member_export
  */
 class MemberExportDataListener
 {
@@ -26,7 +26,7 @@ class MemberExportDataListener
         $data = [];
         if ($param['type'] == 'member') {
             $model = new Member();
-            $field = 'member_id, member_no, username, mobile, nickname, birthday, member_level, point, balance, money, growth, commission, register_channel, status, create_time, last_visit_time';
+            $field = 'member_id, member_no, mobile, nickname, birthday, member_level, point, balance, money, growth, commission, register_channel, status, create_time, last_visit_time';
             //查询导出数据
             $search_model = $model->where([['site_id', '=', $param['site_id']]])->withSearch(['keyword','register_type', 'create_time', 'is_del', 'member_label', 'register_channel'], $param['where'])
                 ->with(['memberLevelNameBind'])->field($field)->append(['register_channel_name', 'sex_name', 'status_name']);
@@ -36,10 +36,9 @@ class MemberExportDataListener
                 $data = $search_model->select()->toArray();
             }
             foreach ($data as $key => $value) {
-                $data[$key]['username'] = !empty($value['username']) ? $value['username'] : '-';
                 $data[$key]['mobile'] = $value['mobile']."\t";
-                $data[$key]['create_time'] = !empty($value['create_time']) ? $value['create_time'] : '0000-00-00 00:00:00';
-                $data[$key]['last_visit_time'] = !empty($value['last_visit_time']) ? $value['last_visit_time'] : '0000-00-00 00:00:00';
+                $data[$key]['create_time'] = !empty($value['create_time']) ? $value['create_time'] : '';
+                $data[$key]['last_visit_time'] = !empty($value['last_visit_time']) ? $value['last_visit_time'] : '';
             }
         }
         return $data;

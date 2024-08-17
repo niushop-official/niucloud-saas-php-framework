@@ -80,12 +80,12 @@ class CorePayService extends BaseCoreService
     public function findPayInfoByTrade(int $site_id, string $trade_type, int $trade_id)
     {
         $where = array(
-            ['site_id', '=', $site_id],
-            ['trade_type', '=', $trade_type],
-            ['trade_id', '=', $trade_id],
-            ['status', '<>', PayDict::STATUS_CANCLE],///不查询已取消的单据
+            [ 'site_id', '=', $site_id ],
+            [ 'trade_type', '=', $trade_type ],
+            [ 'trade_id', '=', $trade_id ],
+            [ 'status', '<>', PayDict::STATUS_CANCLE ],///不查询已取消的单据
         );
-        return $this->model->where($where)->append(['type_name', 'status_name'])->findOrEmpty();
+        return $this->model->where($where)->append([ 'type_name', 'status_name' ])->findOrEmpty();
     }
 
     /**
@@ -97,10 +97,10 @@ class CorePayService extends BaseCoreService
     public function findPayInfoByOutTradeNo(int $site_id, string $out_trade_no)
     {
         $where = array(
-            ['site_id', '=', $site_id],
-            ['out_trade_no', '=', $out_trade_no]
+            [ 'site_id', '=', $site_id ],
+            [ 'out_trade_no', '=', $out_trade_no ]
         );
-        return $this->model->where($where)->append(['type_name', 'status_name'])->findOrEmpty();
+        return $this->model->where($where)->append([ 'type_name', 'status_name' ])->findOrEmpty();
     }
 
     /**
@@ -116,13 +116,13 @@ class CorePayService extends BaseCoreService
     public function getInfoByOutTradeNo(int $site_id, string $out_trade_no, string $channel)
     {
         $where = array(
-            ['site_id', '=', $site_id],
-            ['out_trade_no', '=', $out_trade_no]
+            [ 'site_id', '=', $site_id ],
+            [ 'out_trade_no', '=', $out_trade_no ]
         );
-        $pay = $this->model->where($where)->append(['type_name', 'status_name'])->findOrEmpty()->toArray();
+        $pay = $this->model->where($where)->append([ 'type_name', 'status_name' ])->findOrEmpty()->toArray();
         if (!empty($pay)) {
             //todo  校验场景控制支付方式
-            $pay['pay_type_list'] = array_values((new CorePayChannelService())->getAllowPayTypeByChannel($site_id, $channel, $pay['trade_type']));
+            $pay[ 'pay_type_list' ] = array_values(( new CorePayChannelService() )->getAllowPayTypeByChannel($site_id, $channel, $pay[ 'trade_type' ]));
         }
         return $pay;
     }
@@ -145,12 +145,12 @@ class CorePayService extends BaseCoreService
             //创建新的支付单据
             $pay = $this->createByTrade($site_id, $trade_type, $trade_id);
         }
-        if(!is_array($pay)){
+        if (!is_array($pay)) {
             $pay = $pay->toArray();
         }
         if (!empty($pay)) {
             //todo  校验场景控制支付方式
-            $pay['pay_type_list'] = array_values((new CorePayChannelService())->getAllowPayTypeByChannel($site_id, $channel, $pay['trade_type']));
+            $pay[ 'pay_type_list' ] = array_values(( new CorePayChannelService() )->getAllowPayTypeByChannel($site_id, $channel, $pay[ 'trade_type' ]));
         }
         return $pay;
     }
@@ -168,7 +168,7 @@ class CorePayService extends BaseCoreService
     public function getPayTypeByTrade(int $site_id, string $trade_type, string $channel)
     {
         //todo  校验场景控制支付方式
-        return array_values((new CorePayChannelService())->getAllowPayTypeByChannel($site_id, $channel, $trade_type));
+        return array_values(( new CorePayChannelService() )->getAllowPayTypeByChannel($site_id, $channel, $trade_type));
     }
 
     /**
@@ -191,14 +191,14 @@ class CorePayService extends BaseCoreService
     {
         //检测并创建支付单据
         $pay = $this->checkOrCreate($site_id, $trade_type, $trade_id);
-        $out_trade_no = $pay['out_trade_no'];
-        $money = $pay['money'];
-        $body = $pay['body'];
-        $trade_type = $pay['trade_type'];
-        if (!in_array($type, array_column((new CorePayChannelService())->getAllowPayTypeByChannel($site_id, $channel, $trade_type), 'key'))) throw new PayException('PAYMENT_METHOD_NOT_SCENE');//场景不支持
+        $out_trade_no = $pay[ 'out_trade_no' ];
+        $money = $pay[ 'money' ];
+        $body = $pay[ 'body' ];
+        $trade_type = $pay[ 'trade_type' ];
+        if (!in_array($type, array_column(( new CorePayChannelService() )->getAllowPayTypeByChannel($site_id, $channel, $trade_type), 'key'))) throw new PayException('PAYMENT_METHOD_NOT_SCENE');//场景不支持
         $pay_result = $this->pay_event->init($site_id, $channel, $type)->pay($out_trade_no, $money, $body, $return_url, $quit_url, $buyer_id, $openid ?? '', $voucher);
         //todo  特殊支付方式会直接返回支付状态,状态如果为已支付会直接支付
-        if (!empty($pay_result['status']) && $pay_result['status'] == PayDict::STATUS_FINISH) {
+        if (!empty($pay_result[ 'status' ]) && $pay_result[ 'status' ] == PayDict::STATUS_FINISH) {
             $pay->save([ 'channel' => $channel ]);
             $this->paySuccess($site_id, [
                 'status' => PayDict::STATUS_FINISH,
@@ -233,8 +233,8 @@ class CorePayService extends BaseCoreService
                     'channel' => $channel
                 ]
             );
-            if(env('queue.state', true) ){
-                PayReturnTo::dispatch(['site_id' => $site_id, 'out_trade_no' => $out_trade_no], secs: 15);
+            if (env('queue.state', true)) {
+                PayReturnTo::dispatch([ 'site_id' => $site_id, 'out_trade_no' => $out_trade_no ], secs: 15);
             }
         }
         return $pay_result;
@@ -254,10 +254,10 @@ class CorePayService extends BaseCoreService
             //创建新的支付单据
             $pay = $this->createByTrade($site_id, $trade_type, $trade_id);
         }
-        if ($pay['status'] == PayDict::STATUS_FINISH) throw new PayException('PAY_SUCCESS');
+        if ($pay[ 'status' ] == PayDict::STATUS_FINISH) throw new PayException('PAY_SUCCESS');
 //        if ($pay['status'] == PayDict::STATUS_CANCLE) throw new PayException('PAY_IS_REMOVE');
-        if ($pay['status'] == PayDict::STATUS_ING || $pay['status'] == PayDict::STATUS_CANCLE) {
-            if($pay['status'] == PayDict::STATUS_ING ){
+        if ($pay[ 'status' ] == PayDict::STATUS_ING || $pay[ 'status' ] == PayDict::STATUS_CANCLE) {
+            if ($pay[ 'status' ] == PayDict::STATUS_ING) {
                 //尝试关闭原有的支付单据
                 $this->close($site_id, $pay->out_trade_no);
             }
@@ -274,19 +274,20 @@ class CorePayService extends BaseCoreService
      * @param $trade_id
      * @return Pay|array|mixed|Model
      */
-    public function createByTrade($site_id, $trade_type, $trade_id){
+    public function createByTrade($site_id, $trade_type, $trade_id)
+    {
         //创建新的支付单据
-        $data = array_values(array_filter(event('PayCreate', ['site_id' => $site_id,'trade_type' => $trade_type, 'trade_id' => $trade_id])))[0] ?? [];
-        if(empty($data)) throw new PayException('PAY_NOT_FOUND_TRADE');//找不到可支付的交易
+        $data = array_values(array_filter(event('PayCreate', [ 'site_id' => $site_id, 'trade_type' => $trade_type, 'trade_id' => $trade_id ])))[ 0 ] ?? [];
+        if (empty($data)) throw new PayException('PAY_NOT_FOUND_TRADE');//找不到可支付的交易
 
-        if(isset($data['status']) && $data['money'] == 0){
-            $data['status'] = PayDict::STATUS_FINISH;
-            $data['status_name'] = PayDict::getStatus()[$data['status']] ?? '';
-            $data['type'] = PayDict::BALANCEPAY;
-            $data['type_name'] = PayDict::getPayType()[$data['type']]['name'] ?? '';
+        if (isset($data[ 'status' ]) && $data[ 'money' ] == 0) {
+            $data[ 'status' ] = PayDict::STATUS_FINISH;
+            $data[ 'status_name' ] = PayDict::getStatus()[ $data[ 'status' ] ] ?? '';
+            $data[ 'type' ] = PayDict::BALANCEPAY;
+            $data[ 'type_name' ] = PayDict::getPayType()[ $data[ 'type' ] ][ 'name' ] ?? '';
             return $data;
-        }else{
-            $out_trade_no = $this->create($site_id, $data['main_type'], $data['main_id'], $data['money'], $data['trade_type'], $data['trade_id'], $data['body']);
+        } else {
+            $out_trade_no = $this->create($site_id, $data[ 'main_type' ], $data[ 'main_id' ], $data[ 'money' ], $data[ 'trade_type' ], $data[ 'trade_id' ], $data[ 'body' ]);
             return $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
         }
     }
@@ -307,12 +308,12 @@ class CorePayService extends BaseCoreService
             $pay = $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
         }
         if ($pay->isEmpty()) return true;
-        if ($pay['status'] != PayDict::STATUS_ING) return true;
+        if ($pay[ 'status' ] != PayDict::STATUS_ING) return true;
         if (empty($pay->type)) return true;
         //尝试取消或关闭第三方支付
         try {
             $close = $this->close($site_id, $out_trade_no);
-        } catch ( Throwable $e ) {
+        } catch (Throwable $e) {
             $close = false;
         }
         return $close;
@@ -328,20 +329,20 @@ class CorePayService extends BaseCoreService
     {
         $pay = $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
         if ($pay->isEmpty()) throw new PayException('ALIPAY_TRANSACTION_NO_NOT_EXIST');
-        if($pay['status'] == PayDict::STATUS_CANCLE) return true;
+        if ($pay[ 'status' ] == PayDict::STATUS_CANCLE) return true;
 
-        if (!in_array($pay['status'], [
+        if (!in_array($pay[ 'status' ], [
             PayDict::STATUS_WAIT,
             PayDict::STATUS_ING
         ])) throw new PayException('TREAT_PAYMENT_IS_OPEN');
-        if ($pay['status'] == PayDict::STATUS_ING) {
+        if ($pay[ 'status' ] == PayDict::STATUS_ING) {
             if (!empty($pay->type)) {
                 //尝试取消或关闭第三方支付
                 $close = $this->pay_event->init($site_id, $pay->channel, $pay->type)->close($out_trade_no);
                 if (!$close) {//有问题查询第三方订单详情
                     $order = $this->pay_event->init($site_id, $pay->channel, $pay->type)->getOrder($out_trade_no);
                     if (!empty($order)) {
-                        if ($order['status'] == OnlinePayDict::SUCCESS) {//如果已支付,就将支付调整为已支付
+                        if ($order[ 'status' ] == OnlinePayDict::SUCCESS) {//如果已支付,就将支付调整为已支付
                             $this->paySuccess($site_id, [
                                 'out_trade_no' => $out_trade_no,
                                 'type' => $pay->type
@@ -372,11 +373,11 @@ class CorePayService extends BaseCoreService
 //        if ($pay->isEmpty()) throw new PayException('ALIPAY_TRANSACTION_NO_NOT_EXIST');
         if ($pay->isEmpty()) return true;
 //        if ($pay['status'] == PayDict::STATUS_FINISH) throw new PayException('DOCUMENT_IS_PAID');//当前单据已支付
-        if (!in_array($pay['status'], [
+        if (!in_array($pay[ 'status' ], [
             PayDict::STATUS_WAIT,
             PayDict::STATUS_ING
         ])) throw new PayException('IS_PAY_REMOVE_NOT_RESETTING');//只有待支付可以关闭支付
-        if (!$this->close($site_id, $pay['out_trade_no'])) {
+        if (!$this->close($site_id, $pay[ 'out_trade_no' ])) {
             throw new PayException('DOCUMENT_IS_PAY_REMOVE');
         }
         return true;
@@ -395,9 +396,9 @@ class CorePayService extends BaseCoreService
         $pay = $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
 
         if ($pay->isEmpty()) throw new PayException('ALIPAY_TRANSACTION_NO_NOT_EXIST');
-        if ($pay['status'] == PayDict::STATUS_FINISH) throw new PayException('DOCUMENT_IS_PAID');
-        if ($pay['status'] == PayDict::STATUS_CANCLE) throw new PayException('PAY_IS_REMOVE');
-        $status = $params['status'];
+        if ($pay[ 'status' ] == PayDict::STATUS_FINISH) throw new PayException('DOCUMENT_IS_PAID');
+        if ($pay[ 'status' ] == PayDict::STATUS_CANCLE) throw new PayException('PAY_IS_REMOVE');
+        $status = $params[ 'status' ];
         switch ($status) {
             case OnlinePayDict::SUCCESS://支付成功
                 $this->paySuccess($site_id, array_merge([
@@ -433,19 +434,19 @@ class CorePayService extends BaseCoreService
      */
     public function notify(int $site_id, string $channel, string $type, string $action)
     {
-        $callback = function ($out_trade_no, $params) use ($site_id, $type, $action) {
+        $callback = function($out_trade_no, $params) use ($site_id, $type, $action) {
             try {
                 switch ($action) {
                     case 'pay'://支付结果通知
                         return $this->payNotify($site_id, $out_trade_no, $type, $params);
                         break;
                     case 'refund':
-                        return (new CoreRefundService())->refundNotify($site_id, $out_trade_no, $type, $params);
+                        return ( new CoreRefundService() )->refundNotify($site_id, $out_trade_no, $type, $params);
                         break;
                 }
                 //找不到对应的业务
                 return true;
-            } catch ( PayException $e ) {
+            } catch (PayException $e) {
                 return false;
             }
         };
@@ -460,17 +461,17 @@ class CorePayService extends BaseCoreService
      */
     public function check(int $site_id, array $data)
     {
-        $out_trade_no = $data['out_trade_no'];
+        $out_trade_no = $data[ 'out_trade_no' ];
         $pay = $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
         if ($pay->isEmpty()) throw new PayException('ALIPAY_TRANSACTION_NO_NOT_EXIST');
-        if ($pay['status'] == PayDict::STATUS_FINISH) throw new PayException('PAY_SUCCESS');//单据已支付
-        if ($pay['status'] == PayDict::STATUS_CANCLE) throw new PayException('PAY_IS_REMOVE');//单据已取消
+        if ($pay[ 'status' ] == PayDict::STATUS_FINISH) throw new PayException('PAY_SUCCESS');//单据已支付
+        if ($pay[ 'status' ] == PayDict::STATUS_CANCLE) throw new PayException('PAY_IS_REMOVE');//单据已取消
         //查询第三方支付单据
         $pay_info = $this->pay_event->init($site_id, $pay->channel, $pay->type)->getOrder($out_trade_no);
-        $type = $pay['type'];
+        $type = $pay[ 'type' ];
         if (empty($pay_info))
             return false;
-        $status = $pay_info['status'];
+        $status = $pay_info[ 'status' ];
         switch ($status) {
             case OnlinePayDict::SUCCESS://支付成功
                 $this->paySuccess($site_id, [
@@ -503,27 +504,27 @@ class CorePayService extends BaseCoreService
      */
     public function paySuccess($site_id, $params)
     {
-        $out_trade_no = $params['out_trade_no'];
+        $out_trade_no = $params[ 'out_trade_no' ];
         $pay = $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
-        $type = $params['type'];
+        $type = $params[ 'type' ];
         $trade_type = $pay->trade_type;
         $trade_id = $pay->trade_id;
         $data = array(
             'pay_time' => time(),
             'status' => PayDict::STATUS_FINISH,
             'type' => $type,
-            'trade_no' => $params['trade_no'] ?? '',
-            'voucher' => $params['voucher'] ?? '',
-            'mch_id' => $params['mch_id'] ?? '',
+            'trade_no' => $params[ 'trade_no' ] ?? '',
+            'voucher' => $params[ 'voucher' ] ?? '',
+            'mch_id' => $params[ 'mch_id' ] ?? '',
         );
         //允许修改的值
-        $allow_field = array('trade_no', 'voucher', 'status', 'pay_time', 'type', 'mch_id');
+        $allow_field = array( 'trade_no', 'voucher', 'status', 'pay_time', 'type', 'mch_id' );
 
         // 启动事务
         Db::startTrans();
         try {
             $pay->allowField($allow_field)->save($data);
-            $result = event('PaySuccess', ['out_trade_no' => $out_trade_no, 'trade_type' => $trade_type, 'site_id' => $site_id, 'trade_id' => $trade_id]);
+            $result = event('PaySuccess', [ 'out_trade_no' => $out_trade_no, 'trade_type' => $trade_type, 'site_id' => $site_id, 'trade_id' => $trade_id ]);
 //            if (!check_event_result($result)) {
 //                Db::rollback();
 //                return false;
@@ -531,10 +532,10 @@ class CorePayService extends BaseCoreService
             // 提交事务
             Db::commit();
             return true;
-        } catch ( Throwable $e ) {
+        } catch (Throwable $e) {
             // 回滚事务
             Db::rollback();
-            throw new PayException($e->getMessage().$e->getFile().$e->getLine());
+            throw new PayException($e->getMessage() . $e->getFile() . $e->getLine());
         }
         return true;
     }
@@ -547,17 +548,17 @@ class CorePayService extends BaseCoreService
      */
     public function payClose($site_id, $data)
     {
-        $out_trade_no = $data['out_trade_no'];
+        $out_trade_no = $data[ 'out_trade_no' ];
 
         Db::startTrans();
         try {
             $pay = $this->findPayInfoByOutTradeNo($site_id, $out_trade_no);
             $pay->save([
                 'status' => PayDict::STATUS_CANCLE,
-                'fail_reason' => $data['reason'] ?? ''
+                'fail_reason' => $data[ 'reason' ] ?? ''
             ]);
 
-            $result = event('PayClose', ['out_trade_no' => $out_trade_no, 'site_id' => $site_id, 'trade_type' => $pay->trade_type, 'trade_id' => $pay->trade_id ]);
+            $result = event('PayClose', [ 'out_trade_no' => $out_trade_no, 'site_id' => $site_id, 'trade_type' => $pay->trade_type, 'trade_id' => $pay->trade_id ]);
             if (!check_event_result($result)) {
                 Db::rollback();
                 return false;
@@ -565,10 +566,10 @@ class CorePayService extends BaseCoreService
             // 提交事务
             Db::commit();
             return true;
-        } catch ( Throwable $e ) {
+        } catch (Throwable $e) {
             // 回滚事务
             Db::rollback();
-            throw new PayException($e->getMessage().$e->getFile().$e->getLine());
+            throw new PayException($e->getMessage() . $e->getFile() . $e->getLine());
         }
 
     }

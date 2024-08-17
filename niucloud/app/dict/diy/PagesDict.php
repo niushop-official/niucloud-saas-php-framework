@@ -68,7 +68,9 @@ class PagesDict
             "list" => []
         ];
 
-        $wap_index_list = ( new ConfigService() )->getWapIndexList();
+        $wap_index_list = ( new ConfigService() )->getWapIndexList([
+            'site_id' => $params[ 'site_id' ] ?? 0
+        ]);
 
         if (!empty($wap_index_list)) {
             foreach ($wap_index_list as $k => $v) {

@@ -2,7 +2,7 @@
 SET NAMES utf8mb4;
 
 DROP TABLE IF EXISTS `addon`;
-CREATE TABLE `addon`  (
+CREATE TABLE `addon` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(40) NOT NULL DEFAULT '' COMMENT '插件名称',
   `icon` varchar(255) NOT NULL DEFAULT '' COMMENT '插件图标',
@@ -24,7 +24,7 @@ CREATE TABLE `addon`  (
 
 
 DROP TABLE IF EXISTS `addon_log`;
-CREATE TABLE `addon_log`  (
+CREATE TABLE `addon_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `action` varchar(40) NOT NULL DEFAULT '' COMMENT '操作类型   install 安装 uninstall 卸载 update 更新',
   `key` varchar(20) NOT NULL DEFAULT '' COMMENT '插件标识',
@@ -78,12 +78,12 @@ CREATE TABLE `diy_page`  (
   `template` varchar(255) NOT NULL DEFAULT '' COMMENT '模板名称',
   `mode` varchar(255) NOT NULL DEFAULT 'diy' COMMENT '页面展示模式，diy：自定义，fixed：固定',
   `value` longtext COMMENT '页面数据，json格式',
-  `is_default` int(11) NOT NULL DEFAULT '0' COMMENT '是否默认页面，1：是，0：否',
-  `is_change` int(11) NOT NULL DEFAULT '0' COMMENT '数据是否发生过变化，1：变化了，2：没有',
+  `is_default` int(11) NOT NULL DEFAULT 0 COMMENT '是否默认页面，1：是，0：否',
+  `is_change` int(11) NOT NULL DEFAULT 0 COMMENT '数据是否发生过变化，1：变化了，2：没有',
   `share` varchar(1000) NOT NULL DEFAULT '' COMMENT '分享内容',
-  `visit_count` int(11) NOT NULL DEFAULT '0' COMMENT '访问量',
-  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `visit_count` int(11) NOT NULL DEFAULT 0 COMMENT '访问量',
+  `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '自定义页面' ROW_FORMAT = Dynamic;
 
@@ -456,91 +456,6 @@ CREATE TABLE `pay_transfer`  (
   `batch_id` varchar(500) NOT NULL DEFAULT '' COMMENT '转账批次id',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '转账表' ROW_FORMAT = Dynamic;
-
-
-DROP TABLE IF EXISTS `recharge_order`;
-CREATE TABLE `recharge_order`  (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
-  `order_no` varchar(50) NOT NULL DEFAULT '' COMMENT '订单编号',
-  `order_from` varchar(55) NOT NULL DEFAULT '' COMMENT '订单来源',
-  `order_type` varchar(50) NOT NULL DEFAULT '' COMMENT '订单类型',
-  `out_trade_no` varchar(50) NOT NULL DEFAULT '' COMMENT '支付流水号',
-  `order_status` int(11) NOT NULL DEFAULT 0 COMMENT '订单状态',
-  `refund_status` int(11) NOT NULL DEFAULT 0 COMMENT '退款状态',
-  `member_id` int(11) NOT NULL DEFAULT 0 COMMENT '会员id',
-  `ip` varchar(20) NOT NULL DEFAULT '' COMMENT '会员ip',
-  `member_message` varchar(50) NOT NULL DEFAULT '' COMMENT '会员留言信息',
-  `order_item_money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '订单项目金额',
-  `order_discount_money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '订单优惠金额',
-  `order_money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '订单金额',
-  `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `pay_time` int(11) NOT NULL DEFAULT 0 COMMENT '订单支付时间',
-  `close_time` int(11) NOT NULL DEFAULT 0 COMMENT '订单关闭时间',
-  `is_delete` int(11) NOT NULL DEFAULT 0 COMMENT '是否删除(针对后台)',
-  `is_enable_refund` int(11) NOT NULL DEFAULT 0 COMMENT '是否允许退款',
-  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '商家留言',
-  `invoice_id` int(11) NOT NULL DEFAULT 0 COMMENT '发票id，0表示不开发票',
-  `close_reason` varchar(255) NOT NULL DEFAULT '' COMMENT '关闭原因',
-  PRIMARY KEY (`order_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单表' ROW_FORMAT = Dynamic;
-
-
-DROP TABLE IF EXISTS `recharge_order_item`;
-CREATE TABLE `recharge_order_item`  (
-  `order_item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL DEFAULT 0 COMMENT '订单id',
-  `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
-  `member_id` int(11) NOT NULL DEFAULT 0 COMMENT '购买会员id',
-  `item_id` int(11) NOT NULL DEFAULT 0 COMMENT '项目id',
-  `item_type` varchar(255) NOT NULL DEFAULT '' COMMENT '项目类型',
-  `item_name` varchar(400) NOT NULL DEFAULT '' COMMENT '项目名称',
-  `item_image` varchar(2000) NOT NULL DEFAULT '' COMMENT '项目图片',
-  `price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '项目单价',
-  `num` decimal(10, 3) NOT NULL DEFAULT 0.000 COMMENT '购买数量',
-  `item_money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '项目总价',
-  `is_refund` int(11) NOT NULL DEFAULT 0 COMMENT '是否退款',
-  `refund_no` varchar(255) NOT NULL DEFAULT '' COMMENT '退款编号',
-  `refund_status` int(11) NOT NULL DEFAULT 0 COMMENT '退款状态',
-  `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
-  PRIMARY KEY (`order_item_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单商品表' ROW_FORMAT = Dynamic;
-
-
-DROP TABLE IF EXISTS `recharge_order_item_refund`;
-CREATE TABLE `recharge_order_item_refund`  (
-  `refund_id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_item_id` int(11) NOT NULL DEFAULT 0 COMMENT '订单id',
-  `order_id` int(11) NOT NULL DEFAULT 0 COMMENT '订单id',
-  `order_no` varchar(255) NOT NULL DEFAULT '' COMMENT '订单编号',
-  `refund_no` varchar(255) NOT NULL DEFAULT '0' COMMENT '退款单号',
-  `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
-  `member_id` int(11) NOT NULL DEFAULT 0 COMMENT '会员id',
-  `num` decimal(10, 3) NOT NULL DEFAULT 0.000 COMMENT '退货数量',
-  `money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '总退款',
-  `status` int(11) NOT NULL DEFAULT 0 COMMENT '退款状态',
-  `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `audit_time` int(11) NOT NULL DEFAULT 0 COMMENT '审核时间',
-  `transfer_time` int(11) NOT NULL DEFAULT 0 COMMENT '转账时间',
-  `item_type` varchar(255) NOT NULL DEFAULT '' COMMENT '项目类型',
-  PRIMARY KEY (`refund_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单退款表' ROW_FORMAT = Dynamic;
-
-
-DROP TABLE IF EXISTS `recharge_order_log`;
-CREATE TABLE `recharge_order_log`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL DEFAULT 0 COMMENT '订单id',
-  `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
-  `action` varchar(255) NOT NULL DEFAULT '' COMMENT '操作内容',
-  `uid` int(11) NOT NULL DEFAULT 0 COMMENT '操作人id',
-  `nick_name` varchar(50) NOT NULL DEFAULT '' COMMENT '操作人名称',
-  `order_status` int(11) NOT NULL DEFAULT 0 COMMENT '订单状态，操作后',
-  `action_way` bigint(20) NOT NULL DEFAULT 2 COMMENT '操作类型1买家2卖家 3 系统任务',
-  `order_status_name` varchar(255) NOT NULL DEFAULT '' COMMENT '订单状态名称，操作后',
-  `action_time` int(11) NOT NULL DEFAULT 0 COMMENT '操作时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '订单操作记录表' ROW_FORMAT = Dynamic;
 
 
 DROP TABLE IF EXISTS `site`;
@@ -1119,7 +1034,7 @@ INSERT INTO `site`(site_id, site_name, group_id, keywords, app_type, logo, `desc
 
 UPDATE `site` SET site_id = 0 WHERE  site_id = 1;
 
-INSERT INTO `sys_user` VALUES ('1', '', '', '', '', '', '0', '0', '0', '1', '0', '0', '0');
+-- INSERT INTO `sys_user` VALUES ('1', '', '', '', '', '', '0', '0', '0', '1', '0', '0', '0');
 
 INSERT INTO `sys_user_role` VALUES ('1', '1', '0', '', '0', '1', '1');
 
