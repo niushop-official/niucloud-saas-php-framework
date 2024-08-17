@@ -2,7 +2,7 @@ import { currRoute } from './common'
 import { redirectInterceptor } from './interceptor'
 import useConfigStore from "@/stores/config";
 import useSystemStore from '@/stores/system'
-import {useShare} from '@/hooks/useShare'
+import { useShare } from '@/hooks/useShare'
 
 export default {
     install(vue) {
@@ -13,7 +13,7 @@ export default {
                 }
             },
             onLoad: (data: object) => {
-                const route = currRoute() ?? ''
+                const route = currRoute() || ''
 
                 this.query = data
 
@@ -22,7 +22,7 @@ export default {
                 })
             },
             onShow: () => {
-                const route = currRoute() ?? ''
+                const route = currRoute() || ''
 
                 useSystemStore().$patch((state) => {
                     state.currRoute = route
@@ -33,14 +33,14 @@ export default {
                     query: this.query
                 })
             },
-            onShareAppMessage(){
+            onShareAppMessage() {
                 useShare().onShareAppMessage()
             },
-            onShareTimeline(){
+            onShareTimeline() {
                 useShare().onShareTimeline()
             },
-            methods:{
-                themeColor(){
+            methods: {
+                themeColor() {
                     const configStore = useConfigStore()
                     return configStore.getThemeColor();
                 }

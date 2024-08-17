@@ -7,7 +7,7 @@ interface System {
     siteAddons: string[],
     currRoute: string,
     location: Object | null, // 定位信息
-    mapConfig: Object
+    mapConfig: any
 }
 
 const useSystemStore = defineStore('system', {
@@ -43,7 +43,7 @@ const useSystemStore = defineStore('system', {
                 uni.setStorageSync('mapConfig', this.mapConfig);
             })
         },
-        setLocation(value: Object) {
+        setLocation(value: any) {
             var date = new Date();
             date.setSeconds(60 * this.mapConfig.valid_time);
             value.valid_time = date.getTime() / 1000; // 定位信息 5分钟内有效，过期后将重新获取定位信息

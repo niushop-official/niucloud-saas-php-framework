@@ -3,35 +3,35 @@
 		<view class="w-[100vw] min-h-[100vh] bg-[#f8f8f8]" v-if="!loading">
 			<view class="w-full bg-[#fff] verify-box h-[760rpx]">
 				<view class="text-[var(--primary-color)] fixed top-[40rpx] right-[30rpx] flex items-center" @click="redirect({url:'/app/pages/verify/record'})">
-					<image class="w-[26rpx] h-[28rpx]" :src="img('static/resource/images/verify/history.png')"/>
-					<text class="text-[26rpx] ml-[10rpx]">核销记录</text>
+					<text class="nc-iconfont nc-icon-lishijiluV6xx !text-[28rpx] -mb-[2rpx]"></text>
+					<text class="text-[26rpx] ml-[8rpx]">核销记录</text>
 				</view>
 				<view v-show="operationType == 'sweepCode'" class="flex flex-col items-center justify-center">
 					<view class="sweep-code flex items-center justify-center" @click="scanCode">
 						<image class="w-[354rpx] h-[354rpx]" :src="img('static/resource/images/verify/saoma.png')"/>
 					</view>
-					<view class="mt-[40rpx] text-[32rpx]">点击扫描二维码</view>
-					<view class="mt-[20rpx] text-[#8288A2] text-[26rpx] font-400 pb-[142rpx]">扫描二维码进行核销</view>
+					<view class="mt-[40rpx] text-[30rpx]">点击扫描二维码</view>
+					<view class="mt-[20rpx] text-[var(--text-color-light9)] text-[26rpx] font-400 pb-[142rpx]">扫描二维码进行核销</view>
 				</view>
 				
 				<view v-show="operationType == 'manualInput'">
 					<view class="flex pt-[126rpx] items-center justify-center">
-						<view class="flex justify-center items-center flex-col pr-[30rpx] w-[130rpx]">
+						<view class="flex justify-center items-center flex-col pr-[30rpx] min-w-[130rpx]">
 							<image class="w-[100rpx] h-[100rpx]" :src="img('static/resource/images/verify/shuruhexiaoma.png')"/>
-							<view class="text-[26rpx] h-[36rpx] leading-[36rpx] mt-[12rpx]">验证核销码</view>
+							<view class="text-[26rpx] h-[36rpx] leading-[36rpx] mt-[14rpx]">验证核销码</view>
 						</view>
 						<image class="w-[74rpx] h-[12rpx] mb-[50rpx]" :src="img('static/resource/images/verify/youjiantou.png')"/>
-						<view class="flex justify-center items-center flex-col pl-[30rpx] w-[130rpx]">
+						<view class="flex justify-center items-center flex-col pl-[30rpx] min-w-[130rpx]">
 							<image class="w-[100rpx] h-[100rpx]" :src="img('static/resource/images/verify/hexiao1.png')"/>
-							<view class="text-[26rpx] h-[36rpx] leading-[36rpx] mt-[12rpx]">核销</view>
+							<view class="text-[26rpx] h-[36rpx] leading-[36rpx] mt-[14rpx]">核销</view>
 						</view>
 					</view>
 					<view class="mt-[50rpx]">
-						<view class="h-[90rpx] border-[2rpx] border-solid border-[#DCE0EF] rounded-[16rpx] box-border p-[20rpx] mx-[60rpx] flex items-center" >
+						<view class="h-[90rpx] border-[2rpx] border-solid border-[#eee] rounded-[16rpx] box-border p-[20rpx] mx-[60rpx] flex items-center" >
 							<text class="nc-iconfont nc-icon-saotiaoxingmaV6xx text-[44rpx] text-[#EF000C]"></text>
 							<input type="text" placeholder="请输入核销码" class="h-[90rpx] border-none text-start ml-[30rpx] text-[28rpx] flex-1" placeholder-class="_placeholder" v-model="verify_code" :focus="isFocus" ref="input"/>
 						</view>
-						<view class="h-[88rpx] min-w-[630rpx] text-[#fff] flex items-center justify-center !text-[32rpx] save-btn rounded-[50rpx] h-[88rpx] mx-[60rpx] mt-[146rpx] relative z-1" @click="confirm">确认</view>
+						<view class="h-[80rpx] primary-btn-bg min-w-[630rpx] text-[#fff] flex-center !text-[26rpx] save-btn rounded-[100rpx] h-[80rpx] font-500 mx-[60rpx] mt-[146rpx] relative z-1" @click="confirm">核销</view>
 					</view>
 				</view>
 			</view>
@@ -56,7 +56,7 @@
 			<privacy-popup ref="privacyPopup"></privacy-popup>
 			<!-- #endif -->
 		</view>
-        <u-loading-page :loading="loading" loading-text="" loadingColor="var(--primary-color)" iconSize="35"></u-loading-page>
+		<loading-page :loading="loading"></loading-page>
     </view>
 </template>
 
@@ -108,7 +108,6 @@
 			}
 		})
 	}
-	
 	
 	const scanCode = () => {
 		// #ifdef MP
@@ -169,30 +168,30 @@
 	
 	const changeOperationType = (type: string) => {
 		// #ifdef H5
-		if (type == 'sweepCode' && !isWeixinBrowser()) {
-			uni.showToast({
-				title: 'H5端不支持扫码核销',
-				icon: 'none'
-			});
-			return;
-		}
+		// if (type == 'sweepCode' && !isWeixinBrowser()) {
+		// 	uni.showToast({
+		// 		title: 'H5端不支持扫码核销',
+		// 		icon: 'none'
+		// 	});
+		// 	return;
+		// }
 		// #endif
 		operationType.value = type;
 	}
 </script>
 <style lang="scss" scoped>
 	.action-type-wrap {
-		box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.03), 0 4px 2px 0 rgba(0, 0, 0, 0.04);;
+		box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.03), 0 4px 2px 0 rgba(0, 0, 0, 0.04);
 	}
 	.heXiao{
 		background: linear-gradient( 180deg, #FF7354 0%, #FF020F 100%), #EF000C;
 	}
 	.xuanZhong{
-		background: linear-gradient( 270deg, #FFD1D1 0%, rgba(255,209,209,0.2) 100%), #FFFFFF;
+		background: linear-gradient( 270deg, #FFD1D1 0%, rgba(255,209,209,0.1) 100%), #FFFFFF;
 		color:#EF000C;
 	}
 	.xuanZhong1{
-		background: linear-gradient( 90deg, #FFD1D1 0%, rgba(255,209,209,0.2) 100%), #FFFFFF;
+		background: linear-gradient( 90deg, #FFD1D1 0%, rgba(255,209,209,0.1) 100%), #FFFFFF;
 		color:#EF000C;
 	}
 	.sweep-code {
@@ -206,11 +205,8 @@
 		border-bottom-left-radius: 400rpx 60rpx;
 		border-bottom-right-radius: 400rpx 60rpx;
 	}
-	.save-btn{
-		background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
-	}
 	._placeholder{
-		color: #8288A2;
-		font-size: 26rpx;
+		color: var(--text-color-light9);
+		font-size: 28rpx;
 	}
 </style>

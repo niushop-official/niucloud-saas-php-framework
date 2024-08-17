@@ -1,39 +1,39 @@
 <template>
-	<view :style="themeColor()">
-		<u-loading-page :loading="loading && memberInfo" loadingText="" bg-color="#f7f7f7"></u-loading-page>
-		<view v-if="!loading && memberInfo && list && list.length" class=" min-h-[100vh] overflow-hidden flex flex-col" :style="{backgroundColor: currLevelInfo.level_style.bg_color }">
+	<view :style="themeColor()" class="bg-[var(--page-bg-color)] min-h-[100vh] overflow-hidden">
+		<loading-page :loading="loading && memberInfo"></loading-page>
+		<view v-if="!loading && memberInfo && list && list.length" class="min-h-[100vh] overflow-hidden flex flex-col" :style="{backgroundColor: currLevelInfo.level_style.bg_color }">
 			<!-- #ifdef MP -->
 			<top-tabbar :data="topTabbarData" :scrollBool="topTabarObj.getScrollBool()"/>
 			<!-- #endif -->
 			<view>
-				<view class="pt-[40rpx] mb-[20rpx]">
+				<view class="pt-[40rpx] mb-[40rpx]">
 					<!-- 轮播图 -->
 					<view class="relative">
-						<swiper class="swiper ns-indicator-dots relative" :style="{ height: '300rpx' }" @change="swiperChange" :current = "swiperIndex" previous-margin="48rpx" next-margin="48rpx">
+						<swiper class="swiper ns-indicator-dots relative" :style="{ height: '300rpx' }" @change="swiperChange" :current = "swiperIndex" previous-margin="30rpx" next-margin="30rpx">
 							<swiper-item class="swiper-item" v-for="(item,index) in list" :key="item.id">
 								<view class="h-[300rpx] relative">
 									<view v-if="memberInfo.member_level == item.level_id && swiperIndex == index" class="text-[24rpx] absolute top-0 left-0 z-10 h-[66rpx] !bg-contain w-[150rpx] flex pt-[12rpx] pl-[16rpx]  box-border" :style="{ background: 'url(' + img(currLevelInfo.level_tag) + ') no-repeat',color: currLevelInfo.level_style.level_color}">
 										当前等级
 									</view>
-									<view class="absolute top-0 left-0 right-0 bottom-0 z-20 px-[30rpx] pt-[76rpx] box-border" :class="{'px-[50rpx]': swiperIndex != index}">
-										<view class="flex items-center leading-[50rpx] mb-[70rpx]">
+									<view class="absolute top-0 left-0 right-0 bottom-0 z-20 px-[30rpx] pt-[68rpx] box-border" :class="{'px-[50rpx]': swiperIndex != index}">
+										<view class="flex items-center leading-[50rpx] mb-[90rpx]">
 											<image class="h-[32rpx] w-[34rpx] align-middle" :src="img(item.level_icon ? item.level_icon : '')" mode="aspectFill" />
 											<view class="text-[36rpx]  font-bold ml-[10rpx] max-w-[340rpx] truncate" :style="{color:currLevelInfo.level_style.level_color}">{{item.level_name}}</view>
 										</view>
-										<view class="flex items-center" :style="{color: currLevelInfo.level_style.level_color}">
-											<view class="text-[28rpx] font-bold leading-[38rpx]">{{ memberInfo.growth }}</view>
-											<view class="text-[24rpx] leading-[34rpx] font-500">/{{list[index].growth}}成长值</view>
+										<view class="flex items-baseline" :style="{color: currLevelInfo.level_style.level_color}">
+											<view class="text-[30rpx] font-500 leading-[38rpx]">{{ memberInfo.growth }}</view>
+											<view class="text-[24rpx] leading-[34rpx]">/{{list[index].growth}}成长值</view>
 										</view>
 										<view class="flex justify-between items-center mt-[10rpx]">
 											<view class="flex flex-col flex-1">
 												<view>
-													<progress :percent="progress(index)" :border-radius="100" :activeColor="currLevelInfo.level_style.level_color" backgroundColor="#fff" stroke-width="6" />
+													<progress :percent="progress(index)" :border-radius="100" :activeColor="currLevelInfo.level_style.level_color" backgroundColor="#fff" stroke-width="4" />
 												</view>
 											</view>
 										</view>
 									</view>
 									<view class="relatvie h-full w-full">
-										<image class="h-full w-full" :src="img(item.level_bg)" mode="aspectFit" :class="{'swiper-animation': swiperIndex != index}" :show-menu-by-longpress="true"/>
+										<image class="h-full w-full" :src="img(item.level_bg)" :class="{'swiper-animation': swiperIndex != index}" :show-menu-by-longpress="true"/>
 									</view>
 								</view>
 							</swiper-item>
@@ -49,52 +49,51 @@
 								<block v-for="(item,index) in list" :key="item.id">
 									<view :style="levelStyle" class=" flex-shrink-0 flex flex-col items-center justify-center" @click="changeLevel(index)" :id="'id' + index">
 										<view class="w-[14rpx] h-[14rpx] level-class" :class="{'level-select': levelIndex == (index)}"></view>
-										<view :style="maxWidth" class="text-[24rpx] text-[#aaa] mt-[10rpx]   truncate">{{item.level_name}}</view>
+										<view :style="maxWidth" class="text-[22rpx] text-[#aaa] mt-[16rpx] truncate" :class="{'!text-[#fff]': levelIndex == (index)}">{{item.level_name}}</view>
 									</view>
 								</block>
 							</view>
 						</scroll-view>
 					</view>
 				</view>
-				<view class="flex mx-[30rpx] pt-[30rpx]  pb-[46rpx]  items-center flex-col level_benefits" v-if="currLevelInfo.benefits_arr && currLevelInfo.benefits_arr.length" :style="{ backgroundImage: 'url(' + img(currLevelInfo.member_bg) + ')'}">
+				<view class="flex mx-[var(--sidebar-m)] pt-[30rpx]  pb-[46rpx]  items-center flex-col level_benefits" v-if="currLevelInfo.benefits_arr && currLevelInfo.benefits_arr.length" :style="{ backgroundImage: 'url(' + img(currLevelInfo.member_bg) + ')'}">
 					<view class="flex items-center justify-center">
-						<text class="text-[#fff] text-[32rpx] font-bold leading-[44rpx]">会员权益</text>
+						<text class="text-[#fff] text-[30rpx] font-500 leading-[44rpx]">会员权益</text>
 					</view>
 					<view class="flex flex-wrap w-[690rpx] mt-[40rpx] justify-between">
 						<view class="flex flex-col w-[25%] items-center" v-for="(item,index) in currLevelInfo.benefits_arr" :key="index">
-							<image class="h-[100rpx] w-[100rpx]" :src="img(item.icon)" mode="heightFix" />
-							<text class="text-[rgba(255,255,255,0.9)] mt-[10rpx] text-[24rpx] leading-[34rpx]">{{item.title}}</text>
+							<image class="h-[88rpx] w-[88rpx]" :src="img(item.icon)" mode="heightFix" />
+							<text class="text-[rgba(255,255,255,0.9)] mt-[16rpx] text-[24rpx] leading-[34rpx]">{{item.title}}</text>
 						</view>
 					</view>
 				</view>
 			</view>
 			
-			<view class="flex-1 rounded-t-[40rpx] px-[30rpx] pt-[30rpx] mt-[-16rpx]  relative tab-bar" :style="{background: `linear-gradient( 180deg, ${currLevelInfo.level_style.gift} 0%, #FFFFFF 20%)`}">
+			<view class="flex-1 rounded-t-[40rpx] px-[30rpx] pt-[var(--pad-top-m)] mt-[-10rpx]  relative tab-bar" :style="{background: `linear-gradient( 180deg, ${currLevelInfo.level_style.gift} 0%, #FFFFFF 20%)`}">
 				<!-- 升级礼包 -->
 				<view v-if="currLevelInfo.gifts_arr && currLevelInfo.gifts_arr.length">
-					<view class="pt-[10rpx] pb-[30rpx] flex items-center">
-						<text class="text-[32rpx] text-[#333] font-bold leading-[44rpx]">升级礼包</text>
+					<view class="pb-[30rpx] flex items-center">
+						<text class="text-[30rpx] text-[#333] font-500 leading-[44rpx]">升级礼包</text>
 					</view>
 					<view class="flex flex-wrap">
-						<view  v-for="(item,index) in currLevelInfo.gifts_arr" :key="index" class="mb-[20rpx]"  :class="{'mr-[20rpx]': (index+1) % 3 != 0}">
-							<view class="relative box-border mb-[12rpx] w-[216rpx] h-[180rpx] !bg-contain"  :style="{ background: 'url(' + img(item.background) + ') no-repeat'}">
-							</view>
-							<view class="text-center text-[#333] text-[28rpx] font-500 truncate leading-[40rpx] max-w-[216rpx]">{{item.text}}</view>
+						<view  v-for="(item,index) in currLevelInfo.gifts_arr" :key="index" class="mb-[20rpx]"  :class="{'mr-[21rpx]': (index+1) % 3 != 0}">
+							<view class="relative box-border mb-[16rpx] w-[216rpx] h-[180rpx] !bg-contain"  :style="{ background: 'url(' + img(item.background) + ') no-repeat'}"></view>
+							<view class="text-center font-500 text-[#333] text-[28rpx] truncate leading-[40rpx] max-w-[216rpx]">{{item.text}}</view>
 						</view>
 					</view>
 				</view>
 				
 				<!-- 升级技巧 -->
 				<view v-if="upgradeSkills && upgradeSkills.length">
-					<view class="pt-[10rpx] pb-[30rpx] flex items-center">
-						<text class="text-[32rpx] text-[#333] font-bold leading-[44rpx]">升级技巧</text>
+					<view class="pt-[30rpx] pb-[30rpx] flex items-center">
+						<text class="text-[30rpx] text-[#333] font-500 leading-[44rpx]">升级技巧</text>
 					</view>
-					<view>
-						<view class="flex items-center mb-[30rpx]" v-for="(item,index) in upgradeSkills" :key="index">
+					<view class="pb-[30rpx]">
+						<view class="flex items-center mb-[34rpx]" v-for="(item,index) in upgradeSkills" :key="index">
 							<image class="h-[100rpx] w-[100rpx] mr-[20rpx]" :src="img(item.icon)" mode="heightFix" />
 							<view class="flex flex-col">
-								<view class="text-[#3A3945] text-[28rpx] font-bold leading-[38rpx] mb-[8rpx]">{{item.title}}</view>
-								<view class="text-[24rpx] text-[#3A3945] leading-[34rpx]">{{item.desc}}</view>
+								<view class="text-[28rpx] leading-[38rpx] mb-[8rpx]">{{item.title}}</view>
+								<view class="text-[24rpx] text-[var(--text-color-light9)] leading-[34rpx]">{{item.desc}}</view>
 							</view>
 							<text class="skill-btn" @click="redirect({ url: item.button.wap_redirect, param: {} , mode: 'redirectTo'})">{{item.button.text}}</text>
 						</view>
@@ -102,10 +101,10 @@
 				</view>
 			</view>
 		</view>
-		<view v-if="!loading && (!list || !list.length)" class="h-[100vh] w-full flex items-center justify-center">
-			<u-empty :icon="img('static/resource/images/empty.png')" text="暂无会员等级" />
+		<view class="empty-page" v-if="!loading && (!list || !list.length)">
+			<image class="img" :src="img('static/resource/images/empty.png')" mode="aspectFill"></image>
+			<text class="desc">暂无会员等级</text>
 		</view>
-		
 	</view>
 </template>
 
@@ -168,13 +167,13 @@
 	const getMemberLevelFn = ()=>{
 		loading.value = true;
 		
-		getMemberLevel().then((res) => {
+		getMemberLevel().then((res: any) => {
 			list.value = res.data || [];
 			
 			// 初始化会员等级数据
 			let bool = true;
 			if(memberInfo.value && list.value && list.value.length){
-				list.value.forEach((item,index)=>{
+				list.value.forEach((item: any,index)=>{
 					if(item.level_id == memberInfo.value.member_level){
 						bool = false;
 						swiperIndex.value = index;
@@ -211,12 +210,12 @@
 	}
 	
 	const getTaskGrowthFn = ()=>{
-		getTaskGrowth().then((res) => {
+		getTaskGrowth().then((res: any) => {
 			upgradeSkills.value = res.data
 		})
 	}
 	
-	const swiperChange = (e) => {
+	const swiperChange = (e: any) => {
 	    swiperIndex.value = e.detail.current;
 		levelIndex.value = swiperIndex.value
 		infoStructureFn(e.detail.current);
@@ -229,7 +228,7 @@
 		// 会员权益
 		if(data && data.level_benefits){
 			data.benefits_arr = [];
-			Object.values(data.level_benefits).forEach((item,index,Array)=>{
+			Object.values(data.level_benefits).forEach((item: any,index,Array)=>{
 				if(item.content){
 					data.benefits_arr.push(item.content)
 				}
@@ -242,7 +241,7 @@
 			for(let key in data.level_gifts){
 				if(data.level_gifts[key].content){
 					// 增加类型
-					data.level_gifts[key].content.forEach((item,index,Array)=>{
+					data.level_gifts[key].content.forEach((item: any,index: any,Array: any)=>{
 						Array[index].type = key
 					})
 					data.gifts_arr = data.gifts_arr.concat(data.level_gifts[key].content);
@@ -261,17 +260,19 @@
 
 <style lang="scss" scoped>
 	.skill-btn{
-		padding: 0 20rpx;
+		width: 120rpx;
 		height: 54rpx;
-		line-height: 56rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		color: #333;
 		background: linear-gradient( 180deg, #FEE8AC 0%, #F5D36E 85%);
-		border-radius: 30rpx;
+		border-radius: 100rpx;
 		margin-left: auto;
-		font-size: 24rpx;
+		font-size: 22rpx;
 	}
 	.swiper-animation{
-		transform: scale(0.92, 0.92);
+		transform: scale(0.95, 0.95);
 		transition-duration: 0.3s;
 		transition-timing-function: ease;
 	}
@@ -290,7 +291,7 @@
 			position: absolute;
 			width: 14rpx;
 			height: 14rpx;
-			background-color: #aaa;
+			background-color: #bbb;
 			border-radius: 14rpx;
 			top:50%;
 			left: 50%;
@@ -305,13 +306,16 @@
 			position: absolute;
 			width: 26rpx;
 			height: 26rpx;
-			background-color: #F6F6F6;
-			opacity: 0.4;
+			background-color: #fff;
+			opacity: 0.6;
 			border-radius: 26rpx;
 			top:50%;
 			left: 50%;
 			transform: translate(-50%,-50%);
 			z-index: 1;
+		}
+		&::before{
+			background-color: #fff !important;
 		}
 	}
 	.level_benefits{

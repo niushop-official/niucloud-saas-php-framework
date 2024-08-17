@@ -1,36 +1,33 @@
 <template>
     <u-popup :show="show" @close="show = false" mode="bottom" :round="10"  zIndex="10090">
-        <view>
-            <view class="py-[30rpx] px-[40rpx] flex items-center justify-between">
-                <view class="text-center flex-1 text-[32rpx] font-500 leading-[44rpx]">选择时间</view>
-                <view class="nc-iconfont nc-icon-guanbiV6xx text-[36rpx] text-primary" @click="show = false"></view>
-            </view>
-            <view class="px-[30rpx] mb-[20rpx] mt-[10rpx]">
+        <view class="popup-common">
+			<view class="title">选择时间</view>
+            <view class="px-[var(--popup-sidebar-m)] mb-[20rpx] mt-[10rpx]">
                 <view class="flex items-center justify-between mb-[30rpx]">
-                    <view class="w-[160rpx] h-[60rpx] box-border leading-[60rpx] rounded-[30rpx] bg-[#F4F6FA] text-center text-[26rpx] text-[#666] border-[2rpx] border-solid border-[#F4F6FA]"  v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == item.type}"  @click="loadDateFn(item)">{{item.name}}</view> 
+                    <view class="w-[160rpx] h-[66rpx] box-border flex-center rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"  v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == item.type}"  @click="loadDateFn(item)">{{item.name}}</view> 
                 </view>
                 <view class="flex items-center justify-between">
-                    <view class="w-[316rpx] h-[60rpx] box-border leading-[60rpx] rounded-[30rpx] bg-[#F4F6FA] text-center text-[26rpx] text-[#666] border-[2rpx] border-solid border-[#F4F6FA]" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == 'first'}" @click="currentValue.type = 'first'">{{dateList.nowDate[0].substr(0,10)}}</view>
+                    <view class="w-[316rpx] h-[66rpx] box-border leading-[62rpx] rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]" :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == 'first'}" @click="currentValue.type = 'first'">{{dateList.nowDate[0].substr(0,10)}}</view>
                     <view class="nc-iconfont nc-icon-jianV6xx"></view>
-                    <view class="w-[316rpx] h-[60rpx] box-border leading-[60rpx] rounded-[30rpx] bg-[#F4F6FA] text-center text-[26rpx] text-[#666] border-[2rpx] border-solid border-[#F4F6FA]" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == 'second'}" @click="currentValue.type = 'second'">{{dateList.nowDate[1].substr(0,10)}}</view>
+                    <view class="w-[316rpx] h-[66rpx] box-border leading-[62rpx] rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]" :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == 'second'}" @click="currentValue.type = 'second'">{{dateList.nowDate[1].substr(0,10)}}</view>
                 </view>
             </view>
             <view>
-                <picker-view  indicator-class="!h-[70rpx] !bg-[#F4F6FA]" :value="dateList.curIndex" @change="bindChange" class="w-[750rpx] px-[60rpx] h-[396rpx] box-border">
+                <picker-view  indicator-class="!h-[80rpx] !bg-[var(--temp-bg)]" :value="dateList.curIndex" @change="bindChange" class="w-[750rpx] px-[60rpx] h-[396rpx] box-border">
                     <picker-view-column>
-                        <view class="text-center leading-[70rpx]  text-[28rpx]" v-for="(item,index) in dateList.years" :key="index">{{item}}年</view>
+                        <view class="text-center leading-[80rpx]  text-[28rpx]" v-for="(item,index) in dateList.years" :key="index">{{item}}年</view>
                     </picker-view-column>
                     <picker-view-column>
-                        <view class="text-center leading-[70rpx] text-[28rpx]" v-for="(item,index) in dateList.months" :key="index">{{item}}月</view>
+                        <view class="text-center leading-[80rpx] text-[28rpx]" v-for="(item,index) in dateList.months" :key="index">{{item}}月</view>
                     </picker-view-column>
                     <picker-view-column>
-                        <view class="text-center leading-[70rpx]  text-[28rpx]" v-for="(item,index) in dateList.days" :key="index">{{item}}日</view>
+                        <view class="text-center leading-[80rpx]  text-[28rpx]" v-for="(item,index) in dateList.days" :key="index">{{item}}日</view>
                     </picker-view-column>
                 </picker-view>
             </view>
-            <view class="px-[30rpx] pb-[30rpx] pt-[20rpx] flex justify-between">
-                <button class="w-[330rpx] h-[88rpx] text-[var(--primary-color)] text-[32rpx] leading-[84rpx] border-[2rpx] border-solid border-[var(--primary-color)] rounded-[100rpx] bg-transparent" hover-class="none" @click="reset">重置</button>
-                <button class="w-[330rpx] h-[88rpx] text-[#fff] text-[32rpx] leading-[88rpx] border-[0] rounded-[100rpx] primary-btn-bg" shape="circle" hover-class="none" @click="save">确定</button>
+            <view class="btn-wrap flex justify-between items-center !pt-[30rpx]">
+                <button class="btn flex-1 !leading-[76rpx] mr-[20rpx] !text-[var(--primary-color)] border-[2rpx] border-solid border-[var(--primary-color)] rounded-[100rpx] bg-transparent box-border" hover-class="none" @click="reset">重置</button>
+                <button class="btn flex-1 border-[0] rounded-[100rpx] primary-btn-bg" shape="circle" hover-class="none" @click="save">确定</button>
             </view>
         </view>
     </u-popup>
@@ -42,7 +39,7 @@ import { ref,reactive } from 'vue'
 const emits = defineEmits(['confirm'])
 // 弹框时间选择
 const show = ref(false)
-let create_time = ref([])
+const create_time: any = ref([])
 // 日期
 const init = () =>{
     const date = new Date();
@@ -92,11 +89,11 @@ const init = () =>{
         lastYear: formatDate(lastYear)
     }
 }
-const getDaysInMonth = (year, month) => {
+const getDaysInMonth = (year: any, month: any) => {
     let  date = new Date(year, month, 0).getDate()
     return date
 }
-const getDaysCount = (year, month) =>{
+const getDaysCount = (year: any, month: any) =>{
     let count = getDaysInMonth(year, month)
     let days = []
     for (let i = 1; i <= count; i++) {
@@ -112,7 +109,7 @@ const dateList = reactive({
     nowDate:[init().nowDateStart,init().nowDateEnd] //当前选中日期
 })
  
-const bindChange = (e) =>{
+const bindChange = (e: any) =>{
     const val = e.detail.value
     let year = dateList.years[val[0]]
     let month= dateList.months[val[1]]
@@ -148,11 +145,11 @@ const curselectDate = reactive([
     }
 ])
 // 时间搜索
-let currentValue = ref({
+const currentValue = ref({
     type: 'first',
     time: []
 })
-const loadDateFn = (data) =>{
+const loadDateFn = (data: any) =>{
     currentValue.value.type = data.type
     currentValue.value.time = data.time
     dateList.nowDate[0] = currentValue.value.time[0]

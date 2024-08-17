@@ -1,51 +1,53 @@
 <template>
-	<view class="member-record-detail" :style="themeColor()">
+	<view class="min-h-[100vh] bg-[var(--page-bg-color)] overflow-hidden" :style="themeColor()">
 		<block v-if="!loading">
-			<view class="money-wrap">
-				<text>-{{ cashOutInfo.apply_money }}</text>
-				<text>{{ cashOutInfo.status_name }}</text>
-			</view>
-			<!-- 状态0待审核1.待转账2已转账 -1拒绝' -->
-			<view class="item">
-				<view class="line-wrap">
-					<text class="label w-[200rpx]">{{t('cashOutNo')}}</text>
-					<text class="value">{{ cashOutInfo.cash_out_no }}</text>
+			<view  class="sidebar-marign card-template mt-[20rpx] !pt-[60rpx] !pb-[40rpx]">
+				<view class="flex items-center flex-col mb-[80rpx]">
+					<text class="text-[60rpx] font-bold price-font mb-[20rpx]">-{{ cashOutInfo.apply_money }}</text>
+					<text class="text-[28rpx] text-[#333]" :class="{'text-primary': cashOutInfo.status == 1}">{{ cashOutInfo.status_name }}</text>
 				</view>
-				<view class="line-wrap">
-					<text class="label w-[200rpx]">{{t('serviceMoney')}}</text>
-					<text class="value">￥{{ cashOutInfo.service_money }}</text>
-				</view>
-				<view class="line-wrap">
-					<text class="label w-[200rpx]">{{t('createTime')}}</text>
-					<text class="value">{{ cashOutInfo.create_time }}</text>
-				</view>
-				<view class="line-wrap" v-if="cashOutInfo.status && cashOutInfo.audit_time">
-					<text class="label w-[200rpx]">{{t('auditTime')}}</text>
-					<text class="value">{{ cashOutInfo.audit_time  }}</text>
-				</view>
-				<view class="line-wrap" v-if="cashOutInfo.transfer_bank">
-					<text class="label w-[200rpx]">{{t('transferBank')}}</text>
-					<text class="value truncate">{{ cashOutInfo.transfer_bank }}</text>
-				</view>
-				<view class="line-wrap">
-					<text class="label w-[200rpx]">{{t('transferAccount')}}</text>
-					<text class="value truncate">{{ cashOutInfo.transfer_type == 'wechatpay' ? '微信' : cashOutInfo.transfer_account }}</text>
-				</view>
-				<view class="line-wrap" v-if="cashOutInfo.status == -1 && cashOutInfo.refuse_reason">
-					<text class="label w-[200rpx]">{{t('refuseReason')}}</text>
-					<text class="value truncate">{{ cashOutInfo.refuse_reason }}</text>
-				</view>
-				<view class="line-wrap" v-if="cashOutInfo.status == 2">
-					<text class="label w-[200rpx]">{{t('transferTypeName')}}</text>
-					<text class="value truncate">{{ cashOutInfo.transfer_type_name }}</text>
-				</view>
-				<view class="line-wrap" v-if="cashOutInfo.status == 2 && cashOutInfo.transfer_time">
-					<text class="label w-[200rpx]">{{t('transferTime')}}</text>
-					<text class="value truncate">{{ cashOutInfo.transfer_time }}</text>
+				<!-- 状态1.待审核2.待转账 3.已转账 -1拒绝' -->
+				<view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]">
+						<text class="text-[#333] w-[200rpx]">{{t('cashOutNo')}}</text>
+						<text class="text-[#333]">{{ cashOutInfo.cash_out_no }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]">
+						<text class="text-[#333] w-[200rpx]">{{t('serviceMoney')}}</text>
+						<text class="text-[#333]">￥{{ cashOutInfo.service_money }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]">
+						<text class="text-[#333] w-[200rpx]">{{t('createTime')}}</text>
+						<text class="text-[#333]">{{ cashOutInfo.create_time }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status && cashOutInfo.audit_time">
+						<text class="text-[#333] w-[200rpx]">{{t('auditTime')}}</text>
+						<text class="text-[#333]">{{ cashOutInfo.audit_time  }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.transfer_bank">
+						<text class="text-[#333] w-[200rpx]">{{t('transferBank')}}</text>
+						<text class="text-[#333] truncate">{{ cashOutInfo.transfer_bank }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]">
+						<text class="text-[#333] w-[200rpx]">{{t('transferAccount')}}</text>
+						<text class="text-[#333] truncate">{{ cashOutInfo.transfer_type == 'wechatpay' ? '微信' : cashOutInfo.transfer_account }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == -1 && cashOutInfo.refuse_reason">
+						<text class="text-[#333] w-[200rpx]">{{t('refuseReason')}}</text>
+						<text class="text-[#333] truncate">{{ cashOutInfo.refuse_reason }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == 2">
+						<text class="text-[#333] w-[200rpx]">{{t('transferTypeName')}}</text>
+						<text class="text-[#333] truncate">{{ cashOutInfo.transfer_type_name }}</text>
+					</view>
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == 2 && cashOutInfo.transfer_time">
+						<text class="text-[#333] w-[200rpx]">{{t('transferTime')}}</text>
+						<text class="text-[#333] truncate">{{ cashOutInfo.transfer_time }}</text>
+					</view>
 				</view>
 			</view>
 		</block>
-		<u-loading-page bg-color="rgb(248,248,248)" :loading="loading" loadingText="" fontSize="16" color="#303133"></u-loading-page>
+		<loading-page :loading="loading"></loading-page>
 	</view>
 </template>
 
@@ -63,10 +65,10 @@ onLoad((option: any) => {
 	getCashoutAccountListFn(id)
 })
 
-const getCashoutAccountListFn = (id) => {
+const getCashoutAccountListFn = (id: any) => {
 	loading.value = true;
 
-	getCashOutDetail(id).then((res) => {
+	getCashOutDetail(id).then((res: any) => {
 		cashOutInfo.value = res.data;
 		loading.value = false;
 	}).catch(() => {
@@ -76,5 +78,4 @@ const getCashoutAccountListFn = (id) => {
 </script>
 
 <style lang="scss">
-@import '@/styles/member_record_detail.scss';
 </style>

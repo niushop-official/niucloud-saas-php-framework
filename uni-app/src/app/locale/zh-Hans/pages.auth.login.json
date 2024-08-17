@@ -5,11 +5,14 @@
     "resetpwd": "忘记密码",
     "noAccount": "还没有账号",
     "toRegister": "去注册",
-    "and": "和",
     "agreeTips": "登录代表您同意",
     "isAgreeTips": "请先阅读并同意协议",
-    "usernameLogin": "密码登录",
-    "mobileLogin": "验证码登录",
     "mobilePlaceholder": "请输入手机号",
-    "oneClicklogin":"一键登录"
+    "oneClicklogin":"快捷登录",
+	"accountLogin":"账号密码登录",
+	"accountLoginTip":"输入账号密码登录",
+	"accountLoginError":"商家未开启账号密码登录",
+	"mobileLogin":"手机号登录",
+	"mobileLoginTip":"输入手机号验证码登录",
+	"mobileLoginError":"商家未开启手机号登录"
 }

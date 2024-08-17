@@ -1,5 +1,5 @@
 import { ref, reactive, computed } from 'vue';
-import { onLoad, onShow, onPullDownRefresh, onPageScroll, onUnload } from '@dcloudio/uni-app';
+import { onLoad, onShow, onHide, onPullDownRefresh, onPageScroll, onUnload } from '@dcloudio/uni-app';
 import { img, handleOnloadParams } from '@/utils/common';
 import { getDiyInfo } from '@/app/api/diy';
 import useDiyStore from '@/app/stores/diy';
@@ -13,6 +13,7 @@ export function useDiy(params: any = {}) {
     const id = ref(0)
     const name = ref(params.name || '')
     const template = ref('')
+    let currRoute = "" //当前路由
 
     // 自定义页面 数据
     const diyData = reactive({
@@ -26,7 +27,7 @@ export function useDiy(params: any = {}) {
         return loading.value;
     }
 
-    const data = computed(() => {
+    const data: any = computed(() => {
         if (diyStore.mode == 'decorate') {
             return diyStore;
         } else {
@@ -80,6 +81,20 @@ export function useDiy(params: any = {}) {
     // 监听页面显示
     const onShowLifeCycle = (callback: any = null) => {
         onShow(() => {
+            /******** 解决跳转自定义页面空白问题-第二步-start **********/
+            let curPage: any = getCurrentPages();
+            currRoute = curPage[curPage.length - 1] ? curPage[curPage.length - 1].route : ''; //获取当前页面的路由
+            let urlArr = []
+            if (uni.getStorageSync('diyPageBlank')) {
+                urlArr = uni.getStorageSync('diyPageBlank');
+            }
+            if (!urlArr.length || urlArr.length && urlArr.indexOf(currRoute) == -1) {
+                diyStore.topFixedStatus = 'home'
+            } else if (urlArr.length && urlArr.indexOf(currRoute) != -1) {
+                diyStore.topFixedStatus = 'diy'
+            }
+            /******** 解决跳转自定义页面空白问题-第二步-end **********/
+
             // 装修模式
             if (diyStore.mode == 'decorate') {
                 diyStore.init();
@@ -115,7 +130,7 @@ export function useDiy(params: any = {}) {
                         });
 
                         // 控制自定义头部是否出现 | 微信小程序
-                        isShowTopTabbar.value = diyData.value.some((item) => {
+                        isShowTopTabbar.value = diyData.value.some((item: any) => {
                             return item && item.position && item.position == 'top_fixed'
                         });
 
@@ -135,11 +150,40 @@ export function useDiy(params: any = {}) {
         })
     }
 
+    // 监听页面隐藏
+    const onHideLifeCycle = (callback: any = null) => {
+        onHide(() => {
+            /******** 解决跳转自定义页面空白问题-第一步 -start **********/
+            let url = [];
+            if (uni.getStorageSync('diyPageBlank')) {
+                url = uni.getStorageSync('diyPageBlank');
+            }
+
+            // 清空重复、与当前页面路径一致的url
+            if (url.length) {
+                url = Array.from(new Set(url))
+                url.forEach((item, index, arr) => {
+                    if (item == currRoute) {
+                        arr.splice(index, 1);
+                    }
+                })
+            }
+
+            // 当diyStore.topFixedStatus == "diy"时,存储到diyPageBlank缓存中
+            if (diyStore.topFixedStatus == "diy") {
+                url.push(currRoute);
+            }
+            uni.setStorageSync('diyPageBlank', url);
+            /******** 解决跳转自定义页面空白问题-第一步 -end **********/
+
+            if (callback) callback()
+        })
+    }
+
     // 监听页面卸载
     const onUnloadLifeCycle = () => {
         onUnload(() => {
-            // 兼容轮播搜索组件-切换分类时，导致个人中心白屏
-            diyStore.topFixedStatus = 'home'
+
         })
     }
 
@@ -168,6 +212,7 @@ export function useDiy(params: any = {}) {
         pageStyle,
         onLoad: onLoadLifeCycle,
         onShow: onShowLifeCycle,
+        onHide: onHideLifeCycle,
         onUnload: onUnloadLifeCycle,
         onPullDownRefresh: onPullDownRefreshLifeCycle,
         onPageScroll: onPageScrollLifeCycle,

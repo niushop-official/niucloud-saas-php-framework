@@ -1,102 +1,171 @@
 <template>
-    <view class="w-screen h-screen flex flex-col" :style="themeColor()">
-        <view class="flex-1">
-            <!-- #ifdef H5 -->
-            <view class="h-[100rpx]"></view>
-            <!-- #endif -->
-            <view class="px-[60rpx] pt-[100rpx] mb-[100rpx]">
-                <view class="font-bold text-xl">{{ t('login') }}</view>
-            </view>
-            <view class="px-[60rpx] text-sm flex mb-[50rpx] font-bold leading-none" v-if="loginType.length > 1">
-                <block v-for="(item, index) in loginType">
-                    <view :class="{'text-gray-300' : item.type != type}" @click="type = item.type">{{ item.title }}</view>
-                    <view class="mx-[30rpx] border-solid border-0 border-r-[2px] border-gray-300" v-show="index == 0"></view>
-                </block>
-            </view>
-            <view class="px-[60rpx]">
-                <u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
-                    <view v-show="type == 'username'">
-                        <u-form-item label="" prop="username" :border-bottom="true">
-                            <u-input v-model="formData.username" border="none" clearable :placeholder="t('usernamePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[#8288A2] text-[26rpx]"/>
-                        </u-form-item>
-                        <view class="mt-[40rpx]">
-                            <u-form-item label="" prop="password" :border-bottom="true">
-                                <u-input v-model="formData.password" border="none" type="password" clearable :placeholder="t('passwordPlaceholder')" autocomplete="new-password" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[#8288A2] text-[26rpx]"/>
-                            </u-form-item>
-                        </view>
-                    </view>
-                    <view v-show="type == 'mobile'">
-                        <u-form-item label="" prop="mobile" :border-bottom="true">
-                            <u-input v-model="formData.mobile" border="none" clearable :placeholder="t('mobilePlaceholder')"  autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx"  placeholderClass="!text-[#8288A2]"/>
-                        </u-form-item>
-                        <view class="mt-[40rpx]">
-                            <u-form-item label="" prop="mobile_code" :border-bottom="true">
-                                <u-input v-model="formData.mobile_code" border="none" clearable class="!bg-transparent" fontSize="26rpx"  :disabled="real_name_input" :placeholder="t('codePlaceholder')" placeholderClass="!text-[#8288A2]">
-                                    <template #suffix>
-                                        <sms-code :mobile="formData.mobile" type="login" v-model="formData.mobile_key"></sms-code>
-                                    </template>
-                                </u-input>
-                            </u-form-item>
-                        </view>
-                    </view>
-                    <view class="flex text-xs justify-between mt-[20rpx] text-[#8288A2]">
-                        <view @click="redirect({ url: '/app/pages/auth/register' })">{{ t('noAccount') }}
-                            <text class="text-primary">{{ t('toRegister') }}</text>
-                        </view>
-                        <view @click="redirect({ url: '/app/pages/auth/resetpwd' })">{{ t('resetpwd') }}</view>
-                    </view>
-                    <view class="mt-[80rpx]">
-                        <button hover-class="none" class="bg-[var(--primary-color)] text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[28rpx]" :loading="loading" :loadingText="t('logining')" @click="handleLogin">{{t('login')}}</button>
-                    </view>
-
-                    <!-- #ifdef MP-WEIXIN -->
-                    <view class="mt-[20rpx]" v-if="configStore.login.is_auth_register">
-                        <button hover-class="none" class="text-[var(--primary-color)] bg-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[28rpx]" :loading="loginLoading" :loadingText="t('logining')" @click="oneClickLogin">{{t('oneClicklogin')}}</button>
-                    </view>
-                    <view class="mt-[20rpx]" v-else-if="type == 'mobile'">
-                        <u-button :customStyle="{border:'none',color:'var(--primary-color)',fontSize:'26rpx',height:'40rpx', lineHeight:'40rpx'}" :text="t('mobileQuickLogin')" open-type="getPhoneNumber" @getphonenumber="mobileAuth" @click="checkWxPrivacy"></u-button>
-                    </view>
-                    <!-- #endif -->
-                </u-form>
-            </view>
-        </view>
-        <view class="text-xs py-[50rpx] flex justify-center w-full" v-if="configStore.login.agreement_show">
-            <text class="iconfont text-[var(--primary-color)] text-[34rpx] mr-[12rpx]" :class="isAgree ? 'iconxuanze1' : 'nc-iconfont nc-icon-yuanquanV6xx'" @click="isAgree = !isAgree"></text>
-            {{ t('agreeTips') }}
-            <view @click="redirect({ url: '/app/pages/auth/agreement?key=service' })">
-                <text class="text-primary">{{ t('userAgreement') }}</text>
-            </view>
-            {{ t('and') }}
-            <view @click="redirect({ url: '/app/pages/auth/agreement?key=privacy' })">
-                <text class="text-primary">{{ t('privacyAgreement') }}</text>
-            </view>
-        </view>
-        <!-- #ifdef MP-WEIXIN -->
-        <!-- 小程序隐私协议 -->
-        <wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
-        <!-- #endif -->
-    </view>
+    <view class="w-screen h-screen flex flex-col" :style="themeColor()" v-if="type">
+		<!-- #ifdef MP-WEIXIN -->
+		<view :style="{'height':headerHeight}">
+			<top-tabbar :data="param" :scrollBool="topTabarObj.getScrollBool()" class="top-header"/>
+		</view>
+		<!-- #endif -->
+		<view class="mx-[60rpx]">
+			<view class="pt-[140rpx] text-[44rpx] font-500 text-[#333]">{{ type == 'username' ? t('accountLogin') : t('mobileLogin') }}</view>
+			<view class="text-[26rpx] leading-[39rpx] text-[var(--text-color-light6)] mt-[16rpx] mb-[80rpx]">{{ type == 'username' ? t('accountLoginTip') : t('mobileLoginTip') }}</view>
+			<u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
+				<template v-if="type == 'username'">
+					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
+					<u-form-item label="" prop="username" :border-bottom="false">
+					    <u-input v-model="formData.username" border="none" maxlength="40" clearable :placeholder="t('usernamePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+					</u-form-item>
+					</view>
+					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
+					    <u-form-item label="" prop="password" :border-bottom="false">
+					        <u-input v-model="formData.password" border="none" type="password" maxlength="40" clearable :placeholder="t('passwordPlaceholder')" autocomplete="new-password" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+					    </u-form-item>
+					</view>
+				</template>
+				<template v-if="type == 'mobile'">
+					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
+						<u-form-item label="" prop="mobile" :border-bottom="false">
+							<u-input v-model="formData.mobile" type="number" maxlength="11" border="none" clearable :placeholder="t('mobilePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx"  placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+						</u-form-item>
+					</view>
+					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx] text-[26rpx]">
+					    <u-form-item label="" prop="mobile_code" :border-bottom="false">
+					        <u-input v-model="formData.mobile_code" type="number" maxlength="4" border="none" clearable class="!bg-transparent" fontSize="26rpx" :disabled="real_name_input" :placeholder="t('codePlaceholder')" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+					            <template #suffix>
+					                <sms-code v-if="configStore.login.agreement_show" :mobile="formData.mobile" type="login" v-model="formData.mobile_key" :isAgree="isAgree"></sms-code>
+									<sms-code v-else :mobile="formData.mobile" type="login" v-model="formData.mobile_key"></sms-code>
+					            </template>
+					        </u-input>
+					    </u-form-item>
+					</view>
+				</template>
+			</u-form>
+			<view v-if="type == 'username'" class="text-right text-[24rpx] text-[var(--text-color-light9)] leading-[34rpx] mt-[20rpx]" @click="redirect({ url: '/app/pages/auth/resetpwd' })">{{t('resetpwd')}}</view>
+			<view :class="{'mt-[160rpx]':type != 'username','mt-[106rpx]':type == 'username'}">
+				<view v-if="configStore.login.agreement_show" class="flex items-center mb-[20rpx] py-[10rpx]" @click.stop="agreeChange">
+					<u-checkbox-group @change="agreeChange">
+						<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }"/>
+					</u-checkbox-group>
+					<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
+						<text>{{ t('agreeTips') }}</text>
+						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=privacy' })" class="text-primary">《{{t('privacyAgreement')}}》</text>
+						<text>{{ t('and') }}</text>
+						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=service' })" class="text-primary">《{{t('userAgreement')}}》</text>
+					</view>
+				</view>
+				<button class="w-full h-[80rpx] !bg-[var(--primary-color)] text-[26rpx] rounded-[40rpx] leading-[80rpx] font-500 !text-[#fff] !mx-[0]" :loadingText="t('logining')" @click="handleLogin">{{t('login')}}</button>
+				<view class="flex items-center justify-between mt-[30rpx]">
+					<view class="text-[26rpx] text-[var(--text-color-light6)] leading-[34rpx]" @click="setType" v-if="(type == 'username' && configStore.login.is_mobile) || (type == 'mobile' && configStore.login.is_username )">
+					{{ type == 'username' ? t('mobileLogin') : t('accountLogin') }}
+					</view>
+					<view class="text-[26rpx] text-[#333] leading-[34rpx]" @click="redirect({ url: '/app/pages/auth/register',param:{type} })">
+						<text>{{ t('noAccount') }},</text>
+						<text class="text-primary">{{ t('toRegister') }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="footer w-full" v-if="isShowQuickLogin">
+			<view class="text-[26rpx] leading-[36rpx] text-[#333] text-center mb-[30rpx] font-400">{{t('oneClicklogin')}}</view>
+			<view class="flex justify-center">
+				<button class="h-[80rpx] w-[80rpx] text-[46rpx] !text-[#1AAB37] text-center !p-0 !bg-transparent leading-[79rpx] border-[2rpx] rounded-[50%] border-solid border-[#ddd] nc-iconfont nc-icon-weixinV6mm overflow-hidden" @click="toLink"></button>
+			</view>
+		</view>
+	</view>
 </template>
-
 <script setup lang="ts">
-    import { ref, reactive, computed, onMounted } from 'vue'
-    import { usernameLogin, mobileLogin,bind } from '@/app/api/auth'
-    import useMemberStore from '@/stores/member'
-    import useConfigStore from '@/stores/config'
-    import { useLogin } from '@/hooks/useLogin'
-    import { t } from '@/locale'
-    import { redirect,getToken } from '@/utils/common'
-    import { onLoad,onShow } from '@dcloudio/uni-app';
-
-    const formData = reactive({
-        username: '',
-        password: '',
-        mobile: '',
-        mobile_code: '',
-        mobile_key: ''
-    })
-
+	import { ref, reactive, computed, onMounted } from 'vue'
+	import { usernameLogin, mobileLogin } from '@/app/api/auth'
+	import useMemberStore from '@/stores/member'
+	import useConfigStore from '@/stores/config'
+	import { useLogin } from '@/hooks/useLogin'
+	import { t } from '@/locale'
+	import { redirect,getToken,pxToRpx,isWeixinBrowser } from '@/utils/common'
+	import { onLoad } from '@dcloudio/uni-app';
+	import { topTabar } from '@/utils/topTabbar'
+	
+	let menuButtonInfo: any = {};
+	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
+	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
+	menuButtonInfo = uni.getMenuButtonBoundingClientRect();
+	// #endif
+	/********* 自定义头部 - start ***********/
+	const topTabarObj = topTabar()
+	const param = topTabarObj.setTopTabbarParam({title:'',topStatusBar:{bgColor: '#fff',textColor: '#333'}})
+	/********* 自定义头部 - end ***********/
+	const headerHeight = computed(()=>{
+		return Object.keys(menuButtonInfo).length ? pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) + pxToRpx(8)+'rpx':'auto'
+	})
 	const real_name_input = ref(true);
+	const memberStore = useMemberStore()
+	const configStore = useConfigStore()
+	const type = ref('')
+	const isAgree = ref(false)
+	const isShowQuickLogin = ref(false) // 是否显示快捷登录
+
+	onLoad(async (option: any)=> {
+		await configStore.getLoginConfig()
+		if (!getToken() && !configStore.login.is_username && !configStore.login.is_mobile) {
+			uni.showToast({ title: '商家未开启普通账号登录', icon: 'none' })
+			setTimeout(() => {
+				redirect({ url: '/app/pages/index/index', mode: 'reLaunch' })
+			}, 100)
+		}
+		if (option.type) {
+			if (option.type == 'mobile') {
+				if (configStore.login.is_mobile) {
+					type.value = option.type
+				}
+
+			} else if (option.type == 'username' && configStore.login.is_username) {
+				type.value = option.type
+			}
+		} else {
+			if (configStore.login.is_username) {
+				type.value = 'username'
+			} else if (configStore.login.is_mobile) {
+				type.value = 'mobile'
+			}
+
+		}
+
+		// 如果只开启了账号密码登录，那么就不需要跳转到登录中间页了
+
+		// #ifdef MP-WEIXIN
+		if (configStore.login.is_username && !configStore.login.is_mobile && !configStore.login.is_auth_register) {
+			isShowQuickLogin.value = false;
+		} else {
+			isShowQuickLogin.value = true;
+		}
+		// #endif
+
+		// #ifdef H5
+		if (isWeixinBrowser()) {
+			// 微信浏览器
+			if (configStore.login.is_username && !configStore.login.is_mobile && !configStore.login.is_auth_register) {
+				isShowQuickLogin.value = false;
+			} else {
+				isShowQuickLogin.value = true;
+			}
+		} else {
+			// 普通浏览器
+			if (configStore.login.is_username && !configStore.login.is_mobile) {
+				isShowQuickLogin.value = false;
+			} else {
+				isShowQuickLogin.value = true;
+			}
+		}
+		// #endif
+
+	})
+
+	const formData = reactive({
+	    username: '',
+	    password: '',
+	    mobile: '',
+	    mobile_code: '',
+	    mobile_key: ''
+	})
+
 	onMounted(() => {
 		// 防止浏览器自动填充
 		setTimeout(()=>{
@@ -104,165 +173,115 @@
 		},800)
 	});
 
-    const memberStore = useMemberStore()
-    const configStore = useConfigStore()
+	const agreeChange = () => {
+		isAgree.value = !isAgree.value
+	}
 
-    onLoad(async()=>{
-        await configStore.getLoginConfig()
-        uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
-        uni.getStorageSync('unionid') && (Object.assign(formData, { unionid: uni.getStorageSync('unionid') }))
-        uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
-        if(!getToken() && !configStore.login.is_username && !configStore.login.is_mobile && !configStore.login.is_bind_mobile){
-            uni.showToast({ title: '商家未开启普通账号登录注册', icon: 'none' })
-            setTimeout(() => {
-                redirect({ url: '/app/pages/index/index', mode: 'reLaunch' })
-            }, 100)
-        }
-    })
+	const setType = ()=> {
+		type.value = type.value == 'username' ? 'mobile' : 'username'
+	}
 
-    const loading = ref(false)
+	const loading = ref(false)
+	
+	const rules = computed(() => {
+	    return {
+	        'username': {
+	            type: 'string',
+	            required: type.value == 'username',
+	            message: t('usernamePlaceholder'),
+	            trigger: ['blur', 'change'],
+	        },
+	        'password': {
+	            type: 'string',
+	            required: type.value == 'username',
+	            message: t('passwordPlaceholder'),
+	            trigger: ['blur', 'change']
+	        },
+	        'mobile': [
+	            {
+	                type: 'string',
+	                required: type.value == 'mobile',
+	                message: t('mobilePlaceholder'),
+	                trigger: ['blur', 'change'],
+	            },
+	            {
+	                validator(rule: any, value: any) {
+	                    if (type.value != 'mobile') return true
+	                    else return uni.$u.test.mobile(value)
+	                },
+	                message: t('mobileError'),
+	                trigger: ['change', 'blur'],
+	            }
+	        ],
+	        'mobile_code': {
+	            type: 'string',
+	            required: type.value == 'mobile',
+	            message: t('codePlaceholder'),
+	            trigger: ['blur', 'change']
+	        }
+	    }
+	})
+	
+	const formRef: any = ref(null)
+	
+	const handleLogin = () => {
+	    formRef.value.validate().then(() => {
+	        if (configStore.login.agreement_show && !isAgree.value) {
+	            uni.showToast({ title: t('isAgreeTips'), icon: 'none' });
+	            return false;
+	        }
+	
+	        if (loading.value) return
+	        loading.value = true
+	
+	        const login = type.value == 'username' ? usernameLogin : mobileLogin
+	
+	        login(formData).then((res: any) => {
+	            memberStore.setToken(res.data.token)
+	            if(configStore.login.is_bind_mobile && !res.data.mobile){
+	                uni.setStorageSync('isbindmobile', true)
+	            }
+	            useLogin().handleLoginBack()
+	        }).catch(() => {
+	            loading.value = false
+	        })
+	    })
+	}
 
-    const type = ref('')
+	const toLink = ()=> {
+		const pages = getCurrentPages(); // 获取页面栈
+		if (pages.length > 1) {
+			const currentPage = pages[pages.length - 2].route;
+			if (currentPage == 'app/pages/auth/index') {
+				// 返回上一页
+				uni.navigateBack({
+					delta: 1 // 默认值是1，表示返回的页面层数
+				});
+			}else{
+				redirect({ url: '/app/pages/auth/index',mode:'redirectTo' })
+			}
+		}else{
+			redirect({ url: '/app/pages/auth/index',mode:'redirectTo' })
+		}
 
-    const loginType = computed(() => {
-        const value = []
-        if(configStore.login.is_username){
-            value.push({ type: 'username', title: t('usernameLogin') })
-        }
-        if(configStore.login.is_bind_mobile || configStore.login.is_mobile){
-            value.push({ type: 'mobile', title: t('mobileLogin') })
-        }
-        type.value = value[0] ? value[0].type : ''
-        return value
-    })
-
-    const rules = computed(() => {
-        return {
-            'username': {
-                type: 'string',
-                required: type.value == 'username',
-                message: t('usernamePlaceholder'),
-                trigger: ['blur', 'change'],
-            },
-            'password': {
-                type: 'string',
-                required: type.value == 'username',
-                message: t('passwordPlaceholder'),
-                trigger: ['blur', 'change']
-            },
-            'mobile': [
-                {
-                    type: 'string',
-                    required: type.value == 'mobile',
-                    message: t('mobilePlaceholder'),
-                    trigger: ['blur', 'change'],
-                },
-                {
-                    validator(rule, value) {
-                        if (type.value != 'mobile') return true
-                        else return uni.$u.test.mobile(value)
-                    },
-                    message: t('mobileError'),
-                    trigger: ['change', 'blur'],
-                }
-            ],
-            'mobile_code': {
-                type: 'string',
-                required: type.value == 'mobile',
-                message: t('codePlaceholder'),
-                trigger: ['blur', 'change']
-            }
-        }
-    })
-
-    const isAgree = ref(false)
-
-    const formRef = ref(null)
-
-    const handleLogin = () => {
-        formRef.value.validate().then(() => {
-            if (configStore.login.agreement_show && !isAgree.value) {
-                uni.showToast({ title: t('isAgreeTips'), icon: 'none' });
-                return false;
-            }
-
-            if (loading.value) return
-            loading.value = true
-
-            const login = type.value == 'username' ? usernameLogin : mobileLogin
-
-            login(formData).then((res) => {
-                memberStore.setToken(res.data.token)
-                if(configStore.login.is_bind_mobile && !res.data.mobile){
-                    uni.setStorageSync('isbindmobile', true)
-                }
-                useLogin().handleLoginBack()
-            }).catch(() => {
-                loading.value = false
-            })
-        })
-    }
-
-    // todo 一键登录
-    const loginLoading = ref(false)
-    const oneClickLogin = () =>{
-        // 第三方平台自动登录
-        if (loginLoading.value) return
-        loginLoading.value =true
-        const login = useLogin()
-        login.getAuthCode('',false,true)
-    }
-
-    const wxPrivacyPopupRef:any = ref(null)
-
-    // 检测是否同意隐私协议
-    const checkWxPrivacy = ()=>{
-        wxPrivacyPopupRef.value.proactive();
-    }
-    const mobileAuth = (e) => {
-        if (!isAgree.value && configStore.login.agreement_show) {
-            uni.showToast({
-                title: `${ t('pleaceAgree') }《${ t('userAgreement') }》《${ t('privacyAgreement') }》`,
-                icon: 'none'
-            })
-            return
-        }
-        
-        const login = useLogin()
-        login.getAuthCode('',false,true,(data) => {
-            if (e.detail.errMsg == 'getPhoneNumber:ok') {
-                uni.showLoading({ title: '' })
-
-                bind({
-                    openid:data.openid,
-                    unionid:data.unionid,
-                    mobile_code: e.detail.code
-                }).then((res) => {
-                    uni.hideLoading()
-                    memberStore.setToken(res.data.token)
-                    useLogin().handleLoginBack()
-                    
-                }).catch((res) => {
-                    setTimeout(() => {
-                        uni.hideLoading()
-                    }, 2000);
-                })
-            }
-
-            if (e.detail.errno == 104) {
-                let msg = '用户未授权隐私权限';
-                uni.showToast({ title: msg, icon: 'none' })
-            }
-            if (e.detail.errMsg == "getPhoneNumber:fail user deny") {
-                let msg = '用户拒绝获取手机号码';
-                uni.showToast({ title: msg, icon: 'none' })
-            }
-        })
-    }
+	}
 </script>
-
-<style lang="scss">
-	.u-input{
+<style lang="scss" scoped>
+	:deep(.u-input){
 		background-color: transparent !important;
+	}
+	:deep(.u-checkbox){
+		margin: 0 !important;
+	}
+	:deep(.u-form-item){
+		flex:1;
+		.u-line{
+			display:none;
+		}
+	}
+	.footer{
+		margin-top:200rpx;
+		padding-bottom:calc(151rpx + constant(safe-area-inset-bottom));
+		padding-bottom:calc(151rpx + env(safe-area-inset-bottom));
 	}
 </style>

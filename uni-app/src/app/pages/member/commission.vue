@@ -1,74 +1,68 @@
 <template>
-	<view class="bg-[#F6F6F6] min-h-[100vh] w-full" :style="themeColor()" v-if="memberStore.info">
-		<view class="fixed w-full z-2 !bg-[#F6F6F6]">
+	<view class="bg-[var(--page-bg-color)] min-h-[100vh] w-full" :style="themeColor()" v-if="memberStore.info">
+		<view class="fixed w-full z-2 !bg-[var(--page-bg-color)]">
 			<view class="pb-[272rpx]" :style="headerStyle">
 				<!-- #ifdef MP-WEIXIN -->
 				<top-tabbar :data="param" class="top-header"/>
 				<!-- #endif -->
 			</view>
-			<view class="mt-[-232rpx] sidebar-marign" :style="{ backgroundImage: 'url(' + img('static/resource/images/member/commission/account_bg.png') + ')',backgroundRepeat:'no-repeat',backgroundSize:'100% 100%'}">
+			<view class="mt-[-232rpx] sidebar-marign rounded-[var(--rounded-big)]" :style="{ backgroundImage: 'url(' + img('static/resource/images/member/commission/account_bg.png') + ')',backgroundRepeat:'no-repeat',backgroundSize:'100% 100%'}">
 				<view class="pt-[40rpx]">
 					<view class="flex items-center justify-between px-[30rpx]">
 						<view>
-							<view class="text-[26rpx] font-400 text-[#fff] leading-[36rpx] mb-[16rpx]">{{t('accountCommission')}}</view>
-							<view class="font-bold text-[#fff] flex items-baseline">
-								<text class="text-[56rpx] h-[72rpx] price-font">{{ memberStore.info ? (moneyFormat(memberStore.info.commission).split(".")[0]+'.') : '0.' }}</text>
-								<text class="text-[44rpx] h-[56rpx] price-font">{{ memberStore.info ? moneyFormat(memberStore.info.commission).split(".")[1] : '00' }}</text>
+							<view class="text-[26rpx] font-400 text-[#fff] mb-[20rpx]">{{t('accountCommission')}}</view>
+							<view class="font-bold text-[56rpx] price-font text-[#fff] flex items-baseline">
+								{{ memberStore.info ? moneyFormat(memberStore.info.commission) : '0.00' }}
 							</view>
 						</view>
-						<button @click="applyCashOut" hover-class="none" class="bg-[#fff] rounded-[100rpx] w-[150rpx] h-[66rpx] leading-[66rpx] text-[#EF000C] m-[0] border-[0] text-[32rpx]">{{t('transferMoney')}}</button>
+						<button @click="applyCashOut" hover-class="none" class="bg-[#fff] rounded-[100rpx] w-[160rpx] h-[70rpx] flex-center text-[#EF000C] m-[0] border-[0] text-[26rpx]">{{t('transferMoney')}}</button>
 					</view>
-					<view class="flex items-center mt-[68rpx] px-[30rpx] border-[0] border-t-[2rpx] border-solid border-[rgba(255,255,255,.3)] h-[126rpx]">
+					<view class="flex items-center mt-[60rpx] px-[30rpx] pb-[10rpx] border-[0] border-t-[2rpx] border-solid border-[rgba(255,255,255,.1)] h-[126rpx]">
 						<view class="flex-1">
-							<view class="font-bold text-[#fff] text-[36rpx] leading-[44rpx] mb-[6rpx] price-font">
+							<view class="font-bold text-[#fff] text-[40rpx] mb-[10rpx] price-font">
 								{{ moneyFormat(memberStore.info?.commission_get)|| '0.00' }}
 							</view>
-							<view class="text-[26rpx] text-[#fff] leading-[36rpx]">{{ t('commission') }}</view>
+							<view class="text-[24rpx] text-[#fff]">{{ t('commission') }}</view>
 						</view>
 						<view class="flex-1">
-							<view class="font-bold text-[#fff] text-[36rpx] leading-[44rpx] mb-[6rpx] price-font">
+							<view class="font-bold text-[#fff] text-[40rpx] mb-[10rpx] price-font">
 								{{ moneyFormat(memberStore.info?.commission_cash_outing)|| '0.00' }}
 							</view>
-							<view class="text-[26rpx] text-[#fff] leading-[36rpx]">{{ t('money') }}</view>
+							<view class="text-[24rpx] text-[#fff]">{{ t('money') }}</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="mt-[40rpx] tab-style-1">
+			<view class="mt-[30rpx] tab-style-1">
 				<view class="tab-left">
 					<view class="tab-left-item" :class="{ 'class-select': fromType.from_type === item.from_type && fromType.account_data_gt === item.account_data_gt }" @click="fromTypeFn(item,index)" v-for="(item, index) in accountTypeList">{{ item.name }}</view>
 				</view>
 				<view class="tab-right" @click="handleSelect">
                     <view class="tab-right-date">日期</view>
-                    <view class="nc-iconfont nc-icon-riliV6xx tab-right-icon"></view>
+                    <view class="nc-iconfont nc-icon-a-riliV6xx-36 tab-right-icon"></view>
                 </view>
 			</view>
 		</view>
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="geCommissionListFn" :top="mescrollTop">
-            	<view class="px-[var(--sidebar-m)] pt-[20rpx] body-bottom" v-if="list.length">
-					<view v-for="(item,index) in list" :key="item.id" class="w-full h-[140rpx] flex justify-between items-center card-template" :class="{'mt-[20rpx]':index}">
-						<view class="flex items-center">
-							<view class="w-[80rpx] h-[80rpx] text-center rounded-[40rpx] text-[40rpx] font-500 leading-[80rpx] text-[#fff]"
-							:class="{'bg-[#EF000C]' :item.account_data > 0, 'bg-[#1379FF]':item.account_data <= 0 }">
-								{{item.account_data > 0?'收':'提'}}
-							</view>
-							<view class="flex flex-col ml-[20rpx]">
-								<view class="text-[#333] text-[26rpx] leading-[36rpx]">{{item.from_type_name}}</view>
-								<view class="text-[#8288A2] text-[24rpx] leading-[34rpx] mt-[4rpx] font-400">{{item.create_time}}</view>
-							</view>
+            <view class="px-[var(--sidebar-m)] pt-[10rpx] body-bottom" v-if="list.length">
+				<view v-for="(item,index) in list" :key="item.id" class="w-full h-[140rpx] flex justify-between items-center card-template" :class="{'mt-[var(--top-m)]':index}">
+					<view class="flex items-center">
+						<view class="w-[80rpx] h-[80rpx] rounded-[40rpx] text-[40rpx] font-500  text-[#fff] flex items-center justify-center" :class="{'bg-[#EF000C]' :item.account_data > 0, 'bg-[#1379FF]':item.account_data <= 0 }">
+							{{item.account_data > 0?'收':'提'}}
 						</view>
-						<view class="text-[36rpx] leading-[50rpx]" :class="{'text-[#EF000C]' :item.account_data > 0, 'text-[#333]':item.account_data <= 0 }">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
+						<view class="flex flex-col ml-[20rpx]">
+							<view class="text-[#333] text-[28rpx] leading-[36rpx]">{{item.from_type_name}}</view>
+							<view class="text-[var(--text-color-light9)] text-[24rpx] mt-[12rpx]">{{item.create_time}}</view>
+						</view>
 					</view>
+					<view class="text-[36rpx] leading-[50rpx] price-font" :class="{'text-[#EF000C]' :item.account_data > 0, 'text-[#1379FF]':item.account_data <= 0 }">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
 				</view>
-				<view class="box-border pt-[20rpx] px-[30rpx] body-bottom" :style="{'height':'calc(100vh - '+ mescrollTop +')'}" v-if="!list.length && !loading &&!listLoading">
-					<view class="h-full rounded-[16rpx] flex items-center justify-center">
-						<mescroll-empty></mescroll-empty>
-					</view>
-				</view>
-            </mescroll-body>
-			<u-loading-page bg-color="rgb(248,248,248)" :loading="loading" loadingText="" fontSize="16" color="#303133"></u-loading-page>
-			<!-- 时间选择 -->
-			<select-date ref="selectDateRef" @confirm="confirmFn" />
+			</view>
+			<mescroll-empty v-if="!list.length && !loading &&!listLoading"></mescroll-empty>
+        </mescroll-body>
+	    <loading-page :loading="loading"></loading-page>
+		<!-- 时间选择 -->
+		<select-date ref="selectDateRef" @confirm="confirmFn" />
 	</view>
 </template>
 
@@ -100,7 +94,7 @@
     /********* 自定义头部 - end ***********/
 
 	// 获取系统状态栏的高度
-	let menuButtonInfo:any = {};
+	let menuButtonInfo: any = {};
 	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
 	menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -115,7 +109,7 @@
 	})
 	//  16为自定头部的padding-bottom
 	const mescrollTop = computed(()=>{
-		return Object.keys(menuButtonInfo).length? (Number(menuButtonInfo.height) * 2 + menuButtonInfo.top * 2  + 486 + 16)+'rpx':'504rpx'
+		return Object.keys(menuButtonInfo).length? (Number(menuButtonInfo.height) * 2 + menuButtonInfo.top * 2  + 470 + 16)+'rpx':'470rpx'
 	})
 
 	//来源类型
@@ -139,7 +133,7 @@
 		fromType.value.account_data_gt = data.account_data_gt
 		getMescroll().resetUpScroll();
 	}
-	const geCommissionListFn = (mescroll) => {
+	const geCommissionListFn = (mescroll: any) => {
 		listLoading.value = true;
 		let data : Object = {
 			page: mescroll.num,
@@ -149,7 +143,7 @@
 			create_time:create_time.value
 		}
 		getMemberCommission(data).then((res:any) => {
-			let newArr = res.data.data;-
+			let newArr = res.data.data;
 			mescroll.endSuccess(newArr.length);
 			//设置列表数据
 			if (mescroll.num == 1) {
@@ -170,7 +164,7 @@ const handleSelect = () =>{
 	selectDateRef.value.show = true
 }
 // 确定时间筛选
-const confirmFn = (data) =>{
+const confirmFn = (data: any) =>{
 	create_time.value = data;
 	list.value = []
 	getMescroll().resetUpScroll();

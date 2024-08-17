@@ -62,7 +62,7 @@
 
 								<text v-if="diyComponent.mode != 'img'"
 									class="graphic-text w-full text-center truncate leading-normal"
-									:class="{ 'pt-1.5' : diyComponent.mode != 'text' }"
+									:class="{ 'pt-[16rpx]' : diyComponent.mode != 'text' }"
 									:style="{ fontSize: diyComponent.font.size * 2 + 'rpx', fontWeight: diyComponent.font.weight, color: diyComponent.font.color }">
 									{{ item.title }}
 								</text>
@@ -98,7 +98,7 @@
 									</view>
 									<text v-if="diyComponent.mode != 'img'"
 										class="graphic-text w-full text-center truncate leading-normal"
-										:class="{ 'pt-1.5' : diyComponent.mode != 'text' }"
+										:class="{ 'pt-[16rpx]' : diyComponent.mode != 'text' }"
 										:style="{ fontSize: diyComponent.font.size * 2 + 'rpx', fontWeight: diyComponent.font.weight, color: diyComponent.font.color }">
 										{{ item.title }}
 									</text>
@@ -138,7 +138,7 @@
 							</view>
 							<text v-if="diyComponent.mode != 'img'"
 								class="graphic-text w-full text-center truncate leading-normal"
-								:class="{ 'pt-1.5' : diyComponent.mode != 'text' }"
+								:class="{ 'pt-[16rpx]' : diyComponent.mode != 'text' }"
 								:style="{ fontSize: diyComponent.font.size * 2 + 'rpx', fontWeight: diyComponent.font.weight, color: diyComponent.font.color }">
 								{{ item.title }}
 							</text>

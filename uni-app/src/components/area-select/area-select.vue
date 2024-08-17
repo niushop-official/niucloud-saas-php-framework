@@ -1,18 +1,18 @@
 <template>
-    <u-popup :show="show" @close="show = false" mode="bottom" :round="10" :closeable="true">
-        <view @touchmove.prevent.stop>
-        <view class="text-center p-[30rpx]">请选择地区</view>
+    <u-popup :show="show" @close="show = false" mode="bottom" :round="10">
+        <view @touchmove.prevent.stop class="popup-common">
+        <view class="title">请选择地区</view>
         
-            <view class="flex p-[30rpx] text-sm font-semibold">
-                <view v-if="areaList.province.length" class="flex-1" :class="{'text-[var(--primary-color)]': currSelect == 'province'}" @click="currSelect = 'province'">
+            <view class="flex p-[30rpx] pt-[0] text-sm font-500">
+                <view v-if="areaList.province.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'province'}" @click="currSelect = 'province'">
                     <view v-if="selected.province">{{ selected.province.name }}</view>
                     <view v-else>请选择</view>
                 </view>
-                <view v-if="areaList.city.length" class="flex-1" :class="{'text-[var(--primary-color)]': currSelect == 'city' }" @click="currSelect = 'city'">
+                <view v-if="areaList.city.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'city' }" @click="currSelect = 'city'">
                     <view v-if="selected.city">{{ selected.city.name }}</view>
                     <view v-else>请选择</view>
                 </view>
-                <view v-if="areaList.district.length" class="flex-1" :class="{'text-[var(--primary-color)]': currSelect == 'district' }" @click="currSelect = 'district'">
+                <view v-if="areaList.district.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'district' }" @click="currSelect = 'district'">
                     <view v-if="selected.district">{{ selected.district.name }}</view>
                     <view v-else>请选择</view>
                 </view>
@@ -20,15 +20,15 @@
             <scroll-view scroll-y="true" class="h-[50vh]">
                 <view class="flex p-[30rpx] pt-0 text-sm">
                     <view v-if="areaList.province.length" v-show="currSelect == 'province'">
-                        <view v-for="item in areaList.province" class="leading-loose" :class="{'text-[var(--primary-color)]': selected.province && selected.province.id == item.id }"
+                        <view v-for="item in areaList.province" class="h-[80rpx] flex items-center" :class="{'text-[var(--primary-color)]': selected.province && selected.province.id == item.id }"
                             @click="selected.province = item" >{{ item.name }}</view>
                     </view>
                     <view v-if="areaList.city.length" v-show="currSelect == 'city'">
-                        <view v-for="item in areaList.city" class="leading-loose" :class="{'text-[var(--primary-color)]': selected.city && selected.city.id == item.id }"
+                        <view v-for="item in areaList.city" class="h-[80rpx] flex items-center" :class="{'text-[var(--primary-color)]': selected.city && selected.city.id == item.id }"
                             @click="selected.city = item">{{ item.name }}</view>
                     </view>
                     <view v-if="areaList.district.length" v-show="currSelect == 'district'">
-                        <view v-for="item in areaList.district" class="leading-loose" :class="{'text-[var(--primary-color)]': selected.district && selected.district.id == item.id }"
+                        <view v-for="item in areaList.district" class="h-[80rpx] flex items-center " :class="{'text-[var(--primary-color)]': selected.district && selected.district.id == item.id }"
                             @click="selected.district = item">{{ item.name }}</view>
                     </view>
                 </view>

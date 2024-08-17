@@ -1,31 +1,33 @@
 <template>
 	<u-popup :show="show" :round="10" @close="handleClose" :closeable="true" bgColor="#fff" zIndex="10081" :closeOnClickOverlay="false">
-		<view class="flex flex-col h-[75vh]" v-if="payInfo" @touchmove.prevent.stop>
+		<view class="flex flex-col h-[75vh] popup-common" v-if="payInfo" @touchmove.prevent.stop>
 			<view class="head">
-				<view class="text-center py-[26rpx]">{{ t('pay.payTitle') }}</view>
-				<view class="flex items-end justify-center w-full text-xl font-bold py-[20rpx]">
+				<view class="title">
+					{{ t('pay.payTitle') }}
+				</view>
+				<view class="flex items-end justify-center w-full text-xl font-bold py-[20rpx] price-font">
 					<view class="text-base mr-[4rpx]">{{ t('currency') }}</view>
 					{{ moneyFormat(payInfo.money) }}
 				</view>
 			</view>
 			<scroll-view scroll-y="true" class="flex-1 pt-[20rpx]">
-				<view class="flex text-sm px-[30rpx] py-[20rpx]">
-					<view class="text-gray-500">{{ t('pay.orderInfo') }}</view>
-					<view class="text-right flex-1 pl-[30rpx] using-hidden">{{ payInfo.body }}</view>
+				<view class="flex text-[28rpx] px-[36rpx] py-[20rpx] mb-[10rpx]">
+					<view class="text-[var(--text-color-light6)]">{{ t('pay.orderInfo') }}</view>
+					<view class="text-right flex-1 pl-[30rpx] truncate">{{ payInfo.body }}</view>
 				</view>
-				<view class="mx-[30rpx] py-[10rpx] px-[30rpx] bg-white rounded-md bg-page">
+				<view class="mx-[var(--popup-sidebar-m)] px-[30rpx] bg-white rounded-[20rpx] bg-[var(--temp-bg)]">
                     <block v-if="payInfo.pay_type_list.length">
-                        <view class="pay-item py-[18rpx] flex items-center border-0 border-b border-solid border-[#eee]" v-for="(item, index) in payInfo.pay_type_list" :key="index" @click="type = item.key">
+                        <view class="pay-item py-[30rpx] flex items-center border-0 border-b border-solid border-[#eee]" v-for="(item, index) in payInfo.pay_type_list" :key="index" @click="type = item.key">
                             <u-image :src="img(item.icon)" width="50rpx" height="50rpx"></u-image>
-                            <view class="flex-1 px-[20rpx] text-sm font-bold">{{ item.name }}</view>
+                            <view class="flex-1 px-[20rpx] text-[28rpx] font-500">{{ item.name }}</view>
                             <u-icon name="checkbox-mark" color="var(--primary-color)" v-if="item.key == type"></u-icon>
                         </view>
                     </block>
-                    <view class="py-[20rpx] text-center text-sm text-gray-subtitle" v-else>{{ t('pay.notHavePayType') }}</view>
+                    <view class="py-[30rpx] text-center text-[24rpx] text-gray-subtitle" v-else>{{ t('pay.notHavePayType') }}</view>
 				</view>
 			</scroll-view>
-			<view class="p-[30rpx]">
-                <button class="primary-btn-bg h-[80rpx] rounded-[50rpx] leading-[80rpx] text-[28rpx] text-[#fff]" hover-class="none" :loading="loading" @click="confirmPay">{{t('pay.confirmPay')}}</button>
+			<view class="btn-wrap">
+                <button class="primary-btn-bg btn" hover-class="none" :loading="loading" @click="confirmPay">{{t('pay.confirmPay')}}</button>
 			</view>
 		</view>
 	</u-popup>
@@ -61,20 +63,20 @@
 
 		pay({
 			trade_type: payInfo.value?.trade_type,
-            trade_id: payInfo.value?.trade_id,
+			trade_id: payInfo.value?.trade_id,
 			type: type.value,
-            openid: uni.getStorageSync('openid') || ''
-		}).then(res => {
+			openid: uni.getStorageSync('openid') || ''
+		}).then((res: any) => {
 			switch (type.value) {
 				case 'wechatpay':
 					// #ifndef H5
 					uni.requestPayment({
 						provider: 'wxpay',
 						...res.data,
-						success: (res) => {
-                            toPayResult()
+						success: (res: any) => {
+							toPayResult()
 						},
-						fail: (res) => {
+						fail: (res: any) => {
 							loading.value = false
 						}
 					})
@@ -86,14 +88,17 @@
 						wechat.pay({
 							...res.data,
 							success: () => {
-                                toPayResult()
+								toPayResult()
 							},
 							cancel: () => {
 								loading.value = false
 							}
 						})
 					} else {
-						uni.setStorageSync('paymenting', { trade_type: payInfo.value?.trade_type, trade_id: payInfo.value?.trade_id })
+						uni.setStorageSync('paymenting', {
+							trade_type: payInfo.value?.trade_type,
+							trade_id: payInfo.value?.trade_id
+						})
 						location.href = res.data.h5_url
 					}
 					// #endif
@@ -101,25 +106,34 @@
 				case 'alipay':
 					// #ifdef H5
 					if (isWeixinBrowser()) {
-						redirect({ url: '/app/pages/pay/browser', param: { trade_type: payInfo.value?.trade_type, trade_id: payInfo.value?.trade_id, alipay: encodeURIComponent(res.data.url) }, mode: 'redirectTo' })
+						redirect({
+							url: '/app/pages/pay/browser',
+							param: {
+								trade_type: payInfo.value?.trade_type,
+								trade_id: payInfo.value?.trade_id,
+								alipay: encodeURIComponent(res.data.url)
+							},
+							mode: 'redirectTo'
+						})
 					} else {
-						uni.setStorageSync('paymenting', { trade_type: payInfo.value?.trade_type, trade_id: payInfo.value?.trade_id })
+						uni.setStorageSync('paymenting', {
+							trade_type: payInfo.value?.trade_type,
+							trade_id: payInfo.value?.trade_id
+						})
 						location.href = res.data.url
 					}
 					// #endif
 					break;
 				default:
-                    if (res.data.url) {
-                        redirect({
-                            url: res.data.url,
-                            param: res.data.param || {},
-                            mode: 'redirectTo',
-                            success() {
-                            }
-                        })
-                        return
-                    }
-                    toPayResult()
+					if (res.data.url) {
+						redirect({
+							url: res.data.url,
+							param: res.data.param || {},
+							mode: 'redirectTo'
+						})
+						return
+					}
+					toPayResult()
 			}
 		}).catch(() => {
 			loading.value = false
@@ -149,30 +163,29 @@
 	const open = (tradeType : string, tradeId : number, payReturn: string = '') => {
 		if (repeat.value) return
 		repeat.value = true
-        // 设置支付后跳转页面
-        uni.setStorageSync('payReturn', encodeURIComponent(payReturn))
 
-		getPayInfo(tradeType, tradeId)
-			.then((res : any) => {
-				let { data } = res
-                payInfo.value = data
+		// 设置支付后跳转页面
+		uni.setStorageSync('payReturn', encodeURIComponent(payReturn))
 
-				if (uni.$u.test.isEmpty(data)) {
-					uni.showToast({ title: t('pay.notObtainedInfo'), icon: 'none' })
-					return
-				}
-				if (data.money == 0) {
-                    toPayResult()
-					return
-				}
-				type.value = data.pay_type_list[0] ? data.pay_type_list[0].key : ''
-				show.value = true
-				repeat.value = false
+		getPayInfo(tradeType, tradeId).then((res: any) => {
+			let { data } = res
+			payInfo.value = data
 
-			})
-			.catch(() => {
-				repeat.value = false
-			})
+			if (uni.$u.test.isEmpty(data)) {
+				uni.showToast({ title: t('pay.notObtainedInfo'), icon: 'none' })
+				return
+			}
+			if (data.money == 0) {
+				toPayResult()
+				return
+			}
+			type.value = data.pay_type_list[0] ? data.pay_type_list[0].key : ''
+			show.value = true
+			repeat.value = false
+
+		}).catch(() => {
+			repeat.value = false
+		})
 	}
 
     const toPayResult = ()=> {

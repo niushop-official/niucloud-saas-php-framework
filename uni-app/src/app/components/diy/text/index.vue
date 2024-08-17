@@ -2,12 +2,12 @@
 	<view :style="warpCss">
 		<view :style="maskLayer"></view>
 		<view class="diy-text relative">
-			<view v-if="diyComponent.style == 'style-1'" class=" px-[20rpx]">
+			<view v-if="diyComponent.style == 'style-1'" class=" px-[var(--pad-sidebar-m)]">
 				<view @click="diyStore.toRedirect(diyComponent.link)">
-					<view :style="{
+					<view class="leading-[1]" :style="{
 							fontSize: diyComponent.fontSize * 2 + 'rpx',
 							color: diyComponent.textColor,
-							fontWeight: diyComponent.fontWeight,
+							fontWeight: (diyComponent.fontWeight == 'normal' ? 500 : diyComponent.fontWeight),
 							textAlign : diyComponent.textAlign
 						}">
 						{{ diyComponent.text }}
@@ -16,19 +16,20 @@
 			</view>
 			<view v-if="diyComponent.style == 'style-2'" class=" px-[20rpx] flex items-center">
 				<view @click="diyStore.toRedirect(diyComponent.link)">
-					<view class="max-w-[200rpx] truncate" :style="{
+					<view class="max-w-[200rpx] truncate leading-[1]" :style="{
 							fontSize: diyComponent.fontSize * 2 + 'rpx',
 							color: diyComponent.textColor,
-							fontWeight: diyComponent.fontWeight
+							fontWeight: (diyComponent.fontWeight == 'normal' ? 500 : diyComponent.fontWeight)
 						}">
 						{{ diyComponent.text }}
 					</view>
 				</view>
-				<text class="ml-[16rpx] max-w-[300rpx] truncate" :style="{ color: diyComponent.subTitle.color, fontSize: diyComponent.subTitle.fontSize * 2 + 'rpx', }">{{ diyComponent.subTitle.text }}</text>
+				<text v-if="diyComponent.subTitle.text" :style="{background: diyComponent.subTitle.color}" class="mx-[10rpx] w-[2rpx] h-[24rpx] opacity-70"></text>
+				<text class="max-w-[300rpx] truncate" :style="{ color: diyComponent.subTitle.color, fontSize: diyComponent.subTitle.fontSize * 2 + 'rpx', }">{{ diyComponent.subTitle.text }}</text>
 				<view class="ml-auto text-right " v-if="diyComponent.more.isShow" :style="{ color: diyComponent.more.color }">
 					<view @click="diyStore.toRedirect(diyComponent.more.link)" class="flex items-center">
-						<text class="max-w-[200rpx] truncate text-[24rpx]">{{ diyComponent.more.text }}</text>
-						<text class="nc-iconfont nc-icon-youV6xx text-[26rpx]" :style="{ color: diyComponent.more.color }"></text>
+						<text class="max-w-[200rpx] truncate text-[26rpx]">{{ diyComponent.more.text }}</text>
+						<text class="nc-iconfont nc-icon-youV6xx text-[24rpx]" :style="{ color: diyComponent.more.color }"></text>
 					</view>
 				</view>
 			</view>

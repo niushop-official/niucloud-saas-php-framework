@@ -18,6 +18,15 @@
 			}
 		},
 		{
+			"path": "app/pages/auth/index",
+			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
+				"navigationBarTitleText": "%pages.auth.index%"
+			}
+		},
+		{
 			"path": "app/pages/auth/agreement",
 			"style": {
 				"navigationBarTitleText": "%pages.auth.agreement%"
@@ -26,24 +35,36 @@
 		{
 			"path": "app/pages/auth/bind",
 			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
 				"navigationBarTitleText": "%pages.auth.bind%"
 			}
 		},
 		{
 			"path": "app/pages/auth/login",
 			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
 				"navigationBarTitleText": "%pages.auth.login%"
 			}
 		},
 		{
 			"path": "app/pages/auth/register",
 			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
 				"navigationBarTitleText": "%pages.auth.register%"
 			}
 		},
 		{
 			"path": "app/pages/auth/resetpwd",
 			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
 				"navigationBarTitleText": "%pages.auth.resetpwd%"
 			}
 		},
@@ -201,13 +222,6 @@
 			"needLogin": true
 		},
 		{
-			"path": "app/pages/member/location_address_edit",
-			"style": {
-				"navigationBarTitleText": "%pages.member.address_edit%"
-			},
-			"needLogin": true
-		},
-		{
 			"path": "app/pages/member/sign_in",
 			"style": {
 				// #ifndef H5
@@ -305,9 +319,9 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#ffffff",
-		"backgroundColor": "#F8F8F8",
-		"backgroundColorTop": "#F8F8F8",
-		"backgroundColorBottom": "#F8F8F8"
+		"backgroundColor": "#F6F6F6",
+		"backgroundColorTop": "#F6F6F6",
+		"backgroundColorBottom": "#F6F6F6"
 	},
 	"tabBar": {
 		"list": [{

@@ -1,75 +1,68 @@
 <template>
-    <view class="min-h-[100vh] !bg-[#F6F6F6]" :style="themeColor()" v-if="memberStore.info">
-			<view class="fixed w-full z-2  !bg-[#F6F6F6]">
-				<view class="pb-[203rpx] text-[#fff] w-full" :style="headerStyle">
+    <view class="min-h-[100vh] !bg-[var(--page-bg-color)]" :style="themeColor()" v-if="memberStore.info">
+			<view class="fixed w-full z-2  !bg-[var(--page-bg-color)]">
+				<view class="pb-[190rpx] text-[#fff] w-full" :style="headerStyle">
 					<!-- #ifdef MP-WEIXIN -->
 					<top-tabbar :data="param" class="top-header"/>
 					<!-- #endif -->
-				    <view class="leading-[39rpx] text-[28rpx] pl-[53rpx] pt-[79rpx]">{{t('accountBalance')}}</view>
-					<view class="flex items-baseline pl-[53rpx]">
-						<text class="text-[40rpx] leading-[56rpx]">￥</text>
-						<text class="text-[70rpx] leading-[98rpx]">{{ memberStore.info ? moneyFormat((parseFloat(memberStore.info.balance) + parseFloat(memberStore.info.money)).toString()) : '0.00' }}</text>
+				    <view class="leading-[38rpx] text-[28rpx] pl-[60rpx] pt-[100rpx]">{{t('accountBalance')}}</view>
+					<view class="flex items-baseline pl-[60rpx]" >
+						<text class="text-[36rpx] leading-[52rpx] mr-[6rpx] price-font">￥</text>
+						<text class="text-[56rpx] leading-[72rpx] price-font">{{ memberStore.info ?  moneyFormat((parseFloat(memberStore.info.balance) + parseFloat(memberStore.info.money)).toString()).split('.')[0] : '0' }}.</text>
+						<text class="text-[36rpx] leading-[56rpx] price-font">{{ memberStore.info ? moneyFormat((parseFloat(memberStore.info.balance) + parseFloat(memberStore.info.money)).toString()).split('.')[1] : '00'  }}</text>
 					</view>
 				</view>
-				<view class="sidebar-marign py-[30rpx] bg-[#fff] rounded-[16rpx] px-[40rpx] box-border w-[calc(100% - 60rpx)] mt-[-112rpx]">
+				<view class="sidebar-marign pt-[50rpx] pb-[40rpx] bg-[#fff] rounded-[var(--rounded-big)] px-[40rpx] box-border mt-[-112rpx]">
 					<view class="flex flex-col items-center w-full" @click="redirect({ url: '/app/pages/member/detailed_account', param: { type : 'money' } })"  :class="{'pt-[12rpx]': !Object.keys(cashOutConfigObj).length || (Object.keys(cashOutConfigObj).length && !systemStore.siteAddons.includes('recharge') && cashOutConfigObj.is_open != 1)}">
-						<view class=" text-[#999] text-[24rpx] leading-[34rpx] font-400">{{t('money')}}</view>
-						<view class="flex items-baseline text-[#333]">
-							<text class="text-[26rpx] leading-[36rpx]">￥</text>
-							<text class="text-[44rpx] leading-[62rpx] font-bold">{{ moneyFormat(memberStore.info?.money)|| '0.00' }}</text>
+						<view class=" text-[var(--text-color-light9)] text-[26rpx] leading-[34rpx] mb-[12rpx]">{{t('money')}}</view>
+						<view class="text-[#333] inline-block">
+							<text class="text-[36rpx] mr-[6rpx] price-font">￥</text>
+							<text class="text-[56rpx] font-500 price-font">{{ moneyFormat(memberStore.info?.money).split('.')[0] }}.</text>
+							<text class="text-[36rpx] font-500 price-font">{{ moneyFormat(memberStore.info?.money).split('.')[1] }}</text>
 						</view>
-						
 					</view>
-					<view class="mt-[50rpx] flex justify-between" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1)">
-						<button :class="{'!w-[630rpx]': cashOutConfigObj.is_open != 1}" class="w-[280rpx] h-[66rpx] rounded-[40rpx] text-[30rpx] !bg-[#fff] !text-[var(--primary-color)] leading-[64rpx] !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border" shape="circle" v-if="systemStore.siteAddons.includes('recharge')"
-                    @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
-						<view v-if="cashOutConfigObj.is_open == 1" :class="{'!w-[630rpx]': !systemStore.siteAddons.includes('recharge')}" class="text-center w-[280rpx] h-[66rpx] rounded-[40rpx] text-[30rpx] !text-[#fff] leading-[66rpx] !m-0"
+					<view class="mt-[60rpx] flex justify-around" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1)">
+						<block v-if="systemStore.siteAddons.includes('recharge')">
+							<button v-if="cashOutConfigObj.is_open != 1" class="!w-[340rpx] h-[70rpx] font-500 rounded-full  text-[26rpx]  primary-btn-bg  !text-[#fff] flex-center !m-0"  hover-class="none" shape="circle" @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
+							<button  v-else class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border"  hover-class="none" shape="circle" @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
+						</block>
+						<view v-if="cashOutConfigObj.is_open == 1" :class="{'!w-[340rpx]': !systemStore.siteAddons.includes('recharge')}" class="text-center w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] !text-[#fff] flex-center font-500 !m-0"
 						style="background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;" @click="applyCashOut">{{t('cashOut')}}</view>
 					</view>
 				</view>
-				<view class="px-[var(--sidebar-m)] box-border mt-[20rpx] flex justify-between items-center">
-					<scroll-view :scroll-x="true" scroll-with-animation :scroll-into-view="'id' + (subActive>3 ? subActive - 2 : 0)" class="!h-[100%] flex-1">
-						<view class="flex whitespace-nowrap">
-							<view :id="'id' + index" class="text-[26rpx] leading-[70rpx] text-[#666] font-400" :class="{ 'class-select': fromType === item.key,'ml-30rpx':index}" @click="fromTypeFn(item.key,index)" v-for="(item, index) in accountTypeList">{{ item.name }}</view>
-						</view>
-					</scroll-view>
-					<view class="flex items-center" @click="handleSelect">
-						<view class="text-[26rpx] text-[#333] mr-[10rpx]">日期</view>
-						<view class="nc-iconfont nc-icon-riliV6xx !text-[28rpx] leading-[36rpx]"></view>
+				<view class="mt-[30rpx] bg-[var(--page-bg-color)] tab-style-1">
+					<view class="tab-left">
+						<view class="tab-left-item" :class="{ 'class-select': fromType === item.key}" @click="fromTypeFn(item.key,index)" v-for="(item, index) in accountTypeList">{{ item.name }}</view>
+					</view>
+					<view class="tab-right" @click="handleSelect">
+						<view class="tab-right-date">日期</view>
+						<view class="nc-iconfont nc-icon-a-riliV6xx-36 tab-right-icon"></view>
 					</view>
 				</view>
 			</view>
             <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" height="auto" @up="getListFn" :top="mescrollTop">
-            	<view class="sidebar-marign pt-[20rpx] body-bottom" v-if="list.length">
-					<view  v-for="(item,index) in list" :key="item.id" class="w-full h-[120rpx] flex justify-between items-center bg-[#fff] box-border p-[20rpx] rounded-[16rpx]" :class="{'mt-[20rpx]':index>0}">
+            	<view class="sidebar-marign pt-[10rpx] body-bottom" v-if="list.length">
+					<view  v-for="(item,index) in list" :key="item.id" class="w-full h-[140rpx] flex justify-between items-center box-border card-template" :class="{'mt-[var(--top-m)]':index>0}">
 						<view class="flex items-center">
-							<view class="w-[80rpx] h-[80rpx] text-center rounded-[40rpx] text-[40rpx] font-bold leading-[80rpx] text-[#fff]"
+							<view class="w-[80rpx] h-[80rpx] text-center rounded-[40rpx] text-[40rpx] font-500 leading-[80rpx] text-[#fff]"
 							:class="{'bg-[#EF000C]' :item.account_data > 0&&item.account_type!='money', 'bg-[#03B521]':item.account_data <= 0&&item.account_type!='money','bg-[#1379FF]':item.account_type=='money'}">
 								{{item.account_type=='money'?'提':item.account_data > 0?'收':'支'}}
 							</view>
 							<view class="flex flex-col ml-[20rpx]">
-								<view class="text-[#000] text-[26rpx] leading-[36rpx]">{{item.from_type_name}}</view>
-								<view class="text-[#999] text-[24rpx] leading-[34rpx] mt-[4rpx] font-400">{{item.create_time}}</view>
+								<view class="text-[#333] text-[28rpx] leading-[36rpx]">{{item.from_type_name}}</view>
+								<view class="text-[var(--text-color-light9)] text-[24rpx] mt-[12rpx]">{{item.create_time}}</view>
 							</view>
 						</view>
 						<view class="text-right">
-							<view class="text-[36rpx] leading-[50rpx]"
+							<view class="text-[36rpx] leading-[40rpx] price-font"
 							:class="{'text-[#EF000C]' :item.account_data > 0&&item.account_type!='money', 'text-[#03B521]':item.account_data <= 0&&item.account_type!='money'}">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
-							<view class="text-[#999] text-[24rpx] leading-[34rpx] mt-[4rpx] font-400">
-								<text class="mr-[15rpx]">剩余余额</text>
-								<text>{{item.account_sum}}</text>
-							</view>
 						</view>
 					</view>
 				</view>
-				<view class="box-border pt-[20rpx] px-[30rpx]  body-bottom" :style="{'height':'calc(100vh - '+mescrollTop +')'}" v-if="!list.length && !loading &&!listLoading">
-					<view class="h-full  rounded-[16rpx] flex items-center justify-center">
-						<mescroll-empty></mescroll-empty>
-					</view>
-				</view>
+				<mescroll-empty v-if="!list.length && !loading &&!listLoading"></mescroll-empty>
 
             </mescroll-body>
-			<u-loading-page bg-color="rgb(248,248,248)" :loading="loading" loadingText="" fontSize="16" color="#303133"></u-loading-page>
+		    <loading-page :loading="loading"></loading-page>
 			<!-- <pay ref="payRef" @close="rechargeLoading = false"></pay> -->
 			<!-- 时间选择 -->
 			<select-date ref="selectDateRef" @confirm="confirmFn" />
@@ -99,9 +92,9 @@
     let param = topTabarObj.setTopTabbarParam({title:'我的余额'})
     /********* 自定义头部 - end ***********/
 
-	const cashOutConfigObj = reactive({})
+	const cashOutConfigObj: any = reactive({})
 	onShow(() => {
-        cashOutConfig().then((res) => {
+        cashOutConfig().then((res: any) => {
             for (let key in res.data) {
                 cashOutConfigObj[key] = res.data[key];
             }
@@ -110,7 +103,7 @@
     })
 
 	// 获取系统状态栏的高度
-	let menuButtonInfo:any = {};
+	let menuButtonInfo: any = {};
 	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
 	menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -127,15 +120,15 @@
 	const mescrollTop = computed(()=>{
 		if(Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1)){
 			if(Object.keys(menuButtonInfo).length){
-				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+669)+'rpx'
+				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+708)+'rpx'
 			}else{
-				return '669rpx'
+				return '708rpx'
 			}
 		}else {
 			if(Object.keys(menuButtonInfo).length){
-				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+566)+'rpx'
+				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+538)+'rpx'
 			}else{
-				return '566rpx'
+				return '538rpx'
 			}
 		}
 	})
@@ -151,7 +144,7 @@
 	const create_time = ref([])
 	//来源类型
 	const subActive = ref(0)
-	const fromTypeFn = (key,index)=>{
+	const fromTypeFn = (key: any,index: any)=>{
 		fromType.value = key
 		subActive.value = index
 		getMescroll().resetUpScroll();
@@ -179,7 +172,7 @@
 		let data : Object = {
 			page: mescroll.num,
 			limit: mescroll.size,
-			from_type:fromType.value,
+			trade_type:fromType.value,
 			create_time: create_time.value
 
 		};
@@ -193,7 +186,7 @@
 			[propName : string] : number | string | object
 		}
 
-		getBalanceListAll(data).then((res : acceptingDataStructure) => {
+		getBalanceListAll(data).then((res : any) => {
 			let newArr = res.data.data;
 			mescroll.endSuccess(newArr.length);
 			//设置列表数据
@@ -215,7 +208,7 @@
 		selectDateRef.value.show = true
 	}
 	// 确定时间筛选
-	const confirmFn = (data) =>{
+	const confirmFn = (data: any) =>{
 		create_time.value = data;
 		list.value = []
 		getMescroll().resetUpScroll();
@@ -223,22 +216,6 @@
 </script>
 
 <style lang="scss" scoped>
-	.class-select {
-		position: relative;
-		font-weight: 500;
-		color: var(--primary-color);
-		&::before {
-			content: "";
-			position: absolute;
-			bottom: 0;
-			height: 4rpx;
-			border-radius: 4rpx;
-			background-color: var(--primary-color);
-			width: 40rpx;
-			left: 50%;
-			transform: translateX(-50%);
-		}
-	}
 	:deep(.uni-scroll-view){
 		overflow: auto hidden !important;
 	}

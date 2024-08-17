@@ -1,37 +1,37 @@
 <template>
-    <view v-if="!loading" :style="themeColor()">
+    <view class="address bg-[var(--page-bg-color)] min-h-[100vh]" v-if="!loading" :style="themeColor()">
         <scroll-view scroll-y="true">
-            <u-swipe-action>
-                <view class="py-[30rpx] sidebar-marign">
-                    <u-swipe-action-item :options="addressOptions" @click="swipeClick(key)" v-for="(item, key) in addressList">
-                        <view class="border-0 !border-b !border-[#f5f5f5] border-solid pb-[30rpx] flex items-center">
-                            <view class="flex-1 line-feed" @click="selectAddress(item)">
-                                <view class="font-bold my-[10rpx] text-sm line-feed">{{ item.full_address }}</view>
-                                <view class="text-sm flex items-center">
-                                    <view>{{ item.name }}</view>
-                                    <text class="text-[26rpx] text-gray-subtitle">{{ mobileHide(item.mobile) }}</text>
-                                    <view class="bg-primary text-white text-xs px-[10rpx] leading-none flex items-center h-[32rpx] ml-[10rpx] rounded min-w-[50rpx]" v-if="item.is_default == 1">{{ t('default') }}</view>
-                                </view>
-                            </view>
-                            <text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[32rpx] p-[20rpx] pr-0" @click="editAddress(item.id)"></text>
-                        </view>
-                    </u-swipe-action-item>
-                    <view v-if="!addressList.length" class="pt-[20vh]">
-                        <mescroll-empty :option="{tip : '暂无收货地址'}"></mescroll-empty>
-                    </view>
-                </view>
-            </u-swipe-action>
-            <u-tabbar :fixed="true" :safeAreaInsetBottom="true" :border="false" zIndex="99">
-                <view class="p-[24rpx] pt-0 w-full">
-                    <button hover-class="none" class="bg-[var(--primary-color)] text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[28rpx]" @click="addAddress">{{t('createAddress')}}</button>
-                </view>
-            </u-tabbar>
+			<view class="sidebar-marign pt-[var(--top-m)]" v-if="addressList.length">
+				<u-swipe-action>
+						<view class="mb-[var(--top-m)] card-template" v-for="(item, key) in addressList">
+							<u-swipe-action-item :options="addressOptions" @click="swipeClick(key)">
+								<view class="flex items-center">
+									<view class="flex-1 line-feed mr-[20rpx]" @click="selectAddress(item)">
+										<view class="flex items-center">
+											<view class="text-[#333] text-[30rpx] leading-[34rpx] font-500">{{ item.name }}</view>
+											<text class="text-[#333] text-[30rpx] ml-[10rpx]">{{ mobileHide(item.mobile) }}</text>
+											<view v-if="item.is_default == 1" class="bg-primary-light !text-[var(--primary-color)] border-[2rpx] border-solid border-[var(--primary-color)] !text-[22rpx] px-[10rpx] h-[36rpx] ml-[10rpx] tag-item">{{ t('default') }}</view>
+										</view>
+										<view class="mt-[16rpx] text-[26rpx] line-feed text-[var(--text-color-light9)] leading-[1.4]">{{ item.full_address }}</view>
+									</view>
+									<text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[32rpx]" @click="editAddress(item.id)"></text>
+								</view>
+							</u-swipe-action-item>
+						</view>	
+				</u-swipe-action>
+			</view>
+			<mescroll-empty v-if="!addressList.length" :option="{tip : '暂无收货地址'}"></mescroll-empty>
+			<view class="w-full footer">
+				<view class="py-[30rpx] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
+					<button hover-class="none" class="primary-btn-bg text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" @click="addAddress">{{t('createAddress')}}</button>
+				</view>
+			</view>
         </scroll-view>
     </view>
 </template>
 
 <script setup lang="ts">
-    import { ref, reactive, computed, watch } from 'vue'
+    import { ref } from 'vue'
     import { onLoad } from '@dcloudio/uni-app'
     import { redirect, img, mobileHide } from '@/utils/common'
     import { getAddressList, deleteAddress } from '@/app/api/member'
@@ -54,8 +54,8 @@
     })
 
     getAddressList({}).then(({ data }) => {
-        const address = [], locationAddress = []
-        data.forEach(item => {
+        const address: any = [], locationAddress: any = []
+        data.forEach((item: any) => {
             item.type == 'address' ? address.push(item) : locationAddress.push(item)
         })
 		if(!source.value){ //地址管理使用
@@ -87,7 +87,7 @@
         }
     ])
 
-    const selectAddress = (data: object) => {
+    const selectAddress = (data: any) => {
         const selectAddress = uni.getStorageSync('selectAddressCallback')
         if (selectAddress) {
             selectAddress.address_id = data.id
@@ -104,7 +104,7 @@
 
     const swipeClick = (index: any) => {
         const list = current.value ? locationAddressList : addressList
-        const data = list.value[index]
+        const data: any = list.value[index]
 
         deleteAddress(data.id).then(() => {
             list.value.splice(index, 1)
@@ -122,4 +122,15 @@
         word-wrap:break-word;
         word-break: break-all;
     }
+	:deep(.u-swipe-action-item__right__button__wrapper__text.u-line-1){
+		font-size: 24rpx !important;
+		
+	}
+	:deep(.u-swipe-action-item__right__button__wrapper){
+	    padding:0 10rpx !important;
+	}
+	.footer{
+		height: calc(100rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;
+		height: calc(100rpx + var(--top-m) + var(--top-m) + env(safe-area-inset-bottom)) !important;
+	}
 </style>

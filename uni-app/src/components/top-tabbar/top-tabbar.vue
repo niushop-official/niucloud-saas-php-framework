@@ -24,8 +24,8 @@
 						<image :src="img(topStatusBarData.imgUrl)" mode="heightFix"></image>
 					</view>
 					<view class="search" @click="diyStore.toRedirect(topStatusBarData.link)" :style="{ height: menuButtonInfo.height - 2 + 'px', lineHeight: menuButtonInfo.height - 2 + 'px' }">
-						<text class="nc-iconfont nc-icon-sousuoV6xx absolute left-[20rpx]"></text>
-						<text class="text-[28rpx]">{{topStatusBarData.inputPlaceholder}}</text>
+						<text class="nc-iconfont nc-icon-sousuo-duanV6xx1 text-[24rpx] absolute left-[20rpx]"></text>
+						<text class="text-[24rpx]">{{topStatusBarData.inputPlaceholder}}</text>
 					</view>
 					<view :style="{ 'width': capsuleWidth }"></view>
 				</view>
@@ -41,11 +41,6 @@
 	
 		<!-- 解决fixed定位后导航栏塌陷的问题 -->
 		<view class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: placeholderHeight + 'px' }"></view>
-		
-		<!-- #ifdef MP-WEIXIN -->
-		<!-- 小程序隐私协议 -->
-		<wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
-		<!-- #endif -->
 	</view>
 </template>
 
@@ -56,11 +51,12 @@ import { getAddressByLatlng } from '@/app/api/system';
 import useSystemStore from '@/stores/system';
 import useDiyStore from '@/app/stores/diy';
 import manifestJson from '@/manifest.json'
+import { cloneDeep } from 'lodash-es'
 
 // 获取系统状态栏的高度
 let systemInfo = uni.getSystemInfoSync();
 let platform = systemInfo.platform;
-let menuButtonInfo = {};
+let menuButtonInfo: any = {};
 // 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
 menuButtonInfo = uni.getMenuButtonBoundingClientRect();
@@ -183,8 +179,8 @@ if(componentsScrollVal){
 }
 /******************************* 存储滚动值-end ***********************/ 
 
-/******************************* 返回按钮-start ***********************/ 
-let isBackShow = ref(false);
+/******************************* 返回按钮-start ***********************/
+const isBackShow = ref(false);
 let pages = getCurrentPages();
 
 // 返回按钮的函数
@@ -205,7 +201,7 @@ const capsuleWidth = computed(() => {
 })
 
 // 导航栏塌陷的高度
-let placeholderHeight = ref(0);
+const placeholderHeight = ref(0);
 const instance = getCurrentInstance();
 const navbarPlaceholderHeight = () => {
     nextTick(() => {
@@ -220,14 +216,14 @@ const navbarPlaceholderHeight = () => {
 /******************************* 定位-start ***********************/ 
 // 获取地图配置
 const systemStore = useSystemStore();
-let currentPosition = ref('定位中...')
+const currentPosition = ref('定位中...')
 let mapConfig = uni.getStorageSync('mapConfig');
 
 const initPosition = () =>{
 	// #ifdef H5
 	if (getQueryVariable('latng')) {
 		currentPosition.value = "定位中..."
-		let locationInfo = systemStore.location;
+		let locationInfo: any = systemStore.location;
 		var tempArr = getQueryVariable('latng').split(',');
 		locationInfo.latitude = tempArr[0];
 		locationInfo.longitude = tempArr[1];
@@ -241,7 +237,7 @@ const initPosition = () =>{
 	// 定位信息过期后，重新获取定位
 	if(mapConfig.is_open == 1 && locationStorage() && locationStorage().is_expired) {
 		getLocation({
-			fail: (res) => {
+			fail: (res: any) => {
 				// 拒绝定位，进入默认总店
 				currentPosition.value = "定位中..."
 			}
@@ -249,7 +245,7 @@ const initPosition = () =>{
 	}	
 }
 
-watch(() => systemStore.location, (nval, oval)=> {
+watch(() => systemStore.location, (nval: any, oval)=> {
 	if (nval.latitude && nval.longitude) {
 		getAddressByLatlngFn()
 	}else{
@@ -278,7 +274,7 @@ const reposition = () => {
 	// #ifdef MP
 	uni.chooseLocation({
 		success: (res) => {
-			var urlencode = JSON.parse(JSON.stringify(systemStore.location));
+			var urlencode = cloneDeep(systemStore.location);
 			urlencode = Object.assign(urlencode,res)
 			systemStore.setLocation(urlencode);
 		},
@@ -465,6 +461,7 @@ defineExpose({
 				align-items: center;
 				margin-right: 10rpx;
 				overflow: hidden;
+				box-sizing: border-box;
 				text{
                     overflow: hidden; //超出的文本隐藏
                     text-overflow: ellipsis; //用省略号显示
@@ -494,6 +491,7 @@ defineExpose({
 				margin: 0 10rpx;
 				max-width: 360rpx;
 				font-size: 27rpx;
+				line-height: normal;
 			}
 
 			.nearby-store-name {

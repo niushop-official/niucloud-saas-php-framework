@@ -18,6 +18,10 @@ import { t } from '@/locale'
 const prop = defineProps({
     mobile: String,
     type: String,
+	isAgree:{
+		type:Boolean,
+		default:true
+	},
     modelValue: {
         type: String,
         default: ''
@@ -34,7 +38,7 @@ const value = computed({
     }
 })
 
-const smsRef = ref(null)
+const smsRef: any = ref(null)
 const sendSms = useSendSms(smsRef)
 const show = ref(false)
 
@@ -50,11 +54,21 @@ const captcha = useCaptcha(formData)
 const handleSend = async()=> {
     if (smsRef.value.canGetCode) {
         formData.mobile = prop.mobile
-        if (uni.$u.test.isEmpty(formData.mobile)) { uni.showToast({ title: t('mobilePlaceholder'), icon:'none' }); return }
-        if (!uni.$u.test.mobile(formData.mobile)) { uni.showToast({ title: t('mobileError'), icon:'none' }); return }
-        
+        if (!prop.isAgree) {
+            uni.showToast({ title: t('isAgreeTips'), icon: 'none' });
+            return
+        }
+        if (uni.$u.test.isEmpty(formData.mobile)) {
+            uni.showToast({ title: t('mobilePlaceholder'), icon: 'none' });
+            return
+        }
+        if (!uni.$u.test.mobile(formData.mobile)) {
+            uni.showToast({ title: t('mobileError'), icon: 'none' });
+            return
+        }
+
         await captcha.refresh()
-        show.value = true        
+        show.value = true
     }
 }
 

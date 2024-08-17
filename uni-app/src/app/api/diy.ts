@@ -8,13 +8,6 @@ export function getDiyInfo(params: Record<string, any>) {
 }
 
 /**
- * 获取底部导航信息
- */
-export function getTabbarInfo(params: Record<string, any>) {
-    return request.get('diy/tabbar', params)
-}
-
-/**
  * 获取底部导航列表
  */
 export function getTabbarList(params: Record<string, any>) {

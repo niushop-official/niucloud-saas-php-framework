@@ -1,6 +1,6 @@
 {
     "name" : "",
-    "appid" : "__UNI__ED923AB",
+    "appid" : "__UNI__9B03DBD",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -90,7 +90,13 @@
                     "key" : ""
                 }
             }
-        }
+        },
+		"async" : {
+		    "loading" : "",
+		    "error" : "",
+		    "delay" : 0,
+		    "timeout" : 3000
+		}
     },
     "fallbackLocale" : "zh-Hans"
 }

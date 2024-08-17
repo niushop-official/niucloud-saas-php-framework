@@ -5,44 +5,34 @@
             <view class="px-[50rpx] pb-[50rpx]">
                 <u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
                     <u-form-item label="" prop="mobile" :borderBottom="true">
-                        <input v-model="formData.mobile"  :placeholder="t('mobilePlaceholder')" class=" w-full h-[50rpx]  leading-[50rpx] !bg-transparent !px-[20rpx] text-[26rpx] text-[#333]"  :disabled="real_name_input"  placeholder-class="bind-mobile" />
+                        <input v-model="formData.mobile" type="number" maxlength="11" :placeholder="t('mobilePlaceholder')" class="w-full h-[50rpx] leading-[50rpx] !bg-transparent !px-[20rpx] text-[26rpx] text-[#333]" :disabled="real_name_input" placeholder-class="bind-mobile" />
                     </u-form-item>
                     <view class="mt-[20rpx]">
                         <u-form-item label="" prop="mobile_code"  :borderBottom="true">
-                            <input v-model="formData.mobile_code"  :placeholder="t('codePlaceholder')" class=" box-border w-full h-[50rpx]  leading-[50rpx] !bg-transparent !px-[20rpx] text-[26rpx] text-[#333]" :disabled="real_name_input" placeholder-class="bind-mobile" />
+                            <input v-model="formData.mobile_code" type="number" maxlength="6" :placeholder="t('codePlaceholder')" class="box-border w-full h-[50rpx] leading-[50rpx] !bg-transparent !px-[20rpx] text-[26rpx] text-[#333]" :disabled="real_name_input" placeholder-class="bind-mobile" />
                             <template #right>
-                                <sms-code :mobile="formData.mobile" type="bind_mobile" v-model="formData.mobile_key"></sms-code>
+								<sms-code v-if="config.agreement_show" :mobile="formData.mobile" type="login" v-model="formData.mobile_key" :isAgree="isAgree"></sms-code>
+								<sms-code v-else :mobile="formData.mobile" type="login" v-model="formData.mobile_key"></sms-code>
                             </template> 
                         </u-form-item>
                     </view>
-                    <view class="flex items-baseline mt-[20rpx] pl-[10rpx]" v-if="config.agreement_show">
-                        <u-checkbox-group>
-                            <u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="shape" size="12" @change="agreeChange" :customStyle="{marginTop: '0rpx',marginBottom: '0rpx'}" :label=" t('agreeTips')" labelSize="22rpx" labelColor="#8288A2" />
-                        </u-checkbox-group>
-                        <view class="text-[22rpx] text-[#8288A2] leading-[30rpx]  flex flex-wrap">
-                            <view @click="redirect({ url: '/app/pages/auth/agreement?key=service' })">
-                                《<text class="text-primary">{{ t('userAgreement') }}</text>》
-                            </view>
-                            <view @click="redirect({ url: '/app/pages/auth/agreement?key=privacy' })">
-                                《<text class="text-primary">{{ t('privacyAgreement') }}</text>》
-                            </view>
-                        </view>
-                    </view>
+					<view v-if="config.agreement_show" class="flex items-center mt-[20rpx] pl-[10rpx] py-[10rpx]" @click.stop="agreeChange">
+						<u-checkbox-group @change="agreeChange">
+							<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }"/>
+						</u-checkbox-group>
+						<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
+							<text>{{ t('agreeTips') }}</text>
+							<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=privacy' })" class="text-primary">《{{t('privacyAgreement')}}》</text>
+							<text>{{ t('and') }}</text>
+							<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=service' })" class="text-primary">《{{t('userAgreement')}}》</text>
+						</view>
+					</view>
                     <view class="mt-[120rpx]">
-                        <button class="primary-btn-bg text-[26rpx] text-[#fff] !h-[80rpx] leading-[80rpx] rounded-full font-bold"   :loading="loading" :loadingText="t('binding')" @click="handleBind">{{t('bind')}}</button>
+                        <button class="primary-btn-bg text-[26rpx] !text-[#fff] !h-[80rpx] leading-[80rpx] rounded-full font-500"   :loading="loading" :loadingText="t('binding')" @click="handleBind">{{t('bind')}}</button>
                     </view>
-                    <!-- #ifdef MP-WEIXIN -->
-                    <view class="mt-[20rpx]">
-                        <u-button :customStyle="{border:'none',color:'var(--primary-color)',fontSize:'26rpx',height:'40rpx', lineHeight:'40rpx'}" :text="t('mobileQuickLogin')" open-type="getPhoneNumber" @getphonenumber="mobileAuth" @click="checkWxPrivacy"></u-button>
-                    </view>
-                    <!-- #endif -->
                 </u-form>
             </view>
         </view>
-        <!-- #ifdef MP-WEIXIN -->
-        <!-- 小程序隐私协议 -->
-        <wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
-        <!-- #endif -->
     </u-popup>
 </template>
 
@@ -62,13 +52,6 @@
         return useConfigStore().login
     })
 
-    const wxPrivacyPopupRef:any = ref(null)
-
-    // 检测是否同意隐私协议
-    const checkWxPrivacy = ()=>{
-        wxPrivacyPopupRef.value.proactive();
-    }
-
     const loading = ref(false)
     const isAgree = ref(false)
 
@@ -78,17 +61,17 @@
         mobile_key: ''
     })
 
-	let real_name_input = ref(true);
+    const real_name_input = ref(true);
 	onMounted(() => {
 		// 防止浏览器自动填充
 		setTimeout(()=>{
 			real_name_input.value = false;
 		},800)
-	});
 
-    uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
-    uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
-    uni.getStorageSync('unionid') && (Object.assign(formData, { unionid: uni.getStorageSync('unionid') }))
+        uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
+        uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
+        uni.getStorageSync('unionid') && (Object.assign(formData, { unionid: uni.getStorageSync('unionid') }))
+	});
 
     const rules = {
         'mobile': [
@@ -99,7 +82,7 @@
                 trigger: ['blur', 'change'],
             },
             {
-                validator(rule, value, callback) {
+                validator(rule: any, value: any, callback: any) {
                     let mobile = /^1[3-9]\d{9}$/;
                     if (!mobile.test(value)){
                         callback(new Error('请输入正确的手机号'))
@@ -123,11 +106,15 @@
         isAgree.value = !isAgree.value
     }
 
-
-    const formRef = ref(null)
+    const formRef: any = ref(null)
 
     const handleBind = () => {
         formRef.value.validate().then(() => {
+            if (!isAgree.value && config.value.agreement_show) {
+                uni.showToast({ title: t('isAgreeTips'), icon: 'none' })
+                return
+            }
+            
             if (loading.value) return
             loading.value = true
 
@@ -143,44 +130,6 @@
         })
     }
 
-    const mobileAuth = (e) => {
-        if (!isAgree.value && config.value.agreement_show) {
-            uni.showToast({
-                title: `${ t('pleaceAgree') }《${ t('userAgreement') }》《${ t('privacyAgreement') }》`,
-                icon: 'none'
-            })
-            return
-        }
-
-        if (e.detail.errMsg == 'getPhoneNumber:ok') {
-            uni.showLoading({ title: '' })
-
-            bindMobile({
-                mobile_code: e.detail.code
-            }).then((res) => {
-                uni.hideLoading()
-                memberStore.getMemberInfo()
-                if(res.msg == 1){
-                    uni.removeStorageSync('isbindmobile');
-                }
-                show.value = false
-            }).catch((res) => {
-                setTimeout(() => {
-                    show.value = false
-                    uni.hideLoading()
-                }, 2000);
-            })
-        }
-
-        if (e.detail.errno == 104) {
-            let msg = '用户未授权隐私权限';
-            uni.showToast({ title: msg, icon: 'none' })
-        }
-        if (e.detail.errMsg == "getPhoneNumber:fail user deny") {
-            let msg = '用户拒绝获取手机号码';
-            uni.showToast({ title: msg, icon: 'none' })
-        }
-    }
     const open = ()=> {
         show.value = true
     }
@@ -192,7 +141,10 @@
 
 <style lang="scss" scoped>
 :deep(.bind-mobile){
-    color:#8288A2;
+    color:var(--text-color-light9);
     font-size: 26rpx;
+}
+:deep(.u-checkbox){
+	margin:0 !important;
 }
 </style>

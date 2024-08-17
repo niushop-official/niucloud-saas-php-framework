@@ -1,5 +1,7 @@
 {
     "registering": "注册中",
+	"usernameRegisterTip":"输入账号密码注册",
+	"mobileRegisterTip":"输入手机号验证码注册",
     "usernamePlaceholder": "请输入账号",
     "passwordPlaceholder": "请输入密码",
     "confirmPasswordPlaceholder": "请再次确认密码",
@@ -7,7 +9,6 @@
     "resetpwd": "忘记密码",
     "haveAccount": "已有账号",
     "toLogin": "去登录",
-    "and": "和",
     "registerAgreeTips": "注册代表您同意",
     "isAgreeTips": "请先阅读并同意协议",
     "usernameRegister": "账号注册",

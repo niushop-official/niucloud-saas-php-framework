@@ -1,10 +1,10 @@
 import { language } from '@/locale'
 import { checkNeedLogin } from '@/utils/auth'
-import { redirect, getToken, getSiteId, isWeixinBrowser } from '@/utils/common'
+import { redirect, getToken, getSiteId } from '@/utils/common'
 import { memberLog } from '@/app/api/auth'
 import useConfigStore from "@/stores/config";
 import { useShare } from '@/hooks/useShare'
-import useMemberStore from '@/stores/member'
+
 /**
  * 页面跳转拦截器
  */
@@ -96,7 +96,7 @@ export const launchInterceptor = () => {
  * 设置插件应用的主色调
  * @param path
  */
-const setAddonName = async (path: string) => {
+const setAddonName = async(path: string) => {
     let pathArr = path.split('/')
     let route = pathArr[1] == 'addon' ? pathArr[2] : 'app';
 

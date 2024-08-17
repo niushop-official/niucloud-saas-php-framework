@@ -1,50 +1,52 @@
 <template>
-    <view class="sidebar-marign pt-[10rpx]" :style="themeColor()">
-        <u-form labelPosition="left" :model="formData" :label-style="{'font-size':'28rpx'}" labelWidth="200rpx" errorType='toast' :rules="rules" ref="formRef">
-            <view class="">
-                <u-form-item :label="t('name')" prop="name" :border-bottom="true">
-                    <u-input  fontSize="28rpx" v-model.trim="formData.name" border="none" clearable maxlength="25" :placeholder="t('namePlaceholder')"/>
-                </u-form-item>
-            </view>
-            <view class="mt-[10rpx]">
-                <u-form-item :label="t('mobile')" prop="mobile" :border-bottom="true">
-                    <u-input  fontSize="28rpx" v-model.trim="formData.mobile" border="none" clearable :placeholder="t('mobilePlaceholder')"/>
-                </u-form-item>
-            </view>
-            <view class="mt-[10rpx]">
-                <u-form-item :label="t('selectArea')" prop="area" :border-bottom="true" >
-                    <view class="flex w-full items-center" v-if="addressType == 'address' && isSelectMap != 1" @click="selectArea">
-						<view v-if="!formData.area" class="text-gray-placeholder text-[28rpx] flex-1">{{ t('selectAreaPlaceholder') }}</view>
-						<view v-else class="text-[28rpx] flex-1">{{ formData.area }}</view>
-						<view @click.stop="chooseLocation" class="flex items-center">
-							<text class="nc-iconfont nc-icon-dizhiguanliV6xx mr-[4rpx] text-[32rpx] text-[#e93323]"></text>
-							<text class="text-[24rpx] whitespace-nowrap">定位</text>
+    <view class="bg-[var(--page-bg-color)] min-h-[100vh] overflow-hidden address-edit" :style="themeColor()">
+		<u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
+			<view class="sidebar-marign card-template mt-[var(--top-m)] py-[20rpx]">
+				<view class="">
+					<u-form-item :label="t('name')" prop="name" labelWidth="200rpx">
+						<u-input  fontSize="28rpx" v-model.trim="formData.name" border="none" clearable maxlength="25"  placeholderStyle="color: #888" :placeholder="t('namePlaceholder')"/>
+					</u-form-item>
+				</view>
+				<view class="mt-[16rpx]">
+					<u-form-item :label="t('mobile')" prop="mobile" labelWidth="200rpx">
+						<u-input fontSize="28rpx" v-model.trim="formData.mobile" type="number" maxlength="11" border="none" clearable :placeholder="t('mobilePlaceholder')" placeholderStyle="color: #888"/>
+					</u-form-item>
+				</view>
+				<view class="mt-[16rpx]">
+					<u-form-item :label="t('selectArea')" prop="area" labelWidth="200rpx">
+						<view class="flex w-full items-center h-[52rpx]" v-if="addressType == 'address' && isSelectMap != 1" @click="selectArea">
+							<view v-if="!formData.area" class="text-[#888] text-[28rpx] flex-1">{{ t('selectAreaPlaceholder') }}</view>
+							<view v-else class="text-[28rpx] flex-1 leading-[1.4]">{{ formData.area }}</view>
+							<view @click.stop="chooseLocation" class="flex items-center">
+								<text class="nc-iconfont nc-icon-dizhiguanliV6xx mr-[4rpx] text-[32rpx] text-[#e93323]"></text>
+								<text class="text-[24rpx] whitespace-nowrap text-[#e93323]">定位</text>
+							</view>
 						</view>
-					</view>
-					<view v-else class="flex justify-between items-center flex-1" @click="chooseLocation">
-					    <view  class="text-[28rpx] text-[#303133]" v-if="formData.area || formData.address_name">{{formData.area || formData.address_name}}</view>
-						<view  class="text-[#c3c4d5] text-[28rpx]" v-else>{{t('selectAddressPlaceholder')}}</view>
-						<view class="flex items-center">
-							<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[32rpx] mr-[4rpx] text-[#e93323]"></text>
-							<text class="text-[24rpx] whitespace-nowrap">定位</text>
+						<view v-else class="flex justify-between items-center flex-1 h-[52rpx]" @click="chooseLocation">
+							<view  class="text-[28rpx] text-[#303133] leading-[1.4]" v-if="formData.area || formData.address_name">{{formData.area || formData.address_name}}</view>
+							<view  class="text-[#888] text-[28rpx]" v-else>{{t('selectAddressPlaceholder')}}</view>
+							<view class="flex items-center">
+								<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[32rpx] mr-[4rpx] text-[#e93323]"></text>
+								<text class="text-[24rpx] whitespace-nowrap text-[#e93323]">定位</text>
+							</view>
 						</view>
-					</view>
-                </u-form-item>
-            </view>
-            <view class="mt-[10rpx]">
-                <u-form-item :label="t('address')" prop="address" :border-bottom="true">
-                    <u-input fontSize="28rpx" v-model.trim="formData.address" border="none" clearable maxlength="120" :placeholder="t('addressPlaceholder')"/>
-                </u-form-item>
-            </view>
-            <view class="mt-[10rpx]">
-                <u-form-item :label="t('defaultAddress')" prop="name" :border-bottom="true">
-                    <u-switch v-model="formData.is_default" size="20" :activeValue="1" :inactiveValue="0" activeColor="var(--primary-color)"/>
-                </u-form-item>
-            </view>
-            <view class="mt-[40rpx]">
-                <button hover-class="none" class="!bg-[var(--primary-color)] !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[28rpx]" :class="{'opacity-50': btnDisabled}" @click="save" :disabled="btnDisabled" :loading="operateLoading">{{t('save')}}</button>
-            </view>
-        </u-form>
+					</u-form-item>
+				</view>
+				<view class="mt-[16rpx]">
+					<u-form-item :label="t('address')" prop="address" labelWidth="200rpx">
+						<u-input fontSize="28rpx" v-model="formData.address" border="none" clearable maxlength="120" :placeholder="t('addressPlaceholder')" placeholderStyle="color: #888"/>
+					</u-form-item>
+				</view>
+			</view>
+			<view class="sidebar-marign card-template mt-[var(--top-m)] py-[10rpx]">
+				<u-form-item :label="t('defaultAddress')" prop="name" :border-bottom="false" labelWidth="200rpx">
+					<u-switch v-model="formData.is_default" size="20" :activeValue="1" :inactiveValue="0" activeColor="var(--primary-color)" inactiveColor="var(--temp-bg)"/>
+				</u-form-item>
+			</view>
+		</u-form>
+		<view class="left-[var(--sidebar-m)] right-[var(--sidebar-m)] fixed bottom-[30rpx]">
+			<button hover-class="none" class="primary-btn-bg !text-[#fff] h-[80rpx] leading-[80rpx] font-500 rounded-[100rpx] text-[26rpx]" :class="{'opacity-50': btnDisabled}" @click="save" :disabled="btnDisabled" :loading="operateLoading">{{t('save')}}</button>
+		</view>
         <area-select ref="areaRef" @complete="areaSelectComplete" :area-id="formData.district_id"/>
 		<!-- #ifdef MP-WEIXIN -->
 		<!-- 小程序隐私协议 -->
@@ -55,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed } from 'vue'
+    import { ref, computed,nextTick } from 'vue'
     import { onLoad } from '@dcloudio/uni-app'
     import { redirect } from '@/utils/common'
     import { t } from '@/locale'
@@ -63,7 +65,7 @@
 	import manifestJson from '@/manifest.json'
 	import { getAddressByLatlng } from '@/app/api/system'
     
-    const formData = ref({
+    const formData: any = ref({
         id: 0,
         name: '',
         mobile: '',
@@ -79,39 +81,46 @@
         area: ''
     })
     const areaRef = ref()
-    const formRef = ref(null)
+    const formRef: any = ref(null)
     const source = ref('')
     const btnDisabled = ref(false)
 	const isSelectAddress = ref(false)
 	const addressType = ref('address');
 	const isSelectMap = ref(2) // 值为1，该地址需要有经纬度，反之不需要
+
+    const wxPrivacyPopupRef:any = ref(null)
     
     onLoad((data: any) => {
-		isSelectMap.value = data.isSelectMap || '';
-		const selectAddress = uni.getStorageSync('selectAddressCallback')
-        if (data.id) {
-            getAddressInfo(data.id).then(res => {
-                    res.data && Object.assign(formData.value, res.data)
-					// 兼容待支付页面编辑地址
-					if(selectAddress){
-						addressType.value = selectAddress.delivery == 'express' ? 'address' : 'locationAddress';
-					}
-                })
-			
-        }else if (data.name) {
-            if (uni.getStorageSync('addressInfo')) {
-                Object.assign(formData.value, uni.getStorageSync('addressInfo'))
-            }
-            formData.value.address = data.name;
-            getAddress(data.latng);
-            var tempArr = getQueryVariable('latng').split(',');
-            formData.value.lat = tempArr[0];
-            formData.value.lng = tempArr[1];
-        }
-        source.value = data.source || ''
-		if(selectAddress){
-			addressType.value = selectAddress.delivery == 'express' ? 'address' : 'locationAddress';
-		}
+	    isSelectMap.value = data.isSelectMap || '';
+	    const selectAddress = uni.getStorageSync('selectAddressCallback')
+	    if (data.id) {
+		    getAddressInfo(data.id).then((res: any) => {
+			    res.data && Object.assign(formData.value, res.data)
+			    // 兼容待支付页面编辑地址
+			    if (selectAddress) {
+				    addressType.value = selectAddress.delivery == 'express' ? 'address' : 'locationAddress';
+			    }
+		    })
+
+	    } else if (data.name) {
+		    if (uni.getStorageSync('addressInfo')) {
+			    Object.assign(formData.value, uni.getStorageSync('addressInfo'))
+		    }
+		    formData.value.address = data.name;
+		    getAddress(data.latng);
+		    var tempArr = getQueryVariable('latng').split(',');
+		    formData.value.lat = tempArr[0];
+		    formData.value.lng = tempArr[1];
+	    }
+	    source.value = data.source || ''
+	    if (selectAddress) {
+		    addressType.value = selectAddress.delivery == 'express' ? 'address' : 'locationAddress';
+	    }
+	    // #ifdef MP
+	    nextTick(() => {
+		    if (wxPrivacyPopupRef.value) wxPrivacyPopupRef.value.proactive();
+	    })
+	    // #endif
     })
     
     const rules = computed(() => {
@@ -130,7 +139,7 @@
                     trigger: ['blur', 'change'],
                 },
                 {
-                    validator(rule, value, callback) {
+                    validator(rule: any, value: any, callback: any) {
                         let mobile = /^1[3-9]\d{9}$/;
                         if (!mobile.test(value)){
                             callback(new Error(t('mobileError')))
@@ -154,7 +163,7 @@
                 type: 'string',
                 required: true,
                 message: t('addressPlaceholder'),
-                trigger: ['blur', 'change'],
+                trigger: ['blur', 'change']
             }
         }
     })
@@ -164,7 +173,7 @@
         areaRef.value.open()
     }
     
-    const areaSelectComplete = (event) => {
+    const areaSelectComplete = (event: any) => {
 		if(isSelectAddress.value && (formData.value.province_id == event.province.id || formData.value.city_id != event.city.id || formData.value.district_id != event.district.id)){
 			formData.value.lat = '';
 			formData.value.lng = '';
@@ -197,7 +206,7 @@
 				return false;
 			}
 
-            save(formData.value).then((res) => {
+            save(formData.value).then((res: any) => {
                 operateLoading.value = false
                 setTimeout(() => {
                     btnDisabled.value = false
@@ -229,7 +238,7 @@
     }
 	
 	// 选择地址
-	const chooseLocation = (data:Object = {})=> {
+	const chooseLocation = ()=> {
 	    // #ifdef MP
 	    uni.chooseLocation({
 	    	success: (res) => {
@@ -307,5 +316,11 @@
 </script>
 
 <style lang="scss" scoped>
-	
+	.address-edit :deep(.u-form-item__body__left__content__label){
+		font-size: 28rpx !important;
+	}
+	.address-edit :deep(.u-form-item__body__right){
+		display:flex;
+		align-items: center;
+	}
 </style>

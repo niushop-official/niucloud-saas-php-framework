@@ -111,7 +111,7 @@ export function bind(data : AnyObject) {
 }
 
 /**
- * 记录会员访问日志
+ * 记录会员访问日志【目前只更新最后访问时间】
  */
 export function memberLog(data : AnyObject) {
     return request.post('member/log', data, { showErrorMessage: false })

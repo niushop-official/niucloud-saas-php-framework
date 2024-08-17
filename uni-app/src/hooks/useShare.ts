@@ -8,7 +8,6 @@ import wechat from '@/utils/wechat'
 
 export const useShare = () => {
     var wechatOptions: any = {};
-
     var weappOptions: any = {};
 
     const wechatInit = () => {

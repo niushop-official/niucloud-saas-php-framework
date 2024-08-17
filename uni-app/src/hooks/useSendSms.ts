@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { t } from '@/locale'
 import { sendSms } from '@/app/api/system'
 
-export function useSendSms(smsRef: AnyObject | null) {
+export function useSendSms(smsRef: any) {
     const tips = ref(t('getSmsCode'))
     const seconds = 90
     const changeText = 'X' + t('smsCodeChangeText')
@@ -20,7 +20,7 @@ export function useSendSms(smsRef: AnyObject | null) {
         smsRef.value.start()
 
         let result: string | boolean = false
-        await sendSms(param).then(res => {
+        await sendSms(param).then((res: any) => {
             if (res.code == 1) {
                 result = res.data.key
             } else {
@@ -41,7 +41,7 @@ export function useSendSms(smsRef: AnyObject | null) {
     return {
         tips: tips,
         seconds,
-        canGetCode: canGetCode,
+        canGetCode,
         send,
         codeChange,
         changeText

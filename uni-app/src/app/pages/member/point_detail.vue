@@ -1,40 +1,42 @@
 <template>
-	<view class="bg-[#F6F6F6] min-h-[100vh]" :style="themeColor()">
+	<view class="bg-[var(--page-bg-color)] min-h-[100vh]" :style="themeColor()">
         <view class="fixed left-0 right-0 top-0 z-10085">
-            <view class="bg-[#fff] px-[var(--sidebar-m)] py-[14rpx] relative z-10084">
-                <view class="flex items-center h-[60rpx] bg-[#F8F9FD] rounded-[30rpx] px-[20rpx]">
-                    <view class="flex-1 text-[26rpx] leading-[60rpx] text-[#8288A2]" :class="{'!text-[#333]':from_type}" @click="typePopup = true">{{from_type_name || '请选择来源用途'}}</view>
-                    <text class="nc-iconfont nc-icon-shangV6xx-1 text-[32rpx] ml-[18rpx] !text-[#626779]" v-if="typePopup" @click="typePopup = false"></text>
-                    <text class="nc-iconfont nc-icon-xiaV6xx text-[32rpx] ml-[18rpx] !text-[#626779]" v-else @click="typePopup = true"></text>
+            <view class="bg-[#fff] px-[30rpx] h-[88rpx] flex-center relative z-10084">
+                <view class="search-input">
+                    <view class="flex-1 text-[24rpx] leading-[60rpx] text-[var(--text-color-light9)]" :class="{'!text-[#333]':from_type}" @click="typePopup = true">{{from_type_name || '请选择来源用途'}}</view>
+                    <text class="nc-iconfont nc-icon-shangV6xx-1 !text-[26rpx] ml-[18rpx] !text-[var(--text-color-light6)]" v-if="typePopup" @click="typePopup = false"></text>
+                    <text class="nc-iconfont nc-icon-xiaV6xx !text-[26rpx] ml-[18rpx] !text-[var(--text-color-light6)]" v-else @click="typePopup = true"></text>
                 </view>
             </view>
-            <u-popup :show="typePopup" mode="top" @close="typePopup = false" class="type-class">
-                <view @touchmove.prevent.stop class="py-[22rpx]">
-                    <view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[#FDF8F8] !text-primary font-500' : from_type == ''}" @click="searchTypeFn()">全部</view>
-                    <view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[#FDF8F8] !text-primary font-500' : from_type == index}" v-for="(item,index) in pointType" @click="searchTypeFn(index,item)">{{ item.name }}</view>
-                </view>
-            </u-popup>
-            <view class="px-[var(--sidebar-m)] pt-[30rpx] pb-[20rpx] flex items-center justify-between bg-[#F6F6F6]">
+            <view class="type-class">
+				<u-popup :show="typePopup" mode="top" @close="typePopup = false">
+					<view @touchmove.prevent.stop class="py-[22rpx]">
+						<view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[#FDF8F8] !text-primary font-500' : from_type == ''}" @click="searchTypeFn()">全部</view>
+						<view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[#FDF8F8] !text-primary font-500' : from_type == index}" v-for="(item,index) in pointType" @click="searchTypeFn(index,item)">{{ item.name }}</view>
+					</view>
+				</u-popup>
+			</view>
+            <view class="px-[var(--sidebar-m)] py-[30rpx] flex items-center justify-between">
                 <view class="flex items-center">
-                    <view class="px-[20rpx] py-[6rpx] bg-[#fff] rounded-[30rpx] text-[26rpx] leading-[36rpx] mr-[20rpx] text-[#333]" :class="{'!text-[var(--primary-color)] font-500':amount_type == item.status}" v-for="(item,index) in typeList" :key="index" @click="loadTypeFn(item.status)">{{ item.name }}</view>
+                    <view class="px-[30rpx]  bg-[#fff] rounded-[30rpx] text-[24rpx] leading-[54rpx] mr-[20rpx] text-[#333]" :class="{'!text-[var(--primary-color)] font-500':amount_type == item.status}" v-for="(item,index) in typeList" :key="index" @click="loadTypeFn(item.status)">{{ item.name }}</view>
                 </view>
                 <view class="flex items-center" @click="handleSelect">
                     <view class="text-[26rpx] text-[#333] mr-[10rpx]">日期</view>
-                    <view class="nc-iconfont nc-icon-riliV6xx !text-[28rpx] leading-[36rpx]"></view>
+                    <view class="nc-iconfont nc-icon-a-riliV6xx-36 !text-[28rpx] leading-[36rpx]"></view>
                 </view>
             </view>
         </view>
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" top="186rpx">
-			<view v-for="(item,index) in pointList" :key="index" class="bg-white sidebar-marign rounded-[16rpx] px-[30rpx] mb-[20rpx] py-[12rpx]">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" top="202rpx">
+			<view v-for="(item,index) in pointList" :key="index" class="sidebar-marign card-template  mb-[var(--top-m)]">
                 <view class="flex justify-between items-center">
-                    <view class="text-[20rpx] text-[#333] font-500">
-                        <text>{{item.month_info.year}}年</text>
-                        <text class="text-[36rpx] font-bold ml-[10rpx] mr-[4rpx]">{{item.month_info.month}}</text>
-                        <text>月</text>
+                    <view class="text-[#333]">
+                        <text class="text-[26rpx]">{{item.month_info.year}}年</text>
+                        <text class="text-[36rpx] font-500 ml-[10rpx] mr-[4rpx]">{{item.month_info.month}}</text>
+                        <text class="text-[26rpx]">月</text>
                     </view>
                     <view>
-                        <text class="nc-iconfont nc-icon-xiaV6xx !text-[32rpx] text-[#626779]" v-if="item.flag" @click="item.flag = false"></text>
-                        <text class="nc-iconfont nc-icon-shangV6xx-1 !text-[32rpx] text-[#626779]" v-else @click="item.flag = true"></text>
+                        <text class="nc-iconfont nc-icon-xiaV6xx !text-[26rpx] text-[var(--text-color-light6)]" v-if="item.flag" @click="item.flag = false"></text>
+                        <text class="nc-iconfont nc-icon-shangV6xx-1 !text-[26rpx] text-[var(--text-color-light6)]" v-else @click="item.flag = true"></text>
                     </view>
                 </view>
 				<view v-show="item.flag">
@@ -44,20 +46,18 @@
                                 <image v-if="subItem.account_data > 0" :src="img('static/resource/images/member/point/detail/point_add.png')" class="w-[60rpx] h-[60rpx]"></image>
                                 <image v-else :src="img('static/resource/images/member/point/detail/point_min.png')" class="w-[60rpx] h-[60rpx]"></image>
                             </view>
-                            <view class="flex-1  flex items-center ml-[20rpx]  box-border py-[20rpx] border-0" :class="{'border-solid border-t-[2rpx]  border-[#F0F2F8]' : subIndex}">
+                            <view class="flex-1  flex items-center ml-[20rpx]  box-border py-[30rpx] border-0" :class="{'border-solid border-t-[2rpx]  border-[#F0F2F8]' : subIndex}">
                                 <view class="flex-1">
-                                    <view class="text-[26rpx] font-500 leading-[36rpx] text-[#333]">{{subItem.from_type_name}}</view>
-                                    <view class="text-[24rpx] text-[#8288A2] leading-[34rpx] mt-[4rpx]">{{subItem.create_time}}</view>
+                                    <view class="text-[26rpx] text-[#333]">{{subItem.from_type_name}}</view>
+                                    <view class="text-[24rpx] text-[var(--text-color-light9)] mt-[16rpx]">{{subItem.create_time}}</view>
                                 </view>
-                                <view class="text-[36rpx] font-500 text-[#03B521]" :class="{ '!text-primary' : subItem.account_data > 0 }">{{subItem.account_data > 0 ? '+' + subItem.account_data : subItem.account_data}}</view>
+                                <view class="text-[36rpx] font-500 text-[#03B521] price-font" :class="{ '!text-primary' : subItem.account_data > 0 }">{{subItem.account_data > 0 ? '+' + subItem.account_data : subItem.account_data}}</view>
                             </view>
                         </view>
                     </block>
                 </view>
 			</view>
-            <view class="mx-[30rpx]  rounded-[16rpx] noData flex items-center justify-center" v-if="!pointList.length && loading">
-				<mescroll-empty  :option="{tip : '暂无积分明细'}"></mescroll-empty>
-			</view>
+            <mescroll-empty  :option="{tip : '暂无积分明细'}" v-if="!pointList.length && loading"></mescroll-empty>
 		</mescroll-body>
         <!-- 时间选择 -->
          <select-date ref="selectDateRef" @confirm="confirmFn" />
@@ -74,6 +74,7 @@ import MescrollEmpty from '@/components/mescroll/mescroll-empty/mescroll-empty.v
 import useMescroll from '@/components/mescroll/hooks/useMescroll.js';
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app';
 import selectDate from '@/components/select-date/select-date.vue';
+
 const { mescrollInit, downCallback, getMescroll } = useMescroll(onPageScroll, onReachBottom);
 
 const from_type = ref('');
@@ -89,7 +90,7 @@ const typeList = ref([
     {name:'支出',status:'disburse'}
 ])
 
-const getPointListFn = (mescroll)=> {
+const getPointListFn = (mescroll: any)=> {
     let data = {
         page: mescroll.num,
         page_size: mescroll.size,
@@ -98,7 +99,7 @@ const getPointListFn = (mescroll)=> {
         create_time: create_time.value
     };
     loading.value = false;
-    getPointList(data).then((res) => {
+    getPointList(data).then((res: any) => {
         let newArr = res.data.data;
         mescroll.endSuccess(newArr.length);
         //设置列表数据
@@ -119,7 +120,7 @@ const getPointListFn = (mescroll)=> {
 
 const pointType = ref({})
 const getPointTypeFn = () =>{
-    getPointType('point').then(res =>{
+    getPointType('point').then((res: any) =>{
         pointType.value = res.data
     })
 }
@@ -154,9 +155,8 @@ const confirmFn = (data:any) =>{
 </script>
 
 <style lang="scss" scoped>
-:deep(.u-popup.type-class .u-transition) {
-	top: 88rpx !important;
-    box-shadow: 1rpx 1rpx 6rpx 2rpx rgba(184,201,212,0.25);
+:deep(.type-class .u-popup .u-transition){
+	top: 86rpx !important;
 }
 .noData{
 	height: calc(100vh - 206rpx - constant(safe-area-inset-bottom));

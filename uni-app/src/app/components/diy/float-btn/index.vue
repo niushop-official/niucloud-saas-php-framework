@@ -80,7 +80,7 @@
 
 	//样式二
 	const styleTwoRepeat = ref(true)
-	const styleTwoRepeatTime = ref(null)
+	const styleTwoRepeatTime: any = ref(null)
 	const styleTwoWarpCss =	computed(() => {
 		var style = '';
         if(diyComponent.value.componentStartBgColor) {

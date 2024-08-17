@@ -7,7 +7,7 @@
 			<!-- #endif -->
 			<view v-if="info" class="flex ml-[32rpx] mr-[52rpx]  items-center relative">
 				<!-- 唤起获取微信 -->
-				<u-avatar :src="img(info.headimg)" size="55" leftIcon="none" :default-url="img('static/resource/images/default_headimg.png')" @click="clickAvatar"></u-avatar>
+				<u-avatar :src="img(info.headimg)" size="55" leftIcon="none" :default-url="img('static/resource/images/default_headimg.png')" @click="clickAvatar" />
 				<view class="ml-[22rpx]">
 					<view class="text-[#222222] flex pr-[50rpx] flex-wrap items-center">
 						<view class="text-[#222222] truncate max-w-[320rpx] font-bold text-lg mr-[16rpx]" :style="{ color : diyComponent.textColor }">{{ info.nickname }}</view>
@@ -20,15 +20,15 @@
 					</view>
 				</view>
 			</view>
-			<view v-else class="flex ml-[32rpx] mr-[52rpx]  items-center relative" @click="toLogin">
-				<u-avatar src="" size="55" :default-url="img('static/resource/images/default_headimg.png')" />
-				<view class="ml-[22rpx]">
+			<view v-else class="flex ml-[32rpx] mr-[52rpx]  items-center relative">
+				<u-avatar :src="img('static/resource/images/default_headimg.png')" size="55" @click="toLogin" />
+				<view class="ml-[22rpx]" @click="toLogin">
 					<view class="text-[#222222] font-bold text-lg" :style="{ color : diyComponent.textColor }">
 						{{ t('login') }}/{{ t('register') }}
 					</view>
 				</view>
-				<view class="set-icon flex items-center absolute right-0 top-2">
-					<view @click="redirect({ url: '/app/pages/setting/index' })">
+				<view class="set-icon flex items-center absolute right-0 top-2" @click="redirect({ url: '/app/pages/setting/index' })">
+					<view>
 						<text class="nc-iconfont nc-icon-shezhiV6xx-1 text-[40rpx] ml-[10rpx]" :style="{ color : diyComponent.textColor }"></text>
 					</view>
 				</view>
@@ -59,10 +59,6 @@
 		<information-filling ref="infoFill"></information-filling>
 		<!-- #endif -->
 
-		<!-- #ifdef MP-WEIXIN -->
-		<!-- 小程序隐私协议 -->
-		<wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
-		<!-- #endif -->
 	</view>
 </template>
 
@@ -151,24 +147,43 @@
 	})
 
 	const toLogin = () => {
-		if(configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile){
-			useLogin().setLoginBack({ url: '/app/pages/member/index' })
-		}else if(configStore.login.is_auth_register){  // 判断是否开启第三方自动注册登录
-           // 第三方平台自动登录
-                // #ifdef MP
-                useLogin().getAuthCode()
-                // #endif
-                // #ifdef H5
-                if (isWeixinBrowser()) {
-                    useLogin().getAuthCode('snsapi_userinfo')
-                }
-                // #endif
-		}else{
-			uni.showToast({ title: '商家未开启注册方式', icon: 'none' })
+		let normalLogin = !configStore.login.is_username && !configStore.login.is_mobile && !configStore.login.is_bind_mobile; // 未开启普通登录
+		let authRegisterLogin = !configStore.login.is_auth_register; // 自动注册登录
+
+		// #ifdef H5
+		if (isWeixinBrowser()) {
+			// 微信浏览器
+			if (normalLogin && authRegisterLogin) {
+				uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
+			} else if (configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile) {
+				useLogin().setLoginBack({ url: '/addon/shop/pages/member/index' })
+			} else if (normalLogin && configStore.login.is_auth_register) {
+				// 判断是否开启第三方自动注册登录
+				useLogin().getAuthCode({ scopes: 'snsapi_userinfo' })
+			}
+		} else {
+			// 普通浏览器
+			if (normalLogin) {
+				uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
+			} else if (configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile) {
+				useLogin().setLoginBack({ url: '/addon/shop/pages/member/index' })
+			}
 		}
+		// #endif
+
+		// #ifdef MP
+		if (normalLogin && authRegisterLogin) {
+			uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
+		} else if (configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile) {
+			useLogin().setLoginBack({ url: '/addon/shop/pages/member/index' })
+		} else if (normalLogin && configStore.login.is_auth_register) {
+			// 判断是否开启第三方自动注册登录
+			useLogin().getAuthCode()
+		}
+		// #endif
 	}
 
-	const infoFill = ref(false)
+	const infoFill: any = ref(false)
 	const clickAvatar = () => {
 		// #ifdef MP-WEIXIN
 		infoFill.value.show = true
@@ -176,13 +191,13 @@
 
 		// #ifdef H5
 		if (isWeixinBrowser()) {
-			useLogin().getAuthCode('snsapi_userinfo')
+			useLogin().getAuthCode({ scopes : 'snsapi_userinfo' })
 		} else {
 			redirect({ url: '/app/pages/member/personal' })
 		}
 		// #endif
 	}
-	let menuButtonInfo = {};
+	let menuButtonInfo: any = {};
 	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
 	menuButtonInfo = uni.getMenuButtonBoundingClientRect();

@@ -8,7 +8,7 @@
 			<view class="mx-[30rpx]">
 				<view class="mt-[20rpx]">
 					<u-form-item :label="t('headimg')" prop="headimg" :border-bottom="true">
-						<button class="m-0 my-[10rpx] p-0 w-[140rpx] h-[140rpx]" open-type="chooseAvatar" @chooseavatar="onChooseAvatar" @click="checkWxPrivacy">
+						<button class="m-0 my-[10rpx] p-0 w-[140rpx] h-[140rpx]" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
 							<view class="w-full h-full flex items-center justify-center overflow-hidden">
 								<u-image :src="img(formData.headimg)" width="140rpx" height="140rpx" v-if="formData.headimg" mode="aspectFill"></u-image>
 								<u-icon name="plus" v-else></u-icon>
@@ -18,9 +18,9 @@
 					<u-form-item :label=" t('nickname')" prop="nickname" :border-bottom="true">
 						<input type="nickname" v-model="formData.nickname" :placeholder="t('nicknamePlaceholder')" @blur="bindNickname">
 					</u-form-item>
-					<u-form-item :label=" t('mobile')" prop="mobile" :border-bottom="true" v-if="isBindMobile">
+					<u-form-item :label="t('mobile')" prop="mobile" :border-bottom="true" v-if="isBindMobile">
 						<input type="mobile" v-model="formData.mobile" :disabled="true" v-if="formData.mobile">
-						<u-button :customStyle="{border:'none',color: 'var(--primary-color)',width:'140rpx', textAlign:'left',margin:'0rpx'}" :text="t('getMobile')" open-type="getPhoneNumber" @getphonenumber="mobileAuth" @click="checkWxPrivacy" v-else></u-button>
+						<u-button :customStyle="{border:'none',color: 'var(--primary-color)',width:'140rpx', textAlign:'left',margin:'0rpx'}" :text="t('getMobile')" open-type="getPhoneNumber" @getphonenumber="memberStore.bindMobile" v-else></u-button>
 					</u-form-item>
 				</view>
 			</view>
@@ -36,11 +36,11 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive, computed, watch,onMounted } from 'vue'
+	import { ref, reactive, computed, watch,onMounted,nextTick } from 'vue'
 	import { t } from '@/locale'
 	import useMemberStore from '@/stores/member'
-	import { img, getToken } from '@/utils/common'
-	import { modifyMember, bindMobile } from '@/app/api/member'
+	import { img } from '@/utils/common'
+	import { modifyMember } from '@/app/api/member'
 	import { fetchBase64Image } from '@/app/api/system'
 	import { useLogin } from '@/hooks/useLogin'
 
@@ -63,21 +63,21 @@
 		}
 	}, { immediate: true })
 
-	let isBindMobile = ref(null)
+	const isBindMobile = ref(null)
+
+	const wxPrivacyPopupRef:any = ref(null)
 
 	onMounted(()=>{
 		uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
     	uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
     	uni.getStorageSync('unionid') && (Object.assign(formData, { unionid: uni.getStorageSync('unionid') }))
 		isBindMobile.value = uni.getStorageSync('isbindmobile');
+		// #ifdef MP
+		nextTick(()=>{
+			if(wxPrivacyPopupRef.value) wxPrivacyPopupRef.value.proactive();
+		})
+		// #endif
 	})
-
-	const wxPrivacyPopupRef:any = ref(null)
-
-	// 检测是否同意隐私协议
-	const checkWxPrivacy = ()=>{
-		wxPrivacyPopupRef.value.proactive();
-	}
 
 	const onChooseAvatar = (e) => {
 		uni.getFileSystemManager().readFile({
@@ -116,67 +116,38 @@
 		}
 	}
 
-	const formRef = ref(null)
+	const formRef: any = ref(null)
 
 	const confirm = async () => {
-        formRef.value.validate().then(async() => {
-            if (loading.value) return
-            loading.value = true
+		formRef.value.validate().then(async() => {
+			if (loading.value) return
+			loading.value = true
 
-            // 修改头像
-            await modifyMember({ field: 'headimg', value: formData.headimg }).then(() => {
-                memberStore.info.headimg = formData.headimg
-            }).catch(() => {
-                loading.value = false
-            })
-            if (!loading.value) return
+			// 修改头像
+			await modifyMember({ field: 'headimg', value: formData.headimg }).then(() => {
+				memberStore.info.headimg = formData.headimg
+			}).catch(() => {
+				loading.value = false
+			})
+			if (!loading.value) return
 
-            // 修改昵称
-            modifyMember({ field: 'nickname', value: formData.nickname }).then(() => {
-                memberStore.info.nickname = formData.nickname
-                loading.value = false
-                show.value = false
-            }).catch(() => {
-                loading.value = false
-            })
+			// 修改昵称
+			modifyMember({ field: 'nickname', value: formData.nickname }).then(() => {
+				memberStore.info.nickname = formData.nickname
+				loading.value = false
+				show.value = false
+			}).catch(() => {
+				loading.value = false
+			})
 			// #ifdef MP-WEIXIN
 			const login = useLogin()
-			if( info.value && !info.value.weapp_openid){
-                login.getAuthCode('',true)
-            }
-			 // #endif
+			if (info.value && !info.value.weapp_openid) {
+				login.getAuthCode({ updateFlag: true }) // 更新oppenid
+			}
+			// #endif
 
-        })
-    }
-	const mobileAuth = (e) => {
-		
-        if (e.detail.errMsg == 'getPhoneNumber:ok') {
-            uni.showLoading({ title: '' })
-            bindMobile({
-                openid: formData.openid,
-                mobile_code: e.detail.code
-            }).then((res) => {
-                uni.hideLoading()
-                memberStore.getMemberInfo()
-				if(info.value.mobile){
-                    uni.removeStorageSync('isbindmobile');
-                }
-            }).catch((res) => {
-                setTimeout(() => {
-                    uni.hideLoading()
-                }, 2000);
-            })
-        }
-
-        if (e.detail.errno == 104) {
-            let msg = '用户未授权隐私权限';
-            uni.showToast({ title: msg, icon: 'none' })
-        }
-        if (e.detail.errMsg == "getPhoneNumber:fail user deny") {
-            let msg = '用户拒绝获取手机号码';
-            uni.showToast({ title: msg, icon: 'none' })
-        }
-    }
+		})
+	}
 
 	defineExpose({
 		show

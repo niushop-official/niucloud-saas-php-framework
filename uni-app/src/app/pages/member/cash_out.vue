@@ -1,14 +1,14 @@
 <template>
-	<view class="member-record-list" :style="themeColor()">
+	<view class="min-h-[100vh] bg-[var(--page-bg-color)] overflow-hidden" :style="themeColor()">
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getCashOutListFn">
-			<view v-for="(item,index) in cashOutList" :key="item.id" class="member-record-item" @click="toDetailFn(item)">
-				<view class="name">{{item.transfer_type_name}}</view>
-				<view class="desc">{{t('applyTime')}}: {{item.create_time}}</view>
-				<view class="desc">{{ item.status != -1 ? currentStatusDesc(item.status) : item.refuse_reason}}</view>
-				<view class="money" :class="item.apply_money > 0 ? 'text-active' : ''">
-					{{ item.apply_money > 0 ? '+' + item.apply_money : item.apply_money }}
+			<view v-for="(item,index) in cashOutList" :key="item.id" class="sidebar-marign card-template mt-[var(--top-m)]" @click="toDetailFn(item)">
+				<view class="flex items-center justify-between  mb-[20rpx]">
+					<view class="text-[36rpx] font-500 price-font" :class="item.apply_money > 0 ? 'text-active' : ''">{{ item.apply_money }}</view>
+					<view class="leading-[38rpx] text-[26rpx] ">{{ item.status_name }}</view>
 				</view>
-				<view class="state">{{ item.status_name }}</view>
+				<view class="text-[24rpx] text-[var(--text-color-light6)] mb-[10rpx] leading-[34rpx]">{{ t('rechargeType') }} {{item.transfer_type_name}}</view>
+				<view class="text-[24rpx] text-[var(--text-color-light6)] mb-[10rpx] leading-[34rpx]">{{t('applyTime')}}: {{item.create_time}}</view>
+				<view class="text-[24rpx] text-[var(--text-color-light9)]  leading-[34rpx]">{{ item.status != -1 ? currentStatusDesc(item.status) : item.refuse_reason}}</view>
 			</view>
 			<mescroll-empty v-if="!cashOutList.length && loading" :option="{tip : t('emptyTip')}"></mescroll-empty>
 		</mescroll-body>
@@ -31,7 +31,7 @@ const cashOutList = ref<Array<any>>([]);
 const mescrollRef = ref(null);
 const loading = ref<boolean>(false);
 let account_type = uni.getStorageSync('cashOutAccountType')
-const currentStatusDesc = (status) =>{
+const currentStatusDesc = (status: any) =>{
 	switch(status){
 		case 1:
 			return t('toBeReviewed')
@@ -44,13 +44,13 @@ const currentStatusDesc = (status) =>{
 	}
 }
 
-const getCashOutListFn = (mescroll)=>{
+const getCashOutListFn = (mescroll: any)=>{
 	let data:any = {}
 	loading.value = false;
 	data.page = mescroll.num;
 	data.page_size = mescroll.size;
 	data.account_type = account_type;
-	getCashOutList(data).then((res) => {
+	getCashOutList(data).then((res: any) => {
 		let newArr = res.data.data;
 		mescroll.endSuccess(newArr.length);
 		//设置列表数据
@@ -65,11 +65,13 @@ const getCashOutListFn = (mescroll)=>{
 	})
 }
 
-const toDetailFn = (data)=>{
+const toDetailFn = (data: any)=>{
 	redirect({ url: '/app/pages/member/cash_out_detail', param: { id: data.id }});
 }
 </script>
 
 <style lang="scss">
-	@import '@/styles/member_record_list.scss';
+	.text-active{
+		color: #FF0D3E;
+	}
 </style>

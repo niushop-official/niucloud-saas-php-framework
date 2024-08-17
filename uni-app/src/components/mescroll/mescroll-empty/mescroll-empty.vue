@@ -3,10 +3,10 @@
 <mescroll-empty v-if="isShowEmpty" :option="optEmpty" @emptyclick="emptyClick"></mescroll-empty>
 -->
 <template>
-	<view class="mescroll-empty" :class="{ 'empty-fixed': option.fixed }" :style="{ 'z-index': option.zIndex, top: option.top }">
-		<view> <image v-if="icon" class="empty-icon" :src="icon" mode="widthFix" /> </view>
-		<view v-if="tip" class="empty-tip">{{ tip }}</view>
-		<view v-if="btnText" class="empty-btn" @click="emptyClick">{{ btnText }}</view>
+	<view class="mescroll-empty empty-page" :class="{ 'empty-fixed': option.fixed }" :style="{ 'z-index': option.zIndex, top: option.top }">
+		<view> <image v-if="icon" class="img" :src="icon" mode="aspectFit" /> </view>
+		<view v-if="tip" class="desc">{{ tip }}</view>
+		<view v-if="btnText" class="btn" @click="emptyClick">{{ btnText }}</view>
 	</view>
 </template>
 
@@ -76,9 +76,13 @@ export default {
 /* 无任何数据的空布局 */
 .mescroll-empty {
 	box-sizing: border-box;
-	width: 100%;
-	padding: 100rpx 50rpx;
+	width: 710rpx;
+	height: 710rpx;
+	padding-top: 100rpx;
 	text-align: center;
+	background-color: #fff;
+	border-radius: var(--rounded-big);
+	margin: var(--top-m) var(--sidebar-m) 0;
 }
 
 .mescroll-empty.empty-fixed {
@@ -89,25 +93,25 @@ export default {
 }
 
 .mescroll-empty .empty-icon {
-	width: 348rpx;
-	height: 348rpx;
+	width: 400rpx;
+	height: 300rpx;
 }
 
 .mescroll-empty .empty-tip {
-	font-size: 24rpx;
-	color: gray;
+	font-size: 26rpx;
+	color: var(--text-color-light9);
 }
 
 .mescroll-empty .empty-btn {
-	margin-top: 40rpx;
+	margin-top: 36rpx;
 	display: inline-block;
 	min-width: 220rpx;
 	height: 66rpx;
 	line-height: 66rpx;
-	font-size: 28rpx;
-	border: 1rpx solid #EF000C;
-	border-radius: 60rpx;
-	color: #EF000C;
+	font-size: 24rpx;
+	border: 1rpx solid var(--primary-color);
+	border-radius: 100rpx;
+	color: var(--primary-color);
 }
 
 .mescroll-empty .empty-btn:active {

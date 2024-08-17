@@ -1,57 +1,62 @@
 <template>
-    <view :style="themeColor()" class="bg-[#f8f8f8] min-h-[100vh] overflow-hidden">
+    <view :style="themeColor()" class="bg-[var(--page-bg-color)] min-h-[100vh] overflow-hidden">
         <block v-if="!loading && verifyInfo && verifyInfo.value">
-			<view class="w-full bg-[#fff] flex justify-center">
-				<view class="text-[var(--primary-color)] absolute top-[40rpx] right-[30rpx] flex items-center" @click="redirect({url:'/app/pages/verify/record'})">
-					<image class="w-[26rpx] h-[28rpx]" :src="img('static/resource/images/verify/history.png')"/>
-					<text class="text-[26rpx] ml-[10rpx]">核销记录</text>
+			<view class="p-[30rpx] bg-[#fff]">
+				<view class="text-[var(--primary-color)] fixed top-[40rpx] right-[30rpx] flex items-center" @click="redirect({url:'/app/pages/verify/record'})">
+					<text class="nc-iconfont nc-icon-lishijiluV6xx !text-[28rpx] -mb-[2rpx]"></text>
+					<text class="text-[26rpx] ml-[8rpx]">核销记录</text>
 				</view>
-				<view class="flex pt-[120rpx] pb-[30rpx] items-center">
-					<view class="flex justify-center items-center flex-col pr-[30rpx] w-[130rpx]">
+				<view class="flex items-center mt-[60rpx] justify-center">
+					<view class="flex justify-center items-center flex-col pr-[30rpx]">
 						<image class="w-[100rpx] h-[100rpx]" :src="img('static/resource/images/verify/yanzhenghexiaoma.png')"/>
-						<view class="text-[26rpx] mt-[12rpx] h-[36rpx] leading-[36rpx]">验证核销码</view>
+						<view class="text-[26rpx] mt-[14rpx] h-[36rpx] leading-[36rpx] flex-shrink-0">验证核销码</view>
 					</view>
 					<image class="w-[74rpx] h-[12rpx] mb-[50rpx]" :src="img('static/resource/images/verify/youjiantou.png')"/>
-					<view class="flex justify-center items-center flex-col pl-[30rpx] w-[130rpx]">
+					<view class="flex justify-center items-center flex-col pl-[30rpx]">
 						<image class="w-[100rpx] h-[100rpx]" :src="img('static/resource/images/verify/hexiao.png')"/>
-						<view class="text-[26rpx] mt-[12rpx] h-[36rpx] leading-[36rpx]">确定核销</view>
+						<view class="text-[26rpx] mt-[14rpx] h-[36rpx] leading-[36rpx] flex-shrink-0">确定核销</view>
 					</view>
 				</view>
 			</view>
-			<view class="card-template mt-[20rpx] sidebar-marign">
-				<view class="flex" :class="{'mb-[20rpx]': (verifyInfo.value.list.length - 1 != index)}" v-for="(item,index) in verifyInfo.value.list" :key="index">
-					<image class="w-[150rpx] h-[150rpx] rounded-[8rpx]" mode="aspectFill" v-if="item.cover" :src="img(item.cover)"></image>
-					<image class="w-[150rpx] h-[150rpx] rounded-[8rpx]" mode="aspectFill" v-else :src="img('addon/tourism/tourism/member/hotel.png')"></image>
+			<view class="card-template mt-[var(--top-m)] sidebar-marign">
+				<view class="flex" :class="{'mb-[var(--top-m)]': (verifyInfo.value.list.length - 1 != index)}" v-for="(item,index) in verifyInfo.value.list" :key="index">
+					<image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-if="item.cover" :src="img(item.cover)"></image>
+					<image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-else :src="img('addon/tourism/tourism/member/hotel.png')"></image>
 					<view class="flex flex-col flex-1 ml-[20rpx] py-[4rpx]">
-						<view class="leading-[1.3] multi-hidden">{{item.name}}</view>
-						<view class="self-end text-[#626779] text-[28rpx] mt-[10rpx]">x1</view>
+						<view class="leading-[1]">
+							<view class="leading-[40rpx] truncate max-w-[490rpx] text-[28rpx]">{{item.name}}</view>
+							<view class="mt-[14rpx] truncate text-[24rpx] text-[var(--text-color-light9)] leading-[28rpx] max-w-[490rpx]" v-if="item.sub_name">
+								{{ item.sub_name }}
+                            </view>
+						</view>
+						<view class="text-[var(--text-color-light6)] text-[28rpx] mt-[20rpx]">x1</view>
 					</view>
 				</view>
 			</view>
 			
-			<view class="card-template mt-[20rpx] sidebar-marign">
-				<view class="text-[32rpx] font-500 leading-[1.3]">核销信息</view>
-				<view class="flex pt-[30rpx] items-center justify-between min-h-[36rpx]">
-					<text class="text-[26rpx] text-[#626779]">核销类型</text>
-					<view class="text-[26rpx] text-[#333333]">{{verifyInfo.type_name}}</view>
+			<view class="card-template mt-[var(--top-m)] sidebar-marign">
+				<view class="title">核销信息</view>
+				<view class="card-template-item justify-between">
+					<text class="text-[28rpx] text-[#333]">核销类型</text>
+					<view class="text-[28rpx] text-[#333]">{{verifyInfo.type_name}}</view>
 				</view>
-				<view class="flex pt-[20rpx] items-center justify-between min-h-[36rpx]" v-for="(item,index) in verifyInfo.value.content.fixed">
-					<text class="text-[26rpx] text-[#626779]">{{item.title}}</text>
-					<view class="text-[26rpx] text-[#333333]">{{item.value}}</view>
-				</view>
-			</view>
-			
-			<view v-for="(item,index) in verifyInfo.value.content.diy" :key="index" class="card-template mt-[20rpx] sidebar-marign">
-				<view class="text-[32rpx] font-500 leading-[1.3]">{{item.title}}</view>
-				<view class="flex items-center justify-between min-h-[36rpx]" :class="{'pt-[30rpx]': subIndex==0, 'pt-[20rpx]': subIndex!=0}" v-for="(subItem,subIndex) in item.list" :key="subIndex">
-					<text class="text-[26rpx] text-[#626779]">{{subItem.title}}</text>
-					<text class="text-[26rpx] text-[#333333]">{{ subItem.value }}</text>
+				<view class="card-template-item justify-between" v-for="(item,index) in verifyInfo.value.content.fixed">
+					<text class="text-[28rpx] text-[#333]">{{item.title}}</text>
+					<view class="text-[28rpx] text-[#333]">{{item.value}}</view>
 				</view>
 			</view>
 			
-			<text class=" min-w-[630rpx] fixed bottom-[60rpx] confirmBtn text-[#fff] flex items-center justify-center !text-[32rpx] rounded-[50rpx] h-[88rpx] ml-[60rpx] mr-[60rpx]" @click="verifyFn">确定</text>
+			<view v-for="(item,index) in verifyInfo.value.content.diy" :key="index" class="card-template mt-[var(--top-m)] sidebar-marign">
+				<view class="title">{{item.title}}</view>
+				<view class="card-template-item justify-between"  v-for="(subItem,subIndex) in item.list" :key="subIndex">
+					<text class="text-[28rpx] text-[#333]">{{subItem.title}}</text>
+					<text class="text-[28rpx] text-[#333]">{{ subItem.value }}</text>
+				</view>
+			</view>
+			
+			<view class="fixed bottom-[30rpx] primary-btn-bg text-[#fff] flex-center !text-[26rpx] rounded-[50rpx] h-[80rpx] left-[20rpx] right-[20rpx] font-500" @click="verifyFn">确定</view>
         </block>
-        <u-loading-page :loading="loading" loading-text="" loadingColor="var(--primary-color)" iconSize="35"></u-loading-page>
+		<loading-page :loading="loading"></loading-page>
     </view>
 </template>
 
@@ -144,7 +149,4 @@
 </script>
 
 <style lang="scss" scoped>
-	.confirmBtn{
-		background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
-	}
 </style>

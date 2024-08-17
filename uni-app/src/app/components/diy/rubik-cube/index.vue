@@ -135,7 +135,7 @@
         return style;
     });
 
-	const countBorderRadius = (type, index) => {
+	const countBorderRadius = (type: any, index: any) => {
 		var obj = '';
 		if (diyComponent.value.elementAngle == 'right') {
 			return obj;
@@ -180,7 +180,7 @@
 			]
 		};
 
-		defaultData[type][index].forEach((item, index) => {
+		defaultData[type][index].forEach((item: any, index: any) => {
 			obj += 'border-top-left-radius:' + diyComponent.value.topElementRounded * 2 + 'rpx;';
 			obj += 'border-top-right-radius:' + diyComponent.value.topElementRounded * 2 + 'rpx;';
 			obj += 'border-bottom-left-radius:' + diyComponent.value.bottomElementRounded * 2 + 'rpx;';
@@ -256,7 +256,7 @@
 			}
 		};
 
-		diyComponent.value.list.forEach((item, index) => {
+		diyComponent.value.list.forEach((item: any, index: any) => {
 			item.pageItemStyle = countBorderRadius(diyComponent.value.mode, index);
 		});
 
@@ -285,7 +285,7 @@
 			success: res => {
 				let maxHeight = 0;
 
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					var ratio = item.imgHeight / item.imgWidth;
 
 					let width = res.windowWidth - upx2px(diyComponent.value.margin.both * 2); // 减去左右间距
@@ -298,7 +298,7 @@
 					if (maxHeight == 0 || maxHeight < item.imgHeight) maxHeight = item.imgHeight;
 				})
 
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					item.widthStyle = params.width;
 					item.imgHeight = maxHeight;
 				});
@@ -314,7 +314,7 @@
 			success: res => {
 				let maxHeightFirst = 0;
 				let maxHeightTwo = 0;
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					var ratio = item.imgHeight / item.imgWidth;
 					item.imgWidth = res.windowWidth;
 					item.imgWidth -= upx2px(diyComponent.value.margin.both * 4);
@@ -335,7 +335,7 @@
 						}
 					}
 				});
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					item.imgWidth = 'calc((100% - ' + upx2px(diyComponent.value.imageGap * 2) + 'px) / 2)';
 					item.widthStyle = item.imgWidth;
 					if (index <= 1) {
@@ -357,7 +357,7 @@
 		if (diyComponent.value.list[1].imgWidth === diyComponent.value.list[2].imgWidth) divide = 'right';
 		uni.getSystemInfo({
 			success: res => {
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					if (index == 0) {
 						var ratio = item.imgHeight / item.imgWidth; // 获取左图的尺寸比例
 						item.imgWidth = res.windowWidth - upx2px(diyComponent.value.margin.both * 4) - upx2px(diyComponent.value.imageGap * 2);
@@ -381,7 +381,7 @@
 		var maxHeight = 0;
 		uni.getSystemInfo({
 			success: res => {
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 
 					var ratio = item.imgHeight / item.imgWidth; // 获取左图的尺寸比例
 					if (index == 0) {
@@ -397,7 +397,7 @@
 					if (index > 0 && (maxHeight == 0 || maxHeight < item.imgHeight)) maxHeight = item.imgHeight;
 
 				});
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					item.imgWidth += 'px';
 					item.widthStyle = item.imgWidth;
 					if (index > 0) item.imgHeight = maxHeight;
@@ -412,7 +412,7 @@
 	const calcRowOneLeftOfOneTopOfTwoBottom = () => {
 		uni.getSystemInfo({
 			success: res => {
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					// 左图
 					if (index == 0) {
 						var ratio = item.imgHeight / item.imgWidth; // 获取左图的尺寸比例
@@ -428,7 +428,7 @@
 					}
 				});
 
-				diyComponent.value.list.forEach((item, index) => {
+				diyComponent.value.list.forEach((item: any, index: any) => {
 					item.imgWidth += 'px';
 				});
 			}
