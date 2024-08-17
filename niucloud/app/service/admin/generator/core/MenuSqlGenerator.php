@@ -342,9 +342,9 @@ class MenuSqlGenerator extends BaseGenerator
         }
         if(!empty($this->addonName))
         {
-            $key = $this->addonName.'_'.$this->table['table_name'].'_'.$this->moduleName.'_'.$name;
+            $key = $this->addonName.'_'.$this->moduleName.'_'.$name;
         }else{
-            $key = $this->table['table_name'].'_'.$this->moduleName.'_'.$name;
+            $key = $this->moduleName.'_'.$name;
         }
         $data = [
             [
