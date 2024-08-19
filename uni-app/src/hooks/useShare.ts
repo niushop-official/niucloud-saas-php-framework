@@ -75,6 +75,7 @@ export const useShare = () => {
             weappOptions.query = options.weapp.path || queryStr.join('&')
             weappOptions.imageUrl = options.weapp.url ? img(options.weapp.url) : ''
             // #endif
+            if (options.weapp.path) weappOptions.path = options.weapp.path + (queryStr.length > 0 ? ((options.weapp.path.indexOf('?') !== -1) ? '&' : '?') + queryStr.join('&') : '')
 
             uni.setStorageSync('weappOptions', weappOptions)
         } else {
@@ -115,6 +116,10 @@ export const useShare = () => {
         onShareAppMessage(() => {
             let config: any = uni.getStorageSync('weappOptions')
             if (!config) config = {}
+            console.log({
+                ...config,
+                ...options
+            })
             return {
                 ...config,
                 ...options
