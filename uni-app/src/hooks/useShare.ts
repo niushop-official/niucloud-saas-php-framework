@@ -116,10 +116,6 @@ export const useShare = () => {
         onShareAppMessage(() => {
             let config: any = uni.getStorageSync('weappOptions')
             if (!config) config = {}
-            console.log({
-                ...config,
-                ...options
-            })
             return {
                 ...config,
                 ...options
