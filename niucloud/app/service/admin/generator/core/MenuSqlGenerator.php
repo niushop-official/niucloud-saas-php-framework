@@ -201,7 +201,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => 0,
                 'icon' => '',
                 'api_url' => '',
-                'router_path' => $this->moduleName,
+                'router_path' => $this->addonName .'/' . $this->moduleName,
                 'view_path' => '',
                 'methods' => '',
                 'sort' => 100,
@@ -220,7 +220,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => 1,
                 'icon' => '',
                 'api_url' => $this->getRouteName(),
-                'router_path' => $this->moduleName.'/'.($this->className ? Str::lower($this->className) : 'list'),
+                'router_path' => $this->addonName .'/' . $this->moduleName.'/'.($this->className ? Str::lower($this->className) : 'list'),
                 'view_path' => $this->moduleName.'/'.($this->className ? Str::lower($this->className) : 'list'),
                 'methods' => 'get',
                 'sort' => 90,
@@ -239,7 +239,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => $this->table['edit_type'] == 1 ? 2 : 1,
                 'icon' => '',
                 'api_url' => $this->getRouteName(),
-                'router_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
+                'router_path' => $this->table['edit_type'] == 2 ? $this->addonName .'/' . $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'view_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'methods' => 'post',
                 'sort' => 70,
@@ -258,7 +258,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => $this->table['edit_type'] == 1 ? 2 : 1,
                 'icon' => '',
                 'api_url' => $this->getRouteName().'/<id>',
-                'router_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
+                'router_path' => $this->table['edit_type'] == 2 ? $this->addonName .'/' . $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'view_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'methods' => 'put',
                 'sort' => 60,
@@ -342,9 +342,9 @@ class MenuSqlGenerator extends BaseGenerator
         }
         if(!empty($this->addonName))
         {
-            $key = $this->addonName.'_'.$this->table['table_name'].'_'.$this->moduleName.'_'.$name;
+            $key = $this->addonName.'_'.$this->moduleName.'_'.$name;
         }else{
-            $key = $this->table['table_name'].'_'.$this->moduleName.'_'.$name;
+            $key = $this->moduleName.'_'.$name;
         }
         $data = [
             [
@@ -355,7 +355,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => 0,
                 'icon' => '',
                 'api_url' => '',
-                'router_path' => $this->moduleName,
+                'router_path' => $this->addonName .'/' . $this->moduleName,
                 'view_path' => '',
                 'methods' => '',
                 'sort' => 100,
@@ -374,7 +374,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => 1,
                 'icon' => '',
                 'api_url' => $this->getRouteName(),
-                'router_path' => $this->moduleName.'/'.($this->className ? Str::lower($this->className) : 'list'),
+                'router_path' => $this->addonName .'/' . $this->moduleName.'/'.($this->className ? Str::lower($this->className) : 'list'),
                 'view_path' => $this->moduleName.'/'.($this->className ? Str::lower($this->className) : 'list'),
                 'methods' => 'get',
                 'sort' => 90,
@@ -393,7 +393,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => $this->table['edit_type'] == 1 ? 2 : 1,
                 'icon' => '',
                 'api_url' => $this->getRouteName(),
-                'router_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
+                'router_path' => $this->table['edit_type'] == 2 ? $this->addonName .'/' . $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'view_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'methods' => 'post',
                 'sort' => 70,
@@ -412,7 +412,7 @@ class MenuSqlGenerator extends BaseGenerator
                 'menu_type' => $this->table['edit_type'] == 1 ? 2 : 1,
                 'icon' => '',
                 'api_url' => $this->getRouteName().'/<id>',
-                'router_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
+                'router_path' => $this->table['edit_type'] == 2 ? $this->addonName .'/' . $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'view_path' => $this->table['edit_type'] == 2 ? $this->moduleName.'/'.($this->className ? Str::lower($this->className) . '_edit' : 'edit') : '',
                 'methods' => 'put',
                 'sort' => 60,

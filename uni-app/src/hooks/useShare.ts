@@ -74,6 +74,7 @@ export const useShare = () => {
             weappOptions.title = options.weapp.title || ''
             weappOptions.query = options.weapp.path || queryStr.join('&')
             weappOptions.imageUrl = options.weapp.url ? img(options.weapp.url) : ''
+            if (options.weapp.path) weappOptions.path = options.weapp.path + (queryStr.length > 0 ? ((options.weapp.path.indexOf('?') !== -1) ? '&' : '?') + queryStr.join('&') : '')
             // #endif
 
             uni.setStorageSync('weappOptions', weappOptions)
