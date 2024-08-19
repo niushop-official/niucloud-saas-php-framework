@@ -156,7 +156,7 @@
 			if (normalLogin && authRegisterLogin) {
 				uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
 			} else if (configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile) {
-				useLogin().setLoginBack({ url: '/addon/shop/pages/member/index' })
+				useLogin().setLoginBack({ url: '/app/pages/member/index' })
 			} else if (normalLogin && configStore.login.is_auth_register) {
 				// 判断是否开启第三方自动注册登录
 				useLogin().getAuthCode({ scopes: 'snsapi_userinfo' })
@@ -166,7 +166,7 @@
 			if (normalLogin) {
 				uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
 			} else if (configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile) {
-				useLogin().setLoginBack({ url: '/addon/shop/pages/member/index' })
+				useLogin().setLoginBack({ url: '/app/pages/member/index' })
 			}
 		}
 		// #endif
@@ -175,7 +175,7 @@
 		if (normalLogin && authRegisterLogin) {
 			uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
 		} else if (configStore.login.is_username || configStore.login.is_mobile || configStore.login.is_bind_mobile) {
-			useLogin().setLoginBack({ url: '/addon/shop/pages/member/index' })
+			useLogin().setLoginBack({ url: '/app/pages/member/index' })
 		} else if (normalLogin && configStore.login.is_auth_register) {
 			// 判断是否开启第三方自动注册登录
 			useLogin().getAuthCode()
