@@ -2,22 +2,28 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'f1e3442df7eaec9c31a04e2c12e5372848b23fc0'
-    oldFile: !uuid '1be7937b21c682edd2196d0acf0dcc0d384b6b1b'
-  /niucloud/app:
-    newFile: !uuid 'a2afb48076bf988d800ad4f67500445a5685938a'
-    oldFile: !uuid '2168b53a530232f743070b496161a3fe945ff5bc'
-  /niucloud/app/install:
-    newFile: !uuid '1b515c8b934a71c82850a1566645d863be3bc937'
-    oldFile: !uuid '1e296072fef9a3d06783b1a7c5eb700150fbe0f8'
-  /niucloud/app/install/source:
-    newFile: !uuid '64917e5c422b6000a71d66bd5392de1057ab2dc0'
-    oldFile: !uuid '4f811a62567957b865cb1b858e469af0d3d6fe4e'
-  /niucloud/app/install/source/database.sql:
-    newFile: !uuid '06b2590b4fec3959efa5dc29123c2ede15ec1dc3'
-    oldFile: !uuid 'f53c4770e2f17c1633a1304b4186994a953c03f7'
-gitCommitId: !uuid 'c63e32cdd80352f0d3d525d86e34e51f7d7125c9'
+  /uni-app:
+    newFile: !uuid '4318fb90d478a0c7f68f8643fc1c2893726ad14e'
+    oldFile: !uuid '3d5a8d3675e194f9b09ef83f9d71e5d1cf23f4ef'
+  /uni-app/src:
+    newFile: !uuid '285e04c2cd4d7fd4110c82f640f497e05cd3a971'
+    oldFile: !uuid '64c8d76afb5c70790c9f83a431808c7932e38d3b'
+  /uni-app/src/app:
+    newFile: !uuid '81dba31189d6f2fd9e3931ab6fe0468dfb9d13f6'
+    oldFile: !uuid 'e5af72f1ac5099347e8ed246cd56dddc497f9f53'
+  /uni-app/src/app/components:
+    newFile: !uuid '07bb9c5b52c7c6928e10e26f4043508ec39acdb5'
+    oldFile: !uuid '15053823a892ea0c24995c45e2100fce4da1f25e'
+  /uni-app/src/app/components/diy:
+    newFile: !uuid '36973ad9b360ed5408abbed5cacf47d8079495e6'
+    oldFile: !uuid 'f165877b2d4fc8ae8676ffe94bb108a9d62cab9b'
+  /uni-app/src/app/components/diy/member-info:
+    newFile: !uuid 'ae7cffcf05e4f8cd87cd203abe6c4899b92292d4'
+    oldFile: !uuid '320563f8001b504eab20a523c57c62244e6ad4c3'
+  /uni-app/src/app/components/diy/member-info/index.vue:
+    newFile: !uuid '635143e1dfcb0133942664e6d8c33f67359ea401'
+    oldFile: !uuid '7e1170d2d7c43a66c311afbedcd9b9ebf8854537'
+gitCommitId: !uuid 'ecc7c620c13d4b01756e94307b20df24ac4320b3'
 renames: {
   }
-revisionId: 214
+revisionId: 215
