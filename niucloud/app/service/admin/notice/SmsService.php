@@ -11,6 +11,7 @@
 
 namespace app\service\admin\notice;
 
+use app\dict\common\CommonDict;
 use app\dict\sys\SmsDict;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
@@ -49,9 +50,13 @@ class SmsService extends BaseAdminService
             $data['name'] = $v['name'];
             foreach ($v['params'] as $k_param => $v_param)
             {
+                $value = $config_type[$k][$k_param] ?? '';
+                $encrypt_params = $sms_type_list[$k]['encrypt_params'] ?? [];
+                if ($value !== '' && in_array($k_param, $encrypt_params)) $value = CommonDict::ENCRYPT_STR;
+
                 $data['params'][$k_param] = [
                     'name' => $v_param,
-                    'value' => $config_type[$k][$k_param] ?? ''
+                    'value' => $value
                 ];
             }
             $data['component'] = $v['component'] ?? '';
@@ -83,9 +88,13 @@ class SmsService extends BaseAdminService
         ];
         foreach ($sms_type_list[$sms_type]['params'] as $k_param => $v_param)
         {
+            $value = $config_type[$sms_type][$k_param] ?? '';
+            $encrypt_params = $sms_type_list[$sms_type]['encrypt_params'] ?? [];
+            if ($value !== '' && in_array($k_param, $encrypt_params)) $value = CommonDict::ENCRYPT_STR;
+
             $data['params'][$k_param] = [
                 'name' => $v_param,
-                'value' => $config_type[$sms_type][$k_param] ?? ''
+                'value' => $value
             ];
         }
         return $data;
@@ -119,7 +128,9 @@ class SmsService extends BaseAdminService
         }
         foreach ($sms_type_list[$sms_type]['params'] as $k_param => $v_param)
         {
-            $config[$sms_type][$k_param] = $data[$k_param] ?? '';
+            $value = $data[$k_param] ?? '';
+            if ($value == CommonDict::ENCRYPT_STR) $value = isset($config[$sms_type]) ? ($config[$sms_type][$k_param] ?? '') : '';
+            $config[$sms_type][$k_param] = $value;
         }
 
         return (new CoreConfigService())->setConfig($this->site_id, 'SMS', $config);

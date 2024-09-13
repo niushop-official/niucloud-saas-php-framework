@@ -34,6 +34,8 @@ Route::group('user', function () {
     Route::get('isexist', 'user.User/checkUserIsExist');
     //添加用户
     Route::post('user', 'user.User/add');
+    // 编辑用户
+    Route::put('user/:uid', 'user.User/edit');
     // 获取用户站点创建限制
     Route::get('user/create_site_limit/:uid', 'user.User/getUserCreateSiteLimit');
     // 获取用户站点创建限制

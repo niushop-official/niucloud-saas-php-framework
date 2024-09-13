@@ -1,7 +1,7 @@
 <template>
 	<view class="min-h-[100vh] bg-[var(--page-bg-color)] overflow-hidden" :style="themeColor()">
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getCashOutListFn">
-			<view v-for="(item,index) in cashOutList" :key="item.id" class="sidebar-marign card-template mt-[var(--top-m)]" @click="toDetailFn(item)">
+			<view v-for="(item,index) in cashOutList" :key="item.id" class="sidebar-margin card-template mt-[var(--top-m)]" @click="toDetailFn(item)">
 				<view class="flex items-center justify-between  mb-[20rpx]">
 					<view class="text-[36rpx] font-500 price-font" :class="item.apply_money > 0 ? 'text-active' : ''">{{ item.apply_money }}</view>
 					<view class="leading-[38rpx] text-[26rpx] ">{{ item.status_name }}</view>

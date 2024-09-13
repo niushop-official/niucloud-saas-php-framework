@@ -66,14 +66,14 @@
         </el-card>
 
         <!--添加海报-->
-        <el-dialog v-model="dialogVisible" :title="t('addPosterTitle')" width="25%">
+        <el-dialog v-model="dialogVisible" :title="t('addPosterTitle')" width="350px">
 
             <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules">
                 <el-form-item :label="t('posterName')" prop="name">
                     <el-input v-model="formData.name" :placeholder="t('posterNamePlaceholder')" clearable maxlength="12" show-word-limit class="w-full" />
                 </el-form-item>
                 <el-form-item :label="t('posterType')" prop="type">
-                    <el-select v-model="formData.type" :placeholder="t('posterTypePlaceholder')" class="w-full">
+                    <el-select v-model="formData.type" :placeholder="t('posterTypePlaceholder')" class="!w-full">
                         <el-option v-for="item in posterType" :label="item.name" :value="item.type" :key="item.type"/>
                     </el-select>
                 </el-form-item>

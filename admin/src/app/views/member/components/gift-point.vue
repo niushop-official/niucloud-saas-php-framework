@@ -32,26 +32,32 @@ const formData = ref({
 })
 
 const formRef = ref(null)
-
+// 正则表达式
+const regExp = {
+    required: /[\S]+/,
+    number: /^\d{0,10}$/,
+    digit: /^\d{0,10}(.?\d{0,2})$/,
+    special: /^\d{0,10}(.?\d{0,3})$/
+}
 const formRules = reactive<FormRules>({
     num: [
         {
-            validator: (rule: any, value: any, callback: Function) => {
+            validator: (rule: any, value: any, callback: any) => {
                 if (formData.value.is_use) {
-                    if (Test.empty(formData.value.num)) {
-                        callback('请输入发放积分数量')
-                    }
-                    if (!Test.digits(formData.value.num)) {
+                    if (value.length == 0) {
+                        callback('请输入积分数量')
+                    } else if (isNaN(value) || !regExp.number.test(value)) {
                         callback('积分数量格式错误')
-                    }
-                    if (formData.value.num <= 0) {
+                    } else if (value <=0) {
                         callback('积分数量不能小于等于0')
+                    } else{
+                        callback();
                     }
-                    callback()
                 } else {
                     callback()
                 }
-            }
+            },
+            trigger: 'blur'
         }
     ]
 })

@@ -11,6 +11,7 @@
 
 namespace app\service\admin\upload;
 
+use app\dict\common\CommonDict;
 use app\dict\sys\FileDict;
 use app\dict\sys\StorageDict;
 use app\service\core\upload\CoreStorageService;
@@ -37,7 +38,27 @@ class StorageConfigService extends BaseAdminService
      */
     public function getStorageList()
     {
-        return (new CoreStorageService())->getStorageList($this->site_id);
+        $config_type = (new CoreStorageService())->getStorageConfig($this->site_id);
+        $storage_type_list = StorageDict::getType();
+        $list = [];
+        foreach ($storage_type_list as $k => $v) {
+            $data = [];
+            $data['storage_type'] = $k;
+            $data['is_use'] = $k == $config_type['default'] ? StorageDict::ON : StorageDict::OFF;
+            $data['name'] = $v['name'];
+            $data['component'] = $v['component'];
+            foreach ($v['params'] as $k_param => $v_param) {
+                $value = $config_type[$k][$k_param] ?? '';
+                $encrypt_params = $v['encrypt_params'] ?? [];
+                if ($value !== '' && in_array($k_param, $encrypt_params)) $value = CommonDict::ENCRYPT_STR;
+                $data['params'][$k_param] = [
+                    'name' => $v_param,
+                    'value' => $value
+                ];
+            }
+            $list[] = $data;
+        }
+        return $list;
     }
 
     /**
@@ -63,9 +84,12 @@ class StorageConfigService extends BaseAdminService
         ];
         foreach ($storage_type_list[$storage_type]['params'] as $k_param => $v_param)
         {
+            $value = $config_type[$storage_type][$k_param] ?? '';
+            $encrypt_params = $storage_type_list[$storage_type]['encrypt_params'] ?? [];
+            if ($value !== '' && in_array($k_param, $encrypt_params)) $value = CommonDict::ENCRYPT_STR;
             $data['params'][$k_param] = [
                 'name' => $v_param,
-                'value' => $config_type[$storage_type][$k_param] ?? ''
+                'value' => $value
             ];
         }
         return $data;
@@ -100,14 +124,15 @@ class StorageConfigService extends BaseAdminService
         if($data['is_use'])
         {
             $config['default'] = $storage_type;
-        }else{
+        }else if ($config['default'] == $storage_type) {
             $config['default'] = '';
         }
         foreach ($storage_type_list[$storage_type]['params'] as $k_param => $v_param)
         {
-            $config[$storage_type][$k_param] = $data[$k_param] ?? '';
+            $value = $data[$k_param] ?? '';
+            if ($value == CommonDict::ENCRYPT_STR) $value = isset($config[$storage_type]) ? ($config[$storage_type][$k_param] ?? '') : '';
+            $config[$storage_type][$k_param] = $value;
         }
-
         return (new CoreConfigService())->setConfig($this->site_id, 'STORAGE', $config);
     }
 

@@ -14,11 +14,13 @@ namespace app\service\admin\upgrade;
 use app\dict\addon\AddonDict;
 use app\model\addon\Addon;
 use app\service\admin\install\InstallSystemService;
+use app\service\admin\sys\ConfigService;
 use app\service\core\addon\CoreAddonCloudService;
 use app\service\core\addon\CoreAddonInstallService;
 use app\service\core\addon\CoreAddonService;
 use app\service\core\addon\CoreDependService;
 use app\service\core\addon\WapTrait;
+use app\service\core\channel\CoreH5Service;
 use app\service\core\menu\CoreMenuService;
 use app\service\core\niucloud\CoreModuleService;
 use app\service\core\schedule\CoreScheduleInstallService;
@@ -403,6 +405,10 @@ class UpgradeService extends BaseAdminService
                 }
             }
         }
+
+        $map = (new ConfigService())->getMap();
+        ( new CoreH5Service() )->mapKeyChange($map[ 'key' ]);
+
         return true;
     }
 

@@ -257,7 +257,7 @@ class UserService extends BaseAdminService
         $site_num = (new SysUserRole())->where([['uid', '=', $uid], ['site_id', '<>', request()->defaultSiteId() ] ])->count();
         if ($site_num) throw new CommonException("USER_NOT_ALLOW_DEL");
 
-        $this->model->where([ ['uid', '=', $uid] ])->delete();
+        $this->model->where([ ['uid', '=', $uid] ])->find()->delete();
         return true;
     }
 

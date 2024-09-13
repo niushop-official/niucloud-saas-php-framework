@@ -12,24 +12,24 @@
 				<template v-if="type == 'username'">
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
 					<u-form-item label="" prop="username" :border-bottom="false">
-					    <u-input v-model="formData.username" border="none" maxlength="40" clearable :placeholder="t('usernamePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+					    <u-input v-model="formData.username" border="none" maxlength="40" :placeholder="t('usernamePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 					</u-form-item>
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 					    <u-form-item label="" prop="password" :border-bottom="false">
-					        <u-input v-model="formData.password" border="none" type="password" maxlength="40" clearable :placeholder="t('passwordPlaceholder')" autocomplete="new-password" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+					        <u-input v-model="formData.password" border="none" type="password" maxlength="40" :placeholder="t('passwordPlaceholder')" autocomplete="new-password" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 					    </u-form-item>
 					</view>
 				</template>
 				<template v-if="type == 'mobile'">
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
 						<u-form-item label="" prop="mobile" :border-bottom="false">
-							<u-input v-model="formData.mobile" type="number" maxlength="11" border="none" clearable :placeholder="t('mobilePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx"  placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.mobile" type="number" maxlength="11" border="none" :placeholder="t('mobilePlaceholder')" autocomplete="off" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx"  placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 						</u-form-item>
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx] text-[26rpx]">
 					    <u-form-item label="" prop="mobile_code" :border-bottom="false">
-					        <u-input v-model="formData.mobile_code" type="number" maxlength="4" border="none" clearable class="!bg-transparent" fontSize="26rpx" :disabled="real_name_input" :placeholder="t('codePlaceholder')" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+					        <u-input v-model="formData.mobile_code" type="number" maxlength="4" border="none" class="!bg-transparent" fontSize="26rpx" :disabled="real_name_input" :placeholder="t('codePlaceholder')" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
 					            <template #suffix>
 					                <sms-code v-if="configStore.login.agreement_show" :mobile="formData.mobile" type="login" v-model="formData.mobile_key" :isAgree="isAgree"></sms-code>
 									<sms-code v-else :mobile="formData.mobile" type="login" v-model="formData.mobile_key"></sms-code>

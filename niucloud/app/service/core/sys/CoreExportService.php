@@ -188,6 +188,7 @@ class CoreExportService extends BaseCoreService
         {
             $sheet->getColumnDimension($v['excel_column_name'])->setAutoSize(true);
         }
+
         // 保存Excel文件
         $writer = new Xlsx($spreadsheet);
         // 导出文件的路径

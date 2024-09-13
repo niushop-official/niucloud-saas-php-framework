@@ -7,6 +7,7 @@
 	"calendarSign": "日历签到",
 	"periodSign": "周期签到",
 	"daySignAward": "日签奖励",
+	"daySignAwardPlaceholder": "请选择日签奖励",
 	"continueSignAward": "连签奖励",
 	"calendarSignTip": "用户根据日期进行打卡，连续签到一定天数可即可获得连签奖励。",
 	"periodSignTip": "用户在规定的周期内完成签到可以获得奖励;一个周期结束后将进入下一个循环周期。",

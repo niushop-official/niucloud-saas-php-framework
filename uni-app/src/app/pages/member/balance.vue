@@ -12,7 +12,7 @@
 						<text class="text-[36rpx] leading-[56rpx] price-font">{{ memberStore.info ? moneyFormat((parseFloat(memberStore.info.balance) + parseFloat(memberStore.info.money)).toString()).split('.')[1] : '00'  }}</text>
 					</view>
 				</view>
-				<view class="sidebar-marign pt-[50rpx] pb-[40rpx] bg-[#fff] rounded-[var(--rounded-big)] px-[40rpx] box-border mt-[-112rpx]">
+				<view class="sidebar-margin pt-[50rpx] pb-[40rpx] bg-[#fff] rounded-[var(--rounded-big)] px-[40rpx] box-border mt-[-112rpx]">
 					<view class="flex flex-col items-center w-full" @click="redirect({ url: '/app/pages/member/detailed_account', param: { type : 'money' } })"  :class="{'pt-[12rpx]': !Object.keys(cashOutConfigObj).length || (Object.keys(cashOutConfigObj).length && !systemStore.siteAddons.includes('recharge') && cashOutConfigObj.is_open != 1)}">
 						<view class=" text-[var(--text-color-light9)] text-[26rpx] leading-[34rpx] mb-[12rpx]">{{t('money')}}</view>
 						<view class="text-[#333] inline-block">
@@ -41,7 +41,7 @@
 				</view>
 			</view>
             <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" height="auto" @up="getListFn" :top="mescrollTop">
-            	<view class="sidebar-marign pt-[10rpx] body-bottom" v-if="list.length">
+            	<view class="sidebar-margin pt-[10rpx] body-bottom" v-if="list.length">
 					<view  v-for="(item,index) in list" :key="item.id" class="w-full h-[140rpx] flex justify-between items-center box-border card-template" :class="{'mt-[var(--top-m)]':index>0}">
 						<view class="flex items-center">
 							<view class="w-[80rpx] h-[80rpx] text-center rounded-[40rpx] text-[40rpx] font-500 leading-[80rpx] text-[#fff]"

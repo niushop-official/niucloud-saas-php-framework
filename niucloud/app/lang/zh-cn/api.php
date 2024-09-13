@@ -84,6 +84,7 @@ return [
     //插件安装相关
     'REPEAT_INSTALL' => '当前插件已安装,不能重复安装',
     'NOT_UNINSTALL' => '当前插件未安装,不能进行卸载操作',
+    'ADDON_INFO_FILE_NOT_EXIST' => '未找到插件的info.json文件',
 
     //菜单管理
     'MENU_NOT_EXIST' => '菜单不存在',
@@ -183,6 +184,7 @@ return [
     'KEYWORDS_NOT_EXIST' => '关键词回复不存在',
     'WECHAT_EMPOWER_NOT_EXIST' => '微信授权信息不存在',
     'SCAN_SUCCESS' => '扫码成功',
+    'WECHAT_SNAPSHOUTUSER' => '返回的是虚拟账号',
     //小程序
     'WEAPP_NOT_EXIST' => '微信小程序未配置完善',
     'WEAPP_EMPOWER_NOT_EXIST' => '微信小程序授信信息不存在',

@@ -1,6 +1,6 @@
 <template>
     <view :style="themeColor()">
-		<view class="w-[100vw] min-h-[100vh] bg-[#f8f8f8]" v-if="!loading">
+		<view class="w-[100vw] min-h-[100vh] bg-[#f8f8f8]" v-if="!loading && isVerify">
 			<view class="w-full bg-[#fff] verify-box h-[760rpx]">
 				<view class="text-[var(--primary-color)] fixed top-[40rpx] right-[30rpx] flex items-center" @click="redirect({url:'/app/pages/verify/record'})">
 					<text class="nc-iconfont nc-icon-lishijiluV6xx !text-[28rpx] -mb-[2rpx]"></text>
@@ -56,6 +56,12 @@
 			<privacy-popup ref="privacyPopup"></privacy-popup>
 			<!-- #endif -->
 		</view>
+		<view  class="w-[100vw] min-h-[100vh] bg-[#f8f8f8] overflow-hidden" v-if="!loading && !isVerify">
+			<view class="empty-page">
+                <image class="img" :src="img('static/resource/images/system/empty.png')" mode="aspectFit" />
+                <view class="desc">非核销员无此权限</view>
+            </view>
+		</view>
 		<loading-page :loading="loading"></loading-page>
     </view>
 </template>
@@ -79,6 +85,7 @@
 	const isFocus = ref(false)
 	const verify_code = ref('');
 	const loading = ref(true)
+	const isVerify = ref(false)
 	onShow(() => {
 		if(getToken()) checkIsVerifier();
 	})
@@ -87,23 +94,26 @@
 	const checkIsVerifier = () => {
 		getCheckVerifier().then((res:any) =>{
 			if(!res.data){
-				uni.showToast({
-					title: '非核销员无此权限',
-					icon: 'none'
-				});
-				setTimeout(() => {
-					if(getCurrentPages().length > 1){
-                        uni.navigateBack({
-                            delta: 1
-                        });
-                    }else{
-                        redirect({
-                            url: '/app/pages/member/index',
-                            mode: 'reLaunch'
-                        });
-                    }
-				}, 1000);
+				isVerify.value = false
+				loading.value = false;
+				// uni.showToast({
+				// 	title: '非核销员无此权限',
+				// 	icon: 'none'
+				// });
+				// setTimeout(() => {
+				// 	if(getCurrentPages().length > 1){
+                //         uni.navigateBack({
+                //             delta: 1
+                //         });
+                //     }else{
+                //         redirect({
+                //             url: '/app/pages/member/index',
+                //             mode: 'reLaunch'
+                //         });
+                //     }
+				// }, 1000);
 			}else{
+				isVerify.value = true
 				loading.value = false;
 			}
 		})

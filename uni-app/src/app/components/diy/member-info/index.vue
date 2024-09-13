@@ -66,7 +66,7 @@
 	import { computed, ref, watch } from 'vue'
 	import useMemberStore from '@/stores/member'
 	import { useLogin } from '@/hooks/useLogin'
-	import { img, isWeixinBrowser, redirect, urlDeconstruction, moneyFormat } from '@/utils/common'
+    import {img, isWeixinBrowser, redirect, urlDeconstruction, moneyFormat, getToken} from '@/utils/common'
 	import { t } from '@/locale'
 	import { wechatSync } from '@/app/api/system'
 	import useDiyStore from '@/app/stores/diy'
@@ -114,7 +114,7 @@
 
 	// #ifdef H5
 	const { query } = urlDeconstruction(location.href)
-	if (query.code && isWeixinBrowser()) {
+	if (query.code && isWeixinBrowser() && getToken()) {
 		wechatSync({ code: query.code }).then(res => {
 			memberStore.getMemberInfo()
 		})
@@ -202,7 +202,7 @@
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
 	menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 	// #endif
-	
+
 	// 导航栏内部盒子的样式
 	const navbarInnerStyle = computed(() => {
 		let style = '';

@@ -73,7 +73,7 @@ class Site extends BaseModel
     public function searchKeywordsAttr($query, $value, $data)
     {
         if ($value != '') {
-            $query->where('site_name|keywords', 'like', '%' . $this->handelSpecialCharacter($value) . '%');
+            $query->where('site_id|site_name|keywords', 'like', '%' . $this->handelSpecialCharacter($value) . '%');
         }
     }
 

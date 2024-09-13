@@ -69,10 +69,10 @@ function get_lang($str)
 function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = 'child', $root = 0)
 {
     // 创建Tree
-    $tree = array ();
+    $tree = array();
     if (is_array($list)) {
         // 创建基于主键的数组引用
-        $refer = array ();
+        $refer = array();
         foreach ($list as $key => $data) {
             $refer[ $data[ $pk ] ] =& $list[ $key ];
         }
@@ -132,7 +132,7 @@ function array_keys_search($array, $keys, $index = '', $is_sort = true)
         return [];
     if (!empty($index) && count($array) != count($array, COUNT_RECURSIVE))
         $array = array_column($array, null, $index);
-    $list = array ();
+    $list = array();
 
     foreach ($keys as $key) {
         if (isset($array[ $key ])) {
@@ -502,7 +502,7 @@ function array_merge2(array $array1, array $array2)
 function get_files_by_dir($dir)
 {
     $dh = @opendir($dir);             //打开目录，返回一个目录流
-    $return = array ();
+    $return = array();
     while ($file = @readdir($dh)) {     //循环读取目录下的文件
         if ($file != '.' and $file != '..') {
             $path = $dir . DIRECTORY_SEPARATOR . $file;     //设置目录，用于含有子目录的情况
@@ -946,4 +946,19 @@ function get_wap_domain($site_id)
 function str_sub($str, $length = 10, $is_need_apostrophe = true)
 {
     return mb_substr($str, 0, $length, 'UTF-8') . ( $is_need_apostrophe ? '...' : '' );
+}
+
+/**
+ * 使用正则表达式匹配特殊字符
+ * @param $str
+ * @return bool
+ */
+function is_special_character($str)
+{
+    $pattern = '/[!@#$%^&*()\[\]{}<>\|?:;"]/';
+    if (preg_match($pattern, $str)) {
+        return true;
+    } else {
+        return false;
+    }
 }

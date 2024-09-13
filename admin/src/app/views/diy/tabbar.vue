@@ -17,7 +17,13 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="key" :label="t('key')" min-width="80"/>
+                <el-table-column prop="key" :label="t('key')" min-width="120"/>
+
+                <el-table-column :label="t('type')" min-width="120">
+                    <template #default="{ row }">
+                        <span>{{ row.info.type === 'app' ? t('app') : t('addon') }}</span>
+                    </template>
+                </el-table-column>
 
                 <el-table-column :label="t('operation')" fixed="right" align="right" min-width="160">
                     <template #default="{ row }">

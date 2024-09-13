@@ -311,6 +311,7 @@ class CoreAddonDevelopService extends CoreAddonBaseService
     {
         $data['key'] = $this->key;
         $this->addon_info = $data;
+        $this->addon_info['support_version'] = config('version.version');
     }
 
     /**

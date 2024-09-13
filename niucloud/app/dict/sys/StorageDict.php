@@ -54,6 +54,7 @@ class StorageDict
                     'secret_key' => 'SECRET_KEY',
                     'domain' => '空间域名'
                 ],
+                'encrypt_params' => ['secret_key'],
                 'component' => '/src/app/views/setting/components/storage-qiniu.vue',
             ],
 
@@ -67,6 +68,7 @@ class StorageDict
                     'endpoint' => 'Endpoint',
                     'domain' => '空间域名'
                 ],
+                'encrypt_params' => ['secret_key'],
                 'component' => '/src/app/views/setting/components/storage-ali.vue',
             ],
 
@@ -80,6 +82,7 @@ class StorageDict
                     'secret_key' => 'SECRET_KEY',
                     'domain' => '空间域名'
                 ],
+                'encrypt_params' => ['secret_key'],
                 'component' => '/src/app/views/setting/components/storage-tencent.vue',
             ],
 

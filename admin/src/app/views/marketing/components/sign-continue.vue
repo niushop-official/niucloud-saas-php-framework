@@ -1,10 +1,10 @@
 <template>
     <el-form :model="formData" :rules="formRules" class="page-form" ref="formRef">
         <el-form-item :label="t('continueSign')" prop="continue_sign">
-            <el-input class="input-width" v-model.trim="formData.continue_sign" clearable /><span class="ml-[10px]">{{ t('day') }}</span>
+            <el-input class="input-width" v-model.trim="formData.continue_sign" :maxlength="5" clearable /><span class="ml-[10px]">{{ t('day') }}</span>
         </el-form-item>
         <el-form-item :label="t('continueSign')" >
-            <div>
+            <div class="flex-1">
                 <div v-for="(item,index) in gifts" :key="index" class="mb-[15px]">
                     <component :is="item.component" v-model="formData[item.key]" ref="giftRefs" v-if="item.component" />
                 </div>
@@ -15,7 +15,7 @@
                 <el-radio class="mb-[15px]" v-model="formData.receive_limit" :label="1" @change="radioChange($event, 1)">{{ t('noLimit') }}</el-radio>
                 <div class="flex">
                     <el-radio class="!mr-[15px]" v-model="formData.receive_limit" :label="2" @change="radioChange($event, 2)">{{ t('everyOneLimit') }}</el-radio>
-                    <el-input class="input-width" v-model="formData.receive_num" clearable /><span class="ml-[10px]">{{ t('time') }}</span>
+                    <el-input class="input-width" v-model="formData.receive_num" :maxlength="5" clearable /><span class="ml-[10px]">{{ t('time') }}</span>
                 </div>
             </div>
         </el-form-item>
@@ -76,18 +76,26 @@ getGiftDict().then(({ data }) => {
 })
 
 const formRef = ref(null)
+// 正则表达式
+const regExp = {
+    required: /[\S]+/,
+    number: /^\d{0,10}$/,
+    digit: /^\d{0,10}(.?\d{0,2})$/,
+    special: /^\d{0,10}(.?\d{0,3})$/
+}
 // 表单验证规则
 const formRules = reactive<FormRules>({
     continue_sign: [
         { required: true, message: t('continueSignPlaceholder'), trigger: 'blur' },
         {
-            validator: (rule: any, value: any, callback: Function) => {
-                if (!Test.digits(formData.value.continue_sign)) {
-                    callback('连续签到格式错误')
-                } else if (formData.value.continue_sign <= 0) {
-                    callback('连续签到不能小于等于0')
-                } else {
-                    callback()
+            
+            validator: (rule: any, value: any, callback: any) => {
+               if (isNaN(value) || !regExp.number.test(value)) {
+                    callback('连续签到天数格式错误')
+                } else if (value <=0) {
+                    callback('连续签到天数不能小于等于0')
+                } else{
+                    callback();
                 }
             },
             trigger: 'blur'
@@ -101,7 +109,7 @@ const formRules = reactive<FormRules>({
                     if (Test.empty(formData.value.receive_num)) {
                         callback('请输入限领次数')
                     }
-                    if (!Test.digits(formData.value.receive_num)) {
+                    if (isNaN(formData.value.receive_num) || !regExp.number.test(formData.value.receive_num)) {
                         callback('限领次数格式错误')
                     }
                     if (formData.value.receive_num <= 0) {

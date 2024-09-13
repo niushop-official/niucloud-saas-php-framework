@@ -57,19 +57,22 @@ class PayDict
                 'name' => get_lang('dict_pay.type_wechatpay'),
                 'key' => self::WECHATPAY,
                 'icon' => self::WECHATPAY_ICON,
-                'setting_component' => '/src/app/views/setting/components/pay-wechatpay.vue'
+                'setting_component' => '/src/app/views/setting/components/pay-wechatpay.vue',
+                'encrypt_params' => ['mch_public_cert_path', 'mch_secret_cert', 'mch_secret_key'],
             ],//微信支付
             self::ALIPAY => [
                 'name' => get_lang('dict_pay.type_alipay'),
                 'key' => self::ALIPAY,
                 'icon' => self::ALIPAY_ICON,
-                'setting_component' => '/src/app/views/setting/components/pay-alipay.vue'
+                'setting_component' => '/src/app/views/setting/components/pay-alipay.vue',
+                'encrypt_params' => ['app_secret_cert', 'app_public_cert_path', 'alipay_public_cert_path', 'alipay_root_cert_path'],
             ],//支付宝支付
             self::BALANCEPAY => [
                 'name' => get_lang('dict_pay.type_balancepay'),
                 'key' => self::BALANCEPAY,
                 'icon' => self::BALANCEPAY_ICON,
-                'setting_component' => ''
+                'setting_component' => '',
+                'encrypt_params' => ['secret_key'],
             ],//微信支付
         ];
 

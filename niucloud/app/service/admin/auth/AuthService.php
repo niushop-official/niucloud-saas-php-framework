@@ -38,22 +38,22 @@ class AuthService extends BaseAdminService
      * @param Request $request
      * @return true
      */
-    public function checkSiteAuth(Request $request){
+    public function checkSiteAuth(Request $request)
+    {
         $site_id = $request->adminSiteId();
         //todo  将站点编号转化为站点id
-        $site_info = (new CoreSiteService())->getSiteCache($site_id);
+        $site_info = ( new CoreSiteService() )->getSiteCache($site_id);
         //站点不存在
-        if(empty($site_info)) throw new AuthException('SITE_NOT_EXIST');
+        if (empty($site_info)) throw new AuthException('SITE_NOT_EXIST');
         //没有当前站点的信息
         if (!AuthService::isSuperAdmin()) {
-            if(!$this->getAuthRole($site_id)) throw new AuthException('NO_SITE_PERMISSION');
+            if (!$this->getAuthRole($site_id)) throw new AuthException('NO_SITE_PERMISSION');
         }
 
         $request->siteId($site_id);
-        $request->appType($site_info['app_type']);
+        $request->appType($site_info[ 'app_type' ]);
         return true;
     }
-
 
 
     /**
@@ -62,25 +62,26 @@ class AuthService extends BaseAdminService
      * @return bool
      * @throws Exception
      */
-    public function checkRole(Request $request){
+    public function checkRole(Request $request)
+    {
 
         $rule = strtolower(trim($request->rule()->getRule()));
         $method = strtolower(trim($request->method()));
-        $site_info = (new AuthSiteService())->getSiteInfo();
-        if($method != 'get'){
-            if($site_info['status'] == SiteDict::EXPIRE) throw new AuthException('SITE_EXPIRE_NOT_ALLOW');
-            if($site_info['status'] == SiteDict::CLOSE) throw new AuthException('SITE_CLOSE_NOT_ALLOW');
+        $site_info = ( new AuthSiteService() )->getSiteInfo();
+        if ($method != 'get') {
+            if ($site_info[ 'status' ] == SiteDict::EXPIRE) throw new AuthException('SITE_EXPIRE_NOT_ALLOW');
+            if ($site_info[ 'status' ] == SiteDict::CLOSE) throw new AuthException('SITE_CLOSE_NOT_ALLOW');
         }
 
         $menu_service = new MenuService();
         $all_menu_list = $menu_service->getAllApiList($this->app_type);
 
         //先判断当前访问的接口是否收到权限的限制
-        $method_menu_list = $all_menu_list[$method] ?? [];
-        if(!in_array($rule, $method_menu_list)) {
+        $method_menu_list = $all_menu_list[ $method ] ?? [];
+        if (!in_array($rule, $method_menu_list)) {
             $other_menu_list = $menu_service->getAllApiList($this->app_type == AppTypeDict::ADMIN ? AppTypeDict::SITE : AppTypeDict::ADMIN);
-            $method_menu_list = $other_menu_list[$method] ?? [];
-            if(!in_array($rule, $method_menu_list)) {
+            $method_menu_list = $other_menu_list[ $method ] ?? [];
+            if (!in_array($rule, $method_menu_list)) {
                 return true;
             } else {
                 throw new AuthException('NO_PERMISSION');
@@ -88,7 +89,7 @@ class AuthService extends BaseAdminService
         }
 
         $auth_role_list = $this->getAuthApiList();
-        if(!empty($auth_role_list[$method]) && in_array($rule, $auth_role_list[$method]))
+        if (!empty($auth_role_list[ $method ]) && in_array($rule, $auth_role_list[ $method ]))
             return true;
 
         throw new AuthException('NO_PERMISSION');
@@ -99,7 +100,8 @@ class AuthService extends BaseAdminService
      * 获取授权用户的权限信息
      * @return mixed
      */
-    public function getAuthRole(int $site_id){
+    public function getAuthRole(int $site_id)
+    {
         $user_role_service = new UserRoleService();
         return $user_role_service->getUserRole($site_id, $this->uid);
     }
@@ -108,7 +110,8 @@ class AuthService extends BaseAdminService
      * 当前授权用户接口权限
      * @return array
      */
-    public function getAuthApiList(){
+    public function getAuthApiList()
+    {
         if (AuthService::isSuperAdmin()) {
             $is_admin = 1;
         } else {
@@ -116,15 +119,15 @@ class AuthService extends BaseAdminService
             if (empty($user_role_info))
                 return [];
 
-            $is_admin = $user_role_info['is_admin'];//是否是超级管理员组
+            $is_admin = $user_role_info[ 'is_admin' ];//是否是超级管理员组
         }
 
         $menu_service = new MenuService();
-        if($is_admin){//查询全部启用的权限
+        if ($is_admin) {//查询全部启用的权限
             //获取站点信息
-            return (new AuthSiteService())->getApiList(1);
-        }else{
-            $user_role_ids = $user_role_info['role_ids'];
+            return ( new AuthSiteService() )->getApiList(1);
+        } else {
+            $user_role_ids = $user_role_info[ 'role_ids' ];
             $role_service = new RoleService();
             $menu_keys = $role_service->getMenuIdsByRoleIds($this->site_id, $user_role_ids);
 
@@ -137,21 +140,23 @@ class AuthService extends BaseAdminService
      * 当前授权用户菜单权限
      * @return array
      */
-    public function getAuthMenuList(int $is_tree = 0, $addon = 'all'){
+    public function getAuthMenuList(int $is_tree = 0, $addon = 'all')
+    {
         if (AuthService::isSuperAdmin()) {
             $is_admin = 1;
         } else {
             $user_role_info = $this->getAuthRole($this->site_id);
-            if(empty($user_role_info))
+            if (empty($user_role_info))
                 return [];
-            $is_admin = $user_role_info['is_admin'];//是否是超级管理员组
+            $is_admin = $user_role_info[ 'is_admin' ];//是否是超级管理员组
         }
 
         $menu_service = new MenuService();
-        if($is_admin){//查询全部启用的权限
+        if ($is_admin) {
+            // 查询全部启用的权限
             return ( new MenuService() )->getAllMenuList($this->app_type, 1, $is_tree, 1);
-        }else{
-            $user_role_ids = $user_role_info['role_ids'];
+        } else {
+            $user_role_ids = $user_role_info[ 'role_ids' ];
             $role_service = new RoleService();
             $menu_keys = $role_service->getMenuIdsByRoleIds($this->site_id, $user_role_ids);
             return $menu_service->getMenuListByMenuKeys($this->site_id, $menu_keys, $this->app_type, $is_tree, $addon);
@@ -161,8 +166,9 @@ class AuthService extends BaseAdminService
     /**
      * 获取授权用户信息
      */
-    public function getAuthInfo(){
-        return (new SiteUserService())->getInfo($this->uid);
+    public function getAuthInfo()
+    {
+        return ( new SiteUserService() )->getInfo($this->uid);
     }
 
     /**
@@ -171,8 +177,9 @@ class AuthService extends BaseAdminService
      * @param $data
      * @return bool
      */
-    public function modifyAuth(string $field, $data){
-        return (new SiteUserService())->modify($this->uid, $field, $data);
+    public function modifyAuth(string $field, $data)
+    {
+        return ( new SiteUserService() )->modify($this->uid, $field, $data);
     }
 
     /**
@@ -180,33 +187,35 @@ class AuthService extends BaseAdminService
      * @param array $data
      * @return true
      */
-    public function editAuth(array $data){
-        if(!empty($data['password'])){
+    public function editAuth(array $data)
+    {
+        if (!empty($data[ 'password' ])) {
             //检测原始密码是否正确
-            $user = (new UserService())->find($this->uid);
-            if(!check_password($data['original_password'], $user->password))
+            $user = ( new UserService() )->find($this->uid);
+            if (!check_password($data[ 'original_password' ], $user->password))
                 throw new AuthException('OLD_PASSWORD_ERROR');
 
         }
-        return (new UserService())->edit($this->uid, $data);
+        return ( new UserService() )->edit($this->uid, $data);
     }
 
     /**
      * 是否是超级管理员
      * @return bool
      */
-    public static function isSuperAdmin() {
+    public static function isSuperAdmin()
+    {
         $super_admin_uid = Cache::get('super_admin_uid');
 
         if (!$super_admin_uid) {
-            $super_admin_uid = (new SysUserRole())->where([
-                ['site_id', '=', request()->defaultSiteId()],
-                ['is_admin', '=', 1]
+            $super_admin_uid = ( new SysUserRole() )->where([
+                [ 'site_id', '=', request()->defaultSiteId() ],
+                [ 'is_admin', '=', 1 ]
             ])->value('uid');
             Cache::set('super_admin_uid', $super_admin_uid);
         }
 
-        return $super_admin_uid == (new self())->uid;
+        return $super_admin_uid == ( new self() )->uid;
     }
 
 }

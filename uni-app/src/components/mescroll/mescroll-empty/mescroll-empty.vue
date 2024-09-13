@@ -74,17 +74,6 @@ export default {
 
 <style>
 /* 无任何数据的空布局 */
-.mescroll-empty {
-	box-sizing: border-box;
-	width: 710rpx;
-	height: 710rpx;
-	padding-top: 100rpx;
-	text-align: center;
-	background-color: #fff;
-	border-radius: var(--rounded-big);
-	margin: var(--top-m) var(--sidebar-m) 0;
-}
-
 .mescroll-empty.empty-fixed {
 	z-index: 99;
 	position: absolute; /*transform会使fixed失效,最终会降级为absolute */

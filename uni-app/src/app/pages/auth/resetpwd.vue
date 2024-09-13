@@ -11,12 +11,12 @@
 			<u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
 				<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
 				    <u-form-item label="" prop="mobile" :border-bottom="false">
-				        <u-input v-model="formData.mobile" type="number" maxlength="11" border="none" clearable :placeholder="t('mobilePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+				        <u-input v-model="formData.mobile" type="number" maxlength="11" border="none" :placeholder="t('mobilePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 				    </u-form-item>
 				</view>
 				<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 				    <u-form-item label="" prop="code" :border-bottom="false">
-				        <u-input v-model="formData.mobile_code" type="number" maxlength="4" border="none" clearable :placeholder="t('codePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+				        <u-input v-model="formData.mobile_code" type="number" maxlength="4" border="none" :placeholder="t('codePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
 				            <template #suffix>
 				                <sms-code :mobile="formData.mobile" type="find_pass" v-model="formData.mobile_key"></sms-code>
 				            </template>
@@ -25,12 +25,12 @@
 				</view>
 				<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 				    <u-form-item label="" prop="password" :border-bottom="false">
-				        <u-input v-model="formData.password" border="none" type="password" maxlength="40" clearable :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+				        <u-input v-model="formData.password" border="none" type="password" maxlength="40" :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 				    </u-form-item>
 				</view>
 				<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 				    <u-form-item label="" prop="confirm_password" :border-bottom="false">
-				        <u-input v-model="formData.confirm_password" border="none" type="password" maxlength="40" clearable :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+				        <u-input v-model="formData.confirm_password" border="none" type="password" maxlength="40" :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 				    </u-form-item>
 				</view>
 			</u-form>

@@ -35,8 +35,8 @@
 						</view>
 						<view class="flex items-center" @click="toLink('/app/pages/member/level')">
 							<view class="inline-block">
-								<text class="nc-iconfont nc-icon-a-bangzhuV6xx-36 !text-[24rpx] text-[#733F02]"></text>
-								<text class="text-[24rpx] text-[#733F02] ml-[6rpx] leading-[24rpx]">规则</text>
+								<text class="nc-iconfont nc-icon-a-bangzhuV6xx-36 !text-[22rpx] text-[#733F02]"></text>
+								<text class="text-[22rpx] text-[#733F02] ml-[6rpx] leading-[24rpx]">规则</text>
 							</view>
 							<view class="ml-[2rpx] -mb-[4rpx] text-[#733F02] !text-[24rpx] nc-iconfont nc-icon-youV6xx"></view>
 						</view>

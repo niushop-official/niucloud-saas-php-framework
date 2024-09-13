@@ -79,7 +79,7 @@ class SysSchedule extends BaseModel
      */
     public function searchStatusAttr(Query $query, $value, $data)
     {
-        if ($value) {
+        if ($value != 'all') {
             $query->where('status', $value);
         }
     }

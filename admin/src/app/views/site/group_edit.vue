@@ -81,7 +81,7 @@
 
             <div class="fixed-footer-wrap">
                 <div class="fixed-footer">
-                    <el-button type="primary" @click="confirm(formRef)" v-loading="saveLoading">{{ t('save') }}</el-button>
+                    <el-button type="primary" @click="confirm(formRef)">{{ t('save') }}</el-button>
                     <el-button @click="back()">{{ t('cancel') }}</el-button>
                 </div>
             </div>

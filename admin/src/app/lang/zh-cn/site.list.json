@@ -7,7 +7,7 @@
       "businessHours":"营业时间",
       "createTime":"创建时间",
       "expireTime":"到期时间",
-      "siteNamePlaceholder":"请输入站点名称",
+      "siteNamePlaceholder":"请输入站点名称/编号",
       "createTimePlaceholder":"请输入创建时间",
       "addSite":"添加站点",
       "editSite":"编辑站点",
@@ -52,5 +52,6 @@
       "siteDomainTipsTwo": "需要将域名配置到您的服务器，同时域名需要解析您的服务器才可生效",
       "siteDomainTipsThree": "站点域名不需要加http或者https，末尾不需要加/",
       "toSite": "访问站点",
-      "noPermission": "您没有该站点的管理权限"
+      "noPermission": "您没有该站点的管理权限",
+      "closeSiteTips": "是否要停止该站点？"
 }

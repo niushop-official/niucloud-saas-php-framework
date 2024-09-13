@@ -22,7 +22,7 @@
                     <!-- #endif -->
                 </view>
                 <view>
-                    <view class="sidebar-marign bg-[#fff] rounded-[16rpx] -mt-[85rpx]">
+                    <view class="sidebar-margin bg-[#fff] rounded-[16rpx] -mt-[85rpx]">
                         <view class="card-template">
                             <view class="mb-[30rpx] flex justify-between items-center" v-if="flag">
                                 <view class="flex items-center">
@@ -100,7 +100,7 @@
                         </view>
                     </view>
 
-                    <view class="mt-[20rpx] mb-[30rpx] sidebar-marign card-template" v-if="info && info.continue_award && Object.keys(info.continue_award).length">
+                    <view class="mt-[20rpx] mb-[30rpx] sidebar-margin card-template" v-if="info && info.continue_award && Object.keys(info.continue_award).length">
                         <view class="mb-[30rpx] flex items-center">
                             <view class="font-500 text-[30rpx] text-[#303133]">签到奖励</view>
                             <!-- <view class="text-[var(--text-color-light6)] text-[26rpx] leading-[30rpx]">

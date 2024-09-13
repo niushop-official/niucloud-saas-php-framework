@@ -18,6 +18,17 @@
                         <el-color-picker v-model="theme" />
                     </div>
                 </div>
+                <!-- 布局风格 -->
+                <div class="setting-item mb-[10px]">
+                    <div class="title text-base text-tx-secondary">{{ t('layout.layoutStyle') }}</div>
+                    <div class="flex mt-[10px] layout-style flex-wrap">
+                        <div class="relative w-[125px] h-[100px] border mr-[10px] mb-[10px] hover:border-primary"
+                             :class="{ 'border-primary': currLayout == item.key }" v-for="(item, index) in layouts"
+                             @click="handleSetLayout(item.key)">
+                            <img :src="item.image" alt="" class="w-full h-full">
+                        </div>
+                    </div>
+                </div>
             </el-scrollbar>
         </el-drawer>
     </div>
@@ -27,8 +38,15 @@
 import { ref, computed } from 'vue'
 import useSystemStore from '@/stores/modules/system'
 import { useDark, useToggle } from '@vueuse/core'
-import { setThemeColor } from '@/utils/common'
+import { setThemeColor, img } from '@/utils/common'
 import { t } from '@/lang'
+import Storage from '@/utils/storage'
+
+const layouts = ref([
+    { key: 'admin', image: img('static/resource/images/system/layout_bussiness.png') },
+    { key: 'admin_simplicity', image: img('static/resource/images/system/layout_darkside.png') }
+])
+const currLayout = ref(Storage.get('admin_layout') || 'admin')
 
 const drawer = ref(false)
 const systemStore = useSystemStore()
@@ -66,6 +84,11 @@ const theme = computed({
         setThemeColor(systemStore.theme, systemStore.dark ? 'dark' : 'light')
     }
 })
+
+const handleSetLayout = (key: string) => {
+    Storage.set({ key: 'admin_layout', data: key })
+    location.reload()
+}
 </script>
 
 <style lang="scss" scoped>

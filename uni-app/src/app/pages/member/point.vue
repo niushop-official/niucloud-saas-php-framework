@@ -16,7 +16,7 @@
 				    <text class="desc">积分明细</text>
 				</view>
 			</view>
-			<view class="sidebar-marign flex flex-col mt-[-178rpx] relative">
+			<view class="sidebar-margin flex flex-col mt-[-178rpx] relative">
 				<view class="w-[322rpx] h-[80rpx] text-[30rpx] text-[#333] font-500 box-border pl-[30rpx] pt-[var(--pad-top-m)] rounded-tl-[var(--rounded-big)] overflow-hidden mb-[-2rpx]" 
 				:style="{backgroundImage: 'url(' + img('static/resource/images/member/point/top_bg.png') + ') ',backgroundSize: '100% 100%',backgroundRepeat: 'no-repeat'}">
 					<text class="leading-[42rpx]">积分详情</text>
@@ -39,7 +39,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="mt-[var(--top-m)] sidebar-marign card-template">
+		<view class="mt-[var(--top-m)] sidebar-margin card-template">
 			<view class="title">热门活动</view>
 			<view class="mt-[60rpx] flex justify-between">
 				<view class="w-[200rpx] h-[253rpx] box-border pt-[69rpx] relative text-center" 
@@ -81,7 +81,7 @@
 			</view>
 		</view>	
 		
-		<view class="mt-[var(--top-m)] sidebar-marign card-template" v-if="pointList.length">
+		<view class="mt-[var(--top-m)] sidebar-margin card-template" v-if="pointList.length">
 			<view class="title">做任务领积分</view>
 			<block v-for="(item,index) in pointList">
 				<view class="flex items-center justify-between mt-[30rpx]">

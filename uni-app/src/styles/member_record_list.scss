@@ -1,7 +1,7 @@
 .member-record-list{
 	@apply min-h-[100vh];
 	.member-record-item{
-		@apply relative sidebar-marign border-solid border-t-0 border-l-0 border-r-0 border-b-1 border-[#ECEBEC] py-3 mx-[var(--sidebar-m)];
+		@apply relative sidebar-margin border-solid border-t-0 border-l-0 border-r-0 border-b-1 border-[#ECEBEC] py-3 mx-[var(--sidebar-m)];
 		.name{
 			@apply text-sm;
 		}

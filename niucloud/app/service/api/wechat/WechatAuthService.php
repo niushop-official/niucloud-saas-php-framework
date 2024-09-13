@@ -79,6 +79,8 @@ class WechatAuthService extends BaseApiService
         }
         $unionid = $userinfo->getRaw()[ 'unionid' ] ?? '';
         if (empty($openid)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
+        $is_snapshotuser = $userinfo->getRaw()[ 'is_snapshotuser' ] ?? 0;
+        if ($is_snapshotuser == 1) throw new ApiException('WECHAT_SNAPSHOUTUSER');
         //todo 这儿还可能会获取用户昵称 头像  性别 ....用以更新会员信息
         return [ $avatar ?? '', $nickname ?? '', $openid, $unionid ];
         //todo  业务落地

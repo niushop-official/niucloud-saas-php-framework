@@ -113,7 +113,8 @@ class SiteService extends BaseAdminService
             'create_time' => time(),
             'expire_time' => $data[ 'expire_time' ],
             'app' => $site_group[ 'app' ],
-            'addons' => ''
+            'addons' => '',
+            'status' => strtotime($data[ 'expire_time' ]) > time() ? SiteDict::ON : SiteDict::EXPIRE
         ];
         Db::startTrans();
         try {

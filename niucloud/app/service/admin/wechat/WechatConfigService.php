@@ -11,6 +11,7 @@
 
 namespace app\service\admin\wechat;
 
+use app\dict\common\CommonDict;
 use app\model\sys\SysConfig;
 use app\service\core\wechat\CoreWechatConfigService;
 use core\base\BaseAdminService;
@@ -29,7 +30,13 @@ class WechatConfigService extends BaseAdminService
      */
     public function getWechatConfig()
     {
-        return (new CoreWechatConfigService())->getWechatConfig($this->site_id);
+        $config_info = (new CoreWechatConfigService())->getWechatConfig($this->site_id);
+        foreach ($config_info as $k => $v) {
+            if ($v !== '' && in_array($k, ['app_secret', 'encoding_aes_key'])) {
+                $config_info[$k] = CommonDict::ENCRYPT_STR;
+            }
+        }
+        return $config_info;
     }
 
     /**
@@ -38,6 +45,12 @@ class WechatConfigService extends BaseAdminService
      * @return SysConfig|bool|Model
      */
     public function setWechatConfig(array $data){
+        $config = (new CoreWechatConfigService())->getWechatConfig($this->site_id);
+        foreach ($data as $k => $v) {
+            if ($v == CommonDict::ENCRYPT_STR) {
+                $data[$k] = $config[$k];
+            }
+        }
         return (new CoreWechatConfigService())->setWechatConfig($this->site_id, $data);
     }
 

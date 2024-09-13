@@ -1,8 +1,8 @@
 <template>
     <u-popup :show="show" @close="show = false" mode="center" :round="10" :closeable="true" :safeAreaInsetBottom="false" zIndex="10086">
-        <view @touchmove.prevent.stop class="max-w-[630rpx] w-[630rpx] box-border">
-            <view class="text-center py-[50rpx] text-[32rpx] font-500 leading-[46rpx]">{{t('bindMobile')}}</view>
-            <view class="px-[50rpx] pb-[50rpx]">
+        <view @touchmove.prevent.stop class="max-w-[550rpx] w-[550rpx] box-border">
+            <view class="text-center py-[var(--pad-top-m)] text-[32rpx] font-500 leading-[46rpx]">{{t('bindMobile')}}</view>
+            <view class="px-[var(--pad-sidebar-m)] pb-[var(--pad-top-m)]">
                 <u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
                     <u-form-item label="" prop="mobile" :borderBottom="true">
                         <input v-model="formData.mobile" type="number" maxlength="11" :placeholder="t('mobilePlaceholder')" class="w-full h-[50rpx] leading-[50rpx] !bg-transparent !px-[20rpx] text-[26rpx] text-[#333]" :disabled="real_name_input" placeholder-class="bind-mobile" />
@@ -16,7 +16,7 @@
                             </template> 
                         </u-form-item>
                     </view>
-					<view v-if="config.agreement_show" class="flex items-center mt-[20rpx] pl-[10rpx] py-[10rpx]" @click.stop="agreeChange">
+					<view v-if="config.agreement_show" class="flex items-center mt-[30rpx] pl-[10rpx] py-[10rpx]" @click.stop="agreeChange">
 						<u-checkbox-group @change="agreeChange">
 							<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }"/>
 						</u-checkbox-group>
@@ -27,8 +27,9 @@
 							<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=service' })" class="text-primary">《{{t('userAgreement')}}》</text>
 						</view>
 					</view>
-                    <view class="mt-[120rpx]">
-                        <button class="primary-btn-bg text-[26rpx] !text-[#fff] !h-[80rpx] leading-[80rpx] rounded-full font-500"   :loading="loading" :loadingText="t('binding')" @click="handleBind">{{t('bind')}}</button>
+                    <view class="mt-[100rpx]">
+                        <button class="primary-btn-bg text-[26rpx] !text-[#fff] !h-[80rpx] leading-[80rpx] rounded-full font-500"
+						   :class="{'opacity-50': loading}"  :disabled="loading" @click="handleBind">{{t('bind')}}</button>
                     </view>
                 </u-form>
             </view>

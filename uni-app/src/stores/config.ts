@@ -50,8 +50,8 @@ const useConfigStore = defineStore('config', {
     actions: {
         async getLoginConfig() {
             await getConfig().then((res: any) => {
-                this.login.is_username = parseInt(res.data.is_username)
-                this.login.is_mobile = parseInt(res.data.is_mobile)
+                this.login.is_username = res.data.is_username
+                this.login.is_mobile = res.data.is_mobile
                 this.login.is_auth_register = parseInt(res.data.is_auth_register)
                 this.login.is_bind_mobile = parseInt(res.data.is_bind_mobile)
                 this.login.agreement_show = parseInt(res.data.agreement_show)

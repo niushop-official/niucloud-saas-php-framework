@@ -9,6 +9,7 @@
     "startDate": "开始时间",
     "loginTime": "最后登录时间",
     "addUser": "添加用户",
+    "updateUser": "编辑用户",
     "username": "账号",
     "passwordPlaceholder": "请输入用户密码",
     "usernamePlaceholder": "请输入用户账号",

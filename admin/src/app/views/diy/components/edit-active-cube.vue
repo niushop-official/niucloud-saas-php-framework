@@ -87,15 +87,15 @@
 							<el-input v-model.trim="item.title.text" :placeholder="t('activeCubeTitlePlaceholder')" clearable maxlength="4" show-word-limit/>
 						</el-form-item>
 
-                        <el-form-item :label="t('activeCubeSubTitleTextColor')" v-show="selectBlockStyle.value == 'style-3'">
+                        <el-form-item :label="t('activeCubeSubTitleTextColor')" v-show="diyStore.editComponent.blockStyle.value == 'style-3'">
                             <el-color-picker v-model="item.title.textColor" show-alpha :predefine="diyStore.predefineColors" />
                         </el-form-item>
 
-						<el-form-item :label="t('activeCubeSubTitle')" v-if="selectBlockStyle.value != 'style-3'">
-							<el-input v-model.trim="item.subTitle.text" :placeholder="t('activeCubeSubTitlePlaceholder')" clearable :maxlength="(selectBlockStyle.value != 'style-4' ? '6' : '4')" show-word-limit/>
+						<el-form-item :label="t('activeCubeSubTitle')" v-if="diyStore.editComponent.blockStyle.value != 'style-3'">
+							<el-input v-model.trim="item.subTitle.text" :placeholder="t('activeCubeSubTitlePlaceholder')" clearable :maxlength="(diyStore.editComponent.blockStyle.value != 'style-4' ? '6' : '4')" show-word-limit/>
 						</el-form-item>
                         
-                        <div v-show="selectBlockStyle.value == 'style-4'">
+                        <div v-show="diyStore.editComponent.blockStyle.value == 'style-4'">
                             <el-form-item :label="t('activeCubeSubTitleTextColor')">
                                 <el-color-picker v-model="item.subTitle.textColor" show-alpha :predefine="diyStore.predefineColors" />
                             </el-form-item>
@@ -111,7 +111,7 @@
                             </el-form-item>
                         </div>
                         
-                        <div v-show="selectBlockStyle.value != 'style-4' && selectBlockStyle.value != 'style-3'">
+                        <div v-show="diyStore.editComponent.blockStyle.value != 'style-4' && diyStore.editComponent.blockStyle.value != 'style-3'">
                             <el-form-item :label="t('activeCubeButton')">
                                 <el-input v-model.trim="item.moreTitle.text" :placeholder="t('activeCubeButtonPlaceholder')" clearable maxlength="3" show-word-limit/>
                             </el-form-item>

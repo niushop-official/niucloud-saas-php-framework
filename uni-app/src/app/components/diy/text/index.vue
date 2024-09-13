@@ -2,7 +2,7 @@
 	<view :style="warpCss">
 		<view :style="maskLayer"></view>
 		<view class="diy-text relative">
-			<view v-if="diyComponent.style == 'style-1'" class=" px-[var(--pad-sidebar-m)]">
+			<view v-if="diyComponent.style == 'style-1'" class="px-[var(--pad-sidebar-m)]">
 				<view @click="diyStore.toRedirect(diyComponent.link)">
 					<view class="leading-[1]" :style="{
 							fontSize: diyComponent.fontSize * 2 + 'rpx',

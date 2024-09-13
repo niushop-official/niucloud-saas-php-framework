@@ -19,5 +19,6 @@
       "dataValuePlaceholder":"请输入数据值",
       "sortPlaceholder":"数值越大越排前",
       "momePlaceholder":"请输入备注",
-      "createTime":"创建时间"
+      "createTime":"创建时间",
+      "keyFormatTips": "关键字只允许输入字母和下划线"
 }

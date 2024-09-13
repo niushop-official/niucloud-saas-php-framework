@@ -1,5 +1,5 @@
 <template>
-    <upload-attachment type="image" ref="imageRef" :limit="10" @confirm="imageSelect" />
+    <upload-attachment type="image" ref="imageRef" limit="" @confirm="imageSelect" />
     <upload-attachment type="video" ref="videoRef" @confirm="videoSelect" />
     <vue-ueditor-wrap v-model="content" :config="editorConfig"  :editorDependencies="['ueditor.config.js','ueditor.all.js']" ref="editorRef"></vue-ueditor-wrap>
 </template>

@@ -11,10 +11,10 @@
                 </el-form-item>
 
                 <el-form-item :label="t('signPeriod')" v-if="formData.is_use">
-                    <el-input-number v-model="formData.sign_period" clearable class="input-width" controls-position="right" /><span class="ml-[10px]">天</span>
+                    <el-input-number v-model="formData.sign_period" :min="0" :precision="0" clearable class="input-width" controls-position="right" /><span class="ml-[10px]">天</span>
                 </el-form-item>
 
-                <el-form-item :label="t('daySignAward')" prop="formData.day_award" v-if="formData.is_use">
+                <el-form-item :label="t('daySignAward')" prop="day_award" v-if="formData.is_use">
                     <div v-for="(item, index) in daySignAwardText" :key="index">
                         <span v-if="item.is_use == '1'">{{ item.content }}&nbsp;&nbsp;</span>
                     </div>
@@ -27,7 +27,7 @@
                     <div class="form-tip">{{ t('daySignAwardTip') }}</div>
                 </el-form-item>
 
-                <el-form-item :label="t('continueSignAward')" prop="formData.continue_award" v-if="formData.is_use">
+                <el-form-item :label="t('continueSignAward')" prop="continue_award" v-if="formData.is_use">
                     <div>
                         <div class="form-tip">{{ t('continueSignAwardTipTop') }}</div>
                         <div class="mt-[10px]">
@@ -68,9 +68,9 @@
                     </div>
                 </el-form-item>
 
-                <el-form-item :label="t('ruleExplain')" prop="formData.rule_explain" v-if="formData.is_use">
+                <el-form-item :label="t('ruleExplain')" prop="rule_explain" v-if="formData.is_use">
                     <div class="flex">
-                        <el-input v-model="formData.rule_explain" :placeholder="t('ruleExplainTip')" type="textarea" rows="5" class="textarea-width" clearable />
+                        <el-input v-model="formData.rule_explain" :placeholder="t('ruleExplainTip')" type="textarea" maxlength="500" show-word-limit rows="5" class="textarea-width" clearable />
                         <el-button class="ml-[20px]" type="primary" @click="defaultExplainEvent()" plain>{{ t('useDefaultExplain') }}</el-button>
                     </div>
                 </el-form-item>
@@ -89,7 +89,7 @@
         </el-dialog>
 
         <!-- 连签奖励 -->
-        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="1200px" :destroy-on-close="true" v-if="formData.is_use">
+        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="800px" :destroy-on-close="true" v-if="formData.is_use">
             <sign-continue ref="continueRef" v-model="continue_award" />
             <template #footer>
                 <span class="dialog-footer">
@@ -134,7 +134,10 @@ let editIndex = 0 // 连签奖励修改下标
 const formRules = reactive<FormRules>({
     sign_period: [
         { required: true, message: t('signPeriodTip'), trigger: 'blur' }
-    ]
+    ],
+    day_award: [
+        { required: true, message: t('daySignAwardPlaceholder'), trigger: 'change' }
+    ],
 })
 
 /**

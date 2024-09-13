@@ -22,6 +22,30 @@
                 </template>
             </el-alert>
 
+            <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
+                <div class="flex justify-between">
+                    <el-form :inline="true" :model="cronTableData.searchParam" ref="searchFormRef">
+                        <el-form-item :label="t('title')" prop="key">
+                            <el-select v-model="cronTableData.searchParam.key" placeholder="全部" filterable remote clearable :remote-method="getAddonDevelopFn">
+                                <el-option label="全部" value="all" />
+                                <el-option v-for="item in templateList" :key="item.key" :label="item.name" :value="item.key" />
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item :label="t('status')" prop="status">
+                            <el-select v-model="cronTableData.searchParam.status" placeholder="全部" filterable remote clearable :remote-method="getAddonDevelopFn">
+                                <el-option label="全部" value="all" />
+                                <el-option label="启用" value="1" />
+                                <el-option label="关闭" value="0" />
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="loadCronList()">{{ t('search') }}</el-button>
+                            <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </el-card>
+
             <div class="mt-[20px]">
                 <el-table :data="cronTableData.data" size="large" v-loading="cronTableData.loading">
                     <template #empty>
@@ -124,15 +148,20 @@ const cronTableData = reactive({
     loading: true,
     data: [],
     searchParam: {
-        title: '',
         type: '',
-        last_time: ''
+        status: 'all'
     }
 })
 const templateList = ref([])
 const date_type = ref([])
 const week_list = ref([])
 const searchFormRef = ref<FormInstance>()
+
+const resetForm = (formEl: FormInstance | undefined) => {
+    if (!formEl) return
+    formEl.resetFields()
+    loadCronList()
+}
 
 const setTypeList = async () => {
     templateList.value = await (await getCronTemplate()).data

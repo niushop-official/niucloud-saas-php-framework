@@ -1,7 +1,7 @@
 <template>
     <view :style="themeColor()">
 		<scroll-view :scroll-y="true" class="w-screen h-screen bg-[var(--page-bg-color)]" v-if="!pageLoading && config.is_open == 1">
-			<view class="sidebar-marign pt-[20rpx]">
+			<view class="sidebar-margin pt-[var(--top-m)]">
 				<view class="card-template">
 					<view class="font-500 text-[30rpx] text-[#333] leading-[42rpx]">{{t('cashOutMoneyTip')}}</view>
 					<view class="flex pt-[30rpx] pb-[8rpx] items-center border-0 border-b-[2rpx] border-solid border-[#F1F2F5]">

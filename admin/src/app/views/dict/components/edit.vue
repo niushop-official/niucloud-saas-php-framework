@@ -6,6 +6,7 @@
             </el-form-item>
             <el-form-item :label="t('key')" prop="key">
                 <el-input v-model.trim="formData.key" clearable  maxlength="40" show-word-limit :placeholder="t('keyPlaceholder')" class="input-width" />
+                <p class="form-tip">{{ t('keyFormatTips') }}</p>
             </el-form-item>
             <el-form-item :label="t('memo')">
                 <el-input v-model="formData.memo" type="textarea" clearable :placeholder="t('memoPlaceholder')" class="input-width" />
@@ -50,7 +51,17 @@ const formRules = computed(() => {
             { required: true, message: t('namePlaceholder'), trigger: 'blur' }
         ],
         key: [
-            { required: true, message: t('keyPlaceholder'), trigger: 'blur' }
+            { required: true, message: t('keyPlaceholder'), trigger: 'blur' },
+            {
+                validator: (rule: any, value: any, callback: any) => {
+                    if (/^[a-zA-Z_]+$/.test(value)) {
+                        callback()
+                    } else {
+                        callback(new Error(t('keyFormatTips')))
+                    }
+                },
+                trigger: 'blur'
+            }
         ],
         data: [
             { required: true, message: t('dataPlaceholder'), trigger: 'blur' }

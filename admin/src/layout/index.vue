@@ -7,6 +7,7 @@ import { ref, markRaw, defineAsyncComponent, provide } from 'vue'
 import { getAppType } from '@/utils/common'
 import useUserStore from '@/stores/modules/user'
 import useSystemStore from '@/stores/modules/system'
+import Storage from '@/utils/storage'
 
 const sysLayout = import.meta.glob('./*/index.vue')
 const addonLayout = import.meta.glob('@/addon/**/layout/index.vue')
@@ -15,7 +16,7 @@ const modules = Object.assign(sysLayout, addonLayout)
 let siteLayout = 'default'
 switch (getAppType()) {
     case 'admin':
-        siteLayout = 'admin'
+        siteLayout = Storage.get('admin_layout') || 'admin'
         break
     default:
         const siteInfo = useUserStore().siteInfo

@@ -1,13 +1,13 @@
 <template>
     <view class="w-full h-screen box-border pt-[var(--top-m)] bg-[var(--page-bg-color)] setting-wrap" :style="themeColor()">
-        <view class="mb-[var(--top-m)] sidebar-marign card-template !py-[20rpx]">
+        <view class="mb-[var(--top-m)] sidebar-margin card-template !py-[20rpx]">
             <u-cell-group :border="false" class="cell-group">
                 <u-cell :title="t('personalSettings')" :is-link="true" url="/app/pages/member/personal"></u-cell>
                 <u-cell :title="t('switchLang')" :is-link="true" :value="lang" @click="langSheetShow = true"></u-cell>
                 <u-cell :title="t('version')" :value="version"></u-cell>
             </u-cell-group>
         </view>
-        <view class="mb-[var(--top-m)] sidebar-marign card-template !py-[20rpx]">
+        <view class="mb-[var(--top-m)] sidebar-margin card-template !py-[20rpx]">
             <u-cell-group :border="false" class="cell-group">
                 <u-cell :title="t('userAgreement')" :is-link="true" url="/app/pages/auth/agreement?key=service"></u-cell>
                 <u-cell :title="t('privacyAgreement')" :is-link="true" url="/app/pages/auth/agreement?key=privacy"></u-cell>

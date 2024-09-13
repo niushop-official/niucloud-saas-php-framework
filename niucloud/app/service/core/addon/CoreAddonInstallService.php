@@ -164,6 +164,20 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $install_data = $this->getAddonConfig($this->addon);
         if (empty($install_data)) throw new AddonException('ADDON_INFO_FILE_NOT_EXIST');
 
+        $framework_version = config('version.version');
+        $framework_version_arr = explode('.', $framework_version);
+
+        // 检测框架版本是否支持
+        if (!isset($install_data['support_version']) || empty($install_data['support_version']))
+            throw new AddonException('您要安装的插件或应用的info.json文件中未检测到匹配框架当前版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]的信息无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>');
+
+        $support_framework_arr = explode('.', $install_data['support_version']);
+        if ($framework_version_arr[0].$framework_version_arr[1] != $support_framework_arr[0].$support_framework_arr[1]) {
+            if ((float) "$support_framework_arr[0].$support_framework_arr[1]" < (float) "$framework_version_arr[0].$framework_version_arr[1]") {
+                throw new AddonException('您要安装的插件或应用的info.json文件中检测到支持的框架版本['. $install_data['support_version'] .']低于当前框架版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>');
+            }
+        }
+
         $check_res = Cache::get($this->cache_key . '_install_check');
         if (!$check_res) throw new CommonException('INSTALL_CHECK_NOT_PASS');
 

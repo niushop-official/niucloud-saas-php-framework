@@ -29,7 +29,7 @@ class Schedule extends BaseAdminController
     {
         $data = $this->request->params([
             ['key', ''],
-            ['status', ''],
+            ['status', 'all'],
         ]);
         return success(data: (new ScheduleService())->getPage($data));
 

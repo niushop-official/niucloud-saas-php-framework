@@ -1,7 +1,7 @@
 <template>
     <view  class="w-screen h-screen bg-[var(--page-bg-color)] overflow-hidden" :style="themeColor()">
         <scroll-view scroll-y="true" >
-            <view class="sidebar-marign card-template top-mar account pb-[20rpx]">
+            <view class="sidebar-margin card-template top-mar account pb-[20rpx]">
                 <block v-if="formData.account_type == 'bank'">
                     <view class="text-center text-[32rpx] font-500 mt-[10rpx] text-[#333] leading-[42rpx]">{{ formData.account_id ? t('editBankCard') : t('addBankCard') }}</view>
                     <view class="text-center text-[24rpx] mt-[16rpx] text-[var(--text-color-light9)]">{{ formData.account_id ? t('editBankCardTips') : t('addBankCardTips') }}</view>

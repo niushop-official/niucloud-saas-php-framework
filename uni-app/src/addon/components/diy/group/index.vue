@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="../../../../../../admin/src/styles/icon/addon-iconfont.css">
 <template>
     <view class="diy-group" id="componentList">
         <top-tabbar v-if="data.global && Object.keys(data.global).length && data.global.topStatusBar && data.global.topStatusBar.isShow" :scrollBool="diyGroup.componentsScrollBool.TopTabbar"  ref="topTabbarRef" :data="data.global" />

@@ -13,6 +13,7 @@ namespace app\service\admin\auth;
 
 use app\dict\sys\AppTypeDict;
 use app\model\sys\SysUser;
+use app\model\sys\SysUserRole;
 use app\service\admin\captcha\CaptchaService;
 use app\service\admin\site\SiteService;
 use app\service\admin\user\UserRoleService;
@@ -208,4 +209,20 @@ class LoginService extends BaseAdminService
         return $token_info;
     }
 
+    /**
+     * 重置管理员密码
+     * @return void
+     */
+    public static function resetAdministratorPassword() {
+        $super_admin_uid = ( new SysUserRole() )->where([
+            [ 'site_id', '=', request()->defaultSiteId() ],
+            [ 'is_admin', '=', 1 ]
+        ])->value('uid');
+
+        $user = (new UserService())->find($super_admin_uid);
+        $user->password = create_password('123456');
+        $user->save();
+
+        self::clearToken($super_admin_uid);
+    }
 }

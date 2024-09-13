@@ -21,7 +21,9 @@ use app\service\admin\user\UserRoleService;
 use app\service\admin\user\UserService;
 use core\base\BaseAdminService;
 use core\exception\AdminException;
+use core\exception\CommonException;
 use Exception;
+use think\facade\Cache;
 use think\facade\Db;
 
 /**
@@ -136,7 +138,12 @@ class SiteUserService extends BaseAdminService
             ['uid', '=', $uid],
             ['site_id', '=', $this->site_id]
         ];
-        SysUserRole::where($where)->delete();
+        $user = (new SysUserRole())->where($where)->findOrEmpty();
+        if ($user->isEmpty()) throw new CommonException('USER_NOT_EXIST');
+        if ($user->is_admin) throw new CommonException("SUPER_ADMIN_NOT_ALLOW_DEL");
+        $user->delete();
+        LoginService::clearToken($uid);
+        Cache::delete('user_role_list_' . $uid);
         return true;
     }
 
@@ -147,6 +154,7 @@ class SiteUserService extends BaseAdminService
      */
     public function lock(int $uid){
         (new SysUserRole())->where([ ['uid', '=', $uid], ['site_id', '=', $this->site_id] ])->update(['status' => UserDict::OFF]);
+        Cache::delete('user_role_list_' . $uid);
         LoginService::clearToken($uid);
         return true;
     }
@@ -158,6 +166,7 @@ class SiteUserService extends BaseAdminService
      */
     public function unlock(int $uid){
         (new SysUserRole())->where([ ['uid', '=', $uid], ['site_id', '=', $this->site_id] ])->update(['status' => UserDict::ON]);
+        Cache::delete('user_role_list_' . $uid);
         LoginService::clearToken($uid);
         return true;
     }

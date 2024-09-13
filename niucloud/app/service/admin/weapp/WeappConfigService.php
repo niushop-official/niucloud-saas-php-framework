@@ -11,6 +11,7 @@
 
 namespace app\service\admin\weapp;
 
+use app\dict\common\CommonDict;
 use app\model\sys\SysConfig;
 use app\service\core\weapp\CoreWeappConfigService;
 use core\base\BaseAdminService;
@@ -30,6 +31,11 @@ class WeappConfigService extends BaseAdminService
     public function getWeappConfig()
     {
         $config_info = (new CoreWeappConfigService())->getWeappConfig($this->site_id);
+        foreach ($config_info as $k => $v) {
+            if ($v !== '' && in_array($k, ['app_secret', 'encoding_aes_key'])) {
+                $config_info[$k] = CommonDict::ENCRYPT_STR;
+            }
+        }
         return array_merge($config_info, $this->getWeappStaticInfo());
 
     }
@@ -40,6 +46,12 @@ class WeappConfigService extends BaseAdminService
      * @return SysConfig|bool|Model
      */
     public function setWeappConfig(array $data){
+        $config = (new CoreWeappConfigService())->getWeappConfig($this->site_id);
+        foreach ($data as $k => $v) {
+            if ($v == CommonDict::ENCRYPT_STR) {
+                $data[$k] = $config[$k];
+            }
+        }
         return (new CoreWeappConfigService())->setWeappConfig($this->site_id, $data);
     }
 

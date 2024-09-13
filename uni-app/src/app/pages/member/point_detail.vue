@@ -27,7 +27,7 @@
             </view>
         </view>
 		<mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" top="202rpx">
-			<view v-for="(item,index) in pointList" :key="index" class="sidebar-marign card-template  mb-[var(--top-m)]">
+			<view v-for="(item,index) in pointList" :key="index" class="sidebar-margin card-template  mb-[var(--top-m)]">
                 <view class="flex justify-between items-center">
                     <view class="text-[#333]">
                         <text class="text-[26rpx]">{{item.month_info.year}}年</text>

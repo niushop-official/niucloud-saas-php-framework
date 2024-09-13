@@ -1,7 +1,7 @@
 <template>
     <view :style="themeColor()" class="bg-[var(--page-bg-color)] min-h-[100vh] overflow-hidden">
         <block v-if="!loading">
-			<view class="pt-[20rpx] sidebar-marign">
+			<view class="pt-[20rpx] sidebar-margin">
 				<view class="flex flex-col card-template">
 					<view class="flex" :class="{'mb-[20rpx]': verifyInfo.value.list.length-1 != index}" v-for="(item,index) in verifyInfo.value.list" :key="index">
 						<image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-if="item.cover" :src="img(item.cover)"></image>

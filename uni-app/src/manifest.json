@@ -1,5 +1,5 @@
 {
-    "name" : "",
+    "name" : "加载中",
     "appid" : "__UNI__9B03DBD",
     "description" : "",
     "versionName" : "1.0.0",
@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxc106e776c693c9a7",
         "setting" : {
             "urlCheck" : false
         },
@@ -87,7 +87,7 @@
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {
-                    "key" : ""
+                    "key" : "6ZDBZ-CLSLX-66747-7MVM4-HLK47-XMBXU"
                 }
             }
         },

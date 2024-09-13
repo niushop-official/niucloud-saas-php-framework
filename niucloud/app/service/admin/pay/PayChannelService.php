@@ -12,6 +12,7 @@
 namespace app\service\admin\pay;
 
 use app\dict\common\ChannelDict;
+use app\dict\common\CommonDict;
 use app\dict\pay\PayChannelDict;
 use app\dict\pay\PayDict;
 use app\model\pay\PayChannel;
@@ -55,6 +56,7 @@ class PayChannelService extends BaseAdminService
             if (!array_key_exists($channel, ChannelDict::getType())) throw new PayException('CHANNEL_MARK_INVALID');
         }
         $pay_channel = $this->core_pay_channel_service->find($this->site_id, $where);
+
         if ($pay_channel->isEmpty()) {
             $data[ 'channel' ] = $channel;
             $data[ 'type' ] = $type;
@@ -62,7 +64,13 @@ class PayChannelService extends BaseAdminService
             $data[ 'config' ] = $this->getConfigByPayType($data[ 'config' ], $type);
             $res = $this->model->create($data);
         } else {
+            $config = $pay_channel->config;
             $data[ 'config' ] = $this->getConfigByPayType($data[ 'config' ], $type);
+            foreach ($data[ 'config' ] as $config_k => $config_v) {
+                if ($config_v == CommonDict::ENCRYPT_STR && isset($config[$config_k])) {
+                    $data[ 'config' ][$config_k] = $config[$config_k];
+                }
+            }
             $pay_channel->save($data);
         }
         return true;
@@ -87,10 +95,21 @@ class PayChannelService extends BaseAdminService
         foreach ($pay_channel_list_temp as $v) {
             $pay_channel_list[ $v[ 'channel' ] ][ $v[ 'type' ] ] = $v;
         }
+
+        $pay_type_list = PayDict::getPayType();
+
         foreach ($channel_list as $k => $v) {
             $temp_item = $pay_channel_list[ $k ] ?? [];
             foreach ($v[ 'pay_type' ] as $item_k => $item_v) {
-                $temp_v_item = $temp_item[ $item_k ] ?? [ 'status' => 0, 'config' => [ 'name' => '' ], 'sort' => 0 ];
+                if (isset($temp_item[ $item_k ])) {
+                    $temp_v_item = $temp_item[ $item_k ];
+                    $encrypt_params = $pay_type_list[$item_k]['encrypt_params'] ?? [];
+                    foreach ($temp_v_item['config'] as $config_k => $config_v) {
+                        if ($config_v !== '' && in_array($config_k, $encrypt_params)) $temp_v_item['config'][$config_k] = CommonDict::ENCRYPT_STR;
+                    }
+                } else {
+                    $temp_v_item = [ 'status' => 0, 'config' => [ 'name' => '' ], 'sort' => 0 ];
+                }
                 $item_v[ 'config' ] = $temp_v_item[ 'config' ];
                 $item_v[ 'status' ] = $temp_v_item[ 'status' ];
                 $item_v[ 'sort' ] = $temp_v_item[ 'sort' ];
@@ -118,7 +137,17 @@ class PayChannelService extends BaseAdminService
             'site_id' => $this->site_id,
             'channel' => $channel
         );
-        return $this->model->where($where)->field('type, channel, config, sort, status')->select()->toArray();
+        $list = $this->model->where($where)->field('type, channel, config, sort, status')->select()->toArray();
+        if (!empty($list)) {
+            $pay_type_list = PayDict::getPayType();
+            foreach ($list as $k => &$v) {
+                $encrypt_params = $pay_type_list[ $v['type'] ]['encrypt_params'] ?? [];
+                foreach ($v['config'] as $config_k => $config_v) {
+                    if ($config_v !== '' && in_array($config_k, $encrypt_params)) $v['config'][$config_k] = CommonDict::ENCRYPT_STR;
+                }
+            }
+        }
+        return $list;
     }
 
     /**

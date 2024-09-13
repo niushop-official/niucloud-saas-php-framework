@@ -1,7 +1,7 @@
 <template>
     <view class="w-full h-screen bg-page personal-wrap overflow-hidden" v-if="info" :style="themeColor()">
 
-        <view class="my-[var(--top-m)] sidebar-marign overflow-hidden card-template py-[20rpx]">
+        <view class="my-[var(--top-m)] sidebar-margin overflow-hidden card-template py-[20rpx]">
             <u-cell-group :border="false" class="cell-group">
 				<u-cell :title="t('headimg')" :titleStyle="{'font-size': '28rpx'}" :is-link="true">
 				    <template #value>

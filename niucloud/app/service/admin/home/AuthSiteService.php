@@ -170,7 +170,7 @@ class AuthSiteService extends BaseAdminService
             'site_name' => $data['site_name'],
             'uid' => $this->uid,
             'group_id' => $data['group_id'],
-            'expire_time' => strtotime("+ {$limit['month']} month")
+            'expire_time' => date('Y-m-d H:i:s', strtotime("+ {$limit['month']} month"))
         ]);
 
         return true;

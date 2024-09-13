@@ -129,7 +129,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="230">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="120">
                         <template #default="{ row }">
                             <el-button v-for="(item, index) in operationBtn[row.status.toString()].value" :key="index + 'a'"
                                 @click="fnProcessing(operationBtn[row.status.toString()].clickArr[index], row)"
@@ -158,6 +158,19 @@
                 <el-form-item :label="t('cashOutMethod')">
                     <div class="input-width"> {{ Transfertype[cashOutInfo.transfer_type].name }} </div>
                 </el-form-item>
+                <template v-if="cashOutInfo.transfer_type == 'alipay'">
+                    <el-form-item :label="t('alipayAccount')">
+                        <div class="input-width"> {{ cashOutInfo.transfer_account }} </div>
+                    </el-form-item>
+                </template>
+                <template v-if="cashOutInfo.transfer_type == 'bank'">
+                    <el-form-item :label="t('bankName')">
+                        <div class="input-width"> {{ cashOutInfo.transfer_bank }} </div>
+                    </el-form-item>
+                    <el-form-item :label="t('bankAccount')">
+                        <div class="input-width"> {{ cashOutInfo.transfer_account }} </div>
+                    </el-form-item>
+                </template>
                 <el-form-item :label="t('applicationForWithdrawalAmount')">
                     <div class="input-width"> {{ cashOutInfo.apply_money }} </div>
                 </el-form-item>

@@ -70,14 +70,14 @@
         </el-card>
 
         <!--添加页面-->
-        <el-dialog v-model="dialogVisible" :title="t('addPageTips')" width="25%">
+        <el-dialog v-model="dialogVisible" :title="t('addPageTips')" width="350px">
 
             <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules">
                 <el-form-item :label="t('title')" prop="title">
                     <el-input v-model="formData.title" :placeholder="t('titlePlaceholder')" clearable maxlength="12" show-word-limit class="w-full" />
                 </el-form-item>
                 <el-form-item :label="t('typeName')" prop="type">
-                    <el-select v-model="formData.type" :placeholder="t('pageTypePlaceholder')" class="w-full">
+                    <el-select v-model="formData.type" :placeholder="t('pageTypePlaceholder')" class="!w-full">
                         <el-option v-for="(item, key) in pageType" :label="item.title" :value="key" :key="key"/>
                     </el-select>
                 </el-form-item>

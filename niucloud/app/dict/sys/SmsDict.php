@@ -47,6 +47,7 @@ class SmsDict
                     'app_key' => 'APP_KEY',
                     'secret_key' => 'SECRET_KEY'
                 ],
+                'encrypt_params' => ['secret_key'],
                 'component' => '/src/app/views/setting/components/sms-ali.vue',
             ],
             self::TENCENTSMS => [
@@ -58,6 +59,7 @@ class SmsDict
                     'secret_id' => 'SECRET_ID',
                     'secret_key' => 'SECRET_KEY'
                 ],
+                'encrypt_params' => ['secret_key'],
                 'component' => '/src/app/views/setting/components/sms-tencent.vue',
             ],
         ];

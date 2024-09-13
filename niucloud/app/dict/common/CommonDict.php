@@ -12,7 +12,7 @@ class CommonDict
     public const UNKNOWN = 0;
     public const MAN = 1;
     public const WOMAN = 2;
-
+    public const ENCRYPT_STR = '*****************************';
 
     /**
      * 性别

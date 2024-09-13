@@ -21,6 +21,7 @@
 	import { ref,reactive,computed,watch } from 'vue'
 	import { redirect, currRoute,currShareRoute, img } from '@/utils/common'
 	import useConfigStore from '@/stores/config'
+	import { cloneDeep } from 'lodash-es'
 
     const props = defineProps({
         addon: {
@@ -38,18 +39,45 @@
 
     const tabbar:any = reactive({})
 
-    const setTabbar = ()=>{
-        let list = useConfigStore().tabbarList;
-		if(list.length == 1){
-			Object.assign(tabbar,list[0]);
-		}else{
-			for(let i=0;i<list.length;i++){
-				if(list[i].key == addon){
-					Object.assign(tabbar,list[i]);
-					break;
-				}
-			}
-		}
+    const setTabbar = ()=> {
+	    let list = cloneDeep(useConfigStore().tabbarList);
+	    if (list.length == 1) {
+		    Object.assign(tabbar, list[0]);
+	    } else {
+		    let isExist = false;
+		    for (let i = 0; i < list.length; i++) {
+			    if (list[i].key == addon) {
+				    Object.assign(tabbar, list[i]);
+				    isExist = true;
+				    break;
+			    }
+		    }
+
+		    if (!isExist) {
+
+			    // 检测是否单应用
+			    let count = 0;
+			    let singleTabbar = {}
+			    try {
+				    if (list) {
+					    list.forEach((item: any) => {
+						    if (item.info.type == 'app') {
+							    count++;
+							    singleTabbar = item;
+						    }
+					    })
+				    }
+
+				    if (count == 1) {
+					    Object.assign(tabbar, singleTabbar);
+				    }
+
+			    } catch (e) {
+
+			    }
+		    }
+
+	    }
     }
 
     setTabbar()

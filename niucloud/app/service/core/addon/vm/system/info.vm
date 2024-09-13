@@ -6,5 +6,6 @@
   "author": "{author}",
   "type": "{type}",
   "support_app": "{support_app}",
-  "compile":[]
+  "compile":[],
+  "support_version": "{support_version}"
 }

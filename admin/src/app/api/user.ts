@@ -40,6 +40,14 @@ export function deleteUser(uid: number) {
 }
 
 /**
+ * 修改用户
+ * @param uid
+ */
+export function editUser(params: Record<string, any>) {
+    return request.put(`user/user/${params.uid}`, params, { showSuccessMessage: true })
+}
+
+/**
  * 获取所有用户列表
  * @param params
  * @returns

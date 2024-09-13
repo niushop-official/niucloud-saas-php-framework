@@ -89,7 +89,7 @@
             <div class="text-page-title mb-[20px]">历史版本</div>
             <el-timeline>
                 <el-timeline-item :timestamp="item['release_time'] + ' 版本：' + item['version_no']" v-for="(item,index) in frameworkVersionList" type="primary" :hollow="true" placement="top" :key="index">
-                    <div class="mt-[10px] p-[20px] bg-overlay rounded-md timeline-log-wrap whitespace-pre" v-if="item['upgrade_log']">
+                    <div class="mt-[10px] p-[20px] bg-overlay rounded-md timeline-log-wrap whitespace-pre-wrap" v-if="item['upgrade_log']">
                         <div v-html="item['upgrade_log']"></div>
                     </div>
                 </el-timeline-item>

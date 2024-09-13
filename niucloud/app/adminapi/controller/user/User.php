@@ -87,6 +87,21 @@ class User extends BaseAdminController
     }
 
     /**
+     * 编辑用户
+     * @return Response
+     * @throws \Exception
+     */
+    public function edit($uid) {
+        $data = $this->request->params([
+            ['password', ''],
+            ['real_name', ''],
+            ['head_img', ''],
+        ]);
+        (new UserService())->edit($uid, $data);
+        return success();
+    }
+
+    /**
      * 删除用户
      * @param $uid
      * @return Response

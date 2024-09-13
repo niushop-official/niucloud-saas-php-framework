@@ -35,7 +35,7 @@
 							<view class="line" :style="{'background-color': getTabColor(index == currTabIndex)}" v-if="index == currTabIndex"></view>
 						</view>
 					</scroll-view>
-					<view v-if="diyComponent.tab.list.length" class="absolute tab-btn nc-iconfont nc-icon-a-yingyongliebiaoV6xx-36" @click="tabAllPopup = true"></view>
+					<view v-if="diyComponent.tab.list.length" class="absolute tab-btn iconfont icona-yingyongliebiaoV6xx-32" @click="tabAllPopup = true"></view>
 				</view>
                 
 				<view class="bg-img" v-if="fixedStyleBg">
@@ -522,7 +522,7 @@
 			width: auto;
 			position: relative;
 			padding: 0 20rpx;
-		
+			height:54rpx;
 			.name {
 				font-size: 28rpx;
 				color: #333;
@@ -539,7 +539,7 @@
 				}
 				.line{
 					position: absolute;
-					bottom: 1rpx;
+					bottom: 0rpx;
 					width: 34rpx;
 					height: 4rpx;
 					border-radius: 2rpx;

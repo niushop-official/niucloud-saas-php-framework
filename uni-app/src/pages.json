@@ -308,7 +308,7 @@
 			"root": "addon",
 			"pages": [
 				// {{ PAGE_BEGAIN }}
-        		// {{ PAGE_END }}}
+				// {{ PAGE_END }}}
 				{
 					"path": "end"
 				}

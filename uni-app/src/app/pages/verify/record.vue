@@ -4,14 +4,14 @@
 			<view class="py-[14rpx] flex items-center justify-between px-[20rpx]">
 				<view class="flex-1 search-input mr-[20rpx]">
 					<text @click.stop="searchTypeFn()" class="nc-iconfont nc-icon-sousuo-duanV6xx1 btn"></text>
-					<input class="input" maxlength="50" type="text" v-model="keyword"  placeholder="请输入搜索关键词" placeholderClass="text-[var(--text-color-light9)]" confirm-type="search" @confirm="searchTypeFn()">
+					<input class="input" maxlength="50" type="text" v-model="keyword"  placeholder="请输入搜索关键词" placeholderClass="text-[var(--text-color-light9)] text-[24rpx]" confirm-type="search" @confirm="searchTypeFn()">
 					<text v-if="keyword" class="nc-iconfont nc-icon-cuohaoV6xx1 clear" @click="keyword=''"></text>
 				</view>
 				<view class="nc-iconfont nc-icon-a-riliV6xx-36 !text-[30rpx] leading-[36rpx] text-[var(--text-color-light6)]" @click="handleSelect"></view>
 			</view>
 		</view>
         <mescroll-body ref="mescrollRef" top="88rpx" @init="mescrollInit" :down="{ use: false }" @up="geVerifyRecordFn">
-        	<view class="sidebar-marign pt-[var(--top-m)]" v-if="list.length">
+        	<view class="sidebar-margin pt-[var(--top-m)]" v-if="list.length">
         		<block v-for="(item,index) in list"	:key="item.id">
         			<view class="w-full flex flex-col mb-[var(--top-m)] card-template" @click="toLink(item)">
         				<view class="flex items-center mb-[30rpx] leading-[1] text-[26rpx]">

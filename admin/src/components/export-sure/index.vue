@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="status" :title="t('exportTip')" width="300px" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
+    <el-dialog v-model="status" :title="t('exportTip')" width="300px" :close-on-click-modal="true" :close-on-press-escape="false" :show-close="false">
         <span>{{ t('exportPlaceholder') }}</span>
         <template #footer>
             <span class="dialog-footer">
@@ -52,23 +52,25 @@ const router = useRouter()
  * 导出报表并跳转到下载页
  */
 const detectionExportFn = () => {
-	loading.value = true
+    loading.value = true
     const url = router.resolve({
         path: '/site/setting/export'
     })
     exportDataCheck(prop.type, { page: 1, limit: 1, ...prop.searchParam }).then((res: any) => {
         if (res.data) {
             exportData(prop.type, prop.searchParam).then(() => {
-				loading.value = false
+                loading.value = false
                 emit('close', false)
                 setTimeout(() => {
                     window.open(url.href)
                 }, 100)
             })
         } else {
-            emit('close', false)
+            loading.value = false
             ElMessage.error(res.msg)
         }
+    }).catch(() => {
+        loading.value = false
     })
 }
 // 关闭弹框

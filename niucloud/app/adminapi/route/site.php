@@ -67,6 +67,8 @@ Route::group('site', function () {
     Route::put('user/:uid', 'site.User/edit');
     //站点修改用户属性
     Route::put('user/:uid/:field', 'site.User/modify');
+    //站点删除用户
+    Route::delete('user/:uid', 'site.User/del');
     /***************************************************** 操作日志 **************************************************/
     //操作日志列表
     Route::get('log', 'site.UserLog/lists');

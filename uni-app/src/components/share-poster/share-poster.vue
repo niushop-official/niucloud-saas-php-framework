@@ -84,11 +84,18 @@ const sharePopupShow = ref(false);
 // 复制
 const copyUrl = () => {
 	let data = ''
-	if(props.copyUrl) {
-        data = location.origin + props.copyUrl + props.copyUrlParam;
-    }else {
-        data = location.origin + location.pathname + props.copyUrlParam;
-    }
+	if (props.copyUrl) {
+		let pathName = location.pathname;
+		let packageArr: any = ['/app/', '/addon/'];
+		for (let i = 0; i < packageArr.length; i++) {
+			if (pathName.indexOf(packageArr[i]) != -1) {
+				pathName = pathName.substr(0, pathName.indexOf(packageArr[i]));
+			}
+		}
+		data = location.origin + pathName + props.copyUrl + props.copyUrlParam;
+	} else {
+		data = location.origin + location.pathname + props.copyUrlParam;
+	}
 	copy(data, () => {
 		sharePopupShow.value = false;
 	});

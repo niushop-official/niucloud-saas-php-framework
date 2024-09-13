@@ -49,7 +49,7 @@ class WeappVersionService extends BaseAdminService
      */
     public function add(array $data = [])
     {
-        $site_group = (new SiteGroupService())->getAll();
+        $site_group = (new SiteGroup())->field("group_id, group_name, group_desc, create_time, update_time, app")->order('create_time asc')->select()->toArray();
         if (empty($site_group)) throw new CommonException('PLEASE_ADD_FIRST_SITE_GROUP');
 
         $site_group_id = $data['site_group_id'] ?? $site_group[0]['group_id'];

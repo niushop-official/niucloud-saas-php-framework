@@ -1,6 +1,7 @@
 <template>
 	<view :style="warpCss">
 		<view :style="maskLayer"></view>
+		
 		<view class="diy-active-cube relative">
 			<view class="active-cube-wrap p-[20rpx] pb-[24rpx]">
 				<view class="flex items-center" v-if="diyComponent.titleStyle.value == 'style-1'">
@@ -14,7 +15,7 @@
 				<view class="flex items-center" v-if="diyComponent.titleStyle.value == 'style-3'">
 					<view class="mr-[10rpx] font-500 text-[30rpx]" @click="diyStore.toRedirect(diyComponent.textLink)" :style="{color: diyComponent.titleColor }">{{ diyComponent.text }}</view>
 					<view class="relative h-[36rpx]" @click="diyStore.toRedirect(diyComponent.subTitle.link)">
-						<view v-if="diyComponent.subTitle.text" class="text-center text-[22rpx] py-[6rpx] pl-[16rpx] pr-[36rpx]" :style="{'color': diyComponent.subTitle.textColor, 'background-image':'url('+img('static/resource/images/diy/active_cube/bg_2.png')+')','background-size': 'cover','background-repeat': 'no-repeat'}">{{ diyComponent.subTitle.text }}</view>
+						<view v-if="diyComponent.subTitle.text" class="flex items-center text-[22rpx] leading-0 min-w-[60rpx] h-[34rpx] pl-[10rpx] pr-[34rpx]" :style="{'color': diyComponent.subTitle.textColor, 'background-image':'url('+img('static/resource/images/diy/active_cube/bg_2.png')+')','background-size': '100% 100%','background-repeat': 'no-repeat'}">{{ diyComponent.subTitle.text }}</view>
 <!-- 						<image class="absolute left-0 top-0 bottom-0 !w-[16rpx] !h-[36rpx]" :src="img('static/resource/images/diy/active_cube/block_style2_1.png')" mode="scaleToFill"/>
 						<image class="absolute right-0 top-0 bottom-0 !w-[28rpx] !h-[36rpx]" :src="img('static/resource/images/diy/active_cube/block_style2_2.png')" mode="scaleToFill"/> -->
 					</view>
@@ -94,7 +95,7 @@
 								</view>
 								<view class="relative -mt-[10rpx] text-[20rpx] bg-[#F3DAC5] text-[#ED6E00] rounded-[16rpx] px-[12rpx] h-[34rpx] flex-center" :style="{ color : item.subTitle.textColor, background : 'linear-gradient(to right,'+ item.subTitle.startColor +','+ item.subTitle.endColor + ')' }">{{ item.subTitle.text }}</view>
 							</view>
-							<view class="mt-[10rpx] mb-[8rpx] text-[26rpx] text-[#fff]" :style="{ fontWeight : (diyComponent.blockStyle.fontWeight == 'bold' ? diyComponent.blockStyle.fontWeight : '500') }">{{ item.title.text }}</view>
+							<view class="mt-[12rpx] mb-[12rpx] text-[26rpx] text-[#fff]" :style="{ fontWeight : (diyComponent.blockStyle.fontWeight == 'bold' ? diyComponent.blockStyle.fontWeight : '500') }">{{ item.title.text }}</view>
 						</view>
 					</view>
 				</scroll-view>

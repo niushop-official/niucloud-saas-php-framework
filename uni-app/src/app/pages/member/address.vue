@@ -1,28 +1,32 @@
 <template>
     <view class="address bg-[var(--page-bg-color)] min-h-[100vh]" v-if="!loading" :style="themeColor()">
         <scroll-view scroll-y="true">
-			<view class="sidebar-marign pt-[var(--top-m)]" v-if="addressList.length">
-				<u-swipe-action>
-						<view class="mb-[var(--top-m)] card-template" v-for="(item, key) in addressList">
-							<u-swipe-action-item :options="addressOptions" @click="swipeClick(key)">
-								<view class="flex items-center">
-									<view class="flex-1 line-feed mr-[20rpx]" @click="selectAddress(item)">
-										<view class="flex items-center">
-											<view class="text-[#333] text-[30rpx] leading-[34rpx] font-500">{{ item.name }}</view>
-											<text class="text-[#333] text-[30rpx] ml-[10rpx]">{{ mobileHide(item.mobile) }}</text>
-											<view v-if="item.is_default == 1" class="bg-primary-light !text-[var(--primary-color)] border-[2rpx] border-solid border-[var(--primary-color)] !text-[22rpx] px-[10rpx] h-[36rpx] ml-[10rpx] tag-item">{{ t('default') }}</view>
-										</view>
-										<view class="mt-[16rpx] text-[26rpx] line-feed text-[var(--text-color-light9)] leading-[1.4]">{{ item.full_address }}</view>
-									</view>
-									<text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[32rpx]" @click="editAddress(item.id)"></text>
-								</view>
-							</u-swipe-action-item>
-						</view>	
-				</u-swipe-action>
+			<view class="sidebar-margin pt-[var(--top-m)]" v-if="addressList.length">
+                <view class="mb-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden" v-for="(item, index) in addressList">
+                    <view class="flex flex-col card-template">
+                        <view class="flex-1 line-feed mr-[20rpx]" @click="selectAddress(item)">
+                            <view class="flex items-center">
+                                <view class="text-[#333] text-[30rpx] leading-[34rpx] font-500">{{ item.name }}</view>
+                                <text class="text-[#333] text-[30rpx] ml-[10rpx]">{{ mobileHide(item.mobile) }}</text>
+                            </view>
+                            <view class="mt-[16rpx] text-[26rpx] line-feed text-[var(--text-color-light9)] leading-[1.4]">{{ item.full_address }}</view>
+                        </view>
+                        <view class="flex justify-between pt-[var(--top-m)]">
+                            <view class="flex items-center leading-none" @click.stop="setDefault(index)">
+                                <text class="iconfont mr-[10rpx]" :class="{ 'iconduigou text-primary': item.is_default, 'iconcheckbox_nol': !item.is_default }"></text>
+                                设为默认
+                            </view>
+                            <view class="flex">
+                                <view @click.stop="editAddressFn(item.id)"><text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[32rpx] mr-[4rpx]"></text>编辑</view>
+                                <view @click.stop="deleteAddressFn(index)" class="ml-[40rpx]"><text class="nc-iconfont nc-icon-shanchu-yuangaizhiV6xx shrink-0 text-[32rpx] mr-[4rpx]"></text>删除</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
 			</view>
 			<mescroll-empty v-if="!addressList.length" :option="{tip : '暂无收货地址'}"></mescroll-empty>
 			<view class="w-full footer">
-				<view class="py-[30rpx] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
+				<view class="py-[var(--top-m)] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
 					<button hover-class="none" class="primary-btn-bg text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" @click="addAddress">{{t('createAddress')}}</button>
 				</view>
 			</view>
@@ -34,7 +38,7 @@
     import { ref } from 'vue'
     import { onLoad } from '@dcloudio/uni-app'
     import { redirect, img, mobileHide } from '@/utils/common'
-    import { getAddressList, deleteAddress } from '@/app/api/member'
+    import { getAddressList, deleteAddress, editAddress } from '@/app/api/member'
     import { t } from '@/locale'
     import MescrollEmpty from '@/components/mescroll/mescroll-empty/mescroll-empty.vue';
 
@@ -53,27 +57,30 @@
 		if(uni.getStorageSync('selectAddressCallback')){uni.removeStorage({ key: 'selectAddressCallback' })}
     })
 
-    getAddressList({}).then(({ data }) => {
-        const address: any = [], locationAddress: any = []
-        data.forEach((item: any) => {
-            item.type == 'address' ? address.push(item) : locationAddress.push(item)
+    const getAddressListFn = () => {
+        getAddressList({}).then(({ data }) => {
+            const address: any = [], locationAddress: any = []
+            data.forEach((item: any) => {
+                item.type == 'address' ? address.push(item) : locationAddress.push(item)
+            })
+            if(!source.value){ //地址管理使用
+                addressList.value = data;
+            }else{ // 区分同城配送地址和快递地址
+                addressList.value = current.value == 0 ? address : locationAddress;
+            }
+            loading.value = false
+        }).catch(() => {
+            loading.value = false
         })
-		if(!source.value){ //地址管理使用
-			addressList.value = data;
-		}else{ // 区分同城配送地址和快递地址
-			addressList.value = current.value == 0 ? address : locationAddress;
-		}
-        loading.value = false
-    }).catch(() => {
-        loading.value = false
-    })
+    }
+    getAddressListFn()
 
     const addAddress = ()=> {
         const url = `/app/pages/member/address_edit`
         redirect({ url, param: { source : source.value } })
     }
 
-    const editAddress = (id: number)=> {
+    const editAddressFn = (id: number)=> {
         const url = `/app/pages/member/address_edit`
         redirect({ url, param: { id, source : source.value} })
     }
@@ -102,15 +109,27 @@
         }
     }
 
-    const swipeClick = (index: any) => {
-        const list = current.value ? locationAddressList : addressList
-        const data: any = list.value[index]
+    const deleteAddressFn = (index: any) => {
+        const data: any = addressList.value[index]
 
         deleteAddress(data.id).then(() => {
-            list.value.splice(index, 1)
+            addressList.value.splice(index, 1)
         }).catch()
     }
-	
+
+    const setDefault = (index: any) => {
+        const data: any = addressList.value[index]
+        if (data.is_default) return
+
+        data.is_default = 1;
+        editAddress(data).then(() => {
+            addressList.value.forEach((item, itemIndex) => {
+                item.is_default && (item.is_default = 0)
+                itemIndex == index && (item.is_default = 1)
+            })
+        }).catch()
+    }
+
 </script>
 
 <style lang="scss" scoped>
@@ -124,13 +143,13 @@
     }
 	:deep(.u-swipe-action-item__right__button__wrapper__text.u-line-1){
 		font-size: 24rpx !important;
-		
+
 	}
 	:deep(.u-swipe-action-item__right__button__wrapper){
 	    padding:0 10rpx !important;
 	}
 	.footer{
-		height: calc(100rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;
-		height: calc(100rpx + var(--top-m) + var(--top-m) + env(safe-area-inset-bottom)) !important;
+		height: calc(80rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;
+		height: calc(80rpx + var(--top-m) + var(--top-m) + env(safe-area-inset-bottom)) !important;
 	}
 </style>

@@ -70,7 +70,7 @@ button[type='primary'],uni-button[type='primary']{
 	background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
 }
 // 侧边栏宽度
-.sidebar-marign{
+.sidebar-margin{
 	margin-left: var(--sidebar-m) !important;
 	margin-right: var(--sidebar-m) !important;
 }
@@ -140,7 +140,7 @@ button[type='primary'],uni-button[type='primary']{
 
 // 空页面
 .empty-page{
-	padding-top: 130rpx;
+	padding-top: 120rpx;
 	margin: var(--top-m) auto 0;
 	display: flex;
 	flex-direction: column;
@@ -285,7 +285,7 @@ button[type='primary'],uni-button[type='primary']{
 		font-weight: 400;
 		font-size: 28rpx;
 		text-align: center;
-		margin:0 30rpx;
+		margin:0 var(--sidebar-m);
 		&.class-select{
 			position: relative;
 			font-weight: 500;
@@ -328,6 +328,49 @@ button[type='primary'],uni-button[type='primary']{
 	}
 }
 
+// 公共表单
+.common-form{
+	.common-form-item{
+		display: flex;
+		align-items: center;
+		height: 90rpx;
+		margin-top: 16rpx;
+		&:first-of-type{
+			margin-top: 0;
+		}
+		.label{
+			width: 200rpx;
+			font-size: 28rpx;
+		}
+		.val{
+			flex: 1;
+			font-size: 28rpx;
+		}
+		.switch{
+			.uni-switch-input{
+				width: 84rpx;
+				height: 42rpx;
+				&::after{
+					width: 42rpx;
+					height: 42rpx;
+					top: -2rpx;
+				}
+				&::before{
+					width: 84rpx;
+					height: 42rpx;
+					top: -2rpx;
+					background-color: var(--temp-bg);
+					border-color: var(--temp-bg);
+				}
+			}
+			.uni-switch-input-checked{
+				background-color: var(--primary-color);
+				border-color: var(--primary-color);
+			}
+		}
+	}
+}
+
 /*********** 底部按钮 - start ，适用于按钮定位到底部||同屏按钮||苹果兼容，实例：添加地址，编辑会员账号 **************/
 .common-tab-bar-placeholder {
 	padding-bottom: calc(constant(safe-area-inset-bottom) + 110rpx);
@@ -343,7 +386,7 @@ button[type='primary'],uni-button[type='primary']{
 
 // tab
 .u-tabbar .u-border-top{
-	border-color: #eee !important;
+	border-color: #f6f6f6 !important;
 }
 
 .flex-center{

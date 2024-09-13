@@ -14,6 +14,7 @@ namespace app\model\sys;
 use app\dict\sys\UserDict;
 use app\model\site\Site;
 use core\base\BaseModel;
+use think\model\concern\SoftDelete;
 use think\model\relation\HasOne;
 
 /**
@@ -23,6 +24,8 @@ use think\model\relation\HasOne;
  */
 class SysUserRole extends BaseModel
 {
+
+    use SoftDelete;
 
     /**
      * 数据表主键
@@ -40,6 +43,18 @@ class SysUserRole extends BaseModel
     protected $json = ['role_ids'];
     // 设置JSON数据返回数组
     protected $jsonAssoc = true;
+
+    /**
+     * 定义软删除标记字段
+     * @var string
+     */
+    protected $deleteTime = 'delete_time';
+
+    /**
+     * 定义软删除字段的默认值
+     * @var int
+     */
+    protected $defaultSoftDelete = 0;
 
     /**
      * 关联查询用户信息

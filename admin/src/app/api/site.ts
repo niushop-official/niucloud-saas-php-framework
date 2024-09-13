@@ -184,6 +184,15 @@ export function unlockUser(uid: number) {
     return request.put(`site/user/unlock/${uid}`)
 }
 
+/**
+ * 删除用户
+ *
+ * @param uid
+ */
+export function deleteUser(uid: number) {
+    return request.delete(`site/user/${uid}`)
+}
+
 /***************************************************** 操作日志 **************************************************/
 
 /**

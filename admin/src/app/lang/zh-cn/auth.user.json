@@ -28,5 +28,6 @@
     "manager": "用户",
     "managerPlaceholder": "请选择用户",
     "managerTips": "选择或者新增用户作为管理员",
-    "newAddManager": "新增用户"
+    "newAddManager": "新增用户",
+    "userDeleteTips": "是否要删除该管理员？"
 }

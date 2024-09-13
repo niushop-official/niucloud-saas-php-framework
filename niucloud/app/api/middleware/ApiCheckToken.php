@@ -43,18 +43,18 @@ class ApiCheckToken
         try {
             $token = $request->apiToken();
             $token_info = ( new LoginService() )->parseToken($token);
+            if (!empty($token_info)) {
+                $request->memberId($token_info[ 'member_id' ]);
+            }
+            //校验会员和站点
+            ( new AuthService() )->checkSiteAuth($request);
+            // 校验渠道
+            ( new AuthService() )->checkChannel($request);
         } catch (AuthException $e) {
             //是否将登录错误抛出
             if ($is_throw_exception)
                 return fail($e->getMessage(), [], $e->getCode());
         }
-        if (!empty($token_info)) {
-            $request->memberId($token_info[ 'member_id' ]);
-        }
-        //校验会员和站点
-        ( new AuthService() )->checkSiteAuth($request);
-        // 校验渠道
-        ( new AuthService() )->checkChannel($request);
         return $next($request);
     }
 }

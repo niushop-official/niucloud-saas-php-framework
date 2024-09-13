@@ -923,6 +923,7 @@ CREATE TABLE `sys_user_role`  (
   `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '添加时间',
   `is_admin` int(11) NOT NULL DEFAULT 0 COMMENT '是否是超级管理员',
   `status` int(11) NOT NULL DEFAULT 1 COMMENT '状态',
+  `delete_time` INT(11) NOT NULL DEFAULT 0 COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户权限表' ROW_FORMAT = Dynamic;
 
@@ -1036,7 +1037,7 @@ UPDATE `site` SET site_id = 0 WHERE  site_id = 1;
 
 INSERT INTO `sys_user` VALUES ('1', '', '', '', '', '', '0', '0', '0', '1', '0', '0', '0');
 
-INSERT INTO `sys_user_role` VALUES ('1', '1', '0', '', '0', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('1', '1', '0', '', '0', '1', '1', '0');
 
 INSERT INTO `sys_area` VALUES
 (110000, 0, '北京市', '北京', '116.40529', '39.904987', 1, 0, 1),

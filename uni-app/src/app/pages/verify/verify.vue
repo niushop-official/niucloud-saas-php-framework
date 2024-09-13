@@ -18,7 +18,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="card-template mt-[var(--top-m)] sidebar-marign">
+			<view class="card-template mt-[var(--top-m)] sidebar-margin">
 				<view class="flex" :class="{'mb-[var(--top-m)]': (verifyInfo.value.list.length - 1 != index)}" v-for="(item,index) in verifyInfo.value.list" :key="index">
 					<image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-if="item.cover" :src="img(item.cover)"></image>
 					<image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-else :src="img('addon/tourism/tourism/member/hotel.png')"></image>
@@ -34,7 +34,7 @@
 				</view>
 			</view>
 			
-			<view class="card-template mt-[var(--top-m)] sidebar-marign">
+			<view class="card-template mt-[var(--top-m)] sidebar-margin">
 				<view class="title">核销信息</view>
 				<view class="card-template-item justify-between">
 					<text class="text-[28rpx] text-[#333]">核销类型</text>
@@ -46,7 +46,7 @@
 				</view>
 			</view>
 			
-			<view v-for="(item,index) in verifyInfo.value.content.diy" :key="index" class="card-template mt-[var(--top-m)] sidebar-marign">
+			<view v-for="(item,index) in verifyInfo.value.content.diy" :key="index" class="card-template mt-[var(--top-m)] sidebar-margin">
 				<view class="title">{{item.title}}</view>
 				<view class="card-template-item justify-between"  v-for="(subItem,subIndex) in item.list" :key="subIndex">
 					<text class="text-[28rpx] text-[#333]">{{subItem.title}}</text>

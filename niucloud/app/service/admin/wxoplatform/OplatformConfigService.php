@@ -11,6 +11,7 @@
 
 namespace app\service\admin\wxoplatform;
 
+use app\dict\common\CommonDict;
 use app\model\sys\SysConfig;
 use app\service\core\wxoplatform\CoreOplatformConfigService;
 use core\base\BaseAdminService;
@@ -23,13 +24,20 @@ use think\Model;
  */
 class OplatformConfigService extends BaseAdminService
 {
+
     /**
      * 获取配置信息
      * @return array|null
      */
     public function getConfig()
     {
-        return (new CoreOplatformConfigService())->getConfig();
+        $config =  (new CoreOplatformConfigService())->getConfig();
+        foreach ($config as $k => $v) {
+            if ($v !== '' && in_array($k, ['app_secret', 'aes_key'])) {
+                $config[$k] = CommonDict::ENCRYPT_STR;
+            }
+        }
+        return $config;
     }
 
     /**
@@ -38,6 +46,12 @@ class OplatformConfigService extends BaseAdminService
      * @return SysConfig|bool|Model
      */
     public function setConfig(array $data){
+        $config =  (new CoreOplatformConfigService())->getConfig();
+        foreach ($data as $k => $v) {
+            if ($v == CommonDict::ENCRYPT_STR) {
+                $data[$k] = $config[$k];
+            }
+        }
         return (new CoreOplatformConfigService())->setConfig($data);
     }
 

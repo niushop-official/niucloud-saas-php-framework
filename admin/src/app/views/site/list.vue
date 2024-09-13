@@ -17,7 +17,7 @@
 
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="siteTableData.searchParam" ref="searchFormRef">
-                    <el-form-item :label="t('siteName')" prop="keywords">
+                    <el-form-item :label="t('siteInfo')" prop="keywords">
                         <el-input v-model="siteTableData.searchParam.keywords" :placeholder="t('siteNamePlaceholder')" />
                     </el-form-item>
 
@@ -157,6 +157,7 @@ import { useRouter, useRoute } from 'vue-router'
 import EditSite from '@/app/views/site/components/edit-site.vue'
 import { getInstalledAddonList } from '@/app/api/addon'
 import useUserStore from '@/stores/modules/user'
+import {deleteUser} from "@/app/api/user";
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -308,8 +309,16 @@ const toSiteLink = (siteId:number = 0) => {
 
 const openClose = (i, site_id) => {
     if (i == 1) {
-        closeSite({ site_id }).then(res => {
-            loadSiteList()
+        ElMessageBox.confirm(t('closeSiteTips'), t('warning'),
+            {
+                confirmButtonText: t('confirm'),
+                cancelButtonText: t('cancel'),
+                type: 'warning'
+            }
+        ).then(() => {
+            closeSite({ site_id }).then(res => {
+                loadSiteList()
+            })
         })
     }
     if (i == 3) {

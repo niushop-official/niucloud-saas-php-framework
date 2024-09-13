@@ -12,7 +12,7 @@
                     <el-image class="w-[40px] h-[40px] mr-[10px]" :src="img(item.icon)" fit="contain">
                         <template #error>
                             <div class="image-slot">
-                                <img class="w-[50px] h-[50px]" src="@/app/assets/images/index/app_default.png" />
+                                <img class="w-[40px] h-[40px]" src="@/app/assets/images/index/app_default.png" />
                             </div>
                         </template>
                     </el-image>

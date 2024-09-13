@@ -75,7 +75,7 @@
         </el-dialog>
 
         <el-dialog v-model="failReasonDialogVisible" :title="t('failReason')" width="60%">
-            <el-scrollbar class="h-[60vh] w-full whitespace-pre p-[20px]">
+            <el-scrollbar class="h-[60vh] w-full whitespace-pre-wrap p-[20px]">
                 <div v-html="failReason"></div>
             </el-scrollbar>
         </el-dialog>

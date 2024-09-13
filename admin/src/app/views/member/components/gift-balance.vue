@@ -5,7 +5,7 @@
                 <el-checkbox v-model="formData.is_use" :true-label="1" :false-label="0" label="" size="large" />
                 <span class="ml-[10px] el-form-item__label">送</span>
                 <div class="w-[70px]">
-                    <el-input v-model.trim="formData.money" clearable />
+                    <el-input v-model.trim="formData.money" :maxlength="5" clearable />
                 </div>
                 <span class="ml-[15px] el-form-item__label">元红包</span>
             </div>
@@ -33,26 +33,31 @@ const formData = ref({
     money: ''
 })
 const formRef = ref(null)
-
+// 正则表达式
+const regExp = {
+    required: /[\S]+/,
+    number: /^\d{0,10}$/,
+    digit: /^\d{0,10}(.?\d{0,2})$/,
+    special: /^\d{0,10}(.?\d{0,3})$/
+}
 const formRules = reactive<FormRules>({
     money: [
         {
             validator: (rule: any, value: any, callback: any) => {
                 if (formData.value.is_use) {
-                    if (Test.empty(formData.value.money)) {
+                    if (Test.empty(value)) {
                         callback('请输入红包金额')
-                    }
-                    if (!Test.amount(formData.value.money)) {
+                    }else if (isNaN(value) || !regExp.digit.test(value)) {
                         callback('红包金额格式错误')
-                    }
-                    if (formData.value.money <= 0) {
+                    }else if (value <= 0) {
                         callback('红包金额不能小于等于0')
                     }
                     callback()
                 } else {
                     callback()
                 }
-            }
+            },
+            trigger: 'blur'
         }
     ]
 })

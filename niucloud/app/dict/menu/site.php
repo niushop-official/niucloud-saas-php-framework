@@ -1618,6 +1618,20 @@ return [
                         'sort' => '100',
                         'status' => '1',
                         'is_show' => '1',
+                    ],
+                    [
+                        'menu_name' => '删除管理员',
+                        'menu_key' => 'delete_site_user',
+                        'menu_short_name' => '删除管理员',
+                        'menu_type' => '2',
+                        'icon' => '',
+                        'api_url' => 'site/user/<uid>',
+                        'router_path' => '',
+                        'view_path' => '',
+                        'methods' => 'delete',
+                        'sort' => '100',
+                        'status' => '1',
+                        'is_show' => '1',
                     ]
                 ]
             ],

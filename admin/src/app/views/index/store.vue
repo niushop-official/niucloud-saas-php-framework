@@ -27,7 +27,7 @@
                         {{ t('buyLabel') }}
                     </div>
                 </div>
-                <el-button type="primary" round @click="handleCloudBuild" :loading="cloudBuildRef?.loading">{{ t('cloudBuild') }}</el-button>
+                <el-button type="primary" round @click="handleCloudBuild" :loading="cloudBuildRef?.loading" :disabled="authLoading">{{ t('cloudBuild') }}</el-button>
             </div>
 
             <div>
@@ -42,12 +42,15 @@
                                         </div>
                                     </template>
                                 </el-image>
-                                <div class="flex flex-col justify-center pl-[20px] font-500 text-[13px]">
+                                <div class="flex-1 w-0 flex flex-col justify-center pl-[20px] font-500 text-[13px]">
                                     <div class="w-[236px] truncate leading-[18px]">{{ row.title }}</div>
                                     <div class="w-[236px] truncate leading-[18px] mt-[6px]" v-if="row.install_info && Object.keys(row.install_info)?.length">{{ row.install_info.version }}</div>
                                     <div class="w-[236px] truncate leading-[18px] mt-[6px]" v-else>{{ row.version }}</div>
-                                    <div class="mt-[3px]" v-if="row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version">
-                                        <el-tag type="danger" size="small">{{ t('newVersion') }}{{ row.version }}</el-tag>
+                                    <div class="mt-[3px] flex flex-nowrap">
+                                        <el-tag type="danger" size="small" v-if="row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version">{{ t('newVersion') }}{{ row.version }}</el-tag>
+                                        <el-tooltip v-if="versionJudge(row)" effect="dark" content="该插件与框架版本不兼容，可能存在未知问题" placement="top-start" >
+                                            <el-tag type="info" size="small" class="ml-[3px]">该插件与框架版本不兼容，可能存在未知问题</el-tag>
+                                        </el-tooltip>
                                     </div>
                                 </div>
                             </div>
@@ -376,6 +379,7 @@ import { t } from '@/lang'
 import { getAddonLocal, uninstallAddon, installAddon, preInstallCheck, cloudInstallAddon, getAddonInstalltask, getAddonCloudInstallLog, preUninstallCheck, cancelInstall } from '@/app/api/addon'
 import { deleteAddonDevelop } from '@/app/api/tools'
 import { downloadVersion, getAuthInfo, setAuthInfo } from '@/app/api/module'
+import { getVersions } from '@/app/api/auth'
 import { ElMessage, ElMessageBox, ElNotification, FormInstance, FormRules } from 'element-plus'
 import 'vue-web-terminal/lib/theme/dark.css'
 import { Terminal, TerminalFlash } from 'vue-web-terminal'
@@ -397,6 +401,11 @@ const installAfterTips = ref<string[]>([])
 const userStore = useUserStore()
 const unloadHintDialog = ref(false)
 const terminalRef = ref(null)
+const frameworkVersion = ref('')
+
+getVersions().then(res => {
+    frameworkVersion.value = res.data.version.version
+})
 
 const currDownData = ref()
 const downEventHintFn = () => {
@@ -901,6 +910,14 @@ const deleteAddonFn = (key: string) => {
             localListFn()
         })
     }).catch(() => { })
+}
+
+const versionJudge = (row: any) => {
+    if (!row.support_version) return true
+    const supportVersionApp = row.support_version.split('.')
+    const frameworkVersionArr = frameworkVersion.value.split('.')
+    if (parseFloat(`${supportVersionApp[0]}.${supportVersionApp[1]}`) < parseFloat(`${frameworkVersionArr[0]}.${frameworkVersionArr[1]}`)) return true
+    return false
 }
 </script>
 

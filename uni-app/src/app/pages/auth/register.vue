@@ -12,29 +12,29 @@
 				<template v-if="type == 'username'">
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
 						<u-form-item label="" prop="username" :border-bottom="false">
-							<u-input v-model="formData.username" border="none" maxlength="40" clearable :placeholder="t('usernamePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.username" border="none" maxlength="40" :placeholder="t('usernamePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 						</u-form-item>
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="password" :border-bottom="false">
-							<u-input v-model="formData.password" border="none" type="password" maxlength="40" clearable :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.password" border="none" type="password" maxlength="40" :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 						</u-form-item>
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="confirm_password" :border-bottom="false">
-							<u-input v-model="formData.confirm_password" border="none" type="password" maxlength="40" clearable :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.confirm_password" border="none" type="password" maxlength="40" :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 						</u-form-item>
 					</view>
 				</template>
 				<template v-if="type == 'mobile' || configStore.login.is_bind_mobile">
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="mobile" :border-bottom="false">
-							<u-input v-model="formData.mobile" border="none" clearable maxlength="11" :placeholder="t('mobilePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.mobile" border="none" maxlength="11" :placeholder="t('mobilePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
 						</u-form-item>
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="mobile_code" :border-bottom="false">
-							<u-input v-model="formData.mobile_code" border="none" clearable maxlength="4" :placeholder="t('codePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+							<u-input v-model="formData.mobile_code" border="none" maxlength="4" :placeholder="t('codePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
 								<template #suffix>
 									<sms-code v-if="configStore.login.agreement_show" :mobile="formData.mobile" type="login" v-model="formData.mobile_key" :isAgree="isAgree"></sms-code>
 									<sms-code v-else :mobile="formData.mobile" type="login" v-model="formData.mobile_key"></sms-code>
@@ -46,7 +46,7 @@
 				<template v-if="type == 'username'">
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="captcha_code" :border-bottom="false">
-							<u-input v-model="formData.captcha_code" border="none" clearable :placeholder="t('captchaPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+							<u-input v-model="formData.captcha_code" border="none" :placeholder="t('captchaPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
 								<template #suffix>
 									<image :src="captcha.image.value" class="h-[48rpx] w-[60rpx] ml-[20rpx]" mode="heightFix" @click="captcha.refresh()"></image>
 								</template>

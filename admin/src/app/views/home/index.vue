@@ -24,7 +24,7 @@
                         <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
                     </el-scrollbar>
                 </div>
-                <el-input v-model="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称" @keyup.enter.native="getHomeSiteFn()">
+                <el-input v-model="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称/编号" @keyup.enter.native="getHomeSiteFn()">
                     <template #suffix>
                         <el-icon @click.stop="getHomeSiteFn()" class="cursor-pointer">
                             <Search />
@@ -95,7 +95,7 @@
                             :class="{'bg-[#F6F7FF] border-[#466CEA]': createSiteData.formData.group_id == item.group_id ,'ml-[20px]': index > 0, ' ml-[10px]': index == 0, 'mr-[10px]': (siteGroup.length-1) == index }"
                             @click="createSiteData.formData.group_id = item.group_id"
                         >
-                            <div class="w-[140px] h-[40px] truncate text-white text-[16px] text-center leading-[40px] creatBg relative -left-[1px] -top-[2px]">
+                            <div class="w-[140px] h-[40px] px-[15px] truncate text-white text-[16px] text-center leading-[40px] creatBg relative -left-[1px] -top-[2px]">
                                 {{ item.site_group.group_name }}
                             </div>
                             <el-scrollbar class="flex pb-[20px] pt-[4px] box-border !h-[260px]">

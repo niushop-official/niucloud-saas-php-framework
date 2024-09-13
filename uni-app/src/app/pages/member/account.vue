@@ -2,7 +2,7 @@
     <view class="w-screen h-screen bg-[var(--page-bg-color)]" :style="themeColor()">
         <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getCashoutAccountListFn">
 			<!-- 多嵌套一层是为了微信小程序兼容 -->
-			<view class="sidebar-marign my-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden"  v-for="(item, index) in accountList" :key="index">
+			<view class="sidebar-margin my-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden"  v-for="(item, index) in accountList" :key="index">
 				<u-swipe-action-item :options="accountOptions" @click="swipeClick(index)">
 					<view class="card-template flex justify-between" >
 						<view class="flex items-center">
@@ -21,7 +21,7 @@
 					</view>
 				</u-swipe-action-item>
 			</view>
-			<view class="card-template sidebar-marign my-[var(--top-m)] flex items-center" @click="redirect({ url: '/app/pages/member/account_edit', param: { type: accountType, mode } })">
+			<view class="card-template sidebar-margin my-[var(--top-m)] flex items-center" @click="redirect({ url: '/app/pages/member/account_edit', param: { type: accountType, mode } })">
 				<text class="nc-iconfont nc-icon-jiahaoV6xx text-[30rpx]"></text>
 				<text class="text-[28rpx] ml-[10rpx] flex-1">{{ accountType == 'bank' ? t('addBankCard') : t('addAlipayAccount') }}</text>
 				<text class="nc-iconfont nc-icon-youV6xx text-[24rpx] text-[var(--text-color-light6)]"></text>

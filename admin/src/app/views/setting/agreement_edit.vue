@@ -116,4 +116,8 @@ const back = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+    .edui-default .edui-editor{
+        z-index: 1 !important;
+    }
+</style>

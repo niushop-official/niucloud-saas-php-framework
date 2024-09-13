@@ -1,7 +1,7 @@
 <template>
 	<view class="min-h-[100vh] bg-[var(--page-bg-color)] overflow-hidden" :style="themeColor()">
 		<block v-if="!loading">
-			<view  class="sidebar-marign card-template mt-[20rpx] !pt-[60rpx] !pb-[40rpx]">
+			<view  class="sidebar-margin card-template mt-[20rpx] !pt-[60rpx] !pb-[40rpx]">
 				<view class="flex items-center flex-col mb-[80rpx]">
 					<text class="text-[60rpx] font-bold price-font mb-[20rpx]">-{{ cashOutInfo.apply_money }}</text>
 					<text class="text-[28rpx] text-[#333]" :class="{'text-primary': cashOutInfo.status == 1}">{{ cashOutInfo.status_name }}</text>
@@ -36,11 +36,11 @@
 						<text class="text-[#333] w-[200rpx]">{{t('refuseReason')}}</text>
 						<text class="text-[#333] truncate">{{ cashOutInfo.refuse_reason }}</text>
 					</view>
-					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == 2">
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == 3">
 						<text class="text-[#333] w-[200rpx]">{{t('transferTypeName')}}</text>
 						<text class="text-[#333] truncate">{{ cashOutInfo.transfer_type_name }}</text>
 					</view>
-					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == 2 && cashOutInfo.transfer_time">
+					<view class="flex justify-between text-[28rpx] mt-[34rpx] leading-[32rpx]" v-if="cashOutInfo.status == 3 && cashOutInfo.transfer_time">
 						<text class="text-[#333] w-[200rpx]">{{t('transferTime')}}</text>
 						<text class="text-[#333] truncate">{{ cashOutInfo.transfer_time }}</text>
 					</view>

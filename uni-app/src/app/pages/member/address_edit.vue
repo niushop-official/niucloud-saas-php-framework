@@ -1,7 +1,7 @@
 <template>
     <view class="bg-[var(--page-bg-color)] min-h-[100vh] overflow-hidden address-edit" :style="themeColor()">
 		<u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
-			<view class="sidebar-marign card-template mt-[var(--top-m)] py-[20rpx]">
+			<view class="sidebar-margin card-template mt-[var(--top-m)] py-[20rpx]">
 				<view class="">
 					<u-form-item :label="t('name')" prop="name" labelWidth="200rpx">
 						<u-input  fontSize="28rpx" v-model.trim="formData.name" border="none" clearable maxlength="25"  placeholderStyle="color: #888" :placeholder="t('namePlaceholder')"/>
@@ -38,14 +38,17 @@
 					</u-form-item>
 				</view>
 			</view>
-			<view class="sidebar-marign card-template mt-[var(--top-m)] py-[10rpx]">
+			<view class="sidebar-margin card-template mt-[var(--top-m)] py-[10rpx]">
 				<u-form-item :label="t('defaultAddress')" prop="name" :border-bottom="false" labelWidth="200rpx">
 					<u-switch v-model="formData.is_default" size="20" :activeValue="1" :inactiveValue="0" activeColor="var(--primary-color)" inactiveColor="var(--temp-bg)"/>
 				</u-form-item>
 			</view>
 		</u-form>
-		<view class="left-[var(--sidebar-m)] right-[var(--sidebar-m)] fixed bottom-[30rpx]">
-			<button hover-class="none" class="primary-btn-bg !text-[#fff] h-[80rpx] leading-[80rpx] font-500 rounded-[100rpx] text-[26rpx]" :class="{'opacity-50': btnDisabled}" @click="save" :disabled="btnDisabled" :loading="operateLoading">{{t('save')}}</button>
+		<view class="w-full footer">
+			<view class="py-[var(--top-m)] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
+				<button hover-class="none" class="primary-btn-bg text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" 
+				@click="save" :disabled="btnDisabled" :loading="operateLoading" :class="{'opacity-50': btnDisabled}">{{t('save')}}</button>
+			</view>
 		</view>
         <area-select ref="areaRef" @complete="areaSelectComplete" :area-id="formData.district_id"/>
 		<!-- #ifdef MP-WEIXIN -->
@@ -322,5 +325,9 @@
 	.address-edit :deep(.u-form-item__body__right){
 		display:flex;
 		align-items: center;
+	}
+	.footer{
+		height: calc(100rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;
+		height: calc(100rpx + var(--top-m) + var(--top-m) + env(safe-area-inset-bottom)) !important;
 	}
 </style>

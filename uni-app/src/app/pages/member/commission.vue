@@ -6,7 +6,7 @@
 				<top-tabbar :data="param" class="top-header"/>
 				<!-- #endif -->
 			</view>
-			<view class="mt-[-232rpx] sidebar-marign rounded-[var(--rounded-big)]" :style="{ backgroundImage: 'url(' + img('static/resource/images/member/commission/account_bg.png') + ')',backgroundRepeat:'no-repeat',backgroundSize:'100% 100%'}">
+			<view class="mt-[-232rpx] sidebar-margin rounded-[var(--rounded-big)]" :style="{ backgroundImage: 'url(' + img('static/resource/images/member/commission/account_bg.png') + ')',backgroundRepeat:'no-repeat',backgroundSize:'100% 100%'}">
 				<view class="pt-[40rpx]">
 					<view class="flex items-center justify-between px-[30rpx]">
 						<view>

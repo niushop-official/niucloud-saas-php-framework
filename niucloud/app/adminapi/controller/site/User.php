@@ -106,7 +106,7 @@ class User extends BaseAdminController
      */
     public function del($uid)
     {
-        (new UserService())->del($uid);
+        (new SiteUserService())->del($uid);
         return success('DELETE_SUCCESS');
     }
 
