@@ -78,7 +78,12 @@ class CoreWeappService extends BaseCoreService
      */
     public static function refreshToken(int $site_id)
     {
-        self::app($site_id)->getAccessToken()->refresh();
+        $core_weapp_service = new CoreWeappConfigService();
+        $weapp_config = $core_weapp_service->getWeappConfig($site_id);
+
+        if (!$weapp_config[ 'is_authorization' ]) {
+            self::app($site_id)->getAccessToken()->refresh();
+        }
     }
 
     /**

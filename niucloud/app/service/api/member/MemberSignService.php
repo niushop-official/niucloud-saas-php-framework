@@ -11,6 +11,7 @@
 
 namespace app\service\api\member;
 
+use app\job\member\MemberGiftGrantJob;
 use app\model\member\MemberSign;
 use app\service\core\member\CoreMemberService;
 use app\service\core\sys\CoreConfigService;
@@ -111,19 +112,19 @@ class MemberSignService extends BaseApiService
             $res = $this->model->create($data);
             if ($res) {
                 //日签奖励发放
-                $param = [
-                    'from_type' => 'day_sign_award',
-                    'memo' => '日签奖励'
-                ];
-                (new CoreMemberService())->memberGiftGrant($this->site_id, $this->member_id, $sign_config['day_award'], $param);
+                MemberGiftGrantJob::dispatch([
+                    'site_id' => $this->site_id,
+                    'member_id' => $this->member_id,
+                    'gift' => $sign_config['day_award'],
+                    'param' => [
+                        'from_type' => 'day_sign_award',
+                        'memo' => '日签奖励'
+                    ]
+                ]);
                 $awards['day_award'] = $sign_config['day_award'];
 
                 //签到成功后判断连签天数是否满足连签奖励发放条件
                 if (!empty($sign_config['continue_award'])) {
-                    $param = [
-                        'from_type' => 'continue_sign_award',
-                        'memo' => '连签奖励'
-                    ];
                     foreach ($sign_config['continue_award'] as $key => $value) {
                         $continue_sign = intval($value['continue_sign']);//连续签到天数要求
                         //如果连签天数满足配置条件，发放连签奖励
@@ -144,7 +145,15 @@ class MemberSignService extends BaseApiService
                                     ->whereBetweenTime('create_time', $period_start_time, $period_end_time)->count('sign_id');
                                 if ($receive_count < $value['receive_num']) {
                                     //连签奖励发放
-                                    (new CoreMemberService())->memberGiftGrant($this->site_id, $this->member_id, $gifts, $param);
+                                    MemberGiftGrantJob::dispatch([
+                                        'site_id' => $this->site_id,
+                                        'member_id' => $this->member_id,
+                                        'gift' => $gifts,
+                                        'param' => [
+                                            'from_type' => 'continue_sign_award',
+                                            'memo' => '连签奖励'
+                                        ]
+                                    ]);
                                     $awards['continue_award'] = $gifts;
                                     $continue_text = get_lang('CONTINUE_SIGN').$res->days.get_lang('DAYS');
                                     //更新连签发放记录
@@ -152,7 +161,15 @@ class MemberSignService extends BaseApiService
                                 }
                             } else { //不限制
                                 //连签奖励发放
-                                (new CoreMemberService())->memberGiftGrant($this->site_id, $this->member_id, $gifts, $param);
+                                MemberGiftGrantJob::dispatch([
+                                    'site_id' => $this->site_id,
+                                    'member_id' => $this->member_id,
+                                    'gift' => $gifts,
+                                    'param' => [
+                                        'from_type' => 'continue_sign_award',
+                                        'memo' => '连签奖励'
+                                    ]
+                                ]);
                                 $awards['continue_award'] = $gifts;
                                 $continue_text = get_lang('CONTINUE_SIGN').$res->days.get_lang('DAYS');
                                 //更新连签发放记录
@@ -409,6 +426,15 @@ class MemberSignService extends BaseApiService
         $is_use_point = ($is_use_point_day || $is_use_point_continue) ? 1 : 0;
         $is_use_balance = ($is_use_balance_day || $is_use_balance_continue) ? 1 : 0;
         $is_use_coupon = ($is_use_coupon_day || $is_use_coupon_continue) ? 1 : 0;
+        $coupon_check_data = array_filter(event('CouponCheck', ['site_id' => $this->site_id, 'is_use_coupon' => $is_use_coupon, 'coupon_id' => $coupon_id, 'coupon_list' => $coupon_list]))[0] ?? [];
+        if (empty($coupon_check_data)) {
+            $is_use_coupon = false;
+            $coupon_check_data = [
+                'coupon_id' => [],
+                'coupon_list' => []
+            ];
+        }
+        $is_use_coupon = empty($coupon_check_data['coupon_id']) ? false : $is_use_coupon;
         //相同奖励合并
         $awards_total = [
             'point' => [
@@ -421,8 +447,8 @@ class MemberSignService extends BaseApiService
             ],
             'shop_coupon' => [
                 'is_use' => $is_use_coupon,
-                'coupon_id' => $coupon_id,
-                'coupon_list' => $coupon_list,
+                'coupon_id' => $coupon_check_data['coupon_id'],
+                'coupon_list' => $coupon_check_data['coupon_list'],
             ]
         ];
         return (new CoreMemberService())->getGiftContent($this->site_id, $awards_total, 'member_sign');

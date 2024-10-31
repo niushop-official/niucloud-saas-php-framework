@@ -43,6 +43,17 @@ class CorePosterService extends BaseCoreService
     }
 
     /**
+     * 删除
+     * @param $condition
+     * @return \think\Response
+     */
+    public function del($condition)
+    {
+        ( new Poster() )->delete($condition);
+        return true;
+    }
+
+    /**
      * 海报类型
      * @param string $type
      * @return array

@@ -102,4 +102,13 @@ class ScheduleService extends BaseAdminService
     public function getTemplateList(){
         return (new CoreScheduleService())->getTemplateList();
     }
+
+    /**
+     * 执行一次计划任务
+     * @return true
+     */
+    public function doSchedule(int $id)
+    {
+        return (new CoreScheduleService())->doSchedule($id);
+    }
 }

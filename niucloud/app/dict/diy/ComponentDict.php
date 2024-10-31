@@ -261,7 +261,28 @@ class ComponentDict
                         'value' => [
                             "style" => "style-1",
                             "styleName" => "风格1"
-                        ],
+                        ],// 组件属性
+                        'template' => [
+                            "textColor" => "#303133", // 文字颜色
+                            'pageStartBgColor' => '', // 底部背景颜色（开始）
+                            'pageEndBgColor' => '', // 底部背景颜色（结束）
+                            'pageGradientAngle' => 'to bottom', // 渐变角度，从上到下（to bottom）、从左到右（to right）
+                            'componentBgUrl' => '', // 组件背景图片
+                            'componentBgAlpha' => 2, // 组件背景图片的透明度，0~10
+                            "componentStartBgColor" => '', // 组件背景颜色（开始）
+                            "componentEndBgColor" => '', // 组件背景颜色（结束）
+                            "componentGradientAngle" => 'to bottom', // 渐变角度，上下（to bottom）、左右（to right）
+                            "topRounded" => 12, // 组件上圆角
+                            "bottomRounded" => 0, // 组件下圆角
+                            "elementBgColor" => '', // 元素背景颜色
+                            "topElementRounded" => 0,// 元素上圆角
+                            "bottomElementRounded" => 0, // 元素下圆角
+                            "margin" => [
+                                "top" => 0, // 上边距
+                                "bottom" => 0, // 下边距
+                                "both" => 10 // 左右边距
+                            ]
+                        ]
                     ],
                     'Notice' => [
                         'title' => '公告',
@@ -314,6 +335,7 @@ class ComponentDict
                                 'value' => 'style-1'
                             ],
                             'text' => '超值爆款',
+                            'textImg' => 'static/resource/images/diy/active_cube/journalism.png',
                             "textLink" => [
                                 "name" => ""
                             ],
@@ -330,7 +352,8 @@ class ComponentDict
                             "blockStyle" => [
                                 'title' => '风格1',
                                 'value' => 'style-1',
-                                'fontWeight' => 'normal'
+                                'fontWeight' => 'normal',
+                                'btnText' => 'normal'
                             ],
                             'list' => [
                                 [
@@ -350,8 +373,8 @@ class ComponentDict
                                         "endColor" => "#FE1E00",
                                     ],
                                     "listFrame" => [
-                                        "startColor" => "#FEA715",
-                                        "endColor" => "#FE1E00",
+                                        "startColor" => "#FFFAF5",
+                                        "endColor" => "#FFFFFF"
                                     ],
                                     "link" => [
                                         "name" => ""
@@ -375,8 +398,8 @@ class ComponentDict
                                         "endColor" => "#FF9E03",
                                     ],
                                     "listFrame" => [
-                                        "startColor" => "#FFBF50",
-                                        "endColor" => "#FF9E03",
+                                        "startColor" => "#FFFAF5",
+                                        "endColor" => "#FFFFFF"
                                     ],
                                     "link" => [
                                         "name" => ""
@@ -400,8 +423,8 @@ class ComponentDict
                                         "endColor" => "#49CD2D",
                                     ],
                                     "listFrame" => [
-                                        "startColor" => "#A2E792",
-                                        "endColor" => "#49CD2D",
+                                        "startColor" => "#FFFAF5",
+                                        "endColor" => "#FFFFFF"
                                     ],
                                     "link" => [
                                         "name" => ""
@@ -425,8 +448,8 @@ class ComponentDict
                                         "endColor" => "#1D7CFF",
                                     ],
                                     "listFrame" => [
-                                        "startColor" => "#4AC1FF",
-                                        "endColor" => "#1D7CFF",
+                                        "startColor" => "#FFFAF5",
+                                        "endColor" => "#FFFFFF"
                                     ],
                                     "link" => [
                                         "name" => ""
@@ -480,7 +503,11 @@ class ComponentDict
                                 'hotWord' => [
                                     "interval" => 3,
                                     'list' => []
-                                ]
+                                ],
+                                'color' => '#999999',
+                                'btnColor' => '#ffffff',
+                                'bgColor' => '#ffffff',
+                                'btnBgColor' => '#ff3434'
                             ],
                             // 选项卡设置
                             'tab' => [
@@ -590,7 +617,115 @@ class ComponentDict
                             'borderStyle' => 'solid'
                         ],
                     ],
-
+                    'PictureShow' => [
+                        'title' => '图片展播',
+                        'icon' => 'iconfont icona-tupianzhanbopc302',
+                        'path' => 'edit-picture-show',
+                        'support_page' => [],
+                        'uses' => 0,
+                        'sort' => 10017,
+                        'value' => [
+                            'moduleOne' => [
+                                'head' => [
+                                    'textImg' => 'addon/shop/diy/index/style3/picture_show_head_text3.png',
+                                    "subText" => "最高补1200元",
+                                    "subTextColor" => "#666666"
+                                ],
+                                'list' => [
+                                    [
+                                        "btnTitle" => [
+                                            "text" => "全网低价",
+                                            "color" => "#ffffff",
+                                            "startColor" => "#F5443E",
+                                            "endColor" => "#F5443E"
+                                        ],
+                                        "link" => [
+                                            "name" => ""
+                                        ],
+                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods5.png"
+                                    ],
+                                    [
+                                        "btnTitle" => [
+                                            "text" => "大牌特惠",
+                                            "color" => "#ffffff",
+                                            "startColor" => "#F5443E",
+                                            "endColor" => "#F5443E"
+                                        ],
+                                        "link" => [
+                                            "name" => ""
+                                        ],
+                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods6.png"
+                                    ]
+                                ],
+                                "listFrame" => [
+                                    "startColor" => "#D4EFFF",
+                                    "endColor" => "#EBF4FA"
+                                ]
+                            ],
+                            'moduleTwo' => [
+                                'head' => [
+                                    'textImg' => 'addon/shop/diy/index/style3/picture_show_head_text4.png',
+                                    "subText" => "每日上新",
+                                    "subTextColor" => "#666666"
+                                ],
+                                'list' => [
+                                    [
+                                        "btnTitle" => [
+                                            "text" => "人气爆款",
+                                            "color" => "#ffffff",
+                                            "startColor" => "#F5443E",
+                                            "endColor" => "#F5443E"
+                                        ],
+                                        "link" => [
+                                            "name" => ""
+                                        ],
+                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods7.png",
+                                    ],
+                                    [
+                                        "btnTitle" => [
+                                            "text" => "官方正品",
+                                            "color" => "#ffffff",
+                                            "startColor" => "#F5443E",
+                                            "endColor" => "#F5443E"
+                                        ],
+                                        "link" => [
+                                            "name" => ""
+                                        ],
+                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods8.png"
+                                    ]
+                                ],
+                                "listFrame" => [
+                                    "startColor" => "#FFF1D4",
+                                    "endColor" => "#F9F2E5"
+                                ]
+                            ],
+                            "moduleRounded" => [
+                                "topRounded" => 10,
+                                "bottomRounded" => 10
+                            ],// 组件属性
+                            'template' => [
+                                "textColor" => "#303133", // 文字颜色
+                                'pageStartBgColor' => '', // 底部背景颜色（开始）
+                                'pageEndBgColor' => '', // 底部背景颜色（结束）
+                                'pageGradientAngle' => 'to bottom', // 渐变角度，从上到下（to bottom）、从左到右（to right）
+                                'componentBgUrl' => '', // 组件背景图片
+                                'componentBgAlpha' => 2, // 组件背景图片的透明度，0~10
+                                "componentStartBgColor" => '', // 组件背景颜色（开始）
+                                "componentEndBgColor" => '', // 组件背景颜色（结束）
+                                "componentGradientAngle" => 'to bottom', // 渐变角度，上下（to bottom）、左右（to right）
+                                "topRounded" => 0, // 组件上圆角
+                                "bottomRounded" => 0, // 组件下圆角
+                                "elementBgColor" => '', // 元素背景颜色
+                                "topElementRounded" => 0,// 元素上圆角
+                                "bottomElementRounded" => 0, // 元素下圆角
+                                "margin" => [
+                                    "top" => 0, // 上边距
+                                    "bottom" => 0, // 下边距
+                                    "both" => 10 // 左右边距
+                                ],
+                            ]
+                        ],
+                    ]
                 ],
             ],
         ];

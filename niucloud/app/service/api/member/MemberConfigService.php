@@ -11,6 +11,7 @@
 
 namespace app\service\api\member;
 
+use app\service\api\wechat\WechatAuthService;
 use app\service\core\member\CoreMemberConfigService;
 use core\base\BaseApiService;
 
@@ -23,10 +24,21 @@ class MemberConfigService extends BaseApiService
 {
     /**
      * 获取注册与登录设置
+     * @param $url
+     * @return array
      */
-    public function getLoginConfig(){
-
-        return (new CoreMemberConfigService())->getLoginConfig($this->site_id);
+    public function getLoginConfig($url = '')
+    {
+        $res = ( new CoreMemberConfigService() )->getLoginConfig($this->site_id);
+        if (!empty($url)) {
+            try {
+                // 检测公众号配置是否成功
+                $wechat_auth = ( new WechatAuthService() )->jssdkConfig($url);
+            } catch (\Exception $e) {
+                $res[ 'is_auth_register' ] = 0;
+            }
+        }
+        return $res;
     }
 
 }

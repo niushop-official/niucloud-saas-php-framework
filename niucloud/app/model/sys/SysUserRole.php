@@ -75,7 +75,7 @@ class SysUserRole extends BaseModel
     {
         return $this->hasOne(Site::class, 'site_id', 'site_id')->joinType('inner')
             ->withField('site_id, site_name, app_type, status, expire_time')
-            ->bind(['site_name', 'app_type', 'expire_time', 'status_name', 'site_status_name'])->append(['status_name', 'site_status_name']);
+            ->bind(['site_name', 'app_type', 'expire_time', 'status_name', 'site_status_name', 'site_status' => 'status'])->append(['status_name', 'site_status_name']);
     }
 
     /**

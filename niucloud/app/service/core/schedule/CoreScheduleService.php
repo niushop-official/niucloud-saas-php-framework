@@ -11,11 +11,13 @@
 
 namespace app\service\core\schedule;
 
+use app\dict\schedule\ScheduleLogDict;
 use app\dict\sys\DateDict;
 use app\model\sys\SysSchedule;
 use core\base\BaseCoreService;
 use core\dict\DictLoader;
 use core\exception\CommonException;
+use think\console\Output;
 use think\Container;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -202,6 +204,20 @@ class CoreScheduleService extends BaseCoreService
     }
 
     /**
+     * 执行一次计划任务
+     * @return bool
+     */
+    public function doSchedule(int $id)
+    {
+        $info = $this->getInfo($id);
+        $result = false;
+        if (!empty($info[ 'class' ])) {
+            $result = $this->execute($info, '');
+        }
+        return $result;
+    }
+
+    /**
      * 执行任务
      * @param array $schedule
      * @return true
@@ -215,7 +231,11 @@ class CoreScheduleService extends BaseCoreService
         try {
             $result = Container::getInstance()->invoke([$class, $function ?? 'doJob']);
             if(!empty($output)) $output->writeln('[Schedule]['.date('Y-m-d H:i:s').']'." Processed:" . $job.'('.$name.')');
+            $status = ScheduleLogDict::SUCCESS;
+            if ($result == 1) $result = '计划任务：'.$name.'执行成功';
         }catch( Throwable $e){
+            $result = '计划任务：'.$name.'发生错误, 错误原因：_' . $e->getMessage() . '_' . $e->getFile() . '_' . $e->getLine();
+            $status = ScheduleLogDict::ERROR;
             $error = $e->getMessage();
             if(!empty($output)) $output->writeln('[Schedule]['.date('Y-m-d H:i:s').']'." Error:" . $job.'('.$name.') ,'.$error);
             Log::write('计划任务:'.$name.'发生错误, 错误原因:'.$error);
@@ -227,6 +247,20 @@ class CoreScheduleService extends BaseCoreService
                 'count' => $schedule['count'] + 1,
             ]);
         }
+
+        //记录执行日志
+        $core_schedule_log_service = new CoreScheduleLogService();
+        $core_schedule_log_service->add([
+            'schedule_id' => $schedule['id'],
+            'addon' => $schedule['addon'],
+            'key' => $schedule['key'],
+            'name' => $name,
+            'status' => $status,
+            'execute_result' => $result ?? '',
+            'class' => $class,
+            'job' => $job
+        ]);
+
         return true;
     }
 }

@@ -34,12 +34,14 @@ class DiyConfigService extends BaseApiService
 
         $site_addon = ( new CoreSiteService() )->getSiteCache($this->site_id);
         $bottom_list_keys = array_column($list, 'key');
+
         // 排除没有底部导航的应用
         foreach ($site_addon[ 'apps' ] as $k => $v) {
             if (!in_array($v[ 'key' ], $bottom_list_keys)) {
                 unset($site_addon[ 'apps' ][ $k ]);
             }
         }
+
         // 单应用，排除 系统 底部导航设置
         if (count($list) > 1 && count($site_addon[ 'apps' ]) == 1) {
             foreach ($list as $k => $v) {
@@ -68,6 +70,15 @@ class DiyConfigService extends BaseApiService
         // 检测当前站点是多应用还是单应用
         if ($key == 'app') {
             $site_addon = ( new CoreSiteService() )->getSiteCache($this->site_id);
+
+            $list = ( new CoreDiyConfigService() )->getBottomList();
+            $bottom_list_keys = array_column($list, 'key');
+            // 排除没有底部导航的应用
+            foreach ($site_addon[ 'apps' ] as $k => $v) {
+                if (!in_array($v[ 'key' ], $bottom_list_keys)) {
+                    unset($site_addon[ 'apps' ][ $k ]);
+                }
+            }
             if (count($site_addon[ 'apps' ]) == 1) {
                 $key = $site_addon[ 'apps' ][ 0 ][ 'key' ];
             }

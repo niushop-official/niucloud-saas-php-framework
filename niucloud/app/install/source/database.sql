@@ -427,7 +427,7 @@ CREATE TABLE `pay_refund`  (
   `main_id` int NOT NULL DEFAULT 0 COMMENT '操作人',
   `pay_refund_no` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '外部支付方式的退款单号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '退款记录表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '支付退款记录表' ROW_FORMAT = Dynamic;
 
 
 DROP TABLE IF EXISTS `pay_transfer`;
@@ -480,8 +480,8 @@ CREATE TABLE `site`  (
   `create_time` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `expire_time` bigint(20) NOT NULL DEFAULT 0 COMMENT '到期时间（如果是0 无限期）',
   `front_end_name` varchar(50) NOT NULL DEFAULT '' COMMENT '前台名称',
-  `front_end_logo` varchar(255) NOT NULL DEFAULT '' COMMENT '前台logo',
-  `front_end_icon` varchar(255) NOT NULL DEFAULT '' COMMENT '前台icon',
+  `front_end_logo` varchar(255) NOT NULL DEFAULT '' COMMENT '前台logo（长方形）',
+  `front_end_icon` varchar(255) NOT NULL DEFAULT '' COMMENT '前台icon（正方形）',
   `icon` varchar(255) NOT NULL DEFAULT '' COMMENT '网站图标',
   `member_no` varchar(255) NOT NULL DEFAULT '0' COMMENT '最大会员码值',
   `app` text NOT NULL COMMENT '站点应用',
@@ -879,6 +879,22 @@ CREATE TABLE `sys_schedule`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统任务' ROW_FORMAT = Dynamic;
 
 
+DROP TABLE IF EXISTS `sys_schedule_log`;
+CREATE TABLE `sys_schedule_log` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '执行记录id',
+  `schedule_id` int NOT NULL DEFAULT 0 COMMENT '任务id',
+  `addon` varchar(255) NOT NULL DEFAULT '' COMMENT '所属插件',
+  `key` varchar(255) NOT NULL DEFAULT '' COMMENT '计划任务模板key',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '计划任务名称',
+  `execute_time` int NOT NULL COMMENT '执行时间',
+  `execute_result` text DEFAULT NULL COMMENT '日志信息',
+  `status` varchar(255) NOT NULL DEFAULT '' COMMENT '执行状态',
+  `class` varchar(255) NOT NULL DEFAULT '',
+  `job` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '计划任务执行记录' ROW_FORMAT = Dynamic;
+
+
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
   `uid` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '系统用户ID',
@@ -892,7 +908,7 @@ CREATE TABLE `sys_user`  (
   `login_count` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '登录次数',
   `status` tinyint(3) UNSIGNED NOT NULL DEFAULT 1 COMMENT '后台管理员状态 1有效0无效',
   `is_del` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `delete_time` tinyint(4) NOT NULL DEFAULT 0 COMMENT '删除时间',
+  `delete_time` int(11) NOT NULL DEFAULT 0 COMMENT '删除时间',
   `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '更新时间',
   PRIMARY KEY (`uid`) USING BTREE,
   INDEX `uid`(`uid` ASC) USING BTREE

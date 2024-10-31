@@ -252,7 +252,7 @@ class UpgradeService extends BaseAdminService
         $version_item = $version_list[$index];
         $version_no = $version_item['version_no'];
 
-        $to_dir = $addon == AddonDict::FRAMEWORK_KEY ? $this->root_path : $this->root_path . 'niucloud' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $addon;
+        $to_dir = $addon == AddonDict::FRAMEWORK_KEY ? rtrim($this->root_path, DIRECTORY_SEPARATOR) : $this->root_path . 'niucloud' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $addon;
 
         // 获取文件变更记录
         if (file_exists($code_dir . $version_no . '.txt')) {

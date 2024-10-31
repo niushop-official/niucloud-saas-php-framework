@@ -188,6 +188,7 @@ class SiteService extends BaseAdminService
             $site->save($data);
 
             Cache::tag(self::$cache_tag_name . $site_id)->clear();
+            Cache::tag(MenuService::$cache_tag_name)->clear();
             Db::commit();
             return true;
         } catch (Exception $e) {
@@ -216,11 +217,14 @@ class SiteService extends BaseAdminService
             $models = array_merge($sys_models, ...$addon_models);
 
             foreach ($models as $model) {
-                $name = "\\$model";
-                $class = new $name();
 
-                if (in_array('site_id', $class->getTableFields())) {
-                    $class->where([ [ 'site_id', '=', $site[ 'site_id' ] ] ])->delete();
+                try {
+                    $name = "\\$model";
+                    $class = new $name();
+                    if (in_array('site_id', $class->getTableFields())) {
+                        $class->where([ [ 'site_id', '=', $site[ 'site_id' ] ] ])->delete();
+                    }
+                } catch (\Exception $e) {
                 }
             }
 

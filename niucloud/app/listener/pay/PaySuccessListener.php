@@ -11,7 +11,6 @@
 
 namespace app\listener\pay;
 
-use app\service\core\order\recharge\CoreRechargeOrderService;
 use app\service\core\site\CoreSiteAccountService;
 
 /**
@@ -21,10 +20,6 @@ class PaySuccessListener
 {
     public function handle(array $pay_info)
     {
-//        $trade_type = $pay_info['trade_type'] ?? '';
-//        if ($trade_type == 'recharge') {
-//            (new CoreRechargeOrderService())->pay($pay_info);
-//        }
         //账单记录添加
         (new CoreSiteAccountService())->addPayLog($pay_info);
 

@@ -37,10 +37,13 @@ class CoreSysConfigService extends BaseCoreService
         $wap_domain = !empty(env("system.wap_domain")) ? preg_replace('#/$#', '', env("system.wap_domain")) : request()->domain();
         $web_domain = !empty(env("system.web_domain")) ? preg_replace('#/$#', '', env("system.web_domain")) : request()->domain();
         $site_domain = ( new CoreSiteService() )->getSiteCache($site_id)[ 'site_domain' ] ?? '';
+        $service_domain = request()->domain();
 
         return [
+            'wap_domain' => $site_domain ? ( request()->isSsl() ? "https://" : "http://" ) . $site_domain : $wap_domain,
             'wap_url' => $site_domain ? ( request()->isSsl() ? "https://" : "http://" ) . $site_domain . "/wap" : $wap_domain . "/wap/" . $site_id,
-            'web_url' => $site_domain ? ( request()->isSsl() ? "https://" : "http://" ) . $site_domain . "/web" : $web_domain . "/web/" . $site_id
+            'web_url' => $site_domain ? ( request()->isSsl() ? "https://" : "http://" ) . $site_domain . "/web" : $web_domain . "/web/" . $site_id,
+            'service_domain' => $service_domain
         ];
     }
 

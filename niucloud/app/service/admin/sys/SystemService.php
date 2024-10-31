@@ -13,6 +13,7 @@ namespace app\service\admin\sys;
 
 use app\job\sys\CheckJob;
 use app\service\core\site\CoreSiteService;
+use app\service\core\sys\CoreSysConfigService;
 use core\base\BaseAdminService;
 use think\facade\Db;
 use Throwable;
@@ -48,15 +49,7 @@ class SystemService extends BaseAdminService
      */
     public function getUrl()
     {
-        $wap_domain = !empty(env("system.wap_domain")) ? preg_replace('#/$#', '', env("system.wap_domain")) : request()->domain();
-        $web_domain = !empty(env("system.web_domain")) ? preg_replace('#/$#', '', env("system.web_domain")) : request()->domain();
-        $site_domain = (new CoreSiteService())->getSiteCache($this->site_id)['site_domain'] ?? '';
-
-        return [
-            'wap_domain' => env("system.wap_domain"),
-            'wap_url' => $site_domain ? (request()->isSsl() ? "https://" : "http://") . $site_domain . "/wap" : $wap_domain . "/wap/" . $this->site_id,
-            'web_url' => $site_domain ? (request()->isSsl() ? "https://" : "http://") . $site_domain . "/web" : $web_domain . "/web/" . $this->site_id,
-        ];
+        return (new CoreSysConfigService())->getSceneDomain($this->site_id);
     }
 
     /**

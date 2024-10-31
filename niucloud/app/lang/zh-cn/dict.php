@@ -165,6 +165,11 @@ return [
         'month' => '每月',
 
     ],
+    //计划任务执行记录
+    'dict_schedule_log' => [
+        'success' => '成功',
+        'error' => '失败',
+    ],
     //支付相关
     'dict_pay' => [
         'type_wechatpay' => '微信支付',

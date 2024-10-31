@@ -29,6 +29,7 @@ class BottomNavigationListener
 
         $addon_info = [
             'title' => '系统',
+            'type' => 'app'
         ];
         return [
             'key' => $key,

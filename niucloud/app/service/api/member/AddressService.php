@@ -35,7 +35,7 @@ class AddressService extends BaseApiService
      */
     public function getList(array $where = [])
     {
-        $field = 'id,member_id,name,mobile,address,address_name,full_address,is_default,lng,lat';
+        $field = 'id, member_id, name, mobile, province_id, city_id, district_id, address, address_name, full_address, lng, lat, is_default';
         $order = 'is_default desc, id desc';
 
         $list = $this->model->where([ ['site_id', '=', $this->site_id],['member_id', '=', $this->member_id ] ])->field($field)->order($order)->select()->toArray();

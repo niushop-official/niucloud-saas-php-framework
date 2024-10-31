@@ -128,4 +128,19 @@ class Schedule extends BaseAdminController
     {
         return success(data: ScheduleDict::getDateType());
     }
+
+    /**
+     * 执行一次任务
+     * @param int $id
+     * @return Response
+     */
+    public function doSchedule(int $id)
+    {
+        $res = (new ScheduleService())->doSchedule($id);
+        if ($res) {
+            return success('SUCCESS');
+        } else {
+            return fail('FAIL');
+        }
+    }
 }

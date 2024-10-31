@@ -30,8 +30,8 @@ Route::any('weapp/serve/:site_id', 'weapp.Serve/serve')
     ->middleware(ApiLog::class);
 
 Route::group(function() {
-    Route::post('niucloud/notify', function(){
-        return (new CoreNotifyService())->notify();
+    Route::post('niucloud/notify', function() {
+        return ( new CoreNotifyService() )->notify();
     });
 
 });
@@ -105,6 +105,9 @@ Route::group(function() {
 
     // 获取地图设置
     Route::get('map', 'sys.Config/getMap');
+
+    // 获取初始化数据信息
+    Route::get('init', 'sys.Config/init');
 
     /***************************************************** 地区管理 ****************************************************/
     //通过pid获取列表

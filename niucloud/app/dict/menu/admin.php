@@ -1548,6 +1548,20 @@ return [
                 ],
             ],
             [
+                'menu_name' => '执行日志',
+                'menu_key' => 'tools_schedule_log',
+                'menu_short_name' => '执行日志',
+                'menu_type' => '1',
+                'icon' => 'iconfont iconjihuarenwu',
+                'api_url' => 'sys/schedule/log/list',
+                'router_path' => 'tools/schedule_log',
+                'view_path' => 'tools/schedule_log',
+                'methods' => '',
+                'sort' => '40',
+                'status' => '1',
+                'is_show' => '0'
+            ],
+            [
                 'menu_name' => '授权信息',
                 'menu_key' => 'app_auth',
                 'menu_short_name' => '授权信息',

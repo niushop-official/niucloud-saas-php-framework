@@ -76,7 +76,9 @@ class CoreWechatConfigService extends BaseCoreService
      */
     public function getWechatStaticInfo($site_id)
     {
-        $wap_domain = ( new CoreSysConfigService() )->getSceneDomain($site_id)[ 'wap_url' ] ?? '';
+        $wap_domain = ( new CoreSysConfigService() )->getSceneDomain($site_id)[ 'wap_domain' ] ?? '';
+        $wap_domain = str_replace('http://', '', $wap_domain);
+        $wap_domain = str_replace('https://', '', $wap_domain);
         return [
             'serve_url' => (string) url('/api/wechat/serve/' . $site_id, [], '', true),
             'business_domain' => $wap_domain,

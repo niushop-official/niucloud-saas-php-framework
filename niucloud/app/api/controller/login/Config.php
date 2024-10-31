@@ -23,7 +23,10 @@ class Config extends BaseController
      */
     public function getLoginConfig()
     {
-        return success(( new MemberConfigService() )->getLoginConfig());
+        $data = $this->request->params([
+            [ 'url', '' ],
+        ]);
+        return success(( new MemberConfigService() )->getLoginConfig($data[ 'url' ]));
     }
 
 }

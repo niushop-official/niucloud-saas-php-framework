@@ -61,6 +61,7 @@ class WeappConfigService extends BaseAdminService
      */
     public function getWeappStaticInfo(){
         $domain = request()->domain();
+        $domain = str_replace('http://', 'https://', $domain);
         return [
             'serve_url' => (string)url('/api/weapp/serve/'.$this->site_id, [],'',true),
             'request_url' => $domain,

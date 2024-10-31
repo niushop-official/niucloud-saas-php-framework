@@ -11,12 +11,9 @@
 
 namespace app\service\admin\site;
 
-use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
-use app\model\sys\SysMenu;
 use app\service\admin\diy\DiyService;
-use app\service\admin\sys\ConfigService;
 use app\service\admin\sys\MenuService;
 use app\service\core\addon\CoreAddonService;
 use app\service\core\site\CoreSiteService;
