@@ -7,7 +7,7 @@
                 <div class="font-bold text-xl mb-[40px]">{{ t('developTitle') }}</div>
                 <div class="mb-[20px] flex flex-col">
                     <text class="mb-[10px]">{{ t('wapDomain') }}</text>
-                    <el-input v-model="wapDomain" :placeholder="t('wapDomainPlaceholder')" clearable />
+                    <el-input v-model.trim="wapDomain" :placeholder="t('wapDomainPlaceholder')" clearable />
                 </div>
                 <el-button type="primary" @click="save">{{ t('confirm') }}</el-button>
             </div>

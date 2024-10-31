@@ -18,7 +18,7 @@
             </el-form-item>
 
             <el-form-item :label="t('memo')" prop="memo">
-                <el-input v-model="formData.memo" type="textarea" rows="4" clearable :placeholder="t('memoPlaceholder')" class="input-width"/>
+                <el-input v-model.trim="formData.memo" type="textarea" rows="4" clearable :placeholder="t('memoPlaceholder')" class="input-width"/>
             </el-form-item>
 
         </el-form>

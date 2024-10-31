@@ -4,7 +4,7 @@
     <el-form :model="buttonData" label-width="140px" ref="formRef" :rules="formRules" class="page-form mt-[30px]">
 
         <el-form-item :label="t('menuName')" prop="name">
-            <el-input v-model="buttonData.name" :placeholder="t('menuNamePlaceholder')" class="input-width" clearable />
+            <el-input v-model.trim="buttonData.name" :placeholder="t('menuNamePlaceholder')" class="input-width" clearable />
             <div class="form-tip">{{ buttonData.sub_button ? t('menuNameTips') : t('subMenuNameTips') }}</div>
         </el-form-item>
 
@@ -17,15 +17,15 @@
             </el-form-item>
 
             <el-form-item :label="t('webpageUrl')" prop="url">
-                <el-input v-model="buttonData.url" :placeholder="t('webpageUrlPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="buttonData.url" :placeholder="t('webpageUrlPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
             <el-form-item :label="t('weappAppid')" prop="appid" v-show="buttonData.type == 'miniprogram'">
-                <el-input v-model="buttonData.appid" :placeholder="t('weappAppidPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="buttonData.appid" :placeholder="t('weappAppidPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
             <el-form-item :label="t('weappPage')" prop="pagepath" v-show="buttonData.type == 'miniprogram'">
-                <el-input v-model="buttonData.pagepath" :placeholder="t('weappPagePlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="buttonData.pagepath" :placeholder="t('weappPagePlaceholder')" class="input-width" clearable />
             </el-form-item>
 
         </template>

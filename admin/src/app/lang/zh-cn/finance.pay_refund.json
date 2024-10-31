@@ -6,5 +6,11 @@
 	"createTime": "申请时间",
 	"refundNoPlaceholder": "请输入退款编号",
 	"startDate": "开始时间",
-	"endDate": "结束时间"
+    "endDate": "结束时间",
+	"outTradeNo": "交易流水号",
+	"refundTypeName": "退款方式",
+	"statusName": "退款状态",
+	"transfer": "转账",
+	"transferType": "转账方式",
+	"voucher": "凭证"
 }	

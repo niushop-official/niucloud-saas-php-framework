@@ -32,7 +32,7 @@
 					<el-form-item :label="t('graphicNavShowStyle')">
 						<el-radio-group v-model="diyStore.editComponent.showStyle" @change="changeShowStyle">
 							<el-radio :label="'fixed'">{{t('graphicNavStyleFixed')}}</el-radio>
-							<el-radio :label="'singleSlide'">{{t('graphicNavStyleSingleSlide')}}</el-radio>
+							<el-radio :label="'singleSlide'">{{diyStore.editComponent.pageCount == 2 ? t('graphicNavStyleMultiLine') : t('graphicNavStyleSingleSlide')}}</el-radio>
 							<el-radio :label="'pageSlide'">{{t('graphicNavStylePageSlide')}}</el-radio>
 						</el-radio-group>
 					</el-form-item>

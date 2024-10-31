@@ -9,20 +9,20 @@
             </el-form-item>
 
             <el-form-item :label="t('qiniuBucket')" prop="bucket">
-                <el-input v-model="formData.bucket" :placeholder="t('qiniuBucketPlaceholder')" class="input-width" show-word-limit clearable />
+                <el-input v-model.trim="formData.bucket" :placeholder="t('qiniuBucketPlaceholder')" class="input-width" show-word-limit clearable />
                 <div class="form-tip">{{ t('qiniuBucketTips') }}</div>
             </el-form-item>
 
             <el-form-item :label="t('qiniuAccessKey')" prop="access_key">
-                <el-input v-model="formData.access_key" :placeholder="t('qiniuAccessKeyPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="formData.access_key" :placeholder="t('qiniuAccessKeyPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
             <el-form-item :label="t('qiniuSecretKey')" prop="secret_key">
-                <el-input v-model="formData.secret_key" :placeholder="t('qiniuSecretKeyPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="formData.secret_key" :placeholder="t('qiniuSecretKeyPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
             <el-form-item :label="t('domain')" prop="domain">
-                <el-input v-model="formData.domain" :placeholder="t('domainPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="formData.domain" :placeholder="t('domainPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
         </el-form>

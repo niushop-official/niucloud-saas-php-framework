@@ -8,21 +8,31 @@
             </div>
 
             <div class="flex flex-wrap plug-list pb-10 plug-large" v-if="appList.length">
-                <div  v-for="(item, index) in appList" :key="index + 'b'" class="app-item relative cursor-pointer mt-[20px] mr-4 bg-[#f7f7f7] w-[264px] flex py-[20px] px-[17px]"  @click="toLink(item.key)">
-                    <el-image class="w-[40px] h-[40px] mr-[10px]" :src="img(item.icon)" fit="contain">
-                        <template #error>
-                            <div class="image-slot">
-                                <img class="w-[40px] h-[40px]" src="@/app/assets/images/index/app_default.png" />
-                            </div>
+                <div  v-for="(item, index) in appList" :key="index + 'b'" class="cursor-pointer mt-[20px] mr-4 bg-[#f7f7f7]"  @click="toLink(item.key)">
+                    <el-tooltip class="box-item" effect="light" placement="top">
+                        <template #content>
+                            <div class="max-w-[250px]">{{item.desc}}</div>
                         </template>
-                    </el-image>
-                    <div class="flex flex-col justify-between w-[180px]">
-                        <div class="text-[14px] flex items-center">
-                            <span class="app-text max-w-[170px]">{{ item.title }}</span>
-                            <span class="iconfont iconxiaochengxu2 text-[#00b240] ml-[4px] !text-[14px]"></span>
+                        <div class="w-[264px] flex py-[20px] px-[17px] app-item relative">
+                            <el-image class="w-[40px] h-[40px] mr-[10px]" :src="img(item.icon)" fit="contain">
+                                <template #error>
+                                    <div class="image-slot">
+                                        <img class="w-[40px] h-[40px]" src="@/app/assets/images/index/app_default.png" />
+                                    </div>
+                                </template>
+                            </el-image>
+                            <div class="flex flex-col justify-between w-[180px]">
+                                <div class="text-[14px] flex items-center">
+                                    <span class="app-text max-w-[170px]">{{ item.title }}</span>
+                                    <span class="iconfont iconxiaochengxu2 text-[#00b240] ml-[4px] !text-[14px]"></span>
+                                </div>
+                                    <!-- <el-icon color="#666">
+                                        <QuestionFilled />
+                                    </el-icon> -->
+                                <p class="app-text text-[12px] text-[#999]">{{item.desc}}</p>
+                            </div>
                         </div>
-                        <p class="app-text text-[12px] text-[#999]">{{item.desc}}</p>
-                    </div>
+                    </el-tooltip>
                 </div>
             </div>
 

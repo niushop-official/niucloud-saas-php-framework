@@ -17,7 +17,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="printerTemplateTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('templateName')" prop="template_name">
-                        <el-input v-model="printerTemplateTable.searchParam.template_name" :placeholder="t('templateNamePlaceholder')" />
+                        <el-input v-model.trim="printerTemplateTable.searchParam.template_name" :placeholder="t('templateNamePlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('templateType')" prop="template_type">
                         <el-select v-model="printerTemplateTable.searchParam.template_type" :placeholder="t('templateTypePlaceholder')" clearable>

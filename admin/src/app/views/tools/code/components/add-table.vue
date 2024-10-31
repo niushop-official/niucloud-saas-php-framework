@@ -12,7 +12,7 @@
 
                 <el-table-column align="right" min-width="150">
                     <template #header>
-                        <el-input v-model="search" size="small" :placeholder="t('searchPlaceholder')" />
+                        <el-input v-model.trim="search" size="small" :placeholder="t('searchPlaceholder')" />
                     </template>
                     <template #default="scope">
                         <el-button size="small" type="primary" @click="confirm(scope.row)">{{ t('addBtn') }}</el-button>

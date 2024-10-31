@@ -21,7 +21,7 @@
             </el-form-item>
 
 <!--            <el-form-item :label="t('first')" prop="first">-->
-<!--                <el-input v-model="formData.wechat_first" :placeholder="t('firstPlaceholder')" class="input-width" show-word-limit clearable />-->
+<!--                <el-input v-model.trim="formData.wechat_first" :placeholder="t('firstPlaceholder')" class="input-width" show-word-limit clearable />-->
 <!--            </el-form-item>-->
 
             <el-form-item :label="t('content')">
@@ -31,7 +31,7 @@
             </el-form-item>
 
 <!--            <el-form-item :label="t('remark')" prop="remark">-->
-<!--                <el-input v-model="formData.wechat_remark" :placeholder="t('remarkPlaceholder')" class="input-width" show-word-limit clearable />-->
+<!--                <el-input v-model.trim="formData.wechat_remark" :placeholder="t('remarkPlaceholder')" class="input-width" show-word-limit clearable />-->
 <!--            </el-form-item>-->
 
         </el-form>

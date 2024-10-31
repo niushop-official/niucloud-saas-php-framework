@@ -1,7 +1,8 @@
 <template>
     <el-form :model="formData" :rules="formRules" class="page-form" ref="formRef">
         <el-form-item :label="t('continueSign')" prop="continue_sign">
-            <el-input class="input-width" v-model.trim="formData.continue_sign" :maxlength="5" clearable /><span class="ml-[10px]">{{ t('day') }}</span>
+            <el-input class="input-width" v-model.trim="formData.continue_sign" :maxlength="5" clearable />
+            <span class="ml-[10px]">{{ t('day') }}</span>
         </el-form-item>
         <el-form-item :label="t('continueSign')" >
             <div class="flex-1">
@@ -15,7 +16,7 @@
                 <el-radio class="mb-[15px]" v-model="formData.receive_limit" :label="1" @change="radioChange($event, 1)">{{ t('noLimit') }}</el-radio>
                 <div class="flex">
                     <el-radio class="!mr-[15px]" v-model="formData.receive_limit" :label="2" @change="radioChange($event, 2)">{{ t('everyOneLimit') }}</el-radio>
-                    <el-input class="input-width" v-model="formData.receive_num" :maxlength="5" clearable /><span class="ml-[10px]">{{ t('time') }}</span>
+                    <el-input class="input-width" v-model.trim="formData.receive_num" :maxlength="5" clearable /><span class="ml-[10px]">{{ t('time') }}</span>
                 </div>
             </div>
         </el-form-item>

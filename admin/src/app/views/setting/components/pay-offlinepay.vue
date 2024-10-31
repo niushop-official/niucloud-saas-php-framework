@@ -3,19 +3,19 @@
         <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
 
             <el-form-item :label="t('collectionName')" prop="config.collection_name">
-                <el-input v-model="formData.config.collection_name" :placeholder="t('collectionNamePlaceholder')" class="input-width" show-word-limit clearable />
+                <el-input v-model.trim="formData.config.collection_name" :placeholder="t('collectionNamePlaceholder')" class="input-width" show-word-limit clearable />
             </el-form-item>
 
             <el-form-item :label="t('collectionBank')" prop="config.collection_bank">
-                <el-input v-model="formData.config.collection_bank" :placeholder="t('collectionBankPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="formData.config.collection_bank" :placeholder="t('collectionBankPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
             <el-form-item :label="t('collectionAccount')" prop="config.collection_account">
-                <el-input v-model="formData.config.collection_account" :placeholder="t('collectionAccountPlaceholder')" class="input-width" clearable />
+                <el-input v-model.trim="formData.config.collection_account" :placeholder="t('collectionAccountPlaceholder')" class="input-width" clearable />
             </el-form-item>
 
             <el-form-item :label="t('collectionDesc')" prop="config.collection_desc">
-                <el-input v-model="formData.config.collection_desc" :placeholder="t('collectionDescPlaceholder')" class="input-width" type="textarea" rows="4" clearable />
+                <el-input v-model.trim="formData.config.collection_desc" :placeholder="t('collectionDescPlaceholder')" class="input-width" type="textarea" rows="4" clearable />
             </el-form-item>
         </el-form>
 

@@ -27,13 +27,13 @@
         <el-dialog v-model="dialogVisible" :title="type != 'edit' ? t('addDictData') : t('editDictData')" width="480" class="diy-dialog-wrap" :destroy-on-close="true">
             <el-form :model="formData" label-width="120px" ref="formRef" :rules="formRules" class="page-form">
                 <el-form-item :label="t('name')">
-                    <el-input v-model="name" disabled class="input-width" />
+                    <el-input v-model.trim="name" disabled class="input-width" />
                 </el-form-item>
                 <el-form-item :label="t('dataName')" prop="name">
-                    <el-input v-model="formData.name" clearable :placeholder="t('dataNamePlaceholder')" class="input-width" />
+                    <el-input v-model.trim="formData.name" clearable :placeholder="t('dataNamePlaceholder')" class="input-width" />
                 </el-form-item>
                 <el-form-item :label="t('dataValue')" prop="value">
-                    <el-input v-model="formData.value" clearable :placeholder="t('dataValuePlaceholder')" class="input-width" />
+                    <el-input v-model.trim="formData.value" clearable :placeholder="t('dataValuePlaceholder')" class="input-width" />
                 </el-form-item>
                 <el-form-item :label="t('sort')" prop="sort">
                     <div>
@@ -42,7 +42,7 @@
                     </div>
                 </el-form-item>
                 <el-form-item :label="t('memo')">
-                    <el-input v-model="formData.memo" type="textarea" clearable :placeholder="t('momePlaceholder')" class="input-width" />
+                    <el-input v-model.trim="formData.memo" type="textarea" clearable :placeholder="t('momePlaceholder')" class="input-width" />
                 </el-form-item>
             </el-form>
             <template #footer>

@@ -9,10 +9,10 @@
         <el-card class="box-card mt-[15px] !border-none" shadow="never">
             <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form">
                 <el-form-item :label="t('groupName')" prop="group_name">
-                    <el-input v-model="formData.group_name" :placeholder="t('groupNamePlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="20" :show-word-limit="true" />
+                    <el-input v-model.trim="formData.group_name" :placeholder="t('groupNamePlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="20" :show-word-limit="true" />
                 </el-form-item>
                 <el-form-item :label="t('groupDesc')" prop="group_desc">
-                    <el-input v-model="formData.group_desc" type="textarea" rows="4" clearable :placeholder="t('groupDescPlaceholder')" class="input-width" maxlength="100" />
+                    <el-input v-model.trim="formData.group_desc" type="textarea" rows="4" clearable :placeholder="t('groupDescPlaceholder')" class="input-width" maxlength="100" />
                 </el-form-item>
                 <el-form-item :label="t('mainApp')" prop="app">
                     <div class="text-gray-400" v-if="!appList.length">{{ t('appListEmpty') }}</div>

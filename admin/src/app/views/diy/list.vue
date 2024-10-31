@@ -10,7 +10,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="diyPageTableData.searchParam" ref="searchFormDiyPageRef">
                     <el-form-item :label="t('title')" prop="title">
-                        <el-input v-model="diyPageTableData.searchParam.title" :placeholder="t('titlePlaceholder')" />
+                        <el-input v-model.trim="diyPageTableData.searchParam.title" :placeholder="t('titlePlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('forAddon')" prop="addon_name">
                         <el-select v-model="diyPageTableData.searchParam.addon_name" :placeholder="t('forAddonPlaceholder')" @change="handleSelectAddonChange">
@@ -74,7 +74,7 @@
 
             <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules">
                 <el-form-item :label="t('title')" prop="title">
-                    <el-input v-model="formData.title" :placeholder="t('titlePlaceholder')" clearable maxlength="12" show-word-limit class="w-full" />
+                    <el-input v-model.trim="formData.title" :placeholder="t('titlePlaceholder')" clearable maxlength="12" show-word-limit class="w-full" />
                 </el-form-item>
                 <el-form-item :label="t('typeName')" prop="type">
                     <el-select v-model="formData.type" :placeholder="t('pageTypePlaceholder')" class="!w-full">
@@ -102,10 +102,10 @@
                     <span>{{ sharePage }}</span>
                 </el-form-item>
                 <el-form-item :label="t('shareTitle')" prop="title">
-                    <el-input v-model="shareFormData[tabShareType].title" :placeholder="t('shareTitlePlaceholder')" clearable maxlength="30" show-word-limit />
+                    <el-input v-model.trim="shareFormData[tabShareType].title" :placeholder="t('shareTitlePlaceholder')" clearable maxlength="30" show-word-limit />
                 </el-form-item>
                 <el-form-item :label="t('shareDesc')" prop="desc" v-if="tabShareType == 'wechat'">
-                    <el-input v-model="shareFormData[tabShareType].desc" :placeholder="t('shareDescPlaceholder')" type="textarea" rows="4" clearable maxlength="100" show-word-limit />
+                    <el-input v-model.trim="shareFormData[tabShareType].desc" :placeholder="t('shareDescPlaceholder')" type="textarea" rows="4" clearable maxlength="100" show-word-limit />
                 </el-form-item>
                 <el-form-item :label="t('shareImageUrl')" prop="url">
                     <upload-image v-model="shareFormData[tabShareType].url" :limit="1" />

@@ -1,3 +1,4 @@
+
 <template>
 	<!-- 内容 -->
 	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
@@ -12,11 +13,11 @@
 				</el-form-item>
 			</el-form>
 
-			<el-dialog v-model="showDialog" :title="t('selectStyle')" width="500px">
+			<el-dialog v-model="showDialog" :title="t('selectStyle')" width="660px">
 
 				<div class="flex flex-wrap">
 					<template v-for="(item,index) in styleList" :key="index">
-						<div :class="{ 'border-primary': selectStyle.value == item.value }" @click="changeStyle(item)" class="flex items-center justify-center overflow-hidden w-[200px] h-[100px] mr-[12px] cursor-pointer border bg-gray-50">
+						<div :class="{ 'border-primary': selectStyle.value == item.value, '!mr-[0]': [(index+1)%3] == 0 }" @click="changeStyle(item)" class="flex my-[5px] items-center justify-center overflow-hidden w-[200px] h-[100px] mr-[12px] cursor-pointer border bg-gray-50">
 							<img :src="img(item.url)" />
 						</div>
 					</template>
@@ -80,6 +81,16 @@ const styleList = reactive([
         url: 'static/resource/images/diy/member/member_level_style3.jpg',
         title: '风格3',
         value: 'style-3'
+    },
+    {
+        url: 'static/resource/images/diy/member/member_level_style4.png',
+        title: '风格4',
+        value: 'style-4'
+    },
+    {
+        url: 'static/resource/images/diy/member/member_level_style5.png',
+        title: '风格5',
+        value: 'style-5'
     }
 ])
 

@@ -93,7 +93,7 @@ import { useRouter, useRoute } from 'vue-router'
 const route = useRoute()
 const pageName = route.meta.title
 
-const memberId: number = parseInt(route.query.id || 0)
+const member_id: number = parseInt(route.query.id || 0)
 
 const memberAccountLogTableData = reactive({
     page: 1,

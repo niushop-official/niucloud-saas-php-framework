@@ -6,7 +6,7 @@
 
                 <el-form-item label="" prop="token">
                     <div>
-                        <el-input v-model="formData.token" :placeholder="t('tokenPlaceholder')" class="input-width" clearable maxlength="30"/>
+                        <el-input v-model.trim="formData.token" :placeholder="t('tokenPlaceholder')" class="input-width" clearable maxlength="30"/>
                     </div>
                     <div class="text-[14px] text-[#a9a9a9] leading-tight mt-[10px]">{{ t('tokenTips') }}</div>
                 </el-form-item>

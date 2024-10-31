@@ -51,19 +51,32 @@
                     <template #empty>
                         <span>{{ !cronTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
-
-                    <el-table-column prop="name" :label="t('title')" min-width="150" />
+                    
                     <el-table-column prop="key" :label="t('key')" min-width="150" />
+                    <el-table-column prop="name" :label="t('title')" min-width="150" />
                     <el-table-column :label="t('crondType')" min-width="150">
                         <template #default="{ row }">
                             {{ row.crontab_content }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="status_name" :label="t('openStatus')" min-width="100" />
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="180">
                         <template #default="{ row }">
-                            <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                            <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
+                            <div class="flex items-center">
+                                <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
+                                <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
+                                <el-dropdown class="ml-[12px]">
+                                    <span class="el-dropdown-link text-primary">
+                                        {{ t('more') }}
+                                    </span>
+                                    <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item @click="doEvent(row)">{{ t('doOne') }}</el-dropdown-item>
+                                        <el-dropdown-item @click="toLogList(row.id)">{{ t('cronLog') }}</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                    </template>
+                                </el-dropdown>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -92,13 +105,13 @@
                         <el-select v-model="formData.time.week" class="ml-2 w-[120px]" v-if="formData.time.type == 'week'">
                             <el-option v-for="(item, index) in week_list" :key="index" :label="item" :value="index" />
                         </el-select>
-                        <el-input v-model="formData.time.day" class="ml-2 w-[120px]" v-if="['month', 'day'].indexOf(formData.time.type) != -1">
+                        <el-input v-model.trim="formData.time.day" class="ml-2 w-[120px]" v-if="['month', 'day'].indexOf(formData.time.type) != -1">
                             <template #append>{{ t('day') }}</template>
                         </el-input>
-                        <el-input v-model="formData.time.hour" class="ml-2 w-[120px]" v-if="['month', 'day', 'hour', 'week'].indexOf(formData.time.type) != -1">
+                        <el-input v-model.trim="formData.time.hour" class="ml-2 w-[120px]" v-if="['month', 'day', 'hour', 'week'].indexOf(formData.time.type) != -1">
                             <template #append>{{ t('hour') }}</template>
                         </el-input>
-                        <el-input v-model="formData.time.min" class="ml-2 w-[120px]" v-if="['month', 'day', 'hour', 'week', 'min'].indexOf(formData.time.type) != -1">
+                        <el-input v-model.trim="formData.time.min" class="ml-2 w-[120px]" v-if="['month', 'day', 'hour', 'week', 'min'].indexOf(formData.time.type) != -1">
                             <template #append>{{ t('min') }}</template>
                         </el-input>
                     </div>
@@ -132,7 +145,8 @@ import {
     getWeek,
     addCron,
     editCron,
-    deleteCron
+    deleteCron,
+    doCron
 } from '@/app/api/sys'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
@@ -293,6 +307,20 @@ const deleteEvent = (id: number) => {
     })
 }
 
+const doEvent = (row: any) => {
+    ElMessageBox.confirm(t(`确认要立即执行一次"${row.name}"任务吗？`), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        doCron({id: row.id}).then((res) => {
+        }).catch(() => {
+        })
+    })
+}
+
 const cronDialog: Record<string, any> | null = ref(null)
 /**
  * 查看任务
@@ -301,6 +329,10 @@ const cronDialog: Record<string, any> | null = ref(null)
 const infoEvent = (data: any) => {
     cronDialog.value.setFormData(data)
     cronDialog.value.showDialog = true
+}
+
+const toLogList = (id: number) => {
+    router.push({ path: '/tools/schedule_log', query: { id: id } })
 }
 
 </script>

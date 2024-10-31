@@ -36,13 +36,13 @@
         <el-dialog v-model="showDialog" :title="t('editVersion')" width="550px" :destroy-on-close="true">
             <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
                 <el-form-item :label="t('version')" prop="version">
-                    <el-input v-model="formData.version" :placeholder="t('versionPlaceholder')" class="input-width" />
+                    <el-input v-model.trim="formData.version" :placeholder="t('versionPlaceholder')" class="input-width" />
                 </el-form-item>
                 <el-form-item :label="t('file')" prop="path">
                     <upload-file v-model="formData.path" class="input-width" api="applet/upload" />
                 </el-form-item>
                 <el-form-item :label="t('desc')">
-                    <el-input type="textarea" v-model="formData.desc" class="input-width" clearable></el-input>
+                    <el-input type="textarea" v-model.trim="formData.desc" class="input-width" clearable></el-input>
                 </el-form-item>
             </el-form>
 

@@ -15,11 +15,11 @@
                     </el-form-item>
 
                     <el-form-item :label="t('cashWithdrawalAmount')" v-if="formData.is_open" prop="min">
-                        <el-input v-model="formData.min" @keyup="filterDigit($event)" class="input-width" :placeholder="t('cashWithdrawalAmountPlaceholder')" />
+                        <el-input v-model.trim="formData.min" @keyup="filterDigit($event)" class="input-width" :placeholder="t('cashWithdrawalAmountPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('commissionRatio')" v-if="formData.is_open" prop="rate">
-                        <el-input v-model="formData.rate" @keyup="filterDigit($event)" class="input-width" :placeholder="t('commissionRatioPlaceholder')" />
+                        <el-input v-model.trim="formData.rate" @keyup="filterDigit($event)" class="input-width" :placeholder="t('commissionRatioPlaceholder')" />
                         <span class="ml-2">%</span>
                     </el-form-item>
 

@@ -261,7 +261,6 @@ const attachmentParam = reactive({
  * 查询分组
  */
 const getAttachmentCategoryList = debounce(() => {
-    // todo js实现
 
     const getFn = prop.type == 'icon' ? getIconCategoryList : attachmentCategoryList
     getFn({
@@ -361,7 +360,7 @@ const deleteAttachmentCategory = (index: number) => {
 }
 
 const uploadRef = ref<Record<string, any> | null>(null)
-
+const time = ref<any>(null)
 // 上传文件
 const upload = computed(() => {
     const headers: Record<string, any> = {}
@@ -381,8 +380,18 @@ const upload = computed(() => {
                 getAttachmentList()
                 uploadRef.value?.handleRemove(uploadFile)
             } else {
-                uploadFile.status = 'fail'
-                showElMessage({ message: response.msg, type: 'error' })
+                if(time.value==null) {
+                    time.value = setTimeout(() => {
+                        uploadFile.status = 'fail'
+                        showElMessage({ message: response.msg, type: 'error' })
+                        clearTimeout(time.value)
+                        time.value=null
+                    },500)
+                
+                }else{
+                    clearTimeout(time.value)
+                    time.value=null
+                }
             }
         }
     }

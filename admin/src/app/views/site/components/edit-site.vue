@@ -3,7 +3,7 @@
         <el-form :model="formData" label-width="100px" ref="formRef" :rules="formRules" class="page-form" autocomplete="off" v-loading="loading">
             <div v-if="formData.site_id == 0">
                 <el-form-item :label="t('siteName')" prop="site_name">
-                    <el-input v-model="formData.site_name" maxlength="20" clearable :placeholder="t('siteNamePlaceholder')" class="input-width" />
+                    <el-input v-model.trim="formData.site_name" maxlength="20" clearable :placeholder="t('siteNamePlaceholder')" class="input-width" />
                 </el-form-item>
 
                 <el-form-item :label="t('groupId')" prop="group_id">
@@ -12,7 +12,7 @@
                     </el-select>
                 </el-form-item>
                 <!-- <el-form-item :label="t('realName')" prop="real_name" v-if="!formData.site_id && !loading">
-                        <el-input v-model="formData.real_name" clearable :placeholder="t('realNamePlaceholder')" class="input-width" />
+                        <el-input v-model.trim="formData.real_name" clearable :placeholder="t('realNamePlaceholder')" class="input-width" />
                     </el-form-item> -->
                 <el-form-item :label="t('manager')" prop="uid">
                     <el-select v-model="formData.uid" :placeholder="t('managerPlaceholder')" class="input-width" filterable>
@@ -38,15 +38,15 @@
 
                 <div v-show="formData.uid === 0">
                     <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
+                        <el-input v-model.trim="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
+                        <el-input v-model.trim="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
+                        <el-input v-model.trim="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
                     </el-form-item>
                 </div>
             </div>
@@ -63,7 +63,7 @@
             </div>
 
             <el-form-item :label="t('siteDomain')" prop="site_domain">
-                <el-input v-model="formData.site_domain" clearable :placeholder="t('siteDomainPlaceholder')" class="input-width" />
+                <el-input v-model.trim="formData.site_domain" clearable :placeholder="t('siteDomainPlaceholder')" class="input-width" />
                 <div>
                     <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">{{ t('siteDomainTips') }}</p>
                     <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]">{{ t('siteDomainTipsTwo') }}</p>

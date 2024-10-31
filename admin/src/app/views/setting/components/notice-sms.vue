@@ -17,7 +17,7 @@
             </el-form-item>
 
             <el-form-item :label="t('smsId')" prop="sms_id">
-                <el-input v-model="formData.sms_id" :placeholder="t('smsIdPlaceholder')" class="input-width" show-word-limit clearable />
+                <el-input v-model.trim="formData.sms_id" :placeholder="t('smsIdPlaceholder')" class="input-width" show-word-limit clearable />
             </el-form-item>
 
             <el-form-item :label="t('smsContent')">

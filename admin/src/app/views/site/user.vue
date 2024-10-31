@@ -15,7 +15,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('userName')" prop="username">
-                        <el-input v-model="userTableData.searchParam.username" :placeholder="t('userNamePlaceholder')" />
+                        <el-input v-model.trim="userTableData.searchParam.username" :placeholder="t('userNamePlaceholder')" />
                     </el-form-item>
                     <!-- <el-form-item :label="t('createTime')" prop="create_time">
                         <el-date-picker v-model="userTableData.searchParam.create_time" type="datetimerange"

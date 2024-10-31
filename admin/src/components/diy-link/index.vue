@@ -78,7 +78,7 @@
                         <div v-else class="flex flex-wrap">
                             <div v-for="(item, index) in childList" :key="index"
                                 class="border border-br rounded-[3px] mr-[10px] mb-[10px] px-4 h-[32px] leading-[32px] cursor-pointer hover:bg-primary-light-9 px-[10px] hover:text-primary"
-                                :class="[item.name == selectLink.name ? 'border-primary text-primary' : '']"
+                                 :class="{ 'border-primary text-primary': (parentLinkName != 'DIY_PAGE' && item.name == selectLink.name) || (parentLinkName == 'DIY_PAGE' && item.name == selectLink.name && item.url == selectLink.url) }"
                                 @click="changeChildLink(item)">{{ item.title }}
                             </div>
                         </div>

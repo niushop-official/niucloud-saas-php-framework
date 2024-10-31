@@ -10,7 +10,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="recordsTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('searchReceiver')" prop="mobile">
-                        <el-input v-model="recordsTableData.searchParam.mobile" :placeholder="t('receiverPlaceholder')" />
+                        <el-input v-model.trim="recordsTableData.searchParam.mobile" :placeholder="t('receiverPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('noticeKey')" prop="key">

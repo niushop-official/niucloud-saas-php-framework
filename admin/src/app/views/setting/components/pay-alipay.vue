@@ -7,7 +7,7 @@
                 <div class="form-tip">{{ t('appIdTips') }}</div>
             </el-form-item>
             <el-form-item :label="t('appSecretCert')" prop="config.app_secret_cert">
-                <el-input v-model="formData.config.app_secret_cert" :placeholder="t('appSecretCertPlaceholder')" class="input-width" type="textarea" rows="4" clearable />
+                <el-input v-model.trim="formData.config.app_secret_cert" :placeholder="t('appSecretCertPlaceholder')" class="input-width" type="textarea" rows="4" clearable />
             </el-form-item>
 
             <el-form-item :label="t('appPublicCertPath')" prop="config.app_public_cert_path">

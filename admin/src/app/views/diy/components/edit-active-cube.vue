@@ -11,21 +11,24 @@
 						<ArrowRight />
 					</el-icon>
 				</el-form-item>
-				<el-form-item :label="t('title')">
-					<el-input v-model.trim="diyStore.editComponent.text" :placeholder="t('titlePlaceholder')" clearable maxlength="10" show-word-limit />
-				</el-form-item>
-				<el-form-item :label="t('link')">
-					<diy-link v-model="diyStore.editComponent.textLink"/>
-				</el-form-item>
-				<el-form-item :label="t('subTitle')">
-					<el-input v-model.trim="diyStore.editComponent.subTitle.text" :placeholder="t('subTitlePlaceholder')" clearable maxlength="8" show-word-limit />
-				</el-form-item>
-				<el-form-item :label="t('link')">
-					<diy-link v-model="diyStore.editComponent.subTitle.link"/>
-				</el-form-item>
+                <el-form-item :label="t('title')"  v-if="diyStore.editComponent && diyStore.editComponent.titleStyle && diyStore.editComponent.titleStyle.value != 'style-5'">
+                    <el-input v-model.trim="diyStore.editComponent.text" :placeholder="t('titlePlaceholder')" clearable maxlength="10" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('image')" v-else>
+                    <upload-image v-model="diyStore.editComponent.textImg" :limit="1"/>
+                </el-form-item>
+                <el-form-item :label="t('link')">
+                    <diy-link v-model="diyStore.editComponent.textLink"/>
+                </el-form-item>
+                <el-form-item :label="t('subTitle')">
+                    <el-input v-model.trim="diyStore.editComponent.subTitle.text" :placeholder="t('subTitlePlaceholder')" clearable maxlength="8" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('link')">
+                    <diy-link v-model="diyStore.editComponent.subTitle.link"/>
+                </el-form-item>
 			</el-form>
 
-			<el-dialog v-model="showTitleDialog" :title="t('selectStyle')" width="500px">
+			<el-dialog v-model="showTitleDialog" :title="t('selectStyle')" width="460px">
 
 				<div class="flex flex-wrap">
 					<template v-for="(item,index) in titleStyleList" :key="index">
@@ -92,7 +95,7 @@
                         </el-form-item>
 
 						<el-form-item :label="t('activeCubeSubTitle')" v-if="diyStore.editComponent.blockStyle.value != 'style-3'">
-							<el-input v-model.trim="item.subTitle.text" :placeholder="t('activeCubeSubTitlePlaceholder')" clearable :maxlength="(diyStore.editComponent.blockStyle.value != 'style-4' ? '6' : '4')" show-word-limit/>
+							<el-input v-model.trim="item.subTitle.text" :placeholder="t('activeCubeSubTitlePlaceholder')" clearable maxlength="6" show-word-limit/>
 						</el-form-item>
                         
                         <div v-show="diyStore.editComponent.blockStyle.value == 'style-4'">
@@ -104,12 +107,13 @@
                                 <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
                                 <el-color-picker v-model="item.subTitle.endColor" show-alpha :predefine="diyStore.predefineColors"/>
                             </el-form-item>
-                            <el-form-item :label="t('activeListFrameColor')">
-                                <el-color-picker v-model="item.listFrame.startColor" show-alpha :predefine="diyStore.predefineColors" />
-                                <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
-                                <el-color-picker v-model="item.listFrame.endColor" show-alpha :predefine="diyStore.predefineColors"/>
-                            </el-form-item>
                         </div>
+                        
+                        <el-form-item :label="t('activeListFrameColor')">
+                            <el-color-picker v-model="item.listFrame.startColor" show-alpha :predefine="diyStore.predefineColors" />
+                            <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
+                            <el-color-picker v-model="item.listFrame.endColor" show-alpha :predefine="diyStore.predefineColors"/>
+                        </el-form-item>
                         
                         <div v-show="diyStore.editComponent.blockStyle.value != 'style-4' && diyStore.editComponent.blockStyle.value != 'style-3'">
                             <el-form-item :label="t('activeCubeButton')">
@@ -143,7 +147,7 @@
 	<!-- 样式 -->
 	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<div class="edit-attr-item-wrap">
+		<div class="edit-attr-item-wrap" v-if="selectTitleStyle.value != 'style-5'">
 			<h3 class="mb-[10px]">{{ t('titleStyle') }}</h3>
 			<el-form label-width="90px" class="px-[10px]">
 				<el-form-item :label="t('textColor')">
@@ -173,6 +177,12 @@
 					<el-radio-group v-model="diyStore.editComponent.blockStyle.fontWeight">
 						<el-radio :label="'normal'">{{t('fontWeightNormal')}}</el-radio>
 						<el-radio :label="'bold'">{{t('fontWeightBold')}}</el-radio>
+					</el-radio-group>
+				</el-form-item>
+                <el-form-item :label="t('activeCubeBlockBtnText')" class="flex">
+					<el-radio-group v-model="diyStore.editComponent.blockStyle.btnText">
+						<el-radio :label="'normal'">{{t('btnTextNormal')}}</el-radio>
+						<el-radio :label="'italics'">{{t('btnTextItalics')}}</el-radio>
 					</el-radio-group>
 				</el-form-item>
 			</el-form>
@@ -264,6 +274,10 @@ const titleStyleList = reactive([
         url : 'static/resource/images/diy/active_cube/title_style5.png',
         title:'风格4',
 	    value:'style-4'
+	},{
+        url : 'static/resource/images/diy/active_cube/title_style6.png',
+        title:'风格5',
+	    value:'style-5'
 	}
 ])
 
@@ -280,7 +294,37 @@ const changeTitleStyle = (item:any) => {
 const confirmTitleStyle = () => {
     diyStore.editComponent.titleStyle.title = selectTitleStyle.title;
     diyStore.editComponent.titleStyle.value = selectTitleStyle.value;
+    initTitleStyle(diyStore.editComponent.titleStyle.value);
     showTitleDialog.value = false
+}
+
+const initTitleStyle = (style)=>{
+    if(diyStore.editComponent.titleStyle.value == 'style-1'){
+        diyStore.editComponent.titleColor = "#F91700";
+        diyStore.editComponent.subTitle.textColor = "#FFFFFF";
+        diyStore.editComponent.subTitle.startColor = "#FB792F";
+        diyStore.editComponent.subTitle.endColor = "#F91700";
+    }else if(diyStore.editComponent.titleStyle.value == 'style-2'){
+        diyStore.editComponent.titleColor = "#F91700";
+        diyStore.editComponent.subTitle.textColor = "#FFFFFF";
+        diyStore.editComponent.subTitle.startColor = "#FB792F";
+        diyStore.editComponent.subTitle.endColor = "#F91700";
+    }else if(diyStore.editComponent.titleStyle.value == 'style-3'){
+        diyStore.editComponent.titleColor = "#F91700";
+        diyStore.editComponent.subTitle.textColor = "#FFFFFF";
+        diyStore.editComponent.subTitle.startColor = "#FB792F";
+        diyStore.editComponent.subTitle.endColor = "#F91700";
+    }else if(diyStore.editComponent.titleStyle.value == 'style-4'){
+        diyStore.editComponent.titleColor = "#FFFFFF";
+        diyStore.editComponent.subTitle.textColor = "#333333";
+        diyStore.editComponent.subTitle.startColor = "#FFFFFF";
+        diyStore.editComponent.subTitle.endColor = "#FFFFFF";
+    }else if(diyStore.editComponent.titleStyle.value == 'style-5'){
+        diyStore.editComponent.titleColor = "";
+        diyStore.editComponent.subTitle.textColor = "#999999";
+        diyStore.editComponent.subTitle.startColor = "#FFFFFF";
+        diyStore.editComponent.subTitle.endColor = "#FFFFFF";
+    }
 }
 
 // 板块风格样式
@@ -326,7 +370,173 @@ const changeBlockStyle = (item:any) => {
 const confirmBlockStyle = () => {
     diyStore.editComponent.blockStyle.title = selectBlockStyle.title;
     diyStore.editComponent.blockStyle.value = selectBlockStyle.value;
+    initBlockStyle(diyStore.editComponent.blockStyle.value);
     showListDialog.value = false
+}
+
+const initBlockStyle = (style)=>{
+    // diyStore.editComponent.
+    if(style == 'style-1'){
+        diyStore.editComponent.blockStyle.fontWeight = "normal";
+        diyStore.editComponent.blockStyle.btnText = "normal";
+
+        diyStore.editComponent.list[0].title.textColor = "#303133";
+        diyStore.editComponent.list[0].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[0].subTitle.startColor = "";
+        diyStore.editComponent.list[0].subTitle.endColor = "";
+        diyStore.editComponent.list[0].moreTitle.startColor = "#FEA715";
+        diyStore.editComponent.list[0].moreTitle.endColor = "#FE1E00";
+        diyStore.editComponent.list[0].listFrame.startColor = "#FFFAF5";
+        diyStore.editComponent.list[0].listFrame.endColor = "#FFFFFF";
+
+        diyStore.editComponent.list[1].title.textColor = "#303133";
+        diyStore.editComponent.list[1].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[1].subTitle.startColor = "";
+        diyStore.editComponent.list[1].subTitle.endColor = "";
+        diyStore.editComponent.list[1].moreTitle.startColor = "#FFBF50";
+        diyStore.editComponent.list[1].moreTitle.endColor = "#FF9E03";
+        diyStore.editComponent.list[1].listFrame.startColor = "#FFFAF5";
+        diyStore.editComponent.list[1].listFrame.endColor = "#FFFFFF";
+
+        diyStore.editComponent.list[2].title.textColor = "#303133";
+        diyStore.editComponent.list[2].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[2].subTitle.startColor = "";
+        diyStore.editComponent.list[2].subTitle.endColor = "";
+        diyStore.editComponent.list[2].moreTitle.startColor = "#A2E792";
+        diyStore.editComponent.list[2].moreTitle.endColor = "#49CD2D";
+        diyStore.editComponent.list[2].listFrame.startColor = "#FFFAF5";
+        diyStore.editComponent.list[2].listFrame.endColor = "#FFFFFF";
+
+        diyStore.editComponent.list[3].title.textColor = "#303133";
+        diyStore.editComponent.list[3].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[3].subTitle.startColor = "";
+        diyStore.editComponent.list[3].subTitle.endColor = "";
+        diyStore.editComponent.list[3].moreTitle.startColor = "#4AC1FF";
+        diyStore.editComponent.list[3].moreTitle.endColor = "#1D7CFF";
+        diyStore.editComponent.list[3].listFrame.startColor = "#FFFAF5";
+        diyStore.editComponent.list[3].listFrame.endColor = "#FFFFFF";
+
+    }else if(style == 'style-2'){
+        diyStore.editComponent.blockStyle.fontWeight = "normal";
+        diyStore.editComponent.blockStyle.btnText = "normal";
+
+        diyStore.editComponent.blockStyle.fontWeight = "bold";
+        diyStore.editComponent.blockStyle.btnText = "italics";
+        
+        diyStore.editComponent.list[0].title.textColor = "#303133";
+        diyStore.editComponent.list[0].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[0].subTitle.startColor = "";
+        diyStore.editComponent.list[0].subTitle.endColor = "";
+        diyStore.editComponent.list[0].moreTitle.startColor = "#FFC051";
+        diyStore.editComponent.list[0].moreTitle.endColor = "#FF9C00";
+        diyStore.editComponent.list[0].listFrame.startColor = "#FFF1DB";
+        diyStore.editComponent.list[0].listFrame.endColor = "#FFFBF4";
+
+        diyStore.editComponent.list[1].title.textColor = "#303133";
+        diyStore.editComponent.list[1].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[1].subTitle.startColor = "";
+        diyStore.editComponent.list[1].subTitle.endColor = "";
+        diyStore.editComponent.list[1].moreTitle.startColor = "#A4E894";
+        diyStore.editComponent.list[1].moreTitle.endColor = "#45CC2A";
+        diyStore.editComponent.list[1].listFrame.startColor = "#E6F6E2";
+        diyStore.editComponent.list[1].listFrame.endColor = "#F5FDF3";
+
+        diyStore.editComponent.list[2].title.textColor = "#303133";
+        diyStore.editComponent.list[2].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[2].subTitle.startColor = "";
+        diyStore.editComponent.list[2].subTitle.endColor = "";
+        diyStore.editComponent.list[2].moreTitle.startColor = "#4BC2FF";
+        diyStore.editComponent.list[2].moreTitle.endColor = "#1F7DFF";
+        diyStore.editComponent.list[2].listFrame.startColor = "#E2F6FF";
+        diyStore.editComponent.list[2].listFrame.endColor = "#F2FAFF";
+
+        diyStore.editComponent.list[3].title.textColor = "#303133";
+        diyStore.editComponent.list[3].subTitle.textColor = "#999999";
+        diyStore.editComponent.list[3].subTitle.startColor = "";
+        diyStore.editComponent.list[3].subTitle.endColor = "";
+        diyStore.editComponent.list[3].moreTitle.startColor = "#FB792F";
+        diyStore.editComponent.list[3].moreTitle.endColor = "#F91700";
+        diyStore.editComponent.list[3].listFrame.startColor = "#FFEAEA";
+        diyStore.editComponent.list[3].listFrame.endColor = "#FFFCFB";
+    }else if(style == 'style-3'){
+        diyStore.editComponent.blockStyle.fontWeight = "normal";
+        diyStore.editComponent.blockStyle.btnText = "normal";
+
+        diyStore.editComponent.list[0].title.textColor = "#FF1128";
+        diyStore.editComponent.list[0].subTitle.textColor = "";
+        diyStore.editComponent.list[0].subTitle.startColor = "";
+        diyStore.editComponent.list[0].subTitle.endColor = "";
+        diyStore.editComponent.list[0].moreTitle.startColor = "";
+        diyStore.editComponent.list[0].moreTitle.endColor = "";
+        diyStore.editComponent.list[0].listFrame.startColor = "";
+        diyStore.editComponent.list[0].listFrame.endColor = "";
+
+        diyStore.editComponent.list[1].title.textColor = "#303133";
+        diyStore.editComponent.list[1].subTitle.textColor = "";
+        diyStore.editComponent.list[1].subTitle.startColor = "";
+        diyStore.editComponent.list[1].subTitle.endColor = "";
+        diyStore.editComponent.list[1].moreTitle.startColor = "";
+        diyStore.editComponent.list[1].moreTitle.endColor = "";
+        diyStore.editComponent.list[1].listFrame.startColor = "";
+        diyStore.editComponent.list[1].listFrame.endColor = "";
+
+        diyStore.editComponent.list[2].title.textColor = "#303133";
+        diyStore.editComponent.list[2].subTitle.textColor = "";
+        diyStore.editComponent.list[2].subTitle.startColor = "";
+        diyStore.editComponent.list[2].subTitle.endColor = "";
+        diyStore.editComponent.list[2].moreTitle.startColor = "";
+        diyStore.editComponent.list[2].moreTitle.endColor = "";
+        diyStore.editComponent.list[2].listFrame.startColor = "";
+        diyStore.editComponent.list[2].listFrame.endColor = "";
+
+        diyStore.editComponent.list[3].title.textColor = "#303133";
+        diyStore.editComponent.list[3].subTitle.textColor = "";
+        diyStore.editComponent.list[3].subTitle.startColor = "";
+        diyStore.editComponent.list[3].subTitle.endColor = "";
+        diyStore.editComponent.list[3].moreTitle.startColor = "";
+        diyStore.editComponent.list[3].moreTitle.endColor = "";
+        diyStore.editComponent.list[3].listFrame.startColor = "";
+        diyStore.editComponent.list[3].listFrame.endColor = "";
+    }else if(style == 'style-4'){
+        diyStore.editComponent.blockStyle.fontWeight = "bold";
+        diyStore.editComponent.blockStyle.btnText = "normal";
+        
+        diyStore.editComponent.list[0].title.textColor = "#303133";
+        diyStore.editComponent.list[0].subTitle.textColor = "#ED6E00";
+        diyStore.editComponent.list[0].subTitle.startColor = "#FFE4D9";
+        diyStore.editComponent.list[0].subTitle.endColor = "#FFE4D9";
+        diyStore.editComponent.list[0].moreTitle.startColor = "";
+        diyStore.editComponent.list[0].moreTitle.endColor = "";
+        diyStore.editComponent.list[0].listFrame.startColor = "#FFAD4D";
+        diyStore.editComponent.list[0].listFrame.endColor = "#F93D02";
+
+        diyStore.editComponent.list[1].title.textColor = "#303133";
+        diyStore.editComponent.list[1].subTitle.textColor = "#2E59E9";
+        diyStore.editComponent.list[1].subTitle.startColor = "#CAD7F8";
+        diyStore.editComponent.list[1].subTitle.endColor = "#CAD7F8";
+        diyStore.editComponent.list[1].moreTitle.startColor = "";
+        diyStore.editComponent.list[1].moreTitle.endColor = "";
+        diyStore.editComponent.list[1].listFrame.startColor = "#7CA7F4";
+        diyStore.editComponent.list[1].listFrame.endColor = "#2B56E9";
+
+        diyStore.editComponent.list[2].title.textColor = "#303133";
+        diyStore.editComponent.list[2].subTitle.textColor = "#F62F55";
+        diyStore.editComponent.list[2].subTitle.startColor = "#FCD6D9";
+        diyStore.editComponent.list[2].subTitle.endColor = "#FCD6D9";
+        diyStore.editComponent.list[2].moreTitle.startColor = "";
+        diyStore.editComponent.list[2].moreTitle.endColor = "";
+        diyStore.editComponent.list[2].listFrame.startColor = "#FF7F48";
+        diyStore.editComponent.list[2].listFrame.endColor = "#EE335B";
+
+        diyStore.editComponent.list[3].title.textColor = "#303133";
+        diyStore.editComponent.list[3].subTitle.textColor = "#139B3C";
+        diyStore.editComponent.list[3].subTitle.startColor = "#D3F1DA";
+        diyStore.editComponent.list[3].subTitle.endColor = "#D3F1DA";
+        diyStore.editComponent.list[3].moreTitle.startColor = "";
+        diyStore.editComponent.list[3].moreTitle.endColor = "";
+        diyStore.editComponent.list[3].listFrame.startColor = "#90D48C";
+        diyStore.editComponent.list[3].listFrame.endColor = "#299F4F";
+    }
 }
 
 const addItem = () => {

@@ -18,11 +18,11 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="siteTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('siteInfo')" prop="keywords">
-                        <el-input v-model="siteTableData.searchParam.keywords" :placeholder="t('siteNamePlaceholder')" />
+                        <el-input v-model.trim="siteTableData.searchParam.keywords" :placeholder="t('siteNamePlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('siteDomain')" prop="site_domain">
-                        <el-input v-model="siteTableData.searchParam.site_domain" :placeholder="t('siteDomainPlaceholder')" />
+                        <el-input v-model.trim="siteTableData.searchParam.site_domain" :placeholder="t('siteDomainPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('app')" prop="app_id">

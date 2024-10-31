@@ -8,7 +8,7 @@
                 <span>{{saveInfo.username}}</span>
             </el-form-item>
             <el-form-item :label="t('realName')">
-                <el-input v-model="saveInfo.real_name" :placeholder="t('realNamePlaceholder')" clearable class="input-width" />
+                <el-input v-model.trim="saveInfo.real_name" :placeholder="t('realNamePlaceholder')" clearable class="input-width" />
             </el-form-item>
         </el-form>
         <template #footer>

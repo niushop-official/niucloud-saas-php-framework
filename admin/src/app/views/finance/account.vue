@@ -51,7 +51,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item :label="t('tradeNo')" prop="trade_no">
-                        <el-input v-model="siteAccountLogTable.searchParam.trade_no" :placeholder="t('tradeNoPlaceholder')" />
+                        <el-input v-model.trim="siteAccountLogTable.searchParam.trade_no" :placeholder="t('tradeNoPlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('createTime')" prop="create_time">
                         <el-date-picker v-model="siteAccountLogTable.searchParam.create_time" type="datetimerange"

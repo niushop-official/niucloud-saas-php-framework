@@ -10,7 +10,7 @@
             <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="roleTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('roleName')" prop="search">
-                        <el-input v-model="roleTableData.searchParam.search" class="w-[240px]" :placeholder="t('roleNamePlaceholder')" />
+                        <el-input v-model.trim="roleTableData.searchParam.search" class="w-[240px]" :placeholder="t('roleNamePlaceholder')" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="loadRoleList()">{{ t('search') }}</el-button>

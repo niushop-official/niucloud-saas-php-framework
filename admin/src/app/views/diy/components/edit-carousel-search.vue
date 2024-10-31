@@ -89,7 +89,7 @@
 									</el-form-item>
 
 									<el-form-item :label="t('dataSources')">
-										<el-input v-model="item.diy_title" :placeholder="t('selectDiyPagePlaceholder')" readonly class="select-diy-page-input" @click="diyPageShowDialogOpen(index)">
+										<el-input v-model.trim="item.diy_title" :placeholder="t('selectDiyPagePlaceholder')" readonly class="select-diy-page-input" @click="diyPageShowDialogOpen(index)">
 											<template #suffix>
 												<div @click.stop="tabClear(index)">
 													<el-icon v-if="item.diy_title">
@@ -137,7 +137,6 @@
 				</el-collapse-item>
 				<el-collapse-item :title="t('carouselSearchSwiperSet')" name="swiper">
 					<el-form label-width="100px" class="px-[10px]">
-
 						<el-form-item :label="t('carouselSearchSwiperControl')">
 							<el-switch v-model="diyStore.editComponent.swiper.control" />
 						</el-form-item>
@@ -173,6 +172,23 @@
 
 	<!-- 样式 -->
 	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+        <div class="edit-attr-item-wrap">
+			<h3 class="mb-[10px]">{{ t('carouselSearchStyle') }}</h3>
+			<el-form label-width="100px" class="px-[10px]">
+				<el-form-item :label="t('carouselSearchTextColor')">
+					<el-color-picker v-model="diyStore.editComponent.search.color" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+				<el-form-item :label="t('carouselSearchBgColor')">
+					<el-color-picker v-model="diyStore.editComponent.search.bgColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+				<el-form-item :label="t('carouselSearchBtnColor')">
+					<el-color-picker v-model="diyStore.editComponent.search.btnColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+				<el-form-item :label="t('carouselSearchBtnBgColor')">
+					<el-color-picker v-model="diyStore.editComponent.search.btnBgColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+			</el-form>
+		</div>
 
 		<div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('carouselSearchTabStyle') }}</h3>
@@ -199,6 +215,7 @@
 					<el-radio-group v-model="diyStore.editComponent.swiper.swiperStyle">
 						<el-radio label="style-1">{{ t('carouselSearchSwiperIndicatorStyle1') }}</el-radio>
 						<el-radio label="style-2">{{ t('carouselSearchSwiperIndicatorStyle2') }}</el-radio>
+						<el-radio label="style-3">{{ t('carouselSearchSwiperIndicatorStyle3') }}</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item :label="t('topRounded')">
@@ -217,6 +234,7 @@
 					<el-radio-group v-model="diyStore.editComponent.swiper.indicatorStyle">
 						<el-radio label="style-1">{{ t('carouselSearchSwiperIndicatorStyle1') }}</el-radio>
 						<el-radio label="style-2">{{ t('carouselSearchSwiperIndicatorStyle2') }}</el-radio>
+						<el-radio label="style-3">{{ t('carouselSearchSwiperIndicatorStyle3') }}</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item :label="t('carouselSearchSwiperIndicatorAlign')">
@@ -280,13 +298,15 @@ diyStore.editComponent.verify = (index: number) => {
         // }
     });
 
-    diyStore.value[index].swiper.list.forEach((item: any) => {
-        if(item.imageUrl == ''){
-            res.code = false
-            res.message = t('imageUrlTip')
-            return res
-        }
-    });
+    if(diyStore.value[index].swiper.control){
+        diyStore.value[index].swiper.list.forEach((item: any) => {
+            if(item.imageUrl == ''){
+                res.code = false
+                res.message = t('imageUrlTip')
+                return res
+            }
+        });
+    }
 
     return res
 }

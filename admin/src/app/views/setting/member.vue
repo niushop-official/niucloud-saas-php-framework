@@ -6,7 +6,7 @@
                 <h3 class="panel-title !text-sm">{{ t('memberNoRule') }}</h3>
 
                 <el-form-item :label="t('prefix')" prop="prefix">
-                    <el-input v-model="formData.prefix" :placeholder="t('prefixPlaceholder')" class="input-width" clearable maxlength="20" @change="getMemberNo(ruleFormRef)"/>
+                    <el-input v-model.trim="formData.prefix" :placeholder="t('prefixPlaceholder')" class="input-width" clearable maxlength="20" @change="getMemberNo(ruleFormRef)"/>
                 </el-form-item>
                 <el-form-item :label="t('length')" prop="length">
                     <el-input v-model.trim="formData.length" :placeholder="t('lengthPlaceholder')" class="input-width" clearable @keyup="filterNumber($event)" @change="getMemberNo(ruleFormRef)" @blur="formData.length = $event.target.value"/>

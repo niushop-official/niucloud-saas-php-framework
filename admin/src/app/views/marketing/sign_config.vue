@@ -4,7 +4,7 @@
 
         <el-form class="page-form" :model="formData" label-width="150px" ref="ruleFormRef" :rules="formRules" v-loading="loading">
             <el-card class="box-card !border-none" shadow="never">
-                <h3 class="panel-title !text-sm">{{ t('signRule') }}</h3>
+                <h3 class="text-page-title">{{ t('signRule') }}</h3>
 
                 <el-form-item :label="t('isUse')">
                     <el-switch v-model="formData.is_use" />
@@ -70,7 +70,7 @@
 
                 <el-form-item :label="t('ruleExplain')" prop="rule_explain" v-if="formData.is_use">
                     <div class="flex">
-                        <el-input v-model="formData.rule_explain" :placeholder="t('ruleExplainTip')" type="textarea" maxlength="500" show-word-limit rows="5" class="textarea-width" clearable />
+                        <el-input v-model.trim="formData.rule_explain" :placeholder="t('ruleExplainTip')" type="textarea" maxlength="500" show-word-limit rows="5" class="textarea-width" clearable />
                         <el-button class="ml-[20px]" type="primary" @click="defaultExplainEvent()" plain>{{ t('useDefaultExplain') }}</el-button>
                     </div>
                 </el-form-item>
@@ -78,7 +78,7 @@
         </el-form>
 
         <!-- 日签奖励 -->
-        <el-dialog v-model="daySignDialog" :title="t('daySignTitle')" width="1200px" :destroy-on-close="true" v-if="formData.is_use">
+        <el-dialog v-model="daySignDialog" :title="t('daySignTitle')" width="1000px" :destroy-on-close="true" v-if="formData.is_use">
             <sign-day ref="benefitsRef" v-model="formData.day_award" />
             <template #footer>
                 <span class="dialog-footer">
@@ -89,7 +89,7 @@
         </el-dialog>
 
         <!-- 连签奖励 -->
-        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="800px" :destroy-on-close="true" v-if="formData.is_use">
+        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="1000px" :destroy-on-close="true" v-if="formData.is_use">
             <sign-continue ref="continueRef" v-model="continue_award" />
             <template #footer>
                 <span class="dialog-footer">

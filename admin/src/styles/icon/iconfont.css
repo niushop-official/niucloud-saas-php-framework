@@ -1,8 +1,8 @@
 @font-face {
     font-family: "iconfont"; /* Project id 3883393 */
-    src: url('//at.alicdn.com/t/c/font_3883393_go2pmb0sgk8.woff2?t=1720506563694') format('woff2'),
-         url('//at.alicdn.com/t/c/font_3883393_go2pmb0sgk8.woff?t=1720506563694') format('woff'),
-         url('//at.alicdn.com/t/c/font_3883393_go2pmb0sgk8.ttf?t=1720506563694') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_3883393_t4cbwq5qdz.woff2?t=1729077942624') format('woff2'),
+         url('//at.alicdn.com/t/c/font_3883393_t4cbwq5qdz.woff?t=1729077942624') format('woff'),
+         url('//at.alicdn.com/t/c/font_3883393_t4cbwq5qdz.ttf?t=1729077942624') format('truetype');
   }
   
   .iconfont {
@@ -11,6 +11,70 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icona-tupianzhanbopc302:before {
+    content: "\e83c";
+  }
+  
+  .icona-jingxuantuijianpc302:before {
+    content: "\e83d";
+  }
+  
+  .icona-jingxuantuijianpc30-12:before {
+    content: "\e83e";
+  }
+  
+  .icona-baokuantuijianpc30:before {
+    content: "\e836";
+  }
+  
+  .icona-shangpintuijianpc30:before {
+    content: "\e839";
+  }
+  
+  .icona-paihangbangpc30:before {
+    content: "\e83a";
+  }
+  
+  .icona-xinrenzhuanxiangpc30:before {
+    content: "\e83b";
+  }
+  
+  .icona-lipinkatupianpc30:before {
+    content: "\e82c";
+  }
+  
+  .icona-lipinkayouxiaoqipc30:before {
+    content: "\e82d";
+  }
+  
+  .icona-lipinkazhufuyupc30:before {
+    content: "\e833";
+  }
+  
+  .icona-lipinkamingchengpc30:before {
+    content: "\e834";
+  }
+  
+  .iconshezhiV6xx:before {
+    content: "\e82e";
+  }
+  
+  .iconshezhiV6xx-2:before {
+    content: "\e82f";
+  }
+  
+  .iconshezhiV6xx-1:before {
+    content: "\e830";
+  }
+  
+  .iconshezhiV6xx1:before {
+    content: "\e831";
+  }
+  
+  .iconshezhi-1V6xx:before {
+    content: "\e832";
   }
   
   .icondiduiqi1:before {
@@ -1137,10 +1201,6 @@
     content: "\e628";
   }
   
-  .icongouwuche1:before {
-    content: "\e680";
-  }
-  
   .icongonggao:before {
     content: "\e629";
   }
@@ -2222,7 +2282,7 @@
   }
   
   .iconwenhao:before {
-    content: "\e890";
+    content: "\f1e3";
   }
   
   .iconmofang-liangzuoliangyou:before {

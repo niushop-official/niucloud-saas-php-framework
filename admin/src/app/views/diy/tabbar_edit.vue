@@ -45,7 +45,7 @@
                                             </div>
                                         </el-form-item>
                                         <el-form-item :label="t('navTitleOne')">
-                                            <el-input class="!w-[215px]" v-model="item.text" :placeholder="t('titleContent')" maxlength="5" show-word-limit />
+                                            <el-input class="!w-[215px]" v-model.trim="item.text" :placeholder="t('titleContent')" maxlength="5" show-word-limit />
                                         </el-form-item>
                                         <el-form-item :label="t('navLinkOne')">
                                             <diy-link v-model="item.link" @confirm="diyLinkFn" />
@@ -69,21 +69,21 @@
                                 <el-form-item :label="t('textColor')">
                                     <div class="flex align-center">
                                         <el-color-picker v-model="diyBottomData.value.textColor" />
-                                        <el-input class="ml-[10px]" v-model="diyBottomData.value.textColor" disabled />
+                                        <el-input class="ml-[10px]" v-model.trim="diyBottomData.value.textColor" disabled />
                                         <el-button class="ml-[10px]" type="primary" @click="diyBottomData.value.textColor = '#333333'">{{ t('reset') }}</el-button>
                                     </div>
                                 </el-form-item>
                                 <el-form-item :label="t('textSelectColor')">
                                     <div class="flex align-center">
                                         <el-color-picker v-model="diyBottomData.value.textHoverColor" />
-                                        <el-input class="ml-[10px]" v-model="diyBottomData.value.textHoverColor" disabled />
+                                        <el-input class="ml-[10px]" v-model.trim="diyBottomData.value.textHoverColor" disabled />
                                         <el-button class="ml-[10px]" type="primary" @click="diyBottomData.value.textHoverColor = '#333333'">{{ t('reset') }}</el-button>
                                     </div>
                                 </el-form-item>
                                 <el-form-item :label="t('backgroundColor')">
                                     <div class="flex align-center">
                                         <el-color-picker v-model="diyBottomData.value.backgroundColor" />
-                                        <el-input class="ml-[10px]" v-model="diyBottomData.value.backgroundColor" disabled />
+                                        <el-input class="ml-[10px]" v-model.trim="diyBottomData.value.backgroundColor" disabled />
                                         <el-button class="ml-[10px]" type="primary" @click="diyBottomData.value.backgroundColor = '#FFFFFF'">{{ t('reset') }}</el-button>
                                     </div>
                                 </el-form-item>

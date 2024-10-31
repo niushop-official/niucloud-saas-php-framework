@@ -12,7 +12,7 @@ export function getAddonLocal(params: Record<string, any>) {
  * 插件详情
  * @returns
  */
-export function getAddonDetial(id: number) {
+export function getAddonDetail(id: number) {
     return request.get(`addon/${ id }`)
 }
 

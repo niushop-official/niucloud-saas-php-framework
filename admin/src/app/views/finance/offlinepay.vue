@@ -9,7 +9,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="payListTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('outTradeNo')" prop="trade_no">
-                        <el-input v-model="payListTable.searchParam.out_trade_no" :placeholder="t('outTradeNoPlaceholder')" />
+                        <el-input v-model.trim="payListTable.searchParam.out_trade_no" :placeholder="t('outTradeNoPlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('createTime')" prop="create_time">
                         <el-date-picker v-model="payListTable.searchParam.create_time" type="datetimerange"

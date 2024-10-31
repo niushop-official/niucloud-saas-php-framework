@@ -13,7 +13,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="siteGroupTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('groupName')" prop="keywords">
-                        <el-input v-model="siteGroupTableData.searchParam.keywords" :placeholder="t('groupNamePlaceholder')" />
+                        <el-input v-model.trim="siteGroupTableData.searchParam.keywords" :placeholder="t('groupNamePlaceholder')" />
                     </el-form-item>
 
                     <el-form-item>

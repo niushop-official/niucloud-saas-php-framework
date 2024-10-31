@@ -10,7 +10,7 @@
             <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('accountNumber')" prop="search">
-                        <el-input v-model="userTableData.searchParam.search" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
+                        <el-input v-model.trim="userTableData.searchParam.search" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="loadUserList()">{{ t('search') }}</el-button>

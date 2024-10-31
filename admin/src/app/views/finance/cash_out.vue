@@ -40,12 +40,12 @@
                             :end-placeholder="t('endDate')" />
                     </el-form-item>
                     <el-form-item :label="t('cashOutNumber')" prop="cash_out_no">
-                        <el-input v-model="orderTableData.searchParam.cash_out_no" class="w-[240px]"
+                        <el-input v-model.trim="orderTableData.searchParam.cash_out_no" class="w-[240px]"
                             :placeholder="t('cashOutNumberPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('memberInfo')" prop="keyword">
-                        <el-input v-model="orderTableData.searchParam.keyword" class="w-[240px]"
+                        <el-input v-model.trim="orderTableData.searchParam.keyword" class="w-[240px]"
                             :placeholder="t('memberInfoPlaceholder')" />
                     </el-form-item>
 
@@ -196,7 +196,7 @@
         <el-dialog v-model="auditShowDialog" :title="t('rejectionAudit')" width="500px" :destroy-on-close="true">
             <el-form :model="auditFailure" label-width="90px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
                 <el-form-item :label="t('reasonsRefusal')" prop="label_name">
-                    <el-input v-model="auditFailure.refuse_reason" clearable maxlength="200" :show-word-limit="true" :placeholder="t('reasonsRefusalPlaceholder')" :rows="4" class="input-width" type="textarea" />
+                    <el-input v-model.trim="auditFailure.refuse_reason" clearable maxlength="200" :show-word-limit="true" :placeholder="t('reasonsRefusalPlaceholder')" :rows="4" class="input-width" type="textarea" />
                 </el-form-item>
             </el-form>
             <template #footer>

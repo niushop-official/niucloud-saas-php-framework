@@ -10,7 +10,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="payRefundTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('refundNo')" prop="refund_no">
-                        <el-input v-model="payRefundTable.searchParam.refund_no" :placeholder="t('refundNoPlaceholder')" />
+                        <el-input v-model.trim="payRefundTable.searchParam.refund_no" :placeholder="t('refundNoPlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('createTime')" prop="create_time">
                         <el-date-picker v-model="payRefundTable.searchParam.create_time" type="datetimerange"
@@ -49,6 +49,7 @@
                 </div>
             </div>
         </el-card>
+        <refund-detail ref="refundDetailDialog"></refund-detail>
     </div>
 </template>
 
@@ -58,6 +59,7 @@ import { t } from '@/lang'
 import { getPayRefundPages } from '@/app/api/pay'
 import { useRouter, useRoute } from 'vue-router'
 import type { FormInstance } from 'element-plus'
+import refundDetail from '@/app/views/finance/components/refund-detail.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -97,9 +99,11 @@ const loadPayRefundList = (page: number = 1) => {
     })
 }
 loadPayRefundList()
-
-const infoEvent = (data:any) => {
-    router.push('/finance/refund/detail?refund_no=' + data.refund_no)
+const refundDetailDialog: Record<string, any> | null = ref(null)
+const infoEvent = (res:any) => {
+    let data = {no: res.refund_no};
+    refundDetailDialog.value.setFormData(data);
+    refundDetailDialog.value.showDialog = true;
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {

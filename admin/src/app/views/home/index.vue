@@ -24,7 +24,7 @@
                         <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
                     </el-scrollbar>
                 </div>
-                <el-input v-model="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称/编号" @keyup.enter.native="getHomeSiteFn()">
+                <el-input v-model.trim="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称/编号" @keyup.enter.native="getHomeSiteFn()">
                     <template #suffix>
                         <el-icon @click.stop="getHomeSiteFn()" class="cursor-pointer">
                             <Search />
@@ -80,7 +80,7 @@
                 <div class="w-[420px] h-[34px] ml-[10px]">
                     <el-form :model="createSiteData.formData" ref="formRef" :rules="formRules">
                         <el-form-item prop="username">
-                            <el-input class="create-site-name" v-model="createSiteData.formData.site_name" maxlength="20" placeholder="请输入站点名称" autocomplete="off"></el-input>
+                            <el-input class="create-site-name" v-model.trim="createSiteData.formData.site_name" maxlength="20" placeholder="请输入站点名称" autocomplete="off"></el-input>
                         </el-form-item>
                     </el-form>
                 </div>

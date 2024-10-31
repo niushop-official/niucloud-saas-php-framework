@@ -16,7 +16,7 @@
                 </div>
             </el-header>
             <el-scrollbar class="menu-scrollbar flex-1 h-0">
-                <el-menu :default-active="route.name" :router="true" :unique-opened="false" :collapse="systemStore.menuIsCollapse" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+                <el-menu :default-active="route.name" :router="true" :unique-opened="false" :collapse="systemStore.menuIsCollapse" background-color="#1f2531" text-color="#fff" active-text-color="#fff">
                     <menu-item v-for="(route, index) in menuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -85,7 +85,7 @@ if (siteInfo?.apps.length > 1) {
 
 <style lang="scss">
 .logo-wrap {
-    background: #545c64;
+    background: #1f2531;
     transition: transform getCssVar('transition-duration');
 }
 :root{
@@ -93,7 +93,7 @@ if (siteInfo?.apps.length > 1) {
 }
 .menu-wrap {
     padding: 0!important;
-    background: #545c64;
+    background: #1f2531;
     display: flex;
     flex-direction: column;
 
@@ -110,6 +110,14 @@ if (siteInfo?.apps.length > 1) {
 
         .el-sub-menu .el-menu-item {
             --el-menu-sub-item-height: 40px;
+        }
+
+        .el-menu-item.is-active {
+            background: var(--el-color-primary);
+        }
+
+        &.el-menu--inline {
+            background: #282e3a;
         }
     }
 

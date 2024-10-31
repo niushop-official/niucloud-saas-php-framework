@@ -479,6 +479,42 @@ export function deleteCron(id: string) {
     return request.delete(`sys/schedule/${ id }`, { showSuccessMessage: true })
 }
 
+/**
+ * 执行任务
+ * @returns
+ */
+export function doCron(params: Record<string, any>) {
+    return request.put(`sys/schedule/do/${ params.id }`, params, {
+        showErrorMessage: true,
+        showSuccessMessage: true
+    })
+}
+
+
+/**
+ * 获取任务日志列表
+ * @returns
+ */
+export function getCronLogList(params: any) {
+    return request.get(`sys/schedule/log/list`, { params })
+}
+
+/**
+ * 删除任务日志
+ * @returns
+ */
+export function deleteCronLog(params: Record<string, any>) {
+    return request.put(`sys/schedule/log/delete`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 清空任务日志
+ * @returns
+ */
+export function clearCronLog(params: Record<string, any>) {
+    return request.put(`sys/schedule/log/clear`, params, { showSuccessMessage: true })
+}
+
 /***************************************************** 协议管理 ****************************************************/
 
 /**

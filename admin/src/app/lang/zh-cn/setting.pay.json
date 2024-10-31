@@ -57,5 +57,11 @@
     "collectionNamePlaceholder": "请输入收款账户名称",
     "collectionBankPlaceholder": "请输入收款银行",
     "collectionAccountPlaceholder": "请输入收款账号",
-    "collectionDescPlaceholder": "请输入转账说明"
+    "collectionDescPlaceholder": "请输入转账说明",
+    "jsapiDir": "JSAPI支付授权目录",
+    "jsapiDirTips": "需在微信商户号>产品中心>开发配置>支付配置 支付授权目录中添加该链接",
+    "h5Domain": "H5支付域名",
+    "h5DomainTips": "需在微信商户号>产品中心>开发配置>支付配置 H5支付域名中添加该域名",
+    "nativeDomain": "Native支付回调链接",
+    "nativeDomainTips": "需在微信商户号>产品中心>开发配置>支付配置 Native支付回调链接中添加该链接"
 }

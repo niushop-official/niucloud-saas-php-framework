@@ -5,10 +5,10 @@
                 <h3 class="panel-title !text-sm">{{ t('oplatformSetting') }}</h3>
 
                 <el-form-item label="APPID" prop="app_id">
-                    <el-input v-model="formData.app_id" :placeholder="t('appidPlaceholder')" class="input-width" clearable />
+                    <el-input v-model.trim="formData.app_id" :placeholder="t('appidPlaceholder')" class="input-width" clearable />
                 </el-form-item>
                 <el-form-item label="APPSECRET" prop="app_secret">
-                    <el-input v-model="formData.app_secret" :placeholder="t('appSecretPlaceholder')" class="input-width" clearable />
+                    <el-input v-model.trim="formData.app_secret" :placeholder="t('appSecretPlaceholder')" class="input-width" clearable />
                 </el-form-item>
             </el-card>
 
@@ -16,7 +16,7 @@
                 <h3 class="panel-title !text-sm">{{ t('messagesReceiving') }}</h3>
 
                 <el-form-item :label="t('empowerReceiveUrl')">
-                    <el-input v-model="staticInfo.auth_serve_url" placeholder="Please input" class="!w-[500px]" :readonly="true">
+                    <el-input v-model.trim="staticInfo.auth_serve_url" placeholder="Please input" class="!w-[500px]" :readonly="true">
                         <template #append>
                             <div class="cursor-pointer" @click="copyEvent(staticInfo.auth_serve_url)">{{ t('copy') }}
                             </div>
@@ -24,7 +24,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="t('messageReceiveUrl')">
-                    <el-input v-model="staticInfo.message_serve_url" placeholder="Please input" class="!w-[500px]" :readonly="true">
+                    <el-input v-model.trim="staticInfo.message_serve_url" placeholder="Please input" class="!w-[500px]" :readonly="true">
                         <template #append>
                             <div class="cursor-pointer" @click="copyEvent(staticInfo.message_serve_url)">{{ t('copy') }}
                             </div>
@@ -32,10 +32,10 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="t('messageValidationToken')" prop="token">
-                    <el-input v-model="formData.token" class="input-width" clearable />
+                    <el-input v-model.trim="formData.token" class="input-width" clearable />
                 </el-form-item>
                 <el-form-item :label="t('messageDecryptKey')" prop="aes_key">
-                    <el-input v-model="formData.aes_key" class="input-width">
+                    <el-input v-model.trim="formData.aes_key" class="input-width">
                         <template #append>
                             <div class="cursor-pointer" @click="copyEvent(formData.aes_key)">{{ t('copy') }}</div>
                         </template>
@@ -48,14 +48,14 @@
                 <h3 class="panel-title !text-sm">{{ t('domainSetting') }}</h3>
 
                 <el-form-item :label="t('empowerStartDomain')">
-                    <el-input v-model="staticInfo.auth_launch_domain" placeholder="Please input" class="input-width" :readonly="true">
+                    <el-input v-model.trim="staticInfo.auth_launch_domain" placeholder="Please input" class="input-width" :readonly="true">
                         <template #append>
                             <div class="cursor-pointer" @click="copyEvent(staticInfo.auth_launch_domain)">{{ t('copy') }}</div>
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="t('wechatDomain')">
-                    <el-input v-model="staticInfo.wechat_auth_domain" placeholder="Please input" class="input-width" :readonly="true">
+                    <el-input v-model.trim="staticInfo.wechat_auth_domain" placeholder="Please input" class="input-width" :readonly="true">
                         <template #append>
                             <div class="cursor-pointer" @click="copyEvent(staticInfo.wechat_auth_domain)">{{ t('copy') }}</div>
                         </template>
@@ -67,7 +67,7 @@
                 <h3 class="panel-title !text-sm">{{ t('developerWeappUpload') }}</h3>
 
                 <el-form-item :label="t('developAppid')" prop="develop_app_id">
-                    <el-input v-model="formData.develop_app_id" :placeholder="t('developAppidPlaceholder')" class="input-width" clearable />
+                    <el-input v-model.trim="formData.develop_app_id" :placeholder="t('developAppidPlaceholder')" class="input-width" clearable />
                 </el-form-item>
                 <el-form-item :label="t('uploadKey')" prop="develop_upload_private_key">
                     <div class="input-width">

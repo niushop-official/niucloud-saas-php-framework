@@ -26,5 +26,6 @@
     "monthPlaceholder": "请输入站点创建有效期限",
     "numCannotLtZero": "站点创建数量不能小于0",
     "monthCannotLtZero": "站点创建有效期不能小于0",
-    "createSiteTimeLimitDeleteTips": "确认要删除吗？"
+    "createSiteTimeLimitDeleteTips": "确认要删除吗？",
+    "siteEmpty": "站点不存在"
 }

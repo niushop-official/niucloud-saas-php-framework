@@ -41,7 +41,7 @@
                     </div>
                 </el-form-item>
                 <el-form-item :label="t('desc')">
-                    <el-input v-model="formData.desc" :placeholder="t('descPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                    <el-input v-model.trim="formData.desc" :placeholder="t('descPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
                 </el-form-item>
 
             </el-card>

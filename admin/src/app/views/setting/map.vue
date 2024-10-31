@@ -38,11 +38,11 @@ import { t } from '@/lang'
 import { setMap, getMap } from '@/app/api/sys'
 import { FormInstance } from 'element-plus'
 
-const loading = ref(false)
+const loading = ref(true)
 const formRef = ref<FormInstance>()
 const formData = reactive({
     key: '',
-    is_open: 1,
+    is_open: 0,
     valid_time: 0
 })
 
@@ -69,8 +69,12 @@ const formRules = computed(() => {
 });
 
 const setFormData = async () => {
+    loading.value = true
     const service_data = await (await getMap()).data
     formData.key = service_data.key
+    formData.is_open = service_data.is_open
+    formData.valid_time = service_data.valid_time
+    loading.value = false
 }
 setFormData()
 

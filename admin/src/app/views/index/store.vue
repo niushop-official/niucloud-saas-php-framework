@@ -31,7 +31,7 @@
             </div>
 
             <div>
-                <el-table v-if="localList[activeName].length&&!authLoading" :data="info[activeName]" size="large" class="pt-[5px]">
+                <el-table v-if="localList[activeName].length&&!loading" :data="info[activeName]" size="large" class="pt-[5px]">
                     <el-table-column :label="t('appName')" align="left" width="320">
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer" @click = "handleTips">
@@ -97,11 +97,11 @@
                             <el-button class="!text-[13px]" v-if="!row.is_download" :loading="downloading == row.key" :disabled="downloading != ''" type="primary" link @click.stop="downEvent(row)">
                                 <span>{{ t('down') }}</span>
                             </el-button>
-                            <el-button class="!text-[13px]" type="primary" link @click="getAddonDetialFn(row)">{{ t('detail') }}</el-button>
+                            <el-button class="!text-[13px]" type="primary" link @click="getAddonDetailFn(row)">{{ t('detail') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="data-loading" v-if="authLoading || !localList[activeName].length">
+                <div class="data-loading" v-if="loading || !localList[activeName].length">
                     <el-table :data="[]" size="large" class="pt-[5px]">
                         <el-table-column :label="t('appName')" align="left" width="320"></el-table-column>
                         <el-table-column align="left" min-width="120"></el-table-column>
@@ -111,7 +111,7 @@
                         <el-table-column :label="t('operation')" fixed="right" align="right" width="150"></el-table-column>
                         <template #empty><span></span></template>
                     </el-table>
-                    <div class="h-[100px]" v-loading="authLoading" v-if="authLoading">
+                    <div class="h-[100px]" v-loading="loading" v-if="loading">
                     </div>
                 </div>
                 <el-empty class="mx-auto overview-empty" v-if="!localList.installed.length && !loading && activeName == 'installed'&&!authLoading">
@@ -827,7 +827,7 @@ const installShowDialogClose = (done: () => {}) => {
 // 插件详情
 const appStoreShowDialog = ref(false)
 const appStoreInfo = ref<AnyObject>({})
-const getAddonDetialFn = (data: AnyObject) => {
+const getAddonDetailFn = (data: AnyObject) => {
     appStoreShowDialog.value = true
     appStoreInfo.value = data
 }

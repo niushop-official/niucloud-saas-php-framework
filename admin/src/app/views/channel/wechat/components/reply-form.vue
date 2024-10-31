@@ -25,7 +25,7 @@
         <div class="py-[20px] px-[30px] h-[350px]">
             <div v-if="formData.msgtype == 'text'">
                 <el-input
-                    v-model="formData.text.content" :rows="5" type="textarea" placeholder="" maxlength="600" :show-word-limit="true"
+                    v-model.trim="formData.text.content" :rows="5" type="textarea" placeholder="" maxlength="600" :show-word-limit="true"
                     resize="none"
                     input-style="box-shadow: none;height:300px"
                 />
@@ -94,14 +94,14 @@
             <div v-if="formData.msgtype == 'miniprogrampage'">
                 <el-form :model="formData.miniprogrampage" label-width="140px" class="page-form" ref="formRef" :rules="formRules">
                     <el-form-item label="小程序APPID" prop="appid">
-                        <el-input v-model="formData.miniprogrampage.appid" class="input-width"/>
+                        <el-input v-model.trim="formData.miniprogrampage.appid" class="input-width"/>
                         <div class="form-tip">小程序需已经与公众号关联</div>
                     </el-form-item>
                     <el-form-item label="小程序卡片标题" prop="title">
-                        <el-input v-model="formData.miniprogrampage.title" class="input-width"/>
+                        <el-input v-model.trim="formData.miniprogrampage.title" class="input-width"/>
                     </el-form-item>
                     <el-form-item label="小程序的页面路径" prop="pagepath">
-                        <el-input v-model="formData.miniprogrampage.pagepath" class="input-width"/>
+                        <el-input v-model.trim="formData.miniprogrampage.pagepath" class="input-width"/>
                     </el-form-item>
                     <el-form-item label="小程序卡片图片" prop="thumb_media_url">
                         <upload-image :limit="1" width="100px" height="100px" v-model="formData.miniprogrampage.thumb_media_url" v-if="formData.miniprogrampage.thumb_media_url"/>

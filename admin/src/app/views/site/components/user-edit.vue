@@ -4,7 +4,7 @@
             <div class="max-h-[60vh]">
                 <el-form :model="formData" label-width="120px" ref="formRef" :rules="formRules" class="page-form" autocomplete="off" v-loading="loading">
                     <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="formData.uid" :disabled="formData.uid" @click="realnameInput = false" @blur="realnameInput = true" />
+                        <el-input v-model.trim="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="formData.uid" :disabled="formData.uid" @click="realnameInput = false" @blur="realnameInput = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('headImg')">
@@ -16,11 +16,11 @@
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="passwordInput" @click="passwordInput = false" @blur="passwordInput = true"  />
+                        <el-input v-model.trim="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="passwordInput" @click="passwordInput = false" @blur="passwordInput = true"  />
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirmPasswordInput" @click="confirmPasswordInput = false" @blur="confirmPasswordInput = true" />
+                        <el-input v-model.trim="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirmPasswordInput" @click="confirmPasswordInput = false" @blur="confirmPasswordInput = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('userCreateSiteLimit')" v-if="!formData.uid && Object.keys(siteGroup).length" prop="create_site_limit">
@@ -40,13 +40,13 @@
                                 </el-table-column>
                                 <el-table-column :label="t('createSiteNum')">
                                     <template #default="{ $index }">
-                                        <el-input v-model.number="formData.create_site_limit[$index].num">
+                                        <el-input v-model.number.trim="formData.create_site_limit[$index].num">
                                         </el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column :label="t('siteMonth')">
                                     <template #default="{ $index }">
-                                        <el-input v-model.number="formData.create_site_limit[$index].month">
+                                        <el-input v-model.number.trim="formData.create_site_limit[$index].month">
                                             <template #append>{{ t('month') }}</template>
                                         </el-input>
                                     </template>
@@ -164,6 +164,16 @@ const setFormData = (uid: number = 0) => {
             showDialog.value = true
         })
     } else {
+        formData.value = {
+            uid: 0,
+            username: '',
+            password: '',
+            head_img: '',
+            real_name: '',
+            confirm_password: '',
+            create_site_limit: [],
+            group_ids: []
+        }
         loading.value = false
         showDialog.value = true
     }

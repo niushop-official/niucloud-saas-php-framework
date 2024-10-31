@@ -9,7 +9,7 @@
                 <p class="form-tip">{{ t('keyFormatTips') }}</p>
             </el-form-item>
             <el-form-item :label="t('memo')">
-                <el-input v-model="formData.memo" type="textarea" clearable :placeholder="t('memoPlaceholder')" class="input-width" />
+                <el-input v-model.trim="formData.memo" type="textarea" clearable :placeholder="t('memoPlaceholder')" class="input-width" />
             </el-form-item>
         </el-form>
 

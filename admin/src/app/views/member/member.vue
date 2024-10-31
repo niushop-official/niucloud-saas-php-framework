@@ -11,7 +11,7 @@
             <el-card class="box-card !border-none my-[20px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="memberTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('memberInfo')" prop="keyword">
-                        <el-input v-model="memberTableData.searchParam.keyword" class="w-[240px]" :placeholder="t('memberInfoPlaceholder')" />
+                        <el-input v-model.trim="memberTableData.searchParam.keyword" class="w-[240px]" :placeholder="t('memberInfoPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('registerChannel')" prop="register_channel">
@@ -56,8 +56,10 @@
                     <el-table-column prop="nickname" :show-overflow-tooltip="true" :label="t('memberInfo')" min-width="170">
                         <template #default="{ row }">
                             <div class="flex items-center">
-                                <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.headimg" :src="img(row.headimg)" alt="">
-                                <img class="w-[50px] h-[50px] mr-[10px] rounded-full" v-else src="@/app/assets/images/member_head.png" alt="">
+                                <div class="mr-[10px] rounded-full w-[50px] h-[50px] flex items-center justify-center">
+                                    <img class="max-w-[50px] max-h-[50px]" v-if="row.headimg" :src="img(row.headimg)" alt="">
+                                    <img class="max-w-[50px] max-h-[50px]" v-else src="@/app/assets/images/member_head.png" alt="">
+                                </div>
                                 <div class="flex flex flex-col">
                                     <span>{{ row.nickname || '' }}</span>
                                 </div>
@@ -122,6 +124,7 @@
             <add-member ref="addMemberDialog" @complete="loadMemberList()" />
             <edit-member ref="editMemberDialog" @complete="loadMemberList()" />
             <export-sure ref="exportSureDialog" :show="flag" type="member" :searchParam="memberTableData.searchParam" @close="handleClose" />
+            <detail-member ref="detailMemberDialog"  @load="loadMemberList()"></detail-member>
         </el-card>
     </div>
 </template>
@@ -134,6 +137,7 @@ import { getRegisterChannelType, getMemberList, getMemberLabelAll, editMemberSta
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import AddMember from '@/app/views/member/components/add-member.vue'
+import detailMember from '@/app/views/member/components/detail-member.vue'
 import EditMember from '@/app/views/member/components/edit-member.vue'
 
 const route = useRoute()
@@ -204,6 +208,7 @@ loadMemberList()
 const router = useRouter()
 const addMemberDialog: Record<string, any> | null = ref(null)
 const editMemberDialog: Record<string, any> | null = ref(null)
+const detailMemberDialog: Record<string, any> | null = ref(null)
 
 /**
  * 设置标签
@@ -254,8 +259,10 @@ const editEvent = (data: any) => { }
 /**
  * 会员详情
  */
-const detailEvent = (data: any) => {
-    router.push(`/member/detail?id=${data.member_id}`)
+const detailEvent = (res: any) => {
+    let data = {id: res.member_id};
+    detailMemberDialog.value.setFormData(data);
+    detailMemberDialog.value.showDialog = true;
 }
 
 /**

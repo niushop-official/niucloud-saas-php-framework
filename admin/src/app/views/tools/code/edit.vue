@@ -205,19 +205,19 @@
                                 :render-after-expand="false" />
                         </el-form-item>
                         <!-- <el-form-item :label="t('controller')">
-                            <el-input v-model="controller" disabled class="input-width" />
+                            <el-input v-model.trim="controller" disabled class="input-width" />
                         </el-form-item>
                         <el-form-item :label="t('dataModel')">
-                            <el-input v-model="dataModel" disabled class="input-width" />
+                            <el-input v-model.trim="dataModel" disabled class="input-width" />
                         </el-form-item>
                         <el-form-item :label="t('validator')">
-                            <el-input v-model="validator" disabled class="input-width" />
+                            <el-input v-model.trim="validator" disabled class="input-width" />
                         </el-form-item>
                         <el-form-item :label="t('webView')">
-                            <el-input v-model="webView" disabled class="input-width" />
+                            <el-input v-model.trim="webView" disabled class="input-width" />
                         </el-form-item>
                         <el-form-item :label="t('routerView')">
-                            <el-input v-model="routerView" disabled class="input-width" />
+                            <el-input v-model.trim="routerView" disabled class="input-width" />
                         </el-form-item> -->
                     </el-form>
                 </el-tab-pane>

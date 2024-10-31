@@ -10,14 +10,14 @@
             <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="sysUserLogTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('ip')" prop="ip">
-                        <el-input v-model="sysUserLogTableData.searchParam.ip" :placeholder="t('ipPlaceholder')" />
+                        <el-input v-model.trim="sysUserLogTableData.searchParam.ip" :placeholder="t('ipPlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model="sysUserLogTableData.searchParam.username" :placeholder="t('usernamePlaceholder')" />
+                        <el-input v-model.trim="sysUserLogTableData.searchParam.username" :placeholder="t('usernamePlaceholder')" />
                     </el-form-item>
 
                     <el-form-item :label="t('url')" prop="url">
-                        <el-input v-model="sysUserLogTableData.searchParam.url" :placeholder="t('urlPlaceholder')" />
+                        <el-input v-model.trim="sysUserLogTableData.searchParam.url" :placeholder="t('urlPlaceholder')" />
                     </el-form-item>
 
                     <el-form-item>

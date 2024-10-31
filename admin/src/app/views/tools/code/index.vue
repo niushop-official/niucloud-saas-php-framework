@@ -85,7 +85,7 @@
                             </el-form-item>
 
                             <el-form-item :label="t('tableName')" prop="table_name">
-                                <el-input v-model="codeTableData.searchParam.table_name" :placeholder="t('tableNamePlaceholder')" />
+                                <el-input v-model.trim="codeTableData.searchParam.table_name" :placeholder="t('tableNamePlaceholder')" />
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="loadGenerateTableList()">{{ t('search') }}</el-button>

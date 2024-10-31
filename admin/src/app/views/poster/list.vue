@@ -10,7 +10,7 @@
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <el-form :inline="true" :model="posterTableData.searchParam" ref="searchFormDiyPosterRef">
                     <el-form-item :label="t('posterName')" prop="name">
-                        <el-input v-model="posterTableData.searchParam.name" :placeholder="t('posterNamePlaceholder')" />
+                        <el-input v-model.trim="posterTableData.searchParam.name" :placeholder="t('posterNamePlaceholder')" />
                     </el-form-item>
                     <el-form-item :label="t('posterType')" prop="type">
                         <el-select v-model="posterTableData.searchParam.type" :placeholder="t('posterTypePlaceholder')">
@@ -70,7 +70,7 @@
 
             <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules">
                 <el-form-item :label="t('posterName')" prop="name">
-                    <el-input v-model="formData.name" :placeholder="t('posterNamePlaceholder')" clearable maxlength="12" show-word-limit class="w-full" />
+                    <el-input v-model.trim="formData.name" :placeholder="t('posterNamePlaceholder')" clearable maxlength="12" show-word-limit class="w-full" />
                 </el-form-item>
                 <el-form-item :label="t('posterType')" prop="type">
                     <el-select v-model="formData.type" :placeholder="t('posterTypePlaceholder')" class="!w-full">

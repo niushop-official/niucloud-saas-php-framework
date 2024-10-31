@@ -6,7 +6,7 @@
                 <upload-image v-model="saveData.headimg" />
             </el-form-item>
             <el-form-item :label="t('nickname')" v-if="type == 'nickname'">
-                <el-input v-model="saveData.nickname" clearable :placeholder="t('nickNamePlaceholder')" class="input-width" />
+                <el-input v-model.trim="saveData.nickname" clearable :placeholder="t('nickNamePlaceholder')" class="input-width" />
             </el-form-item>
             <el-form-item :label="t('birthday')" v-if="type == 'birthday'">
                 <el-date-picker v-model="saveData.birthday" value-format="YYYY-MM-DD" type="date" :placeholder="t('birthdayTip')" />

@@ -9,7 +9,7 @@
 							<icon name="iconfont icon24gf-playCircle" color="#fff" size="25px" @click="previewVideo()"/>
 						</div>
 					</div>
-					<icon name="element CircleCloseFilled" color="#bbb" size="18px" @click="removeVideo" class="absolute z-[2] top-[-9px] right-[-9px]"/>
+					<icon name="element CircleCloseFilled" color="#bbb" size="18px" @click="removeVideo" class="!absolute z-[2] top-[-9px] right-[-9px]"/>
 				</template>
 				<upload-attachment :limit="limit" type="video" @confirm="confirmSelect" v-else>
 					<div class="w-full h-full flex items-center justify-center flex-col">

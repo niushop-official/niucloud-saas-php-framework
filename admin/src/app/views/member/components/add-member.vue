@@ -3,22 +3,22 @@
         <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
 
             <el-form-item :label="t('memberNo')" prop="member_no">
-                <el-input v-model="formData.member_no" clearable maxlength="20" :placeholder="t('memberNoPlaceholder')" class="input-width" />
+                <el-input v-model.trim="formData.member_no" clearable maxlength="20" :placeholder="t('memberNoPlaceholder')" class="input-width" />
             </el-form-item>
 
             <el-form-item :label="t('mobile')" prop="mobile">
-                <el-input v-model="formData.mobile" clearable :placeholder="t('mobilePlaceholder')" @keyup="filterNumber($event)" class="input-width" />
+                <el-input v-model.trim="formData.mobile" clearable :placeholder="t('mobilePlaceholder')" @keyup="filterNumber($event)" class="input-width" />
             </el-form-item>
 
             <el-form-item :label="t('nickname')">
-                <el-input v-model="formData.nickname" clearable :placeholder="t('nickNamePlaceholder')" class="input-width" maxlength="10" show-word-limit  :readonly="nickname_name_input" @click="nickname_name_input = false" @blur="nickname_name_input = true" />
+                <el-input v-model.trim="formData.nickname" clearable :placeholder="t('nickNamePlaceholder')" class="input-width" maxlength="10" show-word-limit  :readonly="nickname_name_input" @click="nickname_name_input = false" @blur="nickname_name_input = true" />
             </el-form-item>
 
             <el-form-item :label="t('password')" prop="password">
-                <el-input v-model="formData.password" type="password" :placeholder="t('passwordPlaceholder')" clearable class="input-width" :show-password="true"  :readonly="password_input" @click="password_input = false" @blur="password_input = true" />
+                <el-input v-model.trim="formData.password" type="password" :placeholder="t('passwordPlaceholder')" clearable class="input-width" :show-password="true"  :readonly="password_input" @click="password_input = false" @blur="password_input = true" />
             </el-form-item>
             <el-form-item :label="t('passwordCopy')" prop="password_copy">
-                <el-input v-model="formData.password_copy" type="password" :placeholder="t('passwordPlaceholder')" clearable class="input-width" :show-password="true"  :readonly="password_copy_input" @click="password_copy_input = false" @blur="password_copy_input = true" />
+                <el-input v-model.trim="formData.password_copy" type="password" :placeholder="t('passwordPlaceholder')" clearable class="input-width" :show-password="true"  :readonly="password_copy_input" @click="password_copy_input = false" @blur="password_copy_input = true" />
             </el-form-item>
 
         </el-form>

@@ -14,7 +14,7 @@
                     <h3 class="text-center text-2xl font-bold mb-[26px]">{{ t('platform') }}</h3>
                     <el-form :model="form" ref="formRef" :rules="formRules">
                         <el-form-item prop="username">
-                            <el-input v-model="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" @keyup.enter="handleLogin(formRef)" class="h-[40px] input-with-select">
+                            <el-input v-model.trim="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" @keyup.enter="handleLogin(formRef)" class="h-[40px] input-with-select">
                                 <template #prepend>
                                     <icon name="element User" />
                                 </template>
@@ -22,7 +22,7 @@
                         </el-form-item>
 
                         <el-form-item prop="password">
-                            <el-input v-model="form.password" :placeholder="t('passwordPlaceholder')" type="password"
+                            <el-input v-model.trim="form.password" :placeholder="t('passwordPlaceholder')" type="password"
                                 autocomplete="new-password"
                                 @keyup.enter="handleLogin(formRef)" :show-password="true"
                                 class="h-[40px] input-with-select">
@@ -55,7 +55,7 @@
                                 <h3 class="text-3xl mb-[30px]">{{ t('siteLogin') }}</h3>
                                 <el-form :model="form" ref="formRef" :rules="formRules">
                                     <el-form-item prop="username">
-                                        <el-input v-model="form.username" @keyup.enter="handleLogin(formRef)" autocomplete="off" class="w-50 m-1 h-[40px]" :placeholder="t('userPlaceholder')">
+                                        <el-input v-model.trim="form.username" @keyup.enter="handleLogin(formRef)" autocomplete="off" class="w-50 m-1 h-[40px]" :placeholder="t('userPlaceholder')">
                                             <template #prefix>
                                                 <icon name="element User" />
                                             </template>
@@ -63,7 +63,7 @@
                                     </el-form-item>
 
                                     <el-form-item prop="password">
-                                        <el-input type="password" v-model="form.password" @keyup.enter="handleLogin(formRef)" autocomplete="new-password" :show-password="true" class="w-50 m-1 h-[40px]" :placeholder="t('passwordPlaceholder')">
+                                        <el-input type="password" v-model.trim="form.password" @keyup.enter="handleLogin(formRef)" autocomplete="new-password" :show-password="true" class="w-50 m-1 h-[40px]" :placeholder="t('passwordPlaceholder')">
                                             <template #prefix>
                                                 <icon name="element Lock" />
                                             </template>

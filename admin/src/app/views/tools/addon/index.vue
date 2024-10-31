@@ -88,7 +88,7 @@
                         <div class="flex justify-between">
                             <el-form :inline="true" :model="params" ref="searchFormRef">
                                 <el-form-item :label="t('title')" prop="search">
-                                    <el-input v-model="params.search" :placeholder="t('titlePlaceholder')" />
+                                    <el-input v-model.trim="params.search" :placeholder="t('titlePlaceholder')" />
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="getAddonDevelopFn">{{ t('search') }}</el-button>

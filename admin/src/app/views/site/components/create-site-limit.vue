@@ -8,12 +8,12 @@
             </el-form-item>
             <el-form-item :label="t('createSiteNum')" prop="num">
                 <div>
-                    <el-input v-model.number="formData.num" class="!w-[150px]"/>
+                    <el-input v-model.number.trim="formData.num" class="!w-[150px]"/>
                     <p class="text-[12px] text-[#a9a9a9] leading-normal mt-[5px]" v-if="formData.group_id">{{ t('createdSiteNum') }}：{{ props.siteGroup[formData.group_id].site_num }}</p>
                 </div>
             </el-form-item>
             <el-form-item :label="t('createSiteTimeLimit')" prop="month">
-                <el-input v-model.number="formData.month" class="!w-[150px]">
+                <el-input v-model.number.trim="formData.month" class="!w-[150px]">
                     <template #append>
                         {{ t('month') }}
                     </template>
