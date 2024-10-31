@@ -5,11 +5,13 @@ namespace core\pay;
 use app\dict\pay\OnlinePayDict;
 use app\dict\pay\RefundDict;
 use app\dict\pay\TransferDict;
+use core\exception\CommonException;
 use core\exception\PayException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
 use think\Response;
 use Throwable;
+use Yansongda\Artful\Exception\InvalidResponseException;
 use Yansongda\Pay\Exception\ContainerException;
 use Yansongda\Pay\Exception\InvalidParamsException;
 use Yansongda\Pay\Exception\ServiceNotFoundException;
@@ -48,22 +50,28 @@ class Wechatpay extends BasePay
      */
     public function mp(array $params)
     {
-        $result = $this->returnFormat(Pay::wechat()->mp([
-            'out_trade_no' => $params['out_trade_no'],
-            'description' => $params['body'],
-            'amount' => [
-                'total' => $params['money'],
-            ],
-            'payer' => [
-                'openid' => $params['openid'],
-            ],
-        ]));
-        $code = $result['code'] ?? 0;
-        if ($code == 0) return $result;
-        //支付错误抛出
-        throw new PayException($result['message']);
+        try {
+            $result = $this->returnFormat(Pay::wechat()->mp([
+                'out_trade_no' => $params['out_trade_no'],
+                'description' => $params['body'],
+                'amount' => [
+                    'total' => $params['money'],
+                ],
+                'payer' => [
+                    'openid' => $params['openid'],
+                ],
+            ]));
+            $code = $result['code'] ?? 0;
+            if ($code == 0) return $result;
+            //支付错误抛出
+            throw new PayException($result['message']);
+        } catch (\Exception  $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
+        }
     }
-
 
     /**
      * 手机网页支付
@@ -72,24 +80,31 @@ class Wechatpay extends BasePay
      */
     public function wap(array $params)
     {
-        $order = [
-            'out_trade_no' => $params['out_trade_no'],
-            'description' => $params['body'],
-            'amount' => [
-                'total' => $params['money'],
-            ],
-            'scene_info' => [
-                'payer_client_ip' => request()->ip(),
-                'h5_info' => [
-                    'type' => 'Wap',
-                ]
-            ],
-        ];
-        //这儿有些特殊, 默认情况下，H5 支付所使用的 appid 是微信公众号的 appid，即配置文件中的 mp_app_id 参数，如果想使用关联的小程序的 appid，则只需要在调用参数中增加 ['_type' => 'mini'] 即可
-        if (!empty($order['type'])) {
-            $order['_type'] = 'mini'; // 注意这一行
+        try {
+            $order = [
+                'out_trade_no' => $params['out_trade_no'],
+                'description' => $params['body'],
+                'amount' => [
+                    'total' => $params['money'],
+                ],
+                'scene_info' => [
+                    'payer_client_ip' => request()->ip(),
+                    'h5_info' => [
+                        'type' => 'Wap',
+                    ]
+                ],
+            ];
+            //这儿有些特殊, 默认情况下，H5 支付所使用的 appid 是微信公众号的 appid，即配置文件中的 mp_app_id 参数，如果想使用关联的小程序的 appid，则只需要在调用参数中增加 ['_type' => 'mini'] 即可
+            if (!empty($order['type'])) {
+                $order['_type'] = 'mini'; // 注意这一行
+            }
+            return $this->returnFormat(Pay::wechat()->h5($order));
+        } catch (\Exception $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
         }
-        return $this->returnFormat(Pay::wechat()->h5($order));
     }
 
     public function web(array $params)
@@ -104,13 +119,20 @@ class Wechatpay extends BasePay
      */
     public function app(array $params)
     {
-        return $this->returnFormat(Pay::wechat()->app([
-            'out_trade_no' => $params['out_trade_no'],
-            'description' => $params['body'],
-            'amount' => [
-                'total' => $params['money'],
-            ],
-        ]));
+        try {
+            return $this->returnFormat(Pay::wechat()->app([
+                'out_trade_no' => $params['out_trade_no'],
+                'description' => $params['body'],
+                'amount' => [
+                    'total' => $params['money'],
+                ],
+            ]));
+        } catch (\Exception $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
+        }
     }
 
     /**
@@ -120,17 +142,24 @@ class Wechatpay extends BasePay
      */
     public function mini(array $params)
     {
-        return $this->returnFormat(Pay::wechat()->mini([
-            'out_trade_no' => $params['out_trade_no'],
-            'description' => $params['body'],
-            'amount' => [
-                'total' => $params['money'],
-                'currency' => 'CNY',//一般是人民币
-            ],
-            'payer' => [
-                'openid' => $params['openid'],
-            ]
-        ]));
+        try {
+            return $this->returnFormat(Pay::wechat()->mini([
+                'out_trade_no' => $params['out_trade_no'],
+                'description' => $params['body'],
+                'amount' => [
+                    'total' => $params['money'],
+                    'currency' => 'CNY',//一般是人民币
+                ],
+                'payer' => [
+                    'openid' => $params['openid'],
+                ]
+            ]));
+        } catch (\Exception $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
+        }
     }
 
     /**
@@ -140,15 +169,22 @@ class Wechatpay extends BasePay
      */
     public function pos(array $params)
     {
-        $order = [
-            'out_trade_no' => $params['out_trade_no'],
-            'body' => $params['body'],
-            'total_fee' => $params['money'],
-            'spbill_create_ip' => request()->ip(),
-            'auth_code' => $params["auth_code"],
-        ];
-        $result = Pay::wechat()->pos($order);
-        return $this->returnFormat($result);
+        try {
+            $order = [
+                'out_trade_no' => $params['out_trade_no'],
+                'body' => $params['body'],
+                'total_fee' => $params['money'],
+                'spbill_create_ip' => request()->ip(),
+                'auth_code' => $params["auth_code"],
+            ];
+            $result = Pay::wechat()->pos($order);
+            return $this->returnFormat($result);
+        } catch (\Exception $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
+        }
     }
 
     /**
@@ -158,13 +194,20 @@ class Wechatpay extends BasePay
      */
     public function scan(array $params)
     {
-        return $this->returnFormat(Pay::wechat()->scan([
-            'out_trade_no' => $params['out_trade_no'],
-            'description' => $params['body'],
-            'amount' => [
-                'total' => $params['money'],
-            ],
-        ]));
+        try {
+            return $this->returnFormat(Pay::wechat()->scan([
+                'out_trade_no' => $params['out_trade_no'],
+                'description' => $params['body'],
+                'amount' => [
+                    'total' => $params['money'],
+                ],
+            ]));
+        } catch (\Exception $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
+        }
     }
 
     /**
