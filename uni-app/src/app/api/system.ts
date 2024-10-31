@@ -4,56 +4,56 @@ import request from '@/utils/request'
  * 获取验证码
  */
 export function getCaptcha() {
-    return request.get('captcha', {}, {showErrorMessage: true})
+    return request.get('captcha', {}, { showErrorMessage: true })
 }
 
 /**
  * 获取微信公众号授权码
  */
 export function getWechatAuthCode(data: AnyObject) {
-    return request.get('wechat/codeurl', data, {showErrorMessage: false })
+    return request.get('wechat/codeurl', data, { showErrorMessage: false })
 }
 
 /**
  * 同步微信信息
  */
 export function wechatSync(data: AnyObject) {
-    return request.post('wechat/sync', data, {showErrorMessage: false})
+    return request.post('wechat/sync', data, { showErrorMessage: false })
 }
 
 /**
  * 获取协议信息
  */
 export function getAgreementInfo(key: string) {
-    return request.get(`agreement/${key}`)
+    return request.get(`agreement/${ key }`)
 }
 
 /**
  * 重置密码
  */
 export function resetPassword(data: AnyObject) {
-    return request.post(`password/reset`, data, {showErrorMessage: true})
+    return request.post(`password/reset`, data, { showErrorMessage: true })
 }
 
 /**
  * 发送短信验证码
  */
 export function sendSms(data: AnyObject) {
-    return request.post(`send/mobile/${data.type}`, data, {showErrorMessage: true})
+    return request.post(`send/mobile/${ data.type }`, data, { showErrorMessage: true })
 }
 
 /**
  * 获取微信jssdk config
  */
-export function getWechatSkdConfig(data: AnyObject) {
-    return request.get('wechat/jssdkconfig', data, {showErrorMessage: false})
+export function getWechatSdkConfig(data: AnyObject) {
+    return request.get('wechat/jssdkconfig', data, { showErrorMessage: false })
 }
 
 /**
  * 上传图片
  */
 export function uploadImage(data: AnyObject) {
-    return request.upload('file/image', data, {showErrorMessage: true})
+    return request.upload('file/image', data, { showErrorMessage: true })
 }
 
 /**
@@ -81,7 +81,7 @@ export function getSiteInfo() {
  * 获取微信小程序订阅消息模板id
  */
 export function getWeappTemplateId(keys: string) {
-    return request.get('weapp/subscribemsg', {keys})
+    return request.get('weapp/subscribemsg', { keys })
 }
 
 /**
@@ -89,7 +89,7 @@ export function getWeappTemplateId(keys: string) {
  * @param pid
  */
 export function getAreaListByPid(pid: number = 0) {
-    return request.get(`area/list_by_pid/${pid}`)
+    return request.get(`area/list_by_pid/${ pid }`)
 }
 
 /**
@@ -97,7 +97,7 @@ export function getAreaListByPid(pid: number = 0) {
  * @param level
  */
 export function getAreatree(level: number = 1) {
-    return request.get(`area/tree/${level}`)
+    return request.get(`area/tree/${ level }`)
 }
 
 /**
@@ -105,7 +105,7 @@ export function getAreatree(level: number = 1) {
  * @param code
  */
 export function getAreaByCode(code: number | string) {
-    return request.get(`area/code/${code}`)
+    return request.get(`area/code/${ code }`)
 }
 
 /**
@@ -113,7 +113,7 @@ export function getAreaByCode(code: number | string) {
  * @param params
  */
 export function getAddressByLatlng(params: Record<string, any>) {
-    return request.get(`area/address_by_latlng`, params, {showErrorMessage: true})
+    return request.get(`area/address_by_latlng`, params, { showErrorMessage: true })
 }
 
 /**
@@ -144,4 +144,11 @@ export function getMap() {
  */
 export function getMsgJumpPath(params: Record<string, any>) {
     return request.get('weapp/getMsgJumpPath', params)
+}
+
+/**
+ * 获取初始化数据信息
+ */
+export function getInitInfo(params: Record<string, any>) {
+    return request.get('init', params)
 }

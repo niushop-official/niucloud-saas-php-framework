@@ -9,7 +9,7 @@
 				</view>
 				<view class="mt-[16rpx]">
 					<u-form-item :label="t('mobile')" prop="mobile" labelWidth="200rpx">
-						<u-input fontSize="28rpx" v-model.trim="formData.mobile" type="number" maxlength="11" border="none" clearable :placeholder="t('mobilePlaceholder')" placeholderStyle="color: #888"/>
+						<u-input fontSize="28rpx" v-model.trim="formData.mobile" maxlength="11" border="none" clearable :placeholder="t('mobilePlaceholder')" placeholderStyle="color: #888"/>
 					</u-form-item>
 				</view>
 				<view class="mt-[16rpx]">
@@ -46,7 +46,7 @@
 		</u-form>
 		<view class="w-full footer">
 			<view class="py-[var(--top-m)] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
-				<button hover-class="none" class="primary-btn-bg text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" 
+				<button hover-class="none" class="primary-btn-bg !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" 
 				@click="save" :disabled="btnDisabled" :loading="operateLoading" :class="{'opacity-50': btnDisabled}">{{t('save')}}</button>
 			</view>
 		</view>
@@ -245,16 +245,16 @@
 	    // #ifdef MP
 	    uni.chooseLocation({
 	    	success: (res) => {
-	            res.latitude && (formData.value.lat = res.latitude)
-	            res.longitude && (formData.value.lng = res.longitude)
-	            res.address && (formData.value.area = res.address)
-	            res.name && (formData.value.address_name = res.address)
-	            res.name && (formData.value.address = res.name)
-				if(res.latitude && res.longitude){
-					let latng = res.latitude+','+res.longitude;
-					getAddress(latng);
-				}
-	    	},
+			    res.latitude && (formData.value.lat = res.latitude)
+			    res.longitude && (formData.value.lng = res.longitude)
+			    res.address && (formData.value.area = res.address)
+			    res.name && (formData.value.address_name = res.address)
+			    res.name && (formData.value.address = res.name)
+			    if (res.latitude && res.longitude) {
+				    let latng = res.latitude + ',' + res.longitude;
+				    getAddress(latng);
+			    }
+		    },
 	        fail: (res)=>{
 	            // 在隐私协议中没有声明chooseLocation:fail api作用域
 	            if(res.errMsg && res.errno) {

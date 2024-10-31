@@ -3,7 +3,7 @@
 		<view :style="maskLayer"></view>
 		
 		<view class="diy-active-cube relative">
-			<view class="active-cube-wrap p-[20rpx] pb-[24rpx]">
+			<view class="active-cube-wrap pt-[28rpx] px-[20rpx] pb-[24rpx]">
 				<view class="flex items-center" v-if="diyComponent.titleStyle.value == 'style-1'">
 					<view class="mr-[10rpx] font-500 text-[30rpx]" :style="{color: diyComponent.titleColor }" @click="diyStore.toRedirect(diyComponent.textLink)">{{ diyComponent.text }}</view>
 					<view v-if="diyComponent.subTitle.text" @click="diyStore.toRedirect(diyComponent.subTitle.link)" class="text-center text-[22rpx] rounded-[40rpx] rounded-tl-[10rpx] py-[6rpx] px-[14rpx]" :style="{'color': diyComponent.subTitle.textColor, background: 'linear-gradient(90deg, '+ diyComponent.subTitle.startColor + ', '+ diyComponent.subTitle.endColor + ')'}">{{ diyComponent.subTitle.text }}</view>
@@ -27,10 +27,17 @@
 						<text class="nc-iconfont nc-icon-youV6xx !text-[26rpx]"></text>
 					</view>
 				</view>
+				<view class="flex items-center" v-if="diyComponent.titleStyle.value == 'style-5'">
+					<view class="h-[32rpx] flex items-center" v-if="diyComponent.textImg" @click="diyStore.toRedirect(diyComponent.textLink)">
+						<image class="h-[100%] w-[auto]" :src="img(diyComponent.textImg)" mode="heightFix" />
+					</view>
+					<view v-if="diyComponent.subTitle.text && diyComponent.textImg" class="mx-[16rpx] w-[2rpx] h-[24rpx]" :style="{'background': diyComponent.subTitle.textColor}"></view>
+					<view v-if="diyComponent.subTitle.text" @click="diyStore.toRedirect(diyComponent.subTitle.link)" class="text-center text-[22rpx] py-[6rpx]" :style="{'color': diyComponent.subTitle.textColor, background: 'linear-gradient(90deg, '+ diyComponent.subTitle.startColor + ', '+ diyComponent.subTitle.endColor + ')'}">{{ diyComponent.subTitle.text }}</view>
+				</view>
 
 				<view class="bd flex flex-wrap justify-between">
 					<template v-for="item in diyComponent.list" :key="item.id">
-						<view v-if="diyComponent.blockStyle.value == 'style-1'" @click="diyStore.toRedirect(item.link)" class="item flex justify-between px-[20rpx] py-[30rpx] bg-white mt-[20rpx] rounded-[var(--rounded-mid)]" :style="{ backgroundColor : diyComponent.elementBgColor }">
+						<view v-if="diyComponent.blockStyle.value == 'style-1'" @click="diyStore.toRedirect(item.link)" class="item flex justify-between px-[20rpx] py-[30rpx] bg-white mt-[20rpx] rounded-[var(--rounded-mid)]" :style="commonTempCss(item)">
 							<view class="flex-1 flex items-baseline flex-col">
 								<view class="text-[28rpx] pb-[10rpx] text-[#333]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
 								<view class="text-[22rpx] text-[#999] pb-[30rpx]">{{ item.subTitle.text }}</view>
@@ -47,12 +54,13 @@
 								<u-icon name="photo" color="#999" size="50"></u-icon>
 							</view>
 						</view>
-						<view v-if="diyComponent.blockStyle.value == 'style-2'" @click="diyStore.toRedirect(item.link)" class="item flex justify-between p-[20rpx] bg-white mt-[20rpx] rounded-[var(--rounded-mid)]" :style="{ backgroundColor : diyComponent.elementBgColor }">
+						
+						<view v-if="diyComponent.blockStyle.value == 'style-2'" @click="diyStore.toRedirect(item.link)" class="item h-[150rpx] flex justify-between p-[20rpx] bg-white mt-[20rpx] rounded-[var(--rounded-mid)]" :style="commonTempCss(item)">
 							<view class="flex-1 flex items-baseline flex-col">
-								<view class="text-[26rpx] pb-[20rpx]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
-								<view class="text-[22rpx] text-gray-500 pb-[20rpx]">{{ item.subTitle.text }}</view>
+								<view class="text-[26rpx] mt-[10rpx] pb-[16rpx]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
+								<view class="text-[22rpx] text-gray-500 pb-[26rpx]">{{ item.subTitle.text }}</view>
 								<view class="link relative text-[22rpx] leading-[40rpx] flex items-center text-white rounded-[20rpx] h-[40rpx] pl-[20rpx] pr-[10rpx]" :style="btnCss(item.moreTitle)" v-if="item.moreTitle.text">
-									<text class="mr-[8rpx]">{{ item.moreTitle.text }}</text>
+									<text class="mr-[8rpx]" :class="{'italic': diyComponent.blockStyle.btnText == 'italics'}">{{ item.moreTitle.text }}</text>
 									<text class="iconfont iconjiantou-you-cuxiantiao-fill !text-[20rpx] text-[#fff]"></text>
 								</view>
 							</view>
@@ -67,7 +75,7 @@
 				</view>
 				<scroll-view :scroll-x="true" class="whitespace-nowrap" :id="'warpStyle3-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-3'">
 					<view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
-						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[10rpx] bg-white mt-[20rpx] w-[157rpx] h-[200rpx] rounded-[var(--rounded-mid)] box-border" :style="itemStyle3"  :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}">
+						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[10rpx] bg-white mt-[20rpx] w-[157rpx] h-[200rpx] rounded-[var(--rounded-mid)] box-border" :style="itemStyle3 + commonTempCss(item)"  :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}">
 							<view class="w-[141rpx] h-[141rpx] rounded-[var(--rounded-small)] overflow-hidden" v-if="item.imageUrl">
 								<image class="w-[141rpx] h-[141rpx]" :src="img(item.imageUrl)" mode="aspectFit" />
 							</view>
@@ -83,7 +91,7 @@
 				
 				<scroll-view scroll-x="true" class="whitespace-nowrap" :id="'warpStyle4-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-4'">
 					<view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
-						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[4rpx] bg-[#F93D02] mt-[20rpx] rounded-[var(--rounded-mid)] box-border" :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}" :style="'background :linear-gradient('+ item.listFrame.startColor +','+ item.listFrame.endColor + ');'+itemStyle4">
+						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[4rpx] bg-[#F93D02] mt-[20rpx] rounded-[var(--rounded-mid)] box-border" :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}" :style="commonTempCss(item) + itemStyle4">
 							<view class="w-[149rpx] h-[149rpx] box-border px-[18rpx] pt-[16rpx] pb-[6rpx] bg-[#fff] flex flex-col items-center rounded-[var(--rounded-small)]">
 								<view class="w-[112rpx] h-[102rpx]" v-if="item.imageUrl">
 									<image class="w-[112rpx] h-[102rpx]" :src="img(item.imageUrl)" mode="aspectFit" />
@@ -181,7 +189,6 @@
 			uni.createSelectorQuery().in(instance).select('#warpStyle4-'+diyComponent.value.id).boundingClientRect((res:any) => {
 				uni.createSelectorQuery().in(instance).select('#item0'+diyComponent.value.id).boundingClientRect((data:any) => {
 					itemStyle4.value = `margin-right:${(res.width - data.width*4)/3}px;`
-
 				}).exec()
 			}).exec()
 		// #endif
@@ -189,6 +196,18 @@
 			itemStyle4.value= 'margin-right:14rpx;'
 		// #endif
 	};
+	
+	// 公共模块颜色
+	const commonTempCss = (data: any)=>{
+		var style = '';
+		if(data.listFrame.startColor && data.listFrame.endColor){
+			style += `background:linear-gradient(${data.listFrame.startColor},${data.listFrame.endColor});`;
+		}else{
+			style += `background:${data.listFrame.startColor || data.listFrame.endColor};`;
+		}
+		return style;
+	}
+	
     const btnCss = (item:any) => {
         var style = '';
         style += `background:linear-gradient(90deg,${item.startColor},${item.endColor});`;
@@ -203,18 +222,25 @@
 	)
 
     onMounted(() => {
-        refresh();
-        // 装修模式下刷新
-        if (diyStore.mode == 'decorate') {
-            watch(
-                () => diyComponent.value,
-                (newValue, oldValue) => {
-                    if (newValue && newValue.componentName == 'ActiveCube') {
-                        refresh();
-                    }
-                }
-            )
-        }
+	    refresh();
+	    // 装修模式下刷新
+	    if (diyStore.mode == 'decorate') {
+		    watch(
+				    () => diyComponent.value,
+				    (newValue, oldValue) => {
+					    if (newValue && newValue.componentName == 'ActiveCube') {
+						    refresh();
+					    }
+				    }
+		    )
+	    } else {
+		    watch(
+				    () => diyComponent.value,
+				    (newValue, oldValue) => {
+					    refresh();
+				    }
+		    )
+	    }
     });
 
     const instance = getCurrentInstance();

@@ -1,6 +1,6 @@
 import { language } from '@/locale'
 import { checkNeedLogin } from '@/utils/auth'
-import { redirect, getToken, getSiteId } from '@/utils/common'
+import { redirect, getToken, getSiteId,currRoute } from '@/utils/common'
 import { memberLog } from '@/app/api/auth'
 import useConfigStore from "@/stores/config";
 import { useShare } from '@/hooks/useShare'
@@ -123,5 +123,15 @@ const setAddonName = async(path: string) => {
 // 加载分享
 const loadShare = () => {
     const { setShare } = useShare()
-    setShare()
+	// 分享其它页面时，需要设置当前页面为白名单
+	const shareWhiteList = [
+		'addon/cms/pages/detail',
+		'addon/shop/pages/goods/detail',
+		'addon/shop/pages/point/detail',
+		'addon/shop_fenxiao/pages/promote_code',
+		'addon/shop_giftcard/pages/detail',
+		'addon/shop_giftcard/pages/give',
+		'app/pages/index/diy',
+	]
+   if(!shareWhiteList.includes(currRoute()||'')) setShare()
 }

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { setToken, removeToken, redirect } from '@/utils/common'
-import { getMemberInfo as getMemberInfoApi, getMemberLevel, bindMobile as bindMobileApi } from '@/app/api/member'
+import { getMemberInfo as getMemberInfoApi, bindMobile as bindMobileApi } from '@/app/api/member'
 import { logout } from '@/app/api/auth'
 import useConfigStore from '@/stores/config'
 import { useLogin } from '@/hooks/useLogin'
@@ -71,11 +71,6 @@ const useMemberStore = defineStore('member', {
                 uni.removeStorageSync('unionid');
                 uni.removeStorageSync('isbindmobile');
                 isRedirect && redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
-            })
-        },
-        getMemberLevel() {
-            getMemberLevel().then((res: any) => {
-                this.levelList = res.data
             })
         },
         // 一键绑定手机号

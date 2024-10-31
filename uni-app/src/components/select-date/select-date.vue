@@ -12,16 +12,16 @@
                     <view class="w-[316rpx] h-[66rpx] box-border leading-[62rpx] rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]" :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == 'second'}" @click="currentValue.type = 'second'">{{dateList.nowDate[1].substr(0,10)}}</view>
                 </view>
             </view>
-            <view>
-                <picker-view  indicator-class="!h-[80rpx] !bg-[var(--temp-bg)]" :value="dateList.curIndex" @change="bindChange" class="w-[750rpx] px-[60rpx] h-[396rpx] box-border">
+            <view class="gradation-picker">
+                <picker-view indicator-class="!h-[80rpx] !bg-[var(--temp-bg)]" :value="dateList.curIndex" @change="bindChange" class="w-[750rpx] px-[60rpx] h-[396rpx] box-border">
                     <picker-view-column>
-                        <view class="text-center leading-[80rpx]  text-[28rpx]" v-for="(item,index) in dateList.years" :key="index">{{item}}年</view>
+						<view class="text-center leading-[80rpx] text-[28rpx]" v-for="(item,index) in dateList.years" :key="index">{{item}}年</view>
                     </picker-view-column>
                     <picker-view-column>
                         <view class="text-center leading-[80rpx] text-[28rpx]" v-for="(item,index) in dateList.months" :key="index">{{item}}月</view>
                     </picker-view-column>
                     <picker-view-column>
-                        <view class="text-center leading-[80rpx]  text-[28rpx]" v-for="(item,index) in dateList.days" :key="index">{{item}}日</view>
+                        <view class="text-center leading-[80rpx] text-[28rpx]" v-for="(item,index) in dateList.days" :key="index">{{item}}日</view>
                     </picker-view-column>
                 </picker-view>
             </view>
@@ -193,4 +193,29 @@ defineExpose({
 :deep(.uni-picker-view-indicator::after){
     border: none !important;
 }
+</style>
+<style lang="scss">
+	.gradation-picker{
+		position: relative;
+		&::after{
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			height: 70rpx;
+			background: linear-gradient(#fff, rgba(255,255,255,.5));
+			z-index: 10;
+		}
+		&::before{
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 70rpx;
+			background: linear-gradient(#fff, rgba(255,255,255,.5));
+			z-index: 12;
+		}
+	}
 </style>

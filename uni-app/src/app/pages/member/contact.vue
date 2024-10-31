@@ -2,9 +2,7 @@
 	<view class="min-h-[100vh]" :style="themeColor()">
 		<view class="contact-wrap pt-[22%]">
 			<image :src="img('static/resource/images/member/contact_service.png')" mode="widthFix" />
-			<view class="mt-[40rpx] text-[28rpx]">
-				欢迎您联系我们，提供您宝贵的意见！
-			</view>
+			<view class="mt-[40rpx] text-[28rpx]">欢迎您联系我们，提供您宝贵的意见！</view>
 			<nc-contact
 					:send-message-title="sendMessageTitle"
 					:send-message-path="sendMessagePath"

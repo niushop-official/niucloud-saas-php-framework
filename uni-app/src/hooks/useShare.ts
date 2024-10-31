@@ -1,6 +1,7 @@
 import { img, isWeixinBrowser, currRoute, currShareRoute } from '@/utils/common'
 import { onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app'
 import { getShareInfo } from '@/app/api/diy';
+import useSystemStore from '@/stores/system';
 
 // #ifdef H5
 import wechat from '@/utils/wechat'
@@ -67,13 +68,16 @@ export const useShare = () => {
             wechatOptions.link = options.wechat.link || h5Link
             wechatOptions.desc = options.wechat.desc || ''
             wechatOptions.imgUrl = options.wechat.url ? img(options.wechat.url) : ''
+            // wechatOptions.success = options.wechat.callback || null;
+            // useSystemStore().shareCallback = options.wechat.callback || null;
             wechatShare()
             // #endif
 
             // #ifdef MP-WEIXIN
             weappOptions.title = options.weapp.title || ''
-            weappOptions.query = options.weapp.path || queryStr.join('&')
+            if (options.weapp.path) weappOptions.path = options.weapp.path
             weappOptions.imageUrl = options.weapp.url ? img(options.weapp.url) : ''
+            useSystemStore().shareCallback = options.weapp.callback || null;
             // #endif
 
             uni.setStorageSync('weappOptions', weappOptions)
@@ -112,9 +116,10 @@ export const useShare = () => {
 
     // 小程序分享，分享给好友
     const shareApp = (options = {}) => {
-        onShareAppMessage(() => {
+        return onShareAppMessage(() => {
             let config: any = uni.getStorageSync('weappOptions')
             if (!config) config = {}
+            if (useSystemStore().shareCallback) useSystemStore().shareCallback();
             return {
                 ...config,
                 ...options
@@ -125,9 +130,10 @@ export const useShare = () => {
 
     // 小程序分享，分享到朋友圈
     const shareTime = (options = {}) => {
-        onShareTimeline(() => {
+        return onShareTimeline(() => {
             let config: any = uni.getStorageSync('weappOptions')
             if (!config) config = {}
+            if (useSystemStore().shareCallback) useSystemStore().shareCallback();
             return {
                 ...config,
                 ...options

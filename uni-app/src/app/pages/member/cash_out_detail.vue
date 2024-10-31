@@ -55,14 +55,23 @@
 import { reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { t } from '@/locale'
-import { redirect, img } from '@/utils/common';
+import { redirect, img, goback } from '@/utils/common';
 import { getCashOutDetail } from '@/app/api/member';
 
 const cashOutInfo = ref({});
 const loading = ref<boolean>(true);
 onLoad((option: any) => {
-	let id = option.id || "";
-	getCashoutAccountListFn(id)
+    let id = option.id || "";
+    if(id){
+	    getCashoutAccountListFn(id)
+    }else{
+        let parameter = {
+            url:'/app/pages/member/cash_out',
+            title: '提现详情不存在',
+            mode: 'reLaunch'
+        };
+        goback(parameter);
+    }
 })
 
 const getCashoutAccountListFn = (id: any) => {

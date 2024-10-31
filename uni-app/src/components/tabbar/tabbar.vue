@@ -1,16 +1,16 @@
 <template>
 	<template v-if="tabbar && Object.keys(tabbar).length">
-		<u-tabbar :value="value" @change="tabbarChange" zIndex="9999" :fixed="true" :placeholder="true" :safeAreaInsetBottom="true"
+		<u-tabbar :value="value" zIndex="9999" :fixed="true" :placeholder="true" :safeAreaInsetBottom="true"
 			:inactive-color="tabbar.value.textColor" :active-color="tabbar.value.textHoverColor">
 			<block v-for="item in tabbar.value.list">
 				<u-tabbar-item class="py-[5rpx]" :style="{'background-color': tabbar.value.backgroundColor}" :text="item.text"
 					:icon="img(value == item.link.url ? item.iconSelectPath : item.iconPath)" :name="item.link.url"
-					v-if="tabbar.value.type == 1"></u-tabbar-item>
+					v-if="tabbar.value.type == 1" @click="itemBtn(item.link.url)"></u-tabbar-item>
 				<u-tabbar-item class="py-[5rpx]" :style="{'background-color': tabbar.value.backgroundColor}"
 					:icon="img(value == item.link.url ? item.iconSelectPath : item.iconPath)" :name="item.link.url"
-					v-if="tabbar.value.type == 2"></u-tabbar-item>
+					v-if="tabbar.value.type == 2" @click="itemBtn(item.link.url)"></u-tabbar-item>
 				<u-tabbar-item class="py-[5rpx]" :style="{'background-color': tabbar.value.backgroundColor}" :text="item.text" :name="item.link.url"
-					v-if="tabbar.value.type == 3"></u-tabbar-item>
+					v-if="tabbar.value.type == 3" @click="itemBtn(item.link.url)"></u-tabbar-item>
 			</block>
 		</u-tabbar>
 		<view class="tab-bar-placeholder"></view>
@@ -113,25 +113,33 @@
 		return '/' + currRoute() + (str.length > 0 ? '?' + str.join('&') : '')
 	})
 
-	const tabbarChange = (url : string) => {
+	// const tabbarChange = (url : string) => {
         // 外部链接
-        if (url.indexOf('http') != -1 || url.indexOf('http') != -1) {
-
-            // #ifdef H5
-            window.location.href = url;
-            // #endif
-
-            // #ifdef MP
-            redirect({
-                url: '/app/pages/webview/index',
-                param: { src: encodeURIComponent(url) }
-            });
-            // #endif
-        } else {
-            redirect({ url,mode: 'reLaunch' })
-        }
+	// }
+	
+	const itemBtn = (url)=>{
+		if (url.indexOf('http') != -1 || url.indexOf('http') != -1) {
+		
+		    // #ifdef H5
+		    window.location.href = url;
+		    // #endif
+		
+		    // #ifdef MP
+		    redirect({
+		        url: '/app/pages/webview/index',
+		        param: { src: encodeURIComponent(url) }
+		    });
+		    // #endif
+		} else {
+			let query:any = currShareRoute().params;
+			let str = [];
+			for (let key in query) {
+				str.push(key + '=' + query[key]);
+			}
+			if(url == ('/' + currRoute()) && !str.length) return
+		    redirect({ url,mode: 'reLaunch' })
+		}
 	}
-
     defineExpose({
     })
 </script>

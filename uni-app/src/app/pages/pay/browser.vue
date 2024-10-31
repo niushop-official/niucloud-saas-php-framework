@@ -1,6 +1,6 @@
 <template>
     <view class="w-screen h-screen bg-[#424040] text-right" :style="themeColor()">
-        <image :src="img('static/resource/images/pay/invite_friends_share.png')" mode="heightFix" class="pt-[30rpx] pr-[30rpx] h-[200rpx]"/>
+        <image :src="img('static/resource/images/pay/invite_friends_share.png')" mode="heightFix" class="pt-[30rpx] pr-[30rpx] h-[200rpx] w-[auto]"/>
         <view class="text-white font-bold pt-[30rpx] pr-[30rpx]">点击右上角跳转到浏览器打开</view>
     </view>
 </template>

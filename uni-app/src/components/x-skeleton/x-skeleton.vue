@@ -95,12 +95,12 @@
         // 骨架的背景色
         bgColor: {
             type: String,
-            default: '#EAEDF5'
+            default: '' // #EAEDF5
         },
         // 骨架的动画高亮背景色
         highlightBgColor: {
             type: String,
-            default: '#F9FAFF'
+            default: '' // #F9FAFF
         },
         // 自定义配置
         config: {

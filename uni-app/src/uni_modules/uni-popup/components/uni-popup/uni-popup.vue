@@ -1,10 +1,8 @@
 <template>
 	<view v-if="showPopup" class="uni-popup" :class="[popupstyle, isDesktop ? 'fixforpc-z-index' : '']">
 		<view @touchstart="touchstart">
-			<uni-transition key="1" v-if="maskShow" name="mask" mode-class="fade" :styles="maskClass"
-				:duration="duration" :show="showTrans" @click="onTap" />
-			<uni-transition key="2" :mode-class="ani" name="content" :styles="transClass" :duration="duration"
-				:show="showTrans" @click="onTap">
+			<uni-transition key="1" v-if="maskShow" name="mask" mode-class="fade" :styles="maskClass" :duration="duration" :show="showTrans" @click="onTap" />
+			<uni-transition key="2" :mode-class="ani" name="content" :styles="transClass" :duration="duration" :show="showTrans" @click="onTap">
 				<view class="uni-popup__wrapper" :style="getStyles" :class="[popupstyle]" @click="clear">
 					<slot />
 				</view>

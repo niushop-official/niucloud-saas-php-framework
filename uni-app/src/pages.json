@@ -246,6 +246,9 @@
 		{
 			"path": "app/pages/pay/result",
 			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
 				"navigationBarTitleText": "%pages.pay.result%"
 			}
 		},

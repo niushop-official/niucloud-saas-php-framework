@@ -26,7 +26,7 @@
                     <template v-if="diyComponent.scrollWay == 'upDown'">
                         <swiper :vertical="true" :duration="500" autoplay="true" circular="true" class="flex-1">
                             <swiper-item v-for="(item, index) in diyComponent.list" :key="index" @touchmove.prevent.stop>
-                                <text @click="toRedirect(item)" class="beyond-hiding using-hidden" :style="{ color: diyComponent.textColor, fontSize: diyComponent.fontSize * 2 + 'rpx', fontWeight: diyComponent.fontWeight }">
+                                <text @click="toRedirect(item)" class="beyond-hiding truncate" :style="{ color: diyComponent.textColor, fontSize: diyComponent.fontSize * 2 + 'rpx', fontWeight: diyComponent.fontWeight }">
                                     {{ item.text }}
                                 </text>
                             </swiper-item>
@@ -37,18 +37,21 @@
                 </view>
 
             </view>
-
-            <u-popup :show="noticeShow" @close="noticeShow = false"  mode="center" round="var(--rounded-big)" :safeAreaInsetBottom="false">
-				<view @touchmove.prevent.stop>
-					<view class="pt-[30rpx] pb-[24rpx] text-sm leading-none border-0 border-solid border-b-[2rpx] border-[#eee] flex items-center justify-between">
-						<text class="ml-[30rpx] text-[#333] text-[30rpx] font-500">公告</text>
-						<text class="mr-[20rpx] nc-iconfont nc-icon-guanbiV6xx text-[35rpx]" @click="noticeShow = false"></text>
+			<view @touchmove.prevent.stop>
+				<u-popup :show="noticeShow" @close="noticeShow = false"  mode="center" round="var(--rounded-big)" :safeAreaInsetBottom="false">
+					<view class="w-[570rpx] px-[32rpx] popup-common center">
+						<view class="title">公告</view>
+						<scroll-view :scroll-y="true" class="px-[30rpx] box-border h-[260rpx]">
+						<block v-for="(item) in noticeContent.split('\n')">
+						    <view class="text-[28rpx] leading-[40rpx] mb-[20rpx]">{{ item }}</view>
+						</block>
+						</scroll-view>
+						<view class="btn-wrap !pt-[40rpx]">
+						    <button class="primary-btn-bg w-[480rpx] h-[70rpx] text-[26rpx] leading-[70rpx] rounded-[35rpx] !text-[#fff] font-500"  @click="noticeShow = false">我知道了</button>
+						</view>
 					</view>
-					<scroll-view scroll-y="true" class="px-[30rpx] py-[30rpx] w-[580rpx] box-border h-[480rpx] text-[26rpx] text-[#333]">{{ noticeContent }}</scroll-view>
-					<button @click="noticeShow = false" class="!mx-[80rpx] !mb-[60rpx] !w-auto !h-[70rpx] text-[26rpx] leading-[70rpx] rounded-full text-white !bg-[#ff4500] !text-[#fff]">我知道了</button>
-				</view>
-            </u-popup>
-
+				</u-popup>
+			</view>
         </view>
     </view>
 </template>

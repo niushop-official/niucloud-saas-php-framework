@@ -23,7 +23,7 @@
             });
         }else{
             redirect({
-                url: '/app/pages/index/index',
+	            url: '/app/pages/index/index',
                 mode: 'reLaunch'
             });
         }

@@ -2,7 +2,7 @@
     <view class="w-screen h-screen bg-[var(--page-bg-color)]" :style="themeColor()">
         <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getCashoutAccountListFn">
 			<!-- 多嵌套一层是为了微信小程序兼容 -->
-			<view class="sidebar-margin my-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden"  v-for="(item, index) in accountList" :key="index">
+			<view class="sidebar-margin my-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden" v-for="(item, index) in accountList" :key="index">
 				<u-swipe-action-item :options="accountOptions" @click="swipeClick(index)">
 					<view class="card-template flex justify-between" >
 						<view class="flex items-center">

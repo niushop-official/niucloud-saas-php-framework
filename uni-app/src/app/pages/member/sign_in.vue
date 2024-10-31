@@ -1,10 +1,10 @@
 <template>
     <view  :style="themeColor()">
-        <view class="bg-[#F6F6F6] min-h-screen overflow-hidden" v-if="Object.values(info).length">
+        <view class="min-h-screen overflow-hidden" v-if="Object.values(info).length" :class="{ 'bg-[#F6F6F6]' : info && info.is_use }">
             <view v-if="info.is_use">
                 <view class="sigin-header">
                 <!-- #ifdef MP-WEIXIN -->
-                    <view class="side-tab" :style="{top: topStyle}"  @click="signPopup = true">
+                    <view v-if="info.rule_explain" class="side-tab" :style="{top: topStyle}"  @click="signPopup = true">
                          <text class="nc-iconfont nc-icon-a-meiriqiandaoV6xx-36  icon"></text>
                         <text class="desc">签到规则</text>
 					</view>
@@ -68,7 +68,7 @@
                                         </block>
                                     </view>
                                     <view class="flex flex-wrap items-center justify-start" v-else>
-                                        <block v-for="(item,index) in state.dataCount" >
+                                        <block v-for="(item,index) in state.dataCount">
                                             <view  class="w-[14.28%] flex flex-col justify-center items-center mb-[30rpx]">
                                                 <view v-if="filteredDate(item)" class="w-[74rpx] h-[92rpx] bg-[#F6FAFF] text-[var(--text-color-light6)] box-border py-[10rpx] rounded-[8rpx] flex flex-col  items-center" :class="{'sigin-bg !text-[#fff]': isVerDate(item) && active ,'!bg-[#FDFDFD] border-[1rpx] border-[#F0F4FA] border-solid': !isVerDate(item) && item < state.curDate && (state.curMonth + 1) == (new Date().getMonth() + 1) && state.curYear == new Date().getFullYear() ,'mb-[20rpx]':isCurrentDate(item),'mb-[30rpx]':!isCurrentDate(item)}" @click="getDayPackFn(item)">
                                                     <text class="text-[24rpx] leading-[28rpx] mb-[6rpx]">{{ filteredDate(item) }}</text>
@@ -307,7 +307,7 @@ const getSignInfoFn =  (data:any) =>{
 }
 
 //获取当月总天数
-const getDayCounts= () => {
+const getDayCounts = () => {
     let counts = new Date(state.curYear,state.curMonth+1,0).getDate()
     //获取当前第一天是星期几
     let firstWeekDay = new Date(state.curYear,state.curMonth,1).getDay()
@@ -319,7 +319,7 @@ const getDayCounts= () => {
 }
 // 获取7天的日期签到
 const getWeekCounts = () =>{
-    let now = `${state.curYear}-${state.curMonth+1 > 10 ? state.curMonth+1 : '0'+(state.curMonth+1)}-${state.curDate > 10 ? state.curDate : '0'+state.curDate }`
+    let now = `${state.curYear}-${state.curMonth+1 > 9 ? state.curMonth+1 : '0'+(state.curMonth+1)}-${state.curDate > 9 ? state.curDate : '0'+state.curDate }`
     for (let i = state.curWeek - 1; i >= 0; i --) {
         const day = new Date(now).getDate() - i
         state.weekCount.push(day)

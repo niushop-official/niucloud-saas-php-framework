@@ -24,8 +24,7 @@
 					<view @click="callPhone" class="text-primary truncate">{{ siteInfo.phone }}</view>
 				</view>
 				<view class="px-6 py-3 w-[480rpx] h-[100rpx] leading-[100rpx] text-sm" v-else>抱歉，商家暂无客服，请线下联系</view>
-				<button @click="popupShow = false"
-				        class="!mx-[30rpx] !mb-[40rpx] !w-auto !h-[70rpx] text-[24rpx] leading-[70rpx] rounded-full text-white !bg-[#ff4500] !text-[#fff]">
+				<button @click="popupShow = false" class="!mx-[30rpx] !mb-[40rpx] !w-auto !h-[70rpx] text-[24rpx] leading-[70rpx] rounded-full text-white !bg-[#ff4500] !text-[#fff]">
 					我知道了
 				</button>
 			</view>

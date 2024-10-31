@@ -126,9 +126,9 @@
 			}
 		}else {
 			if(Object.keys(menuButtonInfo).length){
-				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+538)+'rpx'
+				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+590.39)+'rpx'
 			}else{
-				return '538rpx'
+				return '590.39rpx'
 			}
 		}
 	})
@@ -174,7 +174,6 @@
 			limit: mescroll.size,
 			trade_type:fromType.value,
 			create_time: create_time.value
-
 		};
 		interface acceptingDataStructure {
 			data : acceptingDataItemStructure,

@@ -11,14 +11,14 @@
                             </view>
                             <view class="mt-[16rpx] text-[26rpx] line-feed text-[var(--text-color-light9)] leading-[1.4]">{{ item.full_address }}</view>
                         </view>
-                        <view class="flex justify-between pt-[var(--top-m)]">
-                            <view class="flex items-center leading-none" @click.stop="setDefault(index)">
-                                <text class="iconfont mr-[10rpx]" :class="{ 'iconduigou text-primary': item.is_default, 'iconcheckbox_nol': !item.is_default }"></text>
+                        <view class="flex justify-between pt-[26rpx]">
+                            <view class="flex items-center text-[28rpx] leading-none" @click.stop="setDefault(index)">
+                                <text class="iconfont !text-[28rpx] mr-[10rpx]" :class="{ 'iconduigou text-primary': item.is_default, 'iconcheckbox_nol': !item.is_default }"></text>
                                 设为默认
                             </view>
                             <view class="flex">
-                                <view @click.stop="editAddressFn(item.id)"><text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[32rpx] mr-[4rpx]"></text>编辑</view>
-                                <view @click.stop="deleteAddressFn(index)" class="ml-[40rpx]"><text class="nc-iconfont nc-icon-shanchu-yuangaizhiV6xx shrink-0 text-[32rpx] mr-[4rpx]"></text>删除</view>
+                                <view class="text-[28rpx]" @click.stop="editAddressFn(item.id)"><text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[28rpx] mr-[4rpx]"></text>编辑</view>
+                                <view @click.stop="deleteAddressFn(index)" class="ml-[40rpx] text-[28rpx]"><text class="nc-iconfont nc-icon-shanchu-yuangaizhiV6xx shrink-0 text-[28rpx] mr-[4rpx]"></text>删除</view>
                             </view>
                         </view>
                     </view>
@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
     import { ref } from 'vue'
-    import { onLoad } from '@dcloudio/uni-app'
+    import { onLoad,onShow } from '@dcloudio/uni-app'
     import { redirect, img, mobileHide } from '@/utils/common'
     import { getAddressList, deleteAddress, editAddress } from '@/app/api/member'
     import { t } from '@/locale'
@@ -73,7 +73,10 @@
             loading.value = false
         })
     }
-    getAddressListFn()
+
+    onShow(()=>{
+        getAddressListFn()
+    })
 
     const addAddress = ()=> {
         const url = `/app/pages/member/address_edit`

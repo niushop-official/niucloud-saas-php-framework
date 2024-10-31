@@ -109,7 +109,7 @@
 			[propName : string] : number | string | object
 		}
 
-		let fnList = (params : any) => { };
+		let fnList:any = (params : any) => { };
 		if (type.value == 'balance') fnList = getBalanceList;
 		else if (type.value == 'money') fnList = getMoneyList;
 		else if (type.value == 'commission') fnList = getCommissionList;

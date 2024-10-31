@@ -34,10 +34,10 @@ export default {
                 })
             },
             onShareAppMessage() {
-                useShare().onShareAppMessage()
+                return useShare().onShareAppMessage()
             },
             onShareTimeline() {
-                useShare().onShareTimeline()
+                return useShare().onShareTimeline()
             },
             methods: {
                 themeColor() {

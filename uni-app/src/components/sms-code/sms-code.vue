@@ -4,7 +4,7 @@
     <u-modal :show="show" :title="t('captchaTitle')" :confirm-text="t('confirm')" :cancel-text="t('cancel')" :show-cancel-button="true" @cancel="show = false" @confirm="handleConfirm" confirmColor="var(--primary-color)">
         <view class="flex mt-[20rpx]">
             <u-input :placeholder="t('captchaPlaceholder')" border="surround" v-model="formData.captcha_code"></u-input>
-            <image :src="captcha.image.value" class="h-[76rpx] ml-[20rpx]" mode="heightFix" @click="captcha.refresh()"></image>
+            <image :src="captcha.image.value" class="h-[76rpx] w-[auto] ml-[20rpx]" mode="heightFix" @click="captcha.refresh()"></image>
         </view>
     </u-modal>
 </template>

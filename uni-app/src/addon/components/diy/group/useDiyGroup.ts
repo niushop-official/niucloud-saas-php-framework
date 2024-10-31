@@ -1,4 +1,4 @@
-import { ref, reactive, onMounted, nextTick, computed } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import Sortable from 'sortablejs';
 import { range } from 'lodash-es';
 import { onPageScroll, onHide, onShow } from '@dcloudio/uni-app';
@@ -60,13 +60,12 @@ export function useDiyGroup(params: any = {}) {
         return false;
     }
 
-
     // 监听页面加载完成
     const onMountedLifeCycle = () => {
         onMounted(() => {
             // #ifdef H5
             if (diyStore.mode == 'decorate') {
-                var el = document.getElementById('componentList');
+                var el: any = document.getElementById('componentList');
                 const sortable = Sortable.create(el, {
                     draggable: '.draggable-element',
                     animation: 200,

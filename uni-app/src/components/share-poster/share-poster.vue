@@ -5,7 +5,7 @@
 	        <view @touchmove.prevent.stop>
 				<view class="poster-img-wrap" :style="{'top': shareTop}">
 					<image v-if="isPosterAnimation" class="poster-animation" :src="img('addon/shop/poster_animation.gif')" mode="aspectFit"></image>
-					<image v-if="isPosterImg" class="poster-img" :src="img(poster)" mode="aspectFit"></image>
+					<image v-if="isPosterImg" class="poster-img" :src="img(poster)" mode="aspectFit" :show-menu-by-longpress="true"></image>
 				</view>
 				<view class="share-content">
 					<!-- #ifdef MP || APP-PLUS  -->

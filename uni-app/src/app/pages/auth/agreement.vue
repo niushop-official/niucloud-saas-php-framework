@@ -12,25 +12,33 @@
 	   </view>
     </view>
 </template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getAgreementInfo } from '@/app/api/system'
-import { img} from '@/utils/common'
+import { img, goback } from '@/utils/common'
 
 const agreement = ref(null)
 const loading = ref(true)
 onLoad((option: any)=> {
-    getAgreementInfo(option.key).then((res: any) => {
-        agreement.value = res.data
-		loading.value  = false 
-        uni.setNavigationBarTitle({
-            title: res.data.agreement_key_name
+    if(option.key){
+        getAgreementInfo(option.key).then((res: any) => {
+            agreement.value = res.data
+            loading.value  = false 
+            uni.setNavigationBarTitle({
+                title: res.data.agreement_key_name
+            })
+        }).catch(()=>{
+            loading.value  = false 
         })
-    }).catch(()=>{
-		loading.value  = false 
-	})
+    }else{
+        let parameter = {
+	        url: '/app/pages/index/index',
+            title: '协议类型不存在',
+            mode: 'reLaunch'
+        };
+        goback(parameter)
+    }
 })
 </script>
 

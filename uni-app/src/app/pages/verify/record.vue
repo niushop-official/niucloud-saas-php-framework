@@ -140,9 +140,5 @@ const confirmFn = (data: any) =>{
 :deep(.uni-picker-view-indicator::after){
     border: none !important;
 }
-.noData{
-	height: calc(100vh - 132rpx - constant(safe-area-inset-bottom));
-	height: calc(100vh - 132rpx - env(safe-area-inset-bottom));
- }
 </style>
 

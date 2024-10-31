@@ -17,8 +17,8 @@ export function mobileLogin(data : AnyObject) {
 /**
  * 获取登录配置
  */
-export function getConfig() {
-    return request.get('login/config')
+export function getConfig(params: Record<string, any>) {
+    return request.get('login/config', params)
 }
 
 /**

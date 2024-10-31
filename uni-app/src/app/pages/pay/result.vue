@@ -1,10 +1,11 @@
 <template>
     <view :style="themeColor()">
         <view class="w-screen h-screen flex flex-col items-center" v-if="payInfo">
-            <view class="flex-1 flex flex-col items-center w-full pt-[200rpx]">
-                <view class="flex items-center">
-					<text class="nc-iconfont -mb-[4rpx] !text-[44rpx]" :class="payInfo.status==2 ? 'text-primary nc-icon-duihaoV6mm' : 'nc-icon-tanhaoV6mm text-red'"></text>
-					<text class="text-[36rpx] ml-[16rpx] font-500">{{ payInfo.status == 2 ? t('pay.paySuccess') : t('pay.payFail') }}</text>
+			<top-tabbar ref="topTabbarRef" :data="topTabbarParam" />
+            <view class="flex-1 flex flex-col items-center w-full pt-[180rpx]">
+                <view class="flex items-baseline"  :class="{'text-[#06c05d]': payInfo.status==2, 'text-red': payInfo.status!=2}">
+					<text class="nc-iconfont -mb-[4rpx] !text-[32rpx]" :class="{'nc-icon-duihaoV6mm': payInfo.status==2, 'nc-icon-tanhaoV6mm': payInfo.status!=2}"></text>
+					<text class="text-[36rpx] ml-[16rpx] font-500">{{ payInfo.status == 2 ? '支付成功' : '支付失败' }}</text>
 				</view>
 				
 				<view class="text-[56rpx] font-500 mt-[60rpx] price-font">
@@ -33,12 +34,18 @@
     import { t } from '@/locale'
     import { redirect, moneyFormat } from '@/utils/common'
     import { getFirstPage } from '@/utils/pages'
+	import { topTabar } from '@/utils/topTabbar'
 
     const payInfo = ref<AnyObject | null>(null)
     const loading = ref(false)
     let tradeType = ''
     let tradeId = 0
     let requestNum = 0
+	
+	/********* 自定义头部 - start ***********/
+	const topTabarObj = topTabar()
+	let topTabbarParam = topTabarObj.setTopTabbarParam({title:'',isBack:false})
+	/********* 自定义头部 - end ***********/
 
     onLoad((data : any) => {
         tradeType = data.trade_type
@@ -62,9 +69,9 @@
                 }
                 payInfo.value = res.data
                 loading.value = false
-                uni.setNavigationBarTitle({
-                    title: payInfo.value.status == 2 ? t('pay.paySuccess') : t('pay.payFail')
-                })
+                // uni.setNavigationBarTitle({
+                //     title: payInfo.value.status == 2 ? t('pay.paySuccess') : t('pay.payFail')
+                // })
             }
         })
     }

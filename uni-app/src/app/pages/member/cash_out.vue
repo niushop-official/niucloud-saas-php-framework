@@ -26,7 +26,6 @@ import useMescroll from '@/components/mescroll/hooks/useMescroll.js';
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app';
 
 const { mescrollInit, downCallback, getMescroll } = useMescroll(onPageScroll, onReachBottom);
-
 const cashOutList = ref<Array<any>>([]);
 const mescrollRef = ref(null);
 const loading = ref<boolean>(false);

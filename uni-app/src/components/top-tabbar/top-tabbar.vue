@@ -23,7 +23,7 @@
 					<view class="title-wrap" @click="diyStore.toRedirect(topStatusBarData.link)">
 						<image :src="img(topStatusBarData.imgUrl)" mode="heightFix"></image>
 					</view>
-					<view class="search" @click="diyStore.toRedirect(topStatusBarData.link)" :style="{ height: menuButtonInfo.height - 2 + 'px', lineHeight: menuButtonInfo.height - 2 + 'px' }">
+					<view class="search" @click="diyStore.toRedirect(topStatusBarData.link)" :style="{ height: systemStore.menuButtonInfo.height - 2 + 'px', lineHeight: systemStore.menuButtonInfo.height - 2 + 'px' }">
 						<text class="nc-iconfont nc-icon-sousuo-duanV6xx1 text-[24rpx] absolute left-[20rpx]"></text>
 						<text class="text-[24rpx]">{{topStatusBarData.inputPlaceholder}}</text>
 					</view>
@@ -40,7 +40,7 @@
 		</view>
 	
 		<!-- 解决fixed定位后导航栏塌陷的问题 -->
-		<view class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: placeholderHeight + 'px' }"></view>
+		<view v-if="props.isFill" class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: placeholderHeight + 'px' }"></view>
 	</view>
 </template>
 
@@ -56,11 +56,7 @@ import { cloneDeep } from 'lodash-es'
 // 获取系统状态栏的高度
 let systemInfo = uni.getSystemInfoSync();
 let platform = systemInfo.platform;
-let menuButtonInfo: any = {};
-// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
-// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
-menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-// #endif
+const systemStore = useSystemStore();
 
 const diyStore = useDiyStore();
 
@@ -87,9 +83,12 @@ const props = defineProps({
     isBack: {
     	type: Boolean,
     	default: true
+    },
+	isFill: {
+    	type: Boolean,
+    	default: true
     }
 })
-
 const data = computed(() => {
 	return props.data;
 });
@@ -113,8 +112,8 @@ const navbarInnerStyle = computed(() => {
 	}
 	// #ifdef MP
 	// 导航栏宽度，如果在小程序下，导航栏宽度为胶囊的左边到屏幕左边的距离
-	style += 'height:' + menuButtonInfo.height + 'px;';
-	style += 'padding-top:' + menuButtonInfo.top + 'px;';
+	style += 'height:' + systemStore.menuButtonInfo.height + 'px;';
+	style += 'padding-top:' + systemStore.menuButtonInfo.top + 'px;';
 	style += 'padding-bottom: 8px;';
 	// #endif
 	return style;
@@ -196,26 +195,29 @@ const goBack = () => {
 
 // 微信胶囊宽度+right
 const capsuleWidth = computed(() => {
-	let width = `calc(100vw - ${menuButtonInfo.right}px + ${menuButtonInfo.width}px + 10px)`;
+	let width = `calc(100vw - ${systemStore.menuButtonInfo.right}px + ${systemStore.menuButtonInfo.width}px + 10px)`;
 	return width;
 })
 
 // 导航栏塌陷的高度
 const placeholderHeight = ref(0);
 const instance = getCurrentInstance();
+// #ifdef MP
+let statusBarHeight = systemStore.menuButtonInfo.height + systemStore.menuButtonInfo.top + 8;
+placeholderHeight.value = statusBarHeight || 0;
+// #endif
 const navbarPlaceholderHeight = () => {
     nextTick(() => {
-        const query = uni.createSelectorQuery().in(instance);
-        query.select('.ns-navbar-wrap .u-navbar .content-wrap').boundingClientRect(data => {
-            placeholderHeight.value = data ? data.height : 0;
-            diyStore.topTabarHeight = placeholderHeight.value;
-        }).exec();
-    })
+		const query = uni.createSelectorQuery().in(instance);
+		query.select('.ns-navbar-wrap .u-navbar .content-wrap').boundingClientRect(data => {
+			placeholderHeight.value = data ? data.height : 0;
+			diyStore.topTabarHeight = placeholderHeight.value;
+		}).exec();
+	})
 }
 
 /******************************* 定位-start ***********************/ 
 // 获取地图配置
-const systemStore = useSystemStore();
 const currentPosition = ref('定位中...')
 let mapConfig = uni.getStorageSync('mapConfig');
 
@@ -313,7 +315,6 @@ const getQueryVariable = (variable:any)=> {
 	return false;
 }
 /******************************* 定位-end ***********************/ 
-
 onMounted(() => {
 	navbarPlaceholderHeight();
 	if (pages.length > 1) {

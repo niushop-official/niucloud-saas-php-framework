@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="../../../../../../admin/src/styles/icon/addon-iconfont.css">
 <template>
     <view class="diy-group" id="componentList">
         <top-tabbar v-if="data.global && Object.keys(data.global).length && data.global.topStatusBar && data.global.topStatusBar.isShow" :scrollBool="diyGroup.componentsScrollBool.TopTabbar"  ref="topTabbarRef" :data="data.global" />
@@ -50,6 +49,9 @@
                 <template v-if="component.componentName == 'CarouselSearch'">
                     <diy-carousel-search :scrollBool="diyGroup.componentsScrollBool.CarouselSearch" :component="component" :global="data.global" :index="index" :pullDownRefreshCount="props.pullDownRefreshCount" />
                 </template>
+				<template v-if="component.componentName == 'PictureShow'">
+					<diy-picture-show :component="component" :global="data.global" :index="index" :pullDownRefreshCount="props.pullDownRefreshCount" />
+				</template>
             </view>
         </view>
         <template v-if="diyStore.mode == '' && data.global.bottomTabBarSwitch">

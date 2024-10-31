@@ -158,8 +158,4 @@ const confirmFn = (data:any) =>{
 :deep(.type-class .u-popup .u-transition){
 	top: 86rpx !important;
 }
-.noData{
-	height: calc(100vh - 206rpx - constant(safe-area-inset-bottom));
-	height: calc(100vh - 206rpx - env(safe-area-inset-bottom));
- }
 </style>

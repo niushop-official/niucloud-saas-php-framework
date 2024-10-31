@@ -1,7 +1,7 @@
 // #ifdef H5
 import wx from 'weixin-js-sdk'
 // #endif
-import { getWechatSkdConfig } from '@/app/api/system'
+import { getWechatSdkConfig } from '@/app/api/system'
 import { isWeixinBrowser } from '@/utils/common'
 
 class Wechat {
@@ -12,7 +12,7 @@ class Wechat {
     }
 
     public init() {
-        getWechatSkdConfig({
+        getWechatSdkConfig({
             url: uni.getSystemInfoSync().platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
         }).then((res: any) => {
             const { data } = res

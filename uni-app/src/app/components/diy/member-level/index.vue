@@ -6,7 +6,7 @@
 				<text class="text-[30rpx] text-[#FFDAA8] ml-[10rpx] font-500 max-w-[440rpx] truncate">{{info.member_level_name}}</text>
 			</view>
 			<view class="flex items-center justify-center rounded-[30rpx] box-border style-btn w-[140rpx] h-[56rpx]" @click="toLink('/app/pages/member/level')">
-				<text class="text-[24rpx] text-[#333]">{{ info.member_level ? (upgradeGrowth > 0 ? '去升级' : '去查看') : '去解锁' }}</text>
+				<text class="text-[24rpx] text-[#333]">{{ info.member_level ? (upgradeGrowth > 0 ? '做任务' : '点击查看') : '去解锁' }}</text>
 				<text class="iconfont iconxiayibu1 ml-[4rpx] -mb-[2rpx] !text-[14rpx] text-[#333]"></text>
 			</view>
 		</view>
@@ -19,7 +19,7 @@
 				<text class="text-[#FFE3B1] opacity-80 text-[24rpx] mt-[10rpx] leading-[32rpx]" v-if="benefits_arr && benefits_arr.length">{{info.member_level_name}}购物享{{benefits_arr[0].title}}</text>
 			</view>
 			<view class="flex items-center justify-center rounded-[30rpx] box-border style-btn w-[140rpx] h-[56rpx]" @click="toLink('/app/pages/member/level')">
-				<text class="text-[24rpx] text-[#333]">{{ info.member_level ? (upgradeGrowth > 0 ? '去升级' : '去查看') : '去解锁' }}</text>
+				<text class="text-[24rpx] text-[#333]">{{ info.member_level ? (upgradeGrowth > 0 ? '做任务' : '点击查看') : '去解锁' }}</text>
 				<text class="iconfont iconxiayibu1 ml-[4rpx] -mb-[2rpx] !text-[14rpx] text-[#333]"></text>
 			</view>
 		</view>
@@ -58,6 +58,50 @@
 				</view>
 			</view>
 		</view>
+		<view v-if="diyComponent.style == 'style-4'" class="flex items-center justify-between style-4 px-[24rpx] py-[20rpx]" :style="{'backgroundImage': 'url('+img('static/resource/images/diy/member/style4_bg.jpg')+')'}">
+			<view class="flex flex-col">
+				<view class="flex items-center">
+					<image :src="img('static/resource/images/diy/member/style4_vip.png')" mode="aspectFit" class="w-[70rpx] h-[32rpx] pt-[1rpx]" />
+					<text class="text-[30rpx] text-[#FFEFB0] leading-[normal] ml-[8rpx] font-500 max-w-[420rpx] truncate">{{info.member_level_name}}</text>
+				</view>
+				<view class="text-[#B0B0B0] text-[24rpx] mt-[10rpx] leading-[32rpx]" v-if="benefits_arr && benefits_arr.length">
+					<text>{{info.member_level_name}}购物享</text>
+					<text class="text-[#FFEFB0]">{{benefits_arr[0].title}}</text>
+				</view>
+			</view>
+			<view class="flex items-center justify-center rounded-[30rpx] box-border style-btn w-[150rpx] h-[50rpx]" @click="toLink('/app/pages/member/level')">
+				<text class="text-[22rpx] text-[#333] mr-[8rpx]">{{ info.member_level ? (upgradeGrowth > 0 ? '做任务' : '点击查看') : '去解锁' }}</text>
+				<image :src="img('static/resource/images/diy/member/style4_arrow.png')" mode="aspectFit" class="w-[26rpx] h-[26rpx] pt-[2rpx]" />
+			</view>
+		</view>
+		<view v-if="diyComponent.style == 'style-5'" class="rounded-[var(--rounded-big)] style-5" :style="{'backgroundImage': 'url('+img('static/resource/images/diy/member/style5_bg.jpg')+')'}">
+			<view class="content-head pt-[16rpx] pb-[10rpx] px-[24rpx] flex items-center justify-between">
+				<view class="flex items-center">
+					<image :src="img('static/resource/images/diy/member/style5_vip.png')" mode="aspectFit" class="w-[40rpx] h-[40rpx]" />
+					<text class="text-[#FFFBE2] ml-[10rpx] text-[30rpx] font-500 max-w-[470rpx] truncate">{{info.member_level_name}}</text>
+				</view>
+				<view class="flex items-center rounded-[30rpx] pl-[16rpx] pr-[12rpx] h-[44rpx] leading-normal style-btn" @click="toLink('/app/pages/member/level')">
+					<text class="text-[22rpx] text-[#333] font-500 pb-[2rpx]">
+						{{info.member_level ? (upgradeGrowth > 0 ? '做任务' : '点击查看') : '去解锁'}}
+					</text>
+					<image :src="img('static/resource/images/diy/member/style5_arrow_01.png')" mode="aspectFit" class="w-[22rpx] h-[22rpx] pb-[1rpx]" />
+				</view>
+			</view>
+			<view class="flex flex-col pt-[28rpx] pb-[30rpx] px-[24rpx]">
+				<view class="flex items-center justify-between pb-[16rpx]">
+					<text class="text-[22rpx] ml-[2rpx] leading-[1.4] text-[#FFFBE2]" v-if="upgradeGrowth > 0">还差{{upgradeGrowth}}成长值即可升级为{{ list[afterCurrIndex].level_name }}</text>
+					<text class="text-[22rpx] ml-[2rpx] text-[#FFFBE2]" v-else>恭喜您升级为最高等级</text>
+					<view class="flex items-center" @click="toLink('/app/pages/member/level')">
+						<text class="nc-iconfont nc-icon-a-bangzhuV6xx-36 !text-[22rpx] text-[#FFFBE2]"></text>
+						<text class="text-[22rpx] text-[#FFFBE2] ml-[6rpx] leading-[24rpx]">规则</text>
+						<view class="ml-[2rpx] -mb-[4rpx] text-[#FFFBE2] !text-[24rpx] nc-iconfont nc-icon-youV6xx"></view>
+					</view>
+				</view>
+				<view class="overflow-hidden rounded-[20rpx]">
+					<progress :percent="progress()" activeColor="#fff" backgroundColor="rgba(255,255,255,0.4)" stroke-width="4" />
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -66,7 +110,6 @@
 	import { img, redirect } from '@/utils/common'
 	import useMemberStore from '@/stores/member'
 	import { t } from '@/locale'
-	import { getMemberLevel } from '@/app/api/member';
 	import useDiyStore from '@/app/stores/diy'
 
 	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
@@ -214,6 +257,24 @@
 			bottom: 0;
 			left: 0;
 			right: 0;
+		}
+	}
+	.style-4{
+		background-size: cover;
+		background-repeat: no-repeat;
+		.style-btn{
+			background: linear-gradient(#FFF3C1, #FFEFB0);
+		}
+	}
+	
+	.style-5{
+		background-size: cover;
+		background-repeat: no-repeat;
+		.content-head{
+			background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.14));
+		}
+		.style-btn{
+			background: linear-gradient(#FFFFFF, #FFF8CC);
 		}
 	}
 </style>

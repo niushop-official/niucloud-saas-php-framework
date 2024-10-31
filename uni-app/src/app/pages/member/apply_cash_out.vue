@@ -288,7 +288,8 @@
 
             cashOutApply(applyData).then(res => {
                 loading.value = false
-                redirect({ url: '/app/pages/member/cash_out' })
+				memberStore.getMemberInfo(()=>{redirect({ url: '/app/pages/member/cash_out' })})
+                
             }).catch(() => {
                 loading.value = false
             })

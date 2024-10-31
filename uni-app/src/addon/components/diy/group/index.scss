@@ -1,4 +1,4 @@
-.draggable-element {
+.ignore-draggable-element, .draggable-element {
   &.decorate {
     &:hover:before {
       content: '';

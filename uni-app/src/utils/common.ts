@@ -18,13 +18,14 @@ export const redirect = (redirect: any) => {
     if (!getToken() && getNeedLoginPages().indexOf(url) != -1) {
 
         const config = useConfigStore()
+        const systemStore = useSystemStore()
 
         // #ifdef MP-WEIXIN
         if (config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
             url = '/app/pages/auth/login'
             param = { type: 'username' }
             mode = 'redirectTo'
-        } else if (!config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
+        } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
             uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
             return;
         } else {
@@ -40,7 +41,7 @@ export const redirect = (redirect: any) => {
                 url = '/app/pages/auth/login'
                 param = { type: 'username' }
                 mode = 'redirectTo'
-            } else if (!config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
+            } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
                 uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 return;
             } else {
@@ -53,7 +54,7 @@ export const redirect = (redirect: any) => {
                 url = '/app/pages/auth/login'
                 param = { type: 'username' }
                 mode = 'redirectTo'
-            } else if (!config.login.is_username && !config.login.is_mobile) {
+            } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile) {
                 uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 return;
             } else {
@@ -385,6 +386,24 @@ export function timeStampTurnTime(timeStamp: any, type = "") {
 }
 
 /**
+ * 日期格式转时间戳
+ * @param {Object} date
+ */
+export function timeTurnTimeStamp(date: string) {
+    var f = date.split(' ', 2);
+    var d = (f[0] ? f[0] : '').split('-', 3);
+    var t = (f[1] ? f[1] : '').split(':', 3);
+    return (new Date(
+        parseInt(d[0], 10) || null,
+        (parseInt(d[1], 10) || 1) - 1,
+        parseInt(d[2], 10) || null,
+        parseInt(t[0], 10) || null,
+        parseInt(t[1], 10) || null,
+        parseInt(t[2], 10) || null
+    )).getTime() / 1000;
+}
+
+/**
  * 复制
  * @param {Object} value
  * @param {Object} callback
@@ -545,4 +564,26 @@ const isArray = (value: any) => {
 export function pxToRpx(px: any) {
     const screenWidth = uni.getSystemInfoSync().screenWidth;
     return (750 * Number.parseInt(px)) / screenWidth;
+}
+
+// 返回上一页
+export function goback(data: any) {
+    let { url, mode, param, title } = data
+    uni.showToast({
+        title: title,
+        icon: 'none'
+    });
+    setTimeout(() => {
+        if (getCurrentPages().length > 1) {
+            uni.navigateBack({
+                delta: 1
+            });
+        } else {
+            redirect({
+                url: url,
+                param: param || {},
+                mode: mode || 'redirectTo'
+            });
+        }
+    }, 600);
 }
