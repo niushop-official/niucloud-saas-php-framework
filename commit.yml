@@ -1,9 +1,14 @@
 !revision
 branches: {
   }
-fileChange: {
-  }
-gitCommitId: !uuid '8daa5277ae3588f6cc8da3f10b169bb109ad024f'
+fileChange:
+  /admin:
+    newFile: !uuid 'de51f8ab2d72478c3d5c1fa50ae76ee07d2161dd'
+    oldFile: !uuid 'adbb33c768b150271df99fde99e99c8130a570bb'
+  /admin/package.json:
+    newFile: !uuid 'b0dfeb7c667c104d1b35eee7a88f5f40039c1ba4'
+    oldFile: !uuid 'a113a30d64be809841f9158c45ce29e9837674a1'
+gitCommitId: !uuid 'e492f37467f16b719e9457f845de98877bffde20'
 renames: {
   }
-revisionId: 218
+revisionId: 219
