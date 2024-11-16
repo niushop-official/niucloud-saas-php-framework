@@ -227,6 +227,22 @@ function get_start_and_end_time_by_day($day = '')
 }
 
 /**
+ * 获取本周的 开始、结束时间
+ * @param data 日期
+ */
+function get_weekinfo_by_time($date)
+{
+    $idx = strftime("%u", strtotime($date));
+    $mon_idx = $idx - 1;
+    $sun_idx = $idx - 7;
+    return array(
+        'week_start_day' => strftime('%Y-%m-%d', strtotime($date) - $mon_idx * 86400),
+        'week_end_day' => strftime('%Y-%m-%d', strtotime($date) - $sun_idx * 86400),
+    );
+}
+
+
+/**
  * 路径转链接
  * @param $path
  * @return string

@@ -36,6 +36,7 @@ class MemberConfigService extends BaseApiService
                 $wechat_auth = ( new WechatAuthService() )->jssdkConfig($url);
             } catch (\Exception $e) {
                 $res[ 'is_auth_register' ] = 0;
+                $res[ 'is_force_access_user_info' ] = 0;
             }
         }
         return $res;

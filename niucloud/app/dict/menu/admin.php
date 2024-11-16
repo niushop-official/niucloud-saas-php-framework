@@ -871,7 +871,7 @@ return [
             ],
             [
                 'menu_name' => '删除站点用户',
-                'menu_key' => 'add_user',
+                'menu_key' => 'delete_user',
                 'menu_short_name' => '',
                 'menu_type' => '2',
                 'icon' => '',

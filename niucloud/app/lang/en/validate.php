@@ -75,6 +75,8 @@ return [
         'is_mobile_between' => 'is_mobile must be 0 or 1',
         'is_auth_register_number' => 'is_auth_register must be a number',
         'is_auth_register_between' => 'is_auth_register must be 0 or 1',
+        'is_force_access_user_info_number' => 'is_force_access_user_info must be a number',
+        'is_force_access_user_info_between' => 'is_force_access_user_info must be 0 or 1',
         'is_bind_mobile_number' => 'is_bind_mobile must be a number',
         'is_bind_mobile_between' => 'is_bind_mobile must be 0 or 1',
         'username_cannot_pure_number' => 'The account cannot be a pure number'

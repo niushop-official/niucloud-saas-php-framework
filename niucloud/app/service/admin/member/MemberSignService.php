@@ -15,6 +15,7 @@ use app\model\member\MemberSign;
 use app\service\core\member\CoreMemberService;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
+use core\exception\CommonException;
 
 /**
  * 会员签到服务层
@@ -83,6 +84,7 @@ class MemberSignService extends BaseAdminService
      */
     public function setSign(array $value)
     {
+        if ($value[ 'sign_period' ] <= 0) throw new CommonException('SIGN_PERIOD_GREATER_THAN');
         $data = [
             'is_use' => $value[ 'is_use' ],  //是否开启
             'sign_period' => $value[ 'sign_period' ], // 签到周期

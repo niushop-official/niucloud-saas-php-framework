@@ -65,7 +65,14 @@ class PagesDict
                 "both" => 10
             ],
             "ignore" => [],
-            "list" => []
+            "list" => [],
+            // 轮播图设置
+            'swiper' => [
+                'indicatorColor' => 'rgba(0, 0, 0, 0.3)', // 未选中颜色
+                "indicatorActiveColor" => '#FF0E0E',
+                'indicatorStyle' => 'style-1',
+                'indicatorAlign' => 'center'
+            ]
         ];
 
         $wap_index_list = ( new ConfigService() )->getWapIndexList([
@@ -489,6 +496,13 @@ class PagesDict
                                         "imgWidth" => 100,
                                         "imgHeight" => 100
                                     ]
+                                ],
+                                // 轮播图设置
+                                'swiper' => [
+                                    'indicatorColor' => 'rgba(0, 0, 0, 0.3)', // 未选中颜色
+                                    "indicatorActiveColor" => '#FF0E0E',
+                                    'indicatorStyle' => 'style-1',
+                                    'indicatorAlign' => 'center'
                                 ]
                             ],
                             [
@@ -613,6 +627,13 @@ class PagesDict
                                             "bgColorEnd" => "#FE3423"
                                         ]
                                     ]
+                                ],
+                                // 轮播图设置
+                                'swiper' => [
+                                    'indicatorColor' => 'rgba(0, 0, 0, 0.3)', // 未选中颜色
+                                    "indicatorActiveColor" => '#FF0E0E',
+                                    'indicatorStyle' => 'style-1',
+                                    'indicatorAlign' => 'center'
                                 ],
                                 'pageStartBgColor' => '',
                                 'pageEndBgColor' => '',
@@ -940,6 +961,13 @@ class PagesDict
                                         "imgWidth" => 100,
                                         "imgHeight" => 100
                                     ]
+                                ],
+                                // 轮播图设置
+                                'swiper' => [
+                                    'indicatorColor' => 'rgba(0, 0, 0, 0.3)', // 未选中颜色
+                                    "indicatorActiveColor" => '#FF0E0E',
+                                    'indicatorStyle' => 'style-1',
+                                    'indicatorAlign' => 'center'
                                 ]
                             ],
                             [
@@ -1064,6 +1092,13 @@ class PagesDict
                                             "bgColorEnd" => "#FE3423"
                                         ]
                                     ]
+                                ],
+                                // 轮播图设置
+                                'swiper' => [
+                                    'indicatorColor' => 'rgba(0, 0, 0, 0.3)', // 未选中颜色
+                                    "indicatorActiveColor" => '#FF0E0E',
+                                    'indicatorStyle' => 'style-1',
+                                    'indicatorAlign' => 'center'
                                 ],
                                 'pageStartBgColor' => '',
                                 'pageEndBgColor' => '',

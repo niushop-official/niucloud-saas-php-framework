@@ -69,7 +69,7 @@ class AttachmentService extends BaseAdminService
      */
     public function modifyCategory($att_id, $cate_id)
     {
-        $where = array (
+        $where = array(
             [ 'att_id', '=', $att_id ],
             [ 'site_id', '=', $this->site_id ],
         );
@@ -86,7 +86,7 @@ class AttachmentService extends BaseAdminService
     public function batchModifyCategory($att_ids, $cate_id)
     {
 
-        $where = array (
+        $where = array(
             [ 'att_id', 'in', is_string($att_ids) ? explode($att_ids) : $att_ids ],
             [ 'site_id', '=', $this->site_id ],
         );
@@ -121,7 +121,7 @@ class AttachmentService extends BaseAdminService
      */
     public function getPage(array $data)
     {
-        $where = array (
+        $where = array(
             [ 'site_id', '=', $this->site_id ]
         );
         if (!empty($data[ 'att_type' ])) {
@@ -151,7 +151,7 @@ class AttachmentService extends BaseAdminService
         $attachment = $category_model->create($data);
         if (!$attachment->id)
             throw new AdminException('ADD_FAIL');//创建失败
-        return $attachment->att_id;
+        return $attachment->id;
     }
 
     /**
@@ -162,7 +162,7 @@ class AttachmentService extends BaseAdminService
      */
     public function findCategory(int $site_id, int $id)
     {
-        $where = array (
+        $where = array(
             [ 'site_id', '=', $site_id ],
             [ 'id', '=', $id ]
         );
@@ -181,7 +181,7 @@ class AttachmentService extends BaseAdminService
      */
     public function editCategory(int $id, array $data)
     {
-        $where = array (
+        $where = array(
             [ 'site_id', '=', $this->site_id ],
             [ 'id', '=', $id ]
         );
@@ -215,7 +215,7 @@ class AttachmentService extends BaseAdminService
      */
     public function getCategoryPage(array $data)
     {
-        $where = array (
+        $where = array(
             [ 'site_id', '=', $this->site_id ]
         );
         if (!empty($data[ 'type' ])) {
@@ -237,7 +237,7 @@ class AttachmentService extends BaseAdminService
      */
     public function getCategoryList(array $data)
     {
-        $where = array (
+        $where = array(
             [ 'site_id', '=', $this->site_id ]
         );
         if (!empty($data[ 'type' ])) {
@@ -259,7 +259,7 @@ class AttachmentService extends BaseAdminService
         $icon_list = IconDict::getIcon();
         foreach ($icon_list as $k => $v) {
             unset($icon_list[ $k ][ 'glyphs' ]);
-            if (isset($data[ 'name' ]) && $data[ 'name' ] !=''  && !str_contains($v['name'], $data['name'])) {
+            if (isset($data[ 'name' ]) && $data[ 'name' ] != '' && !str_contains($v[ 'name' ], $data[ 'name' ])) {
                 unset($icon_list[ $k ]);
             }
         }
@@ -295,7 +295,7 @@ class AttachmentService extends BaseAdminService
                 $icon[ $ck ][ 'real_name' ] = $cv[ 'name' ];
 
                 // 查询名称
-                if (!empty($data[ 'real_name' ]) && !str_contains($cv['name'], $data['real_name'])) {
+                if (!empty($data[ 'real_name' ]) && !str_contains($cv[ 'name' ], $data[ 'real_name' ])) {
                     unset($icon[ $ck ]);
                 }
             }

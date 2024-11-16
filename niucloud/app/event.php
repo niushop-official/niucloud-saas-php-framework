@@ -12,6 +12,10 @@ $system_event = [
          * 系统事件
          */
         'AppInit' => [ 'app\listener\system\AppInitListener' ],
+        // 站点创建之后
+        'AddSiteAfter' => [
+            'app\listener\system\AddSiteAfterListener'
+        ],
         'HttpRun' => [],
         'HttpEnd' => [],
         'LogLevel' => [],

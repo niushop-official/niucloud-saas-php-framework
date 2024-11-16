@@ -36,6 +36,7 @@ class CoreMemberConfigService extends BaseCoreService
             'is_username' => $info[ 'is_username' ] ?? 1, // 是否用户名密码登录
             'is_mobile' => $info[ 'is_mobile' ] ?? 0, // 是否手机验证码登录
             'is_auth_register' => $info[ 'is_auth_register' ] ?? 1, // 是否第三方自动注册
+            'is_force_access_user_info' => $info[ 'is_force_access_user_info' ] ?? 0, // 是否强制获取用户信息
             'is_bind_mobile' => $info[ 'is_bind_mobile' ] ?? 0, // 是否强制绑定手机
             'agreement_show' => $info[ 'agreement_show' ] ?? 0, // 政策协议是否展示
             'bg_url' => $info[ 'bg_url' ] ?? '', // 背景图片
@@ -52,10 +53,11 @@ class CoreMemberConfigService extends BaseCoreService
     public function setLoginConfig(int $site_id, array $data)
     {
         $config = [
-            'is_username' => $data[ 'is_username' ] ?? 1,//是否用户名密码登录
-            'is_mobile' => $data[ 'is_mobile' ] ?? 0,//是否手机验证码登录
-            'is_auth_register' => $data[ 'is_auth_register' ] ?? 1,//是否第三方自动注册
-            'is_bind_mobile' => $data[ 'is_bind_mobile' ] ?? 0,//是否强制绑定手机
+            'is_username' => $data[ 'is_username' ] ?? 1,// 是否用户名密码登录
+            'is_mobile' => $data[ 'is_mobile' ] ?? 0, // 是否手机验证码登录
+            'is_auth_register' => $data[ 'is_auth_register' ] ?? 1,// 是否第三方自动注册
+            'is_force_access_user_info' => $data[ 'is_force_access_user_info' ] ?? 0, // 是否强制获取用户信息
+            'is_bind_mobile' => $data[ 'is_bind_mobile' ] ?? 0, // 是否强制绑定手机
             'agreement_show' => $data[ 'agreement_show' ] ?? 0, // 政策协议是否展示
             'bg_url' => $data[ 'bg_url' ] ?? '', // 背景图片
             'desc' => $data[ 'desc' ] ?? '' // 描述

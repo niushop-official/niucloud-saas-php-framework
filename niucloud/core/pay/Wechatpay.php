@@ -39,6 +39,14 @@ class Wechatpay extends BasePay
         $config['mch_public_cert_path'] = url_to_path($config['mch_public_cert_path'] ?? '');
         // 选填-默认为正常模式。可选为： MODE_NORMAL, MODE_SERVICE
         $config['mode'] = Pay::MODE_NORMAL;
+        if (!empty($config['wechat_public_cert_path']) && !empty($config['wechat_public_cert_id'])) {
+            $config['wechat_public_cert_path'] = [
+                $config['wechat_public_cert_id'] => url_to_path($config['wechat_public_cert_path'])
+            ];
+        } else {
+            unset($config['wechat_public_cert_path']);
+            unset($config['wechat_public_cert_id']);
+        }
         Pay::config($this->payConfig($config, 'wechat'));
     }
 

@@ -27,11 +27,11 @@ class MemberRegisterListener
     public function handle($member)
     {
         // 注册发放成长值
-        CoreMemberService::sendGrowth($member['site_id'], $member['member_id'], 'member_register', ['from_type' => 'member_register']);
+        CoreMemberService::sendGrowth($member[ 'site_id' ], $member[ 'member_id' ], 'member_register', [ 'from_type' => 'member_register' ]);
         // 注册发放积分
-        CoreMemberService::sendPoint($member['site_id'], $member['member_id'], 'member_register', ['from_type' => 'member_register']);
+        CoreMemberService::sendPoint($member[ 'site_id' ], $member[ 'member_id' ], 'member_register', [ 'from_type' => 'member_register' ]);
         // 新人专享活动
-        event("MemberLoginAfter", ['site_id' => $member['site_id'], 'member_id' => $member['member_id']]);
+        event("MemberLoginAfter", [ 'site_id' => $member[ 'site_id' ], 'member_id' => $member[ 'member_id' ] ]);
         return;
     }
 }

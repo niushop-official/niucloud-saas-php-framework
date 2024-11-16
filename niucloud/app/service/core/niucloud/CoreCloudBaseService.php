@@ -13,7 +13,6 @@ namespace app\service\core\niucloud;
 
 use core\base\BaseCoreService;
 use core\exception\CommonException;
-use core\util\niucloud\http\Response;
 
 /**
  * 云服务层

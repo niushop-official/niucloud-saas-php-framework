@@ -187,7 +187,7 @@ class GenerateService extends BaseAdminService
             $table_info = $tables[0] ?? [];
             if(empty($table_info)) throw new AdminException('DATA_NOT_EXIST');
 
-            $table_name = str_replace($tablePrefix, '', $table_info['Name']);
+            $table_name = preg_replace("/^{$tablePrefix}/", '', $table_info['Name'], 1);
             $fields = Db::name($table_name)->getFields();
 
             $add_table_data = [
@@ -556,7 +556,7 @@ class GenerateService extends BaseAdminService
         $tables = Db::query($sql);
         $table_info = $tables[0] ?? [];
         if(empty($table_info)) throw new AdminException('DATA_NOT_EXIST');
-        $table_name = str_replace($tablePrefix, '', $table_info['Name']);
+        $table_name = preg_replace("/^{$tablePrefix}/", '', $table_info['Name'], 1);
         return Db::name($table_name)->getFields();
 
     }

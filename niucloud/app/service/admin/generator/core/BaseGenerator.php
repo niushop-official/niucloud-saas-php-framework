@@ -331,7 +331,7 @@ abstract class BaseGenerator
     public function getTableName()
     {
         $tablePrefix = config('database.connections.mysql.prefix');
-        return str_replace($tablePrefix, '', $this->table['table_name']);
+        return preg_replace("/^{$tablePrefix}/", '', $this->table['table_name'], 1);
     }
 
 

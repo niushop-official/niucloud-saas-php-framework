@@ -1,6 +1,6 @@
 <?php
 
-namespace app\upgrade\v050;
+namespace app\upgrade\v053;
 
 use app\model\diy\Diy;
 
@@ -53,7 +53,7 @@ class Upgrade
                     // 活动魔方 组件
                     if ($cv[ 'componentName' ] == 'ActiveCube') {
                         if (!isset($diy_data[ 'value' ][ $ck ][ 'textImg' ])) {
-                            $diy_data[ 'value' ][ $ck ][ 'textImg' ] = 'static/resource/images/diy/active_cube/journalism.png';
+                            $diy_data[ 'value' ][ $ck ][ 'textImg' ] = 'static/resource/images/diy/active_cube/active_cube_text1.png';
                         }
 
                         if (!isset($diy_data[ 'value' ][ $ck ][ 'blockStyle' ][ 'btnText' ])) {

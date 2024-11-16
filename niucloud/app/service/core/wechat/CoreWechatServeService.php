@@ -39,7 +39,7 @@ class CoreWechatServeService extends BaseCoreService
     public function authorization(int $site_id, string $url = '', string $scopes = 'snsapi_base')
     {
         $oauth = CoreWechatService::app($site_id)->getOauth();
-        return $oauth->scopes([$scopes])->redirect($url);
+        return $oauth->scopes([ $scopes ])->redirect($url);
     }
 
     /**
@@ -54,7 +54,7 @@ class CoreWechatServeService extends BaseCoreService
             $oauth = CoreWechatService::app($site_id)->getOauth();
             return $oauth->userFromCode($code);
         } catch (\Exception $e) {
-            throw new CommonException($e->getCode());
+            throw new CommonException($e->getCode() . '：' . $e->getMessage());
         }
     }
 
@@ -87,9 +87,9 @@ class CoreWechatServeService extends BaseCoreService
 
         $app = CoreWechatService::app($site_id);
         $server = $app->getServer();
-        $server->with(function($message, \Closure $next)  use ($site_id){
+        $server->with(function($message, \Closure $next) use ($site_id) {
             // 你的自定义逻辑
-            return (new CoreWechatMessageService)->message($site_id, $message);
+            return ( new CoreWechatMessageService )->message($site_id, $message);
         });
         $response = $server->serve();
         return $response;
@@ -131,7 +131,8 @@ class CoreWechatServeService extends BaseCoreService
      * @throws InvalidArgumentException
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function scan(int $site_id, string $key, int $expire_seconds = 6 * 24 * 3600, $params = []){
+    public function scan(int $site_id, string $key, int $expire_seconds = 6 * 24 * 3600, $params = [])
+    {
         $api = CoreWechatService::appApiClient($site_id);
         if (is_int($key) && $key > 0) {
             $type = 'QR_SCENE';
@@ -140,7 +141,7 @@ class CoreWechatServeService extends BaseCoreService
             $type = 'QR_STR_SCENE';
             $sceneKey = 'scene_str';
         }
-        $scene = [$sceneKey => $key];
+        $scene = [ $sceneKey => $key ];
         $param = [
             'expire_seconds' => $expire_seconds,
             'action_name' => $type,

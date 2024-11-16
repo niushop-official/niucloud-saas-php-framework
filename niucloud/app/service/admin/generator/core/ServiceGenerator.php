@@ -385,7 +385,7 @@ class ServiceGenerator extends BaseGenerator
 
     /**
      * 关联表方法
-     * @return void
+     * @return string
      */
     public function getWithAllFunction()
     {

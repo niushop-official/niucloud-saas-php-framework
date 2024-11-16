@@ -122,7 +122,7 @@ class WechatAuthService extends BaseApiService
             }
         }
         if ($member_info->isEmpty()) {
-            $config = ( new MemberConfigService() )->getLoginConfig();
+//            $config = ( new MemberConfigService() )->getLoginConfig();
 //            $is_auth_register = $config[ 'is_auth_register' ];
             // 去掉强制绑定手机号判断，否则开启强制绑定的情况下公众号第三方注册无法注册
             // 现在不需要控制自动注册，分为两种情况，一种自动注册，另一种手动点击授权登录注册
@@ -134,6 +134,11 @@ class WechatAuthService extends BaseApiService
         } else {
             //可能会更新用户和粉丝表
             $login_service = new LoginService();
+            // 若用户头像为空，那么从微信获取头像和昵称，然后进行更新
+            if (empty($member_info->headimg)) {
+                $member_info->headimg = $avatar;
+                $member_info->nickname = $nickname;
+            }
             return $login_service->login($member_info, MemberLoginTypeDict::WECHAT);
         }
     }

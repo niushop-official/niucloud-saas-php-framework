@@ -78,6 +78,8 @@ return [
         'is_mobile_between' => '手机验证码登录参数必须是0或1',
         'is_auth_register_number' => '第三方自动注册参数必须是整数',
         'is_auth_register_between' => '第三方自动注册参数必须是0或1',
+        'is_force_access_user_info_number' => '强制获取用户信息参数必须是整数',
+        'is_force_access_user_info_between' => '强制获取用户信息参数必须是0或1',
         'is_bind_mobile_number' => '强制绑定手机参数必须是整数',
         'is_bind_mobile_between' => '强制绑定手机参数必须是0或1',
         'cash_out_is_open_in' => '是否启用必须是0或者1',

@@ -26,6 +26,7 @@ class LoginConfig extends Validate
         'is_username' => 'number|between:0,1',
         'is_mobile' => 'number|between:0,1',
         'is_auth_register' => 'number|between:0,1',
+        'is_force_access_user_info' => 'number|between:0,1',
         'is_bind_mobile' => 'number|between:0,1',
 
     ];
@@ -37,11 +38,13 @@ class LoginConfig extends Validate
         'is_mobile.between' => 'validate_member.is_mobile_between',
         'is_auth_register.number' => 'validate_member.is_auth_register_number',
         'is_auth_register.between' => 'validate_member.is_auth_register_between',
+        'is_force_access_user_info.number' => 'validate_member.is_force_access_user_info_number',
+        'is_force_access_user_info.between' => 'validate_member.is_force_access_user_info_between',
         'is_bind_mobile.number' => 'validate_member.is_bind_mobile_number',
         'is_bind_mobile.between' => 'validate_member.is_bind_mobile_between',
     ];
 
     protected $scene = [
-        'set' => ['is_username', 'is_mobile', 'is_auth_register', 'is_bind_mobile'],
+        'set' => [ 'is_username', 'is_mobile', 'is_auth_register', 'is_force_access_user_info', 'is_bind_mobile' ],
     ];
 }

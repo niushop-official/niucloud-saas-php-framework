@@ -58,7 +58,7 @@ class PayDict
                 'key' => self::WECHATPAY,
                 'icon' => self::WECHATPAY_ICON,
                 'setting_component' => '/src/app/views/setting/components/pay-wechatpay.vue',
-                'encrypt_params' => ['mch_public_cert_path', 'mch_secret_cert', 'mch_secret_key'],
+                'encrypt_params' => ['mch_public_cert_path', 'mch_secret_cert', 'mch_secret_key', 'wechat_public_cert_path'],
             ],//微信支付
             self::ALIPAY => [
                 'name' => get_lang('dict_pay.type_alipay'),

@@ -37,6 +37,7 @@ class Config extends BaseAdminController
             [ 'is_username', 1 ],
             [ 'is_mobile', 0 ],
             [ 'is_auth_register', 1 ],
+            [ 'is_force_access_user_info', 0 ],
             [ 'is_bind_mobile', 0 ],
             [ 'agreement_show', 0 ],
             [ 'bg_url', '' ],

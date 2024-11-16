@@ -166,6 +166,8 @@ class PayChannelService extends BaseAdminService
                     'mch_secret_key' => $data[ 'mch_secret_key' ] ?? '',//商户秘钥  现在默认认为是v3版
                     'mch_secret_cert' => $data[ 'mch_secret_cert' ] ?? '',//商户私钥 字符串或路径
                     'mch_public_cert_path' => $data[ 'mch_public_cert_path' ] ?? '',//商户公钥证书路径
+                    'wechat_public_cert_path' => $data['wechat_public_cert_path'] ?? '', // 微信支付公钥
+                    'wechat_public_cert_id' => $data['wechat_public_cert_id'] ?? '' // 微信支付公钥id
                 ];
                 break;
             case PayDict::ALIPAY:

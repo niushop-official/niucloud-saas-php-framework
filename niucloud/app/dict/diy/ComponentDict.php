@@ -190,6 +190,13 @@ class ComponentDict
                                     ]
                                 ]
                             ],
+                            // 轮播图设置
+                            'swiper' => [
+                                'indicatorColor' => 'rgba(0, 0, 0, 0.3)', // 未选中颜色
+                                "indicatorActiveColor" => '#FF0E0E',
+                                'indicatorStyle' => 'style-1',
+                                'indicatorAlign' => 'center'
+                            ]
                         ]
                     ],
                     'RubikCube' => [
@@ -335,7 +342,7 @@ class ComponentDict
                                 'value' => 'style-1'
                             ],
                             'text' => '超值爆款',
-                            'textImg' => 'static/resource/images/diy/active_cube/journalism.png',
+                            'textImg' => 'static/resource/images/diy/active_cube/active_cube_text1.png',
                             "textLink" => [
                                 "name" => ""
                             ],
@@ -497,9 +504,18 @@ class ComponentDict
                             'search' => [
                                 'logo' => '',
                                 'text' => '请输入搜索关键词',
-                                "link" => [
-                                    "name" => ""
+                                'link' => [
+                                    'name' => ''
                                 ],
+                                'style' => 'style-1',
+                                'styleName' => '风格一',
+                                "subTitle" => [
+                                    "text" => "本地好价·优选生活",
+                                    "textColor" => "#000000",
+                                    "startColor" => "rgba(255,255,255,0.7)",
+                                    "endColor" => "",
+                                ],
+                                'positionColor' => '#ffffff',
                                 'hotWord' => [
                                     "interval" => 3,
                                     'list' => []
@@ -627,7 +643,7 @@ class ComponentDict
                         'value' => [
                             'moduleOne' => [
                                 'head' => [
-                                    'textImg' => 'addon/shop/diy/index/style3/picture_show_head_text3.png',
+                                    "textImg" => "static/resource/images/diy/picture_show/picture_show_head_text3.png",
                                     "subText" => "最高补1200元",
                                     "subTextColor" => "#666666"
                                 ],
@@ -642,7 +658,7 @@ class ComponentDict
                                         "link" => [
                                             "name" => ""
                                         ],
-                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods5.png"
+                                        "imageUrl" => "static/resource/images/diy/picture_show/picture_05.png"
                                     ],
                                     [
                                         "btnTitle" => [
@@ -654,7 +670,7 @@ class ComponentDict
                                         "link" => [
                                             "name" => ""
                                         ],
-                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods6.png"
+                                        "imageUrl" => "static/resource/images/diy/picture_show/picture_06.png"
                                     ]
                                 ],
                                 "listFrame" => [
@@ -664,7 +680,7 @@ class ComponentDict
                             ],
                             'moduleTwo' => [
                                 'head' => [
-                                    'textImg' => 'addon/shop/diy/index/style3/picture_show_head_text4.png',
+                                    "textImg" => "static/resource/images/diy/picture_show/picture_show_head_text4.png",
                                     "subText" => "每日上新",
                                     "subTextColor" => "#666666"
                                 ],
@@ -679,7 +695,7 @@ class ComponentDict
                                         "link" => [
                                             "name" => ""
                                         ],
-                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods7.png",
+                                        "imageUrl" => "static/resource/images/diy/picture_show/picture_07.png"
                                     ],
                                     [
                                         "btnTitle" => [
@@ -691,7 +707,7 @@ class ComponentDict
                                         "link" => [
                                             "name" => ""
                                         ],
-                                        "imageUrl" => "addon/shop/diy/index/style3/picture_show_goods8.png"
+                                        "imageUrl" => "static/resource/images/diy/picture_show/picture_08.png"
                                     ]
                                 ],
                                 "listFrame" => [
@@ -702,29 +718,29 @@ class ComponentDict
                             "moduleRounded" => [
                                 "topRounded" => 10,
                                 "bottomRounded" => 10
-                            ],// 组件属性
-                            'template' => [
-                                "textColor" => "#303133", // 文字颜色
-                                'pageStartBgColor' => '', // 底部背景颜色（开始）
-                                'pageEndBgColor' => '', // 底部背景颜色（结束）
-                                'pageGradientAngle' => 'to bottom', // 渐变角度，从上到下（to bottom）、从左到右（to right）
-                                'componentBgUrl' => '', // 组件背景图片
-                                'componentBgAlpha' => 2, // 组件背景图片的透明度，0~10
-                                "componentStartBgColor" => '', // 组件背景颜色（开始）
-                                "componentEndBgColor" => '', // 组件背景颜色（结束）
-                                "componentGradientAngle" => 'to bottom', // 渐变角度，上下（to bottom）、左右（to right）
-                                "topRounded" => 0, // 组件上圆角
-                                "bottomRounded" => 0, // 组件下圆角
-                                "elementBgColor" => '', // 元素背景颜色
-                                "topElementRounded" => 0,// 元素上圆角
-                                "bottomElementRounded" => 0, // 元素下圆角
-                                "margin" => [
-                                    "top" => 0, // 上边距
-                                    "bottom" => 0, // 下边距
-                                    "both" => 10 // 左右边距
-                                ],
-                            ]
-                        ],
+                            ],
+                        ],// 组件属性
+                        'template' => [
+                            "textColor" => "#303133", // 文字颜色
+                            'pageStartBgColor' => '', // 底部背景颜色（开始）
+                            'pageEndBgColor' => '', // 底部背景颜色（结束）
+                            'pageGradientAngle' => 'to bottom', // 渐变角度，从上到下（to bottom）、从左到右（to right）
+                            'componentBgUrl' => '', // 组件背景图片
+                            'componentBgAlpha' => 2, // 组件背景图片的透明度，0~10
+                            "componentStartBgColor" => '', // 组件背景颜色（开始）
+                            "componentEndBgColor" => '', // 组件背景颜色（结束）
+                            "componentGradientAngle" => 'to bottom', // 渐变角度，上下（to bottom）、左右（to right）
+                            "topRounded" => 0, // 组件上圆角
+                            "bottomRounded" => 0, // 组件下圆角
+                            "elementBgColor" => '', // 元素背景颜色
+                            "topElementRounded" => 0,// 元素上圆角
+                            "bottomElementRounded" => 0, // 元素下圆角
+                            "margin" => [
+                                "top" => 0, // 上边距
+                                "bottom" => 0, // 下边距
+                                "both" => 10 // 左右边距
+                            ],
+                        ]
                     ]
                 ],
             ],

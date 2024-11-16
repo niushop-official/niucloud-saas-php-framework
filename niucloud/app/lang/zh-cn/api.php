@@ -285,6 +285,7 @@ return [
     'SIGN_AWARD' => '签到奖励',
     'GET_AWARD' => '恭喜您获得以下奖励',
     'WILL_GET_AWARD' => '您将获得以下奖励',
+    'SIGN_PERIOD_GREATER_THAN' => '签到周期必须大于0天',
 
     //导出相关
     'EXPORT_SUCCESS' => '导出成功',

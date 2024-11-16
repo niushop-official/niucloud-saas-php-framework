@@ -110,10 +110,10 @@ class AreaService extends BaseApiService
         $url = 'https://apis.map.qq.com/ws/geocoder/v1/';
         $map = ( new ConfigService() )->getMap();
 
-        $get_data = array (
-            'location' => $params[ 'latlng' ],
+        $get_data = array(
             'key' => $map[ 'key' ],
-            'get_poi' => 0,//是否返回周边POI列表：1.返回；0不返回(默认)
+            'location' => $params[ 'latlng' ],
+            'get_poi' => 0, // 是否返回周边POI列表：1.返回；0不返回(默认)
         );
 
         $url = $url . '?' . http_build_query($get_data);
@@ -131,12 +131,32 @@ class AreaService extends BaseApiService
             curl_close($curl);
 
             if ($res[ 'status' ] == 0) {
-                $return_array = $res[ 'result' ][ 'address_component' ] ?? [];
-                $address_data = array (
-                    'province' => $return_array[ 'province' ] ?? '',
-                    'city' => $return_array[ 'city' ] ?? '',
-                    'district' => $return_array[ 'district' ] ?? '',
-                    'address' => $return_array[ 'street_number' ] ?? '',
+                $return_array = $res[ 'result' ][ 'address_component' ] ?? []; // 地址部件，address不满足需求时可自行拼接
+                $address_reference = $res[ 'result' ][ 'address_reference' ] ?? [];
+                $address = $return_array[ 'street_number' ] ?? ''; // 门牌，可能为空字串
+                if (empty($address)) {
+                    $address = $return_array[ 'street' ] ?? ''; // 道路，可能为空字串
+                }
+
+                $town = $address_reference[ 'town' ] ?? [];
+                $landmark_l1 = $address_reference[ 'landmark_l1' ] ?? [];
+                $landmark_l2 = $address_reference[ 'landmark_l2' ] ?? [];
+
+                $community = '';
+                if (!empty($landmark_l2[ 'title' ])) {
+                    $community = $landmark_l2[ 'title' ]; // 二级地标，较一级地标更为精确，规模更小
+                } elseif (!empty($landmark_l1[ 'title' ])) {
+                    $community = $landmark_l1[ 'title' ]; // 一级地标，可识别性较强、规模较大的地点、小区等
+                } elseif (!empty($town[ 'title' ])) {
+                    $community = $town[ 'title' ]; // 乡镇/街道（四级行政区划）
+                }
+
+                $address_data = array(
+                    'province' => $return_array[ 'province' ] ?? '', // 省
+                    'city' => $return_array[ 'city' ] ?? '', // 市
+                    'district' => $return_array[ 'district' ] ?? '', // 区
+                    'community' => $community,
+                    'address' => $address,
                     'full_address' => $res[ 'result' ][ 'address' ] ?? '',
                     'formatted_addresses' => $res[ 'result' ][ 'formatted_addresses' ] ?? []
                 );
@@ -146,19 +166,20 @@ class AreaService extends BaseApiService
                     $province = str_replace('省', '', $address_data[ 'province' ]);
                     $province = str_replace('市', '', $province);
                 }
+
                 $city = $address_data[ 'city' ] ?? '';
                 $district = $address_data[ 'district' ] ?? '';
 
                 $province_info = $this->model->where([ [ 'name', 'like', '%' . $province . '%' ], [ 'level', '=', 1 ] ])->field('id,name')->select()->toArray()[ 0 ] ?? [];
 
                 $province_id = 0;
-                $province_name = '';
+                $province_name = $address_data[ 'province' ];
 
                 $city_id = 0;
-                $city_name = '';
+                $city_name = $address_data[ 'city' ];
 
                 $district_id = 0;
-                $district_name = '';
+                $district_name = $address_data[ 'district' ];
 
                 if (!empty($province_info)) {
                     $province_id = $province_info[ 'id' ];
@@ -193,9 +214,10 @@ class AreaService extends BaseApiService
                     'district_id' => $district_id,
                     'district' => $district_name,
 
+                    'community' => $address_data[ 'community' ],
+
                     'full_address' => $address_data[ 'full_address' ],
                     'formatted_addresses' => $address_data[ 'formatted_addresses' ]
-
                 ];
             } else {
                 throw new ApiException($res[ 'message' ]);

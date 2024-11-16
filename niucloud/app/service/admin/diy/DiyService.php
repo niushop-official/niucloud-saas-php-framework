@@ -681,10 +681,12 @@ class DiyService extends BaseAdminService
             } else {
                 // 针对 多应用首页的数据更新
                 if ($info[ 'name' ] == 'DIY_INDEX' && $info[ 'type' ] == 'DIY_INDEX') {
-                    $this->edit($info[ 'id' ], [
-                        'site_id' => $params[ 'site_id' ],
-                        "value" => json_encode($addon_index_template[ 'data' ])
-                    ]);
+                    if ($info[ 'is_change' ] == 0) {
+                        $this->edit($info[ 'id' ], [
+                            'site_id' => $params[ 'site_id' ],
+                            "value" => json_encode($addon_index_template[ 'data' ])
+                        ]);
+                    }
                 }
 
             }
