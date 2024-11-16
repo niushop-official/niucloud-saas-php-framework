@@ -3,7 +3,6 @@ import Sortable from 'sortablejs';
 import { range } from 'lodash-es';
 import { onPageScroll, onHide, onShow } from '@dcloudio/uni-app';
 import useDiyStore from '@/app/stores/diy';
-import { getLocation } from '@/utils/common';
 
 export function useDiyGroup(params: any = {}) {
 
@@ -89,11 +88,7 @@ export function useDiyGroup(params: any = {}) {
 
             nextTick(() => {
                 setTimeout(() => {
-                    if (data.value.global && data.value.global.topStatusBar && data.value.global.topStatusBar.style == 'style-4') {
-                        // 第一次获取经纬度
-                        getLocation()
-                    }
-					
+
 					// 初始化组件滚动值
 					scrollVal = uni.getStorageSync('componentsScrollValGroup');
 					if (scrollVal) {
