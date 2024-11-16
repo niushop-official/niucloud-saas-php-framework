@@ -117,13 +117,6 @@ export function getAddressByLatlng(params: Record<string, any>) {
 }
 
 /**
- * 获取手机端首页列表
- */
-export function getWapIndexList(data: AnyObject) {
-    return request.get('wap_index', data)
-}
-
-/**
  * 获取海报
  * @returns
  */

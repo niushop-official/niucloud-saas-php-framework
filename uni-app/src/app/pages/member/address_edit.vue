@@ -324,7 +324,6 @@
 	}
 	.address-edit :deep(.u-form-item__body__right){
 		display:flex;
-		align-items: center;
 	}
 	.footer{
 		height: calc(100rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;

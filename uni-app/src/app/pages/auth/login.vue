@@ -114,8 +114,8 @@
 			if (option.type == 'mobile') {
 				if (configStore.login.is_mobile) {
 					type.value = option.type
+					uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
 				}
-
 			} else if (option.type == 'username' && configStore.login.is_username) {
 				type.value = option.type
 			}

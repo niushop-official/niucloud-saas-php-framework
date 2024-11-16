@@ -2,7 +2,6 @@ import { redirect, isWeixinBrowser, urlDeconstruction } from '@/utils/common'
 import {
     weappLogin,
     updateWeappOpenid,
-    wechatLogin,
     updateWechatOpenid,
     wechatUser,
     wechatUserLogin
@@ -173,8 +172,10 @@ export function useLogin() {
     }
     /**
      * 登录普通账号后修改openid
+     * @param code
+     * @param callback
      */
-    const updateOpenid = (code: string | null) => {
+    const updateOpenid = (code: string | null, callback: any = null) => {
         let obj: any = {
             code
         };
@@ -193,6 +194,7 @@ export function useLogin() {
             useMemberStore().getMemberInfo(() => {
                 const memberInfo = useMemberStore().info
                 memberInfo && memberInfo.wx_openid && uni.setStorageSync('openid', memberInfo.wx_openid)
+                if (callback) callback();
             })
         })
         // #endif

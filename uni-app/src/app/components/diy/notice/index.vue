@@ -3,13 +3,13 @@
         <view :style="maskLayer"></view>
         <view class="diy-notice relative overflow-hidden">
             <view class="flex items-center pl-[28rpx] p-[22rpx]">
-                <template v-if="diyComponent.noticeType == 'img'">
+                <view v-if="diyComponent.noticeType == 'img'" class="min-w-[60rpx] flex items-center">
                     <template v-if="diyComponent.imgType == 'system'">
-                        <image v-if="diyComponent.systemUrl == 'style_1'" :src="img(`static/resource/images/diy/notice/${diyComponent.systemUrl}.png`)" class="h-[40rpx] max-w-[130rpx] mr-[20rpx] flex-shrink-0" mode="heightFix"/>
+                        <image v-if="diyComponent.systemUrl == 'style_1'" :src="img(`static/resource/images/diy/notice/${diyComponent.systemUrl}.png`)" class="h-[40rpx] w-[auto] mr-[20rpx] flex-shrink-0" mode="heightFix"/>
                         <image v-else-if="diyComponent.systemUrl == 'style_2'" :src="img(`static/resource/images/diy/notice/${diyComponent.systemUrl}.png`)" class="w-[200rpx] mr-[20rpx] h-[30rpx] flex-shrink-0" mode="heightFix" />
                     </template>
                     <image v-else-if="diyComponent.imgType == 'diy'" :src="img(diyComponent.imageUrl || '')" class="w-[200rpx] h-[30rpx] mr-[20rpx] flex-shrink-0" mode="heightFix"/>
-                </template>
+                </view>
                 <view v-if="diyComponent.noticeType == 'text' && diyComponent.noticeTitle" class="max-w-[128rpx] px-[12rpx] text-[26rpx] h-[40rpx] leading-[40rpx] text-[var(--primary-color)] bg-[var(--primary-color-light)] truncate rounded-[8rpx] mr-[20rpx] flex-shrink-0">{{ diyComponent.noticeTitle }}</view>
                 <view class="flex-1 flex overflow-hidden horizontal-body" :id="'horizontal-body-'+diyComponent.id" :class="{'items-center':diyComponent.scrollWay == 'upDown'}">
                     <!-- 横向滚动 -->

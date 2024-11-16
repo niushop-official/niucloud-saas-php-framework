@@ -17,7 +17,7 @@
 						<view :style="{ color: topStatusBarData.textColor }">{{ data.title }}</view>
 					</view>
 				</view>
-	
+
 				<view v-if="topStatusBarData.style == 'style-3'" :style="navbarInnerStyle" class="content-wrap">
 					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<view class="title-wrap" @click="diyStore.toRedirect(topStatusBarData.link)">
@@ -29,29 +29,28 @@
 					</view>
 					<view :style="{ 'width': capsuleWidth }"></view>
 				</view>
-	 
+
 				<view v-if="topStatusBarData.style == 'style-4'" :style="navbarInnerStyle" class="content-wrap">
 					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[28rpx]" :style="{ color: topStatusBarData.textColor }"></text>
-					<view class="title-wrap"  @click="reposition()" :style="{ color: topStatusBarData.textColor }">{{ currentPosition }}</view>
-					<text class="nc-iconfont nc-icon-youV6xx text-[26rpx]" @click="reposition()" :style="{ color: topStatusBarData.textColor }"></text>
+					<view class="title-wrap"  @click.stop="locationVal.repositionFn()" :style="{ color: topStatusBarData.textColor }" v-if="systemStore.currShippingAddress">{{ systemStore.currShippingAddress.community }}</view>
+					<view class="title-wrap"  @click.stop="locationVal.repositionFn()" :style="{ color: topStatusBarData.textColor }" v-else>{{ systemStore.defaultPositionAddress }}</view>
+					<text class="nc-iconfont nc-icon-youV6xx text-[26rpx]" @click.stop="locationVal.repositionFn()" :style="{ color: topStatusBarData.textColor }"></text>
 				</view>
 			</view>
 		</view>
-	
+
 		<!-- 解决fixed定位后导航栏塌陷的问题 -->
 		<view v-if="props.isFill" class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: placeholderHeight + 'px' }"></view>
 	</view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, getCurrentInstance, nextTick } from 'vue';
-import { img, getLocation, locationStorage } from '@/utils/common';
-import { getAddressByLatlng } from '@/app/api/system';
+import { ref, computed, onMounted, getCurrentInstance, nextTick } from 'vue';
+import { img } from '@/utils/common';
 import useSystemStore from '@/stores/system';
 import useDiyStore from '@/app/stores/diy';
-import manifestJson from '@/manifest.json'
-import { cloneDeep } from 'lodash-es'
+import {useLocation} from '@/hooks/useLocation'
 
 // 获取系统状态栏的高度
 let systemInfo = uni.getSystemInfoSync();
@@ -100,7 +99,7 @@ const topStatusBarData = computed(() => {
 // 导航栏内部盒子的样式
 const navbarInnerStyle = computed(() => {
 	let style = '';
-	
+
 	if(props.isBack && isBackShow.value){
 		style += 'padding-left: 30rpx;';//30=>右边留边 44=>箭头宽度 10=>箭头的右maring
 		if(topStatusBarData.value.style == 'style-1') //样式一需要居中需要有右边padding辅助
@@ -122,7 +121,7 @@ const navbarInnerStyle = computed(() => {
 // 样式一的字体大小
 const styleOneFontSize = computed(() => {
 	let style = '';
-	
+
 	// #ifdef H5
 	style += 'font-size: 28rpx;';
 	// #endif
@@ -164,7 +163,7 @@ const bgColor  = computed(() => {
 	return color;
 })
 
-/******************************* 存储滚动值-start ***********************/ 
+/******************************* 存储滚动值-start ***********************/
 // 键名和组件名一致即可
 let componentsScrollVal = uni.getStorageSync('componentsScrollValGroup')
 if(componentsScrollVal){
@@ -176,7 +175,7 @@ if(componentsScrollVal){
 	}
 	uni.setStorageSync('componentsScrollValGroup', obj);
 }
-/******************************* 存储滚动值-end ***********************/ 
+/******************************* 存储滚动值-end ***********************/
 
 /******************************* 返回按钮-start ***********************/
 const isBackShow = ref(false);
@@ -191,7 +190,7 @@ const goBack = () => {
 		uni.navigateBack();
 	}
 }
-/******************************* 返回按钮-end ***********************/ 
+/******************************* 返回按钮-end ***********************/
 
 // 微信胶囊宽度+right
 const capsuleWidth = computed(() => {
@@ -216,120 +215,29 @@ const navbarPlaceholderHeight = () => {
 	})
 }
 
-/******************************* 定位-start ***********************/ 
-// 获取地图配置
-const currentPosition = ref('定位中...')
-let mapConfig = uni.getStorageSync('mapConfig');
-
-const initPosition = () =>{
-	// #ifdef H5
-	if (getQueryVariable('latng')) {
-		currentPosition.value = "定位中..."
-		let locationInfo: any = systemStore.location;
-		var tempArr = getQueryVariable('latng').split(',');
-		locationInfo.latitude = tempArr[0];
-		locationInfo.longitude = tempArr[1];
-		systemStore.setLocation(locationInfo);
+/************** 定位-start ****************/
+	let isOpenLocation = false;
+	if(topStatusBarData.value && topStatusBarData.value.style == 'style-4') {
+		isOpenLocation = true;
 	}
-	// #endif
-	currentPosition.value = '定位中...';
-	if(uni.getStorageSync('addressByLatlng')){
-		currentPosition.value = uni.getStorageSync('addressByLatlng').formatted_addresses.recommend;
-	}
-	// 定位信息过期后，重新获取定位
-	if(mapConfig.is_open == 1 && locationStorage() && locationStorage().is_expired) {
-		getLocation({
-			fail: (res: any) => {
-				// 拒绝定位，进入默认总店
-				currentPosition.value = "定位中..."
-			}
-		});
-	}	
-}
 
-watch(() => systemStore.location, (nval: any, oval)=> {
-	if (nval.latitude && nval.longitude) {
-		getAddressByLatlngFn()
-	}else{
-		currentPosition.value = "定位中..."
-	}
-},{deep:true})
-
-// 根据经纬度获取位置
-const getAddressByLatlngFn = () => {
-	let data = {
-		latlng: ''
-	};
-	data.latlng = systemStore.location.latitude + ',' + systemStore.location.longitude ;
-	getAddressByLatlng(data).then((res: any) => {
-		if (res.data && Object.keys(res.data).length) {
-			currentPosition.value = res.data.formatted_addresses.recommend; // 结合知名地点形成的描述性地址，更具人性化特点
-			uni.setStorageSync('addressByLatlng', res.data);
-		} else {
-			currentPosition.value = '定位中...';
-		}
-	})
-}
-
-// 打开地图重新选择位置
-const reposition = () => {
-	// #ifdef MP
-	uni.chooseLocation({
-		success: (res) => {
-			var urlencode = cloneDeep(systemStore.location);
-			urlencode = Object.assign(urlencode,res)
-			systemStore.setLocation(urlencode);
-		},
-	    fail: (res)=>{
-	        // 在隐私协议中没有声明chooseLocation:fail api作用域
-	        if(res.errMsg && res.errno) {
-	            if(res.errno == 104){
-	                let msg = '用户未授权隐私权限，选择位置失败';
-	                uni.showToast({title: msg, icon: 'none'})
-	            }else if(res.errno == 112){
-	                let msg = '隐私协议中未声明，打开地图选择位置失败';
-	                uni.showToast({title: msg, icon: 'none'})
-	            }else {
-	                uni.showToast({title: res.errMsg, icon: 'none'})
-	            }
-	        }
-	    }
-	});
-	// #endif
-	
-	// #ifdef H5
-	let backurl = location.origin +  location.pathname;
-	window.location.href = 'https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=' + encodeURIComponent(backurl) + '&key=' + manifestJson.h5.sdkConfigs.maps.qqmap.key + '&referer=myapp';
-	// #endif
-}
-
-const getQueryVariable = (variable:any)=> {
-	var query = window.location.search.substring(1);
-	var vars = query.split('&');
-	for (var i = 0; i < vars.length; i++) {
-		var pair = vars[i].split('=');
-		if (pair[0] == variable) {
-			return pair[1];
-		}
-	}
-	return false;
-}
-/******************************* 定位-end ***********************/ 
+	const locationVal = useLocation(isOpenLocation);
+	locationVal.onLoad();
+	locationVal.initFn();
+/************** 定位-end ****************/
 onMounted(() => {
 	navbarPlaceholderHeight();
 	if (pages.length > 1) {
 		isBackShow.value = true;
 	}
-	if(topStatusBarData.value && topStatusBarData.value.style == 'style-4') {
-        initPosition();
-    }
+	// 刷新定位
+	locationVal.refreshLocationFn();
 });
 
 // 页面onShow调用时，也会触发改方法
 const refresh = ()=>{
-	if(topStatusBarData.value && topStatusBarData.value.style == 'style-4') {
-        initPosition();
-    }
+	// 刷新定位
+	locationVal.refreshLocationFn();
 }
 
 defineExpose({

@@ -11,7 +11,7 @@ class Wechat {
         // #endif
     }
 
-    public init() {
+    public init(callback:any = null) {
         getWechatSdkConfig({
             url: uni.getSystemInfoSync().platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
         }).then((res: any) => {
@@ -22,8 +22,9 @@ class Wechat {
                 timestamp: data.timestamp, // 必填，生成签名的时间戳
                 nonceStr: data.nonceStr, // 必填，生成签名的随机串
                 signature: data.signature,// 必填，签名
-                jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode'] // 必填，需要使用的JS接口列表
+                jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
             });
+			if(callback) callback();
         })
     }
 
@@ -63,6 +64,21 @@ class Wechat {
             });
         })
     }
+	
+	/**
+	 * 获取地理位置接口
+	 * @param {Object} callback
+	 */
+	public getLocation(callback: any) {
+		wx.ready(function() {
+			wx.getLocation({
+				type: 'gcj02',
+				success: function(res) {
+					typeof callback == 'function' && callback(res);
+				}
+			});
+		})
+	}
 }
 
 export default new Wechat()

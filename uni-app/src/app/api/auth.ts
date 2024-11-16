@@ -4,6 +4,9 @@ import request from '@/utils/request'
  * 用户名登录
  */
 export function usernameLogin(data : AnyObject) {
+    if(uni.getStorageSync('pid')){
+        data.pid = uni.getStorageSync('pid');
+    }
     return request.get('login', data, { showErrorMessage: true })
 }
 
@@ -11,6 +14,9 @@ export function usernameLogin(data : AnyObject) {
  * 手机验证码登录
  */
 export function mobileLogin(data : AnyObject) {
+    if(uni.getStorageSync('pid')){
+        data.pid = uni.getStorageSync('pid');
+    }
     return request.post('login/mobile', data, { showErrorMessage: true })
 }
 

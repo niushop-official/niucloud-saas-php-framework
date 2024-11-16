@@ -13,7 +13,9 @@ interface System {
     mapConfig: any,
     initStatus: any, // 初始化状态
     menuButtonInfo: any, // 如果是小程序，获取右上角胶囊的尺寸信息
-    shareCallback: any // 分享回调
+    shareCallback: any, // 分享回调
+	currShippingAddress: any,
+    defaultPositionAddress:any
 }
 
 const useSystemStore = defineStore('system', {
@@ -35,7 +37,9 @@ const useSystemStore = defineStore('system', {
                 right: '',
                 width: ''
             },
-            shareCallback: null
+            shareCallback: null,
+			currShippingAddress: null,
+            defaultPositionAddress:'定位中'
         }
     },
     actions: {
@@ -79,6 +83,7 @@ const useSystemStore = defineStore('system', {
                     configStore.login.is_username = data.login_config.is_username
                     configStore.login.is_mobile = data.login_config.is_mobile
                     configStore.login.is_auth_register = parseInt(data.login_config.is_auth_register)
+                    configStore.login.is_force_access_user_info = parseInt(data.login_config.is_force_access_user_info)
                     configStore.login.is_bind_mobile = parseInt(data.login_config.is_bind_mobile)
                     configStore.login.agreement_show = parseInt(data.login_config.agreement_show)
                     configStore.login.bg_url = data.login_config.bg_url // 背景图
@@ -115,7 +120,16 @@ const useSystemStore = defineStore('system', {
             value.valid_time = date.getTime() / 1000; // 定位信息 5分钟内有效，过期后将重新获取定位信息
             this.location = value;
             uni.setStorageSync('location', value); // 初始化数据调用
-        }
+        },
+		// 当前选择的收货地址信息
+		setCurrShippingAddress(value:any) {
+			this.currShippingAddress = value;
+			if(value){
+				uni.setStorageSync('curr_shipping_address', value);
+			}else{
+				uni.removeStorageSync('curr_shipping_address');
+			}
+		}
     }
 })
 

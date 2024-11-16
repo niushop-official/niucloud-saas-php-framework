@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3952239 */
-  src: url('//at.alicdn.com/t/c/font_3952239_cci6ogjyld.woff2?t=1729334583603') format('woff2'),
-       url('//at.alicdn.com/t/c/font_3952239_cci6ogjyld.woff?t=1729334583603') format('woff'),
-       url('//at.alicdn.com/t/c/font_3952239_cci6ogjyld.ttf?t=1729334583603') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_3952239_w9mu2hnz4eg.woff2?t=1731396621845') format('woff2'),
+  url('//at.alicdn.com/t/c/font_3952239_w9mu2hnz4eg.woff?t=1731396621845') format('woff'),
+  url('//at.alicdn.com/t/c/font_3952239_w9mu2hnz4eg.ttf?t=1731396621845') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icona-paihangbangpc30:before {
+  content: "\e83a";
 }
 
 .iconbiaoqianV6xx2:before {

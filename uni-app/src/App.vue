@@ -121,7 +121,20 @@
                             if (memberInfo && memberInfo.wx_openid) {
                                 uni.setStorageSync('openid', memberInfo.wx_openid)
                             } else {
-                                data.query.code ? login.updateOpenid(data.query.code) : login.getAuthCode({ scopes: 'snsapi_base' })
+                                if (data.query.code) {
+                                    // 检测身份是否合法（当前登录的账号是不是我的），openid有效后才能更新登录
+                                    login.updateOpenid(data.query.code, () => {
+                                        login.authLogin({ code: data.query.code })
+                                    })
+                                } else {
+                                    if (loginConfig.is_force_access_user_info) {
+                                        // 强制获取用户信息
+                                        login.getAuthCode({ scopes: 'snsapi_userinfo' })
+                                    } else {
+                                        // 静默获取
+                                        login.getAuthCode({ scopes: 'snsapi_base' })
+                                    }
+                                }
                             }
                         }
                         // #endif
@@ -163,7 +176,17 @@
                     if (uni.getStorageSync('autoLoginLock') && !uni.getStorageSync('wechat_login_back')) return;
                     if (loginConfig.is_auth_register || uni.getStorageSync('wechat_login_back')) {
                         uni.removeStorageSync('wechat_login_back') // 删除微信公众号手动授权登录回调标识
-                        data.query.code ? login.authLogin({ code: data.query.code }) : login.getAuthCode({ scopes: 'snsapi_base' })
+                        if (data.query.code) {
+                            login.authLogin({ code: data.query.code })
+                        } else {
+                            if (loginConfig.is_force_access_user_info) {
+                                // 强制获取用户信息
+                                login.getAuthCode({ scopes: 'snsapi_userinfo' })
+                            } else {
+                                // 静默获取
+                                login.getAuthCode({ scopes: 'snsapi_base' })
+                            }
+                        }
                     }
                 }
                 // #endif
@@ -173,6 +196,7 @@
     })
 
     onShow(() => {
+		
     })
 
     onHide(() => {

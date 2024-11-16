@@ -47,6 +47,9 @@ export function modifyMember(data : AnyObject) {
  * 登录会员绑定手机号
  */
 export function bindMobile(data : AnyObject) {
+	if(uni.getStorageSync('pid')){
+		data.pid = uni.getStorageSync('pid');
+	}
 	return request.put('member/mobile', data, { showErrorMessage: true })
 }
 

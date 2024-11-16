@@ -1,6 +1,6 @@
 import useMemberStore from '@/stores/member'
 import { t } from '@/locale'
-import { getToken, getAppChannel, getSiteId, redirect, currRoute } from './common'
+import { getToken, getAppChannel, getSiteId, redirect, currRoute, isUrl } from './common'
 import qs from 'qs'
 
 interface RequestConfig {

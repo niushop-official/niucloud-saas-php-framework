@@ -7,7 +7,7 @@
 				<view class="bg-img-box" :style="bgImgBoxStyle"></view>
 			</view>
 			<view class="fixed-wrap" :style="fixedStyle">
-				<view class="diy-search-wrap relative z-10" @click="diyStore.toRedirect(diyComponent.search.link)" :style="navbarInnerStyle">
+				<view v-if="diyComponent.search.style == 'style-1'" class="diy-search-wrap relative z-10" @click="diyStore.toRedirect(diyComponent.search.link)" :style="navbarInnerStyle">
 					<view class="img-wrap" v-if="diyComponent.search.logo">
 						<image :src="img(diyComponent.search.logo)" mode="aspectFit"/>
 					</view>
@@ -21,7 +21,35 @@
 						</swiper>
 					</view>
 				</view>
-				
+				<view v-if="diyComponent.search.style == 'style-2'" class="diy-search-wrap style-2 relative z-10" @click="diyStore.toRedirect(diyComponent.search.link)" >
+					<view class="flex items-center" :style="navbarInnerStyle">
+						<view class="img-wrap" v-if="diyComponent.search.logo">
+							<image :src="img(diyComponent.search.logo)" mode="aspectFit"/>
+						</view>
+						<view :style="searchSubTitleCss" class="text-[24rpx] h-[38rpx] flex items-center px-[12rpx] rounded-r-[20rpx] rounded-t-[20rpx] rounded-bl-[2rpx]">{{diyComponent.search.subTitle.text}}</view>
+					</view>
+					<view class="flex items-center w-full mt-[16rpx]">
+						<view @click.stop="locationVal.repositionFn()" v-if="systemStore.currShippingAddress" :style="{color: diyComponent.search.positionColor}" class="mr-[30rpx]">
+							<view class="flex items-baseline font-500">
+								<text class="text-[24rpx] mr-[2rpx]">{{systemStore.currShippingAddress.city}}</text>
+								<text class="iconfont iconxiaV6xx !text-[24rpx]"></text>
+							</view>
+							<view class="text-[18rpx] mt-[10rpx] truncate max-w-[160rpx]" v-if="systemStore.currShippingAddress.community">{{systemStore.currShippingAddress.community}}</view>
+						</view>
+						<view @click.stop="locationVal.repositionFn()" class="text-[24rpx] mr-[30rpx] truncate max-w-[160rpx]" :style="{color: diyComponent.search.positionColor}" v-else>{{ systemStore.defaultPositionAddress }}</view>
+
+						<view class="search-content" :style="{backgroundColor: diyComponent.search.bgColor }" @click.stop="diyStore.toRedirect(diyComponent.search.link)">
+							<text class="input-content text-[#fff] text-[24rpx] leading-[68rpx]" :style="{color: diyComponent.search.color }">{{isShowSearchPlaceholder ? diyComponent.search.text : ''}}</text>
+							<text class="nc-iconfont nc-icon-sousuo-duanV6xx1 w-[80rpx] h-[52rpx] flex items-center justify-center rounded-[50rpx] text-[28rpx] text-[#fff]" :style="{backgroundColor: diyComponent.search.btnBgColor, color: diyComponent.search.btnColor }"></text>
+							<swiper class="swiper-wrap" :interval="diyComponent.search.hotWord.interval * 1000" autoplay="true" vertical="true" circular="true" v-if="!isShowSearchPlaceholder">
+								<swiper-item class="swiper-item" v-for="(item) in diyComponent.search.hotWord.list" :key="item.id">
+									<view class="leading-[64rpx] text-[24rpx]" :style="{color: diyComponent.search.color }">{{ item.text }}</view>
+								</swiper-item>
+							</swiper>
+						</view>
+					</view>
+				</view>
+
 				<view class="tab-list-wrap relative z-10" v-if="diyComponent.tab.control">
 					<scroll-view scroll-x="true" class="scroll-wrap" :scroll-into-view="'a' + currTabIndex">
 						<view @click="changeData({ source : 'home' },-1)" class="scroll-item" :class="[{ active: currTabIndex == -1 }]">
@@ -35,18 +63,18 @@
 					</scroll-view>
 					<view v-if="diyComponent.tab.list.length" class="absolute tab-btn iconfont icona-yingyongliebiaoV6xx-32" @click="tabAllPopup = true"></view>
 				</view>
-                
+
 				<view class="bg-img" v-if="fixedStyleBg">
 					<image v-if="diyComponent.swiper.control && diyComponent.swiper.list && diyComponent.swiper.list[swiperIndex].imageUrl" :src="img(diyComponent.swiper.list[swiperIndex].imageUrl)" mode="widthFix" class="w-full h-full" :show-menu-by-longpress="true"/>
 					<view v-else class="w-full h-full bg-[#fff]"></view>
 				</view>
 			</view>
-			
+
 			<!-- 解决fixed定位后导航栏塌陷的问题 -->
 			<template v-if="diyStore.mode != 'decorate'">
 				<view v-if="diyComponent.positionWay == 'fixed' && props.scrollBool != undefined && props.scrollBool != -1" class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: moduleHeight }"></view>
 			</template>
-			
+
 			<!-- 轮播图 -->
 			<view class="relative" :class="{'mx-[20rpx]': swiperStyleBool && diyComponent.swiper.swiperStyle != 'style-3', 'swiper-style-3': diyComponent.swiper.swiperStyle == 'style-3'}" :style="carouselSwiperStyle()">
 				<swiper v-if="diyComponent.swiper.control" class="swiper" :style="{ height: imgHeight }" autoplay="true" circular="true" @change="swiperChange"
@@ -80,7 +108,7 @@
 				</view>
 				<!-- #endif -->
 			</view>
-			
+
 			<!-- 分类展开 -->
 			<u-popup :safeAreaInsetTop="true" :show="tabAllPopup" mode="top" @close="tabAllPopup = false">
 				<view class="text-sm px-[30rpx] pt-3" :style="{'padding-top':(menuButtonInfo.top+'px')}">全部分类</view>
@@ -113,8 +141,11 @@
 	import { ref, reactive, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
 	import { img } from '@/utils/common';
 	import useDiyStore from '@/app/stores/diy';
-    import diyGroup from '@/addon/components/diy/group/index.vue'
+    import diyGroup from '@/addon/components/diy/group/index.vue';
     import { getDiyInfo } from '@/app/api/diy';
+    import {useLocation} from '@/hooks/useLocation'
+	import useSystemStore from '@/stores/system';
+	const systemStore = useSystemStore();
 
 	const instance = getCurrentInstance();
 	const props = defineProps(['component', 'index', 'pullDownRefreshCount', 'global', 'scrollBool']);
@@ -126,7 +157,18 @@
 			return props.component;
 		}
 	})
-	
+
+	/************** 定位-start ****************/
+	let isOpenLocation = false;
+	if(diyComponent.value && diyComponent.value.search.style == 'style-2' && diyStore.mode != 'decorate') {
+		isOpenLocation = true;
+	}
+
+	const locationVal = useLocation(isOpenLocation);
+	locationVal.onLoad();
+	locationVal.initFn();
+	/************** 定位-end ****************/
+
 	const warpCss = computed(() => {
 		var style = '';
         if(diyComponent.value.componentStartBgColor) {
@@ -139,6 +181,7 @@
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
 		return style;
 	})
+
 
 	watch(
 		() => props.pullDownRefreshCount,
@@ -160,7 +203,7 @@
 					moduleHeight.value = '';
 				}
 			})
-        }) 
+        })
     }
 
     const fixedStyleBg = ref(false);
@@ -170,25 +213,25 @@
 			style += 'position: absolute;z-index: 10;left: 0;right: 0;';
 		}
         if (diyStore.mode == 'decorate') return style;
-		
+
         // #ifdef H5
         if(props.global.topStatusBar.isShow && props.global.topStatusBar.style == 'style-4') {
             style += 'top:' + diyStore.topTabarHeight + 'px;';
         }
         // #endif
-		
+
         if(diyComponent.value.positionWay == 'fixed') {
 			if (props.scrollBool != undefined && props.scrollBool != -1) {
 				style += 'position: fixed;z-index: 10;left: 0;right: 0;';
 			}
-			
+
             // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
 			menuButtonInfo = uni.getMenuButtonBoundingClientRect();
 			if(props.global.topStatusBar.isShow) {
 				style += 'top:' + diyStore.topTabarHeight + 'px;';
 			}
             // #endif
-			
+
 			fixedStyleBg.value = false;
             if (props.scrollBool == 1) {
 				let str = diyComponent.value.fixedBgColor || "";
@@ -204,7 +247,7 @@
         }
         return style;
 	})
-	
+
 	// 轮播样式
 	const carouselSwiperStyle = ()=> {
 		let style = "";
@@ -285,6 +328,14 @@
         return style;
     })
 
+	const searchSubTitleCss = computed(() => {
+	    var style = '';
+	    if (diyComponent.value.search.subTitle.textColor) style += 'color:' + diyComponent.value.search.subTitle.textColor + ';';
+	    if (diyComponent.value.search.subTitle.startColor && diyComponent.value.search.subTitle.endColor) style += `background:linear-gradient(${diyComponent.value.search.subTitle.startColor}, ${diyComponent.value.search.subTitle.endColor});`;
+		else style += 'background-color:' + (diyComponent.value.search.subTitle.startColor || diyComponent.value.search.subTitle.endColor) + ';';
+		return style;
+	})
+
 	const currTabIndex = ref(-1)
 
 	const currentSource = ref('')
@@ -347,15 +398,16 @@
 			}else if(props.global.topStatusBar){
 				navbarInnerStyle.value = ''
 			}
-			
+
         }
         // #endif
-
     });
-	
+
 	const refresh = ()=> {
 		setModuleLocation();
-		
+		// 刷新定位
+		locationVal.refreshLocationFn();
+
 		changeData({ source : 'home' },-1)
         diyComponent.value.swiper.list.forEach((item : any) => {
             if (item.imageUrl == '') {
@@ -368,9 +420,9 @@
     const diyPageData = reactive({
         pageMode: 'diy',
         title: '',
-        global: <any>{},
+        global: {},
         value: []
-    })
+    });
 
     const getDiyInfoFn = (id:any) => {
 	    if(!id){
@@ -416,17 +468,17 @@
             }
         });
     }
-	
+
 	// 轮播指示器
 	let isShowDots = ref(true)
 	// #ifdef H5
 	isShowDots.value = true;
 	// #endif
-	
+
 	// #ifdef MP-WEIXIN
 	isShowDots.value = false;
 	// #endif
-	
+
 	/******************************* 存储滚动值-start ***********************/
 	// 键名和组件名一致即可
 	let componentsScrollVal = uni.getStorageSync('componentsScrollValGroup')
@@ -439,8 +491,7 @@
 		}
 		uni.setStorageSync('componentsScrollValGroup', obj);
 	}
-	/******************************* 存储滚动值-end ***********************/ 
-
+	/******************************* 存储滚动值-end ***********************/
 </script>
 
 <style lang="scss" scoped>
@@ -469,7 +520,7 @@
 			}
 		}
 	}
-	
+
 	.fixed-wrap {
 		&.fixed {
 			position: fixed;
@@ -533,6 +584,13 @@
 			}
 		}
 
+		&.style-2{
+			flex-direction: column;
+			align-items: baseline;
+			.img-wrap{
+				margin-right: 10rpx;
+			}
+		}
 	}
 
 	.tab-list-wrap {
@@ -558,7 +616,7 @@
 				color: #333;
 				line-height: 32rpx;
 			}
-		
+
 			&.active {
 				position: relative;
 				.name {
@@ -569,7 +627,7 @@
 		}
 		.tab-btn{
 			font-size: 34rpx;
-			/* #ifdef H5 */ 
+			/* #ifdef H5 */
 			top: 22rpx;
 			right: 20rpx;
 			line-height: 1;
@@ -626,7 +684,7 @@
 		width: 12rpx;
 		height: 12rpx;
 	}
-	
+
 	// 指示器样式二
 	.swiper.ns-indicator-dots :deep(.uni-swiper-dot) {
 		width: 18rpx;
@@ -636,7 +694,7 @@
 	.swiper.ns-indicator-dots :deep(.uni-swiper-dot-active) {
 		width: 36rpx;
 	}
-	
+
 	// 指示器样式三
 	.swiper.ns-indicator-dots-three :deep(.uni-swiper-dot) {
 		width: 8rpx;
@@ -650,7 +708,7 @@
 	.swiper.ns-indicator-dots-three :deep(.uni-swiper-dot-active) {
 		width: 30rpx;
 	}
-	
+
 	.swiper-dot-box {
 		position: absolute;
 		bottom: 20rpx;
@@ -660,15 +718,15 @@
 		justify-content: center;
 		padding: 0 80rpx 8rpx;
 		box-sizing: border-box;
-	
+
 		&.swiper-left {
 			justify-content: flex-start;
 		}
-	
+
 		&.swiper-right {
 			justify-content: flex-end;
 		}
-	
+
 		.swiper-dot {
 			background-color: #b2b2b2;
 			width: 12rpx;
@@ -676,13 +734,13 @@
 			height: 12rpx;
 			margin: 8rpx;
 		}
-	
+
 		&.straightLine {
 			.swiper-dot {
 				width: 18rpx;
 				height: 6rpx;
 				border-radius: 6rpx;
-	
+
 				&.active {
 					width: 36rpx;
 				}
@@ -704,7 +762,7 @@
 			}
 		}
 	}
-	
+
 	.swiper-style-3{
 		:deep(.uni-swiper-dots-horizontal){
 			bottom: 46rpx !important;
