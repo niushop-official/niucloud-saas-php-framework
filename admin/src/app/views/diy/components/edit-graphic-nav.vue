@@ -45,7 +45,6 @@
 						</el-radio-group>
 					</el-form-item>
 				</view>
-
 			</el-form>
 		</div>
 		<div class="edit-attr-item-wrap">
@@ -86,10 +85,10 @@
 			<h3 class="mb-[10px]">{{ t('graphicNavImageSet') }}</h3>
 			<el-form label-width="90px" class="px-[10px]">
 				<el-form-item :label="t('graphicNavImageSize')">
-					<el-slider v-model="diyStore.editComponent.imageSize" show-input size="small" class="ml-[10px] graphic-nav-slider" :min="20" :max="60"/>
+					<el-slider v-model="diyStore.editComponent.imageSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="20" :max="60"/>
 				</el-form-item>
 				<el-form-item :label="t('graphicNavAroundRadius')">
-					<el-slider v-model="diyStore.editComponent.aroundRadius" show-input size="small" class="ml-[10px] graphic-nav-slider" :max="50"/>
+					<el-slider v-model="diyStore.editComponent.aroundRadius" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50"/>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -97,7 +96,7 @@
 			<h3 class="mb-[10px]">{{ t('textSet') }}</h3>
 			<el-form label-width="90px" class="px-[10px]">
 				<el-form-item :label="t('textFontSize')">
-					<el-slider v-model="diyStore.editComponent.font.size" show-input size="small" class="ml-[10px] graphic-nav-slider" :min="12" :max="16"/>
+					<el-slider v-model="diyStore.editComponent.font.size" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="16"/>
 				</el-form-item>
 				<el-form-item :label="t('textFontWeight')">
 					<el-radio-group v-model="diyStore.editComponent.font.weight">
@@ -109,6 +108,31 @@
 					<el-color-picker v-model="diyStore.editComponent.font.color" show-alpha :predefine="diyStore.predefineColors"/>
 				</el-form-item>
 
+			</el-form>
+		</div>
+		<div class="edit-attr-item-wrap" v-show="diyStore.editComponent.showStyle == 'pageSlide' && diyStore.editComponent.layout == 'horizontal'">
+			<h3 class="mb-[10px]">{{ t('carouselSearchSwiperIndicatorSet') }}</h3>
+			<el-form label-width="100px" class="px-[10px]">
+				<el-form-item :label="t('carouselSearchSwiperIndicatorStyle')"> 
+					<el-radio-group v-model="diyStore.editComponent.swiper.indicatorStyle">
+						<el-radio label="style-1">{{ t('carouselSearchSwiperIndicatorStyle1') }}</el-radio>
+						<el-radio label="style-2">{{ t('carouselSearchSwiperIndicatorStyle2') }}</el-radio>
+						<el-radio label="style-3">{{ t('carouselSearchSwiperIndicatorStyle3') }}</el-radio>
+					</el-radio-group>
+				</el-form-item>
+				<el-form-item :label="t('carouselSearchSwiperIndicatorAlign')">
+					<el-radio-group v-model="diyStore.editComponent.swiper.indicatorAlign">
+						<el-radio label="left">{{ t('alignLeft') }}</el-radio>
+						<el-radio label="center">{{ t('alignCenter') }}</el-radio>
+						<el-radio label="right">{{ t('alignRight') }}</el-radio>
+					</el-radio-group>
+				</el-form-item>
+				<el-form-item :label="t('noColor')">
+					<el-color-picker v-model="diyStore.editComponent.swiper.indicatorColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+				<el-form-item :label="t('selectColor')">
+					<el-color-picker v-model="diyStore.editComponent.swiper.indicatorActiveColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
 			</el-form>
 		</div>
 
@@ -130,7 +154,6 @@ import useDiyStore from '@/stores/modules/diy'
 
 const diyStore = useDiyStore()
 diyStore.editComponent.ignore = [] // 忽略公共属性
-
 // 组件验证
 diyStore.editComponent.verify = (index: number) => {
     const res = { code: true, message: '' }
@@ -215,19 +238,12 @@ const changePageCount = (value:any)=>{
     }else if(value == '2'){
         diyStore.editComponent.showStyle = 'fixed';
     }
-}
+}	
 
 defineExpose({})
 
 </script>
 
-<style lang="scss">
-	.graphic-nav-slider {
-		.el-slider__input {
-			width: 100px;
-		}
-	}
-</style>
 <style lang="scss" scoped>
 	.edit-graphic-nav {
 

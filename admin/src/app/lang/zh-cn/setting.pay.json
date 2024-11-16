@@ -63,5 +63,7 @@
     "h5Domain": "H5支付域名",
     "h5DomainTips": "需在微信商户号>产品中心>开发配置>支付配置 H5支付域名中添加该域名",
     "nativeDomain": "Native支付回调链接",
-    "nativeDomainTips": "需在微信商户号>产品中心>开发配置>支付配置 Native支付回调链接中添加该链接"
+    "nativeDomainTips": "需在微信商户号>产品中心>开发配置>支付配置 Native支付回调链接中添加该链接",
+    "wechatpayPublicCert": "微信支付公钥",
+    "wechatpayPublicCertId": "微信支付公钥ID"
 }

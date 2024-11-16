@@ -30,6 +30,11 @@
                     <el-switch v-model="formData.is_auth_register" :active-value="1" :inactive-value="0" />
                     <div class="form-tip">{{ t('isAuthRegisterTip') }}</div>
                 </el-form-item>
+
+                <el-form-item :label="t('isForceAccessUserInfo')" prop="formData.is_force_access_user_info" v-show="formData.is_auth_register == 1">
+                    <el-switch v-model="formData.is_force_access_user_info" :active-value="1" :inactive-value="0" />
+                    <div class="form-tip">{{ t('isForceAccessUserInfoTip') }}</div>
+                </el-form-item>
             </el-card>
 
             <el-card class="box-card mt-[15px] !border-none" shadow="never">
@@ -72,6 +77,7 @@ const formData:any = reactive({
     is_username: 0,
     is_mobile: 0,
     is_auth_register: 0,
+    is_force_access_user_info: 0,
     is_bind_mobile: 0,
     agreement_show: 0,
     bg_url: '',

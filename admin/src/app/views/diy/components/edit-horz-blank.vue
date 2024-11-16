@@ -5,7 +5,7 @@
 			<h3 class="mb-[10px]">{{ t('blankHeightSet') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
 				<el-form-item :label="t('blankHeight')">
-					<el-slider v-model="diyStore.editComponent.height" show-input size="small" max="200" class="ml-[10px] horz-blank-slider"/>
+					<el-slider v-model="diyStore.editComponent.height" show-input size="small" max="200" class="ml-[10px] diy-nav-slider"/>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -31,11 +31,4 @@ defineExpose({})
 
 </script>
 
-<style lang="scss">
-	.horz-blank-slider {
-		.el-slider__input {
-			width: 100px;
-		}
-	}
-</style>
 <style lang="scss" scoped></style>

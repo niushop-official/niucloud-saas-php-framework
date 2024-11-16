@@ -207,7 +207,7 @@ const loginFn = (data = {}) => {
 
 <style lang="scss">
 .login-wrap {
-    background-image: url("@/app/assets/images/login/login_index_bg.png");
+    background-image: url("@/app/assets/images/login/login_index_bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }

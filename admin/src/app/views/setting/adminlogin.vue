@@ -5,7 +5,7 @@
             <el-card class="box-card !border-none" shadow="never">
                 <h3 class="panel-title !text-sm">{{ t('admin') }}</h3>
 
-                <el-form-item :label="t('isCaptcha')" prop="formData.is_auth_register">
+                <el-form-item :label="t('isCaptcha')">
                     <el-switch v-model="formData.is_captcha" :active-value="1" :inactive-value="0" />
                 </el-form-item>
                 <el-form-item :label="t('bgImg')">
@@ -17,7 +17,7 @@
             <el-card class="box-card mt-[15px] !border-none" shadow="never">
                 <h3 class="panel-title !text-sm">{{ t('site') }}</h3>
 
-                <el-form-item :label="t('isCaptcha')" prop="formData.is_auth_register">
+                <el-form-item :label="t('isCaptcha')">
                     <el-switch v-model="formData.is_site_captcha" :active-value="1" :inactive-value="0" />
                 </el-form-item>
                 <el-form-item :label="t('bgImg')">

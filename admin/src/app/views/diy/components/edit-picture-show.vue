@@ -104,10 +104,10 @@
 			<h3 class="mb-[10px]">{{ t('pictureShowBlockStyle') }}</h3>
 			<el-form label-width="90px" class="px-[10px]">
 				<el-form-item :label="t('topRounded')">
-                    <el-slider v-model="diyStore.editComponent.moduleRounded.topRounded" show-input size="small" class="ml-[10px] graphic-nav-slider" :max="100"/>
+                    <el-slider v-model="diyStore.editComponent.moduleRounded.topRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="100"/>
                 </el-form-item>
                 <el-form-item :label="t('bottomRounded')">
-                    <el-slider v-model="diyStore.editComponent.moduleRounded.bottomRounded" show-input size="small" class="ml-[10px] graphic-nav-slider" :max="100"/>
+                    <el-slider v-model="diyStore.editComponent.moduleRounded.bottomRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="100"/>
                 </el-form-item>
 			</el-form>
 		</div>

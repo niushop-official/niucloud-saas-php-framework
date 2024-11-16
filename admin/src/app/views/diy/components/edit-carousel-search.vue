@@ -26,9 +26,18 @@
 		<div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('carouselSearchSet') }}</h3>
 			<el-form label-width="100px" class="px-[10px]">
-				<div class="text-sm text-gray-400 mb-[10px]">{{ t('carouselSearchLogoTips') }}</div>
+				<el-form-item :label="t('selectStyle')" class="flex">
+					<span class="text-primary flex-1 cursor-pointer" @click="showSearchStyle">{{ diyStore.editComponent.search.styleName }}</span>
+					<el-icon>
+						<ArrowRight />
+					</el-icon>
+				</el-form-item>
+                <el-form-item :label="t('carouselSearchSubTitle')" v-if="diyStore.editComponent.search.style == 'style-2'">
+                    <el-input v-model.trim="diyStore.editComponent.search.subTitle.text" :placeholder="t('carouselSearchSubTitlePlaceholder')" clearable maxlength="10" show-word-limit />
+				</el-form-item>
 				<el-form-item :label="t('logo')">
 					<upload-image v-model="diyStore.editComponent.search.logo" :limit="1" />
+				    <div class="text-sm text-gray-400 mb-[10px]">{{ t('carouselSearchLogoTips') }}</div>
 				</el-form-item>
 				<el-form-item :label="t('carouselSearchText')">
 					<div>
@@ -39,16 +48,34 @@
 				<el-form-item :label="t('link')">
 					<diy-link v-model="diyStore.editComponent.search.link"/>
 				</el-form-item>
-
 			</el-form>
-		</div>
 
-		<div class="edit-attr-item-wrap">
+            <el-dialog v-model="showSearchDialog" :title="t('selectStyle')" width="500px">
+
+				<div class="flex flex-wrap">
+					<template v-for="(item,index) in searchStyleList" :key="index">
+						<div :class="{ 'border-primary': selectSearchStyle.value == item.value }" @click="changeSearchStyle(item)" class="flex items-center justify-center overflow-hidden w-[200px] h-[100px] m-[6px] cursor-pointer border bg-[#eee]">
+							<img :src="img(item.url)" />
+						</div>
+					</template>
+				</div>
+
+				<template #footer>
+					<span class="dialog-footer">
+						<el-button @click="showSearchDialog = false">{{ t('cancel') }}</el-button>
+						<el-button type="primary" @click="confirmSearchStyle">{{ t('confirm') }}</el-button>
+					</span>
+				</template>
+
+			</el-dialog>
+		</div>
+        
+		<div class="edit-attr-item-wrap mb-[20px]">
 			<h3 class="mb-[10px]">{{ t('carouselSearchHotWordSet') }}</h3>
 			<el-form label-width="100px" class="px-[10px]">
 
 				<el-form-item :label="t('carouselSearchHotWordInterval')">
-					<el-slider v-model="diyStore.editComponent.search.hotWord.interval" show-input size="small" class="ml-[10px] horz-blank-slider" :min="1" :max="10"/>
+					<el-slider v-model="diyStore.editComponent.search.hotWord.interval" show-input size="small" class="ml-[10px] diy-nav-slider" :min="1" :max="10"/>
 				</el-form-item>
 
 				<p class="text-sm text-gray-400 mb-[10px]">{{ t('dragMouseAdjustOrder') }}</p>
@@ -70,108 +97,131 @@
 
 			</el-form>
 		</div>
-
+        
 		<el-collapse v-model="activeNames" @change="handleChange" class="collapse-wrap">
-				<el-collapse-item :title="t('carouselSearchTabSet')" name="tab">
-					<div class="edit-attr-item-wrap">
-						<el-form label-width="100px" class="px-[10px]">
-							<el-form-item :label="t('carouselSearchTabControl')">
-								<el-switch v-model="diyStore.editComponent.tab.control" />
-							</el-form-item>
+            <el-collapse-item :title="t('carouselSearchTabSet')" name="tab">
+                <div class="edit-attr-item-wrap">
+                    <el-form label-width="100px" class="px-[10px]">
+                        <el-form-item :label="t('carouselSearchTabControl')">
+                            <el-switch v-model="diyStore.editComponent.tab.control" />
+                        </el-form-item>
 
-							<p class="text-sm text-gray-400 mb-[10px]">{{ t('dragMouseAdjustOrder') }}</p>
+                        <p class="text-sm text-gray-400 mb-[10px]">{{ t('dragMouseAdjustOrder') }}</p>
 
-							<div ref="tabBoxRef">
-								<div v-for="(item,index) in diyStore.editComponent.tab.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
+                        <div ref="tabBoxRef">
+                            <div v-for="(item,index) in diyStore.editComponent.tab.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
 
-									<el-form-item :label="t('carouselSearchTabCategoryText')">
-										<el-input v-model.trim="item.text" :placeholder="t('carouselSearchTabCategoryTextPlaceholder')" clearable maxlength="4" show-word-limit/>
-									</el-form-item>
+                                <el-form-item :label="t('carouselSearchTabCategoryText')">
+                                    <el-input v-model.trim="item.text" :placeholder="t('carouselSearchTabCategoryTextPlaceholder')" clearable maxlength="4" show-word-limit/>
+                                </el-form-item>
 
-									<el-form-item :label="t('dataSources')">
-										<el-input v-model.trim="item.diy_title" :placeholder="t('selectDiyPagePlaceholder')" readonly class="select-diy-page-input" @click="diyPageShowDialogOpen(index)">
-											<template #suffix>
-												<div @click.stop="tabClear(index)">
-													<el-icon v-if="item.diy_title">
-														<Close />
-													</el-icon>
-													<el-icon v-else>
-														<ArrowRight />
-													</el-icon>
-												</div>
-											</template>
-										</el-input>
-									</el-form-item>
+                                <el-form-item :label="t('dataSources')">
+                                    <el-input v-model.trim="item.diy_title" :placeholder="t('selectDiyPagePlaceholder')" readonly class="select-diy-page-input" @click="diyPageShowDialogOpen(index)">
+                                        <template #suffix>
+                                            <div @click.stop="tabClear(index)">
+                                                <el-icon v-if="item.diy_title">
+                                                    <Close />
+                                                </el-icon>
+                                                <el-icon v-else>
+                                                    <ArrowRight />
+                                                </el-icon>
+                                            </div>
+                                        </template>
+                                    </el-input>
+                                </el-form-item>
 
-									<div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.tab.list.length > 1" @click="diyStore.editComponent.tab.list.splice(index,1)">
-										<icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
-									</div>
+                                <div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.tab.list.length > 1" @click="diyStore.editComponent.tab.list.splice(index,1)">
+                                    <icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
+                                </div>
 
-								</div>
-								<el-button v-show="diyStore.editComponent.tab.list.length < 50" class="w-full" @click="addTabItem">{{ t('carouselSearchAddTabItem') }}</el-button>
-							</div>
+                            </div>
+                            <el-button v-show="diyStore.editComponent.tab.list.length < 50" class="w-full" @click="addTabItem">{{ t('carouselSearchAddTabItem') }}</el-button>
+                        </div>
 
-							<!-- 选择微页面弹出框 -->
-							<el-dialog v-model="diyPageShowDialog" :title="t('selectSourcesDiyPage')" width="1000px" :close-on-press-escape="false" :destroy-on-close="true" :close-on-click-modal="false">
-								<el-table :data="diyPageTable.data" ref="diyPageTableRef" size="large" v-loading="diyPageTable.loading" height="490px" @current-change="handleCurrentDiyPageChange" row-key="id" highlight-current-row>
-									<template #empty>
-										<span>{{ !diyPageTable.loading ? t('emptyData') : '' }}</span>
-									</template>
-									<el-table-column prop="page_title" :label="t('diyPageTitle')" min-width="120" />
-									<el-table-column prop="addon_name" :label="t('diyPageTypeName')" min-width="80" />
-									<el-table-column prop="type_name" :label="t('diyPageForAddon')" min-width="80" />
-								</el-table>
-								<div class="mt-[16px] flex justify-end">
-									<el-pagination v-model:current-page="diyPageTable.page" v-model:page-size="diyPageTable.limit"
-									               layout="total, sizes, prev, pager, next, jumper" :total="diyPageTable.total"
-									               @size-change="loadDiyPageList" @current-change="loadDiyPageList" />
-								</div>
-								<div class="flex items-center justify-end mt-[15px]">
-									<el-button type="primary" @click="saveDiyPageId">{{ t('confirm') }}</el-button>
-									<el-button @click="diyPageShowDialog = false">{{ t('cancel') }}</el-button>
-								</div>
-							</el-dialog>
+                        <!-- 选择微页面弹出框 -->
+                        <el-dialog v-model="diyPageShowDialog" :title="t('selectSourcesDiyPage')" width="1000px" :close-on-press-escape="false" :destroy-on-close="true" :close-on-click-modal="false">
+                            <el-table :data="diyPageTable.data" ref="diyPageTableRef" size="large" v-loading="diyPageTable.loading" height="490px" @current-change="handleCurrentDiyPageChange" row-key="id" highlight-current-row>
+                                <template #empty>
+                                    <span>{{ !diyPageTable.loading ? t('emptyData') : '' }}</span>
+                                </template>
+                                <el-table-column prop="page_title" :label="t('diyPageTitle')" min-width="120" />
+                                <el-table-column prop="addon_name" :label="t('diyPageTypeName')" min-width="80" />
+                                <el-table-column prop="type_name" :label="t('diyPageForAddon')" min-width="80" />
+                            </el-table>
+                            <div class="mt-[16px] flex justify-end">
+                                <el-pagination v-model:current-page="diyPageTable.page" v-model:page-size="diyPageTable.limit"
+                                                layout="total, sizes, prev, pager, next, jumper" :total="diyPageTable.total"
+                                                @size-change="loadDiyPageList" @current-change="loadDiyPageList" />
+                            </div>
+                            <div class="flex items-center justify-end mt-[15px]">
+                                <el-button type="primary" @click="saveDiyPageId">{{ t('confirm') }}</el-button>
+                                <el-button @click="diyPageShowDialog = false">{{ t('cancel') }}</el-button>
+                            </div>
+                        </el-dialog>
 
-						</el-form>
-					</div>
-				</el-collapse-item>
-				<el-collapse-item :title="t('carouselSearchSwiperSet')" name="swiper">
-					<el-form label-width="100px" class="px-[10px]">
-						<el-form-item :label="t('carouselSearchSwiperControl')">
-							<el-switch v-model="diyStore.editComponent.swiper.control" />
-						</el-form-item>
-						<el-form-item :label="t('carouselSearchSwiperInterval')">
-							<el-slider v-model="diyStore.editComponent.swiper.interval" show-input size="small" class="ml-[10px] horz-blank-slider" :min="1" :max="10"/>
-						</el-form-item>
+                    </el-form>
+                </div>
+            </el-collapse-item>
+            <el-collapse-item :title="t('carouselSearchSwiperSet')" name="swiper">
+                <el-form label-width="100px" class="px-[10px]">
+                    <el-form-item :label="t('carouselSearchSwiperControl')">
+                        <el-switch v-model="diyStore.editComponent.swiper.control" />
+                    </el-form-item>
+                    <el-form-item :label="t('carouselSearchSwiperInterval')">
+                        <el-slider v-model="diyStore.editComponent.swiper.interval" show-input size="small" class="ml-[10px] diy-nav-slider" :min="1" :max="10"/>
+                    </el-form-item>
 
-						<div class="text-sm text-gray-400 mb-[10px]">{{ t('carouselSearchSwiperTips') }}</div>
+                    <div class="text-sm text-gray-400 mb-[10px]">{{ t('carouselSearchSwiperTips') }}</div>
 
-						<div ref="imageBoxRef">
-							<div v-for="(item,index) in diyStore.editComponent.swiper.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
-								<el-form-item :label="t('image')">
-									<upload-image v-model="item.imageUrl" :limit="1" @change="selectImg" />
-								</el-form-item>
+                    <div ref="imageBoxRef">
+                        <div v-for="(item,index) in diyStore.editComponent.swiper.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
+                            <el-form-item :label="t('image')">
+                                <upload-image v-model="item.imageUrl" :limit="1" @change="selectImg" />
+                            </el-form-item>
 
-								<div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.swiper.list.length > 1" @click="diyStore.editComponent.swiper.list.splice(index,1)">
-									<icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
-								</div>
+                            <div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.swiper.list.length > 1" @click="diyStore.editComponent.swiper.list.splice(index,1)">
+                                <icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
+                            </div>
 
-								<el-form-item :label="t('link')">
-									<diy-link v-model="item.link"/>
-								</el-form-item>
-							</div>
-						</div>
+                            <el-form-item :label="t('link')">
+                                <diy-link v-model="item.link"/>
+                            </el-form-item>
+                        </div>
+                    </div>
 
-						<el-button v-show="diyStore.editComponent.swiper.list.length < 10" class="w-full" @click="addImageAd">{{ t('addImageAd') }}</el-button>
+                    <el-button v-show="diyStore.editComponent.swiper.list.length < 10" class="w-full" @click="addImageAd">{{ t('addImageAd') }}</el-button>
 
-					</el-form>
-				</el-collapse-item>
-			</el-collapse>
+                </el-form>
+            </el-collapse-item>
+        </el-collapse>
 
 	</div>
 
 	<!-- 样式 -->
 	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+        <div class="edit-attr-item-wrap" v-if="diyStore.editComponent.search.style == 'style-2'">
+			<h3 class="mb-[10px]">{{ t('carouselSearchPositionStyle') }}</h3>
+			<el-form label-width="100px" class="px-[10px]">
+				<el-form-item :label="t('carouselSearchTextColor')">
+					<el-color-picker v-model="diyStore.editComponent.search.positionColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+			</el-form>
+		</div>
+        
+        <div class="edit-attr-item-wrap" v-if="diyStore.editComponent.search.style == 'style-2'">
+			<h3 class="mb-[10px]">{{ t('carouselSearchSubTitleStyle') }}</h3>
+			<el-form label-width="100px" class="px-[10px]">
+				<el-form-item :label="t('carouselSearchTextColor')">
+					<el-color-picker v-model="diyStore.editComponent.search.subTitle.textColor" show-alpha :predefine="diyStore.predefineColors"/>
+				</el-form-item>
+				<el-form-item :label="t('carouselSearchBgColor')">
+                    <el-color-picker v-model="diyStore.editComponent.search.subTitle.startColor" :predefine="diyStore.predefineColors" show-alpha/>
+                    <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
+                    <el-color-picker v-model="diyStore.editComponent.search.subTitle.endColor" :predefine="diyStore.predefineColors" show-alpha/>
+				</el-form-item>
+			</el-form>
+		</div>
+
         <div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('carouselSearchStyle') }}</h3>
 			<el-form label-width="100px" class="px-[10px]">
@@ -219,10 +269,10 @@
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item :label="t('topRounded')">
-					<el-slider v-model="diyStore.editComponent.swiper.topRounded" show-input size="small" class="ml-[10px] horz-blank-slider" :max="50" />
+					<el-slider v-model="diyStore.editComponent.swiper.topRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50" />
 				</el-form-item>
 				<el-form-item :label="t('bottomRounded')">
-					<el-slider v-model="diyStore.editComponent.swiper.bottomRounded" show-input size="small" class="ml-[10px] horz-blank-slider" :max="50" />
+					<el-slider v-model="diyStore.editComponent.swiper.bottomRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50" />
 				</el-form-item>
 			</el-form>
 		</div>
@@ -310,6 +360,46 @@ diyStore.editComponent.verify = (index: number) => {
 
     return res
 }
+
+/************** 搜索框样式选择-start ********************/
+const selectSearchStyle = reactive({
+    title: diyStore.editComponent.search.styleName,
+    value: diyStore.editComponent.search.style
+})
+
+const showSearchDialog = ref(false)
+
+const showSearchStyle = () => {
+    showSearchDialog.value = true
+    selectSearchStyle.title = diyStore.editComponent.search.styleName;
+    selectSearchStyle.value = diyStore.editComponent.search.style;
+}
+
+const changeSearchStyle = (item:any) => {
+    selectSearchStyle.title = item.title;
+    selectSearchStyle.value = item.value;
+}
+
+const confirmSearchStyle = () => {
+    diyStore.editComponent.search.styleName = selectSearchStyle.title;
+    diyStore.editComponent.search.style = selectSearchStyle.value;
+    showSearchDialog.value = false
+}
+
+const searchStyleList = reactive([
+    {
+        url: 'static/resource/images/diy/carousel_search/style_1.png',
+        title: '风格1',
+        value: 'style-1'
+    },
+    {
+        url: 'static/resource/images/diy/carousel_search/style_2.png',
+        title: '风格2',
+        value: 'style-2'
+    }
+])
+
+/************** 搜索框样式选择-end ********************/
 
 diyStore.editComponent.search.hotWord.list.forEach((item: any) => {
     if (!item.id) item.id = diyStore.generateRandom()

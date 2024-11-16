@@ -41,7 +41,7 @@
                     </ul>
 				</el-form-item>
                 <el-form-item :label="t('floatBtnOffset')">
-					<el-slider v-model="diyStore.editComponent.offset" show-input size="small" class="ml-[10px] horz-blank-slider" :max="100"/>
+					<el-slider v-model="diyStore.editComponent.offset" show-input size="small" class="ml-[10px] diy-nav-slider" :max="100"/>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -49,10 +49,10 @@
 			<h3 class="mb-[10px]">{{ t('floatBtnImageSet') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
                 <el-form-item :label="t('floatBtnImageSize')">
-					<el-slider v-model="diyStore.editComponent.imageSize" show-input size="small" class="ml-[10px] horz-blank-slider" :min="30" :max="100"/>
+					<el-slider v-model="diyStore.editComponent.imageSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="30" :max="100"/>
 				</el-form-item>
 				<el-form-item :label="t('floatBtnAroundRadius')">
-					<el-slider v-model="diyStore.editComponent.aroundRadius" show-input size="small" class="ml-[10px] graphic-nav-slider" :max="50"/>
+					<el-slider v-model="diyStore.editComponent.aroundRadius" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50"/>
 				</el-form-item>
 
 				<div class="text-[12px] text-[#999] mb-[15px] mt-[5px]">{{t('floatBtnImageSuggest')}}</div>

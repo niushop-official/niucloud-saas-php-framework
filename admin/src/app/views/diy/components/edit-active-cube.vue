@@ -374,8 +374,7 @@ const confirmBlockStyle = () => {
     showListDialog.value = false
 }
 
-const initBlockStyle = (style)=>{
-    // diyStore.editComponent.
+const initBlockStyle = (style: any)=>{
     if(style == 'style-1'){
         diyStore.editComponent.blockStyle.fontWeight = "normal";
         diyStore.editComponent.blockStyle.btnText = "normal";

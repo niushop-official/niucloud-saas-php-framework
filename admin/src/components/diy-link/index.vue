@@ -55,7 +55,7 @@
                             </div>
                             <div class="mb-[16px]">
                                 <el-form-item :label="t('diyAppletPage')">
-                                    <el-input v-model="selectLink.page" :placeholder="t('diyAppletPagePlaceholder')" clearable maxlength="50" />
+                                    <el-input v-model="selectLink.page" :placeholder="t('diyAppletPagePlaceholder')" clearable maxlength="100" />
                                 </el-form-item>
                             </div>
                             <el-form-item label=" ">
@@ -78,7 +78,7 @@
                         <div v-else class="flex flex-wrap">
                             <div v-for="(item, index) in childList" :key="index"
                                 class="border border-br rounded-[3px] mr-[10px] mb-[10px] px-4 h-[32px] leading-[32px] cursor-pointer hover:bg-primary-light-9 px-[10px] hover:text-primary"
-                                 :class="{ 'border-primary text-primary': (parentLinkName != 'DIY_PAGE' && item.name == selectLink.name) || (parentLinkName == 'DIY_PAGE' && item.name == selectLink.name && item.url == selectLink.url) }"
+                                 :class="{ 'border-primary text-primary': (parentLinkName != 'DIY_PAGE' && item.name == selectLink.name) || (parentLinkName == 'DIY_PAGE' && item.url == selectLink.url) }"
                                 @click="changeChildLink(item)">{{ item.title }}
                             </div>
                         </div>

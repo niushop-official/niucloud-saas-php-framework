@@ -37,7 +37,7 @@
 					<el-input v-model.trim="diyStore.editComponent.subTitle.text" :placeholder="t('subTitlePlaceholder')" clearable maxlength="30" show-word-limit />
 				</el-form-item>
 				<el-form-item :label="t('textFontSize')">
-					<el-slider v-model="diyStore.editComponent.subTitle.fontSize" show-input size="small" class="ml-[10px] article-slider" :min="12" :max="16" />
+					<el-slider v-model="diyStore.editComponent.subTitle.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="16" />
 				</el-form-item>
 				<el-form-item :label="t('textColor')">
 					<el-color-picker v-model="diyStore.editComponent.subTitle.color" />
@@ -91,7 +91,7 @@
 			<h3 class="mb-[10px]">{{ t('titleStyle') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
 				<el-form-item :label="t('textFontSize')">
-					<el-slider v-model="diyStore.editComponent.fontSize" show-input size="small" class="ml-[10px] article-slider" :min="12" :max="30" />
+					<el-slider v-model="diyStore.editComponent.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="30" />
 				</el-form-item>
 				<el-form-item :label="t('textFontWeight')">
 					<el-radio-group v-model="diyStore.editComponent.fontWeight">

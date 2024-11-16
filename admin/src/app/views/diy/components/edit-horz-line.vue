@@ -14,7 +14,7 @@
 					<el-color-picker v-model="diyStore.editComponent.borderColor" show-alpha :predefine="diyStore.predefineColors"/>
 				</el-form-item>
 				<el-form-item :label="t('horzLineBorderWidth')">
-					<el-slider v-model="diyStore.editComponent.borderWidth" show-input size="small" class="ml-[10px] horz-blank-slider" :min="1" :max="10"/>
+					<el-slider v-model="diyStore.editComponent.borderWidth" show-input size="small" class="ml-[10px] diy-nav-slider" :min="1" :max="10"/>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -40,11 +40,4 @@ defineExpose({})
 
 </script>
 
-<style lang="scss">
-	.horz-blank-slider {
-		.el-slider__input {
-			width: 100px;
-		}
-	}
-</style>
 <style lang="scss" scoped></style>

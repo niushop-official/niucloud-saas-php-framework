@@ -165,7 +165,7 @@
                                             </el-form-item>
 
                                             <el-form-item :label="t('componentBgAlpha')" v-if="diyStore.editComponent.ignore.indexOf('componentBgUrl') == -1 && diyStore.editComponent.componentBgUrl">
-                                                <el-slider v-model="diyStore.editComponent.componentBgAlpha" show-input size="small" :min="0" :max="10" class="ml-[10px] horz-blank-slider" />
+                                                <el-slider v-model="diyStore.editComponent.componentBgAlpha" show-input size="small" :min="0" :max="10" class="ml-[10px] diy-nav-slider" />
                                             </el-form-item>
 
                                             <el-form-item :label="t('componentBgColor')" v-if="diyStore.editComponent.ignore.indexOf('componentBgColor') == -1">
@@ -182,19 +182,19 @@
                                             </el-form-item>
 
                                             <el-form-item :label="t('marginTop')" v-if="diyStore.editComponent.ignore.indexOf('marginTop') == -1">
-                                                <el-slider v-model="diyStore.editComponent.margin.top" show-input size="small" :min="-100" class="ml-[10px] horz-blank-slider" />
+                                                <el-slider v-model="diyStore.editComponent.margin.top" show-input size="small" :min="-100" class="ml-[10px] diy-nav-slider" />
                                             </el-form-item>
                                             <el-form-item :label="t('marginBottom')" v-if="diyStore.editComponent.ignore.indexOf('marginBottom') == -1">
-                                                <el-slider v-model="diyStore.editComponent.margin.bottom" show-input size="small" class="ml-[10px] horz-blank-slider" />
+                                                <el-slider v-model="diyStore.editComponent.margin.bottom" show-input size="small" class="ml-[10px] diy-nav-slider" />
                                             </el-form-item>
                                             <el-form-item :label="t('marginBoth')" v-if="diyStore.editComponent.ignore.indexOf('marginBoth') == -1">
-                                                <el-slider v-model="diyStore.editComponent.margin.both" show-input size="small" class="ml-[10px] horz-blank-slider" />
+                                                <el-slider v-model="diyStore.editComponent.margin.both" show-input size="small" class="ml-[10px] diy-nav-slider" />
                                             </el-form-item>
                                             <el-form-item :label="t('topRounded')" v-if="diyStore.editComponent.ignore.indexOf('topRounded') == -1">
-                                                <el-slider v-model="diyStore.editComponent.topRounded" show-input size="small" class="ml-[10px] horz-blank-slider" :max="100" />
+                                                <el-slider v-model="diyStore.editComponent.topRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="100" />
                                             </el-form-item>
                                             <el-form-item :label="t('bottomRounded')" v-if="diyStore.editComponent.ignore.indexOf('bottomRounded') == -1">
-                                                <el-slider v-model="diyStore.editComponent.bottomRounded" show-input size="small" class="ml-[10px] horz-blank-slider" :max="100" />
+                                                <el-slider v-model="diyStore.editComponent.bottomRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="100" />
                                             </el-form-item>
                                         </el-form>
                                     </div>
@@ -677,6 +677,11 @@ const settingTips = () => {
                 padding-top: 0;
             }
         }
+    }
+}
+.diy-nav-slider {
+    .el-slider__input {
+        width: 100px;
     }
 }
 </style>

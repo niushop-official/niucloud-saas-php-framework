@@ -26,6 +26,18 @@
                 <div class="form-tip">{{ t('mchPublicCertPathTips') }}</div>
             </el-form-item>
 
+            <el-form-item :label="t('wechatpayPublicCert')" prop="config.wechat_public_cert_path">
+                <div class="input-width">
+                    <upload-file v-model="formData.config.wechat_public_cert_path" api="sys/document/wechat" />
+                </div>
+            </el-form-item>
+
+            <el-form-item :label="t('wechatpayPublicCertId')" prop="config.wechat_public_cert_id">
+                <div class="input-width">
+                    <el-input v-model.trim="formData.config.wechat_public_cert_id" placeholder="" class="input-width" show-word-limit clearable />
+                </div>
+            </el-form-item>
+
             <el-form-item :label="t('jsapiDir')" v-show="formData.channel == 'wechat' || formData.channel == 'weapp'">
                 <el-input :model-value="wapDomain + '/'" placeholder="Please input" class="input-width" :readonly="true" :disabled="true">
                     <template #append>
@@ -93,7 +105,9 @@ const initialFormData = {
         mch_id: '',
         mch_secret_key: '',
         mch_secret_cert: '',
-        mch_public_cert_path: ''
+        mch_public_cert_path: '',
+        wechat_public_cert_path: '',
+        wechat_public_cert_id: ''
     },
     channel: '',
     status: 0,

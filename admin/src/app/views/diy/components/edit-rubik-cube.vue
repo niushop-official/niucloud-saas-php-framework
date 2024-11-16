@@ -54,13 +54,13 @@
 			<h3 class="mb-[10px]">{{ t('rubikCubeStyle') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
 				<el-form-item :label="t('imageGap')">
-					<el-slider v-model="diyStore.editComponent.imageGap" show-input size="small" class="ml-[10px] horz-blank-slider" :max="30"/>
+					<el-slider v-model="diyStore.editComponent.imageGap" show-input size="small" class="ml-[10px] diy-nav-slider" :max="30"/>
 				</el-form-item>
 				<el-form-item :label="t('topRounded')">
-					<el-slider v-model="diyStore.editComponent.topElementRounded" show-input size="small" class="ml-[10px] horz-blank-slider" :max="50"/>
+					<el-slider v-model="diyStore.editComponent.topElementRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50"/>
 				</el-form-item>
 				<el-form-item :label="t('bottomRounded')">
-					<el-slider v-model="diyStore.editComponent.bottomElementRounded" show-input size="small" class="ml-[10px] horz-blank-slider" :max="50"/>
+					<el-slider v-model="diyStore.editComponent.bottomElementRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50"/>
 				</el-form-item>
 			</el-form>
 		</div>

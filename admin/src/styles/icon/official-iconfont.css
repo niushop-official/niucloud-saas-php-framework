@@ -1,8 +1,8 @@
 @font-face {
     font-family: "nc-iconfont"; /* Project id 4567203 */
-    src: url('//at.alicdn.com/t/c/font_4567203_sxolqyse36.woff2?t=1717657005580') format('woff2'),
-         url('//at.alicdn.com/t/c/font_4567203_sxolqyse36.woff?t=1717657005580') format('woff'),
-         url('//at.alicdn.com/t/c/font_4567203_sxolqyse36.ttf?t=1717657005580') format('truetype');
+    src: url('//at.alicdn.com/t/c/font_4567203_upzww1i5qjn.woff2?t=1731549702579') format('woff2'),
+         url('//at.alicdn.com/t/c/font_4567203_upzww1i5qjn.woff?t=1731549702579') format('woff'),
+         url('//at.alicdn.com/t/c/font_4567203_upzww1i5qjn.ttf?t=1731549702579') format('truetype');
   }
   
   .nc-iconfont {
@@ -11,6 +11,98 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .nc-icon-gouwuche1:before {
+    content: "\e76e";
+  }
+  
+  .nc-icon-gouwuche:before {
+    content: "\e6ea";
+  }
+  
+  .nc-icon-kabao:before {
+    content: "\e7ec";
+  }
+  
+  .nc-icon-shouyeV6mm1:before {
+    content: "\e7e5";
+  }
+  
+  .nc-icon-shouyeV6xx11:before {
+    content: "\e7bb";
+  }
+  
+  .nc-icon-a-naozhongV6xx-36:before {
+    content: "\e7c4";
+  }
+  
+  .nc-icon-a-shijianV6xx-36:before {
+    content: "\e7c3";
+  }
+  
+  .nc-icon-a-yingyongzhongxinV6xx-36:before {
+    content: "\e7bf";
+  }
+  
+  .nc-icon-a-bangzhuV6xx-36:before {
+    content: "\e7bc";
+  }
+  
+  .nc-icon-a-riliV6xx-36:before {
+    content: "\e7c7";
+  }
+  
+  .nc-icon-a-meiriqiandaoV6xx-36:before {
+    content: "\e7c6";
+  }
+  
+  .nc-icon-a-yingyongliebiaoV6xx-36:before {
+    content: "\e7c5";
+  }
+  
+  .nc-icon-a-shanchu-fanggai2V6xx-36:before {
+    content: "\e7be";
+  }
+  
+  .nc-icon-cuohaoV6xx1:before {
+    content: "\e7cb";
+  }
+  
+  .nc-icon-a-zhanghaoV6xx-36:before {
+    content: "\e7b9";
+  }
+  
+  .nc-icon-a-wodeV6xx-36:before {
+    content: "\e7b8";
+  }
+  
+  .nc-icon-a-shaixuan-36V6xx-36:before {
+    content: "\e7b3";
+  }
+  
+  .nc-icon-lishijiluV6xx:before {
+    content: "\e6f6";
+  }
+  
+  .nc-icon-paihangbangV6xx:before {
+    content: "\e79d";
+  }
+  
+  .nc-icon-a-xiangshangV6xx1:before {
+    content: "\e799";
+  }
+  
+  .nc-icon-a-xiangxiaV6xx1:before {
+    content: "\e796";
+  }
+  
+  .nc-icon-fuzhiV6xx1:before {
+    content: "\e76c";
+  }
+  
+  .nc-icon-kefuV6xx1:before {
+    content: "\e76a";
   }
   
   .nc-icon-huiyuandengjiV6xx1:before {

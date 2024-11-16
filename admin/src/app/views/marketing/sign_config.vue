@@ -11,7 +11,7 @@
                 </el-form-item>
 
                 <el-form-item :label="t('signPeriod')" v-if="formData.is_use">
-                    <el-input-number v-model="formData.sign_period" :min="0" :precision="0" clearable class="input-width" controls-position="right" /><span class="ml-[10px]">天</span>
+                    <el-input-number v-model="formData.sign_period" :min="1" :precision="0" clearable class="input-width" controls-position="right" /><span class="ml-[10px]">天</span>
                 </el-form-item>
 
                 <el-form-item :label="t('daySignAward')" prop="day_award" v-if="formData.is_use">
@@ -89,7 +89,7 @@
         </el-dialog>
 
         <!-- 连签奖励 -->
-        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="1000px" :destroy-on-close="true" v-if="formData.is_use">
+        <el-dialog v-model="continueSignDialog" :title="t('continueSignTitle')" width="1200px" :destroy-on-close="true" v-if="formData.is_use">
             <sign-continue ref="continueRef" v-model="continue_award" />
             <template #footer>
                 <span class="dialog-footer">
