@@ -2,31 +2,16 @@
 branches: {
   }
 fileChange:
-  /uni-app:
-    newFile: !uuid '819879e51625592d6eb6d65c4bdacb5b2404f324'
-    oldFile: !uuid '8e1343bfa8dfb92cbbfb94c9584c2be391d0744a'
-  /uni-app/src:
-    newFile: !uuid 'fbea17bcb1940c6a0285378b9d6f9a1ab125af6d'
-    oldFile: !uuid 'ec9372857f94b16eaaf90f2f22519c8da969589d'
-  /uni-app/src/addon:
-    newFile: !uuid '5cf0fe93a03878a26057af794e9205e5f917daf2'
-    oldFile: !uuid 'cc88baf70211f6a53d79fb90ce78066354f42999'
-  /uni-app/src/addon/components:
-    newFile: !uuid '49b0a541c216726d62c21ceb45747c0f9bc7870e'
-    oldFile: !uuid '5f039a04ef1e91c98ce4a9e4328f60792f165f7b'
-  /uni-app/src/addon/components/diy:
-    newFile: !uuid 'dafab2e46c89dd2b87f57c02984018c013f4dbbc'
-    oldFile: !uuid '4295f1afed40af1b0d4499d9515dc8636cc80b28'
-  /uni-app/src/addon/components/diy/group:
-    newFile: !uuid 'dea44483780340b3cb64117ecc335591ce40d956'
-    oldFile: !uuid '576e0b950d68fd6a7aa3a8e6490c223bb39d53e0'
-  /uni-app/src/addon/components/diy/group/index.vue:
-    newFile: !uuid 'ef12ab9e9c90d2aea323d0052188cfe1c9f24b07'
-    oldFile: !uuid 'f0785da8af0d90e99b2847be749d602b5ef294e5'
-  /uni-app/src/addon/components/diy/group/useDiyGroup.ts:
-    newFile: !uuid 'efc1fae26662689e6e84ebb574c70ad00c97b851'
-    oldFile: !uuid 'ab06d45a403139637dd329b95022c856065afb29'
-gitCommitId: !uuid 'c012b1898290d006e27de012aaae457b4b4e59bb'
+  /niucloud:
+    newFile: !uuid '50f123e56ebe15fb8cb37d82168f937d52301c33'
+    oldFile: !uuid '6141b13f4c86ff94ac14c8d7724e534b741ab030'
+  /niucloud/public:
+    newFile: !uuid 'a6cab644bcd37d12d2e4cee7cb8c8d018e375091'
+    oldFile: !uuid '13212fd1381216d6e317c11882fb6e87119b8c5b'
+  /niucloud/public/.htaccess:
+    newFile: !uuid '81fe165fe8096b10f1e5d153ecd30e000bf1b954'
+    oldFile: !uuid '43cdf5c68547a61dc35ba6f50ea946106404fde0'
+gitCommitId: !uuid '971f078abc865c97a931a03eff809a91334f7ed8'
 renames: {
   }
-revisionId: 237
+revisionId: 238
