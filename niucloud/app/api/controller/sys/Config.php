@@ -11,14 +11,12 @@
 
 namespace app\api\controller\sys;
 
-use addon\shop\app\service\core\CoreStatService;
 use app\service\api\diy\DiyConfigService;
 use app\service\api\member\MemberConfigService;
 use app\service\api\member\MemberLevelService;
 use app\service\api\member\MemberService;
 use app\service\api\site\SiteService;
 use app\service\api\sys\ConfigService;
-use app\service\api\wechat\WechatAuthService;
 use core\base\BaseApiController;
 use think\Response;
 
@@ -91,9 +89,9 @@ class Config extends BaseApiController
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
 
         ( new MemberService() )->initMemberData();
-        //增加访问数
-        if (isset($res[ 'site_info' ][ 'site_id' ]) && !empty($res[ 'site_info' ][ 'site_id' ]) && in_array('shop', $res[ 'site_info' ][ 'app' ])) {
-            ( new CoreStatService() )->addStat([ 'site_id' => $res[ 'site_info' ][ 'site_id' ], 'access_sum' => 1 ]);
+
+        if (isset($res[ 'site_info' ][ 'site_id' ]) && !empty($res[ 'site_info' ][ 'site_id' ])) {
+            event('initWap', [ 'site_id' => $res[ 'site_info' ][ 'site_id' ] ]);
         }
         return success($res);
     }
