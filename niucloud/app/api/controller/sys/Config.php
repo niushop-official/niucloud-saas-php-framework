@@ -92,8 +92,8 @@ class Config extends BaseApiController
 
         ( new MemberService() )->initMemberData();
         //增加访问数
-        if(isset($res[ 'site_info' ]['site_id']) && !empty($res[ 'site_info' ]['site_id'])){
-            ( new CoreStatService())->addStat([ 'site_id' => $res[ 'site_info' ]['site_id'], 'access_sum' =>  1]);
+        if (isset($res[ 'site_info' ][ 'site_id' ]) && !empty($res[ 'site_info' ][ 'site_id' ]) && in_array('shop', $res[ 'site_info' ][ 'app' ])) {
+            ( new CoreStatService() )->addStat([ 'site_id' => $res[ 'site_info' ][ 'site_id' ], 'access_sum' => 1 ]);
         }
         return success($res);
     }
