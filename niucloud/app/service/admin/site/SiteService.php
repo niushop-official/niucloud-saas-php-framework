@@ -142,7 +142,7 @@ class SiteService extends BaseAdminService
 
             // 更新微页面数据
             $diy_service = new DiyService();
-            $diy_service->loadDiyData([ 'site_id' => $site_id, 'main_app' => $site_group[ 'app' ] ]);
+            $diy_service->loadDiyData([ 'site_id' => $site_id, 'main_app' => $site_group[ 'app' ], 'tag' => 'add' ]);
 
             Cache::delete('user_role_list_' . $data[ 'uid' ]);
 
@@ -181,7 +181,7 @@ class SiteService extends BaseAdminService
 
                 // 更新微页面数据
                 $diy_service = new DiyService();
-                $diy_service->loadDiyData([ 'site_id' => $site_id, 'main_app' => $site_group[ 'app' ] ]);
+                $diy_service->loadDiyData([ 'site_id' => $site_id, 'main_app' => $site_group[ 'app' ], 'tag' => 'update' ]);
 
                 $data[ 'initalled_addon' ] = array_values(array_unique(array_merge($site->initalled_addon, $site_group[ 'app' ], $site_group[ 'addon' ])));
             }

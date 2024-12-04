@@ -241,6 +241,8 @@ return [
     'REFUND_HAD_APPLIED' => '订单已申请退款',
     'ORDER_UNPAID_NOT_ALLOW_APPLY_REFUND' => '订单尚未支付不能进行退款',
 
+    //会员套餐
+    'RECHARGE_NOT_EXIST' => '充值套餐不存在',
 
     // 缓存相关
     'CLEAR_MYSQL_CACHE_SUCCESS' => '数据表缓存清除成功',

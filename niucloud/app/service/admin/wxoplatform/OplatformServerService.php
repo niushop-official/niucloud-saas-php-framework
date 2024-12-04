@@ -95,6 +95,10 @@ class OplatformServerService extends BaseAdminService
         $site_id = CoreOplatformService::getSiteIdByAuthorizerAppid($message['ToUserName']);
         CoreOplatformService::releaseWeapp($site_id);
         (new WeappVersion())->where(['site_id' => $site_id, 'status' => CloudDict::APPLET_AUDITING ])->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS ]);
+
+        // 发布后重新设置下域名
+        request()->siteId($site_id);
+        (new WeappVersionService())->setDomain();
         return true;
     }
 

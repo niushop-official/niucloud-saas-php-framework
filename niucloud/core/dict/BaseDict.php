@@ -47,7 +47,7 @@ abstract class BaseDict extends Storage
 
         $headers = request()->header();
         $admin_site_id_name = system_name('admin_site_id_name');
-        $api_site_id_name = system_name('admin_site_id_name');
+        $api_site_id_name = system_name('api_site_id_name');
         $site_id = $headers[$admin_site_id_name] ?? $headers[$api_site_id_name] ?? 0;
 
         if ((int)$site_id) {

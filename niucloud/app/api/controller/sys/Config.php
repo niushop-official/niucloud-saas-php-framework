@@ -11,6 +11,7 @@
 
 namespace app\api\controller\sys;
 
+use addon\shop\app\service\core\CoreStatService;
 use app\service\api\diy\DiyConfigService;
 use app\service\api\member\MemberConfigService;
 use app\service\api\member\MemberLevelService;
@@ -90,6 +91,10 @@ class Config extends BaseApiController
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
 
         ( new MemberService() )->initMemberData();
+        //增加访问数
+        if(isset($res[ 'site_info' ]['site_id']) && !empty($res[ 'site_info' ]['site_id'])){
+            ( new CoreStatService())->addStat([ 'site_id' => $res[ 'site_info' ]['site_id'], 'access_sum' =>  1]);
+        }
         return success($res);
     }
 }

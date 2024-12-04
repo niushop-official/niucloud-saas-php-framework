@@ -15,6 +15,7 @@ use app\dict\diy\ComponentDict;
 use app\dict\diy\LinkDict;
 use app\dict\diy\PagesDict;
 use app\dict\diy\TemplateDict;
+use app\dict\sys\FileDict;
 use app\model\diy\Diy;
 use app\service\admin\sys\SystemService;
 use app\service\core\diy\CoreDiyConfigService;
@@ -141,6 +142,7 @@ class DiyService extends BaseAdminService
         if (!empty($data[ 'type' ]) && $data[ 'type' ] == 'DIY_PAGE') {
             $data[ 'is_default' ] = 1;
         }
+//        $data[ 'value' ] = $this->handleThumbImgs($data[ 'value' ]);
 
         // 将同类型页面的默认值改为0，默认页面只有一个
         if (!empty($data[ 'is_default' ])) {
@@ -162,6 +164,7 @@ class DiyService extends BaseAdminService
         if (empty($data[ 'site_id' ])) {
             $data[ 'site_id' ] = $this->site_id;
         }
+//        $data[ 'value' ] = $this->handleThumbImgs($data[ 'value' ]);
         $this->model->where([ [ 'id', '=', $id ], [ 'site_id', '=', $data[ 'site_id' ] ] ])->update($data);
         return true;
     }
@@ -590,21 +593,37 @@ class DiyService extends BaseAdminService
     {
         $count = count($params[ 'main_app' ]);
         $addon = array_merge([ '' ], $params[ 'main_app' ]);
+        $tag = $params[ 'tag' ] ?? 'add';
 
         foreach ($addon as $k => $v) {
-            if ($count > 1) {
-                // 站点多应用，使用系统的页面
-                if ($k == 0) {
-                    $is_start = 1;
+            if ($tag == 'add') {
+                if ($count > 1) {
+                    // 站点多应用，使用系统的页面
+                    if ($k == 0) {
+                        $is_start = 1;
+                    } else {
+                        $is_start = 0;
+                    }
                 } else {
-                    $is_start = 0;
+                    // 站点单应用，将应用的设为使用中
+                    if ($k == 0) {
+                        $is_start = 0;
+                    } else {
+                        $is_start = 1;
+                    }
                 }
             } else {
-                // 站点单应用，将应用的设为使用中
-                if ($k == 0) {
+                // 编辑站点套餐的情况
+                if ($count > 1) {
+                    // 站点多应用，将不更新启动页
                     $is_start = 0;
                 } else {
-                    $is_start = 1;
+                    // 站点单应用，将应用的设为使用中
+                    if ($k == 0) {
+                        $is_start = 0;
+                    } else {
+                        $is_start = 1;
+                    }
                 }
             }
 
@@ -725,6 +744,47 @@ class DiyService extends BaseAdminService
             }
 
         }
+    }
+
+    // todo 处理缩略图
+    public function handleThumbImgs($data)
+    {
+        $data = json_decode($data, true);
+
+        // todo $data['global']
+
+        foreach ($data[ 'value' ] as $k => $v) {
+
+            // 如果图片尺寸超过 中图的大写才压缩
+
+            // 图片广告
+            if ($v[ 'componentName' ] == 'ImageAds') {
+                foreach ($v[ 'list' ] as $ck => $cv) {
+                    if (!empty($cv[ 'imageUrl' ]) &&
+                        strpos($cv[ 'imageUrl' ], 'addon/') === false &&
+                        strpos($cv[ 'imageUrl' ], 'static/') === false &&
+                        !isset($data[ 'value' ][ $k ][ 'list' ][ $ck ][ 'imageUrlThumbMid' ])) {
+                        $data[ 'value' ][ $k ][ 'list' ][ $ck ][ 'imageUrlThumbMid' ] = get_thumb_images($this->site_id, $cv[ 'imageUrl' ], FileDict::MID);
+                    }
+                }
+            }
+
+            // 图文导航
+            if ($v[ 'componentName' ] == 'GraphicNav') {
+                foreach ($v[ 'list' ] as $ck => $cv) {
+                    if (!empty($cv[ 'imageUrl' ]) &&
+                        strpos($cv[ 'imageUrl' ], 'addon/') === false &&
+                        strpos($cv[ 'imageUrl' ], 'static/') === false &&
+                        !isset($data[ 'value' ][ $k ][ 'list' ][ $ck ][ 'imageUrlThumbMid' ])) {
+                        $data[ 'value' ][ $k ][ 'list' ][ $ck ][ 'imageUrlThumbMid' ] = get_thumb_images($this->site_id, $cv[ 'imageUrl' ], FileDict::MID);
+                    }
+                }
+            }
+
+        }
+
+        $data = json_encode($data);
+        return $data;
     }
 
 }

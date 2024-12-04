@@ -95,6 +95,7 @@ class ComponentDict
                         'sort' => 10002,
                         'value' => [
                             "imageHeight" => 180,
+                            "isSameScreen"=> false,
                             "list" => [
                                 [
                                     "link" => [
@@ -196,7 +197,14 @@ class ComponentDict
                                 "indicatorActiveColor" => '#FF0E0E',
                                 'indicatorStyle' => 'style-1',
                                 'indicatorAlign' => 'center'
-                            ]
+                            ],
+                            'template' => [
+                                "margin" => [
+                                    "top" => 10, // 上边距
+                                    "bottom" => 10, // 下边距
+                                    "both" => 0 // 左右边距
+                                ],
+                            ],
                         ]
                     ],
                     'RubikCube' => [
@@ -478,8 +486,8 @@ class ComponentDict
                                 "topRounded" => 12, // 组件上圆角
                                 "bottomRounded" => 12, // 组件下圆角
                                 "elementBgColor" => '#FFFAF5', // 元素背景颜色
-                                "topElementRounded" => 0,// 元素上圆角
-                                "bottomElementRounded" => 0, // 元素下圆角
+                                "topElementRounded" => 10,// 元素上圆角
+                                "bottomElementRounded" => 10, // 元素下圆角
                                 "margin" => [
                                     "top" => 10, // 上边距
                                     "bottom" => 10, // 下边距

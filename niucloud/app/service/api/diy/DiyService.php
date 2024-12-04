@@ -13,6 +13,7 @@ namespace app\service\api\diy;
 
 use app\dict\diy\PagesDict;
 use app\dict\diy\TemplateDict;
+use app\dict\sys\FileDict;
 use app\model\diy\Diy;
 use core\base\BaseApiService;
 
@@ -69,6 +70,7 @@ class DiyService extends BaseApiService
             $field = 'id,site_id,title,name,type,template, mode,value,is_default,share,visit_count';
 
             $info = $this->model->field($field)->where($condition)->findOrEmpty()->toArray();
+
             if (empty($info)) {
                 // 查询默认页面数据
                 if (!empty($params[ 'name' ])) {
@@ -88,6 +90,8 @@ class DiyService extends BaseApiService
                         ];
                     }
                 }
+            } else {
+//                $info[ 'value' ] = $this->handleThumbImgs($info[ 'value' ]);
             }
             return $info;
         }
@@ -109,6 +113,40 @@ class DiyService extends BaseApiService
             return $page;
         }
         return [];
+    }
+
+    // todo 使用缩略图
+    public function handleThumbImgs($data)
+    {
+        $data = json_decode($data, true);
+
+        // todo $data['global']
+
+        foreach ($data[ 'value' ] as $k => $v) {
+
+            // 图片广告
+            if ($v[ 'componentName' ] == 'ImageAds') {
+                foreach ($v[ 'list' ] as $ck => $cv) {
+                    if (!empty($cv[ 'imageUrlThumbMid' ])) {
+                        $data[ 'value' ][ $k ][ 'list' ][ $ck ][ 'imageUrl' ] = $cv[ 'imageUrlThumbMid' ];
+                    }
+                }
+            }
+
+            // 图文导航
+            if ($v[ 'componentName' ] == 'GraphicNav') {
+
+                foreach ($v[ 'list' ] as $ck => $cv) {
+                    if (!empty($cv[ 'imageUrlThumbMid' ])) {
+                        $data[ 'value' ][ $k ][ 'list' ][ $ck ][ 'imageUrl' ] = $cv[ 'imageUrlThumbMid' ];
+                    }
+                }
+            }
+
+        }
+
+        $data = json_encode($data);
+        return $data;
     }
 
 }

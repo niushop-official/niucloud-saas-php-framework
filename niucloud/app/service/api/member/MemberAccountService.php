@@ -40,7 +40,7 @@ class MemberAccountService extends BaseApiService
     {
         $where[ 'member_id' ] = $this->member_id;
         $field = 'id, member_id, site_id, account_type, account_data, from_type, related_id, create_time, memo';
-        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->withSearch([ 'member_id', 'account_type', 'from_type', 'create_time', 'account_data_gt', 'account_data_lt', 'keyword' ], $where)->field($field)->order('create_time desc')->append([ 'from_type_name', 'account_type_name' ]);
+        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->withSearch([ 'member_id', 'account_type', 'from_type', 'create_time', 'account_data_gt', 'account_data_lt', 'keyword' ], $where)->field($field)->order('id desc')->append([ 'from_type_name', 'account_type_name' ]);
         return $this->pageQuery($search_model);
     }
 
@@ -68,7 +68,7 @@ class MemberAccountService extends BaseApiService
         }
         $where[ 'member_id' ] = $this->member_id;
         $field = 'id, member_id, site_id, account_type, account_data, from_type, related_id, create_time, memo';
-        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->where($type_where)->withSearch([ 'member_id', 'account_type', 'from_type', 'create_time', 'account_data_gt', 'account_data_lt' ], $where)->field($field)->order('create_time desc')->append([ 'from_type_name', 'account_type_name' ]);
+        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->where($type_where)->withSearch([ 'member_id', 'account_type', 'from_type', 'create_time', 'account_data_gt', 'account_data_lt' ], $where)->field($field)->order('id desc')->append([ 'from_type_name', 'account_type_name' ]);
         $list = $this->pageQuery($search_model);
         $list[ 'data' ] = $this->monthlyGrouping($list[ 'data' ]);
         return $list;
@@ -112,7 +112,7 @@ class MemberAccountService extends BaseApiService
         $where[ 'member_id' ] = $this->member_id;
         $where[ 'create_time' ] = $data[ 'create_time' ];
         $field = 'id, member_id, site_id, account_type, account_data, account_sum, from_type, related_id, create_time, memo';
-        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->where($type_where)->withSearch([ 'member_id', 'create_time' ], $where)->field($field)->order('create_time desc')->append([ 'from_type_name', 'account_type_name' ]);
+        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->where($type_where)->withSearch([ 'member_id', 'create_time' ], $where)->field($field)->order('id desc')->append([ 'from_type_name', 'account_type_name' ]);
         return $this->pageQuery($search_model);
     }
 

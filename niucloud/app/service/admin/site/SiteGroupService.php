@@ -124,7 +124,7 @@ class SiteGroupService extends BaseAdminService
 
                     // 更新微页面数据
                     $diy_service = new DiyService();
-                    $diy_service->loadDiyData([ 'site_id' => $site[ 'site_id' ], 'main_app' => $data[ 'app' ] ]);
+                    $diy_service->loadDiyData([ 'site_id' => $site[ 'site_id' ], 'main_app' => $data[ 'app' ], 'tag' => 'update' ]);
                 }
             }
         }
