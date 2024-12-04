@@ -40,7 +40,7 @@ export function setThemeColor(color: string, mode: string = 'light'): void {
     }
 
     Object.keys(colors[mode]).forEach((key) => {
-        useCssVar('--el-color-primary' + '-' + key, null).value = colorFunction.convert(`color(${color} ${colors[mode][key]})`)
+        useCssVar('--el-color-primary' + '-' + key, null).value = colorFunction.convert(`color(${ color } ${ colors[mode][key] })`)
     })
 }
 
@@ -48,7 +48,9 @@ export function setThemeColor(color: string, mode: string = 'light'): void {
  * 获取当前访问应用类型
  */
 export function getAppType() {
-    const path = location.pathname.split('/').filter((val) => { return val })
+    const path = location.pathname.split('/').filter((val) => {
+        return val
+    })
 
     if (!path.length) {
         return 'admin'
@@ -125,7 +127,7 @@ export function isUrl(str: string): boolean {
  * @returns
  */
 export function img(path: string): string {
-    return isUrl(path) ? path : `${import.meta.env.VITE_IMG_DOMAIN || location.origin}/${path}`
+    return isUrl(path) ? path : `${ import.meta.env.VITE_IMG_DOMAIN || location.origin }/${ path }`
 }
 
 /**
@@ -133,7 +135,7 @@ export function img(path: string): string {
  * @param path
  * @returns
  */
-export function assetImg (path: string) {
+export function assetImg(path: string) {
     return new URL('@/', import.meta.url) + path
 }
 
@@ -228,16 +230,16 @@ export function guid(len = 10, firstU = true, radix: any = null) {
     // 移除第一个字符,并用u替代,因为第一个字符为数值时,该guuid不能用作id或者class
     if (firstU) {
         uuid.shift()
-        return `u${uuid.join('')}`
+        return `u${ uuid.join('') }`
     }
     return uuid.join('')
 }
 
 /**
-* 金额格式化
-*/
-export function moneyFormat(money : string) : string {
-	return isNaN(parseFloat(money)) ? money : parseFloat(money).toFixed(2)
+ * 金额格式化
+ */
+export function moneyFormat(money: string): string {
+    return isNaN(parseFloat(money)) ? money : parseFloat(money).toFixed(2)
 }
 
 
@@ -245,65 +247,65 @@ export function moneyFormat(money : string) : string {
  * 时间戳转日期格式
  */
 export function timeStampTurnTime(timeStamp: any, type = "") {
-	if (timeStamp != undefined && timeStamp != "" && timeStamp > 0) {
-		var date = new Date();
-		date.setTime(timeStamp * 1000);
-		var y: any = date.getFullYear();
-		var m: any = date.getMonth() + 1;
-		m = m < 10 ? ('0' + m) : m;
-		var d: any = date.getDate();
-		d = d < 10 ? ('0' + d) : d;
-		var h: any = date.getHours();
-		h = h < 10 ? ('0' + h) : h;
-		var minute: any = date.getMinutes();
-		var second: any = date.getSeconds();
-		minute = minute < 10 ? ('0' + minute) : minute;
-		second = second < 10 ? ('0' + second) : second;
-		if (type) {
-			if (type == 'yearMonthDay') {
-				return y + '年' + m + '月' + d + '日';
-			}
-			return y + '-' + m + '-' + d;
-		} else {
-			return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
-		}
+    if (timeStamp != undefined && timeStamp != "" && timeStamp > 0) {
+        var date = new Date();
+        date.setTime(timeStamp * 1000);
+        var y: any = date.getFullYear();
+        var m: any = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d: any = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h: any = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute: any = date.getMinutes();
+        var second: any = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        if (type) {
+            if (type == 'yearMonthDay') {
+                return y + '年' + m + '月' + d + '日';
+            }
+            return y + '-' + m + '-' + d;
+        } else {
+            return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+        }
 
-	} else {
-		return "";
-	}
+    } else {
+        return "";
+    }
 }
 
 /**
  * 过滤小数点(保留两位)
  * @param event
  */
-export function filterDigit(event:any){
-    event.target.value = event.target.value.replace(/[^\d\.]/g,'');
-    event.target.value = event.target.value.replace(/^\./g,'');
-    event.target.value = event.target.value.replace(/\.{2,}/g,'.');
+export function filterDigit(event: any) {
+    event.target.value = event.target.value.replace(/[^\d\.]/g, '');
+    event.target.value = event.target.value.replace(/^\./g, '');
+    event.target.value = event.target.value.replace(/\.{2,}/g, '.');
     // 限制最多两位小数
     const decimalParts = event.target.value.split('.');
     if (decimalParts.length > 1 && decimalParts[1].length > 2) {
         // 如果有小数部分且超过两位，则截取前两位
-        event.target.value = `${decimalParts[0]}.${decimalParts[1].slice(0, 2)}`;
+        event.target.value = `${ decimalParts[0] }.${ decimalParts[1].slice(0, 2) }`;
     }
 }
 
 /**
  * 过滤整数
-  * @param event
+ * @param event
  */
-export function filterNumber(event:any){
-    event.target.value = event.target.value.replace(/[^\d]/g,'');
+export function filterNumber(event: any) {
+    event.target.value = event.target.value.replace(/[^\d]/g, '');
 }
 
 /**
  * 过滤特殊字符
-  * @param event
+ * @param event
  */
-export function filterSpecial(event:any){
+export function filterSpecial(event: any) {
     event.target.value = event.target.value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '')
-    event.target.value = event.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g,'')
+    event.target.value = event.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '')
 }
 
 export function importIconFontCss() {
@@ -348,4 +350,48 @@ export function getIcon() {
     // }
     // console.log('modules', modules)
     // // const addonModulesFiles = import.meta.glob('@/addon/**/assets/icon/*.json', { eager: true })
+}
+
+/**
+ * 设置表格分页数据的本地存储
+ * @param page
+ * @param limit
+ * @param where
+ */
+export function setTablePageStorage(page: any = 1, limit: any = 10, where: any = {}) {
+    var data = storage.get('tablePageStorage');
+    if (!data) {
+        data = {};
+    }
+
+    var key = location.pathname + JSON.stringify(where);
+    data[key] = {
+        page,
+        limit
+    };
+
+    var MAX_COUNT = 5; // 最多存储 5 个页面的分页缓存，超出则删除最开始的第一个页面
+    if (Object.keys(data).length > MAX_COUNT) {
+        delete data[Object.keys(data)[0]];
+    }
+
+    storage.set({ key: 'tablePageStorage', data });
+}
+
+/**
+ * 获取表格分页数据的本地存储
+ * @param where
+ */
+export function getTablePageStorage(where: any = {}) {
+    var data = storage.get('tablePageStorage');
+    var key = location.pathname + JSON.stringify(where);
+    if (!data || !data[key]) {
+        data = {
+            page: 1,
+            limit: 10
+        };
+    } else {
+        data = data[key];
+    }
+    return data;
 }

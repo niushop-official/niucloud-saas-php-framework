@@ -94,7 +94,7 @@ import { img } from '@/utils/common'
 import { range } from 'lodash-es'
 
 const diyStore = useDiyStore()
-diyStore.editComponent.ignore = ['pageBgColor','marginTop','marginBottom','marginBoth'] // 忽略公共属性
+diyStore.editComponent.ignore = ['pageBgColor','marginTop','marginBottom','marginBoth','componentBgUrl'] // 忽略公共属性
 
 // 组件验证
 diyStore.editComponent.verify = (index: number) => {
@@ -222,5 +222,5 @@ defineExpose({})
 </script>
 
 <style lang="scss" scoped>
-	
+
 </style>

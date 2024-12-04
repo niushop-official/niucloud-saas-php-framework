@@ -3,7 +3,7 @@
     <div class="main-container">
 
         <el-card class="card !border-none" shadow="never">
-            <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+            <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
         <el-card class="box-card mt-[15px] !border-none" shadow="never" v-loading="loading">
@@ -28,12 +28,12 @@
 
             <h3 class="panel-title !text-sm">{{ t('levelBenefits') }}</h3>
             <div class="pl-[100px]">
-                <member-benefits ref="benefitsRef" v-model="formData.level_benefits"/>
+                <member-benefits v-if="!loading" ref="benefitsRef" v-model="formData.level_benefits"/>
             </div>
 
             <h3 class="panel-title !text-sm">{{ t('levelGift') }}</h3>
             <div class="pl-[100px]">
-                <member-gift ref="giftRef" v-model="formData.level_gifts"/>
+                <member-gift v-if="!loading" ref="giftRef" v-model="formData.level_gifts"/>
             </div>
 
         </el-card>
@@ -60,6 +60,10 @@ import Test from '@/utils/test'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+const back = () => {
+    router.push('/member/level')
+}
 
 const benefitsRef = ref(null)
 const giftRef = ref(null)

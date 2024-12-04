@@ -2,7 +2,7 @@
     <div class="main-container">
 
         <el-card class="card !border-none" shadow="never">
-            <el-page-header :icon="ArrowLeft" @back="$router.back()">
+            <el-page-header :icon="ArrowLeft" @back="back()">
                 <template #content>
                     <span class="text-large font-600 mr-3">{{ pageName }}</span>
                 </template>
@@ -122,7 +122,11 @@ import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const pageName = route.meta.title
+const back = () => {
+    router.push('/tools/schedule')
+}
 
 const cronTableData = reactive({
     page: 1,

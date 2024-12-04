@@ -62,6 +62,8 @@
   "imageUpload": "图片上传",
   "imageSet": "图片设置",
   "imageAdsTips": "建议上传尺寸相同的图片，推荐尺寸750*350",
+  "imageAdsSameScreenTips": "开启沉浸式样式，请确保该图片广告组件在页面中位于最顶端；为保证体验，请不要开导航栏；沉浸式样式仅在微信小程序中生效。",
+  "sameScreen": "沉浸式",
   "addImageAd": "添加图片",
   "imageUrlTip": "请上传图片",
   "imageHeight": "图片高度",

@@ -8,7 +8,7 @@
 				 <el-form-item :label="t('image')">
                     <upload-image v-model="diyStore.editComponent.moduleOne.head.textImg" :limit="1"/>
                 </el-form-item>
-                
+
                 <el-form-item :label="t('subTitle')">
                     <el-input v-model.trim="diyStore.editComponent.moduleOne.head.subText" :placeholder="t('subTitlePlaceholder')" clearable maxlength="8" show-word-limit />
                 </el-form-item>
@@ -125,7 +125,7 @@ import { img } from '@/utils/common'
 import { ref, reactive } from 'vue'
 
 const diyStore = useDiyStore()
-diyStore.editComponent.ignore = [] // 忽略公共属性
+diyStore.editComponent.ignore = ['componentBgUrl'] // 忽略公共属性
 
 // 组件验证
 diyStore.editComponent.verify = (index: number) => {

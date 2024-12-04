@@ -3,7 +3,7 @@
     <div class="main-container">
 
         <el-card class="card !border-none" shadow="never">
-            <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+            <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
         <el-form class="page-form mt-[15px]" :model="formData" label-width="150px" ref="formRef" v-loading="loading">
@@ -98,6 +98,9 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+const back = () => {
+    router.push('/channel/aliapp')
+}
 
 const loading = ref(true)
 

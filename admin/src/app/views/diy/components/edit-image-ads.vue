@@ -4,6 +4,11 @@
 		<div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('imageSet') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
+                
+				<el-form-item :label="t('sameScreen')" v-if="diyStore.currentIndex == 0">
+                    <el-switch v-model="diyStore.editComponent.isSameScreen" />
+                    <div class="text-sm text-gray-400 leading-[1.4]">{{ t('imageAdsSameScreenTips') }}</div>
+				</el-form-item>
 
 				<el-form-item :label="t('imageHeight')" class="display-block">
 					<el-input v-model.trim="diyStore.editComponent.imageHeight" :placeholder="t('imageHeightPlaceholder')" clearable maxlength="10" @blur="blurImageHeight">
@@ -52,7 +57,7 @@ import { range } from 'lodash-es'
 import useDiyStore from '@/stores/modules/diy'
 
 const diyStore = useDiyStore()
-diyStore.editComponent.ignore = [] // 忽略公共属性
+diyStore.editComponent.ignore = ['componentBgUrl'] // 忽略公共属性
 
 // 组件验证
 diyStore.editComponent.verify = (index: number) => {

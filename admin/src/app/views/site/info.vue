@@ -3,7 +3,7 @@
     <div class="main-container" v-loading="loading">
 
         <el-card class="card !border-none" shadow="never">
-            <el-page-header :icon="ArrowLeft" @back="$router.back()">
+            <el-page-header :icon="ArrowLeft" @back="back()">
                 <template #content>
                     <span class="text-large font-600 mr-3">{{ pageName }}</span>
                 </template>

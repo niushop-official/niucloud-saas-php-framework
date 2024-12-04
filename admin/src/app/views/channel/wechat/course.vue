@@ -3,7 +3,7 @@
     <div class="main-container">
 
         <el-card class="card !border-none" shadow="never">
-            <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+            <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
         <el-card class="box-card mt-[15px] pt-[20px] !border-none" shadow="never">
@@ -60,6 +60,9 @@ import { useRouter, useRoute } from 'vue-router'
 const route = useRoute()
 const pageName = route.meta.title
 const router = useRouter()
+const back = () => {
+    router.push('/channel/wechat')
+}
 const loading = ref(true)
 const formData = reactive<Record<string, string>>({
     wechat_name: '',

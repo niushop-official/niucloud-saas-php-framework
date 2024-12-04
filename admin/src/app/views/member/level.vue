@@ -73,6 +73,7 @@ import { t } from '@/lang'
 import { getMemberLevelPageList, deleteMemberLevel } from '@/app/api/member'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { setTablePageStorage,getTablePageStorage } from "@/utils/common";
 
 const route = useRoute()
 const router = useRouter()
@@ -112,11 +113,12 @@ const loadMemberLevelList = (page: number = 1) => {
         memberLevelTableData.loading = false
         memberLevelTableData.data = res.data.data
         memberLevelTableData.total = res.data.total
+        setTablePageStorage(memberLevelTableData.page, memberLevelTableData.limit, memberLevelTableData.searchParam);
     }).catch(() => {
         memberLevelTableData.loading = false
     })
 }
-loadMemberLevelList()
+loadMemberLevelList(getTablePageStorage(memberLevelTableData.searchParam).page);
 
 /**
  * 添加会员标签

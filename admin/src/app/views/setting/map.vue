@@ -57,7 +57,7 @@ const formRules = computed(() => {
                         callback(new Error(t('validTimePlaceholder')))
                     } else if (isNaN(value) || !/^\d{0,10}$/.test(value)) {
                         callback(new Error(t('validTimeFormatTips')))
-                    } else if (value < 0) {
+                    } else if (value < 5) {
                         callback(new Error(t('validTimeNotZeroTips')))
                     } else {
                         callback()

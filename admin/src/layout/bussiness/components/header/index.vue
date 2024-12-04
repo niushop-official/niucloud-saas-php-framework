@@ -1,7 +1,7 @@
 <template>
     <el-container :class="['h-full px-[10px]',{'layout-header border-b border-color': !dark}]" >
         <el-row class="w-100 h-full w-full">
-            <el-col :span="12">
+            <el-col :span="10">
                 <div class="left-panel h-full flex items-center">
                     <!-- 左侧菜单折叠 -->
                     <!-- <div class="navbar-item flex items-center h-full cursor-pointer" @click="toggleMenuCollapse">
@@ -20,8 +20,30 @@
                     </div>
                 </div>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="14">
                 <div class="right-panel h-full flex items-center justify-end">
+                    <div class="flex items-center flex-shrink-0 hidden-xs-only">
+                        <el-dropdown trigger="hover" :hide-on-click="false" popper-class="site-info-wrap" class="mr-[8px]">
+                            <!-- 状态 -->
+                            <div class="mx-[8px] bg-[#f6f6f6] border-[1px] border-solid border-[#eee] rounded-[4px] px-[9px] py-[6px] flex items-center">
+                                <span class="mr-[6px] text-[12px] !text-[#333]">{{siteInfo.site_name}}</span>
+                                <span class="!text-[10px] text-[#f56c6c]" :class="{'!text-[#67c23a]': siteInfo.status == 1, '!text-[#f56c6c]': siteInfo.status == 3}">{{ siteInfo.status_name }}</span>
+                            </div>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>
+                                        <!-- 站点id -->
+                                        <div class="text-[14px]">站点编号：{{siteInfo.site_id}}</div>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <!-- 到期时间 -->
+                                        <div v-if="siteInfo.expire_time == 0" class="text-[14px]">到期时间：永久</div>
+                                        <div v-else class="text-[14px]">到期时间：{{ siteInfo.expire_time }}</div>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
                     <!-- 预览 只有站点时展示-->
                     <i class="iconfont iconicon_huojian1 cursor-pointer px-[8px]" :title="t('visitWap')" @click="toPreview"></i>
                     <i class="iconfont iconlingdang-xianxing cursor-pointer px-[8px]" :title="t('newInfo')" v-if="appType == 'site'"></i>
@@ -65,8 +87,9 @@ import layoutSetting from './layout-setting.vue'
 import userInfo from './user-info.vue'
 import { useFullscreen } from '@vueuse/core'
 import useSystemStore from '@/stores/modules/system'
+import useUserStore from '@/stores/modules/user'
 import useAppStore from '@/stores/modules/app'
-import { useRoute,useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 
@@ -77,6 +100,11 @@ const appStore = useAppStore()
 const route = useRoute()
 const router = useRouter()
 const screenWidth = ref(window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
+
+const userStore = useUserStore()
+const siteInfo:any = computed(() => {
+    return userStore.siteInfo
+})
 
 const dark = computed(() => {
     return systemStore.dark
@@ -154,7 +182,7 @@ const toPreview = () => {
     const url = router.resolve({
         path: '/preview/wap',
         query: {
-            page:'/'
+            page: '/'
         }
     })
     window.open(url.href)
@@ -182,5 +210,10 @@ const toPreview = () => {
         background-color: var(--el-color-primary);
     }
 }
-
+:deep(.el-dropdown-menu__item) {
+	&:focus {
+		background-color: transparent !important;
+		color: #333 !important;
+	}
+}
 </style>

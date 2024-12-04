@@ -89,6 +89,7 @@ const setFormData = async (row: any = null) => {
 const getRefundListInfo = async (no) => {
     loading.value = true
     formData.value = null
+    refundList.value = [];
     await getPayRefundInfo(no).then(({ data }) => {
         formData.value = data
         refundList.value.push(data)

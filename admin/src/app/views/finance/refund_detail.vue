@@ -3,7 +3,7 @@
     <div class="main-container">
 
         <el-card class="card !border-none" shadow="never">
-            <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+            <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
         <el-card class="box-card mt-[15px] !border-none relative" shadow="never" v-if="formData">
@@ -66,6 +66,9 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+const back = () => {
+    router.push('/finance/refund')
+}
 
 const refundNo: any = route.query.refund_no
 const loading = ref(true)

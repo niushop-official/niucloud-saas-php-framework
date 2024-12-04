@@ -129,6 +129,7 @@ import { t } from '@/lang'
 import { getApps,getDiyPageList, deleteDiyPage, getDiyTemplate, editDiyPageShare, setUseDiyPage } from '@/app/api/diy'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { setTablePageStorage,getTablePageStorage } from "@/utils/common";
 
 const route = useRoute()
 const router = useRouter()
@@ -234,12 +235,13 @@ const loadDiyPageList = (page: number = 1) => {
         diyPageTableData.loading = false
         diyPageTableData.data = res.data.data
         diyPageTableData.total = res.data.total
+        setTablePageStorage(diyPageTableData.page, diyPageTableData.limit, diyPageTableData.searchParam);
     }).catch(() => {
         diyPageTableData.loading = false
     })
 }
 
-loadDiyPageList()
+loadDiyPageList(getTablePageStorage(diyPageTableData.searchParam).page);
 
 // 编辑自定义页面
 const editEvent = (data: any) => {

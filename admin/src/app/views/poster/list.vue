@@ -104,7 +104,7 @@ import { t } from '@/lang'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { getPosterPageList,getPosterType,modifyPosterStatus,modifyPosterDefault,deletePoster,getPreviewPoster } from '@/app/api/poster'
-import { img } from '@/utils/common'
+import { img,setTablePageStorage,getTablePageStorage } from '@/utils/common'
 
 const router = useRouter()
 const route = useRoute()
@@ -192,12 +192,13 @@ const loadPosterPageList = (page: number = 1) => {
         posterTableData.loading = false
         posterTableData.data = res.data.data
         posterTableData.total = res.data.total
+        setTablePageStorage(posterTableData.page, posterTableData.limit, posterTableData.searchParam);
     }).catch(() => {
         posterTableData.loading = false
     })
 }
 
-loadPosterPageList()
+loadPosterPageList(getTablePageStorage(posterTableData.searchParam).page);
 
 // 编辑自定义海报
 const editEvent = (data: any) => {

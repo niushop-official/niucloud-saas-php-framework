@@ -77,7 +77,7 @@
             </el-form-item>
 
             <el-form-item :label="t('sort')">
-                <el-input-number v-model="formData.sort" :min="0" max="99999999" />
+                <el-input-number v-model="formData.sort" :min="0" max="8" />
             </el-form-item>
         </el-form>
 

@@ -102,7 +102,29 @@ const changeStyle = (item:any) => {
 const confirmStyle = () => {
     diyStore.editComponent.styleName = selectStyle.title;
     diyStore.editComponent.style = selectStyle.value;
+    initStyle(diyStore.editComponent.style);
     showDialog.value = false
+}
+
+
+const initStyle = (style: any) => {
+	if (style == 'style-1') {
+		diyStore.editComponent.bottomRounded = 0;
+		diyStore.editComponent.topRounded = 12;
+	} else if (style == 'style-2') {
+		diyStore.editComponent.bottomRounded = 0;
+		diyStore.editComponent.topRounded = 12;
+	} else if (style == 'style-3') {
+		diyStore.editComponent.bottomRounded = 12;
+		diyStore.editComponent.topRounded = 12;
+	} else if (style == 'style-4') {
+		diyStore.editComponent.bottomRounded = 12;
+		diyStore.editComponent.topRounded = 12;
+	} else if (style == 'style-5') {
+		diyStore.editComponent.bottomRounded = 12;
+		diyStore.editComponent.topRounded = 12;
+	}
+
 }
 
 defineExpose({})

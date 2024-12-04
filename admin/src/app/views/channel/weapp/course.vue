@@ -3,7 +3,7 @@
 	<div class="main-container">
 
 		<el-card class="card !border-none" shadow="never">
-		    <el-page-header :content="pageName" :icon="ArrowLeft" @back="$router.back()" />
+		    <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
 		</el-card>
 
 		<el-card class="box-card mt-[15px] !border-none" shadow="never">
@@ -63,7 +63,9 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
-
+const back = () => {
+    router.push('/channel/weapp')
+}
 const linkEvent = () => {
     window.open('https://mp.weixin.qq.com/', '_blank')
 }
