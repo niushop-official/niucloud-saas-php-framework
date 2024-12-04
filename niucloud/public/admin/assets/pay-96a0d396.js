@@ -1,0 +1,1 @@
+import{O as t}from"./index-b105d502.js";function r(e){return t.get("pay/refund",{params:e})}function u(e){return t.get(`pay/refund/${e}`)}function a(){return t.get("pay/refund/type")}function f(e){return t.post("pay/refund/transfer",e,{showSuccessMessage:!0})}function s(){return t.get("pay/type/all")}export{u as a,f as b,r as c,s as d,a as g};
