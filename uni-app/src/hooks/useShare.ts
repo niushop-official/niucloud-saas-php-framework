@@ -61,26 +61,33 @@ export const useShare = () => {
         }
         // #endif
 
-        if (options && options.wechat && options.weapp) {
+        if (options) {
 
-            // #ifdef H5
-            wechatOptions.title = options.wechat.title || ''
-            wechatOptions.link = options.wechat.link || h5Link
-            wechatOptions.desc = options.wechat.desc || ''
-            wechatOptions.imgUrl = options.wechat.url ? img(options.wechat.url) : ''
-            // wechatOptions.success = options.wechat.callback || null;
-            // useSystemStore().shareCallback = options.wechat.callback || null;
-            wechatShare()
-            // #endif
+            if (options.wechat) {
 
-            // #ifdef MP-WEIXIN
-            weappOptions.title = options.weapp.title || ''
-            if (options.weapp.path) weappOptions.path = options.weapp.path
-            weappOptions.imageUrl = options.weapp.url ? img(options.weapp.url) : ''
-            useSystemStore().shareCallback = options.weapp.callback || null;
-            // #endif
+                // #ifdef H5
+                wechatOptions.title = options.wechat.title || ''
+                wechatOptions.link = options.wechat.link || h5Link
+                wechatOptions.desc = options.wechat.desc || ''
+                wechatOptions.imgUrl = options.wechat.url ? img(options.wechat.url) : ''
+                // wechatOptions.success = options.wechat.callback || null;
+                // useSystemStore().shareCallback = options.wechat.callback || null;
+                wechatShare()
+                // #endif
+            }
 
-            uni.setStorageSync('weappOptions', weappOptions)
+            if (options.weapp) {
+
+                // #ifdef MP-WEIXIN
+                weappOptions.title = options.weapp.title || ''
+                if (options.weapp.path) weappOptions.path = options.weapp.path
+                weappOptions.imageUrl = options.weapp.url ? img(options.weapp.url) : ''
+                useSystemStore().shareCallback = options.weapp.callback || null;
+                uni.setStorageSync('weappOptions', weappOptions)
+                // #endif
+
+            }
+
         } else {
             getShareInfo({
                 route: '/' + currRoute(),

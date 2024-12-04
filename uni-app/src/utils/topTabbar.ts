@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { onPageScroll } from '@dcloudio/uni-app';
+import { deepClone } from '@/utils/common';
 
 export function topTabar() {
 
@@ -31,7 +32,7 @@ export function topTabar() {
                 param.value[key] = data[key]
             }
         }
-        return param.value;
+        return deepClone(param.value);
     }
 
     onPageScroll((e) => {

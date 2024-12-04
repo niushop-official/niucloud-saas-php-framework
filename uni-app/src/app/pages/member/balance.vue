@@ -23,8 +23,7 @@
 					</view>
 					<view class="mt-[60rpx] flex justify-around" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1)">
 						<block v-if="systemStore.siteAddons.includes('recharge')">
-							<button v-if="cashOutConfigObj.is_open != 1" class="!w-[340rpx] h-[70rpx] font-500 rounded-full  text-[26rpx]  primary-btn-bg  !text-[#fff] flex-center !m-0"  hover-class="none" shape="circle" @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
-							<button  v-else class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border"  hover-class="none" shape="circle" @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
+							<button v-if="rechargeConfigObj.is_use == 1" class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border"  hover-class="none" shape="circle" @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
 						</block>
 						<view v-if="cashOutConfigObj.is_open == 1" :class="{'!w-[340rpx]': !systemStore.siteAddons.includes('recharge')}" class="text-center w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] !text-[#fff] flex-center font-500 !m-0"
 						style="background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;" @click="applyCashOut">{{t('cashOut')}}</view>
@@ -70,10 +69,10 @@
 </template>
 
 <script setup lang="ts">
-	import { ref, reactive,computed } from 'vue'
+	import { ref, reactive,computed ,watch} from 'vue'
 	import { t } from '@/locale'
 	import { moneyFormat, redirect, img,pxToRpx } from '@/utils/common';
-	import { cashOutConfig,getBalanceListAll } from '@/app/api/member';
+	import { cashOutConfig,getBalanceListAll,rechargeConfig} from '@/app/api/member';
 	import MescrollBody from '@/components/mescroll/mescroll-body/mescroll-body.vue';
 	import MescrollEmpty from '@/components/mescroll/mescroll-empty/mescroll-empty.vue';
 	import useMescroll from '@/components/mescroll/hooks/useMescroll.js';
@@ -86,13 +85,30 @@
 	const { downCallback,mescrollInit, getMescroll } = useMescroll(onPageScroll, onReachBottom);
 	const memberStore = useMemberStore()
     const systemStore = useSystemStore()
-    
+
     /********* 自定义头部 - start ***********/
     const topTabarObj = topTabar()
     let param = topTabarObj.setTopTabbarParam({title:'我的余额'})
     /********* 自定义头部 - end ***********/
 
 	const cashOutConfigObj: any = reactive({})
+	const rechargeConfigObj: any = reactive({})
+	// 监听 siteAddons 变化
+	watch(
+	  () => systemStore.siteAddons,
+	  (newAddons, oldAddons) => {
+	    if (newAddons !== oldAddons) {
+	      systemStore.siteAddons = newAddons
+		  if(systemStore.siteAddons.includes('recharge')) {
+		  	rechargeConfig().then((res: any) => {
+		  		for (let key in res.data) {
+		  			rechargeConfigObj[key] = res.data[key];
+		  		}
+		  	})
+		  }
+	    }
+	  }
+	);
 	onShow(() => {
         cashOutConfig().then((res: any) => {
             for (let key in res.data) {
@@ -100,7 +116,15 @@
             }
 
         })
+		if(systemStore.siteAddons.includes('recharge')) {
+			rechargeConfig().then((res: any) => {
+				for (let key in res.data) {
+					rechargeConfigObj[key] = res.data[key];
+				}
+			})
+		}
     })
+
 
 	// 获取系统状态栏的高度
 	let menuButtonInfo: any = {};

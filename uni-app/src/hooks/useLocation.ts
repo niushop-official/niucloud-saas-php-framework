@@ -2,7 +2,6 @@ import { onLoad } from '@dcloudio/uni-app';
 import { isWeixinBrowser } from '@/utils/common';
 import { getAddressByLatlng } from '@/app/api/system';
 import manifestJson from '@/manifest.json';
-import { cloneDeep } from 'lodash-es';
 import wechat from '@/utils/wechat'
 import useSystemStore from '@/stores/system';
 
@@ -19,18 +18,7 @@ export function useLocation(isOpenLocation: any) {
     const onLoadLifeCycle = (callback: any = '') => {
         onLoad((option: any) => {
             if (option && option.latng) {
-                let obj = { latitude: '', longitude: '' };
-                obj.latitude = option.latng.split(',')[0]
-                obj.longitude = option.latng.split(',')[1]
-                var urlencode = cloneDeep(systemStore.location) || {};
-                urlencode = Object.assign(urlencode, obj)
-                systemStore.setLocation(urlencode);
-
-                if (urlencode && urlencode.latitude && urlencode.longitude) {
-                    getAddressByLatlngFn('')
-                } else {
-                    systemStore.setCurrShippingAddress('');
-                }
+                getAddressByLatlngFn(option.latng)
             }
 
             uni.removeStorageSync('manually_select_location_from_map');
@@ -43,19 +31,19 @@ export function useLocation(isOpenLocation: any) {
         // 排除手动地图选择位置的情况
         if (!uni.getStorageSync('manually_select_location_from_map')) {
             // #ifdef H5
-            if (isWeixinBrowser() && systemStore.mapConfig.is_open&& !uni.getStorageSync('curr_shipping_address')) {
+            if (isWeixinBrowser() && systemStore.mapConfig.is_open && !uni.getStorageSync('location_address')) {
                 wechat.init(()=>{
 					wechat.getLocation(res => {
 					    let latlng = res.latitude + ',' + res.longitude; // 纬度（浮点数，范围为90 ~ -90），经度（浮点数，范围为180 ~ -180）
 					    getAddressByLatlngFn(latlng)
 					})
 				});
-                
+
             }
             // #endif
 
             // #ifdef MP
-            if (systemStore.mapConfig.is_open && !uni.getStorageSync('curr_shipping_address')) {
+            if (systemStore.mapConfig.is_open && !uni.getStorageSync('location_address')) {
                 uni.getLocation({
                     type: 'gcj02',
                     success: res => {
@@ -91,13 +79,13 @@ export function useLocation(isOpenLocation: any) {
     // 刷新页面时需要调用的
     const refreshLocation = () => {
         if (!isOpen) return false;
-        if (!uni.getStorageSync('manually_select_location_from_map') && uni.getStorageSync('curr_shipping_address')) {
+        if (!uni.getStorageSync('manually_select_location_from_map') && uni.getStorageSync('location_address')) {
 			if(locationStorage() && !locationStorage().is_expired){
-				systemStore.setCurrShippingAddress(uni.getStorageSync('curr_shipping_address'))	
+				systemStore.setAddressInfo(uni.getStorageSync('location_address'))
 			}else{
-				uni.removeStorageSync('curr_shipping_address');
+				uni.removeStorageSync('location_address');
 			}
-            
+
         }
 
         // 定位信息过期后，重新获取定位
@@ -112,21 +100,17 @@ export function useLocation(isOpenLocation: any) {
         let data = { latlng: '' };
         if (latlng) {
             data.latlng = latlng;
-
-			let obj = { latitude: '', longitude: '' };
-			obj.latitude = data.latlng.split(',')[0]
-			obj.longitude = data.latlng.split(',')[1]
-			var urlencode = cloneDeep(systemStore.location) || {};
-			urlencode = Object.assign(urlencode, obj)
-			systemStore.setLocation(urlencode);
         } else {
-            data.latlng = systemStore.location.latitude + ',' + systemStore.location.longitude;
+            data.latlng = systemStore.diyAddressInfo.latitude + ',' + systemStore.diyAddressInfo.longitude;
         }
         getAddressByLatlng(data).then((res: any) => {
             if (res.data && Object.keys(res.data).length) {
                 let obj: any = {};
-                obj.latitude = res.latitude;
-                obj.longitude = res.longitude;
+				
+				let latlngArr = data.latlng.split(',');
+
+                obj.latitude = latlngArr[0];
+                obj.longitude = latlngArr[1];
                 obj.full_address = res.data.province != undefined ? res.data.province : '';
                 obj.full_address += res.data.city != undefined ? res.data.city : '';
                 obj.full_address += res.data.district != undefined ? res.data.district : '';
@@ -140,9 +124,9 @@ export function useLocation(isOpenLocation: any) {
                 obj.district = res.data.district;
                 obj.community = res.data.community;
                 obj.formatted_addresses = res.data.formatted_addresses;
-                systemStore.setCurrShippingAddress(obj)
+                systemStore.setAddressInfo(obj)
             } else {
-                systemStore.setCurrShippingAddress("")
+                systemStore.setAddressInfo()
             }
 
             // 手动选择地图位置后，清除标识
@@ -158,8 +142,8 @@ export function useLocation(isOpenLocation: any) {
     const reposition = () => {
         if (!isOpen) return false;
 
-        let latitude = systemStore.location ? systemStore.location.latitude : '';
-        let longitude = systemStore.location ? systemStore.location.longitude : '';
+        let latitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.latitude : '';
+        let longitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.longitude : '';
 
         // #ifdef MP
         uni.chooseLocation({
@@ -167,14 +151,8 @@ export function useLocation(isOpenLocation: any) {
             longitude,
             success: (res) => {
                 uni.setStorageSync('manually_select_location_from_map', true)
-                var urlencode = cloneDeep(systemStore.location) || {};
-                urlencode = Object.assign(urlencode, res)
-                systemStore.setLocation(urlencode);
-                if (urlencode && urlencode.latitude && urlencode.longitude) {
-                    getAddressByLatlngFn('')
-                } else {
-                    systemStore.setCurrShippingAddress('');
-                }
+				let latng = res.latitude + ',' + res.longitude;
+				getAddressByLatlngFn(latng)
             },
             fail: (res) => {
                 // 在隐私协议中没有声明chooseLocation:fail api作用域
@@ -204,7 +182,7 @@ export function useLocation(isOpenLocation: any) {
      * 定位信息（缓存）
      */
     const locationStorage = () => {
-        let data = uni.getStorageSync('location');
+        let data = uni.getStorageSync('location_address');
         if (data) {
             var date = new Date();
             if (systemStore.mapConfig.valid_time > 0) {
@@ -221,9 +199,9 @@ export function useLocation(isOpenLocation: any) {
     }
 
     return {
-        initFn: init,
+        init: init,
         onLoad: onLoadLifeCycle,
-        refreshLocationFn: refreshLocation,
-        repositionFn: reposition
+        refresh: refreshLocation,
+        reposition: reposition
     }
 }

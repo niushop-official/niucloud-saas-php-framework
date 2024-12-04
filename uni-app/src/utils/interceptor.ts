@@ -123,15 +123,18 @@ const setAddonName = async(path: string) => {
 // 加载分享
 const loadShare = () => {
     const { setShare } = useShare()
-	// 分享其它页面时，需要设置当前页面为白名单
-	const shareWhiteList = [
-		'addon/cms/pages/detail',
-		'addon/shop/pages/goods/detail',
-		'addon/shop/pages/point/detail',
-		'addon/shop_fenxiao/pages/promote_code',
-		'addon/shop_giftcard/pages/detail',
-		'addon/shop_giftcard/pages/give',
-		'app/pages/index/diy',
-	]
-   if(!shareWhiteList.includes(currRoute()||'')) setShare()
+    // 分享其它页面时，需要设置当前页面为白名单
+    const shareWhiteList = [
+        'addon/cms/pages/detail',
+        'addon/shop/pages/goods/detail',
+        'addon/shop/pages/point/detail',
+        'addon/shop_fenxiao/pages/promote_code',
+        'addon/shop_fenxiao/pages/goods',
+        'addon/shop_giftcard/pages/detail',
+        'addon/shop_giftcard/pages/give',
+        'app/pages/index/diy',
+    ]
+    if (currRoute()) {
+        if (!shareWhiteList.includes(currRoute() || '')) setShare()
+    }
 }

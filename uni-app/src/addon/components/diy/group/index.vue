@@ -49,9 +49,9 @@
                 <template v-if="component.componentName == 'CarouselSearch'">
                     <diy-carousel-search :scrollBool="diyGroup.componentsScrollBool.CarouselSearch" :component="component" :global="data.global" :index="index" :pullDownRefreshCount="props.pullDownRefreshCount" />
                 </template>
-                <template v-if="component.componentName == 'PictureShow'">
-                    <diy-picture-show :component="component" :global="data.global" :index="index" :pullDownRefreshCount="props.pullDownRefreshCount" />
-                </template>
+				<template v-if="component.componentName == 'PictureShow'">
+					<diy-picture-show :component="component" :global="data.global" :index="index" :pullDownRefreshCount="props.pullDownRefreshCount" />
+				</template>
             </view>
         </view>
         <template v-if="diyStore.mode == '' && data.global.bottomTabBarSwitch">

@@ -33,9 +33,9 @@
 				<view v-if="topStatusBarData.style == 'style-4'" :style="navbarInnerStyle" class="content-wrap">
 					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[28rpx]" :style="{ color: topStatusBarData.textColor }"></text>
-					<view class="title-wrap"  @click.stop="locationVal.repositionFn()" :style="{ color: topStatusBarData.textColor }" v-if="systemStore.currShippingAddress">{{ systemStore.currShippingAddress.community }}</view>
-					<view class="title-wrap"  @click.stop="locationVal.repositionFn()" :style="{ color: topStatusBarData.textColor }" v-else>{{ systemStore.defaultPositionAddress }}</view>
-					<text class="nc-iconfont nc-icon-youV6xx text-[26rpx]" @click.stop="locationVal.repositionFn()" :style="{ color: topStatusBarData.textColor }"></text>
+					<view class="title-wrap"  @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-if="systemStore.diyAddressInfo">{{ systemStore.diyAddressInfo.community }}</view>
+					<view class="title-wrap"  @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-else>{{ systemStore.defaultPositionAddress }}</view>
+					<text class="nc-iconfont nc-icon-youV6xx text-[26rpx]" @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }"></text>
 				</view>
 			</view>
 		</view>
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, getCurrentInstance, nextTick } from 'vue';
-import { img } from '@/utils/common';
+import { redirect, img } from '@/utils/common';
 import useSystemStore from '@/stores/system';
 import useDiyStore from '@/app/stores/diy';
 import {useLocation} from '@/hooks/useLocation'
@@ -183,11 +183,29 @@ let pages = getCurrentPages();
 
 // 返回按钮的函数
 const goBack = () => {
-	// 如果自定义了点击返回按钮的函数，则执行，否则执行返回逻辑
-	if (typeof props.customBack === 'function') {
-		props.customBack();
-	} else {
-		uni.navigateBack();
+	// 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
+	if(pages.length ==  1 && pages[0].route == 'app/pages/auth/index'){
+		uni.getStorage({
+		    key: 'loginBack',
+		    success: (res: any) => {
+		        res ? redirect(
+		            {
+		                ...res.data,
+		                mode: 'redirectTo'
+		            }
+		        ) : redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
+		    },
+		    fail: (res) => {
+		        redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
+		    }
+		})
+	}else{
+		// 如果自定义了点击返回按钮的函数，则执行，否则执行返回逻辑
+		if (typeof props.customBack === 'function') {
+			props.customBack();
+		} else {
+			uni.navigateBack();
+		}
 	}
 }
 /******************************* 返回按钮-end ***********************/
@@ -223,21 +241,24 @@ const navbarPlaceholderHeight = () => {
 
 	const locationVal = useLocation(isOpenLocation);
 	locationVal.onLoad();
-	locationVal.initFn();
+	locationVal.init();
 /************** 定位-end ****************/
 onMounted(() => {
 	navbarPlaceholderHeight();
 	if (pages.length > 1) {
 		isBackShow.value = true;
+		// 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
+	}else if(pages.length ==  1 && pages[0].route == 'app/pages/auth/index'){
+		isBackShow.value = true;
 	}
 	// 刷新定位
-	locationVal.refreshLocationFn();
+	locationVal.refresh();
 });
 
 // 页面onShow调用时，也会触发改方法
 const refresh = ()=>{
 	// 刷新定位
-	locationVal.refreshLocationFn();
+	locationVal.refresh();
 }
 
 defineExpose({

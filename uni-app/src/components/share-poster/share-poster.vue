@@ -1,7 +1,7 @@
 <template>
 	<!-- 分享弹窗 -->
 	<view @touchmove.prevent.stop class="share-popup">
-	    <u-popup :show="sharePopupShow" type="bottom" @close="sharePopuClose" overlayOpacity="0.8">
+	    <u-popup :show="sharePopupShow" type="bottom" @close="sharePopupClose" overlayOpacity="0.8">
 	        <view @touchmove.prevent.stop>
 				<view class="poster-img-wrap" :style="{'top': shareTop}">
 					<image v-if="isPosterAnimation" class="poster-animation" :src="img('addon/shop/poster_animation.gif')" mode="aspectFit"></image>
@@ -15,7 +15,7 @@
 							<text>分享给好友</text>
 						</button>
 					</view>
-					
+
 					<view class="share-box">
 						<button class="share-btn" :plain="true" @click="saveGoodsPoster()">
 							<view class="text-[#07c160] iconfont iconpengyouquan"></view>
@@ -23,7 +23,7 @@
 						</button>
 					</view>
 					<!-- #endif -->
-					
+
 					<!-- #ifdef H5 -->
 					<view class="share-box" @click="copyUrl">
 						<button class="share-btn" :plain="true">
@@ -33,7 +33,7 @@
 					</view>
 					<!-- #endif -->
 				</view>
-				<view class="share-footer" @click="sharePopuClose"><text>取消分享</text></view>
+				<view class="share-footer" @click="sharePopupClose"><text>取消分享</text></view>
 	        </view>
 	    </u-popup>
 		<u-popup :show="show" mode="center" :round="10" :closeable="true"  @close="show = false" :safe-area-inset-bottom="false">
@@ -79,6 +79,8 @@ const props = defineProps({
     }
 })
 
+const emits = defineEmits(['close'])
+
 const sharePopupShow = ref(false);
 
 // 复制
@@ -104,7 +106,7 @@ const copyUrl = () => {
 const openShare = ()=>{
 	sharePopupShow.value = true
 	goodsPosterShowFn();
-} 
+}
 
 //生成海报
 const isPosterAnimation = ref(false)
@@ -122,7 +124,7 @@ const goodsPosterShowFn = () => {
 	let startTime = Date.parse(new Date());
 	getPoster(obj).then((res:any) => {
 		poster.value = res.data && img(res.data) || '';
-		
+
 		let endTime = Date.parse(new Date());
 		let time = endTime-startTime;
 		let periodTime = 2200;
@@ -136,7 +138,7 @@ const goodsPosterShowFn = () => {
 			isPosterImg.value = true;
 		}
 	}).catch(() => {
-		sharePopuClose();
+		sharePopupClose();
 	})
 }
 const show = ref(false);
@@ -199,11 +201,13 @@ shareTop.value = menuButtonInfo.top + menuButtonInfo.height + 'px';
 // #endif
 /************ 获取微信头部-end ****************/
 
-const sharePopuClose = ()=>{
+const sharePopupClose = ()=>{
 	sharePopupShow.value = false;
 	isPosterAnimation.value = false;
 	isPosterImg.value = false;
-} 
+	console.log('sharePopupClose 取消分享');
+	emits('close');
+}
 
 defineExpose({
     openShare
@@ -239,7 +243,7 @@ defineExpose({
 				line-height: 1;
 				height: auto;
 				background: none;
-				
+
 				text {
 					margin-top: 20rpx;
 					font-size: 24rpx;
@@ -269,7 +273,7 @@ defineExpose({
 		text-align: center;
 		font-size: 26rpx;
 	}
-	
+
 }
 
 .poster-img-wrap{

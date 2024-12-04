@@ -250,3 +250,10 @@ export function getMemberAccountPointcount() {
 export function getTaskPoint() {
 	return request.get(`task/point`)
 }
+
+/**
+ * 充值配置
+ */
+export function rechargeConfig() {
+	return request.get('recharge/config')
+}

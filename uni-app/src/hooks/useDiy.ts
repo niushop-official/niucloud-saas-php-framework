@@ -43,8 +43,11 @@ export function useDiy(params: any = {}) {
             if (data.value.global.pageStartBgColor && data.value.global.pageEndBgColor) style += `background:linear-gradient(${ data.value.global.pageGradientAngle },${ data.value.global.pageStartBgColor },${ data.value.global.pageEndBgColor });`;
             else style += 'background-color:' + data.value.global.pageStartBgColor + ';';
         }
-
-        style += 'min-height:calc(100vh - 50px);';
+		if(data.value.global.bottomTabBarSwitch){
+			style += 'min-height:calc(100vh - 50px);';
+		}else{
+			style += 'min-height:calc(100vh);';
+		}
         if (data.value.global.bgUrl) {
             style += `background-image:url('${ img(data.value.global.bgUrl) }');`;
         }

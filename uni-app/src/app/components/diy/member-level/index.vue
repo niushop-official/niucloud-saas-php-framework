@@ -23,7 +23,7 @@
 				<text class="iconfont iconxiayibu1 ml-[4rpx] -mb-[2rpx] !text-[14rpx] text-[#333]"></text>
 			</view>
 		</view>
-		<view v-if="diyComponent.style == 'style-3'" class="rounded-[var(--rounded-big)] style-bg-3 py-[var(--pad-top-m)] px-[var(--pad-sidebar-m)]">
+		<view v-if="diyComponent.style == 'style-3'" class="style-bg-3 py-[var(--pad-top-m)] px-[var(--pad-sidebar-m)]">
 			<view class="flex items-center justify-between style-border-3 mb-[30rpx] pb-[40rpx]">
 				<view class="flex flex-col flex-1">
 					<view class="flex items-center justify-between">
@@ -43,7 +43,7 @@
 					</view>
 					<text class="text-[24rpx] text-[#794200] mt-[10rpx]">购物或邀请好友可以提升等级</text>
 				</view>
-	
+
 			</view>
 			<view class="flex items-center justify-between">
 				<view class="flex flex-col flex-1 mt-[2rpx]">
@@ -74,7 +74,7 @@
 				<image :src="img('static/resource/images/diy/member/style4_arrow.png')" mode="aspectFit" class="w-[26rpx] h-[26rpx] pt-[2rpx]" />
 			</view>
 		</view>
-		<view v-if="diyComponent.style == 'style-5'" class="rounded-[var(--rounded-big)] style-5" :style="{'backgroundImage': 'url('+img('static/resource/images/diy/member/style5_bg.jpg')+')'}">
+		<view v-if="diyComponent.style == 'style-5'" class="style-5" :style="{'backgroundImage': 'url('+img('static/resource/images/diy/member/style5_bg.jpg')+')'}">
 			<view class="content-head pt-[16rpx] pb-[10rpx] px-[24rpx] flex items-center justify-between">
 				<view class="flex items-center">
 					<image :src="img('static/resource/images/diy/member/style5_vip.png')" mode="aspectFit" class="w-[40rpx] h-[40rpx]" />
@@ -168,49 +168,49 @@
 			getMemberLevelFn(memberStore.levelList)
 			return memberStore.levelList
 		}
-		
+
 	})
 	const getMemberLevelFn = (list:any)=> {
-			if(!list||!list.length) return false;
-	        let isSet = false;
-            // 刚进来处理会员等级数据
-            if (info.value && list && list.length) {
-                list.forEach((item: any, index: any) => {
-                    if (item.level_id == info.value.member_level) {
-                        currIndex.value = index + 1;
-                        // 会员权益
-                        if (item.level_benefits) {
-                            Object.values(item.level_benefits).forEach((bItem: any) => {
-                                if (bItem.content) {
-                                    benefits_arr.value.push(bItem.content)
-                                }
-                            })
-                        }
-                    }
+		if (!list || !list.length) return false;
+		let isSet = false;
+		// 刚进来处理会员等级数据
+		if (info.value && list && list.length) {
+			list.forEach((item: any, index: any) => {
+				if (item.level_id == info.value.member_level) {
+					currIndex.value = index + 1;
+					// 会员权益
+					if (item.level_benefits) {
+						Object.values(item.level_benefits).forEach((bItem: any) => {
+							if (bItem.content) {
+								benefits_arr.value.push(bItem.content)
+							}
+						})
+					}
+				}
 
-                    if (item.growth > info.value.growth && !isSet) {
-                        afterCurrIndex.value = index;
-                        isSet = true;
-                    }
-                })
-            }
+				if (item.growth > info.value.growth && item.level_id != info.value.member_level && !isSet) {
+					afterCurrIndex.value = index;
+					isSet = true;
+				}
+			})
+		}
 
-            if (info.value.member_level) {
-                if(afterCurrIndex.value == -1){
-                    afterCurrIndex.value = list.length - 1;
-                }
+		if (info.value.member_level) {
+			if (afterCurrIndex.value == -1) {
+				afterCurrIndex.value = list.length - 1;
+			}
 
-                if (list[afterCurrIndex.value] && list[afterCurrIndex.value].growth) {
-                    upgradeGrowth.value = list[afterCurrIndex.value].growth - info.value.growth;
-                }
-            }else{
-                // 当前会员没有会员等级，则展示会员等级中的最后一个等级
-                info.value.member_level_name = list[0].level_name;
-                upgradeGrowth.value = list[0].growth;
-                afterCurrIndex.value = 0;
-                currIndex.value = 1;
-            }
-    }
+			if (list[afterCurrIndex.value] && list[afterCurrIndex.value].growth) {
+				upgradeGrowth.value = list[afterCurrIndex.value].growth - info.value.growth;
+			}
+		} else {
+			// 当前会员没有会员等级，则展示会员等级中的最后一个等级
+			info.value.member_level_name = list[0].level_name;
+			upgradeGrowth.value = list[0].growth - info.value.growth;
+			afterCurrIndex.value = 0;
+			currIndex.value = 1;
+		}
+	}
 
 	// 进度条值
 	let progress = () => {
@@ -266,7 +266,7 @@
 			background: linear-gradient(#FFF3C1, #FFEFB0);
 		}
 	}
-	
+
 	.style-5{
 		background-size: cover;
 		background-repeat: no-repeat;

@@ -68,11 +68,10 @@
 					<view v-else-if="!loginConfig.is_mobile && loginConfig.is_username" class="w-full flex items-center justify-center">
 						<button class="w-[630rpx] h-[88rpx] !mx-[0] !bg-[#fff] !border-[var(--primary-color)] border-solid border-[2rpx] text-[26rpx] rounded-[44rpx] leading-[84rpx] !text-[var(--primary-color)]" @click="redirect({ url: '/app/pages/auth/login',param:{type:'username'}})">{{t('accountLogin')}}</button>
 					</view>
-
 					<view v-if="loginConfig.agreement_show" class="w-full flex items-center justify-center mt-[28rpx]">
 						<view  class="flex items-center justify-center mt-[28rpx] py-[10rpx]" @click.stop="agreeChange">
 							<u-checkbox-group @change="agreeChange">
-								<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }" />
+								<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="26rpx" :customStyle="{ 'marginTop': '5rpx !important' }" />
 							</u-checkbox-group>
 							<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
 								<text>{{ t('agreeTips') }}</text>
@@ -115,7 +114,7 @@
 	// #endif
 	/********* 自定义头部 - start ***********/
 	const topTabarObj = topTabar()
-	let param = topTabarObj.setTopTabbarParam({title:''})
+	let param = topTabarObj.setTopTabbarParam({title:'',topStatusBar:{textColor: '#333'}})
 	/********* 自定义头部 - end ***********/
 	const headerHeight = computed(()=>{
 		return Object.keys(menuButtonInfo).length ? pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) + pxToRpx(8)+'rpx':'auto'

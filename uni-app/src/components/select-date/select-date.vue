@@ -1,7 +1,8 @@
 <template>
     <u-popup :show="show" @close="show = false" mode="bottom" :round="10"  zIndex="10090">
-        <view class="popup-common">
+        <view class="popup-common relative">
 			<view class="title">选择时间</view>
+            <view class="absolute  top-[36rpx] right-[36rpx] text-[24rpx] text-[var(--text-color-light6)] leading-[30rpx] z-10" @click="clearDate">清除</view>
             <view class="px-[var(--popup-sidebar-m)] mb-[20rpx] mt-[10rpx]">
                 <view class="flex items-center justify-between mb-[30rpx]">
                     <view class="w-[160rpx] h-[66rpx] box-border flex-center rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"  v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == item.type}"  @click="loadDateFn(item)">{{item.name}}</view> 
@@ -177,6 +178,10 @@ const reset = () =>{
     dateList.nowDate = [init().nowDateStart,init().nowDateEnd]
 }
 
+const clearDate = () =>{
+    emits('confirm',[])
+    show.value = false
+}
 defineExpose({
     show
 })

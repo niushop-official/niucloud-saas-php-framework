@@ -3,19 +3,19 @@ import { getInitInfo, getSiteInfo } from '@/app/api/system'
 import useConfigStore from '@/stores/config'
 import useMemberStore from '@/stores/member'
 import { isWeixinBrowser } from '@/utils/common'
+import { cloneDeep } from 'lodash-es';
 
 interface System {
     site: AnyObject | null,
     siteApps: string[],
     siteAddons: string[],
     currRoute: string,
-    location: Object | null, // 定位信息
     mapConfig: any,
     initStatus: any, // 初始化状态
     menuButtonInfo: any, // 如果是小程序，获取右上角胶囊的尺寸信息
     shareCallback: any, // 分享回调
-	currShippingAddress: any,
-    defaultPositionAddress:any
+    defaultPositionAddress:any,
+	diyAddressInfo: any  // 定位信息
 }
 
 const useSystemStore = defineStore('system', {
@@ -25,7 +25,6 @@ const useSystemStore = defineStore('system', {
             siteApps: [],
             siteAddons: [],
             currRoute: '',
-            location: null,
             mapConfig: {
                 is_open: 1,
                 valid_time: 0
@@ -38,8 +37,8 @@ const useSystemStore = defineStore('system', {
                 width: ''
             },
             shareCallback: null,
-			currShippingAddress: null,
-            defaultPositionAddress:'定位中'
+            defaultPositionAddress:'定位中',
+			diyAddressInfo: null
         }
     },
     actions: {
@@ -114,20 +113,24 @@ const useSystemStore = defineStore('system', {
             }).catch((err) => {
             })
         },
-        setLocation(value: any) {
-            var date = new Date();
-            date.setSeconds(60 * this.mapConfig.valid_time);
-            value.valid_time = date.getTime() / 1000; // 定位信息 5分钟内有效，过期后将重新获取定位信息
-            this.location = value;
-            uni.setStorageSync('location', value); // 初始化数据调用
-        },
-		// 当前选择的收货地址信息
-		setCurrShippingAddress(value:any) {
-			this.currShippingAddress = value;
-			if(value){
-				uni.setStorageSync('curr_shipping_address', value);
+		// 当前选择的收货地址信息[经纬度，当前定位地址，定位过期时间]
+		setAddressInfo(data:any = {}) {
+			let addressInfo = cloneDeep(data);
+			// 过期时间
+			var date = new Date();
+			date.setSeconds(60 * this.mapConfig.valid_time);
+			addressInfo.valid_time = date.getTime() / 1000; // 定位信息 5分钟内有效，过期后将重新获取定位信息
+			
+			if(this.diyAddressInfo){
+				this.diyAddressInfo = Object.assign(this.diyAddressInfo, addressInfo);
 			}else{
-				uni.removeStorageSync('curr_shipping_address');
+				this.diyAddressInfo = addressInfo;
+			}
+			
+			if(Object.keys(data).length){
+				uni.setStorageSync('location_address', addressInfo);
+			}else{
+				uni.removeStorageSync('location_address');
 			}
 		}
     }

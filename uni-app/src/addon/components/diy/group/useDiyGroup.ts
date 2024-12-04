@@ -34,6 +34,9 @@ export function useDiyGroup(params: any = {}) {
         } else {
             obj['draggable-element'] = true;
         }
+		if(component.componentName == 'ImageAds'){
+			obj['overflow-hidden'] = true
+		}
         return obj;
     }
 

@@ -37,7 +37,7 @@
 
 				<view class="bd flex flex-wrap justify-between">
 					<template v-for="item in diyComponent.list" :key="item.id">
-						<view v-if="diyComponent.blockStyle.value == 'style-1'" @click="diyStore.toRedirect(item.link)" class="item flex justify-between px-[20rpx] py-[30rpx] bg-white mt-[20rpx] rounded-[var(--rounded-mid)]" :style="commonTempCss(item)">
+						<view v-if="diyComponent.blockStyle.value == 'style-1'" @click="diyStore.toRedirect(item.link)" class="item flex justify-between px-[20rpx] py-[30rpx] bg-white mt-[20rpx]" :style="commonTempCss(item)">
 							<view class="flex-1 flex items-baseline flex-col">
 								<view class="text-[28rpx] pb-[10rpx] text-[#333]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
 								<view class="text-[22rpx] text-[#999] pb-[30rpx]">{{ item.subTitle.text }}</view>
@@ -55,7 +55,7 @@
 							</view>
 						</view>
 						
-						<view v-if="diyComponent.blockStyle.value == 'style-2'" @click="diyStore.toRedirect(item.link)" class="item h-[150rpx] flex justify-between p-[20rpx] bg-white mt-[20rpx] rounded-[var(--rounded-mid)]" :style="commonTempCss(item)">
+						<view v-if="diyComponent.blockStyle.value == 'style-2'" @click="diyStore.toRedirect(item.link)" class="item h-[150rpx] flex justify-between p-[20rpx] bg-white mt-[20rpx]" :style="commonTempCss(item)">
 							<view class="flex-1 flex items-baseline flex-col">
 								<view class="text-[26rpx] mt-[10rpx] pb-[16rpx]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
 								<view class="text-[22rpx] text-gray-500 pb-[26rpx]">{{ item.subTitle.text }}</view>
@@ -75,7 +75,7 @@
 				</view>
 				<scroll-view :scroll-x="true" class="whitespace-nowrap" :id="'warpStyle3-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-3'">
 					<view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
-						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[10rpx] bg-white mt-[20rpx] w-[157rpx] h-[200rpx] rounded-[var(--rounded-mid)] box-border" :style="itemStyle3 + commonTempCss(item)"  :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}">
+						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[10rpx] bg-white mt-[20rpx] w-[157rpx] h-[200rpx] box-border" :style="itemStyle3 + commonTempCss(item)"  :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}">
 							<view class="w-[141rpx] h-[141rpx] rounded-[var(--rounded-small)] overflow-hidden" v-if="item.imageUrl">
 								<image class="w-[141rpx] h-[141rpx]" :src="img(item.imageUrl)" mode="aspectFit" />
 							</view>
@@ -91,7 +91,7 @@
 				
 				<scroll-view scroll-x="true" class="whitespace-nowrap" :id="'warpStyle4-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-4'">
 					<view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
-						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[4rpx] bg-[#F93D02] mt-[20rpx] rounded-[var(--rounded-mid)] box-border" :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}" :style="commonTempCss(item) + itemStyle4">
+						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[4rpx] bg-[#F93D02] mt-[20rpx] box-border" :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}" :style="commonTempCss(item) + itemStyle4">
 							<view class="w-[149rpx] h-[149rpx] box-border px-[18rpx] pt-[16rpx] pb-[6rpx] bg-[#fff] flex flex-col items-center rounded-[var(--rounded-small)]">
 								<view class="w-[112rpx] h-[102rpx]" v-if="item.imageUrl">
 									<image class="w-[112rpx] h-[102rpx]" :src="img(item.imageUrl)" mode="aspectFit" />
@@ -205,6 +205,11 @@
 		}else{
 			style += `background:${data.listFrame.startColor || data.listFrame.endColor};`;
 		}
+		if (diyComponent.value.topElementRounded) style += 'border-top-left-radius:' + diyComponent.value.topElementRounded * 2 + 'rpx;';
+		if (diyComponent.value.topElementRounded) style += 'border-top-right-radius:' + diyComponent.value.topElementRounded * 2 + 'rpx;';
+		if (diyComponent.value.bottomElementRounded) style += 'border-bottom-left-radius:' + diyComponent.value.bottomElementRounded * 2 + 'rpx;';
+		if (diyComponent.value.bottomElementRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomElementRounded * 2 + 'rpx;';
+		style += 'overflow: hidden';
 		return style;
 	}
 	

@@ -1,5 +1,5 @@
 <template>
-	<view :style="warpCss" class="flex justify-between">
+	<view :style="warpCss" class="flex justify-between overflow-hidden">
 		<view class="p-[20rpx] box-border overflow-hidden" :style="moduleOneCss">
 			<view class="flex items-center pb-[30rpx] pt-[6rpx]" v-if="diyComponent.moduleOne.head.textImg || diyComponent.moduleOne.head.subText">
 				<image class="h-[28rpx]" v-if="diyComponent.moduleOne.head.textImg" :src="img(diyComponent.moduleOne.head.textImg)" mode="heightFix"></image>
