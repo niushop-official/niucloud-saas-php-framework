@@ -69,11 +69,11 @@
 						<button class="w-[630rpx] h-[88rpx] !mx-[0] !bg-[#fff] !border-[var(--primary-color)] border-solid border-[2rpx] text-[26rpx] rounded-[44rpx] leading-[84rpx] !text-[var(--primary-color)]" @click="redirect({ url: '/app/pages/auth/login',param:{type:'username'}})">{{t('accountLogin')}}</button>
 					</view>
 					<view v-if="loginConfig.agreement_show" class="w-full flex items-center justify-center mt-[28rpx]">
-						<view  class="flex items-center justify-center mt-[28rpx] py-[10rpx]" @click.stop="agreeChange">
+						<view  class="flex items-center justify-center mt-[28rpx] py-[14rpx] px-[50rpx]" @click.stop="agreeChange">
 							<u-checkbox-group @change="agreeChange">
-								<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="26rpx" :customStyle="{ 'marginTop': '5rpx !important' }" />
+								<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="30rpx"  />
 							</u-checkbox-group>
-							<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
+							<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap leading-[30rpx]">
 								<text>{{ t('agreeTips') }}</text>
 								<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=privacy' })" class="text-primary">《{{t('privacyAgreement')}}》</text>
 								<text>{{ t('and') }}</text>
@@ -85,7 +85,7 @@
 					<view class="footer w-full" v-if="loginConfig.is_mobile && loginConfig.is_username">
 						<view class="text-[26rpx] leading-[36rpx] text-[333] text-center mb-[30rpx] font-400">{{t('otherLogin')}}</view>
 						<view class="flex justify-center">
-							<view class="h-[80rpx] w-[80rpx] text-center leading-[78rpx] border-[2rpx] text-primary rounded-[50%] border-solid border-[#ddd] nc-iconfont nc-icon-a-wodeV6xx-36 text-[46rpx] overflow-hidden" @click="redirect({ url: '/app/pages/auth/login',param:{type:'username'}})"></view>
+							<view class="h-[80rpx] w-[80rpx] text-center leading-[78rpx] border-[2rpx] text-[#FF7100] rounded-[50%] border-solid border-[#ddd] nc-iconfont nc-icon-wodeV6mm3 text-[46rpx] overflow-hidden" @click="redirect({ url: '/app/pages/auth/login',param:{type:'username'}})"></view>
 						</view>
 						<view class="text-[24rpx] leading-[36rpx] text-[var(--text-color-light9)] text-center font-400 mt-[30rpx]">{{t('accountLogin')}}</view>
 					</view>
@@ -93,6 +93,25 @@
 				</view>
 			</view>
 		</view>
+		<uni-popup ref="popupRef" type="dialog">
+		    <view class="bg-[#fff] flex flex-col justify-between w-[600rpx] min-h-[280rpx] rounded-[var(--rounded-big)] box-border px-[35rpx] pt-[35rpx] pb-[8rpx] relative">
+				<view class="flex justify-center">
+					<text class="text-[33rpx] font-700"> 用户协议及隐私保护</text>
+				</view>
+		        <view class="flex items-center mb-[20rpx] mt-[20rpx] py-[20rpx]" @click.stop="agreeChange">
+					<view class="text-[26rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
+						<text>{{ t('agreeTips') }}</text>
+						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=privacy' })" class="text-primary">《{{t('privacyAgreement')}}》</text>
+						<text>{{ t('and') }}</text>
+						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=service' })" class="text-primary">《{{t('userAgreement')}}》</text>
+					</view>
+		        </view>
+				<view class="">
+					<view class="w-[100%] flex justify-center bg-[var(--primary-color)] h-[70rpx] leading-[70rpx] text-[#fff] text-[26rpx] border-[0] font-500 rounded-[50rpx]"  @click="dialogConfirm">同意并登录</view>
+					<view class="w-[100%] flex justify-center h-[70rpx] leading-[70rpx] text-[#999] text-[24rpx] border-[0] font-500 rounded-[50rpx]" @click="dialogClose">不同意</view>
+				</view>
+		    </view>
+		</uni-popup>
 	</view>
 </template>
 
@@ -143,6 +162,16 @@
 		return !configStore.login.is_auth_register;
 	});
 	const loginLoading = ref(false)
+	
+	const popupRef = ref()
+	const dialogClose =()=>{
+		popupRef.value.close();
+	}
+	const dialogConfirm =()=>{
+		isAgree.value=true
+		popupRef.value.close();
+		oneClickLogin()
+	}
 
 	onLoad(async ()=> {
 		await systemStore.getSiteInfoFn()
@@ -203,7 +232,8 @@
 	// 检测是否同意小程序隐私协议和登录政策协议
 	const checkWxPrivacy = ()=> {
 		if (!isAgree.value && configStore.login.agreement_show) {
-			uni.showToast({ title: t('isAgreeTips'), icon: 'none' })
+			popupRef.value.open();
+			// uni.showToast({ title: t('isAgreeTips'), icon: 'none' })
 			return true;
 		}
 		return false;

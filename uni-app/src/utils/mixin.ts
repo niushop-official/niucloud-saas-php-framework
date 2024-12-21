@@ -28,6 +28,11 @@ export default {
                     state.currRoute = route
                 })
 
+                let loginBack = uni.getStorageSync('loginBack');
+                if (loginBack && loginBack.url == '/' + route) {
+                    this.query = loginBack.param
+                }
+
                 redirectInterceptor({
                     path: route,
                     query: this.query

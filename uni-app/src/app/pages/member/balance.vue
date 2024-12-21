@@ -21,7 +21,7 @@
 							<text class="text-[36rpx] font-500 price-font">{{ moneyFormat(memberStore.info?.money).split('.')[1] }}</text>
 						</view>
 					</view>
-					<view class="mt-[60rpx] flex justify-around" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1)">
+					<view class="mt-[60rpx] flex justify-around" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1 || rechargeConfigObj.is_use == 1)">
 						<block v-if="systemStore.siteAddons.includes('recharge')">
 							<button v-if="rechargeConfigObj.is_use == 1" class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border"  hover-class="none" shape="circle" @click="redirect({url: '/addon/recharge/pages/recharge'})">充值</button>
 						</block>
@@ -142,17 +142,17 @@
 	})
 
 	const mescrollTop = computed(()=>{
-		if(Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1)){
+		if((cashOutConfigObj.is_open == 1 || rechargeConfigObj.is_use == 1)){
 			if(Object.keys(menuButtonInfo).length){
-				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+708)+'rpx'
+				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+700)+'rpx'
 			}else{
-				return '708rpx'
+				return '718rpx'
 			}
 		}else {
 			if(Object.keys(menuButtonInfo).length){
-				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+590.39)+'rpx'
+				return (pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) +pxToRpx(8)+632)+'rpx'
 			}else{
-				return '590.39rpx'
+				return '650rpx'
 			}
 		}
 	})

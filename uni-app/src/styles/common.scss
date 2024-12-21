@@ -474,4 +474,13 @@ button[type='primary'],uni-button[type='primary']{
 .mescroll-upwarp{
 	opacity: 0;
 }
-/******************** mescroll state **********************/
+/******************** mescroll end **********************/
+
+/******************** u-switch state **********************/
+// 解决u-switch在小程序上点击会出现高亮的情况
+/* #ifdef MP */
+.u-switch{
+	cursor: inherit !important;
+}
+/* #endif */
+/******************** u-switch end **********************/

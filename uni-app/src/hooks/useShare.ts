@@ -61,7 +61,7 @@ export const useShare = () => {
         }
         // #endif
 
-        if (options) {
+        if (options && Object.keys(options).length) {
 
             if (options.wechat) {
 
@@ -93,6 +93,7 @@ export const useShare = () => {
                 route: '/' + currRoute(),
                 params: JSON.stringify(currShareRoute().params)
             }).then((res: any) => {
+
                 let data = res.data;
 
                 // #ifdef H5

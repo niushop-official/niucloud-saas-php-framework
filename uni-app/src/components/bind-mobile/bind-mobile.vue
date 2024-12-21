@@ -1,6 +1,6 @@
 <template>
     <u-popup :show="show" @close="show = false" mode="center" :round="10" :closeable="true" :safeAreaInsetBottom="false" zIndex="10086">
-        <view @touchmove.prevent.stop class="max-w-[550rpx] w-[550rpx] box-border">
+        <view @touchmove.prevent.stop class="max-w-[600rpx] w-[600rpx] box-border">
             <view class="text-center py-[var(--pad-top-m)] text-[32rpx] font-500 leading-[46rpx]">{{t('bindMobile')}}</view>
             <view class="px-[var(--pad-sidebar-m)] pb-[var(--pad-top-m)]">
                 <u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
@@ -18,7 +18,7 @@
                     </view>
 					<view v-if="config.agreement_show" class="flex items-center mt-[30rpx] pl-[10rpx] py-[10rpx]" @click.stop="agreeChange">
 						<u-checkbox-group @change="agreeChange">
-							<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }"/>
+							<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="28rpx"/>
 						</u-checkbox-group>
 						<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
 							<text>{{ t('agreeTips') }}</text>

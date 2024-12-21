@@ -36,6 +36,8 @@
     import diyGroup from '@/addon/components/diy/group/index.vue'
     import fixedGroup from '@/addon/components/fixed/group/index.vue'
 
+    uni.hideTabBar() // 隐藏tabbar
+
     const diy = useDiy({
         name: 'DIY_INDEX'
     })
@@ -67,7 +69,7 @@
 
     // 监听页面隐藏
     diy.onHide();
-	
+
 	// 监听页面卸载
 	diy.onUnload();
 

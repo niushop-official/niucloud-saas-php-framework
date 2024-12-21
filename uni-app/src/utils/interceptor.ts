@@ -130,9 +130,12 @@ const loadShare = () => {
         'addon/shop/pages/point/detail',
         'addon/shop_fenxiao/pages/promote_code',
         'addon/shop_fenxiao/pages/goods',
+        'addon/shop_fenxiao/pages/zone',
         'addon/shop_giftcard/pages/detail',
         'addon/shop_giftcard/pages/give',
         'app/pages/index/diy',
+        'app/pages/friendspay/share',
+        'app/pages/friendspay/money'
     ]
     if (currRoute()) {
         if (!shareWhiteList.includes(currRoute() || '')) setShare()

@@ -17,7 +17,7 @@
 					</view>
 
 					<view class="share-box">
-						<button class="share-btn" :plain="true" @click="saveGoodsPoster()">
+						<button class="share-btn" :plain="true" @click="savePoster()">
 							<view class="text-[#07c160] iconfont iconpengyouquan"></view>
 							<text>保存海报</text>
 						</button>
@@ -105,7 +105,7 @@ const copyUrl = () => {
 
 const openShare = ()=>{
 	sharePopupShow.value = true
-	goodsPosterShowFn();
+	loadPoster();
 }
 
 //生成海报
@@ -113,33 +113,39 @@ const isPosterAnimation = ref(false)
 const isPosterImg = ref(false)
 // 获取分享海报
 const poster = ref('');
-const goodsPosterShowFn = () => {
-	isPosterAnimation.value = true;
-	isPosterImg.value = false;
-	let obj = {
-        id: props.posterId,
-        type: props.posterType,
-        param: props.posterParam
-    }
-	let startTime = Date.parse(new Date());
-	getPoster(obj).then((res:any) => {
-		poster.value = res.data && img(res.data) || '';
+const loadPoster = () => {
+	if(poster.value){
+		// 预加载
+		isPosterAnimation.value = false;
+		isPosterImg.value = true;
+	}else {
+		isPosterAnimation.value = true;
+		isPosterImg.value = false;
+		let obj = {
+			id: props.posterId,
+			type: props.posterType,
+			param: props.posterParam
+		}
+		let startTime = Date.parse(new Date());
+		getPoster(obj).then((res: any) => {
+			poster.value = res.data && img(res.data) || '';
 
-		let endTime = Date.parse(new Date());
-		let time = endTime-startTime;
-		let periodTime = 2200;
-		if(time < periodTime){
-			setTimeout(()=>{
+			let endTime = Date.parse(new Date());
+			let time = endTime - startTime;
+			let periodTime = 2200;
+			if (time < periodTime) {
+				setTimeout(() => {
+					isPosterAnimation.value = false;
+					isPosterImg.value = true;
+				}, (periodTime - time))
+			} else {
 				isPosterAnimation.value = false;
 				isPosterImg.value = true;
-			},(periodTime-time))
-		}else{
-			isPosterAnimation.value = false;
-			isPosterImg.value = true;
-		}
-	}).catch(() => {
-		sharePopupClose();
-	})
+			}
+		}).catch(() => {
+			sharePopupClose();
+		})
+	}
 }
 const show = ref(false);
 
@@ -149,7 +155,7 @@ const closeDialog = ()=> {
 
 // #ifdef MP || APP-PLUS
 //小程序中保存海报
-const saveGoodsPoster = () => {
+const savePoster = () => {
 	let url = img(poster.value);
 	uni.downloadFile({
 		url: url,
@@ -205,12 +211,12 @@ const sharePopupClose = ()=>{
 	sharePopupShow.value = false;
 	isPosterAnimation.value = false;
 	isPosterImg.value = false;
-	console.log('sharePopupClose 取消分享');
 	emits('close');
 }
 
 defineExpose({
-    openShare
+    openShare,
+	loadPoster
 })
 </script>
 <style lang="scss" scoped>

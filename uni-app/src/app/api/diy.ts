@@ -8,6 +8,13 @@ export function getDiyInfo(params: Record<string, any>) {
 }
 
 /**
+ * 获取自定义表单信息
+ */
+export function getDiyFormInfo(form_id:number) {
+    return request.get(`diy/form/${form_id}`)
+}
+
+/**
  * 获取底部导航列表
  */
 export function getTabbarList(params: Record<string, any>) {
@@ -19,4 +26,11 @@ export function getTabbarList(params: Record<string, any>) {
  */
 export function getShareInfo(params: Record<string, any>) {
     return request.get('diy/share', params)
+}
+
+/**
+ * 提交表单数据
+ */
+export function recordsForm(params: Record<string, any>) {
+    return request.post('diy/form/records', params)
 }

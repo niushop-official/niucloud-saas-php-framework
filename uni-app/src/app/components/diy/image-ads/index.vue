@@ -53,6 +53,11 @@
 			    style = 'margin-top: -44.5px;';
 			}
 			// #endif
+			
+			// #ifdef MP
+			// 图文导航开启沉浸式且导航栏开启时，导航栏不占位
+			uni.setStorageSync('imageAdsSameScreen', true);
+			// #endif
 		}
 	    return style;
 	}
@@ -122,6 +127,8 @@
 					item.imgHeight = 330;
 				}
 			});
+		}else{
+			uni.removeStorageSync('imageAdsSameScreen');
 		}
 	}
 </script>

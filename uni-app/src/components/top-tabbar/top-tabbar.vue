@@ -41,7 +41,7 @@
 		</view>
 
 		<!-- 解决fixed定位后导航栏塌陷的问题 -->
-		<view v-if="props.isFill" class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: placeholderHeight + 'px' }"></view>
+		<view v-if="isFill" class="u-navbar-placeholder" :style="{ width: '100%', paddingTop: placeholderHeight + 'px' }"></view>
 	</view>
 </template>
 
@@ -88,9 +88,22 @@ const props = defineProps({
     	default: true
     }
 })
+
+// 控制-定位后是否对导航栏进行填充
+const isFill = computed(() => {
+	let bool = true;
+	if(imageAdsSameScreen.value) {
+		bool = false;
+	}else {
+		bool = props.isFill;
+	}
+	return bool;
+});
+
 const data = computed(() => {
 	return props.data;
 });
+
 const topStatusBarData = computed(() => {
 	if(props.data && props.data.topStatusBar)
 		return props.data.topStatusBar;
@@ -243,6 +256,7 @@ const navbarPlaceholderHeight = () => {
 	locationVal.onLoad();
 	locationVal.init();
 /************** 定位-end ****************/
+let imageAdsSameScreen = ref(false);
 onMounted(() => {
 	navbarPlaceholderHeight();
 	if (pages.length > 1) {
@@ -253,6 +267,9 @@ onMounted(() => {
 	}
 	// 刷新定位
 	locationVal.refresh();
+	
+	// 图文导航开启沉浸式且导航栏开启时，导航栏不占位
+	imageAdsSameScreen.value = uni.getStorageSync('imageAdsSameScreen') || false;
 });
 
 // 页面onShow调用时，也会触发改方法

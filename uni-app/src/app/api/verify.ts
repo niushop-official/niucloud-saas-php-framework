@@ -24,8 +24,8 @@ export function getCheckVerifier() {
 /**
  * 获取核销信息
  */
-export function getVerifierInfo(code: string) {
-    return request.get(`get_verify_by_code/${ code }`)
+export function getVerifierInfo(params: Record<string, any>) {
+    return request.get(`get_verify_by_code`,params)
 }
 
 /**

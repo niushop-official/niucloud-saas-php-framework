@@ -17,12 +17,24 @@
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="password" :border-bottom="false">
-							<u-input v-model="formData.password" border="none" type="password" maxlength="40" :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.password" border="none" :password="isPassword" maxlength="40" :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+								<template #suffix>
+									<view class="" @click="changePassword" v-if="formData.password">
+										<u-icon :name="isPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
+									</view>							
+								</template>
+							</u-input>
 						</u-form-item>
 					</view>
 					<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 						<u-form-item label="" prop="confirm_password" :border-bottom="false">
-							<u-input v-model="formData.confirm_password" border="none" type="password" maxlength="40" :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+							<u-input v-model="formData.confirm_password" border="none" :password="isConfirmPassword" maxlength="40" :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+								<template #suffix>
+									<view class="" @click="changeConfirmPassword" v-if="formData.confirm_password">
+										<u-icon :name="isConfirmPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
+									</view>							
+								</template>
+							</u-input>
 						</u-form-item>
 					</view>
 				</template>
@@ -56,11 +68,11 @@
 				</template>
 			</u-form>
 			<view class="mt-[160rpx]">
-				<view v-if="configStore.login.agreement_show" class="flex items-center mb-[20rpx] py-[10rpx]" @click.stop="agreeChange">
+				<view v-if="configStore.login.agreement_show" class="flex items-center mb-[20rpx] py-[14rpx]" @click.stop="agreeChange">
 					<u-checkbox-group @change="agreeChange">
-						<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }" />
+						<u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="30rpx" />
 					</u-checkbox-group>
-					<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
+					<view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap leading-[30rpx]">
 						<text>{{ t('agreeTips') }}</text>
 						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=privacy' })" class="text-primary">《{{t('privacyAgreement')}}》</text>
 						<text>{{ t('and') }}</text>
@@ -77,6 +89,25 @@
 				</view>
 			</view>
 		</view>
+		<uni-popup ref="popupRef" type="dialog">
+		    <view class="bg-[#fff] flex flex-col justify-between w-[600rpx] min-h-[280rpx] rounded-[var(--rounded-big)] box-border px-[35rpx] pt-[35rpx] pb-[8rpx] relative">
+				<view class="flex justify-center">
+					<text class="text-[33rpx] font-700"> 用户协议及隐私保护</text>
+				</view>
+		        <view class="flex items-center mb-[20rpx] mt-[20rpx] py-[20rpx]" @click.stop="agreeChange">
+					<view class="text-[26rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
+						<text>{{ t('agreeTips') }}</text>
+						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=privacy' })" class="text-primary">《{{t('privacyAgreement')}}》</text>
+						<text>{{ t('and') }}</text>
+						<text @click.stop="redirect({ url: '/app/pages/auth/agreement?key=service' })" class="text-primary">《{{t('userAgreement')}}》</text>
+					</view>
+		        </view>
+				<view class="">
+					<view class="w-[100%] flex justify-center bg-[var(--primary-color)] h-[70rpx] leading-[70rpx] text-[#fff] text-[26rpx] border-[0] font-500 rounded-[50rpx]"  @click="dialogConfirm">同意并注册</view>
+					<view class="w-[100%] flex justify-center h-[70rpx] leading-[70rpx] text-[#999] text-[24rpx] border-[0] font-500 rounded-[50rpx]" @click="dialogClose">不同意</view>
+				</view>
+		    </view>
+		</uni-popup>	
     </view>
 </template>
 
@@ -114,14 +145,31 @@
         captcha_key: '',
         captcha_code: ''
     })
-
+	const popupRef = ref()
+	const dialogClose =()=>{
+		popupRef.value.close();
+	}
+	const dialogConfirm =()=>{
+		isAgree.value=true
+		popupRef.value.close();
+		handleRegister()
+	}
 	const real_name_input = ref(true);
 	onMounted(() => {
 		// 防止浏览器自动填充
 		setTimeout(()=>{
 			real_name_input.value = false;
-		},800)
+		},800) 
 	});
+	const isPassword = ref(true)
+	const isConfirmPassword = ref(true)
+	const changePassword =()=>{
+		isPassword.value = !isPassword.value
+	}
+	
+	const changeConfirmPassword =()=>{
+		isConfirmPassword.value = !isConfirmPassword.value
+	}
 
     const memberStore = useMemberStore()
     const configStore = useConfigStore()
@@ -164,12 +212,21 @@
 
     const rules = computed(()=>{
         return {
-            'username': {
-                type: 'string',
-                required: type.value == 'username',
-                message: t('usernamePlaceholder'),
-                trigger: ['blur', 'change'],
-            },
+            'username': [
+				{
+					type: 'string',
+					required: type.value == 'username',
+					message: t('usernamePlaceholder'),
+					trigger: ['blur', 'change'],
+				},
+				{
+                    validator(rule: any, value: any){
+                        return  !uni.$u.test.number(value)
+                    },
+                    message: t('usernameTips'),
+                    trigger: ['change','blur'],
+                }
+			],
             'password': {
                 type: 'string',
                 required: type.value == 'username',
@@ -229,7 +286,7 @@
     const handleRegister = () => {
         formRef.value.validate().then(() => {
             if (configStore.login.agreement_show && !isAgree.value) {
-                uni.showToast({ title: t('isAgreeTips'), icon: 'none' });
+				popupRef.value.open();
                 return false;
             }
             if (loading.value) return

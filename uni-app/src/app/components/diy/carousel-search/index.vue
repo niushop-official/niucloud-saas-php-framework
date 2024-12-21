@@ -90,8 +90,8 @@
 					<swiper-item class="swiper-item" v-for="(item,index) in diyComponent.swiper.list" :key="item.id" :style="swiperWarpCss">
 						<view @click="diyStore.toRedirect(item.link)">
 							<view class="item" :style="{height: imgHeight}">
-								<image v-if="item.imageUrl" :src="img(item.imageUrl)" mode="scaleToFill" :style="swiperWarpCss" :class="['w-full h-full',{'swiper-animation': swiperIndex != index}]" :show-menu-by-longpress="true"/>
-								<image v-else :src="img('static/resource/images/diy/figure.png')" :style="swiperWarpCss" mode="scaleToFill" :class="['w-full h-full',{'swiper-animation': swiperIndex != index}]" :show-menu-by-longpress="true"/>
+								<image v-if="item.imageUrl" :src="img(item.imageUrl)" mode="scaleToFill" :style="swiperWarpCss" :class="['w-full h-full',{'swiper-animation': (swiperIndex != index && diyComponent.swiper.indicatorStyle != 'style-3')}]" :show-menu-by-longpress="true"/>
+								<image v-else :src="img('static/resource/images/diy/figure.png')" :style="swiperWarpCss" mode="scaleToFill" :class="['w-full h-full',{'swiper-animation': (swiperIndex != index && diyComponent.swiper.indicatorStyle != 'style-3')}]" :show-menu-by-longpress="true"/>
 							</view>
 						</view>
 					</swiper-item>

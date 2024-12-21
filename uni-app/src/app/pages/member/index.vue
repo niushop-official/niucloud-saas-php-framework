@@ -36,6 +36,8 @@
     import fixedGroup from '@/addon/components/fixed/group/index.vue'
     import useMemberStore from '@/stores/member'
 
+    uni.hideTabBar() // 隐藏tabbar
+
     // 会员信息
     const memberStore = useMemberStore()
     const userInfo = computed(() => memberStore.info)
@@ -74,7 +76,7 @@
 
     // 监听页面隐藏
     diy.onHide();
-	
+
 	// 监听页面卸载
 	diy.onUnload();
 

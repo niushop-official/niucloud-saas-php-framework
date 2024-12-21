@@ -25,12 +25,24 @@
 				</view>
 				<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 				    <u-form-item label="" prop="password" :border-bottom="false">
-				        <u-input v-model="formData.password" border="none" type="password" maxlength="40" :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+				        <u-input v-model="formData.password" border="none" :password="isPassword" maxlength="40" :placeholder="t('passwordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+							<template #suffix>
+								<view class="" @click="changePassword" v-if="formData.password">
+									<u-icon :name="isPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
+								</view>							
+							</template>
+						</u-input>
 				    </u-form-item>
 				</view>
 				<view class="h-[88rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
 				    <u-form-item label="" prop="confirm_password" :border-bottom="false">
-				        <u-input v-model="formData.confirm_password" border="none" type="password" maxlength="40" :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]"/>
+				        <u-input v-model="formData.confirm_password" border="none" :password="isConfirmPassword" maxlength="40" :placeholder="t('confirmPasswordPlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
+							<template #suffix>
+								<view class="" @click="changeConfirmPassword" v-if="formData.confirm_password">
+									<u-icon :name="isConfirmPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
+								</view>							
+							</template>
+						</u-input>
 				    </u-form-item>
 				</view>
 			</u-form>
@@ -78,6 +90,15 @@
 	
     const loading = ref(false)
     const formRef: any = ref(null)
+	const isPassword = ref(true)
+	const isConfirmPassword = ref(true)
+	const changePassword =()=>{
+		isPassword.value = !isPassword.value
+	}
+	
+	const changeConfirmPassword =()=>{
+		isConfirmPassword.value = !isConfirmPassword.value
+	}
 
     const rules = {
         'password': {

@@ -10,6 +10,6 @@ export function pay(data : AnyObject) {
 /**
  * 获取支付信息
  */
-export function getPayInfo(tradeType : string, tradeId : number) {
-    return request.get(`pay/info/${tradeType}/${tradeId}`, {}, { showErrorMessage: true })
+export function getPayInfo(tradeType : string, tradeId : number, params: Record<string, any>) {
+    return request.get(`pay/info/${tradeType}/${tradeId}`, params, { showErrorMessage: true })
 }

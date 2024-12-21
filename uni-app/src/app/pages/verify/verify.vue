@@ -33,7 +33,7 @@
 					</view>
 				</view>
 			</view>
-			
+
 			<view class="card-template mt-[var(--top-m)] sidebar-margin">
 				<view class="title">核销信息</view>
 				<view class="card-template-item justify-between">
@@ -45,7 +45,7 @@
 					<view class="text-[28rpx] text-[#333]">{{item.value}}</view>
 				</view>
 			</view>
-			
+
 			<view v-for="(item,index) in verifyInfo.value.content.diy" :key="index" class="card-template mt-[var(--top-m)] sidebar-margin">
 				<view class="title">{{item.title}}</view>
 				<view class="card-template-item justify-between"  v-for="(subItem,subIndex) in item.list" :key="subIndex">
@@ -53,7 +53,7 @@
 					<text class="text-[28rpx] text-[#333]">{{ subItem.value }}</text>
 				</view>
 			</view>
-			
+
 			<view class="fixed bottom-[30rpx] primary-btn-bg text-[#fff] flex-center !text-[26rpx] rounded-[50rpx] h-[80rpx] left-[20rpx] right-[20rpx] font-500" @click="verifyFn">确定</view>
         </block>
 		<loading-page :loading="loading"></loading-page>
@@ -81,14 +81,14 @@
 		    }
 	    }
     })
-	
+
 	onShow(() => {
 		if(getToken()){
 			checkIsVerifier();
 			getVerifierInfoFn();
 		}
 	})
-	
+
 	// 检测是否是核销员
 	const checkIsVerifier = () => {
 		getCheckVerifier().then((res:any) =>{
@@ -114,11 +114,11 @@
 			}
 		})
 	}
-	
+
 	const verifyInfo = ref({})
 	const getVerifierInfoFn = ()=>{
 		loading.value = true;
-		getVerifierInfo(code.value).then((res:any) =>{
+		getVerifierInfo({ code : code.value }).then((res:any) =>{
 			verifyInfo.value = res.data;
 			loading.value = false;
 		}).catch(() => {
@@ -132,7 +132,7 @@
 	const verifyFn = ()=>{
 		if(isLoading) return false;
 		isLoading = true;
-		
+
 		verify(code.value).then((res:any) =>{
 			uni.showToast({
 				title: '核销成功',

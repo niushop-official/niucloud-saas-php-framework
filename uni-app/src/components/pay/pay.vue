@@ -1,6 +1,6 @@
 <template>
 	<u-popup :show="show" :round="10" @close="handleClose" :closeable="true" bgColor="#fff" zIndex="10081" :closeOnClickOverlay="false">
-		<view class="flex flex-col h-[75vh] popup-common" v-if="payInfo" @touchmove.prevent.stop>
+		<view class="flex flex-col h-[65vh] popup-common" v-if="payInfo" @touchmove.prevent.stop>
 			<view class="head">
 				<view class="title">
 					{{ t('pay.payTitle') }}
@@ -57,6 +57,17 @@
 		if (uni.$u.test.isEmpty(type.value)) {
 			uni.showToast({ title: t('pay.notHavePayType'), icon: 'none' })
 			return
+		}
+		if(type.value == 'friendspay'){
+			redirect({
+				url: '/app/pages/friendspay/share',
+				param: {
+					id: payInfo.value?.trade_id,
+					type: payInfo.value?.trade_type,
+				},
+				mode: 'redirectTo'
+			})
+			return false
 		}
 		if (loading.value) return
 		loading.value = true
@@ -160,14 +171,21 @@
 		}
 	})
 	const repeat = ref(false)
-	const open = (tradeType : string, tradeId : number, payReturn: string = '') => {
+	const open = (tradeType : string, tradeId : number, payReturn: string = '', scene: string = '') => {
+
 		if (repeat.value) return
 		repeat.value = true
 
 		// 设置支付后跳转页面
 		uni.setStorageSync('payReturn', encodeURIComponent(payReturn))
 
-		getPayInfo(tradeType, tradeId).then((res: any) => {
+		// 帮人付款时过滤帮付选项
+		const obj: any = {}
+		if(scene){
+			obj.scene = scene
+		}
+		getPayInfo(tradeType, tradeId, obj).then((res: any) => {
+
 			let { data } = res
 			payInfo.value = data
 
@@ -188,11 +206,12 @@
 		})
 	}
 
+	const emits = defineEmits(['close','confirm'])
     const toPayResult = ()=> {
+		emits('confirm')
         redirect({ url: '/app/pages/pay/result', param: { trade_type: payInfo.value?.trade_type, trade_id: payInfo.value?.trade_id }, mode: 'redirectTo' })
     }
 
-	const emits = defineEmits(['close'])
 
 	const handleClose = () => {
 		uni.removeStorageSync('paymenting')

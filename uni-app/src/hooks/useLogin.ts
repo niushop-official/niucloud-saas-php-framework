@@ -233,7 +233,30 @@ export function useLogin() {
 
         // 如果当前在登录中间页，那么要跳转到首页
         if (url.indexOf('app/pages/auth/index') != -1) {
-            url = url.replace('app/pages/auth/index', 'app/pages/index/index')
+            let loginBack = uni.getStorageSync('loginBack');
+            if (loginBack) {
+                url = url.replace('app/pages/auth/index', loginBack.url.substr(1))
+                if (loginBack.param) {
+                    if (url.indexOf('?') != -1) {
+                        for (let key in loginBack.param) {
+                            url += `&${ key }=${ loginBack.param[key] }`;
+                        }
+                    } else {
+                        let count = 0;
+                        for (let key in loginBack.param) {
+                            if (count == 0) {
+                                url += `?${ key }=${ loginBack.param[key] }`;
+                            } else {
+                                url += `&${ key }=${ loginBack.param[key] }`;
+                            }
+                            count++;
+                        }
+                    }
+                }
+            } else {
+                url = url.replace('app/pages/auth/index', 'app/pages/index/index')
+            }
+
         } else {
             let query: any = urlDeconstruction(location.href).query
             query.code && (delete query.code)

@@ -3,6 +3,7 @@
 	"usernameRegisterTip":"输入账号密码注册",
 	"mobileRegisterTip":"输入手机号验证码注册",
     "usernamePlaceholder": "请输入账号",
+    "usernameTips":"账号不能是纯数字",
     "passwordPlaceholder": "请输入密码",
     "confirmPasswordPlaceholder": "请再次确认密码",
     "confirmPasswordError": "两次输入的密码不一致",

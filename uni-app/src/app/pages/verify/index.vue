@@ -13,7 +13,7 @@
 					<view class="mt-[40rpx] text-[30rpx]">点击扫描二维码</view>
 					<view class="mt-[20rpx] text-[var(--text-color-light9)] text-[26rpx] font-400 pb-[142rpx]">扫描二维码进行核销</view>
 				</view>
-				
+
 				<view v-show="operationType == 'manualInput'">
 					<view class="flex pt-[126rpx] items-center justify-center">
 						<view class="flex justify-center items-center flex-col pr-[30rpx] min-w-[130rpx]">
@@ -35,7 +35,7 @@
 					</view>
 				</view>
 			</view>
-		
+
 			<view class="w-[630rpx] h-[100rpx] bg-[#fff] mx-[auto] mt-[220rpx] rounded-[90rpx] flex relative action-type-wrap">
 				<view class="relative w-[51%] pr-[50rpx] box-border rounded-[50rpx] z-0 flex flex-col items-center justify-center" @click="changeOperationType('sweepCode')"  :class="{'xuanZhong1': operationType == 'sweepCode'}">
 					<text class="nc-iconfont nc-icon-saoyisaoV6xx !text-[40rpx]"></text>
@@ -50,7 +50,7 @@
 					<view class="ml-[20rpx] text-[24rpx] leading-[1] mt-[10rpx]" @click="focus">手动输入</view>
 				</view>
 			</view>
-		
+
 			<!-- #ifdef MP-WEIXIN -->
 			<!-- 小程序隐私协议 -->
 			<privacy-popup ref="privacyPopup"></privacy-popup>
@@ -73,7 +73,7 @@
     import { getVerifierInfo, getCheckVerifier } from '@/app/api/verify'
     import { t } from '@/locale'
 	import wechat from '@/utils/wechat'
-	
+
 	const operationType = ref('manualInput'); //类型
 	// #ifdef H5
 	operationType.value = 'manualInput';
@@ -81,7 +81,7 @@
 	// #ifndef H5
 	operationType.value = 'sweepCode';
 	// #endif
-	
+
 	const isFocus = ref(false)
 	const verify_code = ref('');
 	const loading = ref(true)
@@ -89,7 +89,7 @@
 	onShow(() => {
 		if(getToken()) checkIsVerifier();
 	})
-	
+
 	// 检测是否是核销员
 	const checkIsVerifier = () => {
 		getCheckVerifier().then((res:any) =>{
@@ -118,7 +118,7 @@
 			}
 		})
 	}
-	
+
 	const scanCode = () => {
 		// #ifdef MP
 		uni.scanCode({
@@ -136,7 +136,7 @@
 			}
 		});
 		// #endif
-			
+
 		// #ifdef H5
 		if (isWeixinBrowser()) {
 			wechat.init();
@@ -149,7 +149,7 @@
 		}
 		// #endif
 	}
-	
+
 	let isLoading = false;
 	const confirm = () => {
 		var reg = /[\S]+/;
@@ -160,31 +160,31 @@
 			});
 			return false;
 		}
-		
+
 		if(isLoading) return false;
 		isLoading = true;
-		
-		getVerifierInfo(verify_code.value).then((res:any) =>{
+
+		getVerifierInfo({ code : verify_code.value }).then((res:any) =>{
 			isLoading = false;
 			redirect({ url: '/app/pages/verify/verify', param: { code: verify_code.value} })
 		}).catch(() => {
             isLoading = false;
         })
 	}
-	
+
 	const focus = () => {
 		isFocus.value = !isFocus.value;
 	}
-	
+
 	const changeOperationType = (type: string) => {
 		// #ifdef H5
-		// if (type == 'sweepCode' && !isWeixinBrowser()) {
-		// 	uni.showToast({
-		// 		title: 'H5端不支持扫码核销',
-		// 		icon: 'none'
-		// 	});
-		// 	return;
-		// }
+		if (type == 'sweepCode' && !isWeixinBrowser()) {
+			uni.showToast({
+				title: 'H5端不支持扫码核销',
+				icon: 'none'
+			});
+			return;
+		}
 		// #endif
 		operationType.value = type;
 	}

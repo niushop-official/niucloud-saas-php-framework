@@ -64,7 +64,7 @@ class Wechat {
             });
         })
     }
-	
+
 	/**
 	 * 获取地理位置接口
 	 * @param {Object} callback
