@@ -50,6 +50,15 @@ Route::group('pay', function () {
     Route::post('refund/transfer', 'pay.PayRefund/transfer');
     // 获取全部支付方式
     Route::get('type/all', 'pay.PayChannel/getPayTypeList');
+    /***************************************************** 支付 *************************************************/
+    //去支付
+    Route::post('', 'pay.Pay/pay');
+    //支付信息
+    Route::get('info/:trade_type/:trade_id', 'pay.Pay/info');
+    //支付方式列表
+    Route::get('type/list', 'pay.Pay/payTypeList');
+    //找朋友帮忙付支付信息
+    Route::get('friendspay/info/:trade_type/:trade_id/:channel', 'pay.Pay/friendspayInfo');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

@@ -787,4 +787,26 @@ class DiyService extends BaseAdminService
         return $data;
     }
 
+    /**
+     * 复制自定义页面
+     * @param array $param
+     * @return mixed
+     */
+    public function copy($param)
+    {
+        $info = $this->model->where([ [ 'id', '=', $param[ 'id' ] ], [ 'site_id', '=', $this->site_id ] ])->findOrEmpty()->toArray();
+        if (empty($info)) throw new AdminException('PAGE_NOT_EXIST');
+
+        unset($info[ 'id' ]);
+        $info[ 'page_title' ] = $info[ 'page_title' ] . '_副本';
+        $info[ 'is_default' ] = 0;
+        $info[ 'is_change' ] = 0;
+        $info[ 'share' ] = '';
+        $info[ 'create_time' ] = time();
+        $info[ 'update_time' ] = time();
+
+        $res = $this->model->create($info);
+        return $res->id;
+    }
+
 }

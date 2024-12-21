@@ -114,7 +114,38 @@ class ComponentDict
                             'points' => [], // [x,y]：左上，右上，右下，左下
                         ],
                     ],
-
+                    'FriendsPayMessage' => [
+                        'title' => "帮付留言",
+                        'type' => 'text',
+                        'icon' => "nc-iconfont nc-icon-daifuliuyanV6xx",
+                        'path' => "friendspay-message",
+                        'uses' => 1,
+                        'sort' => 10006,
+                        'relate' => 'friendspay_message', // 关联字段，空为不处理
+                        'value' => get_lang('dict_pay_config.pay_leave_message'),
+                        'template' => [
+                            "width" => 611,
+                            "height" => 85,
+                            "minWidth" => 120,
+                            "minHeight" => 44,
+                        ]
+                    ],
+                    'FriendsPayMoney' => [
+                        'title' => "帮付金额",
+                        'type' => 'text',
+                        'icon' => "nc-iconfont nc-icon-daifujineV6xx",
+                        'path' => "friendspay-money",
+                        'uses' => 1,
+                        'sort' => 10007,
+                        'relate' => 'friendspay_money', // 关联字段，空为不处理
+                        'value' => '帮付金额',
+                        'template' => [
+                            "width" => 436,
+                            "height" => 50,
+                            "minWidth" => 120,
+                            "minHeight" => 44,
+                        ]
+                    ],
                 ],
             ],
         ];

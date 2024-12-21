@@ -39,6 +39,8 @@ class ApiCheckToken
         $request->appType(AppTypeDict::API);
         //检测站点
         ( new AuthService() )->checkSite($request);
+        // 校验渠道
+        ( new AuthService() )->checkChannel($request);
         //通过配置来设置系统header参数
         try {
             $token = $request->apiToken();
@@ -48,8 +50,6 @@ class ApiCheckToken
             }
             //校验会员和站点
             ( new AuthService() )->checkSiteAuth($request);
-            // 校验渠道
-            ( new AuthService() )->checkChannel($request);
         } catch (AuthException $e) {
             //是否将登录错误抛出
             if ($is_throw_exception)

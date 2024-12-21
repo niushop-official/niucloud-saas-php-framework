@@ -30,3 +30,18 @@ Route::group('diy', function() {
 
 })->middleware(ApiLog::class)
     ->middleware(ApiCheckToken::class, false);
+
+
+/**
+ * 自定义页面
+ */
+Route::group('diy', function() {
+    // 系统表单详情
+    Route::get('form/:id', 'diy.DiyForm/info');
+
+    //添加使用记录
+    Route::post('form/records', 'diy.DiyForm/addRecord');
+
+})->middleware(ApiLog::class)
+    ->middleware(ApiCheckToken::class,true);
+

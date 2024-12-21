@@ -23,6 +23,14 @@ Route::any('pay/notify/:site_id/:channel/:type/:action', 'pay.Pay/notify')
  * 路由
  */
 Route::group('pay',function () {
+    //找朋友帮忙付支付信息
+    Route::get('friendspay/info/:trade_type/:trade_id', 'pay.Pay/friendspayInfo');
+
+})->middleware(ApiChannel::class)
+    ->middleware(ApiCheckToken::class)
+    ->middleware(ApiLog::class);
+
+Route::group('pay',function () {
     //去支付
     Route::post('', 'pay.Pay/pay');
     //支付信息
@@ -33,5 +41,5 @@ Route::group('pay',function () {
     Route::post('close', 'pay.Pay/close');
 
 })->middleware(ApiChannel::class)
-    ->middleware(ApiCheckToken::class)
+    ->middleware(ApiCheckToken::class, true)//表示验证登录
     ->middleware(ApiLog::class);

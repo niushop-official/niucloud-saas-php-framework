@@ -5,7 +5,6 @@ namespace core\pay;
 use app\dict\pay\OnlinePayDict;
 use app\dict\pay\RefundDict;
 use app\dict\pay\TransferDict;
-use core\exception\CommonException;
 use core\exception\PayException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;

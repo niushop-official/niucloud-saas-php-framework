@@ -149,5 +149,22 @@ class UserRoleService extends BaseAdminService
         );
     }
 
+    /**
+     * 更改站点管理员
+     * @param int $site_id
+     * @param int $uid
+     * @return bool
+     */
+    public function editAdmin(int $site_id, int $uid){
+        $user_role = $this->model->where([['is_admin', '=', 1], ['site_id', '=', $site_id]])->findOrEmpty();
+        if ($user_role->isEmpty())
+            throw new AdminException('USER_NOT_EXIST');
+        $user_role->uid = $uid;
+        $user_role->save();
+        Cache::delete('user_role_'.$uid.'_'.$site_id);
+        Cache::delete('user_role_list_' .$uid);
+        return true;
+    }
+
 
 }

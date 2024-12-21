@@ -32,11 +32,13 @@ class Verify extends BaseApiController
 
     /**
      * 获取核销码信息
-     * @param $code
      * @return Response
      */
-    public function getInfoByCode($code){
-        return success(data:(new VerifyService())->getInfoByCode($code));
+    public function getInfoByCode(){
+        $data = $this->request->params([
+            ['code', ''],
+        ]);
+        return success(data:(new VerifyService())->getInfoByCode($data['code']));
     }
     /**
      * 核销

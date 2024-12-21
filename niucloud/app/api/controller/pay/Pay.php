@@ -56,7 +56,19 @@ class Pay extends BaseApiController
 
     public function info($trade_type, $trade_id)
     {
-        return success((new PayService())->getInfoByTrade($trade_type, $trade_id));
+        $data = $this->request->params([
+            ['scene', '']
+        ]);
+        return success((new PayService())->getInfoByTrade($trade_type, $trade_id, $data));
+    }
+
+    /**
+     * 获取找朋友帮忙付支付信息
+     * @return Response
+     */
+    public function friendspayInfo($trade_type, $trade_id)
+    {
+        return success((new PayService())->getFriendspayInfoByTrade($trade_type, $trade_id));
     }
 
     /**

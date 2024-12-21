@@ -259,6 +259,9 @@ Route::group('sys', function() {
     // 自定义海报预览
     Route::get('poster/preview', 'sys.Poster/preview');
 
+    //获取海报
+    Route::get('poster/generate', 'poster.Poster/poster');
+
     /***************************************************** 百度编辑器 ****************************************************/
     // 获取百度编辑器配置
     Route::get('ueditor', 'sys.Ueditor/getConfig');

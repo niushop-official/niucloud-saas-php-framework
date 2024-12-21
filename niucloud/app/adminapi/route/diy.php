@@ -21,6 +21,7 @@ use think\facade\Route;
 Route::group('diy', function() {
 
     /***************************************************** 自定义页面管理 ****************************************************/
+
     // 自定义页面分页列表
     Route::get('diy', 'diy.Diy/lists');
 
@@ -80,6 +81,9 @@ Route::group('diy', function() {
     // 获取模板页面（存在的应用插件列表）
     Route::get('apps', 'diy.Diy/getApps');
 
+    // 复制模版
+    Route::post('copy', 'diy.Diy/copy');
+
     /***************************************************** 配置相关 *****************************************************/
 
     // 底部导航列表
@@ -90,6 +94,7 @@ Route::group('diy', function() {
 
     // 设置底部导航
     Route::post('bottom', 'diy.Config/setBottomConfig');
+
 
 })->middleware([
     AdminCheckToken::class,

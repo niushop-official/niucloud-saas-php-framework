@@ -21,7 +21,7 @@ use Throwable;
 
 /**
  * 退款服务层
- * Class CorePayService
+ * Class CoreRefundService
  * @package app\service\core\pay
  */
 class CoreRefundService extends BaseCoreService

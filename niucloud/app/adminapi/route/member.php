@@ -152,6 +152,15 @@ Route::group('member', function() {
     Route::get('sign/config', 'member.MemberSign/getSign');
     //签到记录
     Route::get('sign', 'member.MemberSign/lists');
+    /***************************************************** 会员地址 ****************************************************/
+    //会员收货地址列表
+    Route::get('address', 'member.Address/lists');
+    //会员收货地址详情
+    Route::get('address/:id', 'member.Address/info');
+    //添加会员收货地址
+    Route::post('address', 'member.Address/add');
+    //编辑会员收货地址
+    Route::put('address/:id', 'member.Address/edit');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

@@ -255,4 +255,17 @@ class Diy extends BaseAdminController
     {
         return success(( new DiyService() )->getApps());
     }
+
+    /**
+     * 复制模版
+     * @return Response
+     */
+    public function copy()
+    {
+        $params = $this->request->params([
+            [ 'id', '' ],
+        ]);
+        $id = ( new DiyService() )->copy($params);
+        return success('ADD_SUCCESS', [ 'id' => $id ]);
+    }
 }

@@ -107,8 +107,12 @@ class Site extends BaseAdminController
     {
         $data = $this->request->params([
             ['site_name', ''],
-            ['expire_time', 0],
+            ['uid', 0],
+            ['username', ''],
+            ['real_name', ''],
+            ['password', ''],
             ['group_id',0],
+            ['expire_time', 0],
             ['site_domain', ''],
         ]);
         $this->validate(array_merge($data, ['site_id' => $id]), 'app\validate\site\Site.edit');

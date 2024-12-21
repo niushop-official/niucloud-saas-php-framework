@@ -177,6 +177,7 @@ return [
         'type_unipay' => '银联支付',
         'type_offline' => '线下支付',
         'type_balancepay' => '余额支付',
+        'type_friendspay' => '找朋友帮忙付',
 
         'status_wait' => '待支付',
         'status_ing' => '支付中',
@@ -186,6 +187,14 @@ return [
         'pay' => '收款',
         'refund' => '退款',
         'transfer' => '转账',
+    ],
+    //支付配置相关
+    'dict_pay_config' => [
+        'pay_leave_message' => '帮我付一下这笔订单吧，谢谢啦~',
+        'pay_button_name' => '慷慨付款',
+        'pay_page_name' => '帮我付款',
+        'pay_explain_title' => '帮付说明',
+        'pay_explain_content' => "1.付款前请务必和好友进行确认，以避免给你造成损失。\n2.当帮付订单退款成功后，实付金额将原路退还到帮付人账户。\n3.帮付订单信息中显示的金额为单价，但因优惠活动等因素，实付金额可能会发生变化，具体金额以页面显示为准。",
     ],
     //转账相关
     'dict_transfer' => [
@@ -247,6 +256,11 @@ return [
     // 自定义海报
     'dict_diy_poster' => [
         'component_type_basic' => '基础组件',
+    ],
+    // 系统自定义表单
+    'dict_diy_form' => [
+        'component_type_form' => '表单组件',
+        'type_diy_form' => '自定义表单',
     ],
     //短信相关
     'dict_sms' => [

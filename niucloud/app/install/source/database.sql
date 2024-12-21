@@ -368,6 +368,7 @@ CREATE TABLE `pay`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
   `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
   `main_id` int(11) NOT NULL DEFAULT 0 COMMENT '支付会员id',
+  `from_main_id` INT(11) NOT NULL DEFAULT 0 COMMENT '发起支付会员id',
   `out_trade_no` varchar(255) NOT NULL DEFAULT '' COMMENT '支付流水号',
   `trade_type` varchar(255) NOT NULL DEFAULT '' COMMENT '业务类型',
   `trade_id` int(11) NOT NULL DEFAULT 0 COMMENT '业务id',
@@ -1051,7 +1052,7 @@ INSERT INTO `site`(site_id, site_name, group_id, keywords, app_type, logo, `desc
 
 UPDATE `site` SET site_id = 0 WHERE  site_id = 1;
 
-INSERT INTO `sys_user` VALUES ('1', '', '', '', '', '', '0', '0', '0', '1', '0', '0', '0');
+-- INSERT INTO `sys_user` VALUES ('1', '', '', '', '', '', '0', '0', '0', '1', '0', '0', '0');
 
 INSERT INTO `sys_user_role` VALUES ('1', '1', '0', '', '0', '1', '1', '0');
 

@@ -4,6 +4,7 @@ declare ( strict_types = 1 );
 namespace app\listener\system;
 
 
+use app\listener\poster\FriendspayPoster;
 use app\model\member\Member;
 
 /**
@@ -18,34 +19,41 @@ class Poster
      */
     public function handle($data)
     {
+        $type = $data[ 'type' ] ?? '';
+        switch ($type) {
+            case 'friendspay':// 找朋友帮忙付海报
+                return ( new FriendspayPoster() )->handle($data);
+                break;
+            default:
+                $site_id = $data[ 'site_id' ];
+                $param = $data[ 'param' ];
+                $member_id = $param[ 'member_id' ] ?? 0;
 
-        $site_id = $data[ 'site_id' ];
-        $param = $data[ 'param' ];
-        $member_id = $param[ 'member_id' ] ?? 0;
+                $member_model = new Member();
+                $member_info = $member_model->where([
+                    [ 'site_id', '=', $site_id ],
+                    [ 'member_id', '=', $member_id ]
+                ])->field('nickname,headimg')->findOrEmpty()->toArray();
 
-        $member_model = new Member();
-        $member_info = $member_model->where([
-            [ 'site_id', '=', $site_id ],
-            [ 'member_id', '=', $member_id ]
-        ])->field('nickname,headimg')->findOrEmpty()->toArray();
+                if (empty($member_info)) {
+                    return [];
+                }
 
-        if (empty($member_info)) {
-            return [];
+                $nickname = $member_info[ 'nickname' ];
+                if (mb_strlen($nickname, 'UTF-8') > 10) {
+                    $nickname = mb_strlen($nickname) > 10 ? mb_substr($nickname, 0, 7, 'UTF-8') . '...' : $nickname;
+                }
+
+                $headimg = $member_info[ 'headimg' ];
+                if (empty($headimg)) {
+                    $headimg = 'static/resource/images/default_headimg.png';
+                }
+                $return_data = [
+                    'nickname' => $nickname,
+                    'headimg' => $headimg,
+                ];
+                return $return_data;
+                break;
         }
-
-        $nickname = $member_info[ 'nickname' ];
-        if (mb_strlen($nickname, 'UTF-8') > 10) {
-            $nickname = mb_strlen($nickname) > 10 ? mb_substr($nickname, 0, 7, 'UTF-8') . '...' : $nickname;
-        }
-
-        $headimg = $member_info[ 'headimg' ];
-        if (empty($headimg)) {
-            $headimg = 'static/resource/images/default_headimg.png';
-        }
-        $return_data = [
-            'nickname' => $nickname,
-            'headimg' => $headimg,
-        ];
-        return $return_data;
     }
 }

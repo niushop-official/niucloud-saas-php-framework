@@ -134,7 +134,7 @@ Route::group(function() {
     //核销详情
     Route::get('verify_detail/:code', 'sys.Verify/detail');
     //通过code码获取核销信息
-    Route::get('get_verify_by_code/:code', 'sys.Verify/getInfoByCode');
+    Route::get('get_verify_by_code', 'sys.Verify/getInfoByCode');
     //核销操作
     Route::post('verify/:code', 'sys.Verify/verify');
 

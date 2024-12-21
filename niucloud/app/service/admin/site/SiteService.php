@@ -88,6 +88,7 @@ class SiteService extends BaseAdminService
         if (!empty($info)) {
             $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId($site_id);
             $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ] ])->field('key,title,desc,icon,type')->select()->toArray();
+            $info['uid'] = ( new SysUserRole() )->where([ [ 'site_id', '=', $site_id ], [ 'is_admin', '=', 1 ] ])->value('uid');
         }
         return $info;
     }
@@ -164,7 +165,6 @@ class SiteService extends BaseAdminService
     {
         $site = $this->model->where([ [ 'site_id', '=', $site_id ] ])->with([ 'site_group' ])->findOrEmpty();
         if ($site->isEmpty()) throw new AdminException('SITE_NOT_EXIST');
-
         Db::startTrans();
         try {
             if (isset($data[ 'group_id' ]) && $site[ 'group_id' ] != $data[ 'group_id' ]) {
@@ -189,6 +189,26 @@ class SiteService extends BaseAdminService
             if (isset($data[ 'expire_time' ]) && !empty($data[ 'expire_time' ])) {
                 $data[ 'status' ] = strtotime($data[ 'expire_time' ]) > time() ? SiteDict::ON : SiteDict::EXPIRE;
             }
+
+            if (isset($data['uid'])){
+                if ($data[ 'uid' ] > 0) {
+                    ( new UserRoleService() )->editAdmin($site_id,$data['uid']);
+                } else {
+                    //添加用户
+                    $data_user = [
+                        'username' => $data[ 'username' ],
+                        'head_img' => $data[ 'head_img' ] ?? '',
+                        'status' => $data[ 'status' ] ?? 1,
+                        'real_name' => $data[ 'real_name' ] ?? '',
+                        'password' => $data[ 'password' ],
+                        'role_ids' => '',
+                        'is_admin' => 1
+                    ];
+                    $data[ 'uid' ] = ( new UserService() )->add($data_user);
+                    ( new UserRoleService() )->editAdmin($site_id,$data['uid']);
+                }
+            }
+
             $site->save($data);
 
             Cache::tag(self::$cache_tag_name . $site_id)->clear();

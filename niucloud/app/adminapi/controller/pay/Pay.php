@@ -56,4 +56,57 @@ class Pay extends BaseAdminController
         $reason = input('reason', '');
         return success(data: (new PayService())->refuse($out_trade_no, $reason));
     }
+
+    /**
+     *  去支付
+     * @return \think\Response
+     */
+    public function pay()
+    {
+
+        $data = $this->request->params([
+            ['type', ''],
+            ['trade_type', ''],//业务类型
+            ['trade_id', ''],//业务id
+            ['quit_url', ''],
+            ['buyer_id', ''],
+            ['return_url', ''],
+            ['voucher', ''],
+            ['openid', '']
+        ]);
+
+        return success('SUCCESS',(new PayService())->pay($data['type'], $data['trade_type'], $data['trade_id'], $data['return_url'], $data['quit_url'], $data['buyer_id'], $data['voucher'], $data['openid']));
+    }
+
+    /**
+     * 支付信息
+     * @param $trade_type
+     * @param $trade_id
+     * @return \think\Response
+     */
+    public function info($trade_type, $trade_id)
+    {
+        return success((new PayService())->getInfoByTrade($trade_type, $trade_id));
+    }
+
+    /**
+     * 找朋友帮忙付支付信息
+     * @param $trade_type
+     * @param $trade_id
+     * @param $channel
+     * @return \think\Response
+     */
+    public function friendspayInfo($trade_type, $trade_id, $channel)
+    {
+        return success(data:(new PayService())->getFriendspayInfoByTrade($trade_type, $trade_id, $channel));
+    }
+
+    /**
+     * 支付方式列表
+     * @return \think\Response
+     */
+    public function payTypeList()
+    {
+        return success(data:(new PayService())->getPayTypeList());
+    }
 }

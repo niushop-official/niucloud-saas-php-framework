@@ -53,7 +53,11 @@ class Local extends BaseUpload
     {
         try {
             mkdirs_or_notexist(dirname($key), 0777);
-            $content = @file_get_contents($url);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $content = curl_exec($ch);
+            curl_close($ch);
+            // $content = @file_get_contents($url);//file_get_contents下载网络图片慢，更换为curl下载
             if (!empty($content)) {
                 file_put_contents($key, $content);
 

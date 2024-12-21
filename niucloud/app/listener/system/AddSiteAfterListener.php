@@ -10,8 +10,10 @@
 // +----------------------------------------------------------------------
 namespace app\listener\system;
 
+use app\model\sys\Poster;
 use app\model\sys\SysAttachment;
 use app\model\sys\SysAttachmentCategory;
+use app\service\core\poster\CorePosterService;
 
 /**
  * 站点创建之后
@@ -505,6 +507,24 @@ class AddSiteAfterListener
         }
         if (!empty($attachment_list)) {
             $attachment_model->insertAll($attachment_list);
+        }
+
+        $poster_model = new Poster();
+        $poster_count = $poster_model->where([
+            [ 'site_id', '=', $site_id ],
+            [ 'type', '=', 'friendspay' ]
+        ])->count();
+        if ($poster_count == 0) {
+            // 创建默认找朋友帮忙付海报
+            $poster = new CorePosterService();
+            $template = $poster->getTemplateList('', 'friendspay')[ 0 ];
+            $poster->add($site_id, '', [
+                'name' => $template[ 'name' ],
+                'type' => $template[ 'type' ],
+                'value' => $template[ 'data' ],
+                'status' => 1,
+                'is_default' => 1
+            ]);
         }
 
         return true;

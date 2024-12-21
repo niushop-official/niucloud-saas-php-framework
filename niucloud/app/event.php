@@ -104,6 +104,7 @@ $system_event = [
         'StatField' => [],
 
         // 获取海报数据
+        'GetPosterType' => [ 'app\listener\system\PosterType' ],
         'GetPosterData' => [ 'app\listener\system\Poster' ],
 
         // 小程序授权变更事件

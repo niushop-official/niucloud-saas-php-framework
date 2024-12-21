@@ -12,9 +12,15 @@
 namespace app\service\api\pay;
 
 use app\dict\common\ChannelDict;
+use app\dict\pay\PayDict;
+use app\dict\pay\PaySceneDict;
+use app\model\member\Member;
+use app\model\pay\Pay;
+use app\model\sys\Poster;
 use app\service\core\member\CoreMemberService;
 use app\service\core\pay\CorePayService;
 use core\base\BaseApiService;
+use core\exception\ApiException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
@@ -57,7 +63,7 @@ class PayService extends BaseApiService
                 break;
         }
 
-        return $this->core_pay_service->pay($this->site_id, $trade_type, $trade_id, $type, $this->channel, $openid, $return_url, $quit_url, $buyer_id, $voucher);
+        return $this->core_pay_service->pay($this->site_id, $trade_type, $trade_id, $type, $this->channel, $openid, $return_url, $quit_url, $buyer_id, $voucher, $this->member_id);
     }
 
     /**
@@ -90,8 +96,48 @@ class PayService extends BaseApiService
         return $this->core_pay_service->getInfoByOutTradeNo($this->site_id, $out_trade_no, $this->channel);
     }
 
-    public function getInfoByTrade(string $trade_type, int $trade_id){
-        return $this->core_pay_service->getInfoByTrade($this->site_id, $trade_type, $trade_id, $this->channel);
+    public function getInfoByTrade(string $trade_type, int $trade_id, array $data){
+        return $this->core_pay_service->getInfoByTrade($this->site_id, $trade_type, $trade_id, $this->channel, $data['scene']);
+    }
+
+    /**
+     * 获取找朋友帮忙付支付信息
+     * @param string $trade_type
+     * @param int $trade_id
+     * @return array
+     */
+    public function getFriendspayInfoByTrade($trade_type, $trade_id){
+        $from_pay_info = ( new Pay() )->field('site_id')->where([ [ 'trade_type', '=', $trade_type ], [ 'trade_id', '=', $trade_id ] ])->findOrEmpty()->toArray();//查询发起交易所属的站点id
+        if (empty($from_pay_info)) throw new ApiException('TRADE_NOT_EXIST');
+        if ($from_pay_info['site_id'] != $this->site_id) throw new ApiException('TRADE_NOT_EXIST');//不是同一站点的用户不能帮付
+        $pay_info = $this->core_pay_service->getInfoByTrade($from_pay_info[ 'site_id' ], $trade_type, $trade_id, $this->channel, PaySceneDict::FRIENDSPAY);
+        if (!empty($pay_info)) {
+            //todo 查询订单交易信息，其它插件可实现该钩子
+            $trade_info = array_values(array_filter(event('PayTradeInfo',[ 'trade_type' => $trade_type, 'trade_id' => $trade_id ])))[0] ?? [];
+            $pay_info['trade_info'] = $trade_info;
+            if ($pay_info['from_main_id'] != $this->member_id) {
+                $pay_info['is_self'] = false;
+            } else {
+                $pay_info['is_self'] = true;
+            }
+            //海报
+            $poster = ( new Poster() )->field('id')->where([
+                [ 'site_id', '=', $this->site_id ],
+                [ 'type', '=', 'friendspay' ],
+                [ 'status', '=', 1 ],
+                [ 'is_default', '=', 1 ]
+            ])->findOrEmpty()->toArray();
+            if (!empty($poster)) {
+                $pay_info['poster_id'] = $poster['id'];
+            }
+            //发起帮付会员信息
+            $member = ( new Member() )->field('member_id,nickname,headimg')->where([
+                [ 'site_id', '=', $this->site_id ],
+                [ 'member_id', '=', $pay_info['from_main_id'] ]
+            ])->findOrEmpty()->toArray();
+            $pay_info['member'] = $member;
+        }
+        return $pay_info;
     }
 
     /**

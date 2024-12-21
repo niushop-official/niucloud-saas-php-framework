@@ -163,6 +163,9 @@ return [
     'LEVEL_NOT_ALLOWED_DELETE' => '该等级下存在会员不允许删除',
     'MEMBER_LEVEL_MAX' => '最多只能有十个等级',
 
+    // 地址相关
+    'ADDRESS_ANALYSIS_ERROR' => '地址解析异常',
+
     //会员提现
     'CASHOUT_NOT_OPEN' => '会员提现业务未开启',
     'CASHOUT_TYPE_NOT_OPEN' => '当前会员提现方式未启用',
@@ -177,6 +180,12 @@ return [
     'MEMBER_CASHOUT_TRANSFER' => '会员提现转账',
     'CASH_OUT_ACCOUNT_NOT_EXIST' => '提现账户不存在',
 
+    //DIY
+    'PAGE_NOT_EXIST' => '页面不存在',
+
+    //系统表单
+    'DIY_FORM_NOT_EXIT' => '表单不存在',
+    'DIY_FORM_EXCEEDING_LIMIT' => '已达提交次数上限',
 
     //渠道相关  占用 4******
     //微信
@@ -224,6 +233,8 @@ return [
     'VOUCHER_NOT_EMPTY' => '支付单据不能为空',
     'ONLY_PAYING_CAN_AUDIT' => '只有待支付的订单才可以操作',
     'ONLY_OFFLINEPAY_CAN_AUDIT' => '只有线下支付的单据才可以审核',
+    'TRADE_NOT_EXIST' => '支付单据不存在',
+    'PAY_NOT_FOUND_TRADE' => '找不到可支付的交易',
     //退款相关
     'REFUND_NOT_EXIST' => '退款单据不存在',
     //订单相关  8***

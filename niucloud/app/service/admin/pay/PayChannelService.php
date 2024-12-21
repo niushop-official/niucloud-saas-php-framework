@@ -108,11 +108,14 @@ class PayChannelService extends BaseAdminService
                         if ($config_v !== '' && in_array($config_k, $encrypt_params)) $temp_v_item['config'][$config_k] = CommonDict::ENCRYPT_STR;
                     }
                 } else {
-                    $temp_v_item = [ 'status' => 0, 'config' => [ 'name' => '' ], 'sort' => 0 ];
+                    $temp_v_item = [ 'status' => 0, 'config' => $this->getConfigByPayType([], $item_k), 'sort' => 0 ];
                 }
                 $item_v[ 'config' ] = $temp_v_item[ 'config' ];
                 $item_v[ 'status' ] = $temp_v_item[ 'status' ];
                 $item_v[ 'sort' ] = $temp_v_item[ 'sort' ];
+                if ($item_k == PayDict::FRIENDSPAY) {
+                    $item_v[ 'name' ] = $temp_v_item[ 'config' ][ 'pay_type_name' ] ?? get_lang('dict_pay.type_friendspay');
+                }
                 $channel_list[ $k ][ 'pay_type' ][ $item_k ] = $item_v;
             }
             $temp_pay_type = array_values($channel_list[ $k ][ 'pay_type' ]);
@@ -185,6 +188,18 @@ class PayChannelService extends BaseAdminService
                     'collection_bank' => $data[ 'collection_bank' ] ?? '',//必填-收款银行
                     'collection_account' => $data[ 'collection_account' ] ?? '',//必填-收款账号
                     'collection_desc' => $data[ 'collection_desc' ] ?? '',// 必填-转账说明
+                ];
+                break;
+            case PayDict::FRIENDSPAY:
+                $config = [
+                    'pay_type_name' => $data[ 'pay_type_name' ] ?? get_lang('dict_pay.type_friendspay'),// 支付方式名称
+                    'pay_leave_message' => $data[ 'pay_leave_message' ] ?? get_lang('dict_pay_config.pay_leave_message'),// 发起帮付默认留言
+                    'pay_button_name' => $data[ 'pay_button_name' ] ?? get_lang('dict_pay_config.pay_button_name'),// 支付按钮名称
+                    'pay_page_name' => $data[ 'pay_page_name' ] ?? get_lang('dict_pay_config.pay_page_name'),// 帮付页面名称
+                    'pay_explain_switch' => $data[ 'pay_explain_switch' ] ?? 1,// 帮付说明开关, 1开启，0关闭
+                    'pay_explain_title' => $data[ 'pay_explain_title' ] ?? get_lang('dict_pay_config.pay_explain_title'),// 帮付说明标题
+                    'pay_explain_content' => $data[ 'pay_explain_content' ] ?? get_lang('dict_pay_config.pay_explain_content'),// 帮付说明内容
+                    'pay_info_switch' => $data[ 'pay_info_switch' ] ?? 1// 订单信息, 1开启，0关闭
                 ];
                 break;
             default:
