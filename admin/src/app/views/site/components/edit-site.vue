@@ -60,6 +60,42 @@
                         <el-option :label="item['group_name']" :value="item['group_id']" v-for="(item,index) in groupList" :key="index"/>
                     </el-select>
                 </el-form-item>
+
+                <el-form-item :label="t('manager')" prop="uid">
+                    <el-select v-model="formData.uid" :placeholder="t('managerPlaceholder')" class="input-width" filterable>
+                        <el-option :label="t('newAddManager')" :value="0">
+                            <template #default>
+                                <div class="flex items-center">
+                                    <el-icon class="mr-[10px]">
+                                        <Plus />
+                                    </el-icon>
+                                    {{ t('newAddManager') }}
+                                </div>
+                            </template>
+                        </el-option>
+                        <el-option v-for="item in siteUser" :key="item.uid" :label="item['username']" :value="item['uid']">
+                            <div class="flex items-center">
+                                <el-avatar :src="img(item.head_img)" size="small" class="mr-[10px]" v-if="item.head_img" />
+                                <img src="@/app/assets/images/member_head.png" alt="" class="mr-[10px] w-[24px]" v-else>
+                                {{ item.username }}
+                            </div>
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
+                <div v-show="formData.uid === 0">
+                    <el-form-item :label="t('username')" prop="username">
+                        <el-input v-model.trim="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
+                    </el-form-item>
+
+                    <el-form-item :label="t('password')" prop="password">
+                        <el-input v-model.trim="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
+                    </el-form-item>
+
+                    <el-form-item :label="t('confirmPassword')" prop="confirm_password">
+                        <el-input v-model.trim="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
+                    </el-form-item>
+                </div>
             </div>
 
             <el-form-item :label="t('siteDomain')" prop="site_domain">
@@ -231,6 +267,9 @@ const confirm = async (formEl: FormInstance | undefined) => {
             save(data).then(res => {
                 loading.value = false
                 showDialog.value = false
+                getUserListSelect({}).then(({ data }) => {
+                    siteUser.value = data
+                })
                 emit('complete')
             }).catch(() => {
                 loading.value = false

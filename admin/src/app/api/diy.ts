@@ -190,3 +190,11 @@ export function changeTemplate(params: Record<string, any>) {
 export function getApps(params: Record<string, any>) {
 	return request.get(`diy/apps`)
 }
+
+/**
+ * 复制模版页面
+ * @param params
+ */
+export function copyDiy(params: Record<string, any>) {
+    return request.post(`diy/copy`, params, { showSuccessMessage: true })
+}

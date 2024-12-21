@@ -32,7 +32,7 @@
 
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="showDialog = false">{{ t('cancel') }}</el-button>
+                <el-button @click="cancel">{{ t('cancel') }}</el-button>
                 <el-button type="primary" :loading="loading" @click="confirm(formRef)">{{t('confirm')}}</el-button>
             </span>
         </template>
@@ -44,10 +44,11 @@ import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
 import Test from '@/utils/test'
+import { cloneDeep } from 'lodash-es'
 
 const showDialog = ref(false)
 const loading = ref(true)
-
+const initData = ref<any>(null)
 /**
  * 表单数据
  */
@@ -105,15 +106,28 @@ const confirm = async (formEl: FormInstance | undefined) => {
     })
 }
 
+const cancel = () => {
+    Object.assign(formData, initialFormData)
+    if (initData.value) {
+        Object.keys(formData).forEach((key: string) => {
+            if (initData.value[key] != undefined) formData[key] = initData.value[key]
+        })
+        formData.channel = initData.value.redio_key.split('_')[0]
+        formData.status = Number(formData.status)
+    }
+    emit('complete', formData)
+    showDialog.value = false
+}
 const setFormData = async (data: any = null) => {
+    initData.value = cloneDeep(data)
     loading.value = true
     Object.assign(formData, initialFormData)
     if (data) {
         Object.keys(formData).forEach((key: string) => {
             if (data[key] != undefined) formData[key] = data[key]
         })
-        formData['channel'] = data['redio_key'].split('_')[0]
-        formData['status'] = Number(formData['status'])
+        formData.channel = data.redio_key.split('_')[0]
+        formData.status = Number(formData.status)
     }
     loading.value = false
 }

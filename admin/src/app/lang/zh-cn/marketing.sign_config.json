@@ -4,6 +4,8 @@
 	"isUse": "是否启用",
 	"signPeriod": "签到周期",
 	"signPeriodTip": "请输入签到周期",
+    "signPeriodLimitTips": "签到周期格式错误",
+    "signPeriodMustZeroTips": "签到周期必须大于0",
 	"calendarSign": "日历签到",
 	"periodSign": "周期签到",
 	"daySignAward": "日签奖励",

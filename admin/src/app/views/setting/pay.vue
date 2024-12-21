@@ -14,17 +14,17 @@
 
             <div>
                 <div class="flex items-center justify-between p-[10px] table-item-border bg">
-                    <span class="text-base w-[150px]">{{ t('payType') }}</span>
+                    <span class="text-base w-[230px]">{{ t('payType') }}</span>
                     <span class="text-base w-[110px] text-center">{{ t('onState') }}</span>
                     <span class="text-base w-[80px] text-center" v-if="isEdit">{{ t('templateName') }}</span>
                 </div>
 
                 <div ref="fieldBoxRefs" :data-key="payKey">
                     <div class="flex items-center justify-between p-[10px] table-item-border" v-for="(childrenItem, childrenIndex) in payItems.pay_type" :key="childrenItem.redio_key" :id="payKey + '_' + childrenIndex">
-                        <div class="flex w-[150px]">
+                        <div class="flex w-[230px] flex-shrink-0">
                             <span v-if="isEdit" class="iconfont icontuodong mr-2 handle cursor-pointer"></span>
                             <div class="flex items-center select-none">
-                                <div class="mr-[15px] w-[30px] h-[30px]">
+                                <div class="mr-[15px] w-[30px] h-[30px] flex-shrink-0">
                                     <img class="w-[30px]" :src="img(childrenItem.icon)" />
                                 </div>
                                 <span class="text-base text-[#666]">{{ childrenItem.name }}</span>
@@ -134,6 +134,7 @@ const setConfigInfo = (data:any) => {
             element.config = data.config
         }
     })
+    console.log(payConfigData.value)
 }
 
 // 初始化配置信息

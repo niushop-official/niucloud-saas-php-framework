@@ -77,7 +77,7 @@
         <div class="flex flex-col mx-[25px] h-[430px] mt-[15px]">
             <div class="flex items-center">
                 <div class="text-[18px] text-[#333333]">站点名称</div>
-                <div class="w-[420px] h-[34px] ml-[10px]">
+                <div class="w-[350px] h-[34px] ml-[10px]">
                     <el-form :model="createSiteData.formData" ref="formRef" :rules="formRules">
                         <el-form-item prop="username">
                             <el-input class="create-site-name" v-model.trim="createSiteData.formData.site_name" maxlength="20" placeholder="请输入站点名称" autocomplete="off"></el-input>
@@ -85,7 +85,7 @@
                     </el-form>
                 </div>
             </div>
-            
+
             <div class="flex-1 mt-[20px] h-[160px]" v-show="createSiteData.step == 1">
                 <div class="text-[18px] text-[#333333]">店铺套餐</div>
                 <el-scrollbar class="w-full mt-[10px] meal-site -ml-[10px]" height="350px">
@@ -93,8 +93,7 @@
                         <div v-for="(item, index) in siteGroup" :key="index"
                              class="inline-flex flex-col w-[300px] h-[330px] box-border rounded-[17px] border-transparent border-[2px] border-solid create-site-item my-[10px]"
                             :class="{'bg-[#F6F7FF] border-[#466CEA]': createSiteData.formData.group_id == item.group_id ,'ml-[20px]': index > 0, ' ml-[10px]': index == 0, 'mr-[10px]': (siteGroup.length-1) == index }"
-                            @click="createSiteData.formData.group_id = item.group_id"
-                        >
+                            @click="createSiteData.formData.group_id = item.group_id">
                             <div class="w-[140px] h-[40px] px-[15px] truncate text-white text-[16px] text-center leading-[40px] creatBg relative -left-[1px] -top-[2px]">
                                 {{ item.site_group.group_name }}
                             </div>
@@ -264,7 +263,7 @@ const createSiteFn = () => {
         getHomeSiteFn()
     }).catch(() => {
         createSiteData.value.loading = false
-    }) 
+    })
 }
 
 watch(() => createSiteDialog.value, () => {

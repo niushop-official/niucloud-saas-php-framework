@@ -104,3 +104,12 @@ export function initPoster(params: Record<string, any>) {
 export function getPreviewPoster(params: Record<string, any>) {
     return request.get(`sys/poster/preview`, {params})
 }
+
+/**
+ * 下载
+ * @param params
+ * @returns
+ */
+export function getPosterGenerate(params: Record<string, any>) {
+    return request.get(`sys/poster/generate`, {params, showErrorMessage: false})
+}

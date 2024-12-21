@@ -10,7 +10,8 @@
                     </template>
                 </div>
                 <div class="login flex flex-col w-[400px] h-[400px] p-[40px]">
-                    <h3 class="text-center text-2xl mb-[26px]">{{ webSite.site_name || t('siteTitle') }}{{ t('platform') }}</h3>
+                    <h3 class="text-center text-lg font-bold mb-[10px]">{{ webSite.site_name || t('siteTitle') }}</h3>
+                    <h3 class="text-center text-2xl font-bold mb-[26px]">{{ t('platform') }}</h3>
                     <el-form :model="form" ref="formRef" :rules="formRules" class="mt-[30px]">
                         <el-form-item prop="username">
                             <el-input v-model.trim="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" @keyup.enter="handleLogin(formRef)" class="h-[40px]"></el-input>

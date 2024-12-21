@@ -237,6 +237,8 @@ route.query.type = route.query.type || '' // 页面模板，新页面传入
 route.query.title = route.query.title || ''
 route.query.back = route.query.back || '/site/diy/list'
 
+console.log('route',route.path)
+
 const backPath = route.query.back
 const template = ref('');
 const oldTemplate = ref('');
@@ -297,6 +299,9 @@ const goBack = () => {
 const modulesFiles = import.meta.glob('./components/*.vue', { eager: true })
 const addonModulesFiles = import.meta.glob('@/addon/**/views/diy/components/*.vue', { eager: true })
 addonModulesFiles && Object.assign(modulesFiles, addonModulesFiles)
+
+// todo 考虑用一个编辑页面实现，方便后期维护，根据路由判断，是微页面还是系统表单
+// todo 系统表单可以使用自定义组件，微页面不能用系统表单组件
 
 const modules = {}
 for (const [key, value] of Object.entries(modulesFiles)) {

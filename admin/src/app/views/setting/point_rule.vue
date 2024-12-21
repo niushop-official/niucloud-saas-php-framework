@@ -16,20 +16,20 @@
                 <div v-for="(item, key) in rules.grant" :key="key" class="flex items-center">
                     <span class="p-[15px] w-[25%] text-[14px]">{{ item.name }}</span>
                     <span class="p-[15px] w-[50%] text-[14px] text-[#666]">{{ formData.grant[item.key] && formData.grant[item.key].content ? formData.grant[item.key].content : '--' }}</span>
-                    <span class="p-[15px] w-[10%] text-[14px] text-[#666]">
+                    <span class="p-[15px] w-[15%] text-[14px] text-[#666]">
                         <el-tag type="success" v-if="formData.grant[item.key] && formData.grant[item.key].is_use">已启用</el-tag>
                         <el-tag type="danger" v-else>未启用</el-tag>
                     </span>
-                    <span class="p-[15px] w-[15%] text-[14px] text-[#666] text-[var(--el-color-primary)] cursor-pointer" @click="examineFn(key)">配置</span>
+                    <span class="p-[15px] w-[10%] text-[14px] text-[#666] text-[var(--el-color-primary)] cursor-pointer" @click="examineFn(key)">配置</span>
                 </div>
                 <div v-for="(item, key) in rules.consume" :key="key"  class="flex items-center">
                     <span class="p-[15px] w-[25%] text-[14px]">{{ item.name }}</span>
                     <span class="p-[15px] w-[50%] text-[14px] text-[#666]">{{ formData.consume[item.key] && formData.consume[item.key].content ? formData.consume[item.key].content : '--' }}</span>
-                    <span class="p-[15px] w-[10%] text-[14px] text-[#666]">
+                    <span class="p-[15px] w-[15%] text-[14px] text-[#666]">
                         <el-tag type="success" v-if="formData.consume[item.key] && formData.consume[item.key].is_use">已启用</el-tag>
                         <el-tag type="danger" v-else>未启用</el-tag>
                     </span>
-                    <span class="p-[15px] w-[15%] text-[14px] text-[#666] text-[var(--el-color-primary)] cursor-pointer" @click="examineFn(key)">配置</span>
+                    <span class="p-[15px] w-[10%] text-[14px] text-[#666] text-[var(--el-color-primary)] cursor-pointer" @click="examineFn(key)">配置</span>
                 </div>
             </div>
 

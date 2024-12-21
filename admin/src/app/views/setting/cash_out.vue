@@ -71,7 +71,7 @@ const formData = reactive({
     is_auto_transfer: '0',
     is_auto_verify: '0',
     is_open: '0',
-    min: '0.01',
+    min: '0',
     rate: '0',
     transfer_type: []
 })

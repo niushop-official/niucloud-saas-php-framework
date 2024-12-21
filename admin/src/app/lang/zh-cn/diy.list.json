@@ -20,6 +20,7 @@
   "titlePlaceholder": "请输入页面名称",
   "addDiyPage": "添加页面",
   "diyPageDeleteTips": "确定要删除该自定义页面吗？",
+  "diyPageCopyTips": "确定要复制该自定义页面吗？",
   "preview": "预览",
   "share": "分享",
   "shareSet": "分享设置",

@@ -513,3 +513,26 @@ export function setSignConfig(params: Record<string, any>) {
 export function getMemberSignList(params: Record<string, any>) {
     return request.get(`member/sign`, { params });
 }
+
+/***************************************************** 地址管理 ****************************************************/
+
+/**
+ * 获取收货地址
+ */
+export function getMemberAddress(params: Record<string, any>) {
+    return request.get(`member/address`, { params });
+}
+
+/**
+ * 添加收货地址 
+ */
+export function addMemberAddress(params: Record<string, any>) {
+    return request.post(`member/address`, params);
+}
+
+/**
+ * 编辑收货地址
+ */
+export function editMemberAddress(params: Record<string, any>) {
+    return request.put(`member/address`, params);
+}

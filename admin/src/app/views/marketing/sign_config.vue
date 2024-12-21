@@ -10,8 +10,8 @@
                     <el-switch v-model="formData.is_use" />
                 </el-form-item>
 
-                <el-form-item :label="t('signPeriod')" v-if="formData.is_use">
-                    <el-input-number v-model="formData.sign_period" :min="1" :precision="0" clearable class="input-width" controls-position="right" /><span class="ml-[10px]">天</span>
+                <el-form-item :label="t('signPeriod')" prop="sign_period" v-if="formData.is_use">
+                    <el-input v-model="formData.sign_period" placeholder="0" maxlength="8" clearable class="input-width" /><span class="ml-[10px]">天</span>
                 </el-form-item>
 
                 <el-form-item :label="t('daySignAward')" prop="day_award" v-if="formData.is_use">
@@ -130,14 +130,33 @@ const continue_award = ref({})
 let isEdit = false // 是否为编辑状态
 let editIndex = 0 // 连签奖励修改下标
 
+// 正则表达式
+const regExp: any = {
+    required: /[\S]+/,
+    number: /^\d{0,10}$/,
+    digit: /^\d{0,10}(.?\d{0,2})$/,
+    special: /^\d{0,10}(.?\d{0,3})$/
+}
 // 表单验证规则
 const formRules = reactive<FormRules>({
-    sign_period: [
-        { required: true, message: t('signPeriodTip'), trigger: 'blur' }
-    ],
     day_award: [
         { required: true, message: t('daySignAwardPlaceholder'), trigger: 'change' }
     ],
+    sign_period:[{
+            required: true,
+            trigger: 'blur',
+            validator: (rule: any, value: any, callback: any) => {
+                if (value === null || value === '') {
+                    callback(t('signPeriodTip'))
+                }else if (isNaN(value) || !regExp.number.test(value)) {
+                    callback(t('signPeriodLimitTips'))
+                }else if (value <= 0) {
+                    callback(t('signPeriodMustZeroTips'))
+                } else {
+                    callback();
+                }
+        }
+    }],
 })
 
 /**

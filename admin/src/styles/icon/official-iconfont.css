@@ -1,8 +1,8 @@
 @font-face {
   font-family: "nc-iconfont"; /* Project id 4567203 */
-  src: url('//at.alicdn.com/t/c/font_4567203_unxj5bqsj6o.woff2?t=1732704100572') format('woff2'),
-       url('//at.alicdn.com/t/c/font_4567203_unxj5bqsj6o.woff?t=1732704100572') format('woff'),
-       url('//at.alicdn.com/t/c/font_4567203_unxj5bqsj6o.ttf?t=1732704100572') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4567203_vnozyu9086.woff2?t=1734084780804') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4567203_vnozyu9086.woff?t=1734084780804') format('woff'),
+       url('//at.alicdn.com/t/c/font_4567203_vnozyu9086.ttf?t=1734084780804') format('truetype');
 }
 
 .nc-iconfont {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.nc-icon-daifujineV6xx:before {
+  content: "\e83b";
+}
+
+.nc-icon-daifuliuyanV6xx:before {
+  content: "\e83a";
+}
+
+.nc-icon-jichuxinxiV6xx:before {
+  content: "\e838";
+}
+
+.nc-icon-dianpuzhandianV6xx:before {
+  content: "\e836";
 }
 
 .nc-icon-gouwucheV6xx6:before {

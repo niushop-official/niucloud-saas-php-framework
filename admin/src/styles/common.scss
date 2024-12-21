@@ -105,6 +105,16 @@ html, body {
         transition:var(--el-transition-duration) width ease-in-out,var(--el-transition-duration) padding-left ease-in-out,var(--el-transition-duration) padding-right ease-in-out;
     }
 }
+/* 单行超出隐藏 */
+.using-hidden {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: break-spaces;
+}
 
 /** 多行超出隐藏 **/
 .multi-hidden {

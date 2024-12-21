@@ -57,6 +57,7 @@
                         <el-button v-if="row.type == 'DIY_PAGE'" type="primary" link @click="openShare(row)">{{ t('shareSet') }}</el-button>
                         <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
                         <el-button v-if="row.is_default == 0 || row.type == 'DIY_PAGE'" type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
+                        <el-button type="primary" link @click="copyEvent(row.id)">{{ t('copy') }}</el-button>
                     </template>
                 </el-table-column>
 
@@ -126,7 +127,7 @@
 <script lang="ts" setup>
 import { reactive, ref, computed } from 'vue'
 import { t } from '@/lang'
-import { getApps,getDiyPageList, deleteDiyPage, getDiyTemplate, editDiyPageShare, setUseDiyPage } from '@/app/api/diy'
+import { getApps,getDiyPageList, deleteDiyPage, getDiyTemplate, editDiyPageShare, setUseDiyPage,copyDiy } from '@/app/api/diy'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { setTablePageStorage,getTablePageStorage } from "@/utils/common";
@@ -256,6 +257,30 @@ const editEvent = (data: any) => {
 const setUse = (id: any) => {
     setUseDiyPage({id}).then(() => {
         loadDiyPageList()
+    })
+}
+const repeat = ref(false)
+
+// 复制页面
+const copyEvent = (id: any) => {
+    ElMessageBox.confirm(t('diyPageCopyTips'), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        if (repeat.value) return
+        repeat.value = true
+
+        copyDiy({id: id}).then((res: any) => {
+            if (res.code == 1) {
+                loadDiyPageList()
+            }
+            repeat.value = false
+        }).catch(err => {
+            repeat.value = false
+        })
     })
 }
 

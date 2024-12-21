@@ -75,3 +75,26 @@ export function getRefundTransfer(params: Record<string, any>) {
 export function getAllPayType() {
     return request.get(`pay/type/all`)
 }
+
+/**
+ * 支付列表
+ */
+export function getPayList() {
+    return request.get(`pay/type/list`)
+}
+
+/**
+ * 支付
+ */
+export function pay(params: Record<string, any>) {
+    return request.post(`pay`, params)
+}
+
+/**
+* 帮付
+* @param params
+* @returns
+*/
+export function getFriendsPay(tradeType : string, tradeId : number, channel: string) {
+   return request.get(`pay/friendspay/info/${tradeType}/${tradeId}/${channel}`, { showErrorMessage: false })
+}
