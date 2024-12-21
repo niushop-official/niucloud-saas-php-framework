@@ -304,6 +304,25 @@
 			"style": {
 				"navigationBarTitleText": "%pages.weapp.order_shipping%"
 			}
+		},
+		{
+			"path": "app/pages/friendspay/share",
+			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
+				"navigationBarTitleText": "%pages.friendspay.share%"
+			},
+			"needLogin": true
+		},
+		{
+			"path": "app/pages/friendspay/money",
+			"style": {
+				// #ifndef H5
+				"navigationStyle": "custom",
+				// #endif
+				"navigationBarTitleText": "%pages.friendspay.money%"
+			}
 		}
 	],
 	"subPackages": [
