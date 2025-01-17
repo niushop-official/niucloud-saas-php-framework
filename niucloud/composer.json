@@ -25,7 +25,6 @@
         "topthink/think-orm": "v3.0.14",
         "topthink/think-filesystem": "v2.0.2",
         "topthink/think-multi-app": "v1.0.16",
-
         "topthink/think-template": "v3.0.0",
         "topthink/think-view": "v2.0.0",
         "topthink/think-captcha": "v3.0.9",
