@@ -46,5 +46,19 @@
 	"cashOutNumberPlaceholder": "请输入提现单号",
 	"alipayAccount": "支付宝账号",
 	"bankName": "银行名称",
-	"bankAccount": "银行卡号"
+	"bankAccount": "银行卡号",
+	"cashOutInfo":"收款方信息",
+	"transferCode":"收款码",
+	"realname":"真实姓名",
+	"account":"账号",
+	"bankRealname":"持卡人姓名",
+	"remark":"备注",
+	"remarkPlaceholder":"请输入备注",
+	"passAudit":"通过审核",
+	"transferVoucher":"转账凭证",
+	"transferVoucherPlaceholder":"请上传转账凭证",
+	"transferRemark":"转账补充说明",
+	"transferRemarkPlaceholder":"请输入转账补充说明",
+	"notes":"备注",
+	"check":"检查打款进度"
 }

@@ -1,7 +1,7 @@
 <template>
     <el-form :model="formData" :rules="formRules" class="page-form" ref="formRef">
         <el-form-item :label="t('continueSign')" prop="continue_sign">
-            <el-input class="input-width" v-model.trim="formData.continue_sign" :maxlength="5" clearable />
+            <el-input class="input-width" v-model.trim="formData.continue_sign" @keyup="filterNumber($event)" :maxlength="3" clearable />
             <span class="ml-[10px]">{{ t('day') }}</span>
         </el-form-item>
         <el-form-item :label="t('continueSign')" >
@@ -28,7 +28,7 @@ import { t } from '@/lang'
 import { ref, reactive, defineAsyncComponent, computed, watch } from 'vue'
 import { FormRules } from 'element-plus'
 import { getGiftDict } from '@/app/api/member'
-import { guid } from '@/utils/common'
+import { guid, filterNumber } from '@/utils/common'
 import Test from '@/utils/test'
 
 const gifts = ref({})
@@ -88,13 +88,12 @@ const regExp = {
 const formRules = reactive<FormRules>({
     continue_sign: [
         { required: true, message: t('continueSignPlaceholder'), trigger: 'blur' },
-        {
-            
+        {            
             validator: (rule: any, value: any, callback: any) => {
                if (isNaN(value) || !regExp.number.test(value)) {
-                    callback('连续签到天数格式错误')
-                } else if (value <=0) {
-                    callback('连续签到天数不能小于等于0')
+                    callback(t('continueSignFormatError'))
+                } else if (value < 2 || value > 365) {
+                    callback(t('continueSignBerweenDays'))
                 } else{
                     callback();
                 }
@@ -108,13 +107,13 @@ const formRules = reactive<FormRules>({
             validator: (rule: any, value: any, callback: Function) => {
                 if (formData.value.receive_limit == 2) {
                     if (Test.empty(formData.value.receive_num)) {
-                        callback('请输入限领次数')
+                        callback(t('receiveNumPlaceholder'))
                     }
                     if (isNaN(formData.value.receive_num) || !regExp.number.test(formData.value.receive_num)) {
-                        callback('限领次数格式错误')
+                        callback(t('receiveNumFormatError'))
                     }
                     if (formData.value.receive_num <= 0) {
-                        callback('限领次数不能小于等于0')
+                        callback(t('receiveNumMustGreaterThanZeroTip'))
                     }
                     callback()
                 } else {

@@ -138,7 +138,7 @@
 
                         <div class="edit-component-wrap">
 
-                            <component v-if="diyStore.currentComponent" :is="modules[diyStore.currentComponent]" :value="diyStore.value[diyStore.currentIndex]">
+                            <component v-if="diyStore.currentComponent" :is="modules[diyStore.currentComponent]" :key="diyStore.currentIndex" :value="diyStore.value[diyStore.currentIndex]">
                                 <template #style>
                                     <div class="edit-attr-item-wrap">
                                         <h3 class="mb-[10px]">{{ t('componentStyleTitle') }}</h3>
@@ -299,9 +299,6 @@ const goBack = () => {
 const modulesFiles = import.meta.glob('./components/*.vue', { eager: true })
 const addonModulesFiles = import.meta.glob('@/addon/**/views/diy/components/*.vue', { eager: true })
 addonModulesFiles && Object.assign(modulesFiles, addonModulesFiles)
-
-// todo 考虑用一个编辑页面实现，方便后期维护，根据路由判断，是微页面还是系统表单
-// todo 系统表单可以使用自定义组件，微页面不能用系统表单组件
 
 const modules = {}
 for (const [key, value] of Object.entries(modulesFiles)) {

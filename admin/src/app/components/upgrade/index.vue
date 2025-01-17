@@ -10,7 +10,7 @@
                 <div class="mt-[10px]" v-if="upgradeContent.upgrade_version != upgradeContent.last_version">
                     <el-alert type="info" show-icon>
                         <template #title>
-                            当前最新版本为{{ upgradeContent.last_version }}，您的服务已于{{ upgradeContent.expire_time }}到期。如需升级到最新版可在<a class="text-primary" href="https://www.niucloud.com" target="_blank">niucloud-admin官网</a>购买相关服务后再进行升级
+                            当前最新版本为{{ upgradeContent.last_version }}，您的服务{{ upgradeContent.expire_time ? `已于${upgradeContent.expire_time}到期` : '长期有效' }}。如需升级到最新版可在<a class="text-primary" href="https://www.niucloud.com" target="_blank">niucloud-admin官网</a>购买相关服务后再进行升级
                         </template>
                     </el-alert>
                 </div>

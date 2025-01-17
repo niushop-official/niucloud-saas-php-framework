@@ -43,6 +43,9 @@ const useDiyStore = defineStore('diy', {
             position: ['top_fixed', 'right_fixed', 'bottom_fixed', 'left_fixed', 'fixed'],
             global: {
                 title: "页面", // 页面标题（用于前台展示）
+                completeLayout: 'style-1', // 整体布局，目前万能表单用到，表单布局，排版风格，style-1：单列平铺‌，style-2：左右排列‌
+                completeAlign: 'left', // 左右布局 对齐方式，left：左对齐，right：右对齐
+                borderControl: true, // 控制表单组件左右布局时，边框是否显示
 
                 pageStartBgColor: "", // 页面背景颜色（开始）
                 pageEndBgColor: "", // 页面背景颜色（结束）
@@ -106,7 +109,8 @@ const useDiyStore = defineStore('diy', {
                         top: 0, // 上边距
                         bottom: 0, // 下边距
                         both: 0, // 左右边距
-                    }
+                    },
+                    isHidden: false // 是否隐藏该组件 true：是，false：否，增加问号说明：勾选后该组件将隐藏，适用于你不希望看到该组件字段又不希望删除的情况；
                 }
 
             },
@@ -128,6 +132,9 @@ const useDiyStore = defineStore('diy', {
         init() {
             this.global = {
                 title: "页面", // 页面标题
+                completeLayout: 'style-1',
+                completeAlign: 'left',
+                borderControl: true,
 
                 pageStartBgColor: "", // 页面背景颜色（开始）
                 pageEndBgColor: "", // 页面背景颜色（结束）
@@ -191,7 +198,8 @@ const useDiyStore = defineStore('diy', {
                         top: 0, // 上边距
                         bottom: 0, // 下边距
                         both: 0, // 左右边距
-                    }
+                    },
+                    isHidden: false // 是否隐藏该组件 true：是，false：否，增加问号说明：勾选后该组件将隐藏，适用于你不希望看到该组件字段又不希望删除的情况；
                 }
 
             };
@@ -213,8 +221,9 @@ const useDiyStore = defineStore('diy', {
             Object.assign(component, component.value);
             delete component.title;
             delete component.value;
-            delete component.type;
+            // delete component.type;  // todo 考虑删除，没用到
             delete component.icon;
+            delete component.render; // 渲染值，万能表单用到了
 
             // 默认继承全局属性
             let template = cloneDeep(this.global.template);
@@ -238,20 +247,69 @@ const useDiyStore = defineStore('diy', {
             // 置顶组件，只能在第一个位置中添加
             if (component.position && this.position.indexOf(component.position) != -1) {
 
-                this.currentIndex = 0;
-                // 指定位置添加组件
-                this.value.splice(0, 0, component);
+                if (component.position == 'top_fixed') {
+                    // 顶部置顶
+
+                    this.currentIndex = 0;
+                    // 指定位置添加组件
+                    this.value.splice(0, 0, component);
+
+                } else if (component.position == 'bottom_fixed') {
+                    // 底部置顶
+
+                    // 指定位置添加组件
+                    this.value.splice(this.value.length, 0, component);
+                    this.currentIndex = this.value.length - 1;
+                }else{
+
+                    this.currentIndex = 0;
+                    // 指定位置添加组件
+                    this.value.splice(0, 0, component);
+                }
 
             } else if (this.currentIndex === -99) {
+                let index = this.currentIndex;
+                for (let i = this.value.length - 1; i >= 0; i--) {
+                    if (this.value[i].position) {
+                        index = i; // 在定位组件之前添加
+                        break;
+                    }
+                }
 
-                this.value.push(component);
-                // 添加组件后（不是编辑调用的），选择最后一个
-                this.currentIndex = this.value.length - 1;
+                if (index == -99) {
+                    this.value.push(component);
+                    // 添加组件后（不是编辑调用的），选择最后一个
+                    this.currentIndex = this.value.length - 1;
+                } else {
+
+                    // 指定位置添加组件
+                    this.value.splice(index, 0, component);
+                    this.currentIndex = index;
+                }
 
             } else {
+                let index = -1;
+                for (let i = this.value.length - 1; i >= 0; i--) {
+                    if (this.value[i].position && this.value[i].position == 'bottom_fixed') {
+                        index = i; // 在定位组件之前添加
+                        break;
+                    }
+                }
 
-                // 指定位置添加组件
-                this.value.splice(++this.currentIndex, 0, component);
+                // 判断当前添加的位置跟定位组件是否相邻
+                if (index != -1 && (index == this.currentIndex || (index - this.currentIndex) == 1)) {
+
+                    // 未找到定位组件，在当前下标之后添加组件
+                    if (index == -1) {
+                        this.value.splice(++this.currentIndex, 0, component);
+                    } else {
+                        // 指定位置添加组件
+                        this.value.splice(index, 0, component);
+                        this.currentIndex = index;
+                    }
+                } else {
+                    this.value.splice(++this.currentIndex, 0, component);
+                }
 
             }
 
@@ -347,6 +405,8 @@ const useDiyStore = defineStore('diy', {
 
             var temp2 = cloneDeep(this.value[nextIndex]); // 下个组件
             temp2.id = this.generateRandom(); // 更新id，刷新组件数据
+
+            if (temp2.position && this.position.indexOf(temp2.position) != -1) return;
 
             if (temp.position && this.position.indexOf(temp.position) != -1) {
                 ElMessage({

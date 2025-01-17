@@ -25,7 +25,7 @@
 
 		<div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('carouselSearchSet') }}</h3>
-			<el-form label-width="100px" class="px-[10px]">
+			<el-form label-width="100px" class="px-[10px]" @submit.prevent>
 				<el-form-item :label="t('selectStyle')" class="flex">
 					<span class="text-primary flex-1 cursor-pointer" @click="showSearchStyle">{{ diyStore.editComponent.search.styleName }}</span>
 					<el-icon>
@@ -69,7 +69,7 @@
 
 			</el-dialog>
 		</div>
-        
+
 		<div class="edit-attr-item-wrap mb-[20px]">
 			<h3 class="mb-[10px]">{{ t('carouselSearchHotWordSet') }}</h3>
 			<el-form label-width="100px" class="px-[10px]">
@@ -97,11 +97,11 @@
 
 			</el-form>
 		</div>
-        
+
 		<el-collapse v-model="activeNames" @change="handleChange" class="collapse-wrap">
             <el-collapse-item :title="t('carouselSearchTabSet')" name="tab">
                 <div class="edit-attr-item-wrap">
-                    <el-form label-width="100px" class="px-[10px]">
+                    <el-form label-width="100px" class="px-[10px]" @submit.prevent>
                         <el-form-item :label="t('carouselSearchTabControl')">
                             <el-switch v-model="diyStore.editComponent.tab.control" />
                         </el-form-item>
@@ -139,7 +139,7 @@
                         </div>
 
                         <!-- 选择微页面弹出框 -->
-                        <el-dialog v-model="diyPageShowDialog" :title="t('selectSourcesDiyPage')" width="1000px" :close-on-press-escape="false" :destroy-on-close="true" :close-on-click-modal="false">
+                        <el-dialog v-model="diyPageShowDialog" :title="t('selectSourcesDiyPage')" width="1000px" :close-on-press-escape="true" :destroy-on-close="true" :close-on-click-modal="false">
                             <el-table :data="diyPageTable.data" ref="diyPageTableRef" size="large" v-loading="diyPageTable.loading" height="490px" @current-change="handleCurrentDiyPageChange" row-key="id" highlight-current-row>
                                 <template #empty>
                                     <span>{{ !diyPageTable.loading ? t('emptyData') : '' }}</span>
@@ -207,7 +207,7 @@
 				</el-form-item>
 			</el-form>
 		</div>
-        
+
         <div class="edit-attr-item-wrap" v-if="diyStore.editComponent.search.style == 'style-2'">
 			<h3 class="mb-[10px]">{{ t('carouselSearchSubTitleStyle') }}</h3>
 			<el-form label-width="100px" class="px-[10px]">

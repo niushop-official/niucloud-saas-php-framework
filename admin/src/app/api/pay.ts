@@ -91,10 +91,11 @@ export function pay(params: Record<string, any>) {
 }
 
 /**
-* 帮付
-* @param params
-* @returns
-*/
+ * 帮付
+ * @param tradeType
+ * @param tradeId
+ * @param channel
+ */
 export function getFriendsPay(tradeType : string, tradeId : number, channel: string) {
    return request.get(`pay/friendspay/info/${tradeType}/${tradeId}/${channel}`, { showErrorMessage: false })
 }

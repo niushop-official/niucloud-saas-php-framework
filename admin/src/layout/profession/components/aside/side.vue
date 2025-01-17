@@ -83,10 +83,12 @@ const logoUrl = computed(() => {
 routers.forEach(item => {
     item.original_name = item.name
     if (item.meta.addon == '') {
-        if (item.children && item.children.length) {
-            item.name = findFirstValidRoute(item.children)
+        if (item.meta.attr == '') {
+            if (item.children && item.children.length) {
+                item.name = findFirstValidRoute(item.children)
+            }
+            oneMenuData.value.push(item)
         }
-        oneMenuData.value.push(item)
     } else if (item.meta.addon != '' && siteInfo?.apps.length <= 1 && siteInfo?.apps[0].key == item.meta.addon) {
         if (item.children) {
             item.children.forEach((citem: Record<string, any>) => {
@@ -119,23 +121,28 @@ if (siteInfo?.apps.length > 1) {
 const oneMenuActive = ref(route.matched[1].name)
 
 watch(route, () => {
-    // 多应用
-    if (siteInfo?.apps.length > 1) {
-        twoMenuData.value = route.matched[1].children
-        oneMenuActive.value = route.matched[1].name
+    if (route.meta.attr != '') {
+        oneMenuActive.value = route.matched[2].name
+        twoMenuData.value = route.matched[1].children ?? []
     } else {
-        // 单应用
-        const oneMenu = route.matched[1]
-        if (oneMenu.meta.addon == '') {
+        // 多应用
+        if (siteInfo?.apps.length > 1) {
+            twoMenuData.value = route.matched[1].children
             oneMenuActive.value = route.matched[1].name
-            twoMenuData.value = route.matched[1].children ?? []
         } else {
-            if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
-                oneMenuActive.value = route.matched[2].name
-                twoMenuData.value = route.matched[2].children ?? []
-            } else {
+            // 单应用
+            const oneMenu = route.matched[1]
+            if (oneMenu.meta.addon == '') {
                 oneMenuActive.value = route.matched[1].name
                 twoMenuData.value = route.matched[1].children ?? []
+            } else {
+                if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
+                    oneMenuActive.value = route.matched[2].name
+                    twoMenuData.value = route.matched[2].children ?? []
+                } else {
+                    oneMenuActive.value = route.matched[1].name
+                    twoMenuData.value = route.matched[1].children ?? []
+                }
             }
         }
     }

@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            <el-dialog v-model="showDialog" :title="t('pageSelectTips')" width="400px" :close-on-press-escape="false" :destroy-on-close="true" :close-on-click-modal="false">
+            <el-dialog v-model="showDialog" :title="t('pageSelectTips')" width="400px" :close-on-press-escape="true" :destroy-on-close="true" :close-on-click-modal="false">
                 <div class="flex items-start">
                     <el-scrollbar class="pl-4 h-[300px] flex-1">
                         <div class="flex flex-wrap">

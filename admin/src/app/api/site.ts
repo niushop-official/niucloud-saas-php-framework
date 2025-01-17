@@ -254,3 +254,11 @@ export function getAccountType() {
 export function getSiteAddons() {
     return request.get('site/addons')
 }
+
+/**
+ * 获取站点应用
+ * @returns
+ */
+export function getShowApp() {
+    return request.get('site/showApp')
+}

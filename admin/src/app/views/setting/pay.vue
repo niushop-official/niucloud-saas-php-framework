@@ -134,7 +134,6 @@ const setConfigInfo = (data:any) => {
             element.config = data.config
         }
     })
-    console.log(payConfigData.value)
 }
 
 // 初始化配置信息

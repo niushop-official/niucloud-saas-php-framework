@@ -40,7 +40,15 @@
     <el-dialog v-model="showDialog" :title="t('selectLayout')" width="800" :destroy-on-close="true">
         <div class="h-[300px]">
             <el-scrollbar >
-                <h3 class="panel-title !text-sm">{{ t('layout') }}</h3>
+                <div class="flex justify-between items-center mb-[20px]">
+                    <h3 class="!text-sm !text-[#444]">{{ t('layout') }}</h3>
+                    <div class="flex items-center cursor-pointer" @click="toDiyLayout">
+                        <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
+                        <div class="ml-[2px] text-[12px] text-[#999]">如何开发自定义布局</div>
+                    </div>
+                    
+                </div>
+               
                 <div class="flex justify-items-stretch">
                     <div class="w-[180px] h-[130px] mr-[10px] mb-[10px] border hover:border-primary cursor-pointer"
                          :class="{'border-primary': ((!layoutConfig[currAddon] && item.layout == 'default') || (layoutConfig[currAddon] == item.layout)) }"
@@ -56,8 +64,9 @@
                     </div>
                 </div>
                 <h3 class="panel-title !text-sm">{{ t('themeColor') }}</h3>
-                <div class="flex justify-items-stretch">
+                <div class="">
                     <el-color-picker v-model="themeColor[currAddon]" size="large" />
+                    <div class="form-tip text-[#999] mt-2">设置的色调会在前端站点列表体现</div>
                 </div>
             </el-scrollbar>
         </div>
@@ -141,6 +150,13 @@ const confirm = () => {
         value: layoutConfig.value[currAddon.value] ? layoutConfig.value[currAddon.value] : 'default'
     })
     showDialog.value = false
+}
+
+
+// 跳转自定义布局
+const toDiyLayout = () => {
+    let url = 'https://doc.niucloud.com/saas.html?keywords=/ru-he-kai-fa-zi-ding-yi-bu-ju-hou-tai-bu-ju';
+    window.open(url)
 }
 </script>
 

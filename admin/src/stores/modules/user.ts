@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken, getAppType } from '@/utils/common'
 import { login, logout, getAuthMenus, getSiteInfo } from '@/app/api/auth'
 import storage from '@/utils/storage'
 import router from '@/router'
-import { formatRouters, findFirstValidRoute } from '@/router/routers'
+import { formatRouters, findFirstValidRoute, findRules } from '@/router/routers'
 import useTabbarStore from './tabbar'
 import Test from '@/utils/test'
 
@@ -67,6 +67,7 @@ const userStore = defineStore('user', {
             removeToken()
             storage.remove(['userinfo', 'siteInfo'])
             this.routers = []
+            this.rules = []
             logout()
             // 清除tabbar
             useTabbarStore().clearTab()
@@ -87,6 +88,7 @@ const userStore = defineStore('user', {
                             }
                         }
                     })
+                    this.rules = findRules(res.data)
                     resolve(res)
                 }).catch((error) => {
                     reject(error)

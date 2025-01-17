@@ -8,7 +8,11 @@
             </div>
 
             <div class="mt-[20px]">
-                <el-alert :title="t('operationTip')" type="warning" show-icon />
+                <el-alert :description="t('transferTips')" type="warning" show-icon>
+                    <template #title>
+                        <span class="!text-[14px]">{{ t('operationTip') }}</span>
+                    </template>
+                </el-alert>
             </div>
         </el-card>
 
@@ -38,7 +42,7 @@
                 </el-form-item>
             </el-card>
 
-            <el-card class="box-card mt-[15px] !border-none" shadow="never">
+            <!-- <el-card class="box-card mt-[15px] !border-none" shadow="never">
                 <h3 class="panel-title !text-sm">{{t('alipay')}}</h3>
 
                 <el-form-item :label="t('appId')" prop="alipay_config.app_id">
@@ -63,7 +67,7 @@
                         <upload-file v-model="formData.alipay_config.alipay_root_cert_path" api="sys/document/aliyun" />
                     </div>
                 </el-form-item>
-            </el-card>
+            </el-card> -->
         </el-form>
 
         <div class="fixed-footer-wrap">

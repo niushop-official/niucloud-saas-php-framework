@@ -4,7 +4,7 @@
 
 		<div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('titleContent') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
+			<el-form label-width="80px" class="px-[10px]" @submit.prevent>
 				<el-form-item :label="t('selectStyle')" class="flex">
 					<span class="text-primary flex-1 cursor-pointer" @click="showTitleStyle">{{ diyStore.editComponent.titleStyle.title }}</span>
 					<el-icon>
@@ -97,7 +97,7 @@
 						<el-form-item :label="t('activeCubeSubTitle')" v-if="diyStore.editComponent.blockStyle.value != 'style-3'">
 							<el-input v-model.trim="item.subTitle.text" :placeholder="t('activeCubeSubTitlePlaceholder')" clearable maxlength="6" show-word-limit/>
 						</el-form-item>
-                        
+
                         <div v-show="diyStore.editComponent.blockStyle.value == 'style-4'">
                             <el-form-item :label="t('activeCubeSubTitleTextColor')">
                                 <el-color-picker v-model="item.subTitle.textColor" show-alpha :predefine="diyStore.predefineColors" />
@@ -108,13 +108,13 @@
                                 <el-color-picker v-model="item.subTitle.endColor" show-alpha :predefine="diyStore.predefineColors"/>
                             </el-form-item>
                         </div>
-                        
+
                         <el-form-item :label="t('activeListFrameColor')">
                             <el-color-picker v-model="item.listFrame.startColor" show-alpha :predefine="diyStore.predefineColors" />
                             <icon name="iconfont iconmap-connect" size="20px" class="block !text-gray-400 mx-[5px]"/>
                             <el-color-picker v-model="item.listFrame.endColor" show-alpha :predefine="diyStore.predefineColors"/>
                         </el-form-item>
-                        
+
                         <div v-show="diyStore.editComponent.blockStyle.value != 'style-4' && diyStore.editComponent.blockStyle.value != 'style-3'">
                             <el-form-item :label="t('activeCubeButton')">
                                 <el-input v-model.trim="item.moreTitle.text" :placeholder="t('activeCubeButtonPlaceholder')" clearable maxlength="3" show-word-limit/>
@@ -427,7 +427,7 @@ const initBlockStyle = (style: any)=>{
 
         diyStore.editComponent.blockStyle.fontWeight = "bold";
         diyStore.editComponent.blockStyle.btnText = "italics";
-        
+
         diyStore.editComponent.list[0].title.textColor = "#303133";
         diyStore.editComponent.list[0].subTitle.textColor = "#999999";
         diyStore.editComponent.list[0].subTitle.startColor = "";
@@ -505,7 +505,7 @@ const initBlockStyle = (style: any)=>{
     }else if(style == 'style-4'){
         diyStore.editComponent.blockStyle.fontWeight = "bold";
         diyStore.editComponent.blockStyle.btnText = "normal";
-        
+
         diyStore.editComponent.list[0].title.textColor = "#303133";
         diyStore.editComponent.list[0].subTitle.textColor = "#ED6E00";
         diyStore.editComponent.list[0].subTitle.startColor = "#FFE4D9";

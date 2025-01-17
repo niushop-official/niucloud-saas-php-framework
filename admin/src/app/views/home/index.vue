@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-[#F7F9FA] min-h-screen">
         <div class="flex justify-between items-center py-[24px] pl-[62px] pr-[64px] home-head">
             <div class="flex items-center" v-if="webConfig">
                 <img class="w-[32x] h-[32px] rounded-full" v-if="webConfig.icon" :src="img(webConfig.icon)" alt="">
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="w-[1200px] m-auto  mt-[62px]">
+        <div class="w-[1400px] m-auto mt-[62px]">
             <div class="flex justify-between items-center">
                 <span class="text-[24px] font-bold">站点列表</span>
                 <el-button type="primary" class="w-[90px] !h-[34px]" :disabled="siteGroupLoading" @click="handleChick">创建站点</el-button>
@@ -20,8 +20,8 @@
             <div class="flex justify-between items-center mt-[18px]">
                 <div class="w-[800px] text-[14px] whitespace-nowrap">
                     <el-scrollbar :always="true">
-                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'text-[var(--el-color-primary)]': params.app == ''}]" @click="cutAppFn('')">所有应用</span>
-                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
+                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'class-select text-[var(--el-color-primary)]': params.app == ''}]" @click="cutAppFn('')">所有应用</span>
+                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'class-select text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
                     </el-scrollbar>
                 </div>
                 <el-input v-model.trim="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称/编号" @keyup.enter.native="getHomeSiteFn()">
@@ -35,29 +35,29 @@
 
             <div class="min-h-[580px]">
                 <div class="flex flex-wrap mt-[30px]" v-loading="loading">
-                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)" :class="['home-item w-[285px] box-border mb-[20px] cursor-pointer',{'mr-[20px]': index ==0 || (index+1)%4 != 0}]">
-                        <div class="flex items-center px-[24px] pt-[22px] pb-[16px] bg-[#F0F2F4] home-item-head relative">
-                            <div class="absolute h-[5px] w-full z-1 left-0 top-0" :style="{'background-color': item.theme_color}" v-if="item.theme_color"></div>
-                            <img v-if="item.icon" class="w-[48px] h-[48px] mr-[15px] rounded-[50%] overflow-hidden" :src="img(item.icon)" />
-                            <img v-else class="w-[48px] h-[48px] mr-[15px] rounded-[50%] overflow-hidden" src="@/app/assets/images/member_head.png" />
+                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)" :class="['home-item w-[327px] box-border mb-[30px] cursor-pointer',{'mr-[30px]': index ==0 || (index+1)%4 != 0}]">
+                        <div class="flex items-center px-[24px] pt-[22px] pb-[10px] home-item-head relative">
+                            <div class="absolute h-[4px] w-full z-1 left-0 top-0" :style="{'background-color': item.theme_color}" v-if="item.theme_color"></div>
+                            <img v-if="item.icon" class="w-[46px] h-[46px] mr-[15px] img-shadow rounded-[6px] overflow-hidden" :src="img(item.icon)" />
+                            <img v-else class="w-[46px] h-[46px] mr-[15px] rounded-[6px] img-shadow overflow-hidden" src="@/app/assets/images/site_default.png" />
                             <div class="flex flex-col flex-1 justify-center">
                                 <div class="flex items-center flex-wrap">
-                                    <span class="text-[16px] text-[#000] max-w-[145px] font-bold truncate mr-[10px]">{{item.site_name}}</span>
+                                    <span class="text-[16px] text-[#000] max-w-[160px] font-bold truncate mr-[10px]">{{item.site_name}}</span>
                                     <div class="flex items-center justify-center min-w-[42px] h-[18px] bg-[#FF5500] rounded-tl-md rounded-br-md items-tab" v-if="item.app_name">
-                                        <span class="text-[12px] text-[#fff]">{{item.app_name}}</span>
+                                        <span class="text-[12px] text-[#000]">{{item.app_name}}</span>
                                     </div>
                                 </div>
-                                <span class="text-[12px] mt-[3px] text-[#555]">{{item.create_time ? item.create_time.split(" ")[0] : '--'}} 到 {{item.expire_time ? item.expire_time.split(" ")[0] : '--'}}</span>
+                                <span class="text-[12px] mt-[3px] text-[#666]">{{item.create_time ? item.create_time.split(" ")[0] : '--'}} 到 {{item.expire_time ? item.expire_time.split(" ")[0] : '--'}}</span>
                             </div>
                         </div>
-                        <div class="px-[24px] py-[20px] text-[#6D7278]">
+                        <div class="px-[24px] py-[20px] text-[#666]">
                             <p class="text-[14px]">站点编号：{{item.site_id}}</p>
                             <p class="text-[14px] mt-[2px]">站点套餐：{{item.group_name || '--'}}</p>
                         </div>
                     </div>
                     <div v-if="!tableData.length && !loading" class="m-auto mt-[100px]">
-                        <img src="@/app/assets/images/site_empty.png"/>
-                        <p class="text-center text-gray-400 mt-[20px]">暂无站点</p>
+                        <img src="@/app/assets/images/site_empty.png" class="w-[220px] h-[165px]"/>
+                        <p class="text-center text-gray-400 text-[14px] mt-[20px]">暂无站点</p>
                     </div>
                 </div>
             </div>
@@ -284,7 +284,21 @@ watch(() => createSiteDialog.value, () => {
 :deep(.el-input__wrapper) {
     @apply rounded-none;
 }
+.class-select {
+    position: relative;
+    // font-weight: bold;
+    color: var(--el-color-primary);
 
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 2px;
+        height: 2px; /* 下划线的高度 */
+        background-color: var(--el-color-primary); /* 下划线颜色 */
+        width: 75%;
+        left: 12%;
+    }
+}
 .border-color {
     border-color: var(--el-color-primary);
 }
@@ -293,25 +307,31 @@ watch(() => createSiteDialog.value, () => {
     color: var(--el-color-primary);
 }
 .home-item{
-    box-shadow: 0 2px 4px 0 rgba(161,167,183,0.18);
+    // box-shadow: 0 2px 4px 0 rgba(161,167,183,0.18);
+    background:#fff;
     .items-tab span{
         transform: scale(0.9);
     }
 }
 .home-item:hover {
-    border-color: var(--el-color-primary);
+    box-shadow: 0px 0px 18px rgba(0,0,0, 0.07);
+    // border-color: var(--el-color-primary);
     .title {
         color: var(--el-color-primary);
     }
     .home-item-head{
-        background-color: #A1A7B7;
+        // background-color: #A1A7B7;
         span{
-            color: #fff !important;
+            // color: #fff !important;
         }
     }
 }
 .home-head{
+    background:#fff;
     box-shadow: 0 4px 8px 0 rgba(28,31,55,0.04);
+}
+.img-shadow{
+    box-shadow: 0px 0px 4px rgba(0,0,0, 0.07);
 }
 .creatBg{
     background: url('@/app/assets/images/creatBg.png');

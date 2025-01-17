@@ -4,6 +4,7 @@ import roter from './router'
 import ElementPlus from 'element-plus'
 import pinia from './stores'
 import lang from './lang'
+import directives from './utils/directives'
 import '@/styles/index.scss'
 import { useElementIcon } from './utils/common'
 import 'highlight.js/styles/stackoverflow-light.css';
@@ -18,6 +19,7 @@ async function run() {
     app.use(pinia)
     app.use(lang)
     app.use(roter)
+    app.use(directives)
     app.use(ElementPlus)
     app.use(hljsVuePlugin)
     app.use(VueUeditorWrap)

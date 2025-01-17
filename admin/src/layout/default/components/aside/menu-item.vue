@@ -17,15 +17,10 @@
         <template v-else>
             <el-menu-item :index="String(routes.name)" @click="router.push({ name: routes.name })" v-if="meta.addon && meta.parent_route && meta.parent_route.addon == ''">
                 <template #title>
-                    <el-tooltip placement="right" effect="light">
-                        <template #content>
-                            该功能仅限{{ addons[meta.addon].title }}使用
-                        </template>
-                        <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
-                            <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
-                        </div>
-                        <span class="ml-[10px]">{{ meta.title }}</span>
-                    </el-tooltip>
+                    <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
+                        <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
+                    </div>
+                    <span class="ml-[10px]">{{ meta.title }}</span>
                 </template>
             </el-menu-item>
             <el-menu-item :index="String(routes.name)" @click="router.push({ name: routes.name })" v-else>
@@ -84,6 +79,9 @@ routers.forEach(item => {
     if (item.meta.addon) {
         addonRouters[item.meta.addon] = item
     }
+    if (item.meta.attr) {
+        addonRouters[item.meta.attr] = item
+    }
 })
 
 const addonsMenus = ref(null)
@@ -93,6 +91,8 @@ watch(route, () => {
 
     if (systemAddonKeys.value.includes(route.meta.addon) && addonRouters[route.meta.addon]) {
         addonsMenus.value = addonRouters[route.meta.addon]
+    } else if (route.meta.attr && addonRouters[route.meta.attr]) {
+        addonsMenus.value = addonRouters[route.meta.attr]
     } else {
         addonsMenus.value = null
     }

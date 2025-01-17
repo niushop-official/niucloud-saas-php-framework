@@ -3,7 +3,7 @@
         <div class="flex items-center">
             <slot name="content">
                 <div>
-                    <img class="w-[300px]" src="@/app/assets/images/error.png" />
+                    <img class="w-[240px]" src="@/app/assets/images/error.png" />
                 </div>
             </slot>
             <div class="text-left ml-[100px]">

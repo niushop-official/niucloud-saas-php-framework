@@ -81,5 +81,7 @@
     "helpBtn":"帮付按钮名称",
     "helpBtnPlaceholder":"请输入帮付按钮名称",
     "remark":"发起帮付留言",
-    "remarkPlaceholder":"请输入留言备注"
+    "remarkPlaceholder":"请输入留言备注",
+    "payWechatImage":"默认分享图片（公众号）",
+    "payWeappImage":"默认分享图片（小程序）"
 }

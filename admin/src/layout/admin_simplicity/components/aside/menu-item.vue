@@ -1,27 +1,22 @@
 <template>
     <template v-if="meta.show">
-        <el-sub-menu v-if="meta.type == 0 && routes.children" :index="String(routes.name)">
+        <el-sub-menu  v-if="meta.type == 0 && routes.children"  :index="String(routes.name)">
             <template #title>
-                <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
-                    <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
-                </div>
-                <span class="ml-[10px]">{{ meta.title }}</span>
+                <icon v-if="meta.icon && systemStore.menuIsCollapse || props.level != 1"  :name="meta.icon" :size="(meta.icon && systemStore.menuIsCollapse && props.level == 1) ? '20px' : '16px'" class="absolute" />
+                <span class="text-[14px]" :class="{ 'font-bold': props.level === 1 , ' ml-[20px]': (meta.icon && props.level != 1) }">{{ meta.title }}</span>
             </template>
             <menu-item v-for="(route, index) in routes.children" :routes="route" :key="index" :level="props.level + 1" />
         </el-sub-menu>
         <template v-else>
-            <el-menu-item :index="String(routes.name)" @click="router.push({ name: routes.name })">
-                <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
-                    <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
-                </div>
+            <el-menu-item :index="String(routes.name)" @click="router.push({ name: routes.name })" >
+                <icon v-if="meta.icon && systemStore.menuIsCollapse || props.level != 1" :name="meta.icon" :size="(meta.icon && systemStore.menuIsCollapse && props.level == 1) ? '20px' : '16px'" class="absolute"   />
                 <template #title>
-                    <span class="ml-[10px]">{{ meta.title }}</span>
+                    <span class="text-[14px]" :class="{ 'font-bold': props.level === 1 , ' ml-[20px]': (meta.icon && props.level != 1) }">{{ meta.title }}</span>
                 </template>
             </el-menu-item>
         </template>
     </template>
 </template>
-
 <script lang="ts" setup>
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, watch } from 'vue'
@@ -29,7 +24,6 @@ import { img } from '@/utils/common'
 import menuItem from './menu-item.vue'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
-
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
@@ -82,7 +76,21 @@ watch(route, () => {
 <style lang="scss">
 .el-sub-menu{
     .el-icon{
-        width: auto;
+        // width: auto;
+    }
+}
+.el-menu {
+    .el-sub-menu__title,
+    .el-menu-item {
+        &:hover {
+            // background-color: #F1F5FF !important;
+            color: var(--el-color-primary);
+        }
+    }
+    
+    .el-icon.el-sub-menu__icon-arrow{
+        font-size: 15px;
+        top: 50%;
     }
 }
 </style>

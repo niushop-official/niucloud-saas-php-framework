@@ -1,6 +1,9 @@
 <template>
     <el-aside class="layout-aside dark w-auto">
-        <side class="hidden-xs-only slide" />
+        <el-scrollbar>
+            <side class="hidden-xs-only slide" />
+        </el-scrollbar>
+        
     </el-aside>
 </template>
 
@@ -29,15 +32,15 @@ watch(route, () => {
     //background-color: var(--side-dark-color, var(--el-bg-color));
 
     &.bright {
-        background-color: #F5F7F9;
+        // background-color: #F5F7F9;
 
         li {
-            background-color: #F5F7F9;
+            // background-color: #F5F7F9;
 
             &.is-active:not(.is-opened) {
                 position: relative;
                 color: #333;
-                background-color: #fff;
+                // background-color: #fff;
 
                 &::after {
                     content: "";

@@ -42,7 +42,7 @@
             <el-form-item :label="t('authId')" prop="api_url" v-show="formData.menu_type != 0">
                 <el-input v-model.trim="formData.api_url" :placeholder="t('authIdPlaceholder')" class="input-width">
                     <template #append>
-                        <el-select class="w-[90px] border-none" v-model="formData.methods">
+                        <el-select class="border-none" style="width: 100px" v-model="formData.methods">
                             <el-option label="POST" value="post" />
                             <el-option label="GET" value="get" />
                             <el-option label="PUT" value="put" />
@@ -77,7 +77,7 @@
             </el-form-item>
 
             <el-form-item :label="t('sort')">
-                <el-input-number v-model="formData.sort" :min="0" max="8" />
+                <el-input-number v-model="formData.sort" :min="0"/>
             </el-form-item>
         </el-form>
 

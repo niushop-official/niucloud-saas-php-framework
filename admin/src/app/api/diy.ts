@@ -198,3 +198,32 @@ export function getApps(params: Record<string, any>) {
 export function copyDiy(params: Record<string, any>) {
     return request.post(`diy/copy`, params, { showSuccessMessage: true })
 }
+
+/***************************************************** 主题风格 ****************************************************/
+
+
+/**
+ * 获取默认主题配色
+ * @param params
+ */
+export function getDefaultTheme(params: Record<string, any>) {
+    return request.get(`diy/theme/color`, {params})
+}
+
+
+/**
+ * 获取自定义主题配色
+ * @param params
+ */
+export function getDiyTheme(params: Record<string, any>) {
+    return request.get(`diy/theme`, {params})
+}
+
+
+/**
+ * 设置主题配色 
+ * @param params
+ */
+export function setDiyTheme(params: Record<string, any>) {
+    return request.post(`diy/theme`, params, { showSuccessMessage: true })
+}

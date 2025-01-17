@@ -1,27 +1,42 @@
 <template>
-    <el-container class="h-[64px] layout-admin flex items-center justify-between px-[15px]" >
+    <el-container class="h-[64px] w-full layout-admin flex items-center justify-between px-[15px]" >
         <!-- :class="['h-full px-[10px]',{'layout-header border-b border-color': !dark}]"  -->
-        <div class="left-panel flex items-center text-[14px] leading-[1]">
-            <!-- 刷新当前页 -->
-            <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
-                <icon name="element Refresh" />
+        <div class="flex items-center">
+            <div class="w-[120px] flex justify-center items-center flex-shrink-0">
+                <div class="w-[120px] h-[40px] overflow-hidden">
+                    <el-image style="width: 100%; height: 100%" :src="img(logoUrl)" fit="contain">
+                        <template #error>
+                            <div class="flex justify-center items-center w-full h-full"><img class="max-w-[120px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
+                        </template>
+                    </el-image>
+                </div>
             </div>
-            <!-- 面包屑导航 -->
-            <div class="flex items-center h-full pl-[10px] hidden-xs-only">
-                <el-breadcrumb separator="/">
-	                <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
-                </el-breadcrumb>
+            <div class="left-panel flex items-center text-[14px] leading-[1]">
+                <!-- 刷新当前页 -->
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
+                    <icon name="element Refresh" />
+                </div>
+                <!-- 面包屑导航 -->
+                <div class="flex items-center h-full pl-[10px] hidden-xs-only">
+                    <el-breadcrumb separator="/">
+                        <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
+                    </el-breadcrumb>
+                </div>
             </div>
         </div>
-        <div class="right-panel h-full flex items-center justify-end">
-            <div class="navbar-item flex items-center h-full cursor-pointer">
-                <layout-setting />
-            </div>
-            <!-- 用户信息 -->
-            <div class="navbar-item flex items-center h-full cursor-pointer">
-                <user-info />
+       
+        <div>
+            <div class="right-panel h-full flex items-center justify-end">
+                <div class="navbar-item flex items-center h-full cursor-pointer">
+                    <layout-setting />
+                </div>
+                <!-- 用户信息 -->
+                <div class="navbar-item flex items-center h-full cursor-pointer">
+                    <user-info />
+                </div>
             </div>
         </div>
+        
         <input type="hidden" v-model="comparisonToken">
         <input type="hidden" v-model="comparisonSiteId">
 
@@ -60,16 +75,21 @@
 import { ref, computed } from 'vue'
 import useUserStore from '@/stores/modules/user'
 import useAppStore from '@/stores/modules/app'
+import useSystemStore from '@/stores/modules/system'
 import { useRoute } from 'vue-router'
+import { img, isUrl } from '@/utils/common'
+
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 import userInfo from './user-info.vue'
 import layoutSetting from './layout-setting.vue'
-
+const systemStore = useSystemStore()
 const route = useRoute()
 const appStore = useAppStore()
 const userStore = useUserStore()
-
+const logoUrl = computed(() => {
+    return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
+})
 // 检测登录 start
 const detectionLoginDialog = ref(false)
 const comparisonToken = ref('')

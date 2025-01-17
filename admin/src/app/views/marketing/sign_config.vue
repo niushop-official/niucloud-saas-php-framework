@@ -11,7 +11,7 @@
                 </el-form-item>
 
                 <el-form-item :label="t('signPeriod')" prop="sign_period" v-if="formData.is_use">
-                    <el-input v-model="formData.sign_period" placeholder="0" maxlength="8" clearable class="input-width" /><span class="ml-[10px]">天</span>
+                    <el-input v-model.trim="formData.sign_period" @keyup="filterNumber($event)" maxlength="3" clearable class="input-width" /><span class="ml-[10px]">天</span>
                 </el-form-item>
 
                 <el-form-item :label="t('daySignAward')" prop="day_award" v-if="formData.is_use">
@@ -115,6 +115,7 @@ import { getSignConfig, setSignConfig, getMemberGiftsContent } from '@/app/api/m
 import signDay from '@/app/views/marketing/components/sign-day.vue'
 import signContinue from '@/app/views/marketing/components/sign-continue.vue'
 import { FormInstance, FormRules } from 'element-plus'
+import { filterNumber } from '@/utils/common'
 import { useRoute } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
 
@@ -150,7 +151,7 @@ const formRules = reactive<FormRules>({
                     callback(t('signPeriodTip'))
                 }else if (isNaN(value) || !regExp.number.test(value)) {
                     callback(t('signPeriodLimitTips'))
-                }else if (value <= 0) {
+                }else if (value < 2 || value > 365) {
                     callback(t('signPeriodMustZeroTips'))
                 } else {
                     callback();

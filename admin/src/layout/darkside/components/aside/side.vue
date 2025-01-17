@@ -47,10 +47,12 @@ const logoUrl = computed(() => {
 routers.forEach(item => {
     item.original_name = item.name
     if (item.meta.addon == '') {
-        if (item.children && item.children.length) {
-            item.name = findFirstValidRoute(item.children)
+        if (item.meta.attr == '') {
+            if (item.children && item.children.length) {
+                item.name = findFirstValidRoute(item.children)
+            }
+            menuData.value.push(item)
         }
-        menuData.value.push(item)
     } else if (item.meta.addon != '' && siteInfo?.apps.length == 1 && siteInfo?.apps[0].key == item.meta.addon) {
         if (item.children) {
             item.children.forEach((citem: Record<string, any>) => {

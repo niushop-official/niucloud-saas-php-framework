@@ -1,18 +1,23 @@
 <template>
 	<!-- 内容 -->
 	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
+
 		<div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('pageContent') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
+			<el-form label-width="80px" class="px-[10px]" @submit.prevent>
 				<el-form-item :label="t('diyPageTitle')">
-					<el-input v-model.trim="diyStore.pageTitle" :placeholder="t('diyPageTitlePlaceholder')" clearable maxlength="12" show-word-limit/>
+					<el-input v-model.trim="diyStore.pageTitle" :placeholder="t('diyPageTitlePlaceholder')" clearable maxlength="16" show-word-limit/>
 					<div class="text-sm text-gray-400">{{ t('pageTitleTips') }}</div>
 				</el-form-item>
 			</el-form>
 		</div>
+
+		<!-- 表单布局 页面设置 -->
+		<slot name="content"></slot>
+
         <div class="edit-attr-item-wrap">
 			<h3 class="mb-[10px]">{{ t('statusBarContent') }}</h3>
-            <el-form label-width="80px" class="px-[10px]">
+            <el-form label-width="80px" class="px-[10px]" @submit.prevent>
                 <el-form-item :label="t('topStatusBarNav')" class="display-block">
 					<el-switch v-model="diyStore.global.topStatusBar.isShow"/>
 					<div class="text-sm text-gray-400">{{ t('statusBarSwitchTips') }}</div>

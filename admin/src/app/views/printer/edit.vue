@@ -49,7 +49,7 @@
 
 				<el-form-item :label="t('printWidth')" prop="print_width">
 					<el-radio-group v-model="formData.print_width">
-						<el-radio value="58mm">58mm</el-radio>
+						<el-radio label="58mm">58mm</el-radio>
 					</el-radio-group>
 				</el-form-item>
 

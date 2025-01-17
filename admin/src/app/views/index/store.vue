@@ -17,13 +17,13 @@
 
             <div class="flex justify-between my-[20px]">
                 <div class="flex">
-                    <div :class="['flex items-center text-[14px] h-[32px] text-[#a6a9ad] border-[1px] border-solid my-[3px] border-[var(--el-color-info-light-8)] rounded-full px-[20px] mr-[24px] cursor-pointer hover:bg-[var(--el-color-info-light-8)]', { '!text-[#fff] !bg-[#000] !border-[#000]': activeName === 'installed' }]" @click="activeNameTabFn('installed')">
+                    <div :class="['flex items-center text-[14px] h-[32px] border-[1px] border-solid my-[3px] border-[var(--el-color-info-light-8)] rounded-full px-[20px] mr-[24px] cursor-pointer hover:bg-[var(--el-color-info-light-8)]', { '!text-[#fff] !bg-[#000] !border-[#000]': activeName === 'installed' }]" @click="activeNameTabFn('installed')">
                         {{ t('installLabel') }}
                     </div>
-                    <div :class="['flex items-center text-[14px] h-[32px] text-[#a6a9ad] border-[1px] border-solid my-[3px] border-[var(--el-color-info-light-8)] rounded-full px-[20px] mr-[24px] cursor-pointer hover:bg-[var(--el-color-info-light-8)]', { '!text-[#fff] !bg-[#000] !border-[#000]': activeName === 'uninstalled' }]" @click="activeNameTabFn('uninstalled')">
+                    <div :class="['flex items-center text-[14px] h-[32px] border-[1px] border-solid my-[3px] border-[var(--el-color-info-light-8)] rounded-full px-[20px] mr-[24px] cursor-pointer hover:bg-[var(--el-color-info-light-8)]', { '!text-[#fff] !bg-[#000] !border-[#000]': activeName === 'uninstalled' }]" @click="activeNameTabFn('uninstalled')">
                         {{ t('uninstalledLabel') }}
                     </div>
-                    <div :class="['flex items-center text-[14px] h-[32px] text-[#a6a9ad] border-[1px] border-solid my-[3px] border-[var(--el-color-info-light-8)] rounded-full px-[20px] mr-[24px] cursor-pointer hover:bg-[var(--el-color-info-light-8)]', { '!text-[#fff] !bg-[#000] !border-[#000]': activeName === 'all' }]" @click="activeNameTabFn('all')">
+                    <div :class="['flex items-center text-[14px] h-[32px] border-[1px] border-solid my-[3px] border-[var(--el-color-info-light-8)] rounded-full px-[20px] mr-[24px] cursor-pointer hover:bg-[var(--el-color-info-light-8)]', { '!text-[#fff] !bg-[#000] !border-[#000]': activeName === 'all' }]" @click="activeNameTabFn('all')">
                         {{ t('buyLabel') }}
                     </div>
                 </div>
@@ -32,7 +32,7 @@
 
             <div>
                 <el-table v-if="localList[activeName].length&&!loading" :data="info[activeName]" size="large" class="pt-[5px]">
-                    <el-table-column :label="t('appName')" align="left" width="320">
+                    <el-table-column :label="t('appName')" align="left" width="450">
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer" @click = "handleTips">
                                 <el-image class="w-[54px] h-[54px]" :src="row.icon" fit="contain">
@@ -56,7 +56,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column align="left" min-width="120">
+                    <el-table-column align="left" min-width="150">
                         <template #header>
                             <div class="flex items-center">
                                 <span class="font-500 text-[13px] mr-[5px]">{{ t('appIdentification') }}</span>
@@ -76,12 +76,12 @@
                             <span class="font-500 text-[13px] multi-hidden">{{ row.desc }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="t('type')" align="left" min-width="100">
+                    <el-table-column :label="t('type')" align="left" min-width="80">
                         <template #default="{ row }">
                             <span class="font-500 text-[13px]">{{ row.type === 'app' ? t('app') : t('addon') }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="" :label="t('author')" align="left" min-width="100">
+                    <el-table-column prop="" :label="t('author')" align="left" min-width="80">
                         <template #default="{ row }">
                             <span class="font-500 text-[13px]">{{ row.author }}</span>
                         </template>

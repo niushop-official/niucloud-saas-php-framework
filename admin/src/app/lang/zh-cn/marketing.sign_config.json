@@ -5,7 +5,7 @@
 	"signPeriod": "签到周期",
 	"signPeriodTip": "请输入签到周期",
     "signPeriodLimitTips": "签到周期格式错误",
-    "signPeriodMustZeroTips": "签到周期必须大于0",
+    "signPeriodMustZeroTips": "签到周期为2-365天",
 	"calendarSign": "日历签到",
 	"periodSign": "周期签到",
 	"daySignAward": "日签奖励",
@@ -26,12 +26,16 @@
 	"ruleExplainTip": "请输入规则说明",
 	"ruleExplainDefault": "1.每日签到可以获得日签奖励，连续签到可以获得连签奖励；\n2.每日最多可签到1次，断签则会重新计算连签天数；\n3.活动以及奖励最终解释权归商家所有。",
 	"useDefaultExplain": "使用默认说明",
-	"continueSign": "连续签到天数",
+	"continueSign": "连签天数",
+	"continueSignFormatError": "连签天数格式错误",
+	"continueSignBerweenDays": "连签天数为2-365天",
 	"receiveLimit": "领取限制",
 	"noLimit": "不限制",
 	"everyOneLimit": "每人限领",
 	"time": "次",
 	"day": "天",
-	"continueSignPlaceholder":"请输入连续签到天数",
-	"receiveNumPlaceholder":"请输入限领次数"
+	"continueSignPlaceholder":"请输入连签天数",
+	"receiveNumPlaceholder":"请输入限领次数",
+	"receiveNumFormatError":"限领次数格式错误",
+	"receiveNumMustGreaterThanZeroTip":"限领次数不能小于等于0"
 }

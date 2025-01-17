@@ -1,22 +1,8 @@
 <template>
-    <el-container class="h-screen flex flex-col">
+    <el-container class="flex flex-col">
         <el-main class="menu-wrap">
-            <el-header class="logo-wrap flex items-center justify-center h-[64px] w-[var(--aside-width)]">
-                <div class="flex justify-center items-center h-[64px] w-full px-[10px]" v-if="Object.keys(website).length">
-                    <el-image :src="img(website.icon)" class="w-[44px] h-[44px] rounded-[50%]" @error="website.icon = img('static/resource/images/niucloud_icon.jpg')"></el-image>
-                    <div class="flex-1 w-0 overflow-text truncate ml-[10px] text-white" v-if="!systemStore.menuIsCollapse">
-                        <el-tooltip
-                            effect="dark"
-                            :content="website.site_name"
-                            placement="top"
-                        >
-                            {{ website.site_name }}
-                        </el-tooltip>
-                    </div>
-                </div>
-            </el-header>
             <el-scrollbar class="menu-scrollbar flex-1 h-0">
-                <el-menu :default-active="route.name" :router="true" :unique-opened="false" :collapse="systemStore.menuIsCollapse" background-color="#1f2531" text-color="#fff" active-text-color="#fff">
+                <el-menu :default-active="route.name" :default-openeds="defaultOpeneds" :router="true" :unique-opened="false" :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in menuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -26,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed ,onMounted} from 'vue'
 import { useRoute } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
@@ -45,7 +31,12 @@ const addonRouters: Record<string, any> = {}
 const website = computed(() => {
     return systemStore.website
 })
+// 默认打开的菜单项路径数组
+const defaultOpeneds = ref<string[]>([])
+// 在组件挂载后，生成默认打开的菜单项路径数组
+onMounted(() => {
 
+})
 routers.forEach(item => {
     item.original_name = item.name
     if (item.meta.addon == '') {
@@ -81,11 +72,14 @@ if (siteInfo?.apps.length > 1) {
     })
     menuData.value.unshift(...routers)
 }
+
+defaultOpeneds.value = menuData.value.map(item => item.name)
 </script>
 
 <style lang="scss">
 .logo-wrap {
-    background: #1f2531;
+    // background: #1f2531;
+    background: #fff;
     transition: transform getCssVar('transition-duration');
 }
 :root{
@@ -93,7 +87,8 @@ if (siteInfo?.apps.length > 1) {
 }
 .menu-wrap {
     padding: 0!important;
-    background: #1f2531;
+    // background: #1f2531;
+    // background: #fff;
     display: flex;
     flex-direction: column;
 
@@ -113,13 +108,24 @@ if (siteInfo?.apps.length > 1) {
         }
 
         .el-menu-item.is-active {
-            background: var(--el-color-primary);
+            background: var(--el-color-primary) !important;
+            color: #fff !important;
         }
 
         &.el-menu--inline {
-            background: #282e3a;
+            // background: #282e3a;
+            // background: #fff;
+        }
+        .el-menu-item .el-menu-tooltip__trigger{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        &.el-menu--collapse .el-sub-menu__title{
+            justify-content: center;
         }
     }
+
 
 }
 </style>

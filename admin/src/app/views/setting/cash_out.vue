@@ -15,7 +15,10 @@
                     </el-form-item>
 
                     <el-form-item :label="t('cashWithdrawalAmount')" v-if="formData.is_open" prop="min">
-                        <el-input v-model.trim="formData.min" @keyup="filterDigit($event)" class="input-width" :placeholder="t('cashWithdrawalAmountPlaceholder')" />
+                        <div>
+                            <el-input v-model.trim="formData.min" @keyup="filterDigit($event)" class="input-width" :placeholder="t('cashWithdrawalAmountPlaceholder')" />
+                            <div class="text-[12px] text-[#999] leading-[24px]">{{  t('minTips') }}</div>
+                        </div>
                     </el-form-item>
 
                     <el-form-item :label="t('commissionRatio')" v-if="formData.is_open" prop="rate">
@@ -30,17 +33,22 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item :label="t('transfer')" v-if="formData.is_open" class="items-center">
-                        <el-radio-group v-model="formData.is_auto_transfer">
-                            <el-radio label="0" size="large">{{t('manualTransfer')}}</el-radio>
-                            <el-radio label="1" size="large">{{t('automatedTransit')}}</el-radio>
-                        </el-radio-group>
+                    <el-form-item :label="t('transfer')" v-if="formData.is_open" class="items-baseline">
+                        <div>
+                            <el-radio-group v-model="formData.is_auto_transfer">
+                                <el-radio label="0" size="large">{{t('manualTransfer')}}</el-radio>
+                                <el-radio label="1" size="large">{{t('automatedTransit')}}</el-radio>
+                            </el-radio-group>
+                            <div class="text-[12px] text-[#999] leading-[24px]">{{ t('transferTips') }}</div>
+                        </div>
                     </el-form-item>
-
-                    <el-form-item :label="t('transferMode')" v-if="formData.is_open" class="items-center">
-                        <el-checkbox-group v-model="formData.transfer_type" size="large">
-                            <el-checkbox :label="item.key"  v-for="(item,index) in Transfertype" :key="'a'+index">{{item.name}}</el-checkbox>
-                        </el-checkbox-group>
+                    <el-form-item :label="t('transferMode')" v-if="formData.is_open" class="items-baseline">
+                        <div>
+                            <el-checkbox-group v-model="formData.transfer_type" size="large">
+                                <el-checkbox :label="item.key"  v-for="(item,index) in Transfertype" :key="'a'+index">{{item.name}}</el-checkbox>
+                            </el-checkbox-group>
+                            <div class="text-[12px] text-[#999] leading-[24px]">{{ t('transferModeTips') }}</div>
+                        </div>
                     </el-form-item>
                 </el-card>
             </el-form>

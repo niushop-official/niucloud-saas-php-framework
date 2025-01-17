@@ -23,7 +23,7 @@
     "type":"插件类型",
     "typePlaceholder":"请选择插件类型",
     "typePlaceholder1":"应用：指独立开发的系统，比如商城，零售，erp等",
-    "typePlaceholder2":"插件:指不是独立的系统，可以是辅助应用的插件比如商城的拼团，也可以是独立的插件比如系统表单等",
+    "typePlaceholder2":"插件:指不是独立的系统，可以是辅助应用的插件比如商城的拼团，也可以是独立的插件比如万能表单等",
     "supportType":"所属应用",
     "supportApp":"支持应用",
     "supportAppPlaceholder":"请选择支持应用",

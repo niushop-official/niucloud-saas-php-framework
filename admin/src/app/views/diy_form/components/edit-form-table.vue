@@ -1,0 +1,44 @@
+<template>
+	<!-- 内容 -->
+	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
+
+		<!-- 表单组件 字段内容设置 -->
+		<slot name="field"></slot>
+		todo 此处编写表格组件的属性
+
+		<!-- 表单组件 其他设置 -->
+		<slot name="other"></slot>
+
+	</div>
+
+	<!-- 样式 -->
+	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+
+		<!-- 表单组件 字段样式 -->
+		<slot name="style-field"></slot>
+
+		<!-- 组件样式 -->
+		<slot name="style"></slot>
+
+	</div>
+</template>
+
+<script lang="ts" setup>
+import { t } from '@/lang'
+import { ref } from 'vue'
+import useDiyStore from '@/stores/modules/diy'
+
+const diyStore = useDiyStore()
+diyStore.editComponent.ignore = ['componentBgUrl'] // 忽略公共属性
+
+// 组件验证
+diyStore.editComponent.verify = (index: number) => {
+    const res = { code: true, message: '' }
+	// todo 只需要考虑该组件自身的验证
+    return res
+}
+defineExpose({})
+
+</script>
+
+<style lang="scss" scoped></style>

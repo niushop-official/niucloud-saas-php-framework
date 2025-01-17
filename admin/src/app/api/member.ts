@@ -369,6 +369,21 @@ export function memberTransfer(params: Record<string, any>) {
 }
 
 /**
+ * 会员提现转账
+ * @param params
+ */
+export function memberRemark(params: Record<string, any>) {
+    return request.put(`member/cash_out/remark/${params.id}`, params, { showSuccessMessage: true })
+}
+/**
+ * 检查打款进度
+ * @param params
+ */
+export function memberCheck(id: number) {
+    return request.put(`member/cash_out/check/${id}`, {}, { showSuccessMessage: true })
+}
+
+/**
  * 会员状态变更
  * @param params
  */

@@ -30,6 +30,12 @@
             <el-form-item :label="t('remark')" prop="config.pay_leave_message">
                 <el-input v-model.trim="formData.config.pay_leave_message" :placeholder="t('remarkPlaceholder')" class="input-width" type="textarea" rows="4" maxlength="20" show-word-limit clearable />
             </el-form-item>
+            <el-form-item :label="t('payWechatImage')" prop="config.pay_wechat_share_image" v-if="initData.redio_key == 'wechat_friendspay'">
+                <upload-image v-model="formData.config.pay_wechat_share_image" :limit="1" />
+            </el-form-item>
+            <el-form-item :label="t('payWeappImage')" prop="config.pay_weapp_share_image" v-if="initData.redio_key == 'weapp_friendspay'">
+                <upload-image v-model="formData.config.pay_weapp_share_image" :limit="1" />
+            </el-form-item>
         </el-form>
         <template #footer>
             <span class="dialog-footer">
@@ -63,7 +69,9 @@ const initialFormData = {
         pay_type_name: '',
         pay_page_name: '',
         pay_button_name: '',
-        pay_leave_message: ''
+        pay_leave_message: '',
+        pay_wechat_share_image: '',
+        pay_weapp_share_image: ''
     },
     channel: '',
     status: 0,
@@ -146,6 +154,7 @@ const cancel = () => {
 }
 
 const setFormData = async (data: any = null) => {
+    console.log(data)
     initData.value = cloneDeep(data)
     loading.value = true
     Object.assign(formData, initialFormData)

@@ -2,7 +2,7 @@
     <template v-if="meta.show">
         <el-sub-menu v-if="routes.children" :index="String(routes.name)">
             <template #title>
-                <div v-if="meta.icon && routes.meta.class == 1" class="w-[16px] h-[16px] relative flex items-center">
+                <div v-if="meta.icon " class="w-[13px] h-[13px] mr-[10rpx] relative flex justify-center items-center">
                     <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
                 </div>
                 <span :class="['ml-[10px]', {'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}]">{{ meta.title }}</span>
@@ -11,6 +11,9 @@
         </el-sub-menu>
         <el-menu-item v-else :index="String(routes.name)" :route="routes.path">
             <template #title>
+                <div v-if="meta.icon " class="w-[13px] h-[13px] mr-[10rpx] relative flex justify-center items-center">
+                    <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
+                </div>
                 <span :class="[{'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}, {'ml-[10px]': routes.meta.class == 2, 'ml-[15px]': routes.meta.class == 3}]">{{ meta.title }}</span>
             </template>
         </el-menu-item>
@@ -33,6 +36,7 @@ const props = defineProps({
 })
 
 const meta = computed(() => props.routes.meta)
+
 </script>
 
 <style lang="scss">

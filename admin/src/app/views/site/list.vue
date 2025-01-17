@@ -96,8 +96,8 @@
 
                     <el-table-column prop="group_name" :label="t('groupId')" width="150" :show-overflow-tooltip="true" />
                     <el-table-column prop="site_domain" :label="t('siteDomain')" width="150" :show-overflow-tooltip="true" />
-                    <el-table-column prop="create_time" :label="t('createTime')" width="250" :show-overflow-tooltip="true" />
-                    <el-table-column prop="expire_time" :label="t('expireTime')" width="250" :show-overflow-tooltip="true">
+                    <el-table-column prop="create_time" :label="t('createTime')" width="200" :show-overflow-tooltip="true" />
+                    <el-table-column prop="expire_time" :label="t('expireTime')" width="200" :show-overflow-tooltip="true">
                         <template #default="{ row }">
                             <div v-if="row.expire_time == 0">永久</div>
                             <div v-else>{{ row.expire_time }}</div>

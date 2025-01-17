@@ -117,9 +117,11 @@ interface Route {
         type: string
     },
     children?: [],
+    auth?:[],
     is_show: boolean,
     app_type: string,
-    addon: string
+    addon: string,
+    menu_attr ?:  String
 }
 
 /**
@@ -140,6 +142,7 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
             app: route.app_type,
             view: route.view_path,
             addon: route.addon,
+            attr: route.menu_attr,
             parent_route: parentRoute ? parentRoute.meta : parentRoute
         }
     }
@@ -183,4 +186,21 @@ export function findFirstValidRoute(routes: RouteRecordRaw[]): string | undefine
             }
         }
     }
+}
+
+/**
+ * 获取按钮权限
+ * @param routes
+ * @param rules
+ */
+export function findRules(routes: Route[], rules :string[] = []) : string[] {
+    for (const route of routes) {
+        if (route.auth && Array.isArray(route.auth)) {
+            rules = rules.concat(route.auth)
+        }
+        if (route.children) {
+            rules = findRules(route.children, rules)
+        }
+    }
+    return rules
 }

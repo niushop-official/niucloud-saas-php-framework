@@ -410,7 +410,7 @@ export function getTransferInfo(channel: string) {
  * @returns
  */
 export function setTransferInfo(params: Record<string, any>) {
-    return request.post(`pay/channel/set/transfer`, params)
+    return request.post(`pay/channel/set/transfer`, params, { showSuccessMessage: true })
 }
 
 /***************************************************** 定时任务 ****************************************************/
