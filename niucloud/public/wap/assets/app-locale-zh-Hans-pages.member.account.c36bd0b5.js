@@ -1,0 +1,1 @@
+const a="支付宝收款码",d="微信收款码",e="添加银行卡",c="添加微信收款码",o="添加支付宝收款码",t="尾号",n="银行卡",r={alipayAccountNo:a,wechatCode:d,addBankCard:e,addWechatCode:c,addAlipayAccount:o,endNumber:"尾号",bankCard:"银行卡"};export{o as addAlipayAccount,e as addBankCard,c as addWechatCode,a as alipayAccountNo,n as bankCard,r as default,t as endNumber,d as wechatCode};
