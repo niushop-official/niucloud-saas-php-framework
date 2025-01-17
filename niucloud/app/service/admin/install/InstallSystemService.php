@@ -97,7 +97,8 @@ class InstallSystemService extends BaseAdminService
                     'methods' => $value[ 'methods' ] ?? '',
                     'sort' => $value[ 'sort' ] ?? '',
                     'status' => 1,
-                    'is_show' => $value[ 'is_show' ] ?? 1
+                    'is_show' => $value[ 'is_show' ] ?? 1,
+                    'menu_attr' => $value['menu_attr'] ?? ''
                 ];
                 $refer = $value;
                 if (isset($refer[ 'children' ])) {

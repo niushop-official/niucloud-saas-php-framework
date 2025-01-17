@@ -37,6 +37,7 @@ class MemberConfigService extends BaseApiService
             } catch (\Exception $e) {
                 $res[ 'is_auth_register' ] = 0;
                 $res[ 'is_force_access_user_info' ] = 0;
+                $res[ 'is_bind_mobile' ] = 0;
             }
         }
         return $res;

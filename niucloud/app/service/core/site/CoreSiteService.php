@@ -54,10 +54,11 @@ class CoreSiteService extends BaseCoreService
                     [ 'site_id', '=', $site_id ],
                 ];
                 $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo,front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain')->append([ 'status_name' ])->findOrEmpty()->toArray();
+//                dump($info);die;
                 if (!empty($info)) {
                     $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId((int) $site_id);
-                    $info[ 'apps' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::APP ] ])->field('key,title,desc,icon,type')->select()->toArray();
-                    $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::ADDON ] ])->field('key,title,desc,icon,type')->select()->toArray();
+                    $info[ 'apps' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::APP ] ])->field('key,title,desc,icon,type,support_app')->select()->toArray();
+                    $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::ADDON ] ])->field('key,title,desc,icon,type,support_app')->select()->toArray();
                 }
                 return $info;
             },

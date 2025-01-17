@@ -18,17 +18,19 @@ use think\Response;
 class DiyForm extends BaseApiController
 {
     /**
-     * 系统表单详情
-     * @param int $id
+     * 万能表单详情
      * @return Response
      */
-    public function info(int $id)
+    public function info()
     {
-        return success(( new DiyFormService() )->getInfo($id));
+        $data = $this->request->params([
+            [ 'form_id', '' ],
+        ]);
+        return success(( new DiyFormService() )->getInfo($data[ 'form_id' ]));
     }
 
     /**
-     * 添加使用记录
+     * 提交填表记录
      * @return Response
      */
     public function addRecord()
@@ -38,6 +40,30 @@ class DiyForm extends BaseApiController
             [ 'value', [] ],
             [ 'relate_id', '' ],
         ]);
-        return success(( new DiyFormService())->addRecord($data));
+        return success('SUCCESS', ( new DiyFormService() )->addRecord($data));
+    }
+
+    /**
+     * 获取表单填写结果信息
+     * @return Response
+     */
+    public function getResult()
+    {
+        $data = $this->request->params([
+            [ 'record_id', '' ],
+        ]);
+        return success('SUCCESS', ( new DiyFormService() )->getResult($data));
+    }
+
+    /**
+     * 获取表单填写记录
+     * @return Response
+     */
+    public function getRecord()
+    {
+        $data = $this->request->params([
+            [ 'record_id', '' ],
+        ]);
+        return success('SUCCESS', ( new DiyFormService() )->getFormRecordInfo($data));
     }
 }

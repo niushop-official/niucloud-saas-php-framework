@@ -41,6 +41,12 @@ class Transfer extends BaseModel
         'finish_time' => 'timestamp',
     ];
 
+    // 设置json类型字段
+    protected $json = [ 'transfer_payee' ];
+
+    // 设置JSON数据返回数组
+    protected $jsonAssoc = true;
+
     /**
      * 状态字段转化
      * @param $value

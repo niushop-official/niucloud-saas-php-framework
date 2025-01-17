@@ -35,11 +35,11 @@ class MemberCashOutService extends BaseAdminService
     public function getPage(array $where = [])
     {
 
-        $field = 'id,member_cash_out.site_id,cash_out_no,member_cash_out.member_id,account_type,transfer_type,transfer_realname,transfer_mobile,transfer_bank,transfer_account,transfer_fail_reason,transfer_status,transfer_time,apply_money,rate,service_money,member_cash_out.money,audit_time,member_cash_out.status,remark,member_cash_out.create_time,refuse_reason,transfer_no';
+        $field = 'id,member_cash_out.site_id,cash_out_no,member_cash_out.member_id,account_type,transfer_type,transfer_realname,transfer_mobile,transfer_bank,transfer_account,transfer_fail_reason,transfer_status,transfer_time,apply_money,rate,service_money,member_cash_out.money,audit_time,member_cash_out.status,remark,member_cash_out.create_time,refuse_reason,transfer_no, transfer_payment_code';
         $member_where = [];
         if(!empty($where['keywords']))
         {
-            $member_where = [['member.member_no|member.nickname|member.mobile', '=', $where['keywords']]];
+            $member_where = [['member.member_no|member.nickname|member.mobile|member.username', '=', $where['keywords']]];
         }
         $search_model = $this->model->where([['member_cash_out.site_id', '=', $this->site_id]])
             ->withSearch(['member_id','status', 'join_create_time' => 'create_time', 'audit_time', 'transfer_time', 'transfer_type', 'cash_out_no'],$where)->with(['transfer'])
@@ -55,7 +55,7 @@ class MemberCashOutService extends BaseAdminService
      */
     public function getInfo(int $id)
     {
-        $field = 'id,site_id,cash_out_no,member_id,account_type,transfer_type,transfer_realname,transfer_mobile,transfer_bank,transfer_account,transfer_fail_reason,transfer_status,transfer_time,apply_money,rate,service_money,money,audit_time,status,remark,create_time,refuse_reason,transfer_no';
+        $field = 'id,site_id,cash_out_no,member_id,account_type,transfer_type,transfer_realname,transfer_mobile,transfer_bank,transfer_account,transfer_fail_reason,transfer_status,transfer_time,apply_money,rate,service_money,money,audit_time,status,remark,create_time,refuse_reason,transfer_no, transfer_payment_code';
         return $this->model->where([['id', '=', $id], ['site_id', '=', $this->site_id]])->with(['memberInfo', 'transfer'])->field($field)->append(['status_name', 'transfer_status_name', 'transfer_type_name', 'account_type_name'])->findOrEmpty()->toArray();
     }
 
@@ -83,6 +83,16 @@ class MemberCashOutService extends BaseAdminService
     }
 
     /**
+     * 备注
+     * @param int $id
+     * @param array $data
+     * @return true
+     */
+    public function remark(int $id, array $data){
+        $core_member_cash_out_service = new CoreMemberCashOutService();
+        return $core_member_cash_out_service->remark($this->site_id, $id, $data);
+    }
+    /**
      * 统计数据
      * @return array
      */
@@ -96,6 +106,16 @@ class MemberCashOutService extends BaseAdminService
 
         $stat['cash_outing'] = $all_money - $stat['transfered'];
         return $stat;
+    }
+
+    /**
+     * 检测实际的转账状态
+     * @param int $id
+     * @return true
+     */
+    public function checkTransferStatus(int $id){
+        $core_member_cash_out_service = new CoreMemberCashOutService();
+        return $core_member_cash_out_service->checkTransferStatus($this->site_id, $id);
     }
 
 }

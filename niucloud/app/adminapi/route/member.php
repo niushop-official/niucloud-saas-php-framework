@@ -120,6 +120,10 @@ Route::group('member', function() {
     Route::get('cash_out/:id', 'member.CashOut/info');
     //会员提现审核
     Route::put('cash_out/audit/:id/:action', 'member.CashOut/audit');
+    //会员提现备注
+    Route::put('cash_out/remark/:id', 'member.CashOut/remark');
+    //校验会员提现转账状态
+    Route::put('cash_out/check/:id', 'member.CashOut/checkTransferStatus');
     //转账方式
     Route::get('cash_out/transfertype', 'member.CashOut/getTransferType');
     //转账方式

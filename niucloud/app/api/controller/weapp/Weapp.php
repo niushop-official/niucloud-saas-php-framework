@@ -26,9 +26,15 @@ class Weapp extends BaseApiController
      */
     public function login()
     {
-        $data = $this->request->params([ [ 'code', '' ] ]);
+        $data = $this->request->params([
+            [ 'code', '' ],
+            [ 'nickname', '' ],
+            [ 'headimg', '' ],
+            [ 'mobile', '' ],
+            [ 'mobile_code', '' ]
+        ]);
         $weapp_auth_service = new WeappAuthService();
-        return success($weapp_auth_service->login($data[ 'code' ]));
+        return success($weapp_auth_service->login($data));
     }
 
     /**

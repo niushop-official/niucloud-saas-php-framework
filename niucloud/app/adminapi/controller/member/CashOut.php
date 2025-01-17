@@ -83,6 +83,19 @@ class CashOut extends BaseAdminController
     }
 
     /**
+     * 备注转账信息
+     * @param $id
+     * @return Response
+     */
+    public function remark($id)
+    {
+        $data = $this->request->params([
+            ['remark', ''],
+        ]);
+        (new MemberCashOutService())->remark($id, $data);
+        return success();
+    }
+    /**
      * 状态
      * @return Response
      */
@@ -97,5 +110,14 @@ class CashOut extends BaseAdminController
     public function stat()
     {
         return success((new MemberCashOutService())->stat());
+    }
+
+    /**
+     * 校验数组是否
+     * @return void
+     */
+    public function checkTransferStatus($id){
+        (new MemberCashOutService())->checkTransferStatus($id);
+        return success();
     }
 }

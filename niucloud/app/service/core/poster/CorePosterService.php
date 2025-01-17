@@ -49,7 +49,7 @@ class CorePosterService extends BaseCoreService
      */
     public function del($condition)
     {
-        ( new Poster() )->delete($condition);
+        ( new Poster() )->where($condition)->delete();
         return true;
     }
 
@@ -216,7 +216,7 @@ class CorePosterService extends BaseCoreService
                 }
             }
         }
-        
+
         if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }

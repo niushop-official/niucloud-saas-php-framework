@@ -653,9 +653,6 @@ class CoreAddonInstallService extends CoreAddonBaseService
         // 编译 diy-group 自定义组件代码文件
         $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
 
-        // 编译 fixed-group 固定模板组件代码文件
-        $this->compileFixedComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
-
         // 编译 pages.json 页面路由代码文件
         $this->uninstallPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR);
 
@@ -684,9 +681,6 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
         // 编译 diy-group 自定义组件代码文件
         $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
-
-        // 编译 fixed-group 固定模板组件代码文件
-        $this->compileFixedComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
 
         // 编译 pages.json 页面路由代码文件
         $this->installPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR);

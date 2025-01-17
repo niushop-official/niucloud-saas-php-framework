@@ -116,6 +116,9 @@ Route::group('member', function () {
     //会员日志
     Route::post('log', 'member.Member/log');
 
+    // 获取手机号
+    Route::put('getMobile', 'member.Member/getMobile');
+
     /***************************************************** 会员等级 **************************************************/
     Route::get('level', 'member.Level/lists');
 })->middleware(ApiChannel::class)

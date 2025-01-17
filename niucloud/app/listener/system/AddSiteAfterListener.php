@@ -488,6 +488,19 @@ class AddSiteAfterListener
                 'storage_type' => 'local', // 图片上传类型 local本地  aliyun  阿里云oss  qiniu  七牛 ....
                 'cate_id' => $category_id, // 素材分类id
                 'create_time' => time()
+            ],
+            [
+                'site_id' => $site_id,
+                'name' => time() . $site_id . $category_id . 'nav_sow_community.png', // 附件名称
+                'real_name' => '种草社区', // 原始文件名
+                'path' => 'static/resource/images/attachment/nav_sow_community.png', // 完整地址
+                'url' => 'static/resource/images/attachment/nav_sow_community.png', // 网络地址
+                'dir' => 'static/resource/images/attachment', // 附件路径
+                'att_size' => '24576', // 附件大小
+                'att_type' => 'image', // 附件类型image,video
+                'storage_type' => 'local', // 图片上传类型 local本地  aliyun  阿里云oss  qiniu  七牛 ....
+                'cate_id' => $category_id, // 素材分类id
+                'create_time' => time()
             ]
         ];
         $exist_attachment_list = $attachment_model->where([
@@ -509,23 +522,21 @@ class AddSiteAfterListener
             $attachment_model->insertAll($attachment_list);
         }
 
-        $poster_model = new Poster();
-        $poster_count = $poster_model->where([
+        $poster = new CorePosterService();
+        // 存在则删除
+        $poster->del([
             [ 'site_id', '=', $site_id ],
             [ 'type', '=', 'friendspay' ]
-        ])->count();
-        if ($poster_count == 0) {
-            // 创建默认找朋友帮忙付海报
-            $poster = new CorePosterService();
-            $template = $poster->getTemplateList('', 'friendspay')[ 0 ];
-            $poster->add($site_id, '', [
-                'name' => $template[ 'name' ],
-                'type' => $template[ 'type' ],
-                'value' => $template[ 'data' ],
-                'status' => 1,
-                'is_default' => 1
-            ]);
-        }
+        ]);
+        // 创建默认找朋友帮忙付海报
+        $template = $poster->getTemplateList('', 'friendspay')[ 0 ];
+        $poster->add($site_id, '', [
+            'name' => $template[ 'name' ],
+            'type' => $template[ 'type' ],
+            'value' => $template[ 'data' ],
+            'status' => 1,
+            'is_default' => 1
+        ]);
 
         return true;
     }

@@ -269,7 +269,9 @@ class UpgradeService extends BaseAdminService
 
         // 覆盖文件
         if (is_dir($code_dir . $version_no)) {
-            dir_copy($code_dir . $version_no, $to_dir);
+            // 忽略环境变量文件
+            $exclude_files = ['.env.development', '.env.production', '.env', '.env.dev', '.env.product'];
+            dir_copy($code_dir . $version_no, $to_dir, exclude_files:$exclude_files);
             if ($addon != AddonDict::FRAMEWORK_KEY) {
                 (new CoreAddonInstallService($addon))->installDir();
             }
@@ -367,7 +369,8 @@ class UpgradeService extends BaseAdminService
      */
     public function handleUniapp() {
         $code_dir = $this->upgrade_dir .$this->upgrade_task['key'] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
-        dir_copy($code_dir . 'uni-app', $this->root_path . 'uni-app');
+        $exclude_files = ['.env.development', '.env.production', 'manifest.json'];
+        dir_copy($code_dir . 'uni-app', $this->root_path . 'uni-app', exclude_files:$exclude_files);
 
         $addon_list = (new CoreAddonService())->getInstallAddonList();
         $depend_service = new CoreDependService();
@@ -379,9 +382,6 @@ class UpgradeService extends BaseAdminService
 
                 // 编译 diy-group 自定义组件代码文件
                 $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-
-                // 编译 fixed-group 固定模板组件代码文件
-                $this->compileFixedComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
 
                 // 编译 pages.json 页面路由代码文件
                 $this->installPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR);

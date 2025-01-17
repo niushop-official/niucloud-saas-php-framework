@@ -87,7 +87,9 @@ class AreaService extends BaseAdminService
 
                     while ($area['level'] > 1) {
                         $area = $this->model->where([ ['id', '=', $area['pid'] ] ])->field('id,level,pid,name')->findOrEmpty();
-                        $tree[ $level[ $area['level'] ] ] = $area->toArray();
+                        if (!$area->isEmpty()) {
+                            $tree[ $level[ $area[ 'level' ] ] ] = $area->toArray();
+                        }
                     }
                 }
                 return $tree;

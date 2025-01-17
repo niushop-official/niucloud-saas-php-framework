@@ -130,4 +130,29 @@ class AuthService extends BaseApiService
         ];
     }
 
+    /**
+     * 获取手机号
+     * @param string $mobile_code
+     * @return array
+     */
+    public function getMobile(string $mobile_code)
+    {
+
+        $result = ( new CoreWeappAuthService() )->getUserPhoneNumber($this->site_id, $mobile_code);
+        if (empty($result)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
+        if ($result[ 'errcode' ] != 0) throw new ApiException($result[ 'errmsg' ]);
+        $phone_info = $result[ 'phone_info' ];
+        $mobile = $phone_info[ 'purePhoneNumber' ];
+        if (empty($mobile)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
+
+        $member_service = new MemberService();
+
+        $mobile_member = $member_service->findMemberInfo([ 'mobile' => $mobile, 'site_id' => $this->site_id ]);
+        if (!$mobile_member->isEmpty()) throw new AuthException('MOBILE_IS_EXIST');
+
+        return [
+            'mobile' => $mobile
+        ];
+    }
+
 }

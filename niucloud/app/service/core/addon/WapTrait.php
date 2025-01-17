@@ -63,7 +63,7 @@ trait WapTrait
                     $file_name = 'diy-' . $path;
 
                     $content .= "            <template v-if=\"component.componentName == '{$name}'\">\n";
-                    $content .= "                <$file_name :component=\"component\" :global=\"data.global\" :index=\"index\" :pullDownRefreshCount=\"props.pullDownRefreshCount\" :scrollBool=\"diyGroup.componentsScrollBool.{$name}\" />\n";
+                    $content .= "                <$file_name ref=\"diy{$name}Ref\" :component=\"component\" :global=\"data.global\" :index=\"index\" :scrollBool=\"diyGroup.componentsScrollBool.{$name}\" />\n";
                     $content .= "            </template>\n";
                 }
             }
@@ -101,7 +101,7 @@ trait WapTrait
                         $file_name = 'diy-' . $path;
 
                         $content .= "            <template v-if=\"component.componentName == '{$name}'\">\n";
-                        $content .= "                <$file_name :component=\"component\" :global=\"data.global\" :index=\"index\" :pullDownRefreshCount=\"props.pullDownRefreshCount\" :scrollBool=\"diyGroup.componentsScrollBool.{$name}\" />\n";
+                        $content .= "                <$file_name ref=\"diy{$name}Ref\" :component=\"component\" :global=\"data.global\" :index=\"index\" :scrollBool=\"diyGroup.componentsScrollBool.{$name}\" />\n";
                         $content .= "            </template>\n";
 
                         $addon_import_content .= "   import diy{$name} from '@/addon/" . $v . "/components/diy/{$path}/index.vue';\n";
@@ -113,7 +113,7 @@ trait WapTrait
         $content .= "            </view>\n";
 
         $content .= "        </view>\n";
-        $content .= "        <template v-if=\"diyStore.mode == '' && data.global.bottomTabBarSwitch\">\n";
+        $content .= "        <template v-if=\"diyStore.mode == '' && data.global && data.global.bottomTabBarSwitch\">\n";
         $content .= "            <view class=\"pt-[20rpx]\"></view>\n";
         $content .= "            <tabbar />\n";
         $content .= "        </template>\n";
@@ -129,19 +129,22 @@ trait WapTrait
         $content .= "   import topTabbar from '@/components/top-tabbar/top-tabbar.vue'\n";
         $content .= "   import useDiyStore from '@/app/stores/diy';\n";
         $content .= "   import { useDiyGroup } from './useDiyGroup';\n";
-        $content .= "   import { ref } from 'vue';\n\n";
+        $content .= "   import { ref,getCurrentInstance } from 'vue';\n\n";
 
-        $content .= "   const props = defineProps(['data','pullDownRefreshCount']);\n";
-        $content .= "   const topTabbarRef = ref(null);\n";
+        $content .= "   const props = defineProps(['data']);\n";
+        $content .= "   const instance: any = getCurrentInstance();\n";
+        $content .= "   const getFormRef = () => {\n";
+        $content .= "       return {\n";
+        $content .= "           componentRefs: instance.refs\n";
+        $content .= "       }\n";
+        $content .= "   }\n";
+
         $content .= "   const diyStore = useDiyStore();\n";
         $content .= "   const diyGroup = useDiyGroup({\n";
         $content .= "       ...props,\n";
-        $content .= "       getFormRef() {\n";
-        $content .= "           return {\n";
-        $content .= "               topTabbarRef: topTabbarRef.value\n";
-        $content .= "           }\n";
-        $content .= "       }\n";
+        $content .= "       getFormRef\n";
         $content .= "   });\n";
+
         $content .= "   const data = ref(diyGroup.data);\n\n";
 
         $content .= "   // 监听页面加载完成\n";
@@ -151,7 +154,8 @@ trait WapTrait
         $content .= "   diyGroup.onPageScroll();\n";
 
         $content .= "   defineExpose({\n";
-        $content .= "       refresh: diyGroup.refresh\n";
+        $content .= "       refresh: diyGroup.refresh,\n";
+        $content .= "       getFormRef\n";
         $content .= "   })\n";
 
         $content .= "</script>\n";
@@ -161,98 +165,6 @@ trait WapTrait
         $content .= "</style>\n";
 
         return file_put_contents($compile_path . str_replace('/', DIRECTORY_SEPARATOR, 'addon/components/diy/group/index.vue'), $content);
-    }
-
-    /**
-     * 编译 fixed-group 固定模板组件代码文件
-     * @param $compile_path
-     * @param $addon
-     * @return false|int
-     */
-    public function compileFixedComponentsCode($compile_path, $addon)
-    {
-        $content = "<template>\n";
-        $content .= "    <view class=\"fixed-group\">\n";
-
-        $root_path = $compile_path . str_replace('/', DIRECTORY_SEPARATOR, 'app/components/fixed'); // 系统固定模板组件根目录
-        $file_arr = getFileMap($root_path);
-
-        if (!empty($file_arr)) {
-            foreach ($file_arr as $ck => $cv) {
-                if (str_contains($cv, 'index.vue')) {
-
-                    $path = str_replace($root_path . '/', '', $ck);
-                    $path = str_replace('/index.vue', '', $path);
-                    if ($path == 'group') {
-                        continue;
-                    }
-
-                    $file_name = 'fixed-' . $path;
-
-                    $content .= "        <template v-if=\"props.data.global.component == '{$path}'\">\n";
-                    $content .= "            <$file_name :data=\"props.data\" :pullDownRefreshCount=\"props.pullDownRefreshCount\"></$file_name>\n";
-                    $content .= "        </template>\n";
-                }
-            }
-        }
-
-        // 查询已安装的插件
-        $addon_import_content = "";
-        $addon_service = new CoreAddonService();
-        $addon_list = $addon_service->getInstallAddonList();
-        $addon_arr = [];
-        if (!empty($addon_list)) {
-            foreach ($addon_list as $k => $v) {
-                $addon_arr[] = $v[ 'key' ];
-            }
-        }
-        $addon_arr[] = $addon; // 追加新装插件
-        $addon_arr = array_unique($addon_arr);
-        foreach ($addon_arr as $k => $v) {
-            $addon_path = $compile_path . str_replace('/', DIRECTORY_SEPARATOR, 'addon/' . $v . '/components/fixed'); // 插件固定模板组件根目录
-            $addon_file_arr = getFileMap($addon_path);
-
-            if (!empty($addon_file_arr)) {
-                foreach ($addon_file_arr as $ck => $cv) {
-                    if (str_contains($cv, 'index.vue')) {
-
-                        $path = str_replace($addon_path . '/', '', $ck);
-                        $path = str_replace('/index.vue', '', $path);
-
-                        // 获取自定义组件 key 关键词
-                        $name_arr = explode('-', $path);
-                        foreach ($name_arr as $nk => $nv) {
-                            // 首字母大写
-                            $name_arr[ $nk ] = strtoupper($nv[ 0 ] ?? '') . substr($nv, 1);
-                        }
-                        $name = implode('', $name_arr);
-                        $file_name = 'fixed-' . $path;
-
-                        $content .= "        <template v-if=\"props.data.global.component == '{$path}'\">\n";
-                        $content .= "            <$file_name :data=\"props.data\" :pullDownRefreshCount=\"props.pullDownRefreshCount\"></$file_name>\n";
-                        $content .= "        </template>\n";
-
-                        $addon_import_content .= "   import fixed{$name} from '@/addon/" . $v . "/components/fixed/{$path}/index.vue';\n";
-                    }
-                }
-            }
-        }
-
-        $content .= "    </view>\n";
-        $content .= "</template>\n";
-
-        $content .= "<script lang=\"ts\" setup>\n";
-        if (!empty($addon_import_content)) {
-            $content .= $addon_import_content;
-        }
-        $content .= "   const props = defineProps(['data','pullDownRefreshCount']);\n";
-        $content .= "</script>\n";
-
-        $content .= "<style lang=\"scss\" scoped>\n";
-        $content .= "   @import './index.scss';\n";
-        $content .= "</style>\n";
-
-        return file_put_contents($compile_path . str_replace('/', DIRECTORY_SEPARATOR, 'addon/components/fixed/group/index.vue'), $content);
     }
 
     /**

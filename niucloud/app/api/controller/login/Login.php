@@ -84,10 +84,13 @@ class Login extends BaseController
     {
         $data = $this->request->params([
             [ 'mobile', '' ],
+            [ 'nickname', '' ],
+            [ 'headimg', '' ],
+            [ 'mobile', '' ]
         ]);
         //校验登录注册配置
         ( new ConfigService() )->checkLoginConfig(MemberLoginTypeDict::MOBILE);
-        return success(( new LoginService() )->mobile($data[ 'mobile' ]));
+        return success(( new LoginService() )->mobile($data));
     }
 
     /**

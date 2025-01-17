@@ -33,6 +33,18 @@ class Upload extends BaseApiController
     }
 
     /**
+     * 视频上传
+     * @return Response
+     */
+    public function video(){
+        $data = $this->request->params([
+            ['file', 'file'],
+        ]);
+        $upload_service = new UploadService();
+        return success($upload_service->video($data['file']));
+    }
+
+    /**
      * 远程图片拉取
      * @return Response
      */

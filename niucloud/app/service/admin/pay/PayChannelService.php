@@ -199,7 +199,9 @@ class PayChannelService extends BaseAdminService
                     'pay_explain_switch' => $data[ 'pay_explain_switch' ] ?? 1,// 帮付说明开关, 1开启，0关闭
                     'pay_explain_title' => $data[ 'pay_explain_title' ] ?? get_lang('dict_pay_config.pay_explain_title'),// 帮付说明标题
                     'pay_explain_content' => $data[ 'pay_explain_content' ] ?? get_lang('dict_pay_config.pay_explain_content'),// 帮付说明内容
-                    'pay_info_switch' => $data[ 'pay_info_switch' ] ?? 1// 订单信息, 1开启，0关闭
+                    'pay_info_switch' => $data[ 'pay_info_switch' ] ?? 1,// 订单信息, 1开启，0关闭
+                    'pay_wechat_share_image' => $data[ 'pay_wechat_share_image' ] ?? '/static/resource/images/pay/pay_wechat_share_image.png',// 默认分享图片（公众号）
+                    'pay_weapp_share_image' => $data[ 'pay_weapp_share_image' ] ?? '/static/resource/images/pay/pay_weapp_share_image.png'// 默认分享图片（小程序）
                 ];
                 break;
             default:

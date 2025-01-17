@@ -57,6 +57,7 @@ return [
     'ADDON_KEY_IS_EXIST' => '已存在相同插件标识的应用',
     'ADDON_IS_INSTALLED_NOT_ALLOW_DEL' => '已安装的插件不允许删除',
     'ADDON_ZIP_ERROR' => '插件压缩失败',
+    'PHP_SCRIPT_RUNNING_OUT_OF_MEMORY' => 'PHP脚本运行内存不足, 具体操作方法<a style="text-decoration: underline;" href="https://www.kancloud.cn/niushop/niushop_v6/3248604" target="blank">点击查看相关手册</a>',
     //登录注册重置账号....
 
     'LOGIN_SUCCESS' => '登录成功',
@@ -180,12 +181,18 @@ return [
     'MEMBER_CASHOUT_TRANSFER' => '会员提现转账',
     'CASH_OUT_ACCOUNT_NOT_EXIST' => '提现账户不存在',
 
+    'CASH_OUT_ACCOUNT_NOT_FOUND_VALUE' => '转账到微信零钱缺少参数',
+
     //DIY
     'PAGE_NOT_EXIST' => '页面不存在',
+    'APP_COLOR_NOT_EXIST' => '系统配色不存在',
 
-    //系统表单
-    'DIY_FORM_NOT_EXIT' => '表单不存在',
+    //万能表单
+    'DIY_FORM_NOT_EXIST' => '表单不存在',
+    'DIY_FORM_NOT_OPEN' => '该表单已关闭',
     'DIY_FORM_EXCEEDING_LIMIT' => '已达提交次数上限',
+    'ON_STATUS_PROHIBIT_DELETE' => '启用状态下禁止删除',
+    'DIY_FORM_TYPE_NOT_EXIST' => '表单类型不存在',
 
     //渠道相关  占用 4******
     //微信
@@ -214,6 +221,7 @@ return [
     //支付相关(todo  注意:7段不共享)
     'ALIPAY_TRANSACTION_NO_NOT_EXIST' => '无效的支付交易号',
     'PAYMENT_METHOD_NOT_SUPPORT' => '您选择到支付方式不受业务支持',
+    'WECHAT_TRANSFER_CONFIG_NOT_EXIST' => '微信零钱打款设置未配置完善',
     'PAYMENT_LOCK' => '支付中,请稍后再试',
     'PAY_SUCCESS' => '当前支付已完成',
     'PAY_IS_REMOVE' => '当前支付已取消',
@@ -298,7 +306,10 @@ return [
     'SIGN_AWARD' => '签到奖励',
     'GET_AWARD' => '恭喜您获得以下奖励',
     'WILL_GET_AWARD' => '您将获得以下奖励',
-    'SIGN_PERIOD_GREATER_THAN' => '签到周期必须大于0天',
+    'SIGN_PERIOD_CANNOT_EMPTY' => '签到周期不能为空',
+    'SIGN_PERIOD_BETWEEN_2_365_DAYS' => '签到周期为2-365天',
+    'CONTINUE_SIGN_BETWEEN_2_365_DAYS' => '连签天数为2-365天',
+    'CONTINUE_SIGN_CANNOT_GREATER_THAN_SIGN_PERIOD' => '连签天数不能大于签到周期',
 
     //导出相关
     'EXPORT_SUCCESS' => '导出成功',

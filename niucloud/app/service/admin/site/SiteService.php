@@ -88,7 +88,7 @@ class SiteService extends BaseAdminService
         if (!empty($info)) {
             $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId($site_id);
             $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ] ])->field('key,title,desc,icon,type')->select()->toArray();
-            $info['uid'] = ( new SysUserRole() )->where([ [ 'site_id', '=', $site_id ], [ 'is_admin', '=', 1 ] ])->value('uid');
+            $info[ 'uid' ] = ( new SysUserRole() )->where([ [ 'site_id', '=', $site_id ], [ 'is_admin', '=', 1 ] ])->value('uid');
         }
         return $info;
     }
@@ -190,9 +190,9 @@ class SiteService extends BaseAdminService
                 $data[ 'status' ] = strtotime($data[ 'expire_time' ]) > time() ? SiteDict::ON : SiteDict::EXPIRE;
             }
 
-            if (isset($data['uid'])){
+            if (isset($data[ 'uid' ])) {
                 if ($data[ 'uid' ] > 0) {
-                    ( new UserRoleService() )->editAdmin($site_id,$data['uid']);
+                    ( new UserRoleService() )->editAdmin($site_id, $data[ 'uid' ]);
                 } else {
                     //添加用户
                     $data_user = [
@@ -205,7 +205,7 @@ class SiteService extends BaseAdminService
                         'is_admin' => 1
                     ];
                     $data[ 'uid' ] = ( new UserService() )->add($data_user);
-                    ( new UserRoleService() )->editAdmin($site_id,$data['uid']);
+                    ( new UserRoleService() )->editAdmin($site_id, $data[ 'uid' ]);
                 }
             }
 
@@ -391,5 +391,62 @@ class SiteService extends BaseAdminService
     {
         $site_addon = ( new CoreSiteService() )->getAddonKeysBySiteId($this->site_id);
         return $site_addon;
+    }
+
+    /**
+     * 查询应用列表，todo 完善
+     * @return array
+     */
+    public function getShowAppTools()
+    {
+        $list = [
+            'addon' => [
+                'title' => '运营工具',
+                'list' => []
+            ],
+            'tool' => [
+                'title' => '系统工具',
+                'list' => []
+            ],
+//            'promotion' => [
+//                'title' => '营销活动',
+//                'list' => []
+//            ]
+        ];
+
+        $apps = event('ShowApp');
+
+        $keys = [];
+        foreach ($apps as $v) {
+            foreach ($v as $ck => $cv) {
+                if (!empty($cv)) {
+                    foreach ($cv as $addon_k => $addon_v) {
+                        if (in_array($addon_v[ 'key' ], $keys)) {
+                            continue;
+                        }
+                        $list[ $ck ][ 'list' ][] = $addon_v;
+                        $keys[] = $addon_v[ 'key' ];
+                    }
+                }
+
+            }
+
+        }
+
+        $site_addons = $this->getSiteAddons([]);
+        if (!empty($site_addons)) {
+            foreach ($site_addons as $k => $v) {
+                if (!in_array($v[ 'key' ], $keys)) {
+                    $list[ 'addon' ][ 'list' ][] = [
+                        'title' => $v[ 'title' ],
+                        'desc' => $v[ 'desc' ],
+                        'icon' => $v[ 'icon' ],
+                        'key' => $v[ 'key' ]
+                    ];
+                }
+            }
+        }
+
+        return $list;
     }
 }

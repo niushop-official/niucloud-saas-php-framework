@@ -14,13 +14,16 @@ namespace app\dict\pay;
 class TransferDict
 {
 
-    public const WECHAT = 'wechatpay';//微信支付
+    public const WECHAT = 'wechatpay';//微信零钱
 
-    public const ALIPAY = 'alipay';//支付宝支付
+    public const ALIPAY = 'alipay';//支付宝支付  (默认收款码)
 
     public const OFFLINE = 'offline';//线下转账
 
     public const BANK = 'bank';//银行卡转账
+
+
+    public const WECHAT_CODE = 'wechat_code';//微信收款码(线下转账)
 
     //转账状态
 
@@ -43,7 +46,7 @@ class TransferDict
     }
 
     /**
-     * 支付类型
+     * 转账类型
      * @return array
      */
     public static function getTransferType(array $types = [], $is_all = true)
@@ -64,6 +67,11 @@ class TransferDict
                 'key' => self::BANK,
                 'is_online' => false
             ],//银行卡
+            self::WECHAT_CODE => [
+                'name' => get_lang('dict_transfer.type_wechat_code'),
+                'key' => self::WECHAT_CODE,
+                'is_online' => false
+            ],//微信收款码(线下转账)
         ];
         if ($is_all) {
             $list[self::OFFLINE] = [

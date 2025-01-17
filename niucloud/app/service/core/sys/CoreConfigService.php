@@ -13,6 +13,7 @@ namespace app\service\core\sys;
 
 use app\model\sys\SysConfig;
 use core\base\BaseCoreService;
+use think\facade\Cache;
 use think\Model;
 
 /**
@@ -22,6 +23,8 @@ use think\Model;
  */
 class CoreConfigService extends BaseCoreService
 {
+    public static $cache_tag_name = 'sys_config';
+
     public function __construct()
     {
         parent::__construct();
@@ -36,11 +39,29 @@ class CoreConfigService extends BaseCoreService
      */
     public function getConfig(int $site_id, string $key)
     {
+        $cache_name = 'site_config_cache';
         $where = array(
             [ 'config_key', '=', $key ],
             [ 'site_id', '=', $site_id ]
         );
-        return $this->model->where($where)->field('id,site_id,config_key,value,status,create_time,update_time')->findOrEmpty()->toArray();
+        // 缓存清理
+        $info = cache_remember(
+            $cache_name . $key . "_" . $site_id,
+            function() use ($where) {
+                $data = $this->model->where($where)->field('id,site_id,config_key,value,status,create_time,update_time')->findOrEmpty()->toArray();
+                //数据库中无数据返回-1
+                if (empty($data)) {
+                    return -1;
+                }
+                return $data;
+            },
+            self::$cache_tag_name . $site_id
+        );
+        // 检测缓存-1 返回空数据
+        if ($info == -1) {
+            return [];
+        }
+        return $info;
     }
 
     /**
@@ -70,6 +91,7 @@ class CoreConfigService extends BaseCoreService
             $res = $this->model->where($where)->save($data);
         }
 
+        Cache::tag(self::$cache_tag_name . $site_id)->clear();
         return $res;
     }
 

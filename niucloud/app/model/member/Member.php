@@ -268,4 +268,5 @@ class Member extends BaseModel
     {
         return $this->hasOne(MemberLevel::class, 'level_id', 'member_level')->bind([ 'member_level_name' => 'level_name' ]);
     }
+
 }

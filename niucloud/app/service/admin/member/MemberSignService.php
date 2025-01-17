@@ -15,7 +15,7 @@ use app\model\member\MemberSign;
 use app\service\core\member\CoreMemberService;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
-use core\exception\CommonException;
+use core\exception\AdminException;
 
 /**
  * 会员签到服务层
@@ -84,7 +84,14 @@ class MemberSignService extends BaseAdminService
      */
     public function setSign(array $value)
     {
-        if ($value[ 'sign_period' ] <= 0) throw new CommonException('SIGN_PERIOD_GREATER_THAN');
+        if (empty($value[ 'sign_period' ])) throw new AdminException('SIGN_PERIOD_CANNOT_EMPTY');
+        if ($value[ 'sign_period' ] < 2 || $value[ 'sign_period' ] > 365) throw new AdminException('SIGN_PERIOD_BETWEEN_2_365_DAYS');
+        if (!empty($value[ 'continue_award' ])) {
+            foreach ($value[ 'continue_award' ] as $v) {
+                if ($v[ 'continue_sign' ] < 2 || $v[ 'continue_sign' ] > 365) throw new AdminException('CONTINUE_SIGN_BETWEEN_2_365_DAYS');
+                if ($v[ 'continue_sign' ] > $value[ 'sign_period' ]) throw new AdminException('CONTINUE_SIGN_CANNOT_GREATER_THAN_SIGN_PERIOD');
+            }
+        }
         $data = [
             'is_use' => $value[ 'is_use' ],  //是否开启
             'sign_period' => $value[ 'sign_period' ], // 签到周期

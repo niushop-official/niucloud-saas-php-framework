@@ -72,7 +72,8 @@ class MemberCashOut extends BaseApiController
             [ 'apply_money', 0 ],
             [ 'account_type', MemberAccountTypeDict::MONEY ],
             [ 'transfer_type', '' ],
-            [ 'account_id', 0 ]
+            [ 'account_id', 0 ],
+            [ 'transfer_payee', []] ,//收款方信息
         ]);
         $this->validate($data, 'app\validate\member\CashOut.apply');
         return success(data:( new MemberCashOutService() )->apply($data));

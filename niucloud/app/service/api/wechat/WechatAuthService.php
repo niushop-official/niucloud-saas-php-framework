@@ -122,17 +122,35 @@ class WechatAuthService extends BaseApiService
             }
         }
         if ($member_info->isEmpty()) {
-//            $config = ( new MemberConfigService() )->getLoginConfig();
-//            $is_auth_register = $config[ 'is_auth_register' ];
-            // 去掉强制绑定手机号判断，否则开启强制绑定的情况下公众号第三方注册无法注册
-            // 现在不需要控制自动注册，分为两种情况，一种自动注册，另一种手动点击授权登录注册
-            return $this->register($openid, '', $nickname, $avatar, $unionid);
-//            if ($is_auth_register == 1) {
-//            } else {
-//                return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
-//            }
+            $config = ( new MemberConfigService() )->getLoginConfig();
+            $is_auth_register = $config[ 'is_auth_register' ];
+            $is_force_access_user_info = $config[ 'is_force_access_user_info' ];
+            $is_bind_mobile = $config[ 'is_bind_mobile' ];
+
+            // 开启自动注册会员
+            if ($is_auth_register) {
+
+                // 开启强制获取会员信息并且开启强制绑定手机号，必须获取手机号才能进行注册，由于公众号无法主动获取，所以不能注册
+                if ($is_force_access_user_info && $is_bind_mobile) {
+                    return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
+                } else if ($is_force_access_user_info) {
+                    // 开启强制获取会员信息时，必须获取到昵称和头像才能进行注册
+                    if (!empty($nickname) && !empty($avatar)) {
+                        return $this->register($openid, '', $nickname, $avatar, $unionid); // 获取到昵称和头像，然后进行注册
+                    } else {
+                        return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
+                    }
+                } else if ($is_bind_mobile) {
+                    // 开启强制绑定手机号，必须获取手机号才能进行注册，由于公众号无法主动获取，所以不能注册
+                    return [ 'openid' => $openid, 'unionid' => $unionid ];
+                } else if (!$is_force_access_user_info && !$is_bind_mobile) {
+                    // 关闭强制获取用户信息、并且关闭强制绑定手机号的情况下允许注册
+                    return $this->register($openid, '', $nickname, $avatar, $unionid);
+                }
+
+            }
         } else {
-            //可能会更新用户和粉丝表
+            // 可能会更新用户和粉丝表
             $login_service = new LoginService();
             // 若用户头像为空，那么从微信获取头像和昵称，然后进行更新
             if (empty($member_info->headimg)) {

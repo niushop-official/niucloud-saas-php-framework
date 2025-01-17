@@ -20,6 +20,7 @@ class MemberCashOutDict
 {
     public const WAIT_AUDIT = 1;//待审核
     public const WAIT_TRANSFER = 2;//待转账
+    public const TRANSFER_ING = 4;//转账中
     public const TRANSFERED = 3;//已转账
     public const REFUSE = -1;//已拒绝
     public const CANCEL = -2;//已取消
@@ -33,6 +34,7 @@ class MemberCashOutDict
         return [
             self::WAIT_AUDIT => get_lang('dict_member_cash_out.status_wait_audit'),//待审核
             self::WAIT_TRANSFER => get_lang('dict_member_cash_out.status_wait_transfer'),//待转账
+            self::TRANSFER_ING => get_lang('dict_member_cash_out.status_transfer_ing'),//转账中
             self::TRANSFERED => get_lang('dict_member_cash_out.status_transfered'),//已转账
             self::REFUSE => get_lang('dict_member_cash_out.status_refuse'),//已拒绝
             self::CANCEL => get_lang('dict_member_cash_out.status_cancel'),//已取消

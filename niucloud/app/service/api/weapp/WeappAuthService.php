@@ -22,11 +22,9 @@ use core\base\BaseApiService;
 use core\exception\ApiException;
 use core\exception\AuthException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
-use GuzzleHttp\Exception\GuzzleException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
-use think\Model;
 
 
 /**
@@ -76,10 +74,16 @@ class WeappAuthService extends BaseApiService
 
     /**
      * 登录
-     * @param string $code
+     * @param $data
      * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws InvalidConfigException
+     * @throws ModelNotFoundException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function login(string $code)
+    public function login($data)
     {
 
         [
@@ -88,7 +92,7 @@ class WeappAuthService extends BaseApiService
 //            $avatar,
 //            $nickname,
 //            $sex
-        ] = $this->getUserInfoByCode($code);
+        ] = $this->getUserInfoByCode($data[ 'code' ]);
 
         $member_service = new MemberService();
         $member_info = $member_service->findMemberInfo([ 'weapp_openid' => $openid, 'site_id' => $this->site_id ]);
@@ -98,23 +102,74 @@ class WeappAuthService extends BaseApiService
                 $member_info->weapp_openid = $openid;
             }
         }
+
+        $config = ( new MemberConfigService() )->getLoginConfig();
+        $is_auth_register = $config[ 'is_auth_register' ];
+        $is_force_access_user_info = $config[ 'is_force_access_user_info' ];
+        $is_bind_mobile = $config[ 'is_bind_mobile' ];
+
         if ($member_info->isEmpty()) {
-//            $config = ( new MemberConfigService() )->getLoginConfig();
-//            $is_auth_register = $config[ 'is_auth_register' ];
-            // 去掉强制绑定手机号判断，否则开启强制绑定的情况下小程序第三方注册无法注册
-            // 现在不需要控制自动注册，分为两种情况，一种自动注册，另一种手动点击授权登录注册
-            return $this->register($openid, wx_unionid: $unionid);
-//            if ($is_auth_register == 1) {
-//            } else {
-//                return [ 'openid' => $openid, 'unionid' => $unionid ];
-//            }
+
+            // 开启自动注册会员
+            if ($is_auth_register) {
+
+                // 开启强制获取会员信息并且开启强制绑定手机号，必须获取全部信息才能进行注册
+                if ($is_force_access_user_info && $is_bind_mobile) {
+                    if (!empty($data[ 'nickname' ]) && !empty($data[ 'headimg' ]) && !empty($data[ 'mobile' ])) {
+                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid, $data[ 'nickname' ], $data[ 'headimg' ]);
+                    } else {
+                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                    }
+                } else if ($is_force_access_user_info) {
+                    // 开启强制获取会员信息时，必须获取到昵称和头像才能进行注册
+                    if (!empty($data[ 'nickname' ]) && !empty($data[ 'headimg' ])) {
+                        return $this->register($openid, '', '', $unionid, $data[ 'nickname' ], $data[ 'headimg' ]);
+                    } else {
+                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                    }
+                } else if ($is_bind_mobile) {
+                    // 开启强制绑定手机号，必须获取手机号才能进行注册
+                    if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
+                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
+                    } else {
+                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                    }
+                } else if (!$is_force_access_user_info && !$is_bind_mobile) {
+                    // 关闭强制获取用户信息、并且关闭强制绑定手机号的情况下允许注册
+                    return $this->register($openid, '', '', $unionid);
+                }
+
+            } else {
+                // 关闭自动注册，但是开启了强制绑定手机号，必须获取手机号才能进行注册
+                if ($is_bind_mobile) {
+                    if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
+                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
+                    } else {
+                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                    }
+                }
+            }
         } else {
-            //可能会更新用户和粉丝表
+            // 可能会更新用户和粉丝表
             $login_service = new LoginService();
+            // 开启自动注册会员,获取到昵称和头像进行修改
+            if ($is_auth_register) {
+                if ($is_force_access_user_info) {
+                    if (!empty($data[ 'nickname' ])) {
+                        $member_info[ 'nickname' ] = $data[ 'nickname' ];
+                    }
+                    if (!empty($data[ 'headimg' ])) {
+                        $member_info[ 'headimg' ] = $data[ 'headimg' ];
+                    }
+                }
+                if ($is_bind_mobile) {
+//                    if (!empty($data[ 'mobile' ])) {
+//                        $member_info[ 'mobile' ] = $data[ 'mobile' ];
+//                    }
+                }
+            }
             return $login_service->login($member_info, MemberLoginTypeDict::WEAPP);
         }
-        //todo  业务落地
-
     }
 
     /**
@@ -122,14 +177,17 @@ class WeappAuthService extends BaseApiService
      * @param string $openid
      * @param string $mobile
      * @param string $mobile_code
+     * @param string $wx_unionid
+     * @param string $nickname
+     * @param string $headimg
      * @return array
      * @throws DataNotFoundException
      * @throws DbException
-     * @throws GuzzleException
-     * @throws InvalidConfigException
      * @throws ModelNotFoundException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function register(string $openid, string $mobile = '', string $mobile_code = '', string $wx_unionid = '')
+    public function register(string $openid, string $mobile = '', string $mobile_code = '', string $wx_unionid = '', $nickname = '', $headimg = '')
     {
 
         if (empty($openid)) throw new AuthException('AUTH_LOGIN_TAG_NOT_EXIST');
@@ -158,7 +216,9 @@ class WeappAuthService extends BaseApiService
         return $register_service->register($mobile ?? '',
             [
                 'weapp_openid' => $openid,
-                'wx_unionid' => $wx_unionid
+                'wx_unionid' => $wx_unionid,
+                'nickname' => $nickname,
+                'headimg' => $headimg,
             ],
             MemberRegisterTypeDict::WEAPP,
             $is_verify_mobile ?? false

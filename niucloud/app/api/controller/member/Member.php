@@ -24,16 +24,18 @@ class Member extends BaseApiController
      * 会员信息
      * @return Response
      */
-    public function info(){
-        return success((new MemberService())->getInfo());
+    public function info()
+    {
+        return success(( new MemberService() )->getInfo());
     }
 
     /**
      * 会员中心
      * @return Response
      */
-    public function center(){
-        return success((new MemberService())->center());
+    public function center()
+    {
+        return success(( new MemberService() )->center());
     }
 
     /**
@@ -41,14 +43,15 @@ class Member extends BaseApiController
      * @param $field
      * @return Response
      */
-    public function modify($field){
+    public function modify($field)
+    {
         $data = $this->request->params([
-            ['value', ''],
-            ['field', $field],
+            [ 'value', '' ],
+            [ 'field', $field ],
         ]);
-        $data[$field] = $data['value'];
+        $data[ $field ] = $data[ 'value' ];
         $this->validate($data, 'app\validate\member\Member.modify');
-        (new MemberService())->modify($field, $data['value']);
+        ( new MemberService() )->modify($field, $data[ 'value' ]);
         return success('MODIFY_SUCCESS');
     }
 
@@ -56,11 +59,12 @@ class Member extends BaseApiController
      * 编辑会员
      * @return Response
      */
-    public function edit(){
+    public function edit()
+    {
         $data = $this->request->params([
-            ['data', []],
+            [ 'data', [] ],
         ]);
-        (new MemberService())->edit($data['data']);
+        ( new MemberService() )->edit($data[ 'data' ]);
         return success('MODIFY_SUCCESS');
     }
 
@@ -68,32 +72,47 @@ class Member extends BaseApiController
      * 绑定手机号
      * @return Response
      */
-    public function mobile(){
+    public function mobile()
+    {
         $data = $this->request->params([
-            ['mobile',  ''],
-            ['mobile_code', ''],
+            [ 'mobile', '' ],
+            [ 'mobile_code', '' ],
         ]);
-        return success((new AuthService())->bindMobile($data['mobile'], $data['mobile_code']));
+        return success(( new AuthService() )->bindMobile($data[ 'mobile' ], $data[ 'mobile_code' ]));
     }
 
     /**
      * 会员日志
      * @return Response
      */
-    public function log(){
+    public function log()
+    {
         $data = $this->request->params([
-            ['route', ''],
-            ['params', ''],
-            ['pre_route', '']
+            [ 'route', '' ],
+            [ 'params', '' ],
+            [ 'pre_route', '' ]
         ]);
-        (new MemberLogService())->log($data);
+        ( new MemberLogService() )->log($data);
         return success();
     }
 
     /**
      * 获取会员码
      */
-    public function qrcode(){
-        return success((new MemberService())->getQrcode());
+    public function qrcode()
+    {
+        return success(( new MemberService() )->getQrcode());
+    }
+
+    /**
+     * 获取手机号
+     * @return Response
+     */
+    public function getMobile()
+    {
+        $data = $this->request->params([
+            [ 'mobile_code', '' ],
+        ]);
+        return success(( new AuthService() )->getMobile($data[ 'mobile_code' ]));
     }
 }

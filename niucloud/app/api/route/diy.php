@@ -28,20 +28,26 @@ Route::group('diy', function() {
 
     Route::get('share', 'diy.Diy/share');
 
+    // 万能表单详情
+    Route::get('form', 'diy.DiyForm/info');
+
 })->middleware(ApiLog::class)
     ->middleware(ApiCheckToken::class, false);
 
-
 /**
- * 自定义页面
+ * 自定义表单
  */
 Route::group('diy', function() {
-    // 系统表单详情
-    Route::get('form/:id', 'diy.DiyForm/info');
 
-    //添加使用记录
-    Route::post('form/records', 'diy.DiyForm/addRecord');
+    // 提交填表记录
+    Route::post('form/record', 'diy.DiyForm/addRecord');
+
+    // 获取表单填写结果信息
+    Route::get('form/result', 'diy.DiyForm/getResult');
+
+    // 获取填表记录
+    Route::get('form/record', 'diy.DiyForm/getRecord');
 
 })->middleware(ApiLog::class)
-    ->middleware(ApiCheckToken::class,true);
+    ->middleware(ApiCheckToken::class, true);
 

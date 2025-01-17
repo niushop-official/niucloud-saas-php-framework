@@ -92,11 +92,23 @@ $system_event = [
         'ExportDataType' => [
             //会员导出
             'app\listener\member_export\MemberExportTypeListener',
+            //表单填写明细导出
+            'app\listener\diy_form_export\DiyFormRecordsExportTypeListener',
+            //表单填表人统计导出
+            'app\listener\diy_form_export\DiyFormRecordsMemberExportTypeListener',
+            //表单字段统计导出
+//            'app\listener\diy_form_export\DiyFormRecordsFieldsExportTypeListener',
         ],
         //导出数据源
         'ExportData' => [
             //会员导出
             'app\listener\member_export\MemberExportDataListener',
+            //表单填写明细导出
+            'app\listener\diy_form_export\DiyFormRecordsExportDataListener',
+            //表单填表人统计导出
+            'app\listener\diy_form_export\DiyFormRecordsMemberExportDataListener',
+            //表单字段统计导出
+//            'app\listener\diy_form_export\DiyFormRecordsFieldsExportDataListener',
         ],
         //统计执行
         'StatExecute' => [],
@@ -108,7 +120,10 @@ $system_event = [
         'GetPosterData' => [ 'app\listener\system\Poster' ],
 
         // 小程序授权变更事件
-        'WeappAuthChangeAfter' => [ 'app\listener\system\WeappAuthChangeAfter' ]
+        'WeappAuthChangeAfter' => [ 'app\listener\system\WeappAuthChangeAfter' ],
+        'ShowApp' => [
+            'app\listener\system\ShowAppListener'
+        ]
     ],
     'subscribe' => [
     ],

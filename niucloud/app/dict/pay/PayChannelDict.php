@@ -33,11 +33,17 @@ class PayChannelDict
 //            }
 //        }
         foreach ($channel as $k => $v) {
-            $list[$k] = [
+            $temp_pay_type = $pay_type;
+            $list[ $k ] = [
                 'name' => $v,
                 'key' => $k,
                 'pay_type' => $pay_type
             ];
+            // PC端暂不支持 帮付
+            if ($k == ChannelDict::PC) {
+                unset($temp_pay_type[ PayDict::FRIENDSPAY ]);
+                $list[ $k ][ 'pay_type' ] = $temp_pay_type;
+            }
         }
         return $list;
     }

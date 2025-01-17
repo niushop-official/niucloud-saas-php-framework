@@ -87,6 +87,8 @@ Route::group('site', function () {
     Route::get('account/type', 'site.SiteAccount/accountType');
     // 获取店铺包含的插件
     Route::get('addons', 'site.Site/addons');
+    // 获取应用列表
+    Route::get('showapp', 'site.Site/showApp');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

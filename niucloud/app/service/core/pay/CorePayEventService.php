@@ -166,14 +166,14 @@ class CorePayEventService extends BaseCoreService
      * @return array
      * @throws Exception
      */
-    public function transfer(float $money, string $transfer_no, string $to_no, string $to_name, string $remark, array $transfer_list = [], string $to_type = '', string $product_code = '', string $scene = '')
+    public function transfer(float $money, string $transfer_no, string|array $to_no, string $to_name, string $remark, array $transfer_list = [], string $to_type = '', string $product_code = '', string $scene = '')
     {
         $transfer_type = TransferDict::getPayTypeByTransfer($this->type);
         switch ($transfer_type) {
-            case PayDict::WECHATPAY:
+            case TransferDict::WECHAT:
                 $money = (int) bcmul($money, 100);
                 break;
-            case PayDict::ALIPAY:
+            case TransferDict::ALIPAY:
                 break;
         }
         return $this->app('transfer')->transfer([

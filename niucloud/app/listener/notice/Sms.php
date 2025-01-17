@@ -13,24 +13,24 @@ class Sms
 
     public function handle(array $data)
     {
-        $site_id = $data['site_id'];
-        $template = $data['template'];//模板
-        $vars = $data['vars'];//模板变量
-        $key = $data['key'];
-        $to = $data['to'];//发送对象主题
-        $mobile = $to['mobile'] ?? '';
+        $site_id = $data[ 'site_id' ];
+        $template = $data[ 'template' ];//模板
+        $vars = $data[ 'vars' ];//模板变量
+        $key = $data[ 'key' ];
+        $to = $data[ 'to' ];//发送对象主题
+        $mobile = $to[ 'mobile' ] ?? '';
         //完全信任消息的设置, 不再依赖support_type
-        if ($template['is_sms']) {
-            $sms_id = $template['sms_id'];//发送模板id
-            $content = $template['sms']['content'];
-            $member_id = $to['member_id'] ?? 0;
-            $uid = $to['uid'] ?? 0;
+        if ($template[ 'is_sms' ]) {
+            $sms_id = $template[ 'sms_id' ];//发送模板id
+            $content = $template[ 'sms' ][ 'content' ];
+            $member_id = $to[ 'member_id' ] ?? 0;
+            $uid = $to[ 'uid' ] ?? 0;
             if (!$mobile) {
                 //会员的
                 if ($member_id > 0) {//查询openid
-                    $info = (new CoreMemberService())->getInfoByMemberId($site_id, $member_id);
-                    $mobile = $info['mobile'] ?? '';
-                    $nickname = $info['nickname'] ?? '';
+                    $info = ( new CoreMemberService() )->getInfoByMemberId($site_id, $member_id);
+                    $mobile = $info[ 'mobile' ] ?? '';
+                    $nickname = $info[ 'nickname' ] ?? '';
                 }
             }
 
@@ -50,17 +50,17 @@ class Sms
                     'result' => ''
                 );
                 $core_sms_service->send($site_id, $mobile, $vars, $key, $sms_id, $content);
-                (new CoreNoticeLogService())->add($site_id, $log_data);
-            } catch ( NoticeException $e ) {
-                $log_data['result'] = $e->getMessage();
-                (new CoreNoticeLogService())->add($site_id, $log_data);
+                ( new CoreNoticeLogService() )->add($site_id, $log_data);
+            } catch (NoticeException $e) {
+                $log_data[ 'result' ] = $e->getMessage();
+                ( new CoreNoticeLogService() )->add($site_id, $log_data);
                 //这儿决定要不要抛出
-                if (!$template['async']) {
+                if (!$template[ 'async' ]) {
                     throw new NoticeException($e->getMessage());
                 }
             }
         } else {
-            if (!$template['async']) {
+            if (!$template[ 'async' ]) {
                 throw new NoticeException('NOTICE_NOT_OPEN_SMS');
             }
         }

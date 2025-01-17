@@ -268,4 +268,41 @@ class Diy extends BaseAdminController
         $id = ( new DiyService() )->copy($params);
         return success('ADD_SUCCESS', [ 'id' => $id ]);
     }
+
+    /**
+     * 获取自定义主题配色
+     * @return Response
+     */
+    public function getDiyTheme()
+    {
+        return  success(( new DiyService() )->getDiyTheme());
+    }
+
+    /**
+     * 添加主题配色
+     * @return Response
+     */
+    public function setDiyTheme()
+    {
+        $data = $this->request->params([
+            [ 'id', '' ],
+            [ 'key', '' ],
+            [ 'mode', '' ],
+            [ 'color_mark', '' ],
+            [ 'color_name', '' ],
+            [ 'diy_value', '' ],
+            [ 'value', '' ],
+        ]);
+        ( new DiyService() )->setDiyTheme($data);
+        return  success('ADD_SUCCESS');
+    }
+
+    /**
+     * 设置主题配色
+     * @return Response
+     */
+    public function getDefaultThemeColor()
+    {
+        return  success(( new DiyService() )->getDefaultThemeColor());
+    }
 }

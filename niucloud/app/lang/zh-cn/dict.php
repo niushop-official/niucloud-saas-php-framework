@@ -198,10 +198,11 @@ return [
     ],
     //转账相关
     'dict_transfer' => [
-        'type_wechat' => '微信',
+        'type_wechat' => '微信零钱',
         'type_ali' => '支付宝',
         'type_bank' => '银行卡',
         'type_offline' => '线下转账',
+        'type_wechat_code' => '微信',//微信线下打款
 
         'status_wait' => '待转账',
         'status_dealing' => '处理中',
@@ -261,6 +262,9 @@ return [
     'dict_diy_form' => [
         'component_type_form' => '表单组件',
         'type_diy_form' => '自定义表单',
+        'type_sign_registration' => '签到报名登记',
+        'type_leave_message_suggestion' => '留言建议',
+        'type_write_off_voucher' => '核销凭证',
     ],
     //短信相关
     'dict_sms' => [
@@ -282,6 +286,7 @@ return [
         //状态
         'status_wait_audit' => '待审核',
         'status_wait_transfer' => '待转账',
+        'status_transfer_ing' => '转账中',
         'status_transfered' => '已转账',
         'status_refuse' => '已拒绝',
         'status_cancel' => '已取消'

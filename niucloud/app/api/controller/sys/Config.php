@@ -12,6 +12,7 @@
 namespace app\api\controller\sys;
 
 use app\service\api\diy\DiyConfigService;
+use app\service\api\diy\DiyService;
 use app\service\api\member\MemberConfigService;
 use app\service\api\member\MemberLevelService;
 use app\service\api\member\MemberService;
@@ -87,6 +88,7 @@ class Config extends BaseApiController
         $res[ 'site_info' ] = ( new SiteService() )->getSiteCache();
         $res[ 'member_level' ] = ( new MemberLevelService() )->getList();
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
+        $res[ 'theme_list' ] = ( new DiyService() )->getDiyTheme();
 
         ( new MemberService() )->initMemberData();
 

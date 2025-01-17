@@ -11,6 +11,7 @@
 
 namespace app\service\api\login;
 
+use app\dict\common\ChannelDict;
 use app\dict\member\MemberLoginTypeDict;
 use app\dict\member\MemberRegisterTypeDict;
 use app\job\member\SetMemberNoJob;

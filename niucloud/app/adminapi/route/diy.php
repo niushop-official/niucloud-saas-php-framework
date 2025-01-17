@@ -84,6 +84,15 @@ Route::group('diy', function() {
     // 复制模版
     Route::post('copy', 'diy.Diy/copy');
 
+    // 获取自定义主题配色
+    Route::get('theme', 'diy.Diy/getDiyTheme');
+
+    // 设置主题配色
+    Route::post('theme', 'diy.Diy/setDiyTheme');
+
+    // 获取默认主题配色
+    Route::get('theme/color', 'diy.Diy/getDefaultThemeColor');
+
     /***************************************************** 配置相关 *****************************************************/
 
     // 底部导航列表
@@ -95,6 +104,76 @@ Route::group('diy', function() {
     // 设置底部导航
     Route::post('bottom', 'diy.Config/setBottomConfig');
 
+    /*****************************************************  万能表单管理 ****************************************************/
+
+    // 万能表单分页列表
+    Route::get('form', 'diy.DiyForm/pages');
+
+    // 万能表单列表
+    Route::get('form/list', 'diy.DiyForm/lists');
+
+    // 万能表单类型
+    Route::get('form/type', 'diy.DiyForm/getFormType');
+
+    // 添加万能表单
+    Route::post('form', 'diy.DiyForm/add');
+
+    // 编辑万能表单
+    Route::put('form/:id', 'diy.DiyForm/edit');
+
+    // 万能表单详情
+    Route::get('form/:id', 'diy.DiyForm/info');
+
+    // 删除万能表单
+    Route::put('form/delete', 'diy.DiyForm/del');
+
+    // 获取万能表单微信小程序二维码
+    Route::get('form/qrcode', 'diy.DiyForm/getQrcode');
+
+    // 页面初始化数据
+    Route::get('form/init', 'diy.DiyForm/getInit');
+
+    // 获取页面模板
+    Route::get('form/template', 'diy.DiyForm/getTemplate');
+
+    // 获取万能表单填写配置
+    Route::get('form/write/:form_id', 'diy.DiyForm/getWriteConfig');
+
+    // 编辑万能表单填写配置
+    Route::put('form/write', 'diy.DiyForm/editWriteConfig');
+
+    // 获取万能表单填写配置
+    Route::get('form/submit/:form_id', 'diy.DiyForm/getSubmitConfig');
+
+    // 编辑万能表单填写配置
+    Route::put('form/submit', 'diy.DiyForm/editSubmitConfig');
+
+    // 编辑万能表单分享内容
+    Route::put('form/share', 'diy.DiyForm/modifyShare');
+
+    // 复制模版
+    Route::post('form/copy', 'diy.DiyForm/copy');
+
+    // 修改万能表单状态
+    Route::put('form/status', 'diy.DiyForm/modifyStatus');
+
+    //获取填写记录列表
+    Route::get('form/records', 'diy.DiyForm/getRecordPages');
+
+    //获取填写记录详情
+    Route::get('form/records/:record_id', 'diy.DiyForm/getRecordInfo');
+
+    //删除填写记录
+    Route::put('form/records/delete', 'diy.DiyForm/delRecord');
+
+    //获取万能表单字段记录
+    Route::get('form/fields/list', 'diy.DiyForm/getFieldsList');
+
+    //获取填表人统计列表
+    Route::get('form/records/member/stat', 'diy.DiyForm/memberStatPages');
+
+    //获取字段统计列表
+    Route::get('form/records/field/stat', 'diy.DiyForm/fieldStatList');
 
 })->middleware([
     AdminCheckToken::class,

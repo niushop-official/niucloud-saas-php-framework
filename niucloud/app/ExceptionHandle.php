@@ -10,6 +10,7 @@ use think\db\exception\ModelNotFoundException;
 use think\exception\Handle;
 use think\exception\HttpException;
 use think\exception\HttpResponseException;
+use think\exception\RouteNotFoundException;
 use think\exception\ValidateException;
 use think\facade\Log;
 use think\Response;
@@ -92,6 +93,9 @@ class ExceptionHandle extends Handle
         if (strpos($e->getMessage(), 'open_basedir') !== false) {
             return fail('OPEN_BASEDIR_ERROR');
         }
+        if (strpos($e->getMessage(), 'Allowed memory size of') !== false) {
+            return fail('PHP_SCRIPT_RUNNING_OUT_OF_MEMORY');
+        }
         if ($e instanceof DbException) {
             return fail(get_lang('DATA_GET_FAIL').':'.$e->getMessage(), [
                 'file' => $e->getFile(),
@@ -108,7 +112,9 @@ class ExceptionHandle extends Handle
             return fail($e->getMessage(), [], $e->getCode() ?: 400);
         }else if($e instanceof ServerException){
             return fail($e->getMessage(), http_code:$e->getCode());
-        }else {
+        } else if ($e instanceof RouteNotFoundException) {
+            return fail('当前访问路由未定义或不匹配 路由地址：' . request()->baseUrl());
+        } else {
             return fail($e->getMessage(), $massageData);
         }
     }

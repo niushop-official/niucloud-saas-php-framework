@@ -2,6 +2,7 @@
 
 namespace core\pay;
 
+use app\dict\common\ChannelDict;
 use app\dict\pay\OnlinePayDict;
 use app\dict\pay\RefundDict;
 use app\dict\pay\TransferDict;
@@ -224,21 +225,32 @@ class Wechatpay extends BasePay
      */
     public function transfer(array $params)
     {
+
+        $to_data = $params['to_no'];//收款人数据
+        $channel = $to_data['channel'] ?? '';//渠道
+        $open_id = $to_data['open_id'] ?? '';//openid
+
+        if(empty($this->config['mch_id']) || empty($this->config['mch_secret_key']) || empty($this->config['mch_secret_cert']) || empty($this->config['mch_public_cert_path'])){
+            throw new PayException('WECHAT_TRANSFER_CONFIG_NOT_EXIST');
+        }
         //这儿的批次信息可能是这儿生成的,但依然需要记录
         $order = [
-            'out_batch_no' => $params['transfer_no'] . '',//
-            'batch_name' => $params['remark'],
-            'batch_remark' => $params['remark'],
+            'out_batch_no' => ($to_data['out_batch_no'] ?? '') . '',//
+            'batch_name' => $params['remark'] ?? '',
+            'batch_remark' => $params['remark'] ?? '',
         ];
+        if($channel == ChannelDict::WEAPP){
+            $order['_type'] = 'mini';
+        }
         $transfer_list = $params['transfer_list'];
         //单笔转账
         if (empty($transfer_list)) {
             $transfer_list = [
                 [
-                    'transfer_no' => $params['transfer_no'] . '1',
+                    'transfer_no' => $params['transfer_no'],
                     'money' => (int)$params['money'],
                     'remark' => $params['remark'],
-                    'openid' => $params['to_no']
+                    'openid' => $open_id
                 ]
             ];
         }
@@ -247,7 +259,7 @@ class Wechatpay extends BasePay
 
         foreach ($transfer_list as $k => $v) {
             $item_transfer = [
-                'out_detail_no' => $params['transfer_no'] . $k,
+                'out_detail_no' => $params['transfer_no'],
                 'transfer_amount' => (int)$v['money'],
                 'transfer_remark' => $v['remark'],
                 'openid' => $v['openid'],
@@ -261,20 +273,35 @@ class Wechatpay extends BasePay
         }
         $order['total_amount'] = $total_amount;
         $order['total_num'] = $total_num;
-        $result = $this->returnFormat(Pay::wechat()->transfer($order));
 
-        if (!empty($result['code'])) {
+        try {
+            $result = $this->returnFormat(Pay::wechat()->transfer($order));
+            if (!empty($result['code'])) {
 //            if($result['code'] == 'PARAM_ERROR'){
 //                throw new PayException();
 //            }else if($result['code'] == 'INVALID_REQUEST'){
 //                throw new PayException();
 //            }
-            if ($result['code'] == 'INVALID_REQUEST') {
-                throw new PayException(700010);
+                if ($result['code'] == 'INVALID_REQUEST') {
+                    throw new PayException(700010);
+                }
+                throw new PayException($result['message']);
             }
-            throw new PayException($result['message']);
+
+            $tran_status_list = [
+                'PROCESSING' => TransferDict::DEALING,
+                'ACCEPTED' => TransferDict::DEALING,
+                'CLOSED' => TransferDict::FAIL,
+                'FINISHED' => TransferDict::SUCCESS,
+            ];
+            return ['batch_id' => $result['batch_id'], 'out_batch_no' => $result['out_batch_no'], 'status' => $tran_status_list[$result['batch_status']]];
+        } catch (\Exception $e) {
+            if ($e instanceof InvalidResponseException) {
+                throw new PayException($e->response->all()['message'] ?? '');
+            }
+            throw new PayException($e->getMessage());
         }
-        return ['batch_id' => $result['batch_id'], 'out_batch_no' => $result['out_batch_no'], 'status' => TransferDict::SUCCESS];
+
     }
 
     /**
@@ -465,28 +492,35 @@ class Wechatpay extends BasePay
      * @throws ContainerException
      * @throws InvalidParamsException
      */
-    public function getTransfer(string $transfer_no, $out_transfer_no = '')
+    public function getTransfer(string $transfer_no, $out_batch_no = '')
     {
         $order = [
-            'out_batch_no' => $out_transfer_no,
+            'out_batch_no' => $out_batch_no,
             'out_detail_no' => $transfer_no,
             '_action' => 'transfer',
         ];
 
-        $result = Pay::wechat()->query($order);
-        $result = $this->returnFormat($result);
-        //微信转账状态
-        $transfer_status_array = [
-            'INIT' => TransferDict::DEALING,//初始态。 系统转账校验中
-            'WAIT_PAY' => TransferDict::DEALING,
-            'PROCESSING' => TransferDict::DEALING,
-            'FAIL' => TransferDict::FAIL,
-            'SUCCESS' => TransferDict::SUCCESS,
-        ];
-        return [
-            'status' => $transfer_status_array[$result['status']],
-            'transfer_no' => $transfer_no
-        ];
+        try {
+            $result = Pay::wechat()->query($order);
+            $result = $this->returnFormat($result);
+            //微信转账状态
+            $transfer_status_array = [
+                'INIT' => TransferDict::DEALING,//初始态。 系统转账校验中
+                'WAIT_PAY' => TransferDict::DEALING,
+                'PROCESSING' => TransferDict::DEALING,
+                'FAIL' => TransferDict::FAIL,
+                'SUCCESS' => TransferDict::SUCCESS,
+            ];
+            return [
+                'status' => $transfer_status_array[$result['detail_status']],
+                'transfer_no' => $transfer_no
+            ];
+        }catch(Throwable $e){
+            return [
+                'status' => TransferDict::DEALING,
+                'transfer_no' => $transfer_no
+            ];
+        }
     }
 
 

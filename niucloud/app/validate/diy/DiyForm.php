@@ -14,7 +14,7 @@ namespace app\validate\diy;
 use think\Validate;
 
 /**
- * 系统表单验证器
+ * 万能表单验证器
  * Class DiyForm
  * @package app\validate\diy
  */

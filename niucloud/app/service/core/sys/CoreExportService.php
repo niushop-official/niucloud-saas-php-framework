@@ -78,12 +78,16 @@ class CoreExportService extends BaseCoreService
 
     /**
      * 获取导出数据列
+     * @param int $site_id
      * @param string $type
+     * @param array $where
      * @return array|mixed
      */
-    public function getExportDataColumn($type = '')
+    public function getExportDataColumn($site_id = 0, $type = '', $where = [])
     {
-        $type_array = event("ExportDataType");
+        $param['site_id'] = $site_id;
+        $param['where'] = $where;
+        $type_array = event("ExportDataType", $param);
         $type_list = [];
         foreach ($type_array as $v)
         {
@@ -94,7 +98,10 @@ class CoreExportService extends BaseCoreService
 
     /**
      * 获取导出数据源
+     * @param int $site_id
      * @param string $type
+     * @param array $where
+     * @param array $page
      * @return array|mixed
      */
     public function getExportData($site_id = 0, $type = '', $where = [], $page = [])

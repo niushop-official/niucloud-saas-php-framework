@@ -57,7 +57,8 @@ class CashOutAccount extends BaseApiController
             ['account_type', ''],
             ['bank_name', ''],
             ['realname', ''],
-            ['account_no', '']
+            ['account_no', ''],
+            ['transfer_payment_code', '']
         ]);
         $this->validate($data, 'app\validate\member\CashOutAccount.addOrEdit');
         $id = (new MemberCashOutAccountService())->add($data);
@@ -74,7 +75,8 @@ class CashOutAccount extends BaseApiController
             ['account_type', ''],
             ['bank_name', ''],
             ['realname', ''],
-            ['account_no', '']
+            ['account_no', ''],
+            ['transfer_payment_code', '']
         ]);
         $this->validate($data, 'app\validate\member\CashOutAccount.addOrEdit');
         (new MemberCashOutAccountService())->edit($account_id, $data);

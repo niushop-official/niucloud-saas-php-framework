@@ -154,8 +154,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
 
                 // 编译 diy-group 自定义组件代码文件
                 $this->compileDiyComponentsCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-                // 编译 fixed-group 固定模板组件代码文件
-                $this->compileFixedComponentsCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
+
                 // 编译 加载插件标题语言包
                 $this->compileLocale($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
 
