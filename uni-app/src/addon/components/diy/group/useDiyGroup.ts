@@ -34,9 +34,9 @@ export function useDiyGroup(params: any = {}) {
         } else {
             obj['draggable-element'] = true;
         }
-		if(component.componentName == 'ImageAds'){
-			obj['overflow-hidden'] = true
-		}
+        if (component.componentName == 'ImageAds') {
+            obj['overflow-hidden'] = true
+        }
         return obj;
     }
 
@@ -92,13 +92,13 @@ export function useDiyGroup(params: any = {}) {
             nextTick(() => {
                 setTimeout(() => {
 
-					// 初始化组件滚动值
-					scrollVal = uni.getStorageSync('componentsScrollValGroup');
-					if (scrollVal) {
-					    for (let key in scrollVal) {
-					        componentsScrollBool.value[key] = -1;
-					    }
-					}
+                    // 初始化组件滚动值
+                    scrollVal = uni.getStorageSync('componentsScrollValGroup');
+                    if (scrollVal) {
+                        for (let key in scrollVal) {
+                            componentsScrollBool.value[key] = -1;
+                        }
+                    }
                 }, 500)
             });
         });
@@ -106,9 +106,35 @@ export function useDiyGroup(params: any = {}) {
 
     // 页面onShow调用时，也会触发改方法
     const refresh = () => {
-
         nextTick(() => {
-            params.getFormRef().topTabbarRef?.refresh();
+            let time: any = null;
+            let fn = () => {
+                diyStore.componentRefs = params.getFormRef().componentRefs;
+                data.value.componentRefs = params.getFormRef().componentRefs;
+                params.getFormRef().componentRefs.topTabbarRef?.refresh();
+                if (time) clearInterval(time);
+            }
+
+            let getPass = () => {
+                let pass = false;
+                try {
+                    params.getFormRef()
+                    pass = true;
+                } catch (e) {
+                    pass = false;
+                }
+                if (pass) {
+                    fn();
+                }
+                return pass;
+            }
+
+            if (!getPass()) {
+                time = setInterval(() => {
+                    getPass()
+                }, 100)
+            }
+
         })
     }
 
