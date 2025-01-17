@@ -401,18 +401,52 @@ export function timeStampTurnTime(timeStamp: any, type = "") {
  * 日期格式转时间戳
  * @param {Object} date
  */
-export function timeTurnTimeStamp(date: string) {
-    var f = date.split(' ', 2);
-    var d = (f[0] ? f[0] : '').split('-', 3);
-    var t = (f[1] ? f[1] : '').split(':', 3);
-    return (new Date(
-        parseInt(d[0], 10) || null,
-        (parseInt(d[1], 10) || 1) - 1,
-        parseInt(d[2], 10) || null,
-        parseInt(t[0], 10) || null,
-        parseInt(t[1], 10) || null,
-        parseInt(t[2], 10) || null
-    )).getTime() / 1000;
+export function timeTurnTimeStamp(dateStr: string) {
+    let timestamp;
+    let date;
+
+    // 尝试解析 'YYYY年M月D日'
+    try {
+        let dateStr1 = dateStr.replace('年', '-').replace('月', '-').replace('日', '');
+        date = new Date(dateStr1);
+        timestamp = date.getTime();
+    } catch (e) {
+        // 尝试解析 'YYYY-MM-DD'
+        try {
+            date = new Date(dateStr);
+            timestamp = date.getTime();
+        } catch (e) {
+            // 尝试解析 'YYYY/MM/DD'
+            try {
+                date = new Date(dateStr.replace(/\//g, "-"));
+                timestamp = date.getTime();
+            } catch (e) {
+                // 尝试解析 'YYYY年M月D日 HH时mm分'
+                try {
+                    let dateStr1 = dateStr.replace('年', '-').replace('月', '-').replace('日', ' ').replace('时', ':').replace('分', '');
+                    date = new Date(dateStr1);
+                    timestamp = date.getTime();
+                } catch (e) {
+                    // 尝试解析 'YYYY-MM-DD HH:mm'
+                    try {
+                        date = new Date(dateStr);
+                        timestamp = date.getTime();
+                    } catch (e) {
+                        // 尝试解析 'YYYY/MM/DD HH:mm'
+                        try {
+                            date = new Date(dateStr.replace(/\//g, "-"));
+                            timestamp = date.getTime();
+                        } catch (e) {
+                            // 如果所有格式都失败，返回null
+                            console.error("无法解析日期字符串:", dateStr);
+                            return null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return (timestamp / 1000);
 }
 
 /**
@@ -562,4 +596,82 @@ export function goback(data: any) {
             });
         }
     }, 600);
+}
+
+
+// 获取微信OpenId、微信公众号OpenId
+export function getWinxinOpenId() {
+    const memberStore = useMemberStore();
+    const memberInfo = memberStore.info;
+
+    let obj = {
+        weapp: '',
+        wechat: ''
+    }
+
+    if (memberInfo) {
+        obj.weapp = memberInfo.weapp_openid;
+        obj.wechat = memberInfo.wx_openid;
+    }
+    return obj;
+}
+
+// 获取有效期
+export function getValidTime(minutes: any = 1) {
+    var date = new Date();
+    date.setSeconds(60 * minutes);
+    let validTime: any = parseInt(date.getTime() / 1000); // 定位信息 5分钟内有效，过期后将重新获取定位信息
+    return validTime;
+}
+
+/**
+ * 检测当前访问的是系统（app）还是插件
+ * 设置插件的底部导航
+ * 设置插件应用的主色调
+ * @param path
+ */
+export function setThemeColor (path: string) {
+    let pathArr = path.split('/')
+	let index = !pathArr[0] ? 1 : 0;
+    let route = pathArr[index] == 'addon' ? pathArr[(index+1)] : 'app';
+
+    // 设置底部导航
+    const configStore = useConfigStore()
+    if (configStore.addon != route) {
+        configStore.addon = route;
+    }
+	
+    // 设置插件应用的主色调，排除系统
+	const theme_color_list = uni.getStorageSync('theme_color_list');
+	const current_theme_color = uni.getStorageSync('current_theme_color');
+	let theme = '';
+    if (route != 'app') {
+        try {
+			theme = theme_color_list[route];
+			if(theme && theme.value){
+				configStore.themeColor = theme.value
+				uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+			}else if( !theme && current_theme_color){
+				configStore.themeColor = ''
+			}else{
+				theme = theme_color_list.app || Object.values(theme_color_list)[0];
+				configStore.themeColor = theme.value
+				uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+			}
+        } catch (e) {
+            // 设置插件应用的主色调发生错误，若不存在则使用最后有效的主色调
+			if(!current_theme_color && theme_color_list){
+				theme = theme_color_list.app || Object.values(theme_color_list)[0];
+				configStore.themeColor = theme.value
+				uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+			}else{
+				configStore.themeColor = '';
+			}
+        }
+
+    }else if(!current_theme_color && theme_color_list){
+		theme = theme_color_list.app || Object.values(theme_color_list)[0];
+		configStore.themeColor = theme.value
+		uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+	}
 }

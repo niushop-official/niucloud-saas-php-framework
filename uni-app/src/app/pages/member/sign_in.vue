@@ -63,7 +63,7 @@
                                                         </template>
                                                     </view>
                                                 </view>
-                                                <view class="w-[10rpx] h-[10rpx] rounded-[50%] bg-[#FF5527]" v-if="isCurrentDate(item)"></view>
+                                                <view class="w-[10rpx] h-[10rpx] rounded-[50%] bg-[var(--primary-color)]" v-if="isCurrentDate(item)"></view>
                                             </view>
                                         </block>
                                     </view>
@@ -81,7 +81,7 @@
                                                         </template>
                                                     </view>
                                                 </view>
-                                                <view class="w-[10rpx] h-[10rpx] rounded-[50%] bg-[#FF5527]" v-if="isCurrentDate(item)"></view>
+                                                <view class="w-[10rpx] h-[10rpx] rounded-[50%] bg-[var(--primary-color)]" v-if="isCurrentDate(item)"></view>
                                             </view>
                                         </block>
                                     </view>

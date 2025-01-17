@@ -18,16 +18,16 @@
 							<view v-if="!formData.area" class="text-[#888] text-[28rpx] flex-1">{{ t('selectAreaPlaceholder') }}</view>
 							<view v-else class="text-[28rpx] flex-1 leading-[1.4]">{{ formData.area }}</view>
 							<view @click.stop="chooseLocation" class="flex items-center">
-								<text class="nc-iconfont nc-icon-dizhiguanliV6xx mr-[4rpx] text-[32rpx] text-[#e93323]"></text>
-								<text class="text-[24rpx] whitespace-nowrap text-[#e93323]">定位</text>
+								<text class="nc-iconfont nc-icon-dizhiguanliV6xx mr-[4rpx] text-[32rpx] text-[var(--primary-color)]"></text>
+								<text class="text-[24rpx] whitespace-nowrap text-[var(--primary-color)]">定位</text>
 							</view>
 						</view>
 						<view v-else class="flex justify-between items-center flex-1 h-[52rpx]" @click="chooseLocation">
 							<view  class="text-[28rpx] text-[#303133] leading-[1.4]" v-if="formData.area || formData.address_name">{{formData.area || formData.address_name}}</view>
 							<view  class="text-[#888] text-[28rpx]" v-else>{{t('selectAddressPlaceholder')}}</view>
 							<view class="flex items-center">
-								<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[32rpx] mr-[4rpx] text-[#e93323]"></text>
-								<text class="text-[24rpx] whitespace-nowrap text-[#e93323]">定位</text>
+								<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[32rpx] mr-[4rpx] text-[var(--primary-color)]"></text>
+								<text class="text-[24rpx] whitespace-nowrap text-[var(--primary-color)]">定位</text>
 							</view>
 						</view>
 					</u-form-item>

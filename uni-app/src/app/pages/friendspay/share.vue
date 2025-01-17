@@ -25,7 +25,7 @@
                 <view class="px-[20rpx] box-border">
                     <button class="bg-[#FFB4B1] !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-if="friendsInfo.status == 2">{{ t('finish') }}</button>
                     <button class="bg-[#FFB4B1] !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-else-if="friendsInfo.status == -1">{{ t('close') }}</button>
-                    <button class="primary-btn-bg !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-else :loading="operateLoading" @click="openShareFn">{{ friendsInfo.config.pay_type_name ?  friendsInfo.config.pay_type_name : t('friendPay') }}</button>
+                    <button class="botton-color !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-else :loading="operateLoading" @click="openShareFn">{{ friendsInfo.config.pay_type_name ?  friendsInfo.config.pay_type_name : t('friendPay') }}</button>
                 </view>
                 <view class="mt-[20rpx] flex items-baseline justify-center text-[var(--text-color-light9)]" v-if="friendsInfo.status == 2 && JSON.stringify(friendsInfo.trade_info) !== '[]' && friendsInfo.trade_info.detail_url" @click="redirect({url: friendsInfo.trade_info.detail_url })">
                     <text class="text-[24rpx] mr-[6rpx]">查看订单</text>
@@ -182,7 +182,19 @@ const getFriendspayInfoFn = (tradeType : string, tradeId : number) => {
             share.title = `${name}希望你帮他付${friendsInfo.value.money}元`
         }
         if(JSON.stringify(friendsInfo.value.trade_info) !== '[]' && friendsInfo.value.trade_info.item_list.length){
-            share.url = friendsInfo.value.trade_info.item_list[0].item_image
+            // #ifdef H5
+            share.url = friendsInfo.value.trade_info.item_list[0].item_image ? friendsInfo.value.trade_info.item_list[0].item_image : friendsInfo.value.config.pay_wechat_share_image
+            // #endif
+            // #ifdef MP-WEIXIN
+            share.url = friendsInfo.value.trade_info.item_list[0].item_image ? friendsInfo.value.trade_info.item_list[0].item_image :  friendsInfo.value.config.pay_weapp_share_image
+            // #endif
+        }else{
+            // #ifdef H5
+            share.url = friendsInfo.value.config.pay_wechat_share_image
+            // #endif
+            // #ifdef MP-WEIXIN
+            share.url = friendsInfo.value.config.pay_weapp_share_image
+            // #endif
         }
 		setShare({
 			wechat: {
@@ -258,4 +270,7 @@ const openShareFn = ()=>{
 </script>
 
 <style lang="scss" scoped>
+	.botton-color{
+		background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
+	}
 </style>

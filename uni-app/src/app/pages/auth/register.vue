@@ -21,7 +21,7 @@
 								<template #suffix>
 									<view class="" @click="changePassword" v-if="formData.password">
 										<u-icon :name="isPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
-									</view>							
+									</view>
 								</template>
 							</u-input>
 						</u-form-item>
@@ -32,7 +32,7 @@
 								<template #suffix>
 									<view class="" @click="changeConfirmPassword" v-if="formData.confirm_password">
 										<u-icon :name="isConfirmPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
-									</view>							
+									</view>
 								</template>
 							</u-input>
 						</u-form-item>
@@ -107,7 +107,7 @@
 					<view class="w-[100%] flex justify-center h-[70rpx] leading-[70rpx] text-[#999] text-[24rpx] border-[0] font-500 rounded-[50rpx]" @click="dialogClose">不同意</view>
 				</view>
 		    </view>
-		</uni-popup>	
+		</uni-popup>
     </view>
 </template>
 
@@ -122,7 +122,7 @@
     import { redirect, getToken,pxToRpx } from '@/utils/common'
     import { onLoad } from '@dcloudio/uni-app';
 	import { topTabar } from '@/utils/topTabbar'
-	
+
 	let menuButtonInfo: any = {};
 	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
@@ -159,14 +159,14 @@
 		// 防止浏览器自动填充
 		setTimeout(()=>{
 			real_name_input.value = false;
-		},800) 
+		},800)
 	});
 	const isPassword = ref(true)
 	const isConfirmPassword = ref(true)
 	const changePassword =()=>{
 		isPassword.value = !isPassword.value
 	}
-	
+
 	const changeConfirmPassword =()=>{
 		isConfirmPassword.value = !isConfirmPassword.value
 	}

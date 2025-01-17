@@ -7,6 +7,7 @@
 					<view class="flex pt-[30rpx] pb-[8rpx] items-center border-0 border-b-[2rpx] border-solid border-[#F1F2F5]">
 						<text class="pt-[4rpx] text-[44rpx] text-[#333] iconfont iconrenminbiV6xx price-font "></text>
 						<input type="digit" class="h-[76rpx] leading-[76rpx] pl-[10rpx] flex-1 font-500 text-[54rpx] bg-[#fff]" v-model="applyData.apply_money" maxlength="7" :placeholder="applyData.apply_money?'':(t('minWithdrawal') + t('currency') + moneyFormat(config.min))" placeholder-class="apply-price" :adjust-position="false"/>
+                        <text v-if="Number(serviceMoney)" class="text-[24rpx] text-[var(--text-color-light6)] mr-[20rpx]">手续费{{ serviceMoney }}</text>
 						<text @click="clearMoney" v-if="applyData.apply_money" class="nc-iconfont nc-icon-cuohaoV6xx1 !text-[32rpx] text-[var(--text-color-light9)]"></text>
 					</view>
 					<view class="pt-[16rpx] flex items-center justify-between px-[4rpx]">
@@ -21,13 +22,34 @@
 				<view class="mt-[20rpx] card-template">
                     <view class="font-500 text-[30rpx] text-[#333] leading-[42rpx] mb-[30rpx]">到账方式</view>
 					<!-- 提现到微信 -->
-					<view class="p-[20rpx] mb-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]" v-if="config.transfer_type.includes('wechatpay') && memberStore.info && (memberStore.info.wx_openid || memberStore.info.weapp_openid)"  @click="applyData.transfer_type = 'wechatpay'" :class="{'border-[#00C800] bg-[#ECF9EF]': applyData.transfer_type == 'wechatpay'}">
+					<view class="p-[20rpx] mb-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]" v-if="config.transfer_type.includes('wechatpay') && memberStore.info && (memberStore.info.wx_openid || memberStore.info.weapp_openid)" :class="{'border-[#00C800] bg-[#ECF9EF]': applyData.transfer_type == 'wechatpay'}"  @click="transferWeixin">
 						<view>
                             <image class="h-[60rpx] w-[60rpx]" :src="img('static/resource/images/member/apply_withdrawal/wechat.png')" mode="widthFix" />
                         </view>
 						<view class="flex-1 px-[20rpx]">
 							<view class="text-[28rpx] text-[#333] leading-[40rpx] mb-[6rpx]">{{ t('cashOutToWechat') }}</view>
 							<view class="text-[var(--text-color-light9)] text-[24rpx] leading-[34rpx]">{{ t('cashOutToWechatTips') }}</view>
+						</view>
+					</view>
+					
+					<!-- 提现到微信收款码 -->
+					<view class="p-[20rpx] mb-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]"  v-if="config.transfer_type.includes('wechat_code')" :class="{'border-[#00C800] bg-[#ECF9EF]': applyData.transfer_type == 'wechat_code' && wechatCodeInfo}" >
+						<view @click="transferWechatCode" >
+					        <image class="h-[60rpx] w-[60rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/wechat_code.png')" mode="widthFix" />
+					    </view>
+						<view class="flex-1 px-[22rpx]"  @click="transferWechatCode" >
+							<view class="text-[28rpx] text-[#333] leading-[40rpx] mb-[6rpx]">{{ t('cashOutToWechatCode') }}</view>
+							<view class="text-[var(--text-color-light9)] text-[24rpx] leading-[34rpx]">
+								<view  v-if="wechatCodeInfo" class="truncate max-w-[440rpx]">
+					                <text>{{ t('cashOutTo') }}{{ t('wechatCodeAccountNo') }}</text>
+					                <text class="text-[#333]">{{ wechatCodeInfo.account_no }}</text> 
+								</view>
+								<view v-else>{{ t('cashOutToWechatCodeTips') }}</view>
+							</view>
+						</view>
+						<view class="flex items-center">
+							<button v-if="!wechatCodeInfo && !wechatCodeLoading" hover-class="none" class="w-[110rpx] h-[54rpx] flex-center rounded-full p-[0] text-[var(--primary-color)] bg-transparent border-[2rpx] border-solid border-[var(--primary-color)] text-[22rpx]" @click="redirect({ url: '/app/pages/member/account', param: { type: 'wechat_code', mode: 'select' } , mode: 'redirectTo'})">{{t('toAdd')}}</button>
+					        <text v-else class="nc-iconfont nc-icon-youV6xx text-[28rpx] text-[var(--text-color-light9)] p-[10rpx]" @click.stop="redirect({ url: '/app/pages/member/account', param: { type: 'wechat_code', mode: 'select' } , mode: 'redirectTo'})"></text>
 						</view>
 					</view>
 
@@ -77,7 +99,7 @@
 				</view>
 				
 				<view class="tab-bar-placeholder"></view>
-				<view class="fixed bottom-[0] tab-bar left-0 right-0 px-[var(--sidebar-m)]">
+				<view class="fixed bottom-[0] tab-bar left-0 right-0 px-[var(--sidebar-m)] bg-[var(--page-bg-color)]">
 					<button class="h-[80rpx] !text-[#fff] leading-[80rpx] primary-btn-bg rounded-[50rpx] text-[26rpx]" :disabled="applyData.apply_money == '' || applyData.apply_money == 0" :loading="loading" @click="cashOut">{{t('cashOutNow')}}</button>
 					<view class="mt-[30rpx] text-center text-[26rpx] text-primary" @click.stop="redirect({ url: '/app/pages/member/cash_out'})">
 						{{t('cashOutList')}}
@@ -99,7 +121,7 @@
 <script lang="ts" setup>
     import { ref, reactive, watch, computed } from 'vue'
     import { t } from '@/locale'
-    import { moneyFormat, redirect, getToken ,img, deepClone } from '@/utils/common'
+    import { moneyFormat, redirect, getToken ,img, deepClone, getWinxinOpenId } from '@/utils/common'
     import useMemberStore from '@/stores/member'
     import { cashOutConfig, cashOutApply, getFirstCashoutAccountInfo, getCashoutAccountInfo } from '@/app/api/member'
     import { onLoad } from '@dcloudio/uni-app'
@@ -113,7 +135,11 @@
         apply_money: '',
         transfer_type: '',
         account_type: 'money',
-        account_id: 0
+        account_id: 0,
+		transfer_payee:{
+			open_id: '',
+			channel: ''
+		}
     })
 
     // 可提现金额
@@ -128,6 +154,9 @@
                 break;
             case 'alipay':
                 applyData.account_id = alipayAccountInfo.value ? alipayAccountInfo.value.account_id : 0
+                break;
+            case 'wechat_code':
+                applyData.account_id = wechatCodeInfo.value ? wechatCodeInfo.value.account_id : 0
                 break;
             default:
                 applyData.account_id = 0
@@ -181,15 +210,29 @@
             for (let key in deepClone(res.data)) {
             	config[key] = deepClone(res.data[key]);
             }
-            if (config.transfer_type.includes('wechatpay') && memberStore.info && (!memberStore.info.wx_openid && !memberStore.info.weapp_openid))  config.transfer_type.splice(config.transfer_type.indexOf('wechatpay'),1)
+            if (config.transfer_type.includes('wechatpay') && memberStore.info && (!memberStore.info.wx_openid && !memberStore.info.weapp_openid)){
+                config.transfer_type.splice(config.transfer_type.indexOf('wechatpay'),1)
+            } else{
+                config.transfer_type.includes('wechatpay') && transferWeixin()
+            } 
             config.transfer_type.includes('bank') && getBankAccountInfo()
             config.transfer_type.includes('alipay') && getAlipayAccountInfo()
+            config.transfer_type.includes('wechat_code') && getWechatCodeInfo()
             applyData.transfer_type = config.transfer_type[0]
 			if(query.type){
                 applyData.transfer_type = query.type
             }
             pageLoading.value = false
         })
+    })
+
+    // 手续费
+    const serviceMoney = computed(() => {
+        let money = 0
+        if(applyData.apply_money && Number(config.rate)){
+            money = Number(applyData.apply_money) * Number(config.rate) / 100
+        }
+        return money.toFixed(2);
     })
 
     //全部提现
@@ -229,7 +272,7 @@
     /**
      * 获取支付宝提现账号信息
      */
-     const alipayLoading = ref(false)
+    const alipayLoading = ref(false)
     const alipayAccountInfo:any = ref(null)
     const getAlipayAccountInfo =  () => {
         const data = { account_type: 'alipay', account_id: 0 }
@@ -277,6 +320,33 @@
             bankLoading.value = false
         })
     }
+	
+	
+	/**
+	 * 获取微信收款码提现账号信息
+	 */
+	const wechatCodeLoading = ref(false)
+	const wechatCodeInfo: any = ref(null)
+	const getWechatCodeInfo = () => {
+	    const data = { account_type: 'wechat_code', account_id: 0 }
+	    let request = getFirstCashoutAccountInfo
+	
+	    if (query.type && query.type == 'wechat_code' && query.account_id) {
+	        request = getCashoutAccountInfo
+	        data.account_id = query.account_id
+	    }
+	    wechatCodeLoading.value = true
+	    request(data).then((res: any) => {
+	        if (res.data && res.data.account_id) {
+	            wechatCodeInfo.value = res.data
+	            // 初始化赋值
+	            if(applyData.transfer_type == 'wechat_code' && !applyData.account_id){
+	                applyData.account_id = wechatCodeInfo.value.account_id;
+	            }
+	        }
+	        wechatCodeLoading.value = false
+	    })
+	}
 
     /**
      * 申请提现
@@ -285,10 +355,16 @@
         if (verify()) {
             if (loading.value) return
             loading.value = true
-
-            cashOutApply(applyData).then(res => {
+			
+            cashOutApply(applyData).then((res: any) => {
                 loading.value = false
-				memberStore.getMemberInfo(()=>{redirect({ url: '/app/pages/member/cash_out' })})
+				memberStore.getMemberInfo(()=>{
+                    if(applyData.transfer_type == 'wechatpay'){
+                        redirect({ url: '/app/pages/member/cash_out_detail', param: { id: res.data} })
+                    }else{
+                        redirect({ url: '/app/pages/member/cash_out' })
+                    }
+                })
                 
             }).catch(() => {
                 loading.value = false
@@ -312,6 +388,24 @@
         }
         applyData.transfer_type = 'bank'
     }
+	// 选中提现到微信
+	const transferWeixin = ()=>{
+		let data = getWinxinOpenId();
+		
+		applyData.transfer_payee.open_id = data.wechat ? data.wechat : data.weapp;
+		applyData.transfer_payee.channel = data.wechat ? 'wechat' : 'weapp';
+		
+		applyData.transfer_type = 'wechatpay'
+	}
+	
+	// 选中提现到微信收款码
+	const transferWechatCode = ()=>{
+		if(!wechatCodeInfo.value){
+		    uni.showToast({ title: t('cashOutToWechatCodeTips'), icon: 'none' })
+		    return false
+		}
+		applyData.transfer_type = 'wechat_code'
+	}
 </script>
 
 <style lang="scss" scoped>

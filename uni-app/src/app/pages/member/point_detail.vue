@@ -11,8 +11,8 @@
             <view class="type-class">
 				<u-popup :show="typePopup" mode="top" @close="typePopup = false">
 					<view @touchmove.prevent.stop class="py-[22rpx]">
-						<view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[#FDF8F8] !text-primary font-500' : from_type == ''}" @click="searchTypeFn()">全部</view>
-						<view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[#FDF8F8] !text-primary font-500' : from_type == index}" v-for="(item,index) in pointType" @click="searchTypeFn(index,item)">{{ item.name }}</view>
+						<view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[var(--primary-color-light)] !text-primary font-500' : from_type == ''}" @click="searchTypeFn()">全部</view>
+						<view class="leading-[80rpx] text-[26rpx] text-[#333] px-[50rpx]" :class="{'bg-[var(--primary-color-light)] !text-primary font-500' : from_type == index}" v-for="(item,index) in pointType" @click="searchTypeFn(index,item)">{{ item.name }}</view>
 					</view>
 				</u-popup>
 			</view>

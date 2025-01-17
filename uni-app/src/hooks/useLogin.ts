@@ -1,4 +1,4 @@
-import { redirect, isWeixinBrowser, urlDeconstruction } from '@/utils/common'
+import { redirect, isWeixinBrowser, urlDeconstruction, currRoute } from '@/utils/common'
 import {
     weappLogin,
     updateWeappOpenid,
@@ -23,15 +23,13 @@ export function useLogin() {
 
             // #ifdef MP-WEIXIN
             if (!uni.getStorageSync('autoLoginLock') && uni.getStorageSync('openid') && config.login.is_bind_mobile) {
-                uni.setStorageSync('isbindmobile', true)
-                return
+                uni.setStorageSync('isbindmobile', true) // 强制绑定手机号标识
             }
             // #endif
 
             // #ifdef H5
             if (!uni.getStorageSync('autoLoginLock') && isWeixinBrowser() && uni.getStorageSync('openid') && config.login.is_bind_mobile) {
-                uni.setStorageSync('isbindmobile', true)
-                return
+                uni.setStorageSync('isbindmobile', true) // 强制绑定手机号标识
             }
             // #endif
 
@@ -70,6 +68,7 @@ export function useLogin() {
             // #endif
         })
     }
+
     /**
      * 执行登录后跳转
      */
@@ -97,7 +96,11 @@ export function useLogin() {
      */
     const authLogin = (params: any) => {
         let obj: any = {
-            code: params.code
+            code: params.code,
+            nickname: params.nickname,
+            headimg: params.headimg,
+            mobile: params.mobile,
+            mobile_code: params.mobile_code
         };
 
         // #ifdef MP-WEIXIN
@@ -126,7 +129,7 @@ export function useLogin() {
                     if (params.backFlag) handleLoginBack() // 一键登录返回
                 })
             } else {
-                // 目前业务不会执行到这里
+                // 强制获取昵称和头像，先存储起来
                 uni.setStorageSync('openid', res.data.openid)
                 uni.setStorageSync('unionid', res.data.unionid)
             }
@@ -153,11 +156,18 @@ export function useLogin() {
                             if (config.login.is_bind_mobile && memberInfo && !memberInfo.mobile) {
                                 uni.setStorageSync('isbindmobile', true)
                             }
+
+                            let loginBack = uni.getStorageSync('loginBack');
+                            if (loginBack && loginBack.url && currRoute() == 'app/pages/auth/index') {
+                                handleLoginBack(); // 跳转到上一个页面
+                            }
                         })
                     } else {
-                        // 目前业务不会执行到这里
+                        // 强制获取昵称和头像，先存储起来
                         uni.setStorageSync('openid', res.data.openid)
                         uni.setStorageSync('unionid', res.data.unionid)
+                        if(res.data.nickname) uni.setStorageSync('nickname', res.data.nickname)
+                        if(res.data.avatar) uni.setStorageSync('avatar', res.data.avatar)
                     }
                 })
             }
@@ -210,6 +220,10 @@ export function useLogin() {
         params.updateFlag = params.updateFlag || false; // updateFlag：更新oppenid
         params.backFlag = params.backFlag || false; // backFlag 控制一键登录返回
         params.successCallback = params.successCallback || null;
+        params.nickname = params.nickname || '';
+        params.headimg = params.headimg || '';
+        params.mobile = params.mobile || '';
+        params.mobile_code = params.mobile_code || '';
 
         // #ifdef MP-WEIXIN
         wx.login({
@@ -217,6 +231,10 @@ export function useLogin() {
                 if (res.code) {
                     params.updateFlag ? updateOpenid(res.code) : authLogin({
                         code: res.code,
+                        nickname: params.nickname,
+                        headimg: params.headimg,
+                        mobile: params.mobile,
+                        mobile_code: params.mobile_code,
                         backFlag: params.backFlag,
                         successCallback: params.successCallback
                     })

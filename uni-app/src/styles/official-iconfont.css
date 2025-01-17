@@ -1,8 +1,8 @@
 @font-face {
   font-family: "nc-iconfont"; /* Project id 4567203 */
-  src: url('//at.alicdn.com/t/c/font_4567203_8cgr9qgefz9.woff2?t=1734663182190') format('woff2'),
-       url('//at.alicdn.com/t/c/font_4567203_8cgr9qgefz9.woff?t=1734663182190') format('woff'),
-       url('//at.alicdn.com/t/c/font_4567203_8cgr9qgefz9.ttf?t=1734663182190') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_4567203_r6wh4er3yxa.woff2?t=1736824513371') format('woff2'),
+       url('//at.alicdn.com/t/c/font_4567203_r6wh4er3yxa.woff?t=1736824513371') format('woff'),
+       url('//at.alicdn.com/t/c/font_4567203_r6wh4er3yxa.ttf?t=1736824513371') format('truetype');
 }
 
 .nc-iconfont {
@@ -11,6 +11,90 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.nc-icon-a-xiangyouV6mm:before {
+  content: "\e849";
+}
+
+.nc-icon-a-xiangyouV6xx1:before {
+  content: "\e797";
+}
+
+.nc-icon-xiaoxiV6mm1:before {
+  content: "\e83c";
+}
+
+.nc-icon-guanbiV6xx2:before {
+  content: "\e857";
+}
+
+.nc-icon-guanbiV6xx-1:before {
+  content: "\e856";
+}
+
+.nc-icon-fenxiangV6mm2:before {
+  content: "\e854";
+}
+
+.nc-icon-fenxiangV6xx4:before {
+  content: "\e853";
+}
+
+.nc-icon-a-sousuoV6xx-34:before {
+  content: "\e855";
+}
+
+.nc-icon-sousuoV6xx11:before {
+  content: "\e851";
+}
+
+.nc-icon-a-shipinV6xx-28-1:before {
+  content: "\e850";
+}
+
+.nc-icon-a-gengduoV6xx-28:before {
+  content: "\e84f";
+}
+
+.nc-icon-fenxiangV6mm1:before {
+  content: "\e847";
+}
+
+.nc-icon-tupiandaohangpc:before {
+  content: "\e7dc";
+}
+
+.nc-icon-shequfenleiV6xx-1:before {
+  content: "\e84a";
+}
+
+.nc-icon-gouwuV6xx1:before {
+  content: "\e844";
+}
+
+.nc-icon-a-xiangyouV6xx2:before {
+  content: "\e848";
+}
+
+.nc-icon-dianxinxiV6xx1:before {
+  content: "\e842";
+}
+
+.nc-icon-a-dianzanV6xx-36:before {
+  content: "\e7df";
+}
+
+.nc-icon-fenxiangV6xx3:before {
+  content: "\e846";
+}
+
+.nc-icon-xiaoxiV6xx1:before {
+  content: "\e83d";
+}
+
+.nc-icon-liebiaoV6xx1:before {
+  content: "\e841";
 }
 
 .nc-icon-daifujineV6xx:before {

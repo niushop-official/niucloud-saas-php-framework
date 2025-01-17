@@ -38,7 +38,7 @@
 	import useDiyStore from '@/app/stores/diy';
     import { img } from '@/utils/common';
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+	const props = defineProps(['component', 'index']);
 
 	const diyStore = useDiyStore();
 
@@ -86,13 +86,6 @@
 
         return style;
     });
-
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 
     onMounted(() => {
         refresh();

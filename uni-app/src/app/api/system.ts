@@ -71,6 +71,12 @@ export function fetchBase64Image(data: AnyObject) {
 }
 
 /**
+ * 上传视频
+ */
+export function uploadVideo(data: AnyObject) {
+    return request.upload('file/video', data, { showErrorMessage: true })
+}
+/**
  * 获取站点信息
  */
 export function getSiteInfo() {

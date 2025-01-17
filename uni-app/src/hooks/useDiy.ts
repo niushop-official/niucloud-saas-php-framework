@@ -1,5 +1,5 @@
 import { ref, reactive, computed } from 'vue';
-import { onLoad, onShow, onHide, onPullDownRefresh, onPageScroll, onUnload } from '@dcloudio/uni-app';
+import { onLoad, onShow, onHide, onPageScroll, onUnload } from '@dcloudio/uni-app';
 import { img, handleOnloadParams } from '@/utils/common';
 import { getDiyInfo } from '@/app/api/diy';
 import useDiyStore from '@/app/stores/diy';
@@ -8,12 +8,12 @@ export function useDiy(params: any = {}) {
 
     const loading = ref(true);
     const diyStore = useDiyStore();
-    const pullDownRefreshCount = ref(0)
 
     const id = ref(0)
     const name = ref(params.name || '')
     const template = ref('')
-    let currRoute = "" //当前路由
+    const currRoute = ref('') //当前路由
+    const requestData: any = reactive({});
 
     // 自定义页面 数据
     const diyData = reactive({
@@ -43,11 +43,11 @@ export function useDiy(params: any = {}) {
             if (data.value.global.pageStartBgColor && data.value.global.pageEndBgColor) style += `background:linear-gradient(${ data.value.global.pageGradientAngle },${ data.value.global.pageStartBgColor },${ data.value.global.pageEndBgColor });`;
             else style += 'background-color:' + data.value.global.pageStartBgColor + ';';
         }
-		if(data.value.global.bottomTabBarSwitch){
-			style += 'min-height:calc(100vh - 50px);';
-		}else{
-			style += 'min-height:calc(100vh);';
-		}
+        if (data.value.global.bottomTabBarSwitch) {
+            style += 'min-height:calc(100vh - 50px);';
+        } else {
+            style += 'min-height:calc(100vh);';
+        }
         if (data.value.global.bgUrl) {
             style += `background-image:url('${ img(data.value.global.bgUrl) }');`;
         }
@@ -86,14 +86,14 @@ export function useDiy(params: any = {}) {
         onShow(() => {
             /******** 解决跳转自定义页面空白问题-第二步-start **********/
             let curPage: any = getCurrentPages();
-            currRoute = curPage[curPage.length - 1] ? curPage[curPage.length - 1].route : ''; //获取当前页面的路由
+            currRoute.value = curPage[curPage.length - 1] ? curPage[curPage.length - 1].route : ''; //获取当前页面的路由
             let urlArr = []
             if (uni.getStorageSync('diyPageBlank')) {
                 urlArr = uni.getStorageSync('diyPageBlank');
             }
-            if (!urlArr.length || urlArr.length && urlArr.indexOf(currRoute) == -1) {
+            if (!urlArr.length || urlArr.length && urlArr.indexOf(currRoute.value) == -1) {
                 diyStore.topFixedStatus = 'home'
-            } else if (urlArr.length && urlArr.indexOf(currRoute) != -1) {
+            } else if (urlArr.length && urlArr.indexOf(currRoute.value) != -1) {
                 diyStore.topFixedStatus = 'diy'
             }
             /******** 解决跳转自定义页面空白问题-第二步-end **********/
@@ -107,12 +107,13 @@ export function useDiy(params: any = {}) {
                     name: name.value,
                     template: template.value
                 }).then((res: any) => {
-                    let requestData = res.data;
+                    Object.assign(requestData, res.data);
                     if (requestData.value) {
                         diyData.pageMode = requestData.mode;
                         diyData.title = requestData.title;
 
-                        let sources = JSON.parse(requestData.value);
+                        let sources = JSON.parse(requestData.value); // todo diy的结构应该后台处理好，前端就不需要再转换了
+
                         diyData.global = sources.global;
                         diyData.value = sources.value;
                         diyData.value.forEach((item: any, index) => {
@@ -149,7 +150,6 @@ export function useDiy(params: any = {}) {
 
                 });
             }
-
         })
     }
 
@@ -166,7 +166,7 @@ export function useDiy(params: any = {}) {
             if (url.length) {
                 url = Array.from(new Set(url))
                 url.forEach((item, index, arr) => {
-                    if (item == currRoute) {
+                    if (item == currRoute.value) {
                         arr.splice(index, 1);
                     }
                 })
@@ -174,7 +174,7 @@ export function useDiy(params: any = {}) {
 
             // 当diyStore.topFixedStatus == "diy"时,存储到diyPageBlank缓存中
             if (diyStore.topFixedStatus == "diy") {
-                url.push(currRoute);
+                url.push(currRoute.value);
             }
             uni.setStorageSync('diyPageBlank', url);
             /******** 解决跳转自定义页面空白问题-第一步 -end **********/
@@ -190,14 +190,6 @@ export function useDiy(params: any = {}) {
         })
     }
 
-    // 监听下拉刷新事件
-    const onPullDownRefreshLifeCycle = () => {
-        onPullDownRefresh(() => {
-            pullDownRefreshCount.value++;
-            uni.stopPullDownRefresh();
-        })
-    }
-
     // 监听滚动事件
     const onPageScrollLifeCycle = () => {
         onPageScroll((e) => {
@@ -209,7 +201,6 @@ export function useDiy(params: any = {}) {
 
     return {
         getLoading,
-        pullDownRefreshCount,
         data: data.value,
         isShowTopTabbar,
         pageStyle,
@@ -217,7 +208,6 @@ export function useDiy(params: any = {}) {
         onShow: onShowLifeCycle,
         onHide: onHideLifeCycle,
         onUnload: onUnloadLifeCycle,
-        onPullDownRefresh: onPullDownRefreshLifeCycle,
         onPageScroll: onPageScrollLifeCycle,
     }
 }

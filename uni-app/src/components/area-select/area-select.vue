@@ -2,7 +2,6 @@
     <u-popup :show="show" @close="show = false" mode="bottom" :round="10">
         <view @touchmove.prevent.stop class="popup-common">
         <view class="title">请选择地区</view>
-        
             <view class="flex p-[30rpx] pt-[0] text-sm font-500">
                 <view v-if="areaList.province.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'province'}" @click="currSelect = 'province'">
                     <view v-if="selected.province">{{ selected.province.name }}</view>
@@ -40,14 +39,14 @@
 <script setup lang="ts">
     import { ref, reactive, watch } from 'vue'
     import { getAreaListByPid, getAreaByCode } from '@/app/api/system'
-    
+
     const prop = defineProps({
         areaId: {
             type: Number,
             default: 0
         }
     })
-    
+
     const show = ref(false)
     const areaList = reactive({
         province: [],
@@ -55,17 +54,17 @@
         district: []
     })
     const currSelect = ref('province')
-    
+
     const selected = reactive({
         province: null,
         city: null,
         district: null
     })
-    
+
     getAreaListByPid(0).then(({ data }) => {
         areaList.province = data
     }).catch()
-    
+
     watch(() => prop.areaId, (nval, oval)=> {
         if (nval && !oval) {
             getAreaByCode(nval).then(({ data }) => {
@@ -77,7 +76,7 @@
     },{
 		immediate:true
 	})
-    
+
     /**
      * 监听省变更
      */
@@ -100,7 +99,7 @@
             }
         }).catch()
     }, { deep: true })
-    
+
     /**
      * 监听市变更
      */
@@ -129,9 +128,9 @@
         }
 
     }, { deep: true })
-    
+
     const emits = defineEmits(['complete'])
-    
+
     /**
      * 监听区县变更
      */
@@ -140,13 +139,13 @@
             currSelect.value = 'district'
             emits('complete', selected)
             show.value = false
-        } 
+        }
     }, { deep: true })
-    
+
     const open = ()=> {
         show.value = true
     }
-    
+
     defineExpose({
     	open
     })

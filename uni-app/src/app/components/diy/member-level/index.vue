@@ -112,7 +112,7 @@
 	import { t } from '@/locale'
 	import useDiyStore from '@/app/stores/diy'
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+	const props = defineProps(['component', 'index']);
 	const diyStore = useDiyStore();
 	const memberStore = useMemberStore()
 
@@ -132,13 +132,6 @@
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
 		return style;
 	})
-
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 
     // 获取会员等级列表
     const upgradeGrowth = ref(0) // 升级下级会员所需的成长值
@@ -160,6 +153,7 @@
 			return wap_member_info.value||{};
 		}
 	})
+
 	const list:any = computed(() => {
 		// 装修模式
 		if (diyStore.mode == 'decorate') {
@@ -170,11 +164,12 @@
 		}
 
 	})
+
 	const getMemberLevelFn = (list:any)=> {
 		if (!list || !list.length) return false;
 		let isSet = false;
 		// 刚进来处理会员等级数据
-		if (info.value && list && list.length) {
+		if (info.value && info.value.member_level && list && list.length) {
 			list.forEach((item: any, index: any) => {
 				if (item.level_id == info.value.member_level) {
 					currIndex.value = index + 1;
@@ -206,7 +201,7 @@
 		} else {
 			// 当前会员没有会员等级，则展示会员等级中的最后一个等级
 			info.value.member_level_name = list[0].level_name;
-			upgradeGrowth.value = list[0].growth - info.value.growth;
+			upgradeGrowth.value = list[0].growth - (info.value.growth || 0);
 			afterCurrIndex.value = 0;
 			currIndex.value = 1;
 		}

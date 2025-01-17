@@ -66,6 +66,9 @@ const useSystemStore = defineStore('system', {
                     this.mapConfig.is_open = data.map_config.is_open;
                     this.mapConfig.valid_time = data.map_config.valid_time;
                     uni.setStorageSync('mapConfig', this.mapConfig);
+					
+					// 主题色
+					uni.setStorageSync('theme_color_list', data.theme_list);
 
                     // 站点信息
                     this.site = data.site_info

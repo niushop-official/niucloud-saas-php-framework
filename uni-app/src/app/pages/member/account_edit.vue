@@ -28,7 +28,7 @@
 
                 <block v-if="formData.account_type == 'alipay'">
                     <view class="text-center text-[32rpx] font-500 mt-[20rpx] text-[#333] leading-[42rpx]">{{ formData.account_id ? t('editAlipayAccount') : t('addAlipayAccount') }}</view>
-                    <view class="text-center text-[28rpx] mt-[16rpx] text-[var(--text-color-light9)] leading-[36rpx]">{{ formData.account_id ? t('editAlipayAccountTips') : t('addAlipayAccountTips') }}</view>
+                    <!-- <view class="text-center text-[28rpx] mt-[16rpx] text-[var(--text-color-light9)] leading-[36rpx]">{{ formData.account_id ? t('editAlipayAccountTips') : t('addAlipayAccountTips') }}</view> -->
 
                     <view class="mt-[70rpx] px-[10rpx]">
                         <u-form labelPosition="left" :model="formData"  labelWidth="200rpx" errorType='toast' :rules="rules" ref="formRef">
@@ -42,9 +42,51 @@
                                     <u-input v-model.trim="formData.account_no" border="none" maxlength="30" fontSize="28rpx" clearable :placeholder="t('alipayAccountNoPlaceholder')"/>
                                 </u-form-item>
                             </view>
+							<view class="mt-[16rpx]">
+							    <u-form-item label="收款码" prop="transfer_payment_code">
+                                    <view class="relative w-[160rpx] h-[160rpx]" v-if="formData.transfer_payment_code">
+                                        <image  class="w-[160rpx] h-[160rpx]" :src="img(formData.transfer_payment_code)" mode="aspectFill" @click="previewImageFn(img(formData.transfer_payment_code))"></image>
+                                        <view class="absolute top-0 right-0 bg-[#373737] flex justify-end h-[28rpx] w-[28rpx] rounded-bl-[40rpx]" @click="collectionCodeDeleteFn">
+                                            <text class="nc-iconfont nc-icon-guanbiV6xx !text-[20rpx] mt-[2rpx] mr-[2rpx] text-[#fff]"></text>
+                                        </view>
+                                    </view>
+									<u-upload v-else @afterRead="collectionCodeAfterRead" @delete="collectionCodeDeleteFn" :maxCount="1"></u-upload>
+							    </u-form-item>
+							</view>
                         </u-form>
                     </view>
                 </block>
+				
+				<block v-if="formData.account_type == 'wechat_code'">
+				    <view class="text-center text-[32rpx] font-500 mt-[20rpx] text-[#333] leading-[42rpx]">{{ formData.account_id ? t('editWechatCodeAccount'): t('addWechatCodeAccount')  }}</view>
+				    <!-- <view class="text-center text-[28rpx] mt-[16rpx] text-[var(--text-color-light9)] leading-[36rpx]">{{ formData.account_id ? t('editWechatCodeAccountTips') : t('addWechatCodeAccountTips') }}</view> -->
+				
+				    <view class="mt-[70rpx] px-[10rpx]">
+				        <u-form labelPosition="left" :model="formData"  labelWidth="200rpx" errorType='toast' :rules="rules" ref="formRef">
+                            <view>
+				                <u-form-item :label="t('alipayRealname')" prop="realname">
+				                    <u-input v-model.trim="formData.realname" maxlength="30" border="none" fontSize="28rpx" clearable :placeholder="t('alipayRealnamePlaceholder')"/>
+				                </u-form-item>
+				            </view>
+				            <view class="mt-[16rpx]">
+				                <u-form-item :label="t('wechatCodeAccountNo')" prop="account_no">
+				                    <u-input v-model.trim="formData.account_no" border="none" maxlength="30" fontSize="28rpx" clearable :placeholder="t('wechatCodeAccountNoPlaceholder')"/>
+				                </u-form-item>
+				            </view>
+							<view class="mt-[16rpx]">
+							    <u-form-item label="收款码" prop="transfer_payment_code">
+                                    <view class="relative w-[160rpx] h-[160rpx]" v-if="formData.transfer_payment_code">
+                                        <image  class="w-[160rpx] h-[160rpx]" :src="img(formData.transfer_payment_code)" mode="aspectFill" @click="previewImageFn(img(formData.transfer_payment_code))"></image>
+                                        <view class="absolute top-0 right-0 bg-[#373737] flex justify-end h-[28rpx] w-[28rpx] rounded-bl-[40rpx]" @click="collectionCodeDeleteFn">
+                                            <text class="nc-iconfont nc-icon-guanbiV6xx !text-[20rpx] mt-[2rpx] mr-[2rpx] text-[#fff]"></text>
+                                        </view>
+                                    </view>
+									<u-upload v-else @afterRead="collectionCodeAfterRead" @delete="collectionCodeDeleteFn" :maxCount="1"></u-upload>
+							    </u-form-item>
+							</view>
+				        </u-form>
+				    </view>
+				</block>
             </view>
 			<view class="common-tab-bar-placeholder"></view>
 			<view class="common-tab-bar fixed left-[var(--sidebar-m)] right-[var(--sidebar-m)] bottom-[0]">
@@ -61,7 +103,8 @@
     import { onLoad } from '@dcloudio/uni-app'
     import { getCashoutAccountInfo, addCashoutAccount, editCashoutAccount, deleteCashoutAccount } from '@/app/api/member'
     import { t } from '@/locale'
-    import { redirect } from '@/utils/common'
+	import { uploadImage } from '@/app/api/system'
+    import { redirect, img } from '@/utils/common'
 
     const loading = ref(false)
     const formRef: any = ref(null)
@@ -72,7 +115,8 @@
         account_type: 'bank',
         bank_name: '',
         realname: '',
-        account_no: ''
+        account_no: '',
+		transfer_payment_code: ''
     })
 
     const rules = computed(() => {
@@ -89,12 +133,16 @@
                 message: t('bankNamePlaceholder'),
                 trigger: ['blur', 'change'],
             },
-            'account_no': {
-                type: 'string',
-                required: true,
-                message: formData.account_type == 'bank' ? t('bankAccountNoPlaceholder') : t('alipayAccountNoPlaceholder'),
-                trigger: ['blur', 'change'],
-            }
+            'transfer_payment_code': {
+				validator(rule, value, callback) {
+					if (!value || !value.length){
+						let tips = formData.account_type == 'alipay' ? t('alipayAccountImgPlaceholder') : t('wechatCodeAccountImgPlaceholder');
+						callback(new Error(tips))
+					} else {
+						callback()
+					}
+				}
+			}
         }
     })
 
@@ -102,7 +150,7 @@
         data.type && (formData.account_type = data.type)
         data.mode && (mode.value = data.mode)
         if (data.id) {
-            formData.account_id = data.id||''
+            formData.account_id = data.id || ''
 			if(formData.account_id){
 				uni.setNavigationBarTitle({
 				    title:t('editAccountTitle')
@@ -138,12 +186,38 @@
             })
         })
     }
+	
+	const collectionCodeAfterRead = (e)=>{
+		uploadImage({
+			filePath: e.file.url,
+			name: 'file'
+		}).then(res => {
+			if(res.data){
+				formData.transfer_payment_code = '';
+				formData.transfer_payment_code = res.data.url;
+			}
+		}).catch(() => {
+		})
+	}
+	
+	// 删除图片
+	const collectionCodeDeleteFn = (e) =>{
+		formData.transfer_payment_code = '';
+	}
 
     const handleDelete = () => {
         deleteCashoutAccount(formData.account_id).then(() => {
             redirect({ url: '/app/pages/member/account', mode: 'redirectTo' })
         })
     }
+	
+	// 预览
+	const previewImageFn = (url:any) => {
+		uni.previewImage({
+			current: 0,
+			urls: [url]
+		});
+	}
 </script>
 
 <style lang="scss" scoped>

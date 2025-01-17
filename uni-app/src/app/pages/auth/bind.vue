@@ -66,7 +66,7 @@
 	const headerHeight = computed(()=>{
 		return Object.keys(menuButtonInfo).length ? pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) + pxToRpx(8)+'rpx':'auto'
 	})
-	
+
     const memberStore = useMemberStore()
     const info = computed(() => memberStore.info)
 

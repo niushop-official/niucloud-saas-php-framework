@@ -28,7 +28,7 @@
 	import useDiyStore from '@/app/stores/diy';
     import { img } from '@/utils/common';
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+	const props = defineProps(['component', 'index']);
 	const systemInfo = uni.getSystemInfoSync();
 
 	const diyStore = useDiyStore();
@@ -40,7 +40,7 @@
 			return props.component;
 		}
 	})
-	
+
 	// 兼容通屏样式
 	const imageAdsTempStyle = ()=> {
 		let style = "";
@@ -53,7 +53,7 @@
 			    style = 'margin-top: -44.5px;';
 			}
 			// #endif
-			
+
 			// #ifdef MP
 			// 图文导航开启沉浸式且导航栏开启时，导航栏不占位
 			uni.setStorageSync('imageAdsSameScreen', true);
@@ -85,13 +85,6 @@
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
 		return style;
 	})
-
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 
 	const imgHeight = computed(() => {
 		return (diyComponent.value.imageHeight * 2) + 'rpx';

@@ -3,13 +3,13 @@
 		<view class="u-navbar" :class="{'fixed': props.scrollBool != -1, 'absolute': props.scrollBool == -1}" :style="{ backgroundColor: bgColor}">
 			<view class="navbar-inner" :style="{ width: '100%', height: placeholderHeight + 'px' }">
 				<view v-if="topStatusBarData.style == 'style-1'" class="content-wrap" :class="[topStatusBarData.textAlign]" :style="navbarInnerStyle">
-					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+					<view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<view class="title-wrap" :style="styleOneFontSize">
 						{{ data.title }}
 					</view>
 				</view>
 				<view v-if="topStatusBarData.style == 'style-2'" class="content-wrap"  :style="navbarInnerStyle" @click="diyStore.toRedirect(topStatusBarData.link)">
-					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+					<view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<view class="title-wrap" :style="{ color: topStatusBarData.textColor }">
 						<view>
 							<image :src="img(topStatusBarData.imgUrl)" mode="heightFix"></image>
@@ -19,7 +19,7 @@
 				</view>
 
 				<view v-if="topStatusBarData.style == 'style-3'" :style="navbarInnerStyle" class="content-wrap">
-					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+					<view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<view class="title-wrap" @click="diyStore.toRedirect(topStatusBarData.link)">
 						<image :src="img(topStatusBarData.imgUrl)" mode="heightFix"></image>
 					</view>
@@ -31,7 +31,7 @@
 				</view>
 
 				<view v-if="topStatusBarData.style == 'style-4'" :style="navbarInnerStyle" class="content-wrap">
-					<view v-if="isBack && isBackShow" class="back-wrap -ml-[16rpx] text-[27px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+					<view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
 					<text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[28rpx]" :style="{ color: topStatusBarData.textColor }"></text>
 					<view class="title-wrap"  @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-if="systemStore.diyAddressInfo">{{ systemStore.diyAddressInfo.community }}</view>
 					<view class="title-wrap"  @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-else>{{ systemStore.defaultPositionAddress }}</view>
@@ -113,7 +113,7 @@ const topStatusBarData = computed(() => {
 const navbarInnerStyle = computed(() => {
 	let style = '';
 
-	if(props.isBack && isBackShow.value){
+	if(props.isBack){
 		style += 'padding-left: 30rpx;';//30=>右边留边 44=>箭头宽度 10=>箭头的右maring
 		if(topStatusBarData.value.style == 'style-1') //样式一需要居中需要有右边padding辅助
 			style += 'padding-right:' + (40+30+10) + 'rpx;'; //30=>左边留边 44=>箭头宽度 10=>箭头的右maring
@@ -191,27 +191,31 @@ if(componentsScrollVal){
 /******************************* 存储滚动值-end ***********************/
 
 /******************************* 返回按钮-start ***********************/
-const isBackShow = ref(false);
+// const isBackShow = ref(false);
 let pages = getCurrentPages();
 
 // 返回按钮的函数
 const goBack = () => {
 	// 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
-	if(pages.length ==  1 && pages[0].route == 'app/pages/auth/index'){
-		uni.getStorage({
-		    key: 'loginBack',
-		    success: (res: any) => {
-		        res ? redirect(
-		            {
-		                ...res.data,
-		                mode: 'redirectTo'
-		            }
-		        ) : redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
-		    },
-		    fail: (res) => {
-		        redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
-		    }
-		})
+	if (pages.length === 1) {
+		if (pages[0].route === 'app/pages/auth/index') {
+				uni.getStorage({
+					key: 'loginBack',
+					success: (res: any) => {
+					    res ? redirect(
+					        {
+					            ...res.data,
+					            mode: 'redirectTo'
+					        }
+					    ) : redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
+					},
+					fail: (res) => {
+					    redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
+					}
+			});
+		} else {
+			redirect({ url: '/app/pages/index/index', mode: 'switchTab' });
+		}
 	}else{
 		// 如果自定义了点击返回按钮的函数，则执行，否则执行返回逻辑
 		if (typeof props.customBack === 'function') {
@@ -259,12 +263,12 @@ const navbarPlaceholderHeight = () => {
 let imageAdsSameScreen = ref(false);
 onMounted(() => {
 	navbarPlaceholderHeight();
-	if (pages.length > 1) {
-		isBackShow.value = true;
-		// 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
-	}else if(pages.length ==  1 && pages[0].route == 'app/pages/auth/index'){
-		isBackShow.value = true;
-	}
+	// if (pages.length > 1) {
+	// 	isBackShow.value = true;
+	// 	// 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
+	// }else if(pages.length ==  1 && pages[0].route == 'app/pages/auth/index'){
+	// 	isBackShow.value = true;
+	// }
 	// 刷新定位
 	locationVal.refresh();
 	

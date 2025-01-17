@@ -20,7 +20,7 @@
 				<view class="mt-[181rpx]">
 
 					<!-- #ifdef H5 -->
-					<!-- 微信公众号快捷登录 -->
+					<!-- 微信公众号快捷登录，开启自动注册的情况下才能使用 -->
 					<view v-if="isWeixinBrowser() && loginConfig.is_auth_register" class="w-full flex items-center justify-center mb-[40rpx]">
 						<button class="w-[630rpx] h-[88rpx] !mx-[0] !bg-[var(--primary-color)] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" @click="oneClickLogin()">{{t('quickLoginOrLogout')}}</button>
 					</view>
@@ -32,8 +32,8 @@
 					<!-- 优先显示第三方登录/注册 -->
 					<view class="w-full flex items-center justify-center mb-[40rpx]" v-if="loginConfig.is_auth_register">
 
-						<!-- 开启强制绑定手机号或者手机号登录的情况 -->
-						<button v-if="!wapMemberMobile && loginConfig.is_bind_mobile"
+						<!-- 开启强制绑定手机号或者手机号登录的情况，排除强制获取用户信息的情况（is_force_access_user_info为0） -->
+						<button v-if="!wapMemberMobile && loginConfig.is_bind_mobile && !loginConfig.is_force_access_user_info"
 						class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]"
 						:open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy">{{t('quickLoginOrLogout')}}</button>
 
@@ -44,7 +44,7 @@
 
 					<!-- 未开启第三方登录/注册，但是开启了手机号登录，则一键手机号登录/注册 -->
 					<view class="w-full flex items-center justify-center mb-[40rpx]" v-else-if="!loginConfig.is_auth_register && loginConfig.is_mobile">
-						<button v-if="!wapMemberMobile" class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" :open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy">{{t('quickLoginOrLogout')}}</button>
+						<button v-if="!wapMemberMobile" class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" :open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy('mobileAuth')">{{t('quickLoginOrLogout')}}</button>
 						<button v-else class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" @click="oneClickLogin()">{{t('quickLoginOrLogout')}}</button>
 					</view>
 
@@ -112,6 +112,13 @@
 				</view>
 		    </view>
 		</uni-popup>
+
+		<!-- #ifdef MP-WEIXIN -->
+		<information-filling ref="infoFill"></information-filling>
+		<!-- #endif -->
+
+		<!-- 强制绑定手机号 -->
+		<bind-mobile ref="bindMobileRef" />
 	</view>
 </template>
 
@@ -125,7 +132,8 @@
 	import { onLoad,onShow } from '@dcloudio/uni-app'
 	import { topTabar } from '@/utils/topTabbar'
 	import useSystemStore from '@/stores/system'
-	
+	import { getMobile } from '@/app/api/member'
+
 	let menuButtonInfo: any = {};
 	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
@@ -162,15 +170,25 @@
 		return !configStore.login.is_auth_register;
 	});
 	const loginLoading = ref(false)
-	
+
+	const infoFill: any = ref(false)
+
 	const popupRef = ref()
+
 	const dialogClose =()=>{
 		popupRef.value.close();
 	}
-	const dialogConfirm =()=>{
-		isAgree.value=true
+
+	const dialogConfirm =()=> {
+		isAgree.value = true
 		popupRef.value.close();
 		oneClickLogin()
+	}
+
+	// 强制绑定手机号
+	const bindMobileRef: any = ref(null)
+	const bindMobileFn = () =>{
+		bindMobileRef.value.open()
 	}
 
 	onLoad(async ()=> {
@@ -230,17 +248,21 @@
 	})
 
 	// 检测是否同意小程序隐私协议和登录政策协议
-	const checkWxPrivacy = ()=> {
+	const checkWxPrivacy = (status: any = '')=> {
 		if (!isAgree.value && configStore.login.agreement_show) {
-			popupRef.value.open();
-			// uni.showToast({ title: t('isAgreeTips'), icon: 'none' })
+			// 针对微信小程序获取手机号特殊处理
+			if (status) {
+				uni.showToast({ title: t('isAgreeTips'), icon: 'none' })
+			} else {
+				popupRef.value.open();
+			}
 			return true;
 		}
 		return false;
 	}
 
 	// 一键登录
-	const oneClickLogin = (callback:any = null)=> {
+	const oneClickLogin = (callback:any = null,data:any = null)=> {
 		if (checkWxPrivacy()) return;
 
 		if (loginLoading.value) return
@@ -258,21 +280,40 @@
 
 		// 第三方平台自动登录
 		// #ifdef MP
-		weappLogin(callback)
+		weappLogin(callback, data)
 		// #endif
 	}
 
 	// 微信公众登录
 	const wechatLogin = ()=> {
 		if (isWeixinBrowser()) {
-		   login.getAuthCode({ scopes : 'snsapi_userinfo' })
+			let loginConfig = uni.getStorageSync('login_config')
+			if (loginConfig.is_auth_register) {
+				// 开启强制绑定手机号，必须填写才能注册
+				if (loginConfig.is_bind_mobile) {
+					bindMobileFn();
+				} else if (loginConfig.is_force_access_user_info) {
+					// 开启强制获取用户信息
+					login.getAuthCode({ scopes: 'snsapi_userinfo' }) // 强制获取用户信息
+				} else if (!loginConfig.is_force_access_user_info) {
+					// 关闭强制获取用户信息，昵称随机生成
+					login.getAuthCode({ scopes: 'snsapi_base' }) // 静默获取
+				}
+			}
 			loginLoading.value = false
 		}
 	}
 
 	// 微信小程序登录
-	const weappLogin = (successCallback: any)=> {
-		login.getAuthCode({ backFlag: true, successCallback })
+	const weappLogin = (successCallback: any,data: any)=> {
+		let loginConfig = uni.getStorageSync('login_config')
+		if(loginConfig.is_auth_register && loginConfig.is_force_access_user_info) {
+			infoFill.value.show = true
+			loginLoading.value = false
+		}else {
+			data = data || {};
+			login.getAuthCode({ backFlag: true, successCallback, ...data })
+		}
 	}
 
 	const agreeChange = () => {
@@ -288,7 +329,7 @@
 					uni.setStorageSync('wap_member_mobile', memberInfo.value.mobile) // 存储会员手机号，防止重复请求微信获取手机号接口
 				}
 				loginLoading.value = false
-			});
+			}, { mobile_code: e.detail.code });
 		}
 
 		if (e.detail.errno == 104) {

@@ -93,6 +93,7 @@
 
 	const cashOutConfigObj: any = reactive({})
 	const rechargeConfigObj: any = reactive({})
+
 	// 监听 siteAddons 变化
 	watch(
 	  () => systemStore.siteAddons,
@@ -109,6 +110,7 @@
 	    }
 	  }
 	);
+
 	onShow(() => {
         cashOutConfig().then((res: any) => {
             for (let key in res.data) {

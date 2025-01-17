@@ -57,6 +57,16 @@ export function bindMobile(data: AnyObject) {
 }
 
 /**
+ * 获取手机号
+ */
+export function getMobile(data: AnyObject) {
+    if (uni.getStorageSync('pid')) {
+        data.pid = uni.getStorageSync('pid');
+    }
+    return request.put('member/getmobile', data, { showErrorMessage: true })
+}
+
+/**
  * 提现转账方式
  */
 export function cashOutTransferType() {

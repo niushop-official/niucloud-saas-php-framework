@@ -26,52 +26,50 @@
                 <view class="px-[20rpx] box-border">
                     <button class="bg-[#FFB4B1] !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-if="friendsInfo.status == 2 ">{{ t('finish') }}</button>
                     <button class="bg-[#FFB4B1] !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-else-if="friendsInfo.status == -1">{{ t('close') }}</button>
-                    <button class="primary-btn-bg !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-else :loading="operateLoading" @click="save">{{ friendsInfo.config.pay_button_name ?  friendsInfo.config.pay_button_name : t('payGenerously') }}</button>
+                    <button class="botton-color !text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" hover-class="none" v-else :loading="operateLoading" @click="save">{{ friendsInfo.config.pay_button_name ?  friendsInfo.config.pay_button_name : t('payGenerously') }}</button>
                 </view>
                 <view class="mt-[20rpx] flex items-baseline justify-center text-[var(--text-color-light9)]" @click="redirect({url: '/app/pages/index/index'})">
                     <text class="text-[24rpx] mr-[6rpx]">返回首页</text>
                 </view>
             </view>
-            <view class="card-template sidebar-margin mb-[var(--top-m)]">
-                <template v-if="friendsInfo.config.pay_info_switch">
-                    <template v-if="JSON.stringify(friendsInfo.trade_info) !== '[]' && friendsInfo.trade_info.item_list.length">
-                        <view class="flex justify-between items-center  mb-[30rpx]">
-                            <view class="text-[30rpx] text-[#333] font-500">{{ t('helpPayInfo') }}</view>
-                            <view class="flex-shrink-0" @click="handleMessage" v-if="friendsInfo.config.pay_explain_switch">
-                                <text class="mr-[8rpx] text-[24rpx]">{{ friendsInfo.config.pay_explain_title }}</text>
-                                <text class="nc-iconfont nc-icon-jichuxinxiV6xx text-[26rpx]"></text>
-                            </view>
+            <view class="card-template sidebar-margin mb-[var(--top-m)]" v-if="friendsInfo.config.pay_info_switch">
+                <template v-if="JSON.stringify(friendsInfo.trade_info) !== '[]' && friendsInfo.trade_info.item_list.length">
+                    <view class="flex justify-between items-center  mb-[30rpx]">
+                        <view class="text-[30rpx] text-[#333] font-500">{{ t('helpPayInfo') }}</view>
+                        <view class="flex-shrink-0" @click="handleMessage" v-if="friendsInfo.config.pay_explain_switch">
+                            <text class="mr-[8rpx] text-[24rpx]">{{ friendsInfo.config.pay_explain_title }}</text>
+                            <text class="nc-iconfont nc-icon-jichuxinxiV6xx text-[26rpx]"></text>
                         </view>
-                        <view class="border-0 border-solid border-b-[1rpx] border-[#f6f6f6] mb-[20rpx]">
-                            <view v-for="(item, index) in friendsInfo.trade_info.item_list" class="flex justify-between" :class="{' mb-[34rpx]': (index + 1) != friendsInfo.trade_info.length }">
-                                <view class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden flex-shrink-0">
-                                    <u--image class="overflow-hidden" radius="var(--goods-rounded-big)" width="170rpx" height="170rpx"  :src="img(item.item_image ? item.item_image : '')" model="aspectFill">
-                                        <template #error>
-                                            <image class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden" :src="img('static/resource/images/diy/shop_default.jpg')" mode="aspectFill" />
-                                        </template>
-                                    </u--image>
+                    </view>
+                    <view class="border-0 border-solid border-b-[1rpx] border-[#f6f6f6] mb-[20rpx]">
+                        <view v-for="(item, index) in friendsInfo.trade_info.item_list" class="flex justify-between" :class="{' mb-[34rpx]': (index + 1) != friendsInfo.trade_info.length }">
+                            <view class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden flex-shrink-0">
+                                <u--image class="overflow-hidden" radius="var(--goods-rounded-big)" width="170rpx" height="170rpx"  :src="img(item.item_image ? item.item_image : '')" model="aspectFill">
+                                    <template #error>
+                                        <image class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden" :src="img('static/resource/images/diy/shop_default.jpg')" mode="aspectFill" />
+                                    </template>
+                                </u--image>
+                            </view>
+                            <view class="ml-[20rpx] flex flex-1 flex-col justify-between">
+                                <view>
+                                    <view class="text-[28rpx] using-hidden leading-[40rpx] text-[#333]">{{ item.item_name }}</view>
+                                    <view class="text-[24rpx] mt-[14rpx] text-[var(--text-color-light9)] using-hidden leading-[28rpx]" v-if="item.item_sub_name ">{{ item.item_sub_name }}</view>
                                 </view>
-                                <view class="ml-[20rpx] flex flex-1 flex-col justify-between">
-                                    <view>
-                                        <view class="text-[28rpx] using-hidden leading-[40rpx] text-[#333]">{{ item.item_name }}</view>
-                                        <view class="text-[24rpx] mt-[14rpx] text-[var(--text-color-light9)] using-hidden leading-[28rpx]" v-if="item.item_sub_name ">{{ item.item_sub_name }}</view>
+                                <view class="flex justify-between items-baseline">
+                                    <view class="price-font text-[#FF4142]">
+                                        <text class="text-[24rpx]">￥</text>
+                                        <text class="text-[40rpx] font-500">{{ parseFloat(item.item_price).toFixed(2).split('.')[0] }}</text>
+                                        <text class="text-[24rpx] font-500">.{{ parseFloat(item.item_price).toFixed(2).split('.')[1] }}</text>
                                     </view>
-                                    <view class="flex justify-between items-baseline">
-                                        <view class="price-font text-[#FF4142]">
-                                            <text class="text-[24rpx]">￥</text>
-                                            <text class="text-[40rpx] font-500">{{ parseFloat(item.item_price).toFixed(2).split('.')[0] }}</text>
-                                            <text class="text-[24rpx] font-500">.{{ parseFloat(item.item_price).toFixed(2).split('.')[1] }}</text>
-                                        </view>
-                                        <text class="text-right text-[26rpx]">x{{ item.item_num }}</text>
-                                    </view>
+                                    <text class="text-right text-[26rpx]">x{{ item.item_num }}</text>
                                 </view>
                             </view>
                         </view>
-                        <view class="text-[26rpx] text-right">{{ friendsInfo.trade_info.item_total }}</view>
-                    </template>
-                    <template v-else>
-                        <view class="text-[28rpx]  leading-[40rpx] text-[#333]">{{ friendsInfo.body }}</view>
-                    </template>
+                    </view>
+                    <view class="text-[26rpx] text-right">{{ friendsInfo.trade_info.item_total }}</view>
+                </template>
+                <template v-else>
+                    <view class="text-[28rpx]  leading-[40rpx] text-[#333]">{{ friendsInfo.body }}</view>
                 </template>
             </view>
         </view>
@@ -215,5 +213,8 @@ const save = () =>{
         top: 0;
         transform: translateX(-50%) translateY(-50%)  rotate(45deg);
     }
+}
+.botton-color{
+	background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
 }
 </style>

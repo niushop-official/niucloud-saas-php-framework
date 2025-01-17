@@ -5,7 +5,7 @@
             <view class="absolute  top-[36rpx] right-[36rpx] text-[24rpx] text-[var(--text-color-light6)] leading-[30rpx] z-10" @click="clearDate">清除</view>
             <view class="px-[var(--popup-sidebar-m)] mb-[20rpx] mt-[10rpx]">
                 <view class="flex items-center justify-between mb-[30rpx]">
-                    <view class="w-[160rpx] h-[66rpx] box-border flex-center rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"  v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == item.type}"  @click="loadDateFn(item)">{{item.name}}</view> 
+                    <view class="w-[160rpx] h-[66rpx] box-border flex-center rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"  v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == item.type}"  @click="loadDateFn(item)">{{item.name}}</view> 
                 </view>
                 <view class="flex items-center justify-between">
                     <view class="w-[316rpx] h-[66rpx] box-border leading-[62rpx] rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]" :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == 'first'}" @click="currentValue.type = 'first'">{{dateList.nowDate[0].substr(0,10)}}</view>

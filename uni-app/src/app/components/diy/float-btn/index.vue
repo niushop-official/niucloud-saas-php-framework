@@ -32,7 +32,7 @@
 	import useDiyStore from '@/app/stores/diy';
 	import { img } from '@/utils/common';
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+	const props = defineProps(['component', 'index']);
 
 	const diyStore = useDiyStore();
 
@@ -54,7 +54,7 @@
 		if (diyComponent.value.topRounded) style += 'border-top-right-radius:' + diyComponent.value.topRounded * 2 + 'rpx;';
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-left-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
-		
+
 		return style;
 	})
 
@@ -113,12 +113,6 @@
 		}
 	})
 
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 </script>
 
 <style lang="scss" scoped>

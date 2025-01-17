@@ -1,7 +1,7 @@
 <template>
 	<view :style="warpCss">
 		<view :style="maskLayer"></view>
-		
+
 		<view class="diy-active-cube relative">
 			<view class="active-cube-wrap pt-[28rpx] px-[20rpx] pb-[24rpx]">
 				<view class="flex items-center" v-if="diyComponent.titleStyle.value == 'style-1'">
@@ -54,7 +54,7 @@
 								<u-icon name="photo" color="#999" size="50"></u-icon>
 							</view>
 						</view>
-						
+
 						<view v-if="diyComponent.blockStyle.value == 'style-2'" @click="diyStore.toRedirect(item.link)" class="item h-[150rpx] flex justify-between p-[20rpx] bg-white mt-[20rpx]" :style="commonTempCss(item)">
 							<view class="flex-1 flex items-baseline flex-col">
 								<view class="text-[26rpx] mt-[10rpx] pb-[16rpx]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
@@ -88,7 +88,7 @@
 						</view>
 					</view>
 				</scroll-view>
-				
+
 				<scroll-view scroll-x="true" class="whitespace-nowrap" :id="'warpStyle4-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-4'">
 					<view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
 						<view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="flex flex-col items-center justify-between p-[4rpx] bg-[#F93D02] mt-[20rpx] box-border" :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}" :style="commonTempCss(item) + itemStyle4">
@@ -118,7 +118,7 @@
 	import useDiyStore from '@/app/stores/diy';
 	import { img } from '@/utils/common';
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+	const props = defineProps(['component', 'index']);
 
 	const diyStore = useDiyStore();
 
@@ -196,7 +196,7 @@
 			itemStyle4.value= 'margin-right:14rpx;'
 		// #endif
 	};
-	
+
 	// 公共模块颜色
 	const commonTempCss = (data: any)=>{
 		var style = '';
@@ -209,22 +209,15 @@
 		if (diyComponent.value.topElementRounded) style += 'border-top-right-radius:' + diyComponent.value.topElementRounded * 2 + 'rpx;';
 		if (diyComponent.value.bottomElementRounded) style += 'border-bottom-left-radius:' + diyComponent.value.bottomElementRounded * 2 + 'rpx;';
 		if (diyComponent.value.bottomElementRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomElementRounded * 2 + 'rpx;';
-		style += 'overflow: hidden';
+		style += 'overflow: hidden;';
 		return style;
 	}
-	
+
     const btnCss = (item:any) => {
         var style = '';
         style += `background:linear-gradient(90deg,${item.startColor},${item.endColor});`;
         return style;
     };
-
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 
     onMounted(() => {
 	    refresh();

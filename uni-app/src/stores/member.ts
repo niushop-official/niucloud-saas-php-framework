@@ -63,6 +63,8 @@ const useMemberStore = defineStore('member', {
                 uni.removeStorageSync('openid');
                 uni.removeStorageSync('unionid');
                 uni.removeStorageSync('isbindmobile');
+                uni.removeStorageSync('nickname');
+                uni.removeStorageSync('avatar');
                 isRedirect && redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
             }).catch(() => {
                 removeToken()
@@ -70,6 +72,8 @@ const useMemberStore = defineStore('member', {
                 uni.removeStorageSync('openid');
                 uni.removeStorageSync('unionid');
                 uni.removeStorageSync('isbindmobile');
+                uni.removeStorageSync('nickname');
+                uni.removeStorageSync('avatar');
                 isRedirect && redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
             })
         },

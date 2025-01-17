@@ -21,9 +21,9 @@
 								<template #suffix>
 									<view class="" @click="changePassword"  v-if="formData.password">
 										<u-icon :name="isPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
-									</view>							
+									</view>
 								</template>
-							</u-input>	
+							</u-input>
 					    </u-form-item>
 					</view>
 				</template>
@@ -98,7 +98,7 @@
 	</view>
 </template>
 <script setup lang="ts">
-	import { ref, reactive, computed, onMounted,nextTick } from 'vue'
+	import { ref, reactive, computed, onMounted } from 'vue'
 	import { usernameLogin, mobileLogin } from '@/app/api/auth'
 	import useMemberStore from '@/stores/member'
 	import useConfigStore from '@/stores/config'
@@ -107,7 +107,7 @@
 	import { redirect,getToken,pxToRpx,isWeixinBrowser } from '@/utils/common'
 	import { onLoad } from '@dcloudio/uni-app';
 	import { topTabar } from '@/utils/topTabbar'
-	
+
 	let menuButtonInfo: any = {};
 	// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 	// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
@@ -128,17 +128,21 @@
 	const isShowQuickLogin = ref(false) // 是否显示快捷登录
 	const popupRef = ref()
 	const isPassword = ref(true)
+
 	const changePassword =()=>{
 		isPassword.value = !isPassword.value
 	}
+
 	const dialogClose =()=>{
 		popupRef.value.close();
 	}
+
 	const dialogConfirm =()=>{
 		isAgree.value=true
 		popupRef.value.close();
 		handleLogin()
 	}
+
 	onLoad(async (option: any)=> {
 		await configStore.getLoginConfig()
 		if (!getToken() && !configStore.login.is_username && !configStore.login.is_mobile) {
@@ -218,7 +222,7 @@
 	}
 
 	const loading = ref(false)
-	
+
 	const rules = computed(() => {
 	    return {
 	        'username': {
@@ -257,9 +261,9 @@
 	        }
 	    }
 	})
-	
+
 	const formRef: any = ref(null)
-	
+
 	const handleLogin = () => {
 	    formRef.value.validate().then(() => {
 	        if (configStore.login.agreement_show && !isAgree.value) {
@@ -267,12 +271,12 @@
 	            // uni.showToast({ title: t('isAgreeTips'), icon: 'none' });
 	            return false;
 	        }
-	
+
 	        if (loading.value) return
 	        loading.value = true
-	
+
 	        const login = type.value == 'username' ? usernameLogin : mobileLogin
-	
+
 	        login(formData).then((res: any) => {
 	            memberStore.setToken(res.data.token)
 	            if(configStore.login.is_bind_mobile && !res.data.mobile){

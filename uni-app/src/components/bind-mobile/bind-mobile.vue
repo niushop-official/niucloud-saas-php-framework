@@ -13,7 +13,7 @@
                             <template #right>
 								<sms-code v-if="config.agreement_show" :mobile="formData.mobile" type="login" v-model="formData.mobile_key" :isAgree="isAgree"></sms-code>
 								<sms-code v-else :mobile="formData.mobile" type="login" v-model="formData.mobile_key"></sms-code>
-                            </template> 
+                            </template>
                         </u-form-item>
                     </view>
 					<view v-if="config.agreement_show" class="flex items-center mt-[30rpx] pl-[10rpx] py-[10rpx]" @click.stop="agreeChange">
@@ -41,9 +41,11 @@
     import { ref, reactive, computed, onMounted } from 'vue'
     import { t } from '@/locale'
     import { bindMobile } from '@/app/api/member'
+    import { mobileLogin } from '@/app/api/auth'
     import useMemberStore from '@/stores/member'
     import useConfigStore from '@/stores/config'
     import { redirect } from '@/utils/common'
+    import { useLogin } from '@/hooks/useLogin'
 
     const show = ref(false)
     const memberStore = useMemberStore()
@@ -64,15 +66,17 @@
 
     const real_name_input = ref(true);
 	onMounted(() => {
-		// 防止浏览器自动填充
-		setTimeout(()=>{
-			real_name_input.value = false;
-		},800)
+        // 防止浏览器自动填充
+        setTimeout(() => {
+            real_name_input.value = false;
+        }, 800)
 
-        uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
         uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
+        uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
         uni.getStorageSync('unionid') && (Object.assign(formData, { unionid: uni.getStorageSync('unionid') }))
-	});
+        uni.getStorageSync('nickname') && (Object.assign(formData, { nickname: uni.getStorageSync('nickname') }))
+        uni.getStorageSync('avatar') && (Object.assign(formData, { headimg: uni.getStorageSync('avatar') }))
+    });
 
     const rules = {
         'mobile': [
@@ -84,8 +88,7 @@
             },
             {
                 validator(rule: any, value: any, callback: any) {
-                    let mobile = /^1[3-9]\d{9}$/;
-                    if (!mobile.test(value)){
+                    if (!uni.$u.test.mobile(value)){
                         callback(new Error('请输入正确的手机号'))
                     } else {
                         callback()
@@ -115,14 +118,21 @@
                 uni.showToast({ title: t('isAgreeTips'), icon: 'none' })
                 return
             }
-            
+
             if (loading.value) return
             loading.value = true
 
-            bindMobile(formData).then((res) => {
-                memberStore.getMemberInfo()
-                if(info.value.mobile){
-                    uni.removeStorageSync('isbindmobile');
+            const request = info.value ? bindMobile : mobileLogin;
+
+            request(formData).then((res: any) => {
+                if (info.value) {
+                    memberStore.getMemberInfo()
+                    if (info.value.mobile) {
+                        uni.removeStorageSync('isbindmobile');
+                    }
+                } else {
+                    memberStore.setToken(res.data.token)
+                    useLogin().handleLoginBack()
                 }
                 show.value = false
             }).catch(() => {
@@ -134,7 +144,7 @@
     const open = ()=> {
         show.value = true
     }
-    
+
     defineExpose({
     	open
     })

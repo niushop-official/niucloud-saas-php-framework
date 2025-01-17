@@ -16,7 +16,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="p-[20rpx] box-border overflow-hidden" :style="moduleTwoCss">
 			<view class="flex items-center pb-[30rpx] pt-[6rpx]" v-if="diyComponent.moduleTwo.head.textImg || diyComponent.moduleTwo.head.subText">
 				<image class="h-[28rpx] w-[auto]" v-if="diyComponent.moduleTwo.head.textImg" :src="img(diyComponent.moduleTwo.head.textImg)" mode="heightFix"></image>
@@ -42,7 +42,7 @@
 	import { img } from '@/utils/common';
 	import useDiyStore from '@/app/stores/diy';
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount', 'global', 'scrollBool']);
+	const props = defineProps(['component', 'index', 'global', 'scrollBool']);
 	const diyStore = useDiyStore();
 	const diyComponent = computed(() => {
 		if (diyStore.mode == 'decorate') {
@@ -51,7 +51,7 @@
 			return props.component;
 		}
 	})
-	
+
 	const warpCss = computed(() => {
 		var style = '';
         if(diyComponent.value.componentStartBgColor) {
@@ -64,23 +64,23 @@
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
 		return style;
 	})
-	
+
 	const moduleOneCss = computed(() => {
 		var style = '';
 	    if(diyComponent.value.moduleOne.listFrame) {
 	        if (diyComponent.value.moduleOne.listFrame.startColor && diyComponent.value.moduleOne.listFrame.endColor) style += `background:linear-gradient(${diyComponent.value.moduleOne.listFrame.startColor},${diyComponent.value.moduleOne.listFrame.endColor});`;
 	    }
-		
+
 		if (diyComponent.value.moduleRounded.topRounded) style += 'border-top-left-radius:' + diyComponent.value.moduleRounded.topRounded * 2 + 'rpx;';
 		if (diyComponent.value.moduleRounded.topRounded) style += 'border-top-right-radius:' + diyComponent.value.moduleRounded.topRounded * 2 + 'rpx;';
 		if (diyComponent.value.moduleRounded.bottomRounded) style += 'border-bottom-left-radius:' + diyComponent.value.moduleRounded.bottomRounded * 2 + 'rpx;';
 		if (diyComponent.value.moduleRounded.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.moduleRounded.bottomRounded * 2 + 'rpx;';
-		
+
 		if(diyComponent.value.margin && diyComponent.value.margin.both) style += 'width: calc((100vw - ' + (diyComponent.value.margin.both*4) + 'rpx - 20rpx) / 2);'
 		else style += 'width: calc((100vw - 20rpx) / 2 );'
 		return style;
 	})
-	
+
 	const moduleTwoCss = computed(() => {
 		var style = '';
 	    if(diyComponent.value.moduleTwo.listFrame) {
@@ -90,12 +90,12 @@
 		if (diyComponent.value.moduleRounded.topRounded) style += 'border-top-right-radius:' + diyComponent.value.moduleRounded.topRounded * 2 + 'rpx;';
 		if (diyComponent.value.moduleRounded.bottomRounded) style += 'border-bottom-left-radius:' + diyComponent.value.moduleRounded.bottomRounded * 2 + 'rpx;';
 		if (diyComponent.value.moduleRounded.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.moduleRounded.bottomRounded * 2 + 'rpx;';
-		
+
 		if(diyComponent.value.margin && diyComponent.value.margin.both) style += 'width: calc((100vw - ' + (diyComponent.value.margin.both*4) + 'rpx - 20rpx) / 2);'
 		else style += 'width: calc((100vw - 20rpx) / 2 );'
 		return style;
 	})
-	
+
 	const moduleBtnCss = (data: any)=>{
 		var style = '';
 	    if(data.btnTitle.color) {
@@ -105,13 +105,6 @@
 		return style;
 	}
 
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
-    
     onMounted(() => {
         refresh();
         // 装修模式下刷新
@@ -126,7 +119,7 @@
             )
         }
     });
-	
+
 	const refresh = ()=> {
 
     }

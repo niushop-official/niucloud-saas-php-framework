@@ -62,7 +62,7 @@ import { ref,computed, watch, onMounted, nextTick,getCurrentInstance } from 'vue
 import { img } from '@/utils/common';
 import useDiyStore from '@/app/stores/diy';
 
-const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+const props = defineProps(['component', 'index']);
 const diyStore = useDiyStore();
 const noticeShow = ref(false);
 const noticeContent = ref('');
@@ -111,13 +111,6 @@ const maskLayer = computed(()=>{
 
     return style;
 });
-
-watch(
-    () => props.pullDownRefreshCount,
-    (newValue, oldValue) => {
-        // 处理下拉刷新业务
-    }
-)
 
 const marqueeBodyWidth = ref(0); // 容器宽度
 const marqueeOneWidth = ref(0); // 内容宽度
@@ -268,7 +261,7 @@ const toRedirect = (data: {}) => {
 		backface-visibility: hidden;
     }
 
-    
+
 
     .marquee {
         display: flex;
@@ -276,7 +269,7 @@ const toRedirect = (data: {}) => {
         height: 100%;
         white-space: nowrap;
 		padding-right: 30px;
-		
+
 		// -webkit-perspective: 1000;
 	 //   -moz-perspective: 1000;
 	 //   -ms-perspective: 1000;

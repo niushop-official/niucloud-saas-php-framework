@@ -77,7 +77,7 @@
 
 			<!-- 轮播图 -->
 			<view class="relative" :class="{'mx-[20rpx]': swiperStyleBool && diyComponent.swiper.swiperStyle != 'style-3', 'swiper-style-3': diyComponent.swiper.swiperStyle == 'style-3'}" :style="carouselSwiperStyle()">
-				<swiper v-if="diyComponent.swiper.control" class="swiper" :style="{ height: imgHeight }" autoplay="true" circular="true" @change="swiperChange" 
+				<swiper v-if="diyComponent.swiper.control" class="swiper" :style="{ height: imgHeight }" autoplay="true" circular="true" @change="swiperChange"
 					:class="{
 						'swiper-left': diyComponent.swiper.indicatorAlign == 'left',
 						'swiper-right': diyComponent.swiper.indicatorAlign == 'right',
@@ -149,7 +149,7 @@
 	const systemInfo = uni.getSystemInfoSync();
 
 	const instance = getCurrentInstance();
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount', 'global', 'scrollBool']);
+	const props = defineProps(['component', 'index', 'global', 'scrollBool']);
 	const diyStore = useDiyStore();
 	const diyComponent = computed(() => {
 		if (diyStore.mode == 'decorate') {
@@ -182,14 +182,6 @@
 		if (diyComponent.value.bottomRounded) style += 'border-bottom-right-radius:' + diyComponent.value.bottomRounded * 2 + 'rpx;';
 		return style;
 	})
-
-
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 
     const moduleHeight:any = ref('')
     const setModuleLocation = ()=> {
@@ -227,7 +219,7 @@
 			}
 		}
         // #endif
-		
+
 		if (diyStore.mode == 'decorate') return style;
 
         if(diyComponent.value.positionWay == 'fixed') {
@@ -241,7 +233,7 @@
 				style += 'top:' + diyStore.topTabarHeight + 'px;';
 			}
             // #endif
-			
+
 			if (props.scrollBool == 1 || props.scrollBool == 2) {
 				// #ifdef H5
 				if(props.global.topStatusBar.isShow && props.global.topStatusBar.style == 'style-4') {
@@ -249,7 +241,7 @@
 				}
 				// #endif
 			}
-			
+
 
 			fixedStyleBg.value = false;
             if (props.scrollBool == 1) {
@@ -500,7 +492,7 @@
 	// #ifdef H5
 	isShowDots.value = true;
 	// #endif
-	
+
 	// #ifdef MP-WEIXIN
 	isShowDots.value = false;
 	// #endif

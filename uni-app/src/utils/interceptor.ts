@@ -1,6 +1,6 @@
 import { language } from '@/locale'
 import { checkNeedLogin } from '@/utils/auth'
-import { redirect, getToken, getSiteId,currRoute } from '@/utils/common'
+import { redirect, getToken, getSiteId,currRoute, setThemeColor } from '@/utils/common'
 import { memberLog } from '@/app/api/auth'
 import useConfigStore from "@/stores/config";
 import { useShare } from '@/hooks/useShare'
@@ -12,7 +12,7 @@ export const redirectInterceptor = (route: { path: string, query: object }) => {
     route.path = `/${ route.path }`
 
     // 检测当前访问的是系统（app）还是插件
-    setAddonName(route.path)
+    setThemeColor(route.path)
 
     // 开发模式下，如果未配置站点ID，则跳转到开发环境配置页面
     // #ifdef H5
@@ -67,7 +67,7 @@ export const launchInterceptor = () => {
     // #endif
 
     // 检测当前访问的是系统（app）还是插件
-    setAddonName(launch.path);
+    setThemeColor(launch.path);
 
     // 加载语言包
     language.loadAllLocaleMessages('app', uni.getLocale())
@@ -90,35 +90,6 @@ export const launchInterceptor = () => {
     if (getToken()) memberLog({ route: launch.path, params: JSON.stringify(launch.query || {}), pre_route: '' })
 }
 
-/**
- * 检测当前访问的是系统（app）还是插件
- * 设置插件的底部导航
- * 设置插件应用的主色调
- * @param path
- */
-const setAddonName = async(path: string) => {
-    let pathArr = path.split('/')
-    let route = pathArr[1] == 'addon' ? pathArr[2] : 'app';
-
-    // 设置底部导航
-    const configStore = useConfigStore()
-    if (configStore.addon != route) {
-        configStore.addon = route;
-    }
-
-    // 设置插件应用的主色调，排除系统
-    if (route != 'app') {
-        try {
-            const theme = await import(`../addon/${ route }/utils/theme.json`)
-            configStore.themeColor = theme.default
-            uni.setStorageSync('current_theme_color', JSON.stringify(theme.default));
-        } catch (e) {
-            // 设置插件应用的主色调发生错误，若不存在则使用最后有效的主色调
-        }
-
-    }
-
-}
 
 // 加载分享
 const loadShare = () => {
@@ -134,6 +105,7 @@ const loadShare = () => {
         'addon/shop_giftcard/pages/detail',
         'addon/shop_giftcard/pages/give',
         'app/pages/index/diy',
+        'app/pages/index/diy_form',
         'app/pages/friendspay/share',
         'app/pages/friendspay/money'
     ]

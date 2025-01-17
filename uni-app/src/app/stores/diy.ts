@@ -5,6 +5,7 @@ import { useLogin } from '@/hooks/useLogin';
 
 interface Diy {
     mode: string, // 模式：decorate 装修，为空表示正常
+    id: any,
     pageMode: string, // 页面展示模式，diy：自定义，fixed：固定
     currentIndex: number,
     global: {
@@ -18,13 +19,15 @@ interface Diy {
     value: any[],
     topFixedStatus: string, // 置顶组件的状态
     scrollTop: number,
-    topTabarHeight: number
+    topTabarHeight: number,
+    componentRefs: any
 }
 
 const useDiyStore = defineStore('diy', {
     state: (): Diy => {
         return {
             mode: '',
+            id: 0,
             pageMode: 'diy',
             currentIndex: -99,
             global: {
@@ -37,7 +40,8 @@ const useDiyStore = defineStore('diy', {
             value: [], // 组件集合
             topFixedStatus: 'home', // 顶部 置顶组件状态，home：展示首页数据、diy：展示置顶组件定义的子页面
             scrollTop: 0, // 滚动位置
-            topTabarHeight: 0
+            topTabarHeight: 0,
+            componentRefs: null
         }
     },
     getters: {},
@@ -131,7 +135,7 @@ const useDiyStore = defineStore('diy', {
                 }
                 diyRedirect(data);
             }
-        }
+        },
     }
 })
 

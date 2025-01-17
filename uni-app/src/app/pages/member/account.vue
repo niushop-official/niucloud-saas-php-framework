@@ -8,10 +8,11 @@
 						<view class="flex items-center">
 							<view class="w-[80rpx] h-[80rpx] flex items-center justify-center" @click="handleClick(item)">
 								<image class="w-[80rpx] h-[52rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/bank-icon.png')" mode="widthFix" v-if="item.account_type == 'bank'" />
+								<image class="w-[80rpx] h-[52rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/wechat_code.png')" mode="widthFix" v-else-if="item.account_type == 'wechat_code'" />
 								<image class="h-[78rpx] w-[78rpx] align-middle" v-else :src="img('static/resource/images/member/apply_withdrawal/alipay-icon.png')" mode="widthFix" />
 							</view>
 							<view class="flex flex-col ml-[20rpx]" @click="handleClick(item)">
-								<view class="text-[#333] text-[28rpx]">{{ item.account_type == 'bank' ? item.bank_name : t('alipayAccountNo') }}</view>
+								<view class="text-[#333] text-[28rpx]">{{ item.account_type == 'bank' ? item.bank_name : item.account_type == 'wechat_code'?t('wechatCode')  : t('alipayAccountNo') }}</view>
 								<view v-if="item.account_type == 'bank'" class="text-[var(--text-color-light9)] text-[24rpx] mt-[12rpx]">{{ t('endNumber') }} {{ item.account_no.substring(item.account_no.length - 4) }}{{ t('bankCard') }}</view>
 								<view v-else class="text-[var(--text-color-light9)] text-[24rpx] mt-[12rpx]">{{ item.account_no }}</view>
 							</view>
@@ -23,7 +24,7 @@
 			</view>
 			<view class="card-template sidebar-margin my-[var(--top-m)] flex items-center" @click="redirect({ url: '/app/pages/member/account_edit', param: { type: accountType, mode } })">
 				<text class="nc-iconfont nc-icon-jiahaoV6xx text-[30rpx]"></text>
-				<text class="text-[28rpx] ml-[10rpx] flex-1">{{ accountType == 'bank' ? t('addBankCard') : t('addAlipayAccount') }}</text>
+				<text class="text-[28rpx] ml-[10rpx] flex-1">{{ accountType == 'bank' ? t('addBankCard') : accountType == 'wechat_code' ? t('addWechatCode') : t('addAlipayAccount') }}</text>
 				<text class="nc-iconfont nc-icon-youV6xx text-[24rpx] text-[var(--text-color-light6)]"></text>
 			</view>
         </mescroll-body>

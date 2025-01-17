@@ -1,369 +1,395 @@
 {
-	"pages": [ // pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "app/pages/index/index",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.index.index%",
-				"usingComponents": {
-					"diy-group": "../../../../addon/components/diy/group/index",
-					"fixed-group": "../../../../addon/components/fixed/group/index"
-				},
-				"componentPlaceholder": {
-					"diy-group": "view",
-					"fixed-group": "view"
-				}
-			}
-		},
-		{
-			"path": "app/pages/auth/index",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.auth.index%"
-			}
-		},
-		{
-			"path": "app/pages/auth/agreement",
-			"style": {
-				"navigationBarTitleText": "%pages.auth.agreement%"
-			}
-		},
-		{
-			"path": "app/pages/auth/bind",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.auth.bind%"
-			}
-		},
-		{
-			"path": "app/pages/auth/login",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.auth.login%"
-			}
-		},
-		{
-			"path": "app/pages/auth/register",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.auth.register%"
-			}
-		},
-		{
-			"path": "app/pages/auth/resetpwd",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.auth.resetpwd%"
-			}
-		},
-		{
-			"path": "app/pages/index/diy",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.index.diy%",
-				"usingComponents": {
-					"diy-group": "../../../../addon/components/diy/group/index",
-					"fixed-group": "../../../../addon/components/fixed/group/index"
-				},
-				"componentPlaceholder": {
-					"diy-group": "view",
-					"fixed-group": "view"
-				}
-			}
-		},
-		{
-			"path": "app/pages/index/close",
-			"style": {
-				"navigationBarTitleText": "%pages.index.close%"
-			}
-		},
-		{
-			"path": "app/pages/index/nosite",
-			"style": {
-				"navigationBarTitleText": "%pages.index.nosite%"
-			}
-		},
-		{
-			"path": "app/pages/member/apply_cash_out",
-			"style": {
-				"navigationBarTitleText": "%pages.member.apply_cash_out%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/commission",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.member.commission%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/balance",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.member.balance%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/level",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.member.level%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/detailed_account",
-			"style": {
-				"navigationBarTitleText": "%pages.member.detailed_account%"
-			}
-		},
-		{
-			"path": "app/pages/member/cash_out",
-			"style": {
-				"navigationBarTitleText": "%pages.member.cash_out%"
-			}
-		},
-		{
-			"path": "app/pages/member/cash_out_detail",
-			"style": {
-				"navigationBarTitleText": "%pages.member.cash_out_detail%"
-			}
-		},
-		{
-			"path": "app/pages/member/index",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.member.index%",
-				"usingComponents": {
-					"diy-group": "../../../../addon/components/diy/group/index",
-					"fixed-group": "../../../../addon/components/fixed/group/index"
-				},
-				"componentPlaceholder": {
-					"diy-group": "view",
-					"fixed-group": "view"
-				}
-			}
-		},
-		{
-			"path": "app/pages/member/personal",
-			"style": {
-				"navigationBarTitleText": "%pages.member.personal%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/point",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.member.point%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/point_detail",
-			"style": {
-				"navigationBarTitleText": "%pages.member.point_detail%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/account",
-			"style": {
-				"navigationBarTitleText": "%pages.member.account%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/account_edit",
-			"style": {
-				"navigationBarTitleText": "%pages.member.account_edit%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/address",
-			"style": {
-				"navigationBarTitleText": "%pages.member.address%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/address_edit",
-			"style": {
-				"navigationBarTitleText": "%pages.member.address_edit%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/sign_in",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.member.sign_in%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/member/contact",
-			"style": {
-				"navigationBarTitleText": "%pages.member.contact%"
-			}
-		},
-		{
-			"path": "app/pages/pay/browser",
-			"style": {
-				"navigationBarTitleText": "%pages.pay.browser%"
-			}
-		},
-		{
-			"path": "app/pages/pay/result",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.pay.result%"
-			}
-		},
-		{
-			"path": "app/pages/setting/index",
-			"style": {
-				"navigationBarTitleText": "%pages.setting.index%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/webview/index",
-			"style": {
-				"navigationBarTitleText": "%pages.webview.index%"
-			}
-		},
-		{
-			"path": "app/pages/index/develop",
-			"style": {
-				"navigationBarTitleText": "%pages.index.develop%"
-			}
-		},
-		{
-			"path": "app/pages/verify/index",
-			"style": {
-				"navigationBarTitleText": "%pages.verify.index%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/verify/verify",
-			"style": {
-				"navigationBarTitleText": "%pages.verify.verify%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/verify/detail",
-			"style": {
-				"navigationBarTitleText": "%pages.verify.detail%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/verify/record",
-			"style": {
-				"navigationBarTitleText": "%pages.verify.record%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/weapp/order_shipping",
-			"style": {
-				"navigationBarTitleText": "%pages.weapp.order_shipping%"
-			}
-		},
-		{
-			"path": "app/pages/friendspay/share",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.friendspay.share%"
-			},
-			"needLogin": true
-		},
-		{
-			"path": "app/pages/friendspay/money",
-			"style": {
-				// #ifndef H5
-				"navigationStyle": "custom",
-				// #endif
-				"navigationBarTitleText": "%pages.friendspay.money%"
-			}
-		}
-	],
-	"subPackages": [
-		{
-			"root": "addon",
-			"pages": [
-				// {{ PAGE_BEGAIN }}
-				// {{ PAGE_END }}}
-				{
-					"path": "end"
-				}
-			]
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#ffffff",
-		"backgroundColor": "#F6F6F6",
-		"backgroundColorTop": "#F6F6F6",
-		"backgroundColorBottom": "#F6F6F6"
-	},
-	"tabBar": {
-		"list": [{
-				"pagePath": "app/pages/index/index"
-			},
-			{
-				"pagePath": "app/pages/member/index"
-			}
-		]
-	},
-	"uniIdRouter": {},
-	"easycom": {
-		"custom": {
-			"diy-group": "@/addon/components/diy/group/index.vue",
-			"fixed-group": "@/addon/components/fixed/group/index.vue",
-			"^u-(.*)": "uview-plus/components/u-$1/u-$1.vue",
-			"^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
-			"^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue",
-			"diy-(\W.*)": "@/app/components/diy/$1/index.vue",
-			"fixed-(\W.*)": "@/app/components/fixed/$1/index.vue"
-		}
-	}
+    "pages": [
+        // pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+        {
+            "path": "app/pages/index/index",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.index.index%",
+                "usingComponents": {
+                    "diy-group": "../../../../addon/components/diy/group/index"
+                },
+                "componentPlaceholder": {
+                    "diy-group": "view"
+                }
+            }
+        },
+        {
+            "path": "app/pages/auth/index",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.auth.index%"
+            }
+        },
+        {
+            "path": "app/pages/auth/agreement",
+            "style": {
+                "navigationBarTitleText": "%pages.auth.agreement%"
+            }
+        },
+        {
+            "path": "app/pages/auth/bind",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.auth.bind%"
+            }
+        },
+        {
+            "path": "app/pages/auth/login",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.auth.login%"
+            }
+        },
+        {
+            "path": "app/pages/auth/register",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.auth.register%"
+            }
+        },
+        {
+            "path": "app/pages/auth/resetpwd",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.auth.resetpwd%"
+            }
+        },
+        {
+            "path": "app/pages/index/diy",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.index.diy%",
+                "usingComponents": {
+                    "diy-group": "../../../../addon/components/diy/group/index"
+                },
+                "componentPlaceholder": {
+                    "diy-group": "view"
+                }
+            }
+        },
+        {
+            "path": "app/pages/index/diy_form",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.index.diy_form%",
+                "usingComponents": {
+                    "diy-group": "../../../../addon/components/diy/group/index"
+                },
+                "componentPlaceholder": {
+                    "diy-group": "view"
+                }
+            }
+        },
+        {
+            "path": "app/pages/index/diy_form_result",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.index.diy_form_result%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/index/diy_form_detail",
+            "style": {
+                "navigationBarTitleText": "%pages.index.diy_form_detail%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/index/close",
+            "style": {
+                "navigationBarTitleText": "%pages.index.close%"
+            }
+        },
+        {
+            "path": "app/pages/index/nosite",
+            "style": {
+                "navigationBarTitleText": "%pages.index.nosite%"
+            }
+        },
+        {
+            "path": "app/pages/pay/browser",
+            "style": {
+                "navigationBarTitleText": "%pages.pay.browser%"
+            }
+        },
+        {
+            "path": "app/pages/pay/result",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.pay.result%"
+            }
+        },
+        {
+            "path": "app/pages/setting/index",
+            "style": {
+                "navigationBarTitleText": "%pages.setting.index%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/webview/index",
+            "style": {
+                "navigationBarTitleText": "%pages.webview.index%"
+            }
+        },
+        {
+            "path": "app/pages/index/develop",
+            "style": {
+                "navigationBarTitleText": "%pages.index.develop%"
+            }
+        },
+        {
+            "path": "app/pages/verify/index",
+            "style": {
+                "navigationBarTitleText": "%pages.verify.index%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/verify/verify",
+            "style": {
+                "navigationBarTitleText": "%pages.verify.verify%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/verify/detail",
+            "style": {
+                "navigationBarTitleText": "%pages.verify.detail%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/verify/record",
+            "style": {
+                "navigationBarTitleText": "%pages.verify.record%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/weapp/order_shipping",
+            "style": {
+                "navigationBarTitleText": "%pages.weapp.order_shipping%"
+            }
+        },
+        {
+            "path": "app/pages/friendspay/share",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.friendspay.share%"
+            },
+            "needLogin": true
+        },
+        {
+            "path": "app/pages/friendspay/money",
+            "style": {
+                // #ifndef H5
+                "navigationStyle": "custom",
+                // #endif
+                "navigationBarTitleText": "%pages.friendspay.money%"
+            }
+        }
+    ],
+    "subPackages": [
+        // {{ PAGE_BEGAIN }}
+        // {{ PAGE_END }}
+        {
+            "root": "app/components",
+            "pages": []
+        },
+        {
+            "root": "app/pages/member",
+            "pages": [
+                {
+                    "path": "apply_cash_out",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.apply_cash_out%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "commission",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pages.member.commission%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "balance",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pages.member.balance%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "level",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pages.member.level%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "detailed_account",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.detailed_account%"
+                    }
+                },
+                {
+                    "path": "cash_out",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.cash_out%"
+                    }
+                },
+                {
+                    "path": "cash_out_detail",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.cash_out_detail%"
+                    }
+                },
+                {
+                    "path": "index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pages.member.index%",
+                        "usingComponents": {
+                            "diy-group": "../../../../addon/components/diy/group/index"
+                        },
+                        "componentPlaceholder": {
+                            "diy-group": "view"
+                        }
+                    }
+                },
+                {
+                    "path": "personal",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.personal%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "point",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pages.member.point%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "point_detail",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.point_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "account",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.account%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "account_edit",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.account_edit%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "address",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.address%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "address_edit",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.address_edit%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "sign_in",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pages.member.sign_in%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "contact",
+                    "style": {
+                        "navigationBarTitleText": "%pages.member.contact%"
+                    }
+                }
+            ]
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#ffffff",
+        "backgroundColor": "#F6F6F6",
+        "backgroundColorTop": "#F6F6F6",
+        "backgroundColorBottom": "#F6F6F6"
+    },
+    "tabBar": {
+        "list": [{
+                "pagePath": "app/pages/index/index"
+            },
+            {
+                "pagePath": "app/pages/index/diy"
+            }
+        ]
+    },
+    "uniIdRouter": {},
+    "easycom": {
+        "custom": {
+            "diy-group": "@/addon/components/diy/group/index.vue",
+            "^u-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+            "^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+            "^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue",
+            "diy-(\W.*)": "@/app/components/diy/$1/index.vue"
+        }
+    }
 }

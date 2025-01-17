@@ -167,7 +167,7 @@
     import { img } from '@/utils/common';
 	import useDiyStore from '@/app/stores/diy';
 
-	const props = defineProps(['component', 'index', 'pullDownRefreshCount']);
+	const props = defineProps(['component', 'index']);
 
 	const diyStore = useDiyStore();
 
@@ -225,13 +225,6 @@
 		style.width = `${100 / diyComponent.value.rowCount}%`;
 		return style;
 	}
-
-	watch(
-		() => props.pullDownRefreshCount,
-		(newValue, oldValue) => {
-			// 处理下拉刷新业务
-		}
-	)
 
 	const swiperIndex = ref(0);
 
@@ -320,7 +313,7 @@
 				}
 			}
 		}
-		
+
 		return false;
 	}
 </script>
