@@ -1,4 +1,26 @@
 const fs = require('fs')
+const { spawn } = require('child_process');
+const path = require('path');
+
+const main = () => {
+    const params = process.argv.slice(2) || []
+    const port = params[0] || ''
+    const mode = params[1] || ''
+
+    switch (port) {
+        case 'h5':
+            publish()
+            break;
+        case 'mp-weixin':
+            if (mode == 'build') {
+                handleWeappAddonComponents(mode)
+                handleWeappLanguage(mode)
+            } else if (mode == 'dev') {
+                listenWeappRunDev()
+            }
+            break;
+    }
+}
 
 const publish = () => {
     const src = './dist/build/h5'
@@ -48,4 +70,51 @@ const solve = () => {
     })
 }
 
-publish()
+const handleWeappAddonComponents = (mode) => {
+    const src = `./dist/${mode}/mp-weixin/addon/components/diy/group/index.json`
+
+    try {
+        const data = JSON.parse(fs.readFileSync(src, 'utf8'));
+        data.componentPlaceholder = {};
+
+        Object.keys(data.usingComponents).map(key => {
+            data.componentPlaceholder[key] = "view";
+        })
+        fs.writeFileSync(src, JSON.stringify(data))
+    } catch (err) {
+    }
+}
+
+const handleWeappLanguage = (mode) => {
+    const src = `./dist/${mode}/mp-weixin/locale/language.js`
+
+    try {
+        let content = fs.readFileSync(src, 'utf8');
+        content = content.replace(/Promise\.resolve\(require\(("[^"]+")\)\)/g, 'require.async($1)')
+        fs.writeFileSync(src, content)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const listenWeappRunDev = () => {
+    const devProcess = spawn('npm', ['run', 'dev:niu-mp-weixin'], {
+        stdio: ['pipe', 'pipe', 'pipe'],
+        shell: true
+    });
+
+    let serverReady = false;
+
+    // 监听 stdout 输出
+    devProcess.stdout.on('data', (data) => {
+        const message = data.toString();
+        console.log(message)
+        if (!serverReady && message.includes('DONE  Build complete')) {
+            serverReady = true;
+            handleWeappAddonComponents('dev')
+            handleWeappLanguage('dev')
+        }
+    });
+}
+
+main()
