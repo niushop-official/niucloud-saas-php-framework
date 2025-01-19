@@ -66,7 +66,7 @@ class CoreImageService extends CoreFileService
             if($is_throw_exception){
                 throw new UploadFileException($e->getMessage());
             }else{
-                return '';
+                return $file_path;
             }
 
         }
