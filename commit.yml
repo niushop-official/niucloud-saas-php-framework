@@ -3,15 +3,18 @@ branches: {
   }
 fileChange:
   /uni-app:
-    newFile: !uuid '60e07338e4787b5dae885acf0e7b4ad9fc234189'
-    oldFile: !uuid 'c237424a62b6bbfe2926c73ed9a3077480f1aa1a'
+    newFile: !uuid '8130c28e03423262672061ed48b8f96a185daf01'
+    oldFile: !uuid '60e07338e4787b5dae885acf0e7b4ad9fc234189'
   /uni-app/src:
-    newFile: !uuid 'efaab933670eda9fb6cb368f377070d86d1b5083'
-    oldFile: !uuid 'ceb7999188a564ac544868873fd0dc5689bb83fd'
-  /uni-app/src/pages.json:
-    newFile: !uuid 'f0c40063e28dae28b062bb2999ea703ae62c32d8'
-    oldFile: !uuid '92e3b23279e0205add28d7afe4ebfe16b9c1094b'
-gitCommitId: !uuid 'bd1279bb977a99afcf26fcb3abbb617b0e48014e'
+    newFile: !uuid '1a77e529564720704c4472872686c7d95e4a9320'
+    oldFile: !uuid 'efaab933670eda9fb6cb368f377070d86d1b5083'
+  /uni-app/src/utils:
+    newFile: !uuid '1168275259934ddb27bad9cf8eab214757be0c25'
+    oldFile: !uuid '328902c8e84c60c25033dd145ab99220c5ccabb3'
+  /uni-app/src/utils/request.ts:
+    newFile: !uuid 'f2aa911eacb3464cf0ecae9fe3d50e1a31294c14'
+    oldFile: !uuid 'd569958082ee9c51f9714bf71c71f865deb2382b'
+gitCommitId: !uuid '1f9dcda1538fc63d436e554a17850d7720cbb596'
 renames: {
   }
-revisionId: 262
+revisionId: 263
