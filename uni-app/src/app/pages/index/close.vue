@@ -13,6 +13,8 @@ import { img,redirect } from '@/utils/common'
 import { t } from '@/locale'
 import useSystemStore from '@/stores/system'
 
+uni.hideTabBar() // 隐藏tabbar
+
 const systemStore = useSystemStore()
 
 watch(
