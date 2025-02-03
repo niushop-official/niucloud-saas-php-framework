@@ -58,10 +58,20 @@ watch(route, (nval, oval) => {
 }, { immediate: true })
 
 // 设置title模板
-useHead({
-	titleTemplate: (title) => {
-		const siteTitle = systemStore.site.front_end_name || systemStore.site.site_name
-		return title ? `${title} - ${siteTitle}` : siteTitle
-	}
-})
+watch(() => systemStore.site, () => {
+    useHead({
+        titleTemplate: (title) => {
+            const siteTitle = systemStore.site.front_end_name || systemStore.site.site_name
+	        if(title){
+	        	if(siteTitle){
+			        return `${title} - ${siteTitle}`;
+		        }else {
+			        return title;
+		        }
+	        }else{
+	        	return siteTitle;
+	        }
+        }
+    })
+}, { deep: true, immediate: true })
 </script>
