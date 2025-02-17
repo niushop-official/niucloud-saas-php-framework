@@ -2,25 +2,115 @@
 branches: {
   }
 fileChange:
-  /uni-app:
-    newFile: !uuid '4710df4e265ff1f3748c0ffef79d09668ba1d2c7'
-    oldFile: !uuid '8130c28e03423262672061ed48b8f96a185daf01'
-  /uni-app/src:
-    newFile: !uuid '8b9876ea9f838cba50d39b23b269c8efd8ffa023'
-    oldFile: !uuid '1a77e529564720704c4472872686c7d95e4a9320'
-  /uni-app/src/app:
-    newFile: !uuid '31e507a4606d31a79fb56002d78f495e752ad03d'
-    oldFile: !uuid 'e6512eb583ebf869a664961c92f00b0af5dc324b'
-  /uni-app/src/app/pages:
-    newFile: !uuid '299fb2c36445f1c8fffab8530e2e4dedc307fc9b'
-    oldFile: !uuid 'a0898ca76e4b6cc6e58146ca9fd0f5fdc5e62262'
-  /uni-app/src/app/pages/index:
-    newFile: !uuid '541273a6d8bf371698e7b779a3b4c34b7d4a9058'
-    oldFile: !uuid '8c508d1d826b2b3d328ff546bb55666315b7aca8'
-  /uni-app/src/app/pages/index/close.vue:
-    newFile: !uuid '58d3ddd7cacf0b12f4aacb505f44e0b39d6d7a43'
-    oldFile: !uuid '8827fc89e93b428bde2f8b688ba45b06ef3e304f'
-gitCommitId: !uuid '44e7ce9a5da66d252193cb3cac60c3bf04dd4973'
+  /niucloud:
+    newFile: !uuid 'f4aad2cb5863f650247ad9692848b074ee54b0b0'
+    oldFile: !uuid 'b7a0dd6050d2c82c6956382ae7b35879e8357c85'
+  /niucloud/app:
+    newFile: !uuid 'a14875e5f520de67affad540571f1ed7a62ab070'
+    oldFile: !uuid '7e0d62e6d560c832e6b6903c671d9a6043c6065d'
+  /niucloud/app/service:
+    newFile: !uuid '479a2b4780f95fc221b086f9839fad13b6e7edfa'
+    oldFile: !uuid 'be6800e99e6ebcd2faa00b142476dfd6236e5e43'
+  /niucloud/app/service/core:
+    newFile: !uuid 'd3bb81a6e47e8da58df82a427bd7b0c3d4ec13f2'
+    oldFile: !uuid '1eff798078a7c2ca2e4116fdfa1e637bef7ac18e'
+  /niucloud/app/service/core/addon:
+    newFile: !uuid '3de2a061e22a28640bf488b5fae2a5214a08a559'
+    oldFile: !uuid 'dab5865843ea9f7b61d09cd2583d44f3628f8a72'
+  /niucloud/app/service/core/addon/vm:
+    newFile: !uuid '4d8bf91273aa1c5c0961be0a57f2181191b4b0fb'
+    oldFile: !uuid '5e35ecd2afe9441c5c42a084384db1c04f456a19'
+  /niucloud/app/service/core/addon/vm/package:
+    newFile: !uuid 'c6a257c7a5d6383f1968a7a59ba3f9672d91015d'
+    oldFile: !uuid '43001ada06f114cb1ea7873c595379ab49380f86'
+  /niucloud/app/service/core/addon/vm/package/uni-app-pages.vm:
+    newFile: !uuid 'e315f636e1cacf345d84cfa7965550ce1795f0da'
+    oldFile: !uuid '27399973fbde545185724592a59d36cc00f31a7b'
+  /niucloud/app/service/core/addon/vm/vm:
+    newFile: !uuid 'e57b940092687170112cbc440abf9912c8105154'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/admin:
+    newFile: !uuid 'ac24efc8b112b0df8b02960af00f6aee82515889'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/admin/api.vm:
+    newFile: !uuid '1c1b40b5496b9152ed52d3997db61a792f46ca9e'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/admin/lang.vm:
+    newFile: !uuid '0967ef424bce6791893e9a57bb952f80fd536e93'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/admin/views.vm:
+    newFile: !uuid '2a193a403b8b8fff2a8465afca64b002b701cb0e'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/package:
+    newFile: !uuid 'c6a257c7a5d6383f1968a7a59ba3f9672d91015d'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/package/uni-app-pages.vm:
+    newFile: !uuid 'e315f636e1cacf345d84cfa7965550ce1795f0da'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system:
+    newFile: !uuid 'ad267dbbf6aad9a22dab57dafc5d9d780ff90ba9'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/addon.vm:
+    newFile: !uuid '6212bfd2a52b5c1633d8b50cecc6f87ca0b5ff38'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/admin_controller.vm:
+    newFile: !uuid '38fdffd97fba7d0d78b2a00b0baf43a089554624'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/admin_menu.vm:
+    newFile: !uuid 'b62512838d61fcfb139998b7643eec0db85d6ede'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/admin_route.vm:
+    newFile: !uuid '2fb2febd3dc0c4caf54b2dfd6ef9ce39b6bcf5ac'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/api_controller.vm:
+    newFile: !uuid 'd499c0990dece6786d585fe859af7ed473e6d718'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/api_route.vm:
+    newFile: !uuid 'fe81834d10a3e1682068d0da1a69ac2e03557c1d'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/common.vm:
+    newFile: !uuid '6dd3552331f7b742ca73b82d99f0a1ae5b549f31'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/event.vm:
+    newFile: !uuid 'ab1f4604e7b93baac7e3651354df5e2f6be78548'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/info.vm:
+    newFile: !uuid '8911889611d027d330d772f1c517530466901512'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/system/menu.vm:
+    newFile: !uuid 'c25d0e295e5572c7fbeec5ce67e70aefe1a844b9'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/uni-app:
+    newFile: !uuid 'e15c2989e3283111275662845ec5950e48e49297'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/uni-app/api.vm:
+    newFile: !uuid 'd6def9df17b86b8fbb5405f729110c5b58a5611f'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/uni-app/lang.vm:
+    newFile: !uuid '311847daa5a050a215b149561e1e00c818f5b03b'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/uni-app/views.vm:
+    newFile: !uuid '777b1a6e1a474e794d28c513b89279fc1433993c'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/web:
+    newFile: !uuid '4f7a12a59500041afd75a10d9b414c27aa5925b1'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/web/api.vm:
+    newFile: !uuid 'd2241dfe48b8fdde9593de227ced8c0c5f674b11'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/web/lang.vm:
+    newFile: !uuid '9e26dfeeb6e641a33dae4961196235bdb965b21b'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/web/lang_pages.vm:
+    newFile: !uuid '93efa1d09c1cc82bbbadb4c9dc6f2030d34107d0'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/web/routes.vm:
+    newFile: !uuid '46674b01ae7638820502e7c86b7a2c0527296137'
+    oldFile: null
+  /niucloud/app/service/core/addon/vm/vm/web/view.vm:
+    newFile: !uuid 'af84acdc7059da3a2be5dd47cee17816e054c7f5'
+    oldFile: null
+gitCommitId: !uuid '6648951a28fcc82df7e7d5e92f3e2c5721c70eb3'
 renames: {
   }
-revisionId: 264
+revisionId: 265
