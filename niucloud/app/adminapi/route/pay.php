@@ -59,6 +59,14 @@ Route::group('pay', function () {
     Route::get('type/list', 'pay.Pay/payTypeList');
     //找朋友帮忙付支付信息
     Route::get('friendspay/info/:trade_type/:trade_id/:channel', 'pay.Pay/friendspayInfo');
+
+    /***************************************************** 转账 *************************************************/
+    //获取转账场景
+    Route::get('transfer_scene', 'pay.Transfer/getWechatTransferScene');
+    //设置场景id
+    Route::post('transfer_scene/set_scene_id/:scene', 'pay.Transfer/setSceneId');
+    //设置业务场景配置
+    Route::post('transfer_scene/set_trade_scene/:type', 'pay.Transfer/setTradeScene');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

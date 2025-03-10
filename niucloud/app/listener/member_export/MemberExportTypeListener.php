@@ -25,6 +25,7 @@ class MemberExportTypeListener
             'member' => [
                 'name' => '会员列表',
                 'column' => [
+                    'member_no' => [ 'name' => '会员编号'],
                     'nickname' => [ 'name' => '会员昵称'],
                     'mobile' => [ 'name' => '手机号'],
                     'member_level_name' => [ 'name' => '会员等级'],

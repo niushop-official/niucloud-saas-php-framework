@@ -170,9 +170,15 @@ class CoreMemberConfigService extends BaseCoreService
         //校验转账方式是否合法
         $transfer_type_list = array_keys(TransferDict::getTransferType());
         if (array_diff(array_diff($data[ 'transfer_type' ], $transfer_type_list), $transfer_type_list)) throw new CommonException('TRANSFER_TYPE_NOT_EXIST');
+        foreach ($transfer_type_list as $key => $item) {
+            if (!in_array($item, $data[ 'transfer_type' ])) {
+                unset($transfer_type_list[ $key ]);
+            }
+        }
+        $transfer_type_list = array_values($transfer_type_list);
         $config = [
             'is_open' => $data[ 'is_open' ],//是否启用提现
-            'transfer_type' => $data[ 'transfer_type' ] ?? [],//提现方式
+            'transfer_type' => $transfer_type_list ?? [],//提现方式
             'min' => $data[ 'min' ] ?? '',//最低提现金额
             'is_auto_verify' => $data[ 'is_auto_verify' ] ?? 0,  //是否自动审核
             'is_auto_transfer' => $data[ 'is_auto_transfer' ] ?? 0,  //是否自动转账

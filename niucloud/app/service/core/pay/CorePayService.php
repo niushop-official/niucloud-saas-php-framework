@@ -22,6 +22,7 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\facade\Db;
+use think\facade\Log;
 use think\Model;
 use Throwable;
 
@@ -485,6 +486,9 @@ class CorePayService extends BaseCoreService
                     case 'refund':
                         return ( new CoreRefundService() )->refundNotify($site_id, $out_trade_no, $type, $params);
                         break;
+                    case 'transfer':
+                        return ( new CoreTransferService() )->transferNotify($site_id, $out_trade_no, $params);
+                        break;
                 }
                 //找不到对应的业务
                 return true;
@@ -492,6 +496,8 @@ class CorePayService extends BaseCoreService
                 return false;
             }
         };
+
+        Log::write('业务'.$site_id.'_'.$channel.'_'.$type.'_'.$action);
         return $this->pay_event->init($site_id, $channel, $type)->notify($action, $callback);
     }
 

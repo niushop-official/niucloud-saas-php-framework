@@ -870,6 +870,20 @@ return [
                 'is_show' => '1',
             ],
             [
+                'menu_name' => '编辑站点用户',
+                'menu_key' => 'edit_user',
+                'menu_short_name' => '',
+                'menu_type' => '2',
+                'icon' => '',
+                'api_url' => 'user/user/<uid>',
+                'router_path' => '',
+                'view_path' => '',
+                'methods' => 'put',
+                'sort' => '100',
+                'status' => '1',
+                'is_show' => '1',
+            ],
+            [
                 'menu_name' => '删除站点用户',
                 'menu_key' => 'delete_user',
                 'menu_short_name' => '',
@@ -882,6 +896,20 @@ return [
                 'sort' => '100',
                 'status' => '1',
                 'is_show' => '1',
+            ],
+            [
+                'menu_name' => '获取站点用户信息',
+                'menu_key' => 'get_user_info',
+                'menu_short_name' => '',
+                'menu_type' => '2',
+                'icon' => '',
+                'api_url' => 'user/user/<uid>',
+                'router_path' => '',
+                'view_path' => '',
+                'methods' => 'get',
+                'sort' => '100',
+                'status' => '1',
+                'is_show' => '0',
             ],
             [
                 'menu_name' => '获取用户套餐权限',
@@ -1635,6 +1663,20 @@ return [
                     ]
                 ]
             ],
+            [
+                'menu_name' => '更新缓存',
+                'menu_key' => 'update_cache',
+                'menu_short_name' => '更新缓存',
+                'menu_type' => '1',
+                'icon' => 'nc-iconfont nc-icon-qingliV6xx',
+                'api_url' => 'sys/schema/clear',
+                'router_path' => 'tools/update_cache',
+                'view_path' => 'tools/updatecache',
+                'methods' => 'post',
+                'sort' => '100',
+                'status' => '1',
+                'is_show' => '1',
+            ]
         ],
     ],
 

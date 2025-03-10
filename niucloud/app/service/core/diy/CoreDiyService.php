@@ -11,11 +11,10 @@
 
 namespace app\service\core\diy;
 
-use app\dict\sys\ConfigKeyDict;
-use app\model\sys\SysConfig;
-use app\service\core\sys\CoreConfigService;
+use app\model\addon\Addon;
+use app\model\diy\DiyTheme;
+use app\service\core\site\CoreSiteService;
 use core\base\BaseCoreService;
-use think\Model;
 
 /**
  * 自定义页面服务层
@@ -24,77 +23,79 @@ use think\Model;
  */
 class CoreDiyService extends BaseCoreService
 {
-    /**
-     * 获取系统默认主题配色
-     * @return array
-     */
-    public function getDefaultColor()
-    {
-        return [
-            'title' => '商务蓝',
-            'name' => 'blue',
-            'theme' => [
-                '--primary-color' => '#007aff', // 主色
-                '--primary-help-color' => '#007aff', // 辅色
-                '--price-text-color' => '#FF4142',// 价格颜色
-                '--primary-color-dark' => '#398ade', // 灰色
-                '--primary-color-disabled' => '#9acafc', // 禁用色
-                '--primary-color-light' => '#ecf5ff', // 边框色（深）
-                '--primary-color-light2' => '#fff7f7', // 边框色（淡）
-                '--page-bg-color' => '#f6f6f6', // 页面背景色
-            ],
-        ];
-    }
 
     /**
-     * 获取默认主题配色
-     * @return array
+     * 初始化默认自定义主题配色
+     * @return true
      */
-    public function getDefaultThemeColor()
+    public function initDefaultDiyTheme($site_id)
     {
-        return [
-            [
-                'title' => '商务蓝',
-                'name' => 'blue',
-                'theme' => [
-                    '--primary-color' => '#007aff', // 主色
-                    '--primary-help-color' => '#007aff', // 辅色
-                    '--price-text-color' => '#FF4142',// 价格颜色
-                    '--primary-color-dark' => '#398ade', // 灰色
-                    '--primary-color-disabled' => '#9acafc', // 禁用色
-                    '--primary-color-light' => '#ecf5ff', // 边框色（深）
-                    '--primary-color-light2' => '#fff7f7', // 边框色（淡）
-                    '--page-bg-color' => '#f6f6f6', // 页面背景色
-                ],
-            ],
-            [
-                'title' => '热情红',
-                'name' => 'red',
-                'theme' => [
-                    '--primary-color' => '#FF4142', // 主色
-                    '--primary-help-color' => '#FB7939', // 辅色
-                    '--price-text-color' => '#FF4142',// 价格颜色
-                    '--primary-color-dark' => '#F26F3E', // 灰色
-                    '--primary-color-disabled' => '#FFB397', // 禁用色
-                    '--primary-color-light' => '#FFEAEA', // 边框色（深）
-                    '--primary-color-light2' => '#fff7f7', // 边框色（淡）
-                    '--page-bg-color' => '#f6f6f6', // 页面背景色
-                ],
-            ],
-            [
-                'title' => '活力橙',
-                'name' => 'orange',
-                'theme' => [
-                    '--primary-color' => '#FA6400', // 主色
-                    '--primary-help-color' => '#FA6400', // 辅色
-                    '--price-text-color' => '#FF2525',// 价格颜色
-                    '--primary-color-dark' => '#F48032', // 灰色
-                    '--primary-color-disabled' => '#FFC29A', // 禁用色
-                    '--primary-color-light' => '#FFF4ED', // 边框色（深）
-                    '--primary-color-light2' => '#FFF4ED', // 边框色（淡）
-                    '--page-bg-color' => '#f6f6f6', // 页面背景色
-                ],
-            ]
-        ];
+        $site_addon = ( new CoreSiteService() )->getSiteCache($site_id);
+        $system_theme = array_values(array_filter(event('ThemeColor', [ 'key' => 'app'])))[0] ?? [];
+        foreach ($system_theme['theme_color'] as $k => $v) {
+            $data[] = [
+                'type' => 'app',
+                'addon' => 'app',
+                'site_id' => $site_id,
+                'title' => $v['title'],
+                'theme' => $v['theme'],
+                'default_theme' => $v['theme'],
+                'theme_type' => 'default',
+                'is_selected' => $k == 0 ? 1 : 0,
+                'create_time' => time(),
+            ];
+        }
+        foreach ($site_addon[ 'apps' ] as $value){
+            $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value['key'] ])))[0] ?? [];
+            if (empty($addon_theme)) continue;
+
+            foreach ($addon_theme['theme_color'] as $k => $v){
+                $data[] = [
+                    'type' => 'app',
+                    'addon' => $value['key'],
+                    'site_id' => $site_id,
+                    'title' => $v['title'],
+                    'theme' => $v['theme'],
+                    'default_theme' => $v['theme'],
+                    'theme_type' => 'default',
+                    'is_selected' => $k == 0 ? 1 : 0,
+                    'create_time' => time(),
+                ];
+            }
+            $addon_data = (new addon())->field('key')->where([['support_app', '=', $value['key']]])->select()->toArray();
+            if (!empty($addon_data)){
+                foreach ($addon_data as $v){
+                    foreach ($addon_theme['theme_color'] as $theme_k => $theme_v){
+                        $data[] = [
+                            'type' => 'addon',
+                            'addon' => $v['key'],
+                            'site_id' => $site_id,
+                            'title' => $theme_v['title'],
+                            'theme' => $theme_v['theme'],
+                            'default_theme' => $theme_v['theme'],
+                            'theme_type' => 'default',
+                            'is_selected' => $theme_k == 0 ? 1 : 0,
+                            'create_time' => time(),
+                        ];
+                    }
+                }
+            }
+        }
+        $diy_theme_model = new DiyTheme();
+        foreach ($data as $k => &$v) {
+            $theme_count = $diy_theme_model->where([
+                [ 'site_id', "=", $site_id ],
+                [ 'title', "=", $v[ 'title' ] ],
+                [ 'addon', "=", $v['addon'] ]
+            ])->count();
+            // 如果已有该主题风格颜色则不再添加
+            if ($theme_count > 0) {
+                unset($data[ $k ]);
+            }
+        }
+        if (!empty($data)) {
+            $diy_theme_model->insertAll($data);
+        }
+        return true;
     }
 }

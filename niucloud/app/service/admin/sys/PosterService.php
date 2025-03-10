@@ -114,6 +114,12 @@ class PosterService extends BaseAdminService
      */
     public function modifyStatus($data)
     {
+        $poster_info = $this->model->field('is_default')->where([
+            [ 'id', '=', $data[ 'id' ] ],
+            [ 'site_id', '=', $this->site_id ]
+        ])->findOrEmpty()->toArray();
+        if (empty($poster_info)) throw new AdminException('POSTER_NOT_EXIST');
+        if ($poster_info[ 'is_default' ] == 1) throw new AdminException('POSTER_IN_USE_NOT_ALLOW_MODIFY');
         return $this->model->where([
             [ 'id', '=', $data[ 'id' ] ],
             [ 'site_id', '=', $this->site_id ]

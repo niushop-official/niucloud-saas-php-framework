@@ -47,10 +47,42 @@ class DiyRouteService extends BaseAdminService
         foreach ($link as $k => $v) {
             if (!empty($v[ 'child_list' ])) {
                 foreach ($v[ 'child_list' ] as $ck => $cv) {
-                    if (!empty($cv[ 'url' ])) {
+                    if (!empty($cv[ 'child_list' ])) {
+                        foreach ($cv[ 'child_list' ] as $ck2 => $cv2) {
+                            $is_add = true;
+
+                            if (isset($where[ 'title' ]) && $where[ 'title' ] != '' && !str_contains($cv2[ 'title' ], $where[ 'title' ])) {
+                                $is_add = false;
+                            }
+
+                            if (!empty($where[ 'url' ]) && $where[ 'url' ] != $cv2[ 'url' ]) {
+                                $is_add = false;
+                            }
+
+                            if (!empty($v[ 'addon_info' ]) && !empty($where[ 'addon_name' ]) && $where[ 'addon_name' ] != $v[ 'addon_info' ][ 'key' ]) {
+                                $is_add = false;
+                            }
+
+                            $item = [
+                                'addon_info' => $v[ 'addon_info' ] ?? '',
+                                'title' => $cv2[ 'title' ],
+                                'name' => $cv2[ 'name' ],
+                                'parent' => $k,
+                                'page' => $cv2[ 'url' ],
+                                'is_share' => $cv2[ 'is_share' ],
+                                'action' => $cv2[ 'action' ] ?? '',
+                                'sort' => ++$sort
+                            ];
+
+                            if ($is_add) {
+                                $diy_route_list[] = $item;
+                            }
+                        }
+
+                    } else if (!empty($cv[ 'url' ])) {
                         $is_add = true;
 
-                        if (isset($where[ 'title' ]) && $where[ 'title' ] !='' && !str_contains($cv[ 'title' ], $where[ 'title' ])) {
+                        if (isset($where[ 'title' ]) && $where[ 'title' ] != '' && !str_contains($cv[ 'title' ], $where[ 'title' ])) {
                             $is_add = false;
                         }
 
@@ -181,7 +213,6 @@ class DiyRouteService extends BaseAdminService
         $link = LinkDict::getLink([
             'query' => 'addon'
         ]);
-
         return $link;
     }
 

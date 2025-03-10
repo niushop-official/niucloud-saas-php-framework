@@ -11,9 +11,11 @@
 
 namespace app\service\core\niucloud;
 
+use app\dict\addon\AddonDict;
 use app\model\addon\Addon;
 use app\service\core\addon\CoreAddonBaseService;
 use app\service\core\addon\CoreAddonDevelopDownloadService;
+use app\service\core\addon\WapTrait;
 use core\base\BaseCoreService;
 use core\exception\CommonException;
 use core\util\niucloud\BaseNiucloudClient;
@@ -32,6 +34,8 @@ class CoreCloudBuildService extends BaseCoreService
     protected $root_path;
 
     protected $auth_code;
+
+    use WapTrait;
 
     public function __construct()
     {
@@ -69,15 +73,30 @@ class CoreCloudBuildService extends BaseCoreService
             ]
         ];
 
-        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $niucloud_dir), 'status' => is_readable($niucloud_dir)];
-        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $admin_dir), 'status' => is_readable($admin_dir)];
-        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $web_dir), 'status' => is_readable($web_dir)];
-        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $wap_dir), 'status' => is_readable($wap_dir)];
+        clearstatcache();
 
-        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $niucloud_dir), 'status' => is_write($niucloud_dir) ];
-        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $admin_dir), 'status' => is_write($admin_dir) ];
-        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $web_dir), 'status' => is_write($web_dir) ];
-        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $wap_dir), 'status' => is_write($wap_dir) ];
+        // 校验niucloud/public niucloud/vendor 目录是否可读可写
+        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', public_path()), 'status' => is_readable(public_path())];
+        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $niucloud_dir . 'vendor'), 'status' => is_readable($niucloud_dir . 'vendor')];
+
+        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', public_path()), 'status' => is_write(public_path())];
+        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $niucloud_dir . 'vendor'), 'status' => is_write($niucloud_dir . 'vendor')];
+
+        // 校验niucloud/public下 wap web admin 目录及文件是否可读可写
+        $check_res = checkDirPermissions(public_path() . 'wap');
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'admin'));
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'web'));
+
+        if (!empty($check_res['unreadable'])) {
+            foreach ($check_res['unreadable'] as $item) {
+                $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $item),'status' => false];
+            }
+        }
+        if (!empty($check_res['not_writable'])) {
+            foreach ($check_res['not_writable'] as $item) {
+                $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $item),'status' => false];
+            }
+        }
 
         $check_res = array_merge(
             array_column($data['dir']['is_readable'], 'status'),
@@ -112,6 +131,7 @@ class CoreCloudBuildService extends BaseCoreService
         $wap_is_compile = (new Addon())->where([ ['compile', 'like', '%wap%'] ])->field('id')->findOrEmpty();
         if ($wap_is_compile->isEmpty()) {
             dir_copy($this->root_path . 'uni-app', $package_dir . 'uni-app', exclude_dirs:['node_modules', 'unpackage', 'dist']);
+            $this->handleUniapp($package_dir . 'uni-app');
         }
         // 拷贝admin端文件
         $admin_is_compile = (new Addon())->where([ ['compile', 'like', '%admin%'] ])->field('id')->findOrEmpty();
@@ -153,6 +173,11 @@ class CoreCloudBuildService extends BaseCoreService
         Cache::set($this->cache_key, $this->build_task);
 
         return $this->build_task;
+    }
+
+    private function handleUniapp(string $dir) {
+        $addon = ( new Addon() )->where([ [ 'status', '=', AddonDict::ON ] ])->value('key', '');
+        $this->compileDiyComponentsCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
     }
 
     private function handleCustomPort(string $package_dir) {
@@ -255,15 +280,15 @@ class CoreCloudBuildService extends BaseCoreService
                         $zip->extractTo($temp_dir . 'download');
                         $zip->close();
 
-                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'admin')) {
-                            del_target_dir(public_path() .'admin', true);
-                        }
-                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'web')) {
-                            del_target_dir(public_path() .'web', true);
-                        }
-                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'wap')) {
-                            del_target_dir(public_path() .'wap', true);
-                        }
+//                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'admin')) {
+//                            del_target_dir(public_path() .'admin', true);
+//                        }
+//                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'web')) {
+//                            del_target_dir(public_path() .'web', true);
+//                        }
+//                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'wap')) {
+//                            del_target_dir(public_path() .'wap', true);
+//                        }
 
                         dir_copy($temp_dir . 'download', root_path());
 

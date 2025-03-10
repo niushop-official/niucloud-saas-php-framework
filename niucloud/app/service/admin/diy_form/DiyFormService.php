@@ -55,12 +55,42 @@ class DiyFormService extends BaseAdminService
      */
     public function getPage(array $where = [])
     {
-        $where[] = [ 'site_id', '=', $this->site_id ];
         $field = 'form_id, page_title, title, type, status, addon, share, write_num, remark, update_time';
         $order = "form_id desc";
 
         $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->withSearch([ "title", "type", 'addon' ], $where)->field($field)->order($order)->append([ 'type_name', 'addon_name' ]);
         return $this->pageQuery($search_model);
+    }
+
+    /**
+     * 获取万能表单分页列表（用于弹框选择）
+     * @param array $where
+     * @return array
+     */
+    public function getSelectPage(array $where = [])
+    {
+        $verify_form_ids = [];
+        // 检测id集合是否存在，移除不存在的id，纠正数据准确性
+        if (!empty($where[ 'verify_form_ids' ])) {
+            $verify_form_ids = $this->model->where([
+                [ 'form_id', 'in', $where[ 'verify_form_ids' ] ]
+            ])->field('form_id')->select()->toArray();
+
+            if (!empty($verify_form_ids)) {
+                $verify_form_ids = array_column($verify_form_ids, 'form_id');
+            }
+        }
+
+        $field = 'form_id, page_title, title, type, status, addon, share, write_num, remark, update_time';
+        $order = "form_id desc";
+
+        $search_model = $this->model->where([
+            [ 'site_id', '=', $this->site_id ],
+            [ 'status', '=', 1 ],
+        ])->withSearch([ "title", "type", 'addon' ], $where)->field($field)->order($order)->append([ 'type_name', 'addon_name' ]);
+        $list = $this->pageQuery($search_model);
+        $list[ 'verify_form_ids' ] = $verify_form_ids;
+        return $list;
     }
 
     /**
@@ -285,9 +315,15 @@ class DiyFormService extends BaseAdminService
 
         if ($status_count > 0) throw new AdminException('ON_STATUS_PROHIBIT_DELETE');
 
+        foreach ($form_ids as $form_id) {
+            $result = event('BeforeFormDelete', [ 'form_id' => $form_id, 'site_id' => $this->site_id ])[ 0 ] ?? [];
+            if (!empty($result) && !$result[ 'allow_operate' ]) {
+                $form_info = $this->model->field('page_title')->where([ [ 'form_id', '=', $form_id ], [ 'site_id', '=', $this->site_id ] ])->findOrEmpty()->toArray();
+                throw new AdminException($form_info[ 'page_title' ] . '已被使用，禁止删除');
+            }
+        }
+
         $form_fields_model = new DiyFormFields();
-        $form_records_model = new DiyFormRecords();
-        $form_records_fields_model = new DiyFormRecordsFields();
         $form_submit_config_model = new DiyFormSubmitConfig();
         $form_write_config_model = new DiyFormWriteConfig();
 
@@ -298,12 +334,6 @@ class DiyFormService extends BaseAdminService
 
             //删除万能表单字段表
             $form_fields_model->where($where)->delete();
-
-            //删除万能表单填写记录
-            $form_records_model->where($where)->delete();
-
-            //删除万能表单填写字段
-            $form_records_fields_model->where($where)->delete();
 
             //删除万能表单提交页配置
             $form_submit_config_model->where($where)->delete();
@@ -412,11 +442,15 @@ class DiyFormService extends BaseAdminService
         }
         $componentType($form_component_list, 'diy_form');
 
-        $diy_service = new DiyService();
-        $diy_component_list = $diy_service->getComponentList();
-        $componentType($diy_component_list, 'diy');
+        $data = $form_component_list;
 
-        $data = array_merge($form_component_list, $diy_component_list);
+        if ($type == 'DIY_FORM') {
+            $diy_service = new DiyService();
+            $diy_component_list = $diy_service->getComponentList();
+            $componentType($diy_component_list, 'diy');
+
+            $data = array_merge($form_component_list, $diy_component_list);
+        }
         return $data;
     }
 
@@ -521,6 +555,11 @@ class DiyFormService extends BaseAdminService
      */
     public function modifyStatus($data)
     {
+        $result = event('BeforeFormDelete', [ 'form_id' => $data[ 'form_id' ], 'site_id' => $this->site_id ])[ 0 ] ?? [];
+        if (!empty($result) && !$result[ 'allow_operate' ] && $data[ 'status' ] == 0) {
+            $form_info = $this->model->field('page_title')->where([ [ 'form_id', '=', $data[ 'form_id' ] ], [ 'site_id', '=', $this->site_id ] ])->findOrEmpty()->toArray();
+            throw new AdminException($form_info[ 'page_title' ] . '已被使用，不可禁用');
+        }
         return $this->model->where([
             [ 'form_id', '=', $data[ 'form_id' ] ],
             [ 'site_id', '=', $this->site_id ]
@@ -631,6 +670,23 @@ class DiyFormService extends BaseAdminService
         return [
             'path' => $path
         ];
+    }
+
+    /**
+     * 检测表单名称唯一性
+     * @param array $data
+     * @return bool
+     */
+    public function checkPageTitleUnique($data)
+    {
+        $where = [
+            [ 'page_title', "=", $data[ 'page_title' ] ],
+            [ 'site_id', "=", $this->site_id ]
+        ];
+        if (!empty($data[ 'form_id' ])) {
+            $where[] = [ 'form_id', "<>", $data[ 'form_id' ] ];
+        }
+        return $this->model->where($where)->count() > 0;
     }
 
 }

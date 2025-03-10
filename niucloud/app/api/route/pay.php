@@ -43,3 +43,13 @@ Route::group('pay',function () {
 })->middleware(ApiChannel::class)
     ->middleware(ApiCheckToken::class, true)//表示验证登录
     ->middleware(ApiLog::class);
+
+
+Route::group('transfer',function () {
+    //去支付
+    Route::post('confirm/:transfer_no', 'pay.Pay/pay');
+
+
+})->middleware(ApiChannel::class)
+    ->middleware(ApiCheckToken::class, true)//表示验证登录
+    ->middleware(ApiLog::class);

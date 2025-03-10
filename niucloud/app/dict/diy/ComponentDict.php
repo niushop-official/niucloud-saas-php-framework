@@ -614,7 +614,8 @@ class ComponentDict
                                     ]
                                 ]
                             ],
-                            "offset" => 0 // 偏移量
+                            "offset" => 0, // 上下偏移量
+                            "lateralOffset" => 15 // 左右偏移量
                         ],
                     ],
                     'HorzBlank' => [

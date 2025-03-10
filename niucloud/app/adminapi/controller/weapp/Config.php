@@ -48,4 +48,42 @@ class Config extends BaseAdminController
         return success('SET_SUCCESS');
     }
 
+    /**
+     * 设置微信小程序域名
+     * @return Response
+     */
+    public function setDomain() {
+        $data = $this->request->params([
+            ['requestdomain', ''],
+            ['wsrequestdomain', ''],
+            ['uploaddomain', ''],
+            ['downloaddomain', ''],
+            ['udpdomain', ''],
+            ['tcpdomain', '']
+        ]);
+        (new WeappConfigService())->setDomain($data);
+        return success('SET_SUCCESS');
+    }
+
+    /**
+     * 获取微信小程序隐私协议
+     * @return Response
+     */
+    public function getPrivacySetting() {
+        return success((new WeappConfigService())->getPrivacySetting());
+    }
+
+    /**
+     * 设置微信小程序隐私协议
+     * @return Response
+     */
+    public function setPrivacySetting() {
+        $data = $this->request->params([
+            ['setting_list', []],
+            ['owner_setting', []],
+            ['sdk_privacy_info_list', []]
+        ]);
+        (new WeappConfigService())->setPrivacySetting($data);
+        return success('SET_SUCCESS');
+    }
 }

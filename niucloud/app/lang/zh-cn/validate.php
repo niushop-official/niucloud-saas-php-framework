@@ -165,6 +165,8 @@ return [
     // 自定义
     'validate_diy' => [
         'type_not_exist' => '不存在的页面模板',
+        'theme_title_unique' => '色调名称必须是唯一的',
+        'page_title_unique' => '表单名称必须是唯一的',
     ],
     // 会员提现账号
     'validate_member_cash_out_account' => [

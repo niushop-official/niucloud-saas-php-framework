@@ -234,6 +234,20 @@ class CoreOplatformService extends BaseCoreService
     }
 
     /**
+     * 获取隐私接口
+     * @param $site_id
+     * @return array|mixed[]
+     */
+    public static function getPrivacySetting($site_id) {
+        $app = CoreWeappService::app($site_id);
+        return $app->getClient()->post('/cgi-bin/component/getprivacysetting', [
+            'json' => [
+                'privacy_ver' => 1
+            ]
+        ])->toArray();
+    }
+
+    /**
      * 设置隐私协议
      * @param $site_id
      * @return array|mixed[]
@@ -272,7 +286,7 @@ class CoreOplatformService extends BaseCoreService
      */
     public static function getDomain($site_id) {
         $app = CoreWeappService::app($site_id);
-        return $app->getClient()->post('/wxa/modify_domain', [
+        return $app->getClient()->post('/wxa/modify_domain_directly', [
             'json' => [
                 'action' => 'get',
             ]
@@ -294,7 +308,7 @@ class CoreOplatformService extends BaseCoreService
      */
     public static function setDomain($site_id, $data) {
         $app = CoreWeappService::app($site_id);
-        return $app->getClient()->post('/wxa/modify_domain', [
+        return $app->getClient()->post('/wxa/modify_domain_directly', [
             'json' => [
                 'action' => 'set',
                 'requestdomain' => $data['requestdomain'] ?? [],

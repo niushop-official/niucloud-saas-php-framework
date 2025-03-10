@@ -288,5 +288,14 @@ class CorePayEventService extends BaseCoreService
 
     }
 
-
+    /**
+     * 转账取消
+     * @param array $param
+     * @return array
+     * @throws Exception
+     */
+    public function transferCancel(array $param)
+    {
+        return $this->app()->transferCancel($param);
+    }
 }

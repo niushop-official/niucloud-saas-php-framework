@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | Niucloud-admin 企业快速开发的多应用管理平台
+// | Niucloud-admin 企业快速开发的saas管理平台
 // +----------------------------------------------------------------------
 // | 官方网址：https://www.niucloud.com
 // +----------------------------------------------------------------------
@@ -181,6 +181,7 @@ class TemplateDict
                                     "unique" => false,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => true,
                                     "default" => "",
                                     "value" => ""
                                 ],
@@ -230,6 +231,7 @@ class TemplateDict
                                     "unique" => true,
                                     "autofill" => false,
                                     "privacyProtection" => true,
+                                    'cache' => true,
                                     "default" => "",
                                     "value" => ""
                                 ],
@@ -279,6 +281,7 @@ class TemplateDict
                                     "unique" => true,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => true,
                                     "default" => "",
                                     "value" => ""
                                 ],
@@ -328,6 +331,7 @@ class TemplateDict
                                     "unique" => false,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => true,
                                     "default" => "",
                                     "value" => ""
                                 ],
@@ -377,13 +381,14 @@ class TemplateDict
                                     "unique" => false,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => false,
                                     "default" => [
-                                        "date" => "2025-01-11",
-                                        "timestamp" => 1736564405.243
+                                        "date" => "",
+                                        "timestamp" => 0
                                     ],
                                     "value" => [
-                                        "date" => "2025-01-11 11=>02",
-                                        "timestamp" => 1736564520
+                                        "date" => "",
+                                        "timestamp" => 0
                                     ]
                                 ],
                                 "placeholder" => "请选择日期",
@@ -435,6 +440,7 @@ class TemplateDict
                                     "unique" => false,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => true,
                                     "default" => [],
                                     "value" => []
                                 ],
@@ -518,6 +524,7 @@ class TemplateDict
                                     "unique" => false,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => true,
                                     "default" => "",
                                     "value" => ""
                                 ],
@@ -569,24 +576,25 @@ class TemplateDict
                                     "unique" => false,
                                     "autofill" => false,
                                     "privacyProtection" => false,
+                                    'cache' => false,
                                     "default" => [
                                         "start" => [
-                                            "date" => "2025-01-11",
-                                            "timestamp" => 1736585705
+                                            "date" => "",
+                                            "timestamp" => 0
                                         ],
                                         "end" => [
-                                            "date" => "2025-01-18",
-                                            "timestamp" => 1737190505
+                                            "date" => "",
+                                            "timestamp" => 0
                                         ]
                                     ],
                                     "value" => [
                                         "start" => [
-                                            "date" => "2025/01/11",
-                                            "timestamp" => 1736524800
+                                            "date" => "",
+                                            "timestamp" => 0
                                         ],
                                         "end" => [
-                                            "date" => "2025/01/11",
-                                            "timestamp" => 1736524800
+                                            "date" => "",
+                                            "timestamp" => 0
                                         ]
                                     ]
                                 ],
@@ -595,12 +603,12 @@ class TemplateDict
                                 "dateFormat" => "YYYY/MM/DD",
                                 "start" => [
                                     "placeholder" => "请选择起始日期",
-                                    "dateWay" => "diy",
+                                    "dateWay" => "current",
                                     "defaultControl" => true
                                 ],
                                 "end" => [
                                     "placeholder" => "请选择结束日期",
-                                    "dateWay" => "diy",
+                                    "dateWay" => "current",
                                     "defaultControl" => true
                                 ],
                                 "textColor" => "#303133",

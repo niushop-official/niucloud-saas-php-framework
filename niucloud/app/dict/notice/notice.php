@@ -20,5 +20,18 @@ return [
         'variable' => [
             'code' => '验证码'
         ],
-    ]
+    ],
+
+    //提示用户收款
+//    'member_transfer' => [
+//        'key' => 'member_transfer',
+//        'receiver_type' => 1,
+//        'name' => '提示用户收款',
+//        'title' => '后台通过提现申请后，提示用户收款',
+//        'async' => false,
+//        'variable' => [
+//            'transfer_no' => '转账单号',
+//
+//        ],
+//    ]
 ];

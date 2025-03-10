@@ -93,6 +93,15 @@ Route::group('diy', function() {
     // 获取默认主题配色
     Route::get('theme/color', 'diy.Diy/getDefaultThemeColor');
 
+    // 添加自定义主题配色
+    Route::post('theme/add', 'diy.Diy/addDiyTheme');
+
+    // 编辑自定义主题配色
+    Route::put('theme/edit/:id', 'diy.Diy/editDiyTheme');
+
+    // 删除自定义主题配色
+    Route::delete('theme/delete/:id', 'diy.Diy/delDiyTheme');
+
     /***************************************************** 配置相关 *****************************************************/
 
     // 底部导航列表
@@ -111,6 +120,9 @@ Route::group('diy', function() {
 
     // 万能表单列表
     Route::get('form/list', 'diy.DiyForm/lists');
+
+    // 万能表单分页列表（用于弹框选择）
+    Route::get('form/select', 'diy.DiyForm/select');
 
     // 万能表单类型
     Route::get('form/type', 'diy.DiyForm/getFormType');

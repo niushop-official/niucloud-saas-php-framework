@@ -132,12 +132,13 @@ class CoreMemberCashOutService extends BaseCoreService
             $cash_out_account = (new CoreMemberCashOutAccountService())->getInfo($data['account_id'], $site_id, $member_id);
             if (empty($cash_out_account)) throw new CommonException('CASH_OUT_ACCOUNT_NOT_EXIST');
         } else {
-            $data_transfer_payee = $data['transfer_payee'] ?? [];
-            if (empty($data_transfer_payee)) throw new CommonException('CASH_OUT_ACCOUNT_NOT_FOUND_VALUE');//转账到微信零钱缺少参数
-            $transfer_payee = [
-                'open_id' => $data_transfer_payee['open_id'] ?? '',
-                'channel' => $data_transfer_payee['channel'] ?? '',
-            ];
+//            $data_transfer_payee = $data['transfer_payee'] ?? [];
+//            if (empty($data_transfer_payee)) throw new CommonException('CASH_OUT_ACCOUNT_NOT_FOUND_VALUE');//转账到微信零钱缺少参数
+//            $transfer_payee = [
+//                'open_id' => $data_transfer_payee['open_id'] ?? '',
+//                'channel' => $data_transfer_payee['channel'] ?? '',
+//            ];
+            $transfer_payee = [];
         }
 
         Db::startTrans();
@@ -204,6 +205,7 @@ class CoreMemberCashOutService extends BaseCoreService
     }
 
     /**
+     * 审核
      * @param int $site_id
      * @param int $id
      * @param string $action
@@ -240,14 +242,18 @@ class CoreMemberCashOutService extends BaseCoreService
             'audit_time' => time(),
             'status' => MemberCashOutDict::WAIT_TRANSFER
         ]);
-        $config = (new CoreMemberConfigService())->getCashOutConfig($site_id);
-        if ($config['is_auto_transfer']) {
-            try {
-                $this->transfer($site_id, $cash_out['id']);
-            } catch ( Throwable $e ) {
+//        $config = (new CoreMemberConfigService())->getCashOutConfig($site_id);
+//        if ($config['is_auto_transfer']) {
+//            try {
+                //会员提现需要在前端手动发起
+//                if($cash_out['transfer_type'] != TransferDict::WECHAT){
+//                    $this->transfer($site_id, $cash_out['id']);
+//                }
 
-            }
-        }
+//            } catch ( Throwable $e ) {
+
+//            }
+//        }
         return true;
     }
 
@@ -288,16 +294,10 @@ class CoreMemberCashOutService extends BaseCoreService
                 $transfer_type = $cash_out['transfer_type'];
                 if ($transfer_type == TransferDict::WECHAT) {//如果是转账到微信钱包，则需要获取openid
                     //根据转账方式和会员的授权信息来判断可以使用的转账方式
-//                $member = (new CoreMemberService())->find($site_id, $cash_out['member_id']);
-//                if(!empty($member['wx_openid'])){
-//                    $data['openid'] = $member['wx_openid'];
-//                } else if(!empty($member['weapp_openid'])){
-//                    $data['openid'] = $member['wweapp_openid'];
-//                }else{
-//                    $data['openid'] = '';
-//                }
-//                $data['openid'] = $member['wx_openid'];
-                    $data['transfer_payee'] = $cash_out['transfer_payee'] ?? [];
+                    $data['transfer_payee'] = [
+                        'open_id' => $data['open_id'] ?? '',
+                        'channel' => $data['channel'] ?? '',
+                    ];
                 }
             } else {
                 $transfer_type = $cash_out['transfer_type'];
@@ -305,7 +305,7 @@ class CoreMemberCashOutService extends BaseCoreService
 
             $result = (new CoreTransferService())->transfer($site_id, $transfer_no, $transfer_type, $data);
             Db::commit();
-            return true;
+            return $result;
             // 提交事务
 
         } catch (\Exception $e) {
@@ -391,6 +391,29 @@ class CoreMemberCashOutService extends BaseCoreService
         $status = $core_transfer_service->check($site_id, [
             'transfer_no' => $cash_out['transfer_no']
         ]);
+        return true;
+    }
+
+    /**
+     * 取消提现
+     * @param int $site_id
+     * @param int $id
+     * @return void
+     */
+    public function cancel(int $site_id, int $id){
+        $cash_out = $this->find($site_id, $id);
+        if ($cash_out->isEmpty()) throw new CommonException('RECHARGE_LOG_NOT_EXIST');
+        if ($cash_out['status'] != MemberCashOutDict::WAIT_AUDIT && $cash_out['status'] != MemberCashOutDict::WAIT_TRANSFER && $cash_out['status'] != MemberCashOutDict::TRANSFER_ING) throw new CommonException('CASHOUT_STATUS_NOT_IN_CANCEL');
+        if($cash_out['transfer_type'] == TransferDict::WECHAT){
+            if($cash_out['status'] == MemberCashOutDict::TRANSFER_ING){
+                $core_transfer_service = new CoreTransferService();
+                $core_transfer_service->cancel($site_id, $cash_out['transfer_no']);
+            }
+        }
+        $cash_out->save([
+            'status' => MemberCashOutDict::CANCEL,
+        ]);
+        $this->giveback($site_id, $cash_out);
         return true;
     }
 }

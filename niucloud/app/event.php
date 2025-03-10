@@ -97,7 +97,7 @@ $system_event = [
             //表单填表人统计导出
             'app\listener\diy_form_export\DiyFormRecordsMemberExportTypeListener',
             //表单字段统计导出
-//            'app\listener\diy_form_export\DiyFormRecordsFieldsExportTypeListener',
+            'app\listener\diy_form_export\DiyFormRecordsFieldsExportTypeListener',
         ],
         //导出数据源
         'ExportData' => [
@@ -108,7 +108,7 @@ $system_event = [
             //表单填表人统计导出
             'app\listener\diy_form_export\DiyFormRecordsMemberExportDataListener',
             //表单字段统计导出
-//            'app\listener\diy_form_export\DiyFormRecordsFieldsExportDataListener',
+            'app\listener\diy_form_export\DiyFormRecordsFieldsExportDataListener',
         ],
         //统计执行
         'StatExecute' => [],
@@ -123,7 +123,13 @@ $system_event = [
         'WeappAuthChangeAfter' => [ 'app\listener\system\WeappAuthChangeAfter' ],
         'ShowApp' => [
             'app\listener\system\ShowAppListener'
-        ]
+        ],
+        //获取微信转账场景配置
+        'GetWechatTransferTradeScene' => [
+            'app\listener\transfer\TransferCashOutListener'
+        ],
+        //主题色
+        'ThemeColor' => [ 'app\listener\diy\ThemeColorListener' ],
     ],
     'subscribe' => [
     ],

@@ -167,7 +167,7 @@ class CoreDiyFormRecordsService extends BaseCoreService
 
                     if (!empty($form_field_info)) {
                         if ($form_field_info[ 'field_required' ] == 1 && empty($field_value)) {
-                            throw new CommonException($component[ 'componentTitle' ] . '不能为空');
+                            throw new CommonException(($component[ 'field' ][ 'name' ] ?? $component[ 'componentTitle' ]) . '不能为空');
                         } else if (empty($check_field_value)) {
                             // 过滤空数据
                             continue;
@@ -181,7 +181,7 @@ class CoreDiyFormRecordsService extends BaseCoreService
                             [ 'field_type', '=', $component[ 'componentName' ] ]
                         ])->column('field_value');
                         if ($form_field_info[ 'field_unique' ] == 1 && in_array($field_value, $field_values)) {
-                            throw new CommonException($component[ 'componentTitle' ] . '不能重复');
+                            throw new CommonException(($component[ 'field' ][ 'name' ] ?? $component[ 'componentTitle' ]) . '不能重复');
                         }
                     } else if (empty($check_field_value)) {
                         // 过滤空数据

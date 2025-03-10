@@ -122,6 +122,8 @@ Route::group('member', function() {
     Route::put('cash_out/audit/:id/:action', 'member.CashOut/audit');
     //会员提现备注
     Route::put('cash_out/remark/:id', 'member.CashOut/remark');
+    //取消会员提现
+    Route::put('cash_out/cancel/:id', 'member.CashOut/cancel');
     //校验会员提现转账状态
     Route::put('cash_out/check/:id', 'member.CashOut/checkTransferStatus');
     //转账方式

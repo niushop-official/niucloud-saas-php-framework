@@ -120,4 +120,15 @@ class CashOut extends BaseAdminController
         (new MemberCashOutService())->checkTransferStatus($id);
         return success();
     }
+
+    /**
+     * 取消
+     * @param $id
+     * @return void
+     */
+    public function cancel($id){
+
+        (new MemberCashOutService())->cancel($id);
+        return success();
+    }
 }

@@ -203,6 +203,7 @@ Route::group('sys', function() {
 
     /***************************************************** 清理缓存-刷新菜单 ****************************************************/
     Route::post('schema/clear', 'sys.System/schemaCache');
+    Route::post('cache/clear', 'sys.System/clearCache');
 
     /***************************************************** 公共字典数据 ****************************************************/
     Route::get('date/month', 'sys.Common/getMonth');

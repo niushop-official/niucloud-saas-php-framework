@@ -43,6 +43,21 @@ class DiyForm extends BaseAdminController
     }
 
     /**
+     * @notes 获取万能表单分页列表（用于弹框选择）
+     * @return Response
+     */
+    public function select()
+    {
+        $data = $this->request->params([
+            [ "title", "" ],
+            [ "type", "" ],
+            [ 'addon', '' ],
+            [ 'verify_form_ids', '' ] // 检测id集合是否存在，移除不存在的id，纠正数据准确性
+        ]);
+        return success(( new DiyFormService() )->getSelectPage($data));
+    }
+
+    /**
      * @notes 获取万能表单列表
      * @return Response
      * @throws DataNotFoundException
@@ -101,7 +116,7 @@ class DiyForm extends BaseAdminController
             [ "value", [] ],
             [ 'template', '' ],
         ]);
-
+        $data[ 'form_id' ] = $id;
         $this->validate($data, 'app\validate\diy\DiyForm.edit');
         ( new DiyFormService() )->edit($id, $data);
         return success('MODIFY_SUCCESS');

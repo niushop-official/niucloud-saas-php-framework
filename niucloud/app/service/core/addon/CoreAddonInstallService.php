@@ -105,13 +105,9 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
         $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
 
-        try {
-            if (!is_dir($this->root_path . 'admin' . DIRECTORY_SEPARATOR)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
-            if (!is_dir($this->root_path . 'web' . DIRECTORY_SEPARATOR)) throw new CommonException('WEB_DIR_NOT_EXIST');
-            if (!is_dir($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
-        } catch (\Exception $e) {
-            throw new CommonException($e->getMessage());
-        }
+        if (!is_dir($this->root_path . 'admin' . DIRECTORY_SEPARATOR)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
+        if (!is_dir($this->root_path . 'web' . DIRECTORY_SEPARATOR)) throw new CommonException('WEB_DIR_NOT_EXIST');
+        if (!is_dir($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
 
         // 配置文件
         $package_path = $this->install_addon_path . 'package' . DIRECTORY_SEPARATOR;
@@ -140,6 +136,22 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_web_dir), 'status' => is_dir($to_web_dir) ? is_write($to_web_dir) : mkdir($to_web_dir, 0777, true)];
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_wap_dir), 'status' => is_dir($to_wap_dir) ? is_write($to_wap_dir) : mkdir($to_wap_dir, 0777, true)];
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_resource_dir), 'status' => is_dir($to_resource_dir) ? is_write($to_resource_dir) : mkdir($to_resource_dir, 0777, true)];
+
+        // 校验niucloud/public下 wap web admin 目录及文件是否可读可写
+        $check_res = checkDirPermissions(public_path() . 'wap');
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'admin'));
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'web'));
+
+        if (!empty($check_res['unreadable'])) {
+            foreach ($check_res['unreadable'] as $item) {
+                $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $item),'status' => false];
+            }
+        }
+        if (!empty($check_res['not_writable'])) {
+            foreach ($check_res['not_writable'] as $item) {
+                $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $item),'status' => false];
+            }
+        }
 
         $check_res = array_merge(
             array_column($data['dir']['is_readable'], 'status'),

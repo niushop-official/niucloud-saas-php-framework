@@ -86,7 +86,8 @@ class Login extends BaseController
             [ 'mobile', '' ],
             [ 'nickname', '' ],
             [ 'headimg', '' ],
-            [ 'mobile', '' ]
+            [ 'mobile', '' ],
+            [ 'openid', '' ]
         ]);
         //校验登录注册配置
         ( new ConfigService() )->checkLoginConfig(MemberLoginTypeDict::MOBILE);

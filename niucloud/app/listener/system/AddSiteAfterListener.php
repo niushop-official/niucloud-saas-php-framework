@@ -10,9 +10,9 @@
 // +----------------------------------------------------------------------
 namespace app\listener\system;
 
-use app\model\sys\Poster;
 use app\model\sys\SysAttachment;
 use app\model\sys\SysAttachmentCategory;
+use app\service\core\diy\CoreDiyService;
 use app\service\core\poster\CorePosterService;
 
 /**
@@ -538,6 +538,8 @@ class AddSiteAfterListener
             'is_default' => 1
         ]);
 
+        // 创建默认主题风格颜色
+        ( new CoreDiyService() )->initDefaultDiyTheme($site_id);
         return true;
     }
 }

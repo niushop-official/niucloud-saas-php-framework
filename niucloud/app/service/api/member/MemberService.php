@@ -64,6 +64,15 @@ class MemberService extends BaseApiService
     }
 
     /**
+     * 检测会员信息是否存在
+     * @return int
+     */
+    public function getCount($condition)
+    {
+        return $this->model->where($condition)->count();
+    }
+
+    /**
      * 会员中心信息
      */
     public function center()

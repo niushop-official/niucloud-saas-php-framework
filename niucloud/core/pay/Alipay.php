@@ -376,7 +376,15 @@ class Alipay extends BasePay
             }
         }
     }
+    /**
+     * 转账取消
+     * @param array $params
+     * @return array
+     */
+    public function transferCancel(array $params)
+    {
 
+    }
     public function fail()
     {
         return 'fail';

@@ -12,9 +12,11 @@
 namespace app\service\admin\member;
 
 use app\dict\member\MemberCashOutDict;
+use app\dict\pay\TransferDict;
 use app\model\member\MemberCashOut;
 use app\service\core\member\CoreMemberCashOutService;
 use core\base\BaseAdminService;
+use core\exception\CommonException;
 
 /**
  * 会员提现服务层
@@ -79,6 +81,9 @@ class MemberCashOutService extends BaseAdminService
      */
     public function transfer(int $id, array $data){
         $core_member_cash_out_service = new CoreMemberCashOutService();
+        $cash_out = $core_member_cash_out_service->find($this->site_id, $id);
+        if ($cash_out->isEmpty()) throw new CommonException('RECHARGE_LOG_NOT_EXIST');
+        if ($cash_out['status'] != MemberCashOutDict::WAIT_TRANSFER && $cash_out['transfer_type'] == TransferDict::WECHAT) throw new CommonException('CASH_OUT_WECHAT_ACCOUNT_NOT_ALLOW_ADMIN');
         return $core_member_cash_out_service->transfer($this->site_id, $id, $data);
     }
 
@@ -116,6 +121,16 @@ class MemberCashOutService extends BaseAdminService
     public function checkTransferStatus(int $id){
         $core_member_cash_out_service = new CoreMemberCashOutService();
         return $core_member_cash_out_service->checkTransferStatus($this->site_id, $id);
+    }
+
+    /**
+     * 取消体现
+     * @param int $id
+     * @return mixed
+     */
+    public function cancel(int $id){
+        $core_member_cash_out_service = new CoreMemberCashOutService();
+        return $core_member_cash_out_service->cancel($this->site_id, $id);
     }
 
 }

@@ -246,12 +246,26 @@ class SiteService extends BaseAdminService
                     $name = "\\$model";
                     $class = new $name();
                     if (in_array('site_id', $class->getTableFields())) {
-                        $class->where([ [ 'site_id', '=', $site[ 'site_id' ] ] ])->delete();
+                        $class::destroy(function($query) use ($site){
+                            $query->where([ [ 'site_id', '=', $site[ 'site_id' ] ] ]);
+                        });
+//                        $class->where([ [ 'site_id', '=', $site[ 'site_id' ] ] ])->delete();
                     }
                 } catch (\Exception $e) {
                 }
             }
 
+            //删除站点时同步删除该站点的所有管理员的关联信息
+            $sys_userrole_model = new SysUserRole();
+            $site_uids = $sys_userrole_model->where('site_id', $site_id)->field('site_id,uid')->select()->toArray();
+            $del_res = $sys_userrole_model->where('site_id', $site_id)->field('site_id,uid')->delete();
+            if ($del_res){
+                //删除成功是清除对应的缓存
+                foreach ($site_uids as $item){
+                    Cache::delete('user_role_'.$item['uid'].'_'.$site_id);
+                    Cache::delete('user_role_list_' .$item['uid']);
+                }
+            }
             Cache::tag(self::$cache_tag_name . $site_id)->clear();
             Db::commit();
             return true;

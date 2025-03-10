@@ -66,6 +66,8 @@ Route::group('member', function () {
     Route::post('cash_out/apply', 'member.MemberCashOut/apply');
     //撤销提现申请
     Route::put('cash_out/cancel/:id', 'member.MemberCashOut/cancel');
+    // 提现转账
+    Route::post('cash_out/transfer/:id', 'member.MemberCashOut/transfer');
     // 提现账号列表
     Route::get('cashout_account', 'member.CashOutAccount/lists');
     // 提现账号详情
@@ -78,7 +80,6 @@ Route::group('member', function () {
     Route::put('cashout_account/:account_id', 'member.CashOutAccount/edit');
     // 删除提现账号
     Route::delete('cashout_account/:account_id', 'member.CashOutAccount/del');
-
     /***************************************************** 会员地址 **************************************************/
     //会员收货地址列表
     Route::get('address', 'member.Address/lists');

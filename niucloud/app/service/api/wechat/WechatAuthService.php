@@ -148,14 +148,16 @@ class WechatAuthService extends BaseApiService
                     return $this->register($openid, '', $nickname, $avatar, $unionid);
                 }
 
+            } else {
+                return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
             }
         } else {
             // 可能会更新用户和粉丝表
             $login_service = new LoginService();
             // 若用户头像为空，那么从微信获取头像和昵称，然后进行更新
             if (empty($member_info->headimg)) {
-                $member_info->headimg = $avatar;
-                $member_info->nickname = $nickname;
+                if (!empty($avatar)) $member_info->headimg = $avatar;
+                if (!empty($nickname)) $member_info->nickname = $nickname;
             }
             return $login_service->login($member_info, MemberLoginTypeDict::WECHAT);
         }

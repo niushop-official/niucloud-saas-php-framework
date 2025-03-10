@@ -233,7 +233,7 @@ return [
         'page_diy' => '微页面',
         'component_type_basic' => '基础组件',
 
-        'system_title' => '系统',
+        'system_title' => '系统页面',
         'system_link' => '启动页',
         'system_link_index' => '首页',
 
@@ -252,7 +252,9 @@ return [
         'diy_page' => '自定义页面',
         'diy_link' => '自定义链接',
         'diy_jump_other_applet' => '小程序跳转',
-        'diy_make_phone_call' => '拨打电话'
+        'diy_make_phone_call' => '拨打电话',
+
+        'diy_form_select' => '万能表单'
     ],
     // 自定义海报
     'dict_diy_poster' => [
@@ -380,7 +382,8 @@ return [
         'upload_fail' => '上传失败',
         'auditing' => '审核中',
         'audit_success' => '审核通过',
-        'audit_fail' => '审核失败'
+        'audit_fail' => '审核失败',
+        'published' => '已发布'
     ],
     'dict_wechat_media' => [
         'type_image' => '图片',

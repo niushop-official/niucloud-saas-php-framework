@@ -22,6 +22,8 @@ class CloudDict
 
     const APPLET_AUDITING = 2;
 
+    const APPLET_PUBLISHED = 3;
+
     const APPLET_UPLOAD_FAIL = -1;
 
     const APPLET_AUDIT_FAIL = -2;
@@ -33,6 +35,7 @@ class CloudDict
             self::APPLET_UPLOAD_FAIL => get_lang('dict_cloud_applet.upload_fail'),
             self::APPLET_AUDITING => get_lang('dict_cloud_applet.auditing'),
             self::APPLET_AUDIT_FAIL => get_lang('dict_cloud_applet.audit_fail'),
+            self::APPLET_PUBLISHED => get_lang('dict_cloud_applet.published'),
         ];
         return $status_list[$status] ?? '';
     }

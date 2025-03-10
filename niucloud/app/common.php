@@ -560,8 +560,12 @@ function dir_copy(string $src = '', string $dst = '', &$files = [], $exclude_dir
             } else {
                 // 排除文件
                 if (count($exclude_files) && in_array($file, $exclude_files)) continue;
-                copy($src . '/' . $file, $dst . '/' . $file);
+                $copyResult = copy($src . '/' . $file, $dst . '/' . $file);
                 $files[] = $dst . '/' . $file;
+                if (!$copyResult) {
+                    closedir($dir);
+                    throw new \core\exception\CommonException("文件{$file}拷贝失败请检查是否有足够的权限");
+                }
             }
         }
     }
@@ -1017,4 +1021,54 @@ function get_last_time($time = null)
             break;
     }
     return $text;
+}
+
+/**
+ * 检查目录及其子目录的权限
+ * @param string $dir 要检查的目录路径
+ * @return void
+ */
+function checkDirPermissions($dir, $data = []) {
+    if (!is_dir($dir)) {
+        throw new \RuntimeException(sprintf('指定的路径 "%s" 不是一个有效的目录', $dir));
+    }
+
+    if (empty($data)) {
+        $data = [
+            'unreadable' => [],
+            'not_writable' => []
+        ];
+    }
+
+    try {
+        if (!is_readable($dir)) {
+            $data['unreadable'][] = $dir;
+        }
+        if (!is_writable($dir)) {
+            $data['not_writable'][] = $dir;
+        }
+        if (is_readable($dir)) {
+            $dh = opendir($dir);
+            while (($file = readdir($dh)) !== false) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
+                $fullPath = $dir . DIRECTORY_SEPARATOR . $file;
+                // 判断是否为目录，如果是则递归调用
+                if (is_dir($fullPath)) {
+                    $data = checkDirPermissions($fullPath, $data); // 递归调用自身来检查子目录
+                } else {
+                    // 如果是文件，则检查其读写权限
+                    if (!is_readable($fullPath)) $data['unreadable'][] = $fullPath;
+                    if (!is_writable($fullPath)) $data['not_writable'][] = $fullPath;
+                }
+            }
+            closedir($dh);
+        }
+        return $data;
+    } catch (Exception $e) {
+        $data['unreadable'][] = $dir;
+        $data['not_writable'][] = $dir;
+        return $data;
+    }
 }

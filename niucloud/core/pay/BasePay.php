@@ -126,6 +126,13 @@ abstract class BasePay extends Storage
     abstract protected function getTransfer(string $transfer_no, $out_transfer_no = '');
 
     /**
+     * 取消转账
+     * @param array $params
+     * @return mixed
+     */
+    abstract protected function transferCancel(array $params);
+
+    /**
      * 初始化
      * @param array $config
      * @param string $type

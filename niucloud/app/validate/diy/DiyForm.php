@@ -11,6 +11,7 @@
 
 namespace app\validate\diy;
 
+use app\service\admin\diy_form\DiyFormService;
 use think\Validate;
 
 /**
@@ -22,6 +23,7 @@ class DiyForm extends Validate
 {
 
     protected $rule = [
+        'page_title' => 'require|checkPageTitleUnique',
         'title' => 'require',
         'type' => 'require',
         'value' => 'require',
@@ -30,8 +32,13 @@ class DiyForm extends Validate
     protected $message = [];
 
     protected $scene = [
-        "add" => [ 'title', 'type', 'value' ],
-        "edit" => [ 'title', 'value' ],
+        "add" => [ 'page_title', 'title', 'type', 'value' ],
+        "edit" => [ 'page_title', 'title', 'value' ],
     ];
+
+    public function checkPageTitleUnique($value, $rule, $data)
+    {
+        return ( new DiyFormService() )->checkPageTitleUnique($data) ? get_lang("validate_diy.page_title_unique") : true;
+    }
 
 }

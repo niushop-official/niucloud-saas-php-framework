@@ -35,4 +35,6 @@ class ConfigKeyDict
     public const WEAPP_AUTHORIZATION_INFO = 'weapp_authorization_info';
 
     public const WECHAT_AUTHORIZATION_INFO = 'wechat_authorization_info';
+
+    public const WECHAT_TRANSFER_SCENE_CONFIG = 'WECHAT_TRANSFER_SCENE_CONFIG';//微信转账场景配置
 }

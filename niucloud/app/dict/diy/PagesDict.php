@@ -87,7 +87,21 @@ class PagesDict
                 foreach ($link_list as $ck => $cv) {
                     if ($cv[ 'addon_info' ][ 'key' ] == $v[ 'key' ]) {
                         foreach ($cv[ 'child_list' ] as $tk => $tv) {
-                            if ($tv[ 'url' ] == $v[ 'url' ]) {
+                            if (isset($cv[ 'type' ]) && $cv[ 'type' ] == 'folder') {
+                                if (!empty($tv[ 'child_list' ])) {
+                                    foreach ($tv[ 'child_list' ] as $child_k => $child_v) {
+                                        if ($child_v[ 'url' ] == $v[ 'url' ]) {
+                                            $link = [
+                                                "parent" => $ck,
+                                                "name" => $child_v[ 'name' ],
+                                                "title" => $child_v[ 'title' ],
+                                                "url" => $child_v[ 'url' ]
+                                            ];
+                                            break;
+                                        }
+                                    }
+                                }
+                            } else if ($tv[ 'url' ] == $v[ 'url' ]) {
                                 $link = [
                                     "parent" => $ck,
                                     "name" => $tv[ 'name' ],

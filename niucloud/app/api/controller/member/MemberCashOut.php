@@ -27,12 +27,12 @@ class MemberCashOut extends BaseApiController
     public function lists()
     {
         $data = array_filter($this->request->params([
-            [ 'status', '' ],
-            [ 'account_type', '' ]
-        ]), function($value){
+            ['status', ''],
+            ['account_type', '']
+        ]), function ($value) {
             return $value !== '';
         });
-        return success(( new MemberCashOutService() )->getPage($data));
+        return success((new MemberCashOutService())->getPage($data));
     }
 
     /**
@@ -41,7 +41,7 @@ class MemberCashOut extends BaseApiController
      */
     public function info($id)
     {
-        return success(( new MemberCashOutService() )->getInfo($id));
+        return success((new MemberCashOutService())->getInfo($id));
     }
 
     /**
@@ -50,7 +50,7 @@ class MemberCashOut extends BaseApiController
      */
     public function config()
     {
-        return success(( new MemberCashOutService() )->getCashOutConfig());
+        return success((new MemberCashOutService())->getCashOutConfig());
     }
 
     /**
@@ -69,14 +69,14 @@ class MemberCashOut extends BaseApiController
     public function apply()
     {
         $data = $this->request->params([
-            [ 'apply_money', 0 ],
-            [ 'account_type', MemberAccountTypeDict::MONEY ],
-            [ 'transfer_type', '' ],
-            [ 'account_id', 0 ],
-            [ 'transfer_payee', []] ,//收款方信息
+            ['apply_money', 0],
+            ['account_type', MemberAccountTypeDict::MONEY],
+            ['transfer_type', ''],
+            ['account_id', 0],
+            ['transfer_payee', []],//收款方信息
         ]);
         $this->validate($data, 'app\validate\member\CashOut.apply');
-        return success(data:( new MemberCashOutService() )->apply($data));
+        return success(data: (new MemberCashOutService())->apply($data));
     }
 
     /**
@@ -86,7 +86,20 @@ class MemberCashOut extends BaseApiController
      */
     public function cancel($id)
     {
-        return success(data:( new MemberCashOutService() )->cancel($id));
+        return success(data: (new MemberCashOutService())->cancel($id));
+    }
+
+    /**
+     * 开始转账
+     * @param $id
+     * @return Response
+     */
+    public function transfer($id)
+    {
+        $data = $this->request->params([
+            ['open_id', 0],
+        ]);
+        return success(data: (new MemberCashOutService())->transfer($id, $data));
     }
 
 }

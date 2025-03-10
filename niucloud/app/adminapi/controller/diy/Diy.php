@@ -270,7 +270,7 @@ class Diy extends BaseAdminController
     }
 
     /**
-     * 获取自定义主题配色
+     * 获取主题风格列表
      * @return Response
      */
     public function getDiyTheme()
@@ -279,30 +279,79 @@ class Diy extends BaseAdminController
     }
 
     /**
-     * 添加主题配色
+     * 设置主题风格
      * @return Response
      */
     public function setDiyTheme()
     {
         $data = $this->request->params([
             [ 'id', '' ],
-            [ 'key', '' ],
-            [ 'mode', '' ],
-            [ 'color_mark', '' ],
-            [ 'color_name', '' ],
-            [ 'diy_value', '' ],
-            [ 'value', '' ],
+            [ 'addon', '' ],
+            [ 'title', '' ],
+            [ 'theme', '' ],
+            [ 'new_theme', '' ],
         ]);
         ( new DiyService() )->setDiyTheme($data);
         return  success('ADD_SUCCESS');
     }
 
     /**
-     * 设置主题配色
+     * 获取主题配色列表
      * @return Response
      */
     public function getDefaultThemeColor()
     {
-        return  success(( new DiyService() )->getDefaultThemeColor());
+        $data = $this->request->params([
+            [ 'addon', '' ],
+        ]);
+        return  success(( new DiyService() )->getDefaultThemeColor($data));
+    }
+
+    /**
+     * 添加自定义主题配色
+     * @return Response
+     */
+    public function addDiyTheme()
+    {
+        $data = $this->request->params([
+            [ 'title', '' ],
+            [ 'default_theme', '' ],
+            [ 'theme', '' ],
+            [ 'new_theme', '' ],
+            [ 'addon', '' ]
+        ]);
+        $this->validate($data, 'app\validate\diy\DiyTheme.add');
+        ( new DiyService() )->addDiyTheme($data);
+        return success('ADD_SUCCESS');
+    }
+
+    /**
+     * 编辑自定义主题配色
+     * @param $id
+     * @return Response
+     */
+    public function editDiyTheme($id)
+    {
+        $data = $this->request->params([
+            [ 'title', '' ],
+            [ 'theme', '' ],
+            [ 'new_theme', '' ],
+            [ 'addon', '' ]
+        ]);
+        $data[ 'id' ] = $id;
+        $this->validate($data, 'app\validate\diy\DiyTheme.edit');
+        ( new DiyService() )->editDiyTheme($id, $data);
+        return success('EDIT_SUCCESS');
+    }
+
+    /**
+     * 删除自定义主题配色
+     * @param $id
+     * @return Response
+     */
+    public function delDiyTheme(int $id)
+    {
+        ( new DiyService() )->delDiyTheme($id);
+        return success('DELETE_SUCCESS');
     }
 }

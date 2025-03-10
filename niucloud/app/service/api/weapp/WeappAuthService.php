@@ -107,6 +107,7 @@ class WeappAuthService extends BaseApiService
         $is_auth_register = $config[ 'is_auth_register' ];
         $is_force_access_user_info = $config[ 'is_force_access_user_info' ];
         $is_bind_mobile = $config[ 'is_bind_mobile' ];
+        $is_mobile = $config[ 'is_mobile' ];
 
         if ($member_info->isEmpty()) {
 
@@ -142,6 +143,12 @@ class WeappAuthService extends BaseApiService
             } else {
                 // 关闭自动注册，但是开启了强制绑定手机号，必须获取手机号才能进行注册
                 if ($is_bind_mobile) {
+                    if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
+                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
+                    } else {
+                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                    }
+                } else if($is_mobile) {
                     if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
                         return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
                     } else {

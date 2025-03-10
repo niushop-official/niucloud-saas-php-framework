@@ -50,12 +50,19 @@ class System extends BaseAdminController
     }
 
     /**
-     * 清理缓存，更新菜单
+     * 清理表缓存
      */
     public function schemaCache()
     {
-
         return success((new SystemService())->schemaCache());
+    }
+
+    /**
+     * 清理缓存
+     */
+    public function clearCache()
+    {
+        return success((new SystemService())->clearCache());
     }
 
     /**

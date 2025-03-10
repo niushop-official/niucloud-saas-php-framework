@@ -124,6 +124,7 @@ class ComponentDict
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
 //                                'detailComponent' => '/src/app/views/diy_form/components/detail-form-render.vue', // 用于详情展示，后台会返回默认，特殊组件可以重写组件
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -174,6 +175,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -225,6 +227,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -281,6 +284,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => [], // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => [], // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -369,6 +373,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => [], // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => [], // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -451,6 +456,7 @@ class ComponentDict
                     //             'unique' => false, // 内容不可重复提交 true：是，false：否
                     //             'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                     //             'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+//                    'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                     //             'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                     //             'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                     //         ],
@@ -500,6 +506,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -550,6 +557,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -600,6 +608,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -650,6 +659,7 @@ class ComponentDict
                     //             'unique' => false, // 内容不可重复提交 true：是，false：否
                     //             'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                     //             'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+//                    'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                     //             'detailComponent' => '/src/app/views/diy_form/components/detail-form-table.vue', // 用于详情展示
                     //             'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                     //             'value' => '', // 字段值 存储数据类型不同，各组件自行处理
@@ -717,6 +727,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => false, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => [ // 默认值 存储数据类型不同，各组件自行处理
                                     'date' => '', // 例：2024-12-27
                                     'timestamp' => 0, // 例：1735290511
@@ -788,6 +799,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => false, // 开启本地数据缓存 true：开启，false：关闭
                                 // 默认值 存储数据类型不同，各组件自行处理
                                 'default' => [
                                     // todo 在做的过程中可能会再调整字段名称
@@ -882,6 +894,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => false, // 开启本地数据缓存 true：开启，false：关闭
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                             ],
@@ -933,6 +946,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => false, // 开启本地数据缓存 true：开启，false：关闭
                                 // 默认值 存储数据类型不同，各组件自行处理
                                 'default' => [
                                     'start' => [
@@ -1025,6 +1039,7 @@ class ComponentDict
                     //             'unique' => false, // 内容不可重复提交 true：是，false：否
                     //             'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                     //             'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+//                    'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                     //             'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                     //             'value' => '', // 字段值 存储数据类型不同，各组件自行处理
                     //         ],
@@ -1127,6 +1142,7 @@ class ComponentDict
                                 'unique' => false, // 内容不可重复提交 true：是，false：否
                                 'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                                 'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+                                'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                                 'detailComponent' => '/src/app/views/diy_form/components/detail-form-image.vue', // 用于详情展示
                                 'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                                 'value' => [], // 字段值 存储数据类型不同，各组件自行处理
@@ -1207,6 +1223,7 @@ class ComponentDict
                     //             'unique' => false, // 内容不可重复提交 true：是，false：否
                     //             'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                     //             'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+//                    'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                     //             'detailComponent' => '/src/app/views/diy_form/components/detail-form-video.vue', // 用于详情展示
                     //             'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                     //             'value' => '', // 字段值 存储数据类型不同，各组件自行处理
@@ -1263,6 +1280,7 @@ class ComponentDict
                     //             'unique' => false, // 内容不可重复提交 true：是，false：否
                     //             'autofill' => false, // 自动填充上次填写的内容 true：开启，false：关闭
                     //             'privacyProtection' => false, // 隐私保护 true：开启，false：关闭，隐藏逻辑各组件自行处理
+//                    'cache' => true, // 开启本地数据缓存 true：开启，false：关闭
                     //             'detailComponent' => '/src/app/views/diy_form/components/detail-form-file.vue', // 用于详情展示
                     //             'default' => '', // 默认值 存储数据类型不同，各组件自行处理
                     //             'value' => '', // 字段值 存储数据类型不同，各组件自行处理

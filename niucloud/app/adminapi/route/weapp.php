@@ -24,6 +24,12 @@ Route::group('weapp', function() {
     Route::get('config', 'weapp.Config/get');
     //设置微信配置
     Route::put('config', 'weapp.Config/set');
+    //设置微信域名
+    Route::put('domain', 'weapp.Config/setDomain');
+    // 设置微信隐私协议
+    Route::put('privacysetting', 'weapp.Config/setPrivacySetting');
+    // 获取微信隐私协议
+    Route::get('privacysetting', 'weapp.Config/getPrivacySetting');
 
     /***************************************************** 订阅消息 ****************************************************/
     //同步订阅消息
@@ -39,6 +45,7 @@ Route::group('weapp', function() {
     Route::get('preview', 'weapp.Version/preview');
     //获取小程序上传日志
     Route::get('upload/:key', 'weapp.Version/uploadLog');
+
 
 
     /***************************************************** 小程序发货信息管理服务 ****************************************************/

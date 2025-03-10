@@ -80,6 +80,7 @@ class Config extends BaseApiController
     {
         $data = $this->request->params([
             [ 'url', '' ],
+            [ 'openid', '' ]
         ]);
 
         $res = [];
@@ -89,6 +90,12 @@ class Config extends BaseApiController
         $res[ 'member_level' ] = ( new MemberLevelService() )->getList();
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
         $res[ 'theme_list' ] = ( new DiyService() )->getDiyTheme();
+
+        // 查询是否已经存在该小程序用户, 如果存在则小程序端快捷登录时不再弹出授权弹框
+        $res[ 'member_exist' ] = 0;
+        if (!empty($data[ 'openid' ])) {
+            $res[ 'member_exist' ] = ( new MemberService() )->getCount([ [ 'weapp_openid', '=', $data[ 'openid' ] ] ]) > 0 ? 1 : 0;
+        }
 
         ( new MemberService() )->initMemberData();
 

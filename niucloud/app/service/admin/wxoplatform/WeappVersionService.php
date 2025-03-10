@@ -216,14 +216,14 @@ class WeappVersionService extends BaseAdminService
      */
     public static function weappCommit($site_id, $site_group_id) {
         $version = (new WxOplatfromWeappVersion())->where([ ['site_group_id', '=', $site_group_id], ['template_id', '<>', '' ] ])->order('id desc')->findOrEmpty();
-        if ($version->isEmpty()) return true;
+        if ($version->isEmpty()) throw new CommonException('NOT_YET_PRESENT_TEMPLATE_LIBRARY');
 
         $is_exist = (new WeappVersion())->where(['site_id' => $site_id, 'status' => CloudDict::APPLET_AUDITING ])->findOrEmpty();
         if (!$is_exist->isEmpty()) throw new CommonException('EXIST_AUDITING_VERSION');
 
         $weapp_config = (new CoreWeappConfigService())->getWeappConfig($site_id);
 
-        CoreOplatformService::commitWeapp($site_id, [
+        $commit_result = CoreOplatformService::commitWeapp($site_id, [
             'template_id' => $version['template_id'],
             'user_version' => $version['user_version'],
             'user_desc' => $version['user_desc'],
@@ -236,8 +236,9 @@ class WeappVersionService extends BaseAdminService
                 'directCommit' => true
             ])
         ]);
-
-        (new WeappVersion())->where(['site_id' => $site_id, 'version' => $version['user_version'] ])->delete();
+        if (isset($commit_result['errcode']) && $commit_result['errcode'] != 0) {
+            throw new CommonException($commit_result['errmsg']);
+        }
 
         $create_res = (new WeappVersion())->create([
             'site_id' => $site_id,

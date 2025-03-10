@@ -22,6 +22,7 @@ use core\exception\CommonException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
+use think\facade\Cache;
 use think\Model;
 
 /**
@@ -127,6 +128,8 @@ class CoreSiteService extends BaseCoreService
                 'status' => SiteDict::EXPIRE,
             ]
         );
+        Cache::delete('site_info_cache' . $site_id);
+        Cache::tag(self::$cache_tag_name . $site_id)->clear();
         return true;
     }
 

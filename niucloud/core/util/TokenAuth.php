@@ -47,7 +47,7 @@ class TokenAuth
 
         $params['jti'] = $id . "_" . $type;
         $token = JWT::encode($params, Env::get('app.app_key', 'niucloud456$%^'));
-        $cache_token = Cache::get("token_" . $params['jti']);
+        $cache_token = Cache::store("jwt")->get("token_" . $params['jti']) ?: Cache::get("token_" . $params['jti']);
         $cache_token_arr = $cache_token ?: [];
 //        if(!empty($cache_token))
 //        {
@@ -55,7 +55,7 @@ class TokenAuth
 //            $cache_token_arr[] = $token;
 //        }
         $cache_token_arr[] = $token;
-        Cache::tag("token")->set("token_" . $params['jti'], $cache_token_arr);
+        Cache::store("jwt")->tag("token")->set("token_" . $params['jti'], $cache_token_arr);
         return compact('token', 'params');
     }
 
@@ -74,7 +74,8 @@ class TokenAuth
             if (explode("_", $token_info['jti'])[1] != $type) {
                 return [];
             }
-            if (!empty($token_info) && !in_array($token, Cache::get('token_' . $token_info['jti'], []))) {
+            $token_cache = Cache::store("jwt")->get("token_" . $token_info['jti']) ?: Cache::get("token_" . $token_info['jti'], []);
+            if (!empty($token_info) && !in_array($token, $token_cache)) {
                 return [];
             }
             return $token_info;
@@ -93,16 +94,16 @@ class TokenAuth
     public static function clearToken(int $id, string $type, ?string $token = '')
     {
         if (!empty($token)) {
-            $token_cache = Cache::get("token_" . $id . "_" . $type, []);
+            $token_cache = Cache::store("jwt")->get("token_" . $id . "_" . $type) ?: Cache::get("token_" . $id . "_" . $type, []);
             //todo 也可以通过修改过期时间来实现
             if (!empty($token_cache)) {
                 if (($key = array_search($token, $token_cache)) !== false) {
                     array_splice($token_cache, $key, 1);
                 }
-                Cache::set("token_" . $id . "_" . $type, $token_cache);
+                Cache::store("jwt")->set("token_" . $id . "_" . $type, $token_cache);
             }
         } else {
-            Cache::set("token_" . $id . "_" . $type, []);
+            Cache::store("jwt")->set("token_" . $id . "_" . $type, []);
         }
         return success();
     }

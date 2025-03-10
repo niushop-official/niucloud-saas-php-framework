@@ -15,6 +15,7 @@ use app\job\sys\CheckJob;
 use app\service\core\site\CoreSiteService;
 use app\service\core\sys\CoreSysConfigService;
 use core\base\BaseAdminService;
+use think\facade\Cache;
 use think\facade\Db;
 use Throwable;
 
@@ -114,15 +115,24 @@ class SystemService extends BaseAdminService
     }
 
     /**
-     * 清理缓存
+     * 清除表缓存
+     * @return string
      */
     public function schemaCache()
     {
-
         if (is_dir(dirname($_SERVER[ 'DOCUMENT_ROOT' ]) . '/runtime/schema')) {
             rmdirs(dirname($_SERVER[ 'DOCUMENT_ROOT' ]) . '/runtime/schema');
         }
         return 'CLEAR_MYSQL_CACHE_SUCCESS';
+    }
+
+    /**
+     * 清理缓存
+     */
+    public function clearCache()
+    {
+        Cache::clear();
+        return 'CACHE_CLEAR_SUCCESS';
     }
 
     /**

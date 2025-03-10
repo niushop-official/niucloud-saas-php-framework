@@ -58,6 +58,7 @@ return [
     'ADDON_IS_INSTALLED_NOT_ALLOW_DEL' => '已安装的插件不允许删除',
     'ADDON_ZIP_ERROR' => '插件压缩失败',
     'PHP_SCRIPT_RUNNING_OUT_OF_MEMORY' => 'PHP脚本运行内存不足, 具体操作方法<a style="text-decoration: underline;" href="https://www.kancloud.cn/niushop/niushop_v6/3248604" target="blank">点击查看相关手册</a>',
+    'BEFORE_UPGRADING_NEED_UPGRADE_FRAMEWORK' => '升级插件前需要先升级框架',
     //登录注册重置账号....
 
     'LOGIN_SUCCESS' => '登录成功',
@@ -177,15 +178,23 @@ return [
     'MEMBER_APPLY_CASHOUT' => '会员申请提现,扣除零钱',
     'CASHOUT_MONEY_TOO_LITTLE' => '会员提现金额不能小于最低提现金额',
     'CASHOUT_STATUS_NOT_IN_WAIT_TRANSFER' => '当前提现申请未处于待转账状态',
+    'CASHOUT_STATUS_NOT_IN_CANCEL' => '只有进行中的提现才可以取消',
     'CASHOUT_STATUS_NOT_IN_WAIT_AUDIT' => '当前提现申请未处于待审核状态',
     'MEMBER_CASHOUT_TRANSFER' => '会员提现转账',
     'CASH_OUT_ACCOUNT_NOT_EXIST' => '提现账户不存在',
+    'CASH_OUT_WECHAT_ACCOUNT_NOT_ALLOW_ADMIN' => '在转账到微信零钱的提现场景下,提现操作应该由用户在客户端发起',
 
     'CASH_OUT_ACCOUNT_NOT_FOUND_VALUE' => '转账到微信零钱缺少参数',
 
     //DIY
     'PAGE_NOT_EXIST' => '页面不存在',
-    'APP_COLOR_NOT_EXIST' => '系统配色不存在',
+    'DIY_THEME_COLOR_NOT_EXIST' => '主题配色不存在',
+    'DIY_THEME_DEFAULT_COLOR_CAN_NOT_DELETE' => '系统默认配色不能删除',
+    'DIY_THEME_SELECTED_CAN_NOT_DELETE' => '主题配色已选中不能删除',
+
+    //海报
+    'POSTER_NOT_EXIST' => '海报不存在',
+    'POSTER_IN_USE_NOT_ALLOW_MODIFY' => '海报使用中禁止修改状态',
 
     //万能表单
     'DIY_FORM_NOT_EXIST' => '表单不存在',
@@ -230,6 +239,7 @@ return [
     'TREAT_PAYMENT_IS_OPEN' => '只有待支付时可以关闭',
     'TRANFER_STATUS_NOT_IN_WAIT_TANSFER' => '当前转账未处于待转账状态',
     'TRANSFER_ORDER_INVALID' => '无效的转账单据',
+    'TRANSFER_IS_FAILING' => '单据正在撤销中,请等待片刻或稍后再试',
     'TRANFER_CONFIG_ERROR' => '参数有误或未开通转账业务',
     'IS_PAY_REMOVE_NOT_RESETTING' => '已支付和已取消的单据不可以重置',
     'DOCUMENT_IS_PAY_REMOVE' => '当前单据已支付或已取消',
@@ -243,6 +253,8 @@ return [
     'ONLY_OFFLINEPAY_CAN_AUDIT' => '只有线下支付的单据才可以审核',
     'TRADE_NOT_EXIST' => '支付单据不存在',
     'PAY_NOT_FOUND_TRADE' => '找不到可支付的交易',
+
+    'MERCHANT_TRANSFER_SCENARIOS_THAT_DO_NOT_EXIST' => '不存在的商户转账场景',
     //退款相关
     'REFUND_NOT_EXIST' => '退款单据不存在',
     //订单相关  8***
@@ -265,6 +277,7 @@ return [
 
     // 缓存相关
     'CLEAR_MYSQL_CACHE_SUCCESS' => '数据表缓存清除成功',
+    'CACHE_CLEAR_SUCCESS' => '缓存清除成功',
 
     //任务队列相关
     'JOB_NOT_EXISTS' => '任务类不存在',
@@ -323,6 +336,7 @@ return [
     'WEAPP_EXIST' => '该小程序已经授权给其他站点',
     'WECHAT_EXIST' => '该公众号已经授权给其他站点',
     'PLEASE_ADD_FIRST_SITE_GROUP' => '请先添加站点套餐',
+    'NOT_YET_PRESENT_TEMPLATE_LIBRARY' => '平台尚未上传小程序到模板库',
 
     'PRINTER_NOT_EXIST' => '打印机不存在'
 ];

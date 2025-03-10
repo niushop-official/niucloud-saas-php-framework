@@ -29,6 +29,7 @@ use core\exception\CommonException;
 use core\util\niucloud\BaseNiucloudClient;
 use think\facade\Cache;
 use think\facade\Db;
+use function DI\string;
 
 /**
  * 框架及插件升级
@@ -81,13 +82,9 @@ class UpgradeService extends BaseAdminService
         $web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR;
         $wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR;
 
-        try {
-            if (!is_dir($admin_dir)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
-            if (!is_dir($web_dir)) throw new CommonException('WEB_DIR_NOT_EXIST');
-            if (!is_dir($wap_dir)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
-        } catch (\Exception $e) {
-            throw new CommonException($e->getMessage());
-        }
+        if (!is_dir($admin_dir)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
+        if (!is_dir($web_dir)) throw new CommonException('WEB_DIR_NOT_EXIST');
+        if (!is_dir($wap_dir)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
 
         $data = [
             // 目录检测
@@ -109,6 +106,22 @@ class UpgradeService extends BaseAdminService
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $web_dir), 'status' => is_write($web_dir) ];
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $wap_dir), 'status' => is_write($wap_dir) ];
 
+        // 校验niucloud/public下 wap web admin 目录及文件是否可读可写
+        $check_res = checkDirPermissions(public_path() . 'wap');
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'admin'));
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'web'));
+
+        if (!empty($check_res['unreadable'])) {
+            foreach ($check_res['unreadable'] as $item) {
+                $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $item),'status' => false];
+            }
+        }
+        if (!empty($check_res['not_writable'])) {
+            foreach ($check_res['not_writable'] as $item) {
+                $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $item),'status' => false];
+            }
+        }
+
         $check_res = array_merge(
             array_column($data['dir']['is_readable'], 'status'),
             array_column($data['dir']['is_write'], 'status')
@@ -127,6 +140,8 @@ class UpgradeService extends BaseAdminService
     public function upgrade(string $addon = '') {
         if ($this->upgrade_task) throw new CommonException('UPGRADE_TASK_EXIST');
 
+        $upgrade_content = $this->getUpgradeContent($addon);
+
         $upgrade = [
             'product_key' => BaseNiucloudClient::PRODUCT,
             'framework_version' => config('version.version')
@@ -137,6 +152,12 @@ class UpgradeService extends BaseAdminService
         } else {
             $upgrade['app_key'] = $addon;
             $upgrade['version'] = (new Addon())->where([ ['key', '=', $addon] ])->value('version');
+
+            // 判断框架版本是否低于插件支持版本
+            $last_version = $upgrade_content['version_list'][ count($upgrade_content['version_list']) - 1];
+            if (str_replace('.', '', config('version.version')) < str_replace('.', '', $last_version['niucloud_version']['version_no'])) {
+                throw new CommonException('BEFORE_UPGRADING_NEED_UPGRADE_FRAMEWORK');
+            }
         }
 
         $response = (new CoreAddonCloudService())->upgradeAddon($upgrade);
@@ -150,18 +171,19 @@ class UpgradeService extends BaseAdminService
                 dir_mkdir($upgrade_dir);
             }
 
-            $upgrade_tsak = [
+            $upgrade_task = [
                 'key' => $key,
                 'upgrade' => $upgrade,
+                'steps' => $this->steps,
                 'step' => 'requestUpgrade',
                 'executed' => ['requestUpgrade'],
                 'log' => [ $this->steps['requestUpgrade']['title'] ],
                 'params' => ['token' => $response['token'] ],
-                'upgrade_content' => $this->getUpgradeContent($addon)
+                'upgrade_content' => $upgrade_content
             ];
 
-            Cache::set($this->cache_key, $upgrade_tsak);
-            return $upgrade_tsak;
+            Cache::set($this->cache_key, $upgrade_task);
+            return $upgrade_task;
         } catch (\Exception $e) {
             throw new CommonException($e->getMessage());
         }
@@ -174,7 +196,7 @@ class UpgradeService extends BaseAdminService
     public function execute() {
         if (!$this->upgrade_task) return true;
 
-        $steps = array_keys($this->steps);
+        $steps = isset($this->upgrade_task['steps']) ? array_keys($this->upgrade_task['steps']) : array_keys($this->steps);
         $index = array_search($this->upgrade_task['step'], $steps);
         $step = $steps[ $index + 1 ] ?? '';
         $params = $this->upgrade_task['params'] ?? [];
@@ -194,7 +216,8 @@ class UpgradeService extends BaseAdminService
                 Cache::set($this->cache_key, $this->upgrade_task);
             } catch (\Exception $e) {
                 $this->upgrade_task['step'] = $step;
-                $this->upgrade_task['error'] = $e->getMessage();
+                $this->upgrade_task['error'][] = '升级失败，失败原因：' . $e->getMessage().$e->getFile().$e->getLine();
+                Cache::set($this->cache_key, $this->upgrade_task);
                 $this->upgradeErrorHandle();
             }
             return true;
@@ -481,18 +504,53 @@ class UpgradeService extends BaseAdminService
      * @return true|void
      */
     public function upgradeErrorHandle() {
+        $steps = [];
+        $steps[$this->upgrade_task['step']] = [];
+
+        if (isset($this->upgrade_task['is_cover'])) {
+            $steps['restoreCode'] = ['step' => 'restoreCode', 'title' => '恢复源码备份'];
+            $steps['restoreSql'] = ['step' => 'restoreSql', 'title' => '恢复数据库备份'];
+        }
+        $steps['restoreComplete'] = ['step' => 'restoreComplete', 'title' => '备份恢复完成'];
+        $this->upgrade_task['steps'] = $steps;
+        Cache::set($this->cache_key, $this->upgrade_task);
+    }
+
+    /**
+     * 恢复源码
+     * @return void
+     */
+    public function restoreCode() {
         try {
-            if (isset($this->upgrade_task['is_cover'])) {
-                $restore_service = (new RestoreService());
-                $restore_service->restoreCode();
-                $restore_service->restoreSql();
-            }
-            $this->clearUpgradeTask(5);
+            (new RestoreService())->restoreCode();
             return true;
         } catch (\Exception $e) {
-            $this->clearUpgradeTask(5);
+            $backup_dir = $this->upgrade_dir .$this->upgrade_task['key'] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+            $this->upgrade_task['error'][] = '源码备份恢复失败稍后请手动恢复，源码备份文件路径：'. $backup_dir .'，失败原因：' . $e->getMessage().$e->getFile().$e->getLine();
+            Cache::set($this->cache_key, $this->upgrade_task);
             return true;
         }
+    }
+
+    /**
+     * 恢复数据库
+     * @return void
+     */
+    public function restoreSql() {
+        try {
+            (new RestoreService())->restoreSql();
+            return true;
+        } catch (\Exception $e) {
+            $backup_dir = $this->upgrade_dir .$this->upgrade_task['key'] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+            $this->upgrade_task['error'][] = '数据库备份恢复失败稍后请手动恢复，数据库备份文件路径：'. $backup_dir .'，失败原因：' . $e->getMessage().$e->getFile().$e->getLine();
+            Cache::set($this->cache_key, $this->upgrade_task);
+            return true;
+        }
+    }
+
+    public function restoreComplete() {
+        $this->clearUpgradeTask(5);
+        return true;
     }
 
     /**

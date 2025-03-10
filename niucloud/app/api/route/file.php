@@ -41,4 +41,5 @@ Route::group('file', function() {
     Route::post('image/base64', 'upload.Upload/imageBase64');
 
 })->middleware(ApiChannel::class)
+    ->middleware(ApiCheckToken::class, false)
     ->middleware(ApiLog::class);

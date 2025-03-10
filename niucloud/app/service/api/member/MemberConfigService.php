@@ -35,9 +35,7 @@ class MemberConfigService extends BaseApiService
                 // 检测公众号配置是否成功
                 $wechat_auth = ( new WechatAuthService() )->jssdkConfig($url);
             } catch (\Exception $e) {
-                $res[ 'is_auth_register' ] = 0;
-                $res[ 'is_force_access_user_info' ] = 0;
-                $res[ 'is_bind_mobile' ] = 0;
+                $res[ 'wechat_error' ] = $e->getMessage();
             }
         }
         return $res;

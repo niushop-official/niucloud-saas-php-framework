@@ -36,7 +36,7 @@ class DiyTheme extends BaseModel
     protected $name = 'diy_theme';
 
     // 设置json类型字段
-    protected $json = [ 'value', 'diy_value' ];
+    protected $json = [ 'default_theme', 'theme', 'new_theme' ];
 
     // 设置JSON数据返回数组
     protected $jsonAssoc = true;

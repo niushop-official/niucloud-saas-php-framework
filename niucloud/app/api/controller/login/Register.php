@@ -31,13 +31,14 @@ class Register extends BaseController
             [ 'username', '' ],
             [ 'password', '' ],
             [ 'mobile', '' ],
+            [ 'wx_openid', '' ]
         ]);
         //校验登录注册配置
         ( new ConfigService() )->checkLoginConfig(MemberLoginTypeDict::USERNAME);
         //参数验证
         $this->validate($data, 'app\validate\member\Member.account_register');
         //验证码验证
-        $result = ( new RegisterService() )->account($data[ 'username' ], $data[ 'password' ], $data[ 'mobile' ]);
+        $result = ( new RegisterService() )->account($data[ 'username' ], $data[ 'password' ], $data[ 'mobile' ], $data[ 'wx_openid' ]);
         return success($result);
     }
 

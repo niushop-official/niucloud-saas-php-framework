@@ -73,7 +73,7 @@ class MemberCashOut extends BaseModel
     public function transfer()
     {
         return $this->hasOne(Transfer::class, 'transfer_no', 'transfer_no')->joinType('left')
-            ->withField('transfer_no,  transfer_type, transfer_realname, transfer_mobile, transfer_bank, transfer_account, transfer_voucher, transfer_remark, transfer_fail_reason, transfer_status')->append(['transfer_status_name', 'transfer_type_name']);
+            ->withField('transfer_no,  transfer_type, transfer_realname, transfer_mobile, transfer_bank, transfer_account, transfer_voucher, transfer_remark, transfer_fail_reason, transfer_status, package_info, extra')->append(['transfer_status_name', 'transfer_type_name']);
     }
 
     /**
