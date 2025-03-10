@@ -23,13 +23,13 @@ export function useLogin() {
 
             // #ifdef MP-WEIXIN
             if (!uni.getStorageSync('autoLoginLock') && uni.getStorageSync('openid') && config.login.is_bind_mobile) {
-                uni.setStorageSync('isbindmobile', true) // 强制绑定手机号标识
+                uni.setStorageSync('isBindMobile', true) // 强制绑定手机号标识
             }
             // #endif
 
             // #ifdef H5
             if (!uni.getStorageSync('autoLoginLock') && isWeixinBrowser() && uni.getStorageSync('openid') && config.login.is_bind_mobile) {
-                uni.setStorageSync('isbindmobile', true) // 强制绑定手机号标识
+                uni.setStorageSync('isBindMobile', true) // 强制绑定手机号标识
             }
             // #endif
 
@@ -110,19 +110,30 @@ export function useLogin() {
                 useMemberStore().setToken(res.data.token, () => {
                     const config = useConfigStore()
                     const memberInfo: any = useMemberStore().info
+
+                    // 老用户不控制强制绑定手机号
+                    if (uni.getStorageSync('wap_member_not_control_mobile')) {
+                        uni.removeStorageSync('wap_member_not_control_mobile');
+                    }
+
                     if (memberInfo) {
                         memberInfo.weapp_openid && uni.setStorageSync('openid', memberInfo.weapp_openid)
-                        memberInfo.mobile && uni.setStorageSync('wap_member_mobile', memberInfo.mobile) // 存储会员手机号，防止重复请求微信获取手机号接口
+                        if (memberInfo.mobile) {
+                            uni.setStorageSync('wap_member_mobile', memberInfo.mobile) // 存储会员手机号，防止重复请求微信获取手机号接口
+                        } else {
+                            uni.setStorageSync('wap_member_not_control_mobile', true) // 老用户不控制强制绑定手机号
+                        }
                     }
 
+                    // todo 已注册的会员不受影响
                     // 开启绑定手机号标识
-                    if (uni.getStorageSync('isbindmobile')) {
-                        uni.removeStorageSync('isbindmobile');
+                    if (uni.getStorageSync('isBindMobile')) {
+                        uni.removeStorageSync('isBindMobile');
                     }
-
-                    if (config.login.is_bind_mobile && memberInfo && !memberInfo.mobile) {
-                        uni.setStorageSync('isbindmobile', true)
-                    }
+                    //
+                    // if (config.login.is_bind_mobile && memberInfo && !memberInfo.mobile) {
+                    //     uni.setStorageSync('isBindMobile', true)
+                    // }
 
                     if (params.successCallback) params.successCallback(res.data)
 
@@ -144,17 +155,32 @@ export function useLogin() {
         wechatUser(obj).then((user_res: any) => {
             if (user_res.data) {
                 wechatUserLogin(user_res.data).then((res: any) => {
+                    const config = useConfigStore()
                     if (res.data.token) {
+                        uni.removeStorageSync('member_lock')
                         useMemberStore().setToken(res.data.token, () => {
-                            const config = useConfigStore()
                             const memberInfo = useMemberStore().info
                             memberInfo && memberInfo.wx_openid && uni.setStorageSync('openid', memberInfo.wx_openid)
+                            // todo 已注册的会员不受影响
                             // 开启绑定手机号标识
-                            if (uni.getStorageSync('isbindmobile')) {
-                                uni.removeStorageSync('isbindmobile');
+                            if (uni.getStorageSync('isBindMobile')) {
+                                uni.removeStorageSync('isBindMobile');
                             }
-                            if (config.login.is_bind_mobile && memberInfo && !memberInfo.mobile) {
-                                uni.setStorageSync('isbindmobile', true)
+                            // if (config.login.is_bind_mobile && memberInfo && !memberInfo.mobile) {
+                            //     uni.setStorageSync('isBindMobile', true)
+                            // }
+
+                            // 老用户不控制强制绑定手机号
+                            if (uni.getStorageSync('wap_member_not_control_mobile')) {
+                                uni.removeStorageSync('wap_member_not_control_mobile');
+                            }
+
+                            if (memberInfo) {
+                                if (memberInfo.mobile) {
+                                    uni.setStorageSync('wap_member_mobile', memberInfo.mobile) // 存储会员手机号，防止重复请求微信获取手机号接口
+                                } else {
+                                    uni.setStorageSync('wap_member_not_control_mobile', true) // 老用户不控制强制绑定手机号
+                                }
                             }
 
                             let loginBack = uni.getStorageSync('loginBack');
@@ -166,9 +192,20 @@ export function useLogin() {
                         // 强制获取昵称和头像，先存储起来
                         uni.setStorageSync('openid', res.data.openid)
                         uni.setStorageSync('unionid', res.data.unionid)
-                        if(res.data.nickname) uni.setStorageSync('nickname', res.data.nickname)
-                        if(res.data.avatar) uni.setStorageSync('avatar', res.data.avatar)
+                        if (res.data.nickname) uni.setStorageSync('nickname', res.data.nickname)
+                        if (res.data.avatar) uni.setStorageSync('avatar', res.data.avatar)
+
+                        // 开启绑定手机号标识
+                        if (uni.getStorageSync('isBindMobile')) {
+                            uni.removeStorageSync('isBindMobile');
+                        }
+
+                        if (config.login.is_bind_mobile) {
+                            uni.setStorageSync('isBindMobile', true)
+                        }
                     }
+                }).catch((err) => {
+                    uni.setStorageSync('member_lock', true)
                 })
             }
         }).catch((err) => {
@@ -217,7 +254,7 @@ export function useLogin() {
         params.scopes = params.scopes || 'snsapi_base'; // 公众号用
 
         // 微信小程序用
-        params.updateFlag = params.updateFlag || false; // updateFlag：更新oppenid
+        params.updateFlag = params.updateFlag || false; // updateFlag：更新openid
         params.backFlag = params.backFlag || false; // backFlag 控制一键登录返回
         params.successCallback = params.successCallback || null;
         params.nickname = params.nickname || '';

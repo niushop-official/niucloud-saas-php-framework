@@ -1,8 +1,9 @@
 <template>
     <view class="address bg-[var(--page-bg-color)] min-h-[100vh]" v-if="!loading" :style="themeColor()">
         <scroll-view scroll-y="true">
-			<view class="sidebar-margin pt-[var(--top-m)]" v-if="addressList.length">
-                <view class="mb-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden" v-for="(item, index) in addressList">
+            <view class="sidebar-margin pt-[var(--top-m)]" v-if="addressList.length">
+                <view class="mb-[var(--top-m)] rounded-[var(--rounded-big)] overflow-hidden"
+                      v-for="(item, index) in addressList">
                     <view class="flex flex-col card-template">
                         <view class="flex-1 line-feed mr-[20rpx]" @click="selectAddress(item)">
                             <view class="flex items-center">
@@ -17,142 +18,145 @@
                                 设为默认
                             </view>
                             <view class="flex">
-                                <view class="text-[26rpx]" @click.stop="editAddressFn(item.id)"><text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[26rpx] mr-[4rpx]"></text>编辑</view>
-                                <view @click.stop="deleteAddressFn(index)" class="ml-[40rpx] text-[26rpx]"><text class="nc-iconfont nc-icon-shanchu-yuangaizhiV6xx shrink-0 text-[26rpx] mr-[4rpx]"></text>删除</view>
+                                <view class="text-[26rpx]" @click.stop="editAddressFn(item.id)">
+                                    <text class="nc-iconfont nc-icon-xiugaiV6xx shrink-0 text-[26rpx] mr-[4rpx]"></text>
+                                    编辑
+                                </view>
+                                <view @click.stop="deleteAddressFn(index)" class="ml-[40rpx] text-[26rpx]">
+                                    <text class="nc-iconfont nc-icon-shanchu-yuangaizhiV6xx shrink-0 text-[26rpx] mr-[4rpx]"></text>
+                                    删除
+                                </view>
                             </view>
                         </view>
                     </view>
                 </view>
-			</view>
-			<mescroll-empty v-if="!addressList.length" :option="{tip : '暂无收货地址'}"></mescroll-empty>
-			<view class="w-full footer">
-				<view class="py-[var(--top-m)] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
-					<button hover-class="none" class="primary-btn-bg text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500" @click="addAddress">{{t('createAddress')}}</button>
-				</view>
-			</view>
+            </view>
+            <mescroll-empty v-if="!addressList.length" :option="{tip : '暂无收货地址'}"></mescroll-empty>
+            <view class="w-full footer">
+                <view class="py-[var(--top-m)] px-[var(--sidebar-m)] footer w-full fixed bottom-0 left-0 right-0 box-border">
+                    <button hover-class="none"
+                            class="primary-btn-bg text-[#fff] h-[80rpx] leading-[80rpx] rounded-[100rpx] text-[26rpx] font-500"
+                            @click="addAddress">{{ t('createAddress') }}</button>
+                </view>
+            </view>
         </scroll-view>
     </view>
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
-    import { onLoad,onShow } from '@dcloudio/uni-app'
-    import { redirect, img, mobileHide } from '@/utils/common'
-    import { getAddressList, deleteAddress, editAddress } from '@/app/api/member'
-    import { t } from '@/locale'
-    import MescrollEmpty from '@/components/mescroll/mescroll-empty/mescroll-empty.vue';
+import { ref } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import { redirect, mobileHide } from '@/utils/common'
+import { getAddressList, deleteAddress, editAddress } from '@/app/api/member'
+import { t } from '@/locale'
+import MescrollEmpty from '@/components/mescroll/mescroll-empty/mescroll-empty.vue';
 
-    const loading = ref(true)
-    const current = ref(0)
-    const addressList = ref<object[]>([])
-    const locationAddressList = ref<object[]>([])
-    const type = ref('')
-    const source = ref('')
+const loading = ref(true)
+const current = ref(0)
+const addressList = ref<object[]>([])
+const type = ref('')
+const source = ref('')
 
-    onLoad((data: any) => {
-        type.value = data.type || ''
-        source.value = data.source || ''
-        if (data.type) current.value = data.type == 'address' ? 0 : 1
-		// 清空缓存，防止受待支付界面影响
-		if(uni.getStorageSync('selectAddressCallback')){uni.removeStorage({ key: 'selectAddressCallback' })}
+onLoad((data: any) => {
+    type.value = data.type || ''
+    source.value = data.source || ''
+    if (data.type) current.value = data.type == 'address' ? 0 : 1
+    // 清空缓存，防止受待支付界面影响
+    if (uni.getStorageSync('selectAddressCallback')) {
+        uni.removeStorage({ key: 'selectAddressCallback' })
+    }
+})
+
+const getAddressListFn = () => {
+    getAddressList({}).then(({ data }) => {
+        const address: any = [], locationAddress: any = []
+        data.forEach((item: any) => {
+            item.type == 'address' ? address.push(item) : locationAddress.push(item)
+        })
+        if (!source.value) { //地址管理使用
+            addressList.value = data;
+        } else { // 区分同城配送地址和快递地址
+            addressList.value = current.value == 0 ? address : locationAddress;
+        }
+        loading.value = false
+    }).catch(() => {
+        loading.value = false
     })
+}
 
-    const getAddressListFn = () => {
-        getAddressList({}).then(({ data }) => {
-            const address: any = [], locationAddress: any = []
-            data.forEach((item: any) => {
-                item.type == 'address' ? address.push(item) : locationAddress.push(item)
-            })
-            if(!source.value){ //地址管理使用
-                addressList.value = data;
-            }else{ // 区分同城配送地址和快递地址
-                addressList.value = current.value == 0 ? address : locationAddress;
+onShow(() => {
+    getAddressListFn()
+})
+
+const addAddress = () => {
+    const url = `/app/pages/member/address_edit`
+    redirect({ url, param: { source: source.value } })
+}
+
+const editAddressFn = (id: number) => {
+    const url = `/app/pages/member/address_edit`
+    redirect({ url, param: { id, source: source.value } })
+}
+
+const selectAddress = (data: any) => {
+    const selectAddress = uni.getStorageSync('selectAddressCallback')
+    if (selectAddress) {
+        selectAddress.address_id = data.id
+
+        uni.setStorage({
+            key: 'selectAddressCallback',
+            data: selectAddress,
+            success() {
+                redirect({ url: selectAddress.back, mode: 'redirectTo' })
             }
-            loading.value = false
-        }).catch(() => {
-            loading.value = false
         })
     }
+}
 
-    onShow(()=>{
-        getAddressListFn()
-    })
+const deleteAddressFn = (index: any) => {
+    const data: any = addressList.value[index]
+    deleteAddress(data.id).then(() => {
+        addressList.value.splice(index, 1)
+    }).catch()
+}
 
-    const addAddress = ()=> {
-        const url = `/app/pages/member/address_edit`
-        redirect({ url, param: { source : source.value } })
-    }
+const setDefault = (index: any) => {
+    const data: any = addressList.value[index]
+    if (data.is_default) return
 
-    const editAddressFn = (id: number)=> {
-        const url = `/app/pages/member/address_edit`
-        redirect({ url, param: { id, source : source.value} })
-    }
-
-    const addressOptions = ref([
-        {
-            text: t('delete'),
-            style: {
-                backgroundColor: '#F56C6C'
-            }
-        }
-    ])
-
-    const selectAddress = (data: any) => {
-        const selectAddress = uni.getStorageSync('selectAddressCallback')
-        if (selectAddress) {
-            selectAddress.address_id = data.id
-
-            uni.setStorage({
-                key: 'selectAddressCallback',
-                data: selectAddress,
-                success() {
-                    redirect({url: selectAddress.back, mode: 'redirectTo'})
-                }
-            })
-        }
-    }
-
-    const deleteAddressFn = (index: any) => {
-        const data: any = addressList.value[index]
-
-        deleteAddress(data.id).then(() => {
-            addressList.value.splice(index, 1)
-        }).catch()
-    }
-
-    const setDefault = (index: any) => {
-        const data: any = addressList.value[index]
-        if (data.is_default) return
-
-        data.is_default = 1;
-        editAddress(data).then(() => {
-            addressList.value.forEach((item, itemIndex) => {
-                item.is_default && (item.is_default = 0)
-                itemIndex == index && (item.is_default = 1)
-            })
-        }).catch()
-    }
+    data.is_default = 1;
+    editAddress(data).then(() => {
+        addressList.value.forEach((item, itemIndex) => {
+            item.is_default && (item.is_default = 0)
+            itemIndex == index && (item.is_default = 1)
+        })
+    }).catch()
+}
 
 </script>
 
 <style lang="scss" scoped>
-    :deep(.u-tabs__wrapper__nav__line) {
-        bottom: 0;
-        background: var(--primary-color) !important;
-    }
-    .line-feed{
-        word-wrap:break-word;
-        word-break: break-all;
-    }
-	:deep(.u-swipe-action-item__right__button__wrapper__text.u-line-1){
-		font-size: 24rpx !important;
+:deep(.u-tabs__wrapper__nav__line) {
+    bottom: 0;
+    background: var(--primary-color) !important;
+}
 
-	}
-	:deep(.u-swipe-action-item__right__button__wrapper){
-	    padding:0 10rpx !important;
-	}
-	.footer{
-		height: calc(80rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;
-		height: calc(80rpx + var(--top-m) + var(--top-m) + env(safe-area-inset-bottom)) !important;
-	}
+.line-feed {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+:deep(.u-swipe-action-item__right__button__wrapper__text.u-line-1) {
+    font-size: 24rpx !important;
+
+}
+
+:deep(.u-swipe-action-item__right__button__wrapper) {
+    padding: 0 10rpx !important;
+}
+
+.footer {
+    height: calc(80rpx + var(--top-m) + var(--top-m) + constant(safe-area-inset-bottom)) !important;
+    height: calc(80rpx + var(--top-m) + var(--top-m) + env(safe-area-inset-bottom)) !important;
+}
 </style>

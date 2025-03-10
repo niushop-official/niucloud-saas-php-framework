@@ -18,5 +18,7 @@
     "transferInfo":"转账信息",
     "transferNickname":"收款方昵称",
     "transferImg":"收款方头像",
-    "transferNo":"转账单号"
+    "transferNo":"转账单号",
+    "cashOutNow":"提现",
+    "cashOutCancel":"取消提现"
 }

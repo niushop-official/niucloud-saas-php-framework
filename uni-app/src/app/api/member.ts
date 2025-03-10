@@ -84,7 +84,7 @@ export function cashOutConfig() {
  * 申请余额提现
  */
 export function cashOutApply(data: AnyObject) {
-    return request.post('member/cash_out/apply', data, { showSuccessMessage: true, showErrorMessage: true })
+    return request.post('member/cash_out/apply', data, { showSuccessMessage: false, showErrorMessage: true })
 }
 
 /**
@@ -123,6 +123,13 @@ export function getCashOutDetail(id: number) {
 }
 
 /**
+ * 获取提现转账
+ */
+export function getCashOutTransfer(data: AnyObject) {
+    return request.post(`member/cash_out/transfer/${ data.id }`, data)
+}
+
+/**
  * 添加提现账户
  */
 export function addCashoutAccount(data: AnyObject) {
@@ -146,6 +153,13 @@ export function deleteCashoutAccount(accountId: number) {
     return request.delete(`member/cashout_account/${ accountId }`, { showSuccessMessage: true, showErrorMessage: true })
 }
 
+/**
+ * 会员取消提现
+ * @param params
+ */
+export function memberCancel(params: Record<string, any>) {
+    return request.put(`member/cash_out/cancel/${params.id}`, params, { showSuccessMessage: true,showErrorMessage: true })
+}
 /**
  * 佣金账户流水
  */

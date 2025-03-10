@@ -644,34 +644,68 @@ export function setThemeColor (path: string) {
     // 设置插件应用的主色调，排除系统
 	const theme_color_list = uni.getStorageSync('theme_color_list');
 	const current_theme_color = uni.getStorageSync('current_theme_color');
-	let theme = '';
+	let currTheme = {};
     if (route != 'app') {
         try {
-			theme = theme_color_list[route];
-			if(theme && theme.value){
-				configStore.themeColor = theme.value
-				uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
-			}else if( !theme && current_theme_color){
+			currTheme = theme_color_list[route];
+			if(currTheme && currTheme.theme){
+				configStore.themeColor = themeColorToHex(currTheme.theme)
+				uni.setStorageSync('current_theme_color', JSON.stringify(themeColorToHex(currTheme.theme)));
+			}else if( !currTheme && current_theme_color){
 				configStore.themeColor = ''
 			}else{
-				theme = theme_color_list.app || Object.values(theme_color_list)[0];
-				configStore.themeColor = theme.value
-				uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+				currTheme = theme_color_list.app || Object.values(theme_color_list)[0];
+				configStore.themeColor = themeColorToHex(currTheme.theme)
+				uni.setStorageSync('current_theme_color', JSON.stringify(themeColorToHex(currTheme.theme)));
 			}
         } catch (e) {
             // 设置插件应用的主色调发生错误，若不存在则使用最后有效的主色调
 			if(!current_theme_color && theme_color_list){
-				theme = theme_color_list.app || Object.values(theme_color_list)[0];
-				configStore.themeColor = theme.value
-				uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+				currTheme = theme_color_list.app || Object.values(theme_color_list)[0];
+				configStore.themeColor = themeColorToHex(currTheme.theme)
+				uni.setStorageSync('current_theme_color', JSON.stringify(themeColorToHex(currTheme.theme)));
 			}else{
 				configStore.themeColor = '';
 			}
         }
 
     }else if(!current_theme_color && theme_color_list){
-		theme = theme_color_list.app || Object.values(theme_color_list)[0];
-		configStore.themeColor = theme.value
-		uni.setStorageSync('current_theme_color', JSON.stringify(theme.value));
+		currTheme = theme_color_list.app || Object.values(theme_color_list)[0];
+		configStore.themeColor = themeColorToHex(currTheme.theme)
+		uni.setStorageSync('current_theme_color', JSON.stringify(themeColorToHex(currTheme.theme)));
 	}
+}
+
+export function themeColorToHex (param: any) {
+    const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
+    const rgbaRegex = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(,\s*\d*\.?\d+)?\)$/
+    for(let key in param){
+        if (rgbaRegex.test(param[key])) {
+            const values = param[key].replace('rgba(', '').replace(')', '').split(',');
+            // 提取 r, g, b, a 值，并将它们转换为合适的类型
+            const r = parseInt(values[0].trim(), 10); // Red 分量
+            const g = parseInt(values[1].trim(), 10); // Green 分量
+            const b = parseInt(values[2].trim(), 10); // Blue 分量
+            const a = parseFloat(values[3].trim());   // Alpha 分量
+            param[key] = rgbaToHex(r,g,b,a)
+        }
+    }
+    return param
+}
+
+// rgba转十六进制颜色
+export function rgbaToHex (r, g, b, a) {
+    // 计算混合后的RGB值，假设背景是白色 (255, 255, 255)
+    let rBlend = Math.round((1 - a) * 255 + a * r)
+    let gBlend = Math.round((1 - a) * 255 + a * g)
+    let bBlend = Math.round((1 - a) * 255 + a * b)
+
+    // 将RGB值转换为十六进制
+    let componentToHex = function (c) {
+        let hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    let hex = "#" + componentToHex(rBlend) + componentToHex(gBlend) + componentToHex(bBlend)
+    return hex.toUpperCase()
 }

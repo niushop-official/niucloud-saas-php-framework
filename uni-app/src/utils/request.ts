@@ -158,11 +158,11 @@ class Request {
                 break;
             case 402:
                 if (currRoute().indexOf('app/pages/index/close') != -1) return;
-                redirect({ url: '/app/pages/index/close', mode: 'switchTab' })
+                redirect({ url: '/app/pages/index/close', mode: 'reLaunch' })
                 break;
             case 403:
                 if (currRoute().indexOf('app/pages/index/nosite') != -1) return;
-                redirect({ url: '/app/pages/index/nosite', mode: 'reLaunch' })
+                redirect({ url: '/app/pages/index/nosite', mode: 'switchTab' })
                 break;
         }
     }

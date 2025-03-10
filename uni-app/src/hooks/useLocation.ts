@@ -32,12 +32,12 @@ export function useLocation(isOpenLocation: any) {
         if (!uni.getStorageSync('manually_select_location_from_map')) {
             // #ifdef H5
             if (isWeixinBrowser() && systemStore.mapConfig.is_open && !uni.getStorageSync('location_address')) {
-                wechat.init(()=>{
-					wechat.getLocation(res => {
-					    let latlng = res.latitude + ',' + res.longitude; // 纬度（浮点数，范围为90 ~ -90），经度（浮点数，范围为180 ~ -180）
-					    getAddressByLatlngFn(latlng)
-					})
-				});
+                wechat.init(() => {
+                    wechat.getLocation(res => {
+                        let latlng = res.latitude + ',' + res.longitude; // 纬度（浮点数，范围为90 ~ -90），经度（浮点数，范围为180 ~ -180）
+                        getAddressByLatlngFn(latlng)
+                    })
+                });
 
             }
             // #endif
@@ -80,11 +80,11 @@ export function useLocation(isOpenLocation: any) {
     const refreshLocation = () => {
         if (!isOpen) return false;
         if (!uni.getStorageSync('manually_select_location_from_map') && uni.getStorageSync('location_address')) {
-			if(locationStorage() && !locationStorage().is_expired){
-				systemStore.setAddressInfo(uni.getStorageSync('location_address'))
-			}else{
-				uni.removeStorageSync('location_address');
-			}
+            if (locationStorage() && !locationStorage().is_expired) {
+                systemStore.setAddressInfo(uni.getStorageSync('location_address'))
+            } else {
+                uni.removeStorageSync('location_address');
+            }
 
         }
 
@@ -106,8 +106,8 @@ export function useLocation(isOpenLocation: any) {
         getAddressByLatlng(data).then((res: any) => {
             if (res.data && Object.keys(res.data).length) {
                 let obj: any = {};
-				
-				let latlngArr = data.latlng.split(',');
+
+                let latlngArr = data.latlng.split(',');
 
                 obj.latitude = latlngArr[0];
                 obj.longitude = latlngArr[1];
@@ -151,8 +151,8 @@ export function useLocation(isOpenLocation: any) {
             longitude,
             success: (res) => {
                 uni.setStorageSync('manually_select_location_from_map', true)
-				let latng = res.latitude + ',' + res.longitude;
-				getAddressByLatlngFn(latng)
+                let latng = res.latitude + ',' + res.longitude;
+                getAddressByLatlngFn(latng)
             },
             fail: (res) => {
                 // 在隐私协议中没有声明chooseLocation:fail api作用域
@@ -190,11 +190,11 @@ export function useLocation(isOpenLocation: any) {
             } else {
                 data.is_expired = false;
             }
-        }else{
-			data = {
-				is_expired : false
-			};
-		}
+        } else {
+            data = {
+                is_expired: false
+            };
+        }
         return data;
     }
 

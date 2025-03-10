@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-loading-page class="" bg-color="props.bgColor" icon-size="props.iconSize" :loading="props.loading" loadingText=""></u-loading-page>
+		<u-loading-page bg-color="props.bgColor" icon-size="props.iconSize" :loading="props.loading" loadingText=""></u-loading-page>
 	</view>
 </template>
 

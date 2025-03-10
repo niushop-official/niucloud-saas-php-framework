@@ -9,7 +9,10 @@ export default {
         vue.mixin({
             data() {
                 return {
-                    query: {}
+                    query: {},
+                    hasRedirected: false,
+                    lastPath: '',
+                    lastQuery: ''
                 }
             },
             onLoad: (data: object) => {
@@ -33,10 +36,17 @@ export default {
                     this.query = loginBack.param
                 }
 
-                redirectInterceptor({
-                    path: route,
-                    query: this.query
-                })
+                if (!this.hasRedirected || this.lastPath !== route || JSON.stringify(this.lastQuery) !== JSON.stringify(this.query)) {
+                    redirectInterceptor({
+                        path: route,
+                        query: this.query
+                    })
+                    // 更新状态，表示已经调用过
+                    this.hasRedirected = true;
+                    this.lastPath = route;
+                    this.lastQuery = { ...this.query };
+                }
+                
             },
             onShareAppMessage() {
                 return useShare().onShareAppMessage()

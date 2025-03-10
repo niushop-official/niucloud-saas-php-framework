@@ -112,6 +112,7 @@
                 <template v-if="component.componentName == 'FormFile'">
                     <diy-form-file ref="diyFormFileRef" :component="component" :global="data.global" :index="index" />
                 </template>
+
             </view>
         </view>
         <template v-if="diyStore.mode == '' && data.global && data.global.bottomTabBarSwitch">

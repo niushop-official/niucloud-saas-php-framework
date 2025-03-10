@@ -67,8 +67,9 @@ button[type='primary'],uni-button[type='primary']{
 // 提交按钮背景颜色
 .primary-btn-bg{
 	// background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
-	background: linear-gradient( 94deg, var(--primary-help-color) 0%, var(--primary-color) 99%), var(--primary-color);
+	background: linear-gradient( 94deg, var(--primary-help-color2) 0%, var(--primary-color) 99%), var(--primary-color);
 }
+
 // 侧边栏宽度
 .sidebar-margin{
 	margin-left: var(--sidebar-m) !important;

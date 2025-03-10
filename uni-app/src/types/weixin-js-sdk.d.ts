@@ -762,6 +762,14 @@ declare namespace WeixinJsSdk {
      * 分享到朋友圈
      */
     function updateTimelineShareData(options : OnMenuShareAppMessageOptions) : void
+
+    /**
+     * 商家转账
+     */
+    function requestMerchantTransfer(options: requestMerchantTransferOptions) : void
+
+
+    function canIUse(options: string) 
 }
 
 declare module 'weixin-js-sdk' {

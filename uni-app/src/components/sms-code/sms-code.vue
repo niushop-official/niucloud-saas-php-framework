@@ -1,10 +1,10 @@
 <template>
-    <view class="text-[26rpx]"  :class="{'text-primary': sendSms.canGetCode.value, 'text-gray-300': !sendSms.canGetCode.value}" @click="handleSend">{{ sendSms.tips.value }}</view>
+    <view class="text-[26rpx]" :class="{'text-primary': sendSms.canGetCode.value, 'text-gray-300': !sendSms.canGetCode.value}" @click="handleSend">{{ sendSms.tips.value }}</view>
     <u-code :seconds="sendSms.seconds" :change-text="sendSms.changeText" ref="smsRef" @change="sendSms.codeChange"></u-code>
     <u-modal :show="show" :title="t('captchaTitle')" :confirm-text="t('confirm')" :cancel-text="t('cancel')" :show-cancel-button="true" @cancel="show = false" @confirm="handleConfirm" confirmColor="var(--primary-color)">
         <view class="flex mt-[20rpx]">
             <u-input :placeholder="t('captchaPlaceholder')" border="surround" v-model="formData.captcha_code"></u-input>
-            <image :src="captcha.image.value" class="h-[76rpx] w-[auto] ml-[20rpx]" mode="heightFix" @click="captcha.refresh()"></image>
+            <image :src="captcha.image.value" class="h-[76rpx] w-[auto] ml-[20rpx]" mode="heightFix" @click="captcha.refresh()"/>
         </view>
     </u-modal>
 </template>
@@ -18,10 +18,10 @@ import { t } from '@/locale'
 const prop = defineProps({
     mobile: String,
     type: String,
-	isAgree:{
-		type:Boolean,
-		default:true
-	},
+    isAgree: {
+        type: Boolean,
+        default: true
+    },
     modelValue: {
         type: String,
         default: ''
@@ -42,7 +42,7 @@ const smsRef: any = ref(null)
 const sendSms = useSendSms(smsRef)
 const show = ref(false)
 
-const formData:any = reactive({
+const formData: any = reactive({
     mobile: '',
     captcha_code: '',
     captcha_key: '',
@@ -51,7 +51,7 @@ const formData:any = reactive({
 
 const captcha = useCaptcha(formData)
 
-const handleSend = async()=> {
+const handleSend = async() => {
     if (smsRef.value.canGetCode) {
         formData.mobile = prop.mobile
         if (!prop.isAgree) {
@@ -72,10 +72,13 @@ const handleSend = async()=> {
     }
 }
 
-const handleConfirm = async()=> {
-    if (uni.$u.test.isEmpty(formData.captcha_code)) { uni.showToast({ title: t('captchaPlaceholder'), icon:'none' }); return }
+const handleConfirm = async() => {
+    if (uni.$u.test.isEmpty(formData.captcha_code)) {
+        uni.showToast({ title: t('captchaPlaceholder'), icon: 'none' });
+        return
+    }
     const sendRes = await sendSms.send(formData)
-    
+
     if (sendRes) {
         value.value = sendRes
         show.value = false

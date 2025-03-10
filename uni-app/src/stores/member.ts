@@ -32,46 +32,50 @@ const useMemberStore = defineStore('member', {
                 uni.setStorageSync('wap_member_info', this.info)
                 uni.setStorageSync('wap_member_id', res.data.member_id)
                 if (this.info.mobile) {
-                    uni.removeStorageSync('isbindmobile')
+                    uni.removeStorageSync('isBindMobile')
                     uni.setStorageSync('wap_member_mobile', this.info.mobile) // 存储会员手机号，防止重复请求微信获取手机号接口
                 }
 
                 // #ifdef MP-WEIXIN
                 if (this.info && this.info.weapp_openid) {
-                    uni.setStorageSync('openid', this.info.weapp_openid)
+                    // 如果会员已存在则小程序端快捷登录时不再弹出授权弹框
+                    uni.setStorageSync('member_exist', 1)
                 } else {
                     const login = useLogin()
-                    login.getAuthCode({ updateFlag: true }) // 更新oppenid
+                    login.getAuthCode({ updateFlag: true }) // 更新openid
                 }
                 // #endif
 
                 if (callback) callback();
             }).catch(() => {
                 this.logout()
+                uni.removeStorageSync('wap_member_mobile');
+                uni.removeStorageSync('wap_member_id');
+                uni.removeStorageSync('wap_member_not_control_mobile');
             })
         },
         logout(isRedirect: boolean = false) {
             if (!this.token) return
             this.token = ''
             this.info = null
-            if (useConfigStore().login.is_auth_register) {
-                uni.setStorageSync('autoLoginLock', true) // todo 普通账号退出登录,在进行三方账号登录不会自动登录
-            }
+            // if (useConfigStore().login.is_auth_register) {
+            uni.setStorageSync('autoLoginLock', true) // todo 普通账号退出登录,在进行三方账号登录不会自动登录
+            // }
             logout().then(() => {
                 removeToken()
                 uni.removeStorageSync('wap_member_info');
-                uni.removeStorageSync('openid');
+                // uni.removeStorageSync('openid');
                 uni.removeStorageSync('unionid');
-                uni.removeStorageSync('isbindmobile');
+                uni.removeStorageSync('isBindMobile');
                 uni.removeStorageSync('nickname');
                 uni.removeStorageSync('avatar');
                 isRedirect && redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
             }).catch(() => {
                 removeToken()
                 uni.removeStorageSync('wap_member_info');
-                uni.removeStorageSync('openid');
+                // uni.removeStorageSync('openid');
                 uni.removeStorageSync('unionid');
-                uni.removeStorageSync('isbindmobile');
+                uni.removeStorageSync('isBindMobile');
                 uni.removeStorageSync('nickname');
                 uni.removeStorageSync('avatar');
                 isRedirect && redirect({ url: '/app/pages/index/index', mode: 'switchTab' })

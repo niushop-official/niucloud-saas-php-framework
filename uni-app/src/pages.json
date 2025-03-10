@@ -378,7 +378,7 @@
                 "pagePath": "app/pages/index/index"
             },
             {
-                "pagePath": "app/pages/index/close"
+                "pagePath": "app/pages/index/nosite"
             }
         ]
     },

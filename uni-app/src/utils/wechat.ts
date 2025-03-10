@@ -11,7 +11,7 @@ class Wechat {
         // #endif
     }
 
-    public init(callback:any = null) {
+    public init(callback: any = null) {
         getWechatSdkConfig({
             url: uni.getSystemInfoSync().platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
         }).then((res: any) => {
@@ -24,7 +24,7 @@ class Wechat {
                 signature: data.signature,// 必填，签名
                 jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
             });
-			if(callback) callback();
+            if (callback) callback();
         })
     }
 
@@ -65,20 +65,76 @@ class Wechat {
         })
     }
 
-	/**
-	 * 获取地理位置接口
-	 * @param {Object} callback
-	 */
-	public getLocation(callback: any) {
-		wx.ready(function() {
-			wx.getLocation({
-				type: 'gcj02',
-				success: function(res) {
-					typeof callback == 'function' && callback(res);
-				}
-			});
-		})
-	}
+    /**
+     * 获取地理位置接口
+     * @param {Object} callback
+     */
+    public getLocation(callback: any) {
+        wx.ready(function () {
+            wx.getLocation({
+                type: 'gcj02',
+                success: function (res) {
+                    typeof callback == 'function' && callback(res);
+                }
+            });
+        })
+    }
+
+    /**
+     * 商家转账接口
+     * @param {Object} options 转账参数
+     */
+    public transfer(options: any, callback: any) {
+        // #ifdef MP
+        if (wx.canIUse('requestMerchantTransfer')) {
+            wx.requestMerchantTransfer({
+                ...options,
+                success: (res: any) => {
+                    // console.log('success:', res);
+                    typeof callback == 'function' && callback(res);
+                },
+                cancel: (res: any) => {
+                    typeof callback == 'function' && callback(res);
+                    // console.log('cancel:', res);
+                },
+                fail: (err: any) => {
+                    typeof callback == 'function' && callback(err);
+                },
+            });
+        } else {
+            uni.showToast({
+                title: '你的微信版本过低，请更新至最新版本。',
+                icon: 'none'
+            });
+        }
+        // #endif
+        // #ifdef H5
+        wx.ready(() => {
+            wx.checkJsApi({
+                jsApiList: ['requestMerchantTransfer'],
+                success: function (res) {
+                    if (res.checkResult['requestMerchantTransfer']) {
+                        WeixinJSBridge.invoke('requestMerchantTransfer', options, (res: any) => {
+                                typeof callback == 'function' && callback(res);
+                            }
+                        )
+                    } else {
+                        alert('你的微信版本过低，请更新至最新版本。');
+                    }
+                },
+                fail: function (err) {
+                    // console.log('err:', err);
+                    typeof callback == 'function' && callback(err);
+                },
+                cancel: function (err) {
+                    // console.log('cancel:', err);
+                    typeof callback == 'function' && callback(err);
+                }
+
+            });
+        })
+        // #endif
+    }
 }
 
 export default new Wechat()
