@@ -391,51 +391,53 @@ class Upgrade
                 $addon_theme = $this->getVipcardTheme();
             }
 
-            foreach ($addon_theme[ 'theme_color' ] as $k => $v) {
-                $data[] = [
-                    'type' => 'app',
-                    'addon' => $value[ 'key' ],
-                    'site_id' => $site_id,
-                    'title' => $v[ 'title' ],
-                    'theme' => $v[ 'theme' ],
-                    'default_theme' => $v[ 'theme' ],
-                    'theme_type' => 'default',
-                    'is_selected' => $k == 0 ? 1 : 0,
-                    'create_time' => time(),
-                ];
-            }
-            $addon_data = ( new addon() )->field('key')->where([ [ 'support_app', '=', $value[ 'key' ] ] ])->select()->toArray();
-            if (!empty($addon_data)) {
-                foreach ($addon_data as $v) {
-                    foreach ($addon_theme[ 'theme_color' ] as $theme_k => $theme_v) {
-                        $data[] = [
-                            'type' => 'addon',
-                            'addon' => $v[ 'key' ],
-                            'site_id' => $site_id,
-                            'title' => $theme_v[ 'title' ],
-                            'theme' => $theme_v[ 'theme' ],
-                            'default_theme' => $theme_v[ 'theme' ],
-                            'theme_type' => 'default',
-                            'is_selected' => $theme_k == 0 ? 1 : 0,
-                            'create_time' => time(),
-                        ];
+            if (!empty($addon_theme)) {
+                foreach ($addon_theme[ 'theme_color' ] as $k => $v) {
+                    $data[] = [
+                        'type' => 'app',
+                        'addon' => $value[ 'key' ],
+                        'site_id' => $site_id,
+                        'title' => $v[ 'title' ],
+                        'theme' => $v[ 'theme' ],
+                        'default_theme' => $v[ 'theme' ],
+                        'theme_type' => 'default',
+                        'is_selected' => $k == 0 ? 1 : 0,
+                        'create_time' => time(),
+                    ];
+                }
+                $addon_data = ( new addon() )->field('key')->where([ [ 'support_app', '=', $value[ 'key' ] ] ])->select()->toArray();
+                if (!empty($addon_data)) {
+                    foreach ($addon_data as $v) {
+                        foreach ($addon_theme[ 'theme_color' ] as $theme_k => $theme_v) {
+                            $data[] = [
+                                'type' => 'addon',
+                                'addon' => $v[ 'key' ],
+                                'site_id' => $site_id,
+                                'title' => $theme_v[ 'title' ],
+                                'theme' => $theme_v[ 'theme' ],
+                                'default_theme' => $theme_v[ 'theme' ],
+                                'theme_type' => 'default',
+                                'is_selected' => $theme_k == 0 ? 1 : 0,
+                                'create_time' => time(),
+                            ];
+                        }
                     }
                 }
             }
         }
-        $diy_theme_model = new DiyTheme();
-        foreach ($data as $k => &$v) {
-            $theme_count = $diy_theme_model->where([
-                [ 'site_id', "=", $site_id ],
-                [ 'title', "=", $v[ 'title' ] ],
-                [ 'addon', "=", $v[ 'addon' ] ]
-            ])->count();
-            // 如果已有该主题风格颜色则不再添加
-            if ($theme_count > 0) {
-                unset($data[ $k ]);
-            }
-        }
         if (!empty($data)) {
+            $diy_theme_model = new DiyTheme();
+            foreach ($data as $k => &$v) {
+                $theme_count = $diy_theme_model->where([
+                    [ 'site_id', "=", $site_id ],
+                    [ 'title', "=", $v[ 'title' ] ],
+                    [ 'addon', "=", $v[ 'addon' ] ]
+                ])->count();
+                // 如果已有该主题风格颜色则不再添加
+                if ($theme_count > 0) {
+                    unset($data[ $k ]);
+                }
+            }
             $diy_theme_model->insertAll($data);
         }
         return true;
