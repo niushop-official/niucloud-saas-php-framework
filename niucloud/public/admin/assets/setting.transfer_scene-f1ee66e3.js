@@ -1,0 +1,1 @@
+const e="转账场景ID",n="业务类型",t="收款感知",o="请选择收款感知",r="报备背景",s="操作",c="配置",p="暂无数据",a={transferSceneId:e,transferType:n,recvPerception:t,recvPerceptionTips:o,reportInfos:r,operation:s,deploy:c,noData:p};export{a as default,c as deploy,p as noData,s as operation,t as recvPerception,o as recvPerceptionTips,r as reportInfos,e as transferSceneId,n as transferType};

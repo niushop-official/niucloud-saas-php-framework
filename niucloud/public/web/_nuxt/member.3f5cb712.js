@@ -1,1 +1,0 @@
-const e="\u6B22\u8FCE\u9875",a="\u624B\u673A\u53F7",o="\u6CE8\u518C\u65F6\u95F4",n="\u79EF\u5206",s="\u4F59\u989D",t="\u96F6\u94B1",i="\u672A\u7ED1\u5B9A",l={welcomePage:e,mobile:a,registrationTime:o,point:n,balance:s,looseChange:t,notBound:i};export{s as balance,l as default,t as looseChange,a as mobile,i as notBound,n as point,o as registrationTime,e as welcomePage};
