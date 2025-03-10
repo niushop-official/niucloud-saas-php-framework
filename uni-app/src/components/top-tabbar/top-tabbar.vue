@@ -89,6 +89,8 @@ const props = defineProps({
     }
 })
 
+const isBack = ref(props.isBack);
+
 // 控制-定位后是否对导航栏进行填充
 const isFill = computed(() => {
 	let bool = true;
@@ -113,7 +115,18 @@ const topStatusBarData = computed(() => {
 const navbarInnerStyle = computed(() => {
 	let style = '';
 
-	if(props.isBack){
+  // 获取首页url
+  let weappOptions: any = uni.getStorageSync('weappOptions')
+  if (weappOptions && weappOptions.path) {
+    // 获取当前页面的路径
+    const pages = getCurrentPages();
+    const currentPage = pages[pages.length - 1].route;
+    if(weappOptions.path.indexOf(currentPage) !== -1) {
+      isBack.value = false;
+    }
+  }
+
+	if(isBack.value){
 		style += 'padding-left: 30rpx;';//30=>右边留边 44=>箭头宽度 10=>箭头的右maring
 		if(topStatusBarData.value.style == 'style-1') //样式一需要居中需要有右边padding辅助
 			style += 'padding-right:' + (40+30+10) + 'rpx;'; //30=>左边留边 44=>箭头宽度 10=>箭头的右maring
