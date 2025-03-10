@@ -1,5 +1,5 @@
 <template>
-    <div :class="['layout-aside ease-in duration-200 flex ', { 'bright': !dark }]">
+    <div :class="['layout-aside ease-in duration-200 flex border-t-[1px] border-solid border-[var(--el-color-info-light-8)] box-border', { 'bright': !dark }]">
         <div class="flex flex-col border-0 border-r-[1px] border-solid border-[var(--el-color-info-light-8)] box-border">
             <!-- <div class="w-full h-[64px] flex justify-center items-center w-[65px]flex-shrink-0">
                 <div class="w-[40px] h-[40px] rounded-[50%] overflow-hidden">

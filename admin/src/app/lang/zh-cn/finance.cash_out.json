@@ -41,7 +41,7 @@
 	"cashOutMoney": "转账金额",
 	"auditTime": "审核时间",
 	"transferTime": "转账时间",
-	"memberInfoPlaceholder": "请输入会员名称/会员昵称/手机号",
+	"memberInfoPlaceholder": "请输入会员编号/昵称/手机号搜索",
 	"cashOutNumber": "提现单号",
 	"cashOutNumberPlaceholder": "请输入提现单号",
 	"alipayAccount": "支付宝账号",
@@ -60,5 +60,7 @@
 	"transferRemark":"转账补充说明",
 	"transferRemarkPlaceholder":"请输入转账补充说明",
 	"notes":"备注",
-	"check":"检查打款进度"
+	"check":"检查打款进度",
+	"cancelWithdrawal":"取消",
+	"cancelTips":"确定要取消提现吗？"
 }

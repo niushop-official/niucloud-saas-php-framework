@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="showDialog" :title="t('填写设置')" width="600px" class="diy-dialog-wrap" :close-on-press-escape="true" :destroy-on-close="true" :close-on-click-modal="false">
+    <el-dialog v-model="showDialog" :title="t('writeSet')" width="600px" class="diy-dialog-wrap" :close-on-press-escape="true" :destroy-on-close="true" :close-on-click-modal="false">
 
         <el-form :model="formData" label-width="120px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
 
@@ -33,10 +33,10 @@
                 </el-select>
             </el-form-item>
 
-            <el-form-item :label="t('每人可填写次数')" :class="{ '!mb-[5px]' : formData.member_write_type == 'diy' }">
+            <el-form-item :label="t('apieceFillQuantity')" :class="{ '!mb-[5px]' : formData.member_write_type == 'diy' }">
                 <el-radio-group v-model="formData.member_write_type">
-                    <el-radio label="no_limit">{{t('不限制')}}</el-radio>
-                    <el-radio label="diy">{{t('自定义')}}</el-radio>
+                    <el-radio label="no_limit">{{t('noLimit')}}</el-radio>
+                    <el-radio label="diy">{{t('diy')}}</el-radio>
                 </el-radio-group>
             </el-form-item>
 
@@ -53,10 +53,10 @@
                 </div>
             </el-form-item>
 
-            <el-form-item :label="t('表单可填写总数')" :class="{ '!mb-[5px]' : formData.form_write_type == 'diy' }">
+            <el-form-item :label="t('fillQuantityTotal')" :class="{ '!mb-[5px]' : formData.form_write_type == 'diy' }">
                 <el-radio-group v-model="formData.form_write_type">
-                    <el-radio label="no_limit">{{t('不限制')}}</el-radio>
-                    <el-radio label="diy">{{t('自定义')}}</el-radio>
+                    <el-radio label="no_limit">{{t('noLimit')}}</el-radio>
+                    <el-radio label="diy">{{t('diy')}}</el-radio>
                 </el-radio-group>
             </el-form-item>
 
@@ -72,7 +72,7 @@
                     <span class="mr-[5px]">次</span>
                     <el-tooltip effect="light" placement="top">
                         <template #content>
-                            <p class="w-[250px]">{{ t('填写限制的校验在极端情况下可能存在延时，从而导致限制失效，不建议商品限时抢购等场景使用该功能') }}</p>
+                            <p class="w-[250px]">{{ t('writeTips') }}</p>
                         </template>
                         <el-icon>
                             <QuestionFilled color="#999999" />
@@ -81,11 +81,11 @@
                 </div>
             </el-form-item>
 
-            <el-form-item :label="t('可填写时间段')" prop="time_limit_rule">
+            <el-form-item :label="t('fillInTheTimePeriod')" prop="time_limit_rule">
                 <el-radio-group v-model="formData.time_limit_type">
-                    <el-radio label="no_limit">{{t('不限制')}}</el-radio>
-                    <el-radio label="specify_time">{{t('设置开始/停止时间')}}</el-radio>
-                    <el-radio label="open_day_time">{{t('设置每日开启时间')}}</el-radio>
+                    <el-radio label="no_limit">{{t('noLimit')}}</el-radio>
+                    <el-radio label="specify_time">{{t('setSpecifyTime')}}</el-radio>
+                    <el-radio label="open_day_time">{{t('openDayTime')}}</el-radio>
                 </el-radio-group>
                 <el-date-picker v-if="formData.time_limit_type == 'specify_time'" v-model="formData.time_limit_rule.specify_time" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" />
                 <div class="flex items-center mt-[5px]" v-if="formData.time_limit_type == 'open_day_time'">
@@ -186,7 +186,7 @@ const formRules = computed(() => {
                         if(!value.time_value){
                             callback(new Error(`${unit}数不能为空`))
                         }else if(!value.num){
-                            callback(new Error(`次数不能为空`))
+                            callback(new Error(t('numCannotNull')))
                         }else{
                             callback()
                         }
@@ -210,7 +210,7 @@ const formRules = computed(() => {
                         if(!value.time_value){
                             callback(new Error(`${unit}数不能为空`))
                         }else if(!value.num){
-                            callback(new Error(`次数不能为空`))
+                            callback(new Error(t('numCannotNull')))
                         }else{
                             callback()
                         }
@@ -225,12 +225,12 @@ const formRules = computed(() => {
             {
                 validator: (rule: any, value: string, callback: any) => {
                     if (formData.time_limit_type == 'specify_time' && (!value.specify_time || !value.specify_time.length)) {
-                        callback(new Error('开始/停止时间不能为空'))
+                        callback(new Error(t('timeLimitRuleOne')))
                     } else if (formData.time_limit_type == 'open_day_time' && (!value.open_day_time || !value.open_day_time.length)) {
-                        callback(new Error('开启时间不能为空'))
+                        callback(new Error(t('timeLimitRuleTwo')))
                     } else if (formData.time_limit_type == 'open_day_time' && value.open_day_time && value.open_day_time.length) {
                         if (value.open_day_time[0] == value.open_day_time[1]) {
-                            callback(new Error('开始时间不能等于结束时间'))
+                            callback(new Error(t('timeLimitRuleThree')))
                         } else {
                             callback()
                         }

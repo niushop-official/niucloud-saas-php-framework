@@ -194,6 +194,7 @@ const open = async () => {
         } else {
             loading.value = false
             cloudBuildCheck.value = data
+            showDialog.value = true
         }
     }).catch(() => {
         showDialog.value = false

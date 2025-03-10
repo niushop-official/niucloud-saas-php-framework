@@ -5,10 +5,10 @@
 		<!-- 表单组件 字段内容设置 -->
 		<slot name="field"></slot>
 		<el-form label-width="100px" class="px-[10px]">
-			<el-form-item :label="t('获取方式')">
+			<el-form-item :label="t('access')">
 				<el-radio-group v-model="diyStore.editComponent.mode">
-					<el-radio class="!mr-[20px]" label="authorized_wechat_location">{{ t('授权微信定位') }}</el-radio>
-					<el-radio label="open_choose_location">{{ t('手动选择定位') }}</el-radio>
+					<el-radio class="!mr-[20px]" label="authorized_wechat_location">{{ t('authorizeWeChatLocation') }}</el-radio>
+					<el-radio label="open_choose_location">{{ t('manuallySelectPositioning') }}</el-radio>
 				</el-radio-group>
 			</el-form-item>
 		</el-form>
@@ -19,11 +19,11 @@
 			<el-form-item class="display-block">
 				<template #label>
 					<div class="flex items-center">
-						<span class="mr-[3px]">{{ t('隐私保护') }}</span>
+						<span class="mr-[3px]">{{ t('privacyProtection') }}</span>
 						<el-tooltip effect="light" placement="top">
 							<template #content>
-								<p>会自动将提交的个人信息做加密展示。</p>
-								<p>适用于公开展示收集的数据且不暴露用户隐私。</p>
+								<p>{{ t('privacyProtectionTipsOne') }}</p>
+								<p>{{ t('privacyProtectionTipsTwo') }}</p>
 							</template>
 							<el-icon>
 								<QuestionFilled color="#999999" />
@@ -32,7 +32,7 @@
 					</div>
 				</template>
 				<el-switch v-model="diyStore.editComponent.field.privacyProtection" />
-				<div class="text-sm text-gray-400">{{ t('提交后自动隐藏文本，仅管理员可查看') }}</div>
+				<div class="text-sm text-gray-400">{{ t('privacyProtectionTipsFour') }}</div>
 			</el-form-item>
 		</el-form>
 

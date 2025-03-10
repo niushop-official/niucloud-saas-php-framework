@@ -61,8 +61,8 @@ export function getWeappVersionList(params: Record<string, any>) {
 
 /**
  * 获取微信小程序上传日志
- * @param key 
- * @returns 
+ * @param key
+ * @returns
  */
 export function getWeappUploadLog(key: string) {
     return request.get(`weapp/upload/${key}`)
@@ -130,4 +130,28 @@ export function deleteVersion(id: string) {
  */
 export function getIsTradeManaged() {
     return request.get('weapp/delivery/getIsTradeManaged')
+}
+
+/**
+ * 设置服务器域名
+ * @param params
+ */
+export function setWeappDomain(params: Record<string, any>) {
+    return request.put('weapp/domain', params, { showSuccessMessage: true })
+}
+
+/**
+ * 设置小程序隐私协议
+ * @param params
+ */
+export function setWeappPrivacySetting(params: Record<string, any>) {
+    return request.put('weapp/privacysetting', params, { showSuccessMessage: true })
+}
+
+/**
+ * 获取小程序隐私协议
+ * @param params
+ */
+export function getWeappPrivacySetting() {
+    return request.get('weapp/privacysetting')
 }

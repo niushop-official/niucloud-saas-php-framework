@@ -8,14 +8,14 @@
 			<el-form-item :label="t('formPlaceholder')">
 				<el-input v-model.trim="diyStore.editComponent.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
 			</el-form-item>
-            <el-form-item :label="t('单位')">
-				<el-input v-model.trim="diyStore.editComponent.unit" :placeholder="t('请输入单位')" clearable maxlength="5" show-word-limit />
+            <el-form-item :label="t('unit')">
+				<el-input v-model.trim="diyStore.editComponent.unit" :placeholder="t('unitPlaceholder')" clearable maxlength="5" show-word-limit />
 			</el-form-item>
 			<el-form-item>
 				<template #label>
 					<div class="flex items-center">
 						<span class="mr-[3px]">{{ t('defaultValue') }}</span>
-						<el-tooltip effect="light" :content="t('设置后，默认值会自动填充到输入框，填表人可在此基础上进行修改。')" placement="top">
+						<el-tooltip effect="light" :content="t('defaultValueTips')" placement="top">
 							<el-icon>
 								<QuestionFilled color="#999999" />
 							</el-icon>
@@ -95,10 +95,10 @@ diyStore.editComponent.verify = (index: number) => {
 	if(diyStore.value[index].field.default){
 		if (isNaN(diyStore.value[index].field.default) || !regExp.digit.test(diyStore.value[index].field.default)) {
 			res.code = false;
-			res.message = t('默认值格式输入错误');
+			res.message = t('defaultErrorTips');
 		} else if (diyStore.value[index].field.default < 0) {
 			res.code = false;
-			res.message = t('默认值不能小于0')
+			res.message = t('defaultMustZeroTips')
 		}
 	}
 	return res

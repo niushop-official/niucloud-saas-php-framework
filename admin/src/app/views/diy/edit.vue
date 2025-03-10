@@ -237,8 +237,6 @@ route.query.type = route.query.type || '' // 页面模板，新页面传入
 route.query.title = route.query.title || ''
 route.query.back = route.query.back || '/site/diy/list'
 
-console.log('route',route.path)
-
 const backPath = route.query.back
 const template = ref('');
 const oldTemplate = ref('');

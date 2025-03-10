@@ -62,10 +62,8 @@ const getAppList = async () => {
     // loading.value = false
 
     const res = await getShowApp();
-    console.log('app',res)
     appList.value = res.data
     loading.value = false
-    console.log('appList.value',appList.value,appList.value.length)
 }
 getAppList()
 

@@ -144,27 +144,27 @@ const formRules = reactive<FormRules>({
         { required: true, message: t('daySignAwardPlaceholder'), trigger: 'change' }
     ],
     sign_period:[{
-            required: true,
-            trigger: 'blur',
-            validator: (rule: any, value: any, callback: any) => {
-                if (value === null || value === '') {
-                    callback(t('signPeriodTip'))
-                }else if (isNaN(value) || !regExp.number.test(value)) {
-                    callback(t('signPeriodLimitTips'))
-                }else if (value < 2 || value > 365) {
-                    callback(t('signPeriodMustZeroTips'))
-                } else {
-                    callback();
-                }
+        required: true,
+        trigger: 'blur',
+        validator: (rule: any, value: any, callback: any) => {
+            if (value === null || value === '') {
+                callback(t('signPeriodTip'))
+            }else if (isNaN(value) || !regExp.number.test(value)) {
+                callback(t('signPeriodLimitTips'))
+            }else if (value < 2 || value > 365) {
+                callback(t('signPeriodMustZeroTips'))
+            } else {
+                callback()
+            }
         }
-    }],
+    }]
 })
 
 /**
  * 签到奖励文本请求参数
  */
 const contentData = reactive<Record<string, any>>({
-    gifts: [],
+    gifts: []
 })
 
 /**
@@ -211,17 +211,16 @@ const setFormData = async () => {
 
     if (formData.continue_award) {
         formData.continue_award.forEach((item: any, index: number) => {
-
             continueSignAwardTableData.data.push(cloneDeep(item))
 
-            contentData.gifts = [];
+            contentData.gifts = []
 
             const val = cloneDeep(item)
 
-            delete val['continue_sign'];
-            delete val['continue_tag'];
-            delete val['receive_limit'];
-            delete val['receive_num'];
+            delete val['continue_sign']
+            delete val['continue_tag']
+            delete val['receive_limit']
+            delete val['receive_num']
 
             contentData.gifts = val
 
@@ -239,7 +238,7 @@ setFormData()
 const daySignAwardText = ref([])
 const setMemberBenefitsContent = async () => {
     const data = await (await getMemberGiftsContent(contentData)).data
-    daySignAwardText.value = [];
+    daySignAwardText.value = []
     Object.values(data).forEach((el: any) => {
         daySignAwardText.value.push(el)
     })
@@ -254,7 +253,7 @@ const setMemberBenefitsContent = async () => {
  */
 const setMemberBenefitsContents = async (content: any, item: any, index: number = 0, tag = 0) => {
     const data = await (await getMemberGiftsContent(content)).data
-    continueSignAwardText.value = [];
+    continueSignAwardText.value = []
     Object.values(data).forEach((el: any) => {
         continueSignAwardText.value.push(el)
     })
@@ -276,7 +275,6 @@ const setMemberBenefitsContents = async (content: any, item: any, index: number 
 
     isEdit = false
     editIndex = 0
-
 }
 
 /**
@@ -313,6 +311,9 @@ const setDaySignAward = async () => {
     if (!formData.day_award.hasOwnProperty('balance') && !formData.day_award.hasOwnProperty('point') && formData.day_award.shop_coupon.is_use == 0) {
         formData.day_award = ''
     }
+    if (formData.day_award.hasOwnProperty('balance') && formData.day_award.balance.is_use == 1) {
+        formData.day_award.balance.money = Number(formData.day_award.balance.money)
+    }
     contentData.gifts = formData.day_award
 
     setMemberBenefitsContent()
@@ -338,8 +339,8 @@ const continueSignAwardSet = () => {
  * 修改连签奖励设置页
  */
 const continueSignAwardModify = (flag: boolean, index: any) => {
-    isEdit = flag;
-    editIndex = index;
+    isEdit = flag
+    editIndex = index
 
     continue_award.value = formData.continue_award[index]
     continueSignDialog.value = true
@@ -356,18 +357,20 @@ const setContinueSignAward = async () => {
     if (!continue_award.value.hasOwnProperty('balance') && !continue_award.value.hasOwnProperty('point') && continue_award.value.shop_coupon.is_use == 0) {
         continue_award.value = ''
     }
-
+    if (continue_award.value.hasOwnProperty('balance') && continue_award.value.balance.is_use == 1) {
+        continue_award.value.balance.money = Number(continue_award.value.balance.money)
+    }
     if (Object.keys(continue_award.value).length > 0) {
         const val = cloneDeep(continue_award.value)
 
-        delete val['continue_sign'];
-        delete val['continue_tag'];
-        delete val['receive_limit'];
-        delete val['receive_num'];
+        delete val['continue_sign']
+        delete val['continue_tag']
+        delete val['receive_limit']
+        delete val['receive_num']
 
         contentData.gifts = val
 
-        let index = 0;
+        let index = 0
         if (formData.continue_award.length > 0) {
             index = formData.continue_award.length - 1
         }
@@ -394,7 +397,7 @@ const deleteContinueSignAwardEvent = (index: number) => {
  * 使用默认说明
  */
 const defaultExplainEvent = () => {
-    formData.rule_explain = t('ruleExplainDefault');
+    formData.rule_explain = t('ruleExplainDefault')
 }
 </script>
 

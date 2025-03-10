@@ -77,7 +77,7 @@
                             <div class="flex items-center">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.logo" :src="img(row.logo)" alt="">
                                 <img class="w-[50px] h-[50px] mr-[10px]" v-else src="@/app/assets/images/site_logo.png" alt="">
-                                <div class="flex flex flex-col">
+                                <div class="flex flex-col">
                                     <span>{{ row.site_name || '' }}</span>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@
                     <el-table-column :label="t('manager')" width="150" align="left">
                         <template #default="{ row }">
                             <div class="flex items-center">
-                                <div class="flex flex flex-col">
+                                <div class="flex flex-col">
                                     <span>{{ row.admin.username || '' }}</span>
                                 </div>
                             </div>

@@ -604,6 +604,13 @@ export function clearSchemaCache(params: Record<string, any>) {
     return request.post(`sys/schema/clear`, {}, { showSuccessMessage: true })
 }
 
+/**
+ * 清理缓存
+ */
+export function clearCache(params: Record<string, any>) {
+    return request.post(`sys/cache/clear`, {}, { showSuccessMessage: true })
+}
+
 /***************************************************** 获取应用 ****************************************************/
 /**
  * 获取应用

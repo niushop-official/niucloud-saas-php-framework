@@ -87,7 +87,7 @@
 					<el-table-column :label="t('applicationForWithdrawalAmount')" align="center" min-width="120" />
 					<el-table-column :label="t('actualTransferAmount')" align="center" min-width="120" />
 					<el-table-column :label="t('cashOutCommission')" align="center" min-width="110" />
-					<el-table-column :label="t('cashOutStatus')" align="center" min-width="100" />
+					<el-table-column :label="t('cashOutStatus')" align="center" min-width="150" />
                     <el-table-column :label="t('applyTime')" align="center" min-width="160" />
                     <el-table-column :label="t('auditTime')" align="center" min-width="160" />
                     <el-table-column :label="t('transferTime')" align="center" min-width="160" />
@@ -103,7 +103,7 @@
                                             <div class="flex items-center cursor-pointer " @click="toMember(row.member.member_id)">
                                                 <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.member.headimg" :src="img(row.member.headimg)" alt="">
                                                 <img class="w-[50px] h-[50px] mr-[10px] rounded-full" v-else src="@/app/assets/images/member_head.png" alt="">
-                                                <div class="flex flex flex-col items-baseline" style="width: calc(100% - 60px);">
+                                                <div class="flex flex-col items-baseline" style="width: calc(100% - 60px);">
                                                     <span class="w-[100%] truncate text-left">{{ row.member.nickname || row.member.username || '' }}</span>
                                                     <span class="w-[100%] truncate">{{ row.member.mobile || '' }}</span>
                                                 </div>
@@ -136,6 +136,14 @@
                                                 <span>{{ t('bankAccount') }}：{{ row.transfer_account }}</span>
                                                 <span>{{ t('bankName') }}：{{ row.transfer_bank }}</span>
                                             </div>
+                                            <div class="flex items-center" v-else-if="row.transfer_type=='wechatpay'">
+                                                <img class="w-[50px] h-[50px] mr-[10px]" v-if="row.member.headimg" :src="img(row.member.headimg)" alt="">
+                                                <img class="w-[50px] h-[50px] mr-[10px] rounded-full" v-else src="@/app/assets/images/member_head.png" alt="">
+                                                <div class="flex flex-col items-baseline" style="width: calc(100% - 60px);">
+                                                    <span class="w-[100%] truncate text-left">{{ row.member.nickname || row.member.username || '' }}</span>
+                                                    <span class="w-[100%] truncate">{{ row.member.mobile || '' }}</span>
+                                                </div>
+                                            </div>
                                         </template>
                                     </el-table-column>
                                     <el-table-column prop="apply_money"  min-width="120" align="center" />
@@ -144,7 +152,12 @@
 
                                     <el-table-column prop="service_money" align="center" min-width="110" />
 
-                                    <el-table-column prop="status_name" align="center" min-width="100" />
+                                    <el-table-column prop="status_name" align="center" min-width="150">
+                                        <template #default="{ row }">
+                                            <div>{{ row.status_name }}</div>
+                                            <div v-if="row.status == 2 && row.transfer_type == 'wechatpay'" class="text-[12px] text-[var(--el-color-success)]">(等待用户收款)</div>
+                                        </template>
+                                    </el-table-column>
 
                                     <el-table-column  min-width="160" align="center">
                                         <template #default="{ row }">
@@ -166,9 +179,11 @@
 
                                     <el-table-column  align="right" fixed="right" width="120">
                                         <template #default="{ row }">
-                                            <el-button v-for="(item, index) in operationBtn[row.status.toString()].value" :key="index + 'a'"
-                                                @click="fnProcessing(operationBtn[row.status.toString()].clickArr[index], row)"
-                                                type="primary" link>{{ item }}</el-button>
+                                            <el-button  type="primary" link @click="successfulAuditFn(row)" v-if="row.status == 1"> {{ t('successfulAudit') }}</el-button>
+                                            <el-button  type="primary" link @click="auditFailureFn(row)" v-if="row.status == 1"> {{ t('auditFailure') }}</el-button>
+                                            <el-button  type="primary" link @click="memberCancelFn(row)" v-if="row.status == 1 || row.status == 2 || row.status == 4"> {{ t('cancelWithdrawal') }}</el-button>
+                                            <el-button  type="primary" link @click="transferFn(row)" v-if="row.status == 2 && row.transfer_type !== 'wechatpay'"> {{ t('transfer') }}</el-button>
+                                            <el-button  type="primary" link @click="detailFn(row.id)"> {{ t('detail') }}</el-button>
                                             <el-button  type="primary" link @click="handleRemark(row)"> {{ t('remark') }}</el-button>
                                         </template>
                                     </el-table-column>
@@ -282,6 +297,11 @@
                     <el-col :span="12" v-if="cashOutInfo.transfer && cashOutInfo.transfer.transfer_remark">
                         <el-form-item :label="t('transferRemark')">
                             <div class="input-width"> {{ cashOutInfo.transfer.transfer_remark }} </div>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12" v-if="cashOutInfo.refuse_reason">
+                        <el-form-item :label="t('remark')">
+                            <div class="input-width"> {{ cashOutInfo.refuse_reason }} </div>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -482,11 +502,10 @@
 <script lang="ts" setup>
 import { reactive, ref, computed } from 'vue'
 import { t } from '@/lang'
-import { getCashOutList, getTransfertype, memberTransfer, memberAudit, getCashOutDetail, getCashOutStatusList, getCashOutStat, memberRemark, memberCheck } from '@/app/api/member'
+import { getCashOutList, getTransfertype, memberTransfer, memberAudit, getCashOutDetail, getCashOutStatusList, getCashOutStat, memberRemark, memberCheck, memberCancel } from '@/app/api/member'
 import { img } from '@/utils/common'
 import { ElMessageBox, FormInstance, FormRules } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
-import { AnyObject } from '@/types/global'
 
 const cashOutStatusList = ref([])
 const checkStatusList = async () => {
@@ -496,32 +515,6 @@ checkStatusList()
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
-const operationBtn = ref<AnyObject>({
-    1: {
-        value: [t('successfulAudit'), t('auditFailure'), t('detail')],
-        clickArr: ['successfulAuditFn', 'auditFailureFn', 'detailFn']
-    },
-    2: {
-        value: [t('transfer'), t('detail')],
-        clickArr: ['transferFn', 'detailFn']
-    },
-    3: {
-        value: [t('detail')],
-        clickArr: ['detailFn']
-    },
-    4: {
-        value: [t('detail')],
-        clickArr: ['detailFn']
-    },
-    '-1': {
-        value: [t('detail')],
-        clickArr: ['detailFn']
-    },
-    '-2': {
-        value: [t('detail')],
-        clickArr: ['detailFn']
-    }
-})
 
 // 表单验证规则
 const formRules = reactive<FormRules>({})
@@ -592,48 +585,14 @@ const loadOrderList = (page: number = 1) => {
 }
 loadOrderList()
 
-// 函数总处理
-const auditFailure = ref({ refuse_reason: '', id: 0, action: 0 })
-const auditShowDialog = ref(false)
-const fnProcessing = (type: string, data: any) => {
-    const obj = {}
-    if (['successfulAuditFn', 'auditFailureFn'].includes(type)) {
-        obj.id = data.id
-        if (type == 'successfulAuditFn') {
-            obj.action = 'agree'
-            curData.value = data
-            auditPassShowDialog.value = true
-        } else {
-            obj.action = 'refuse'
-            auditFailure.value = Object.assign(auditFailure.value, obj)
-            auditShowDialog.value = true
-        }
-    } else if (type == 'transferFn') {
-        if (data.transfer_type == 'wechatpay') {
-            obj.id = data.id
-            ElMessageBox.confirm(`${t('isTransfer')}`, `${t('transfer')}`).then(() => {
-                transferFn(obj)
-            })
-        } else {
-            transferData.value = data
-            formTransfer.id = data.id
-            transferShowDialog.value = true
-        }
-    } else if (type == 'checkFn') {
-        checkFn(data.id)
-    } else {
-        detailFn(data.id)
-    }
-}
-
 /**
  * 转账
  * @param data
  */
-const transferData = ref({})
+const transferData = ref<any>({})
 const transferShowDialog = ref(false)
 const formTransferRef = ref<FormInstance>()
-const formTransfer = reactive({
+const formTransfer = reactive<any>({
     id: 0,
     transfer_voucher: '',
     transfer_remark: ''
@@ -646,21 +605,23 @@ const formTransferRules = computed(() => {
     }
 })
 
+const transferFn = (data:any) => {
+    transferData.value = data
+    formTransfer.id = data.id
+    transferShowDialog.value = true
+}
 const handleTransfer = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
     await formEl.validate(async (valid) => {
         if (valid) {
-            transferFn(formTransfer)
+            memberTransfer({ ...formTransfer }).then(res => {
+                transferShowDialog.value = false
+                loadOrderList()
+            }).catch(() => {
+                transferShowDialog.value = false
+                loadOrderList()
+            })
         }
-    })
-}
-const transferFn = (data:any) => {
-    memberTransfer({ ...data }).then(res => {
-        transferShowDialog.value = false
-        loadOrderList()
-    }).catch(() => {
-        transferShowDialog.value = false
-        loadOrderList()
     })
 }
 
@@ -696,6 +657,12 @@ const detailFn = (id:any) => {
 
 const auditPassShowDialog = ref(false)
 const curData = ref<any>({})
+
+// 审核成功弹框
+const successfulAuditFn = (data: any) => {
+    curData.value = data
+    auditPassShowDialog.value = true
+}
 const handlePass = () => {
     const obj = {
         id: curData.value.id,
@@ -703,24 +670,55 @@ const handlePass = () => {
     }
     cashOutAuditFn(obj)
 }
+
+/**
+ *  拒绝审核
+ */
+
+const auditFailure = ref({ refuse_reason: '', id: 0, action: '' })
+const auditShowDialog = ref(false)
+const loading = ref(false)
+
+const auditFailureFn = (data: any) => {
+    auditFailure.value.id = data.id
+    auditFailure.value.action = 'refuse'
+    auditShowDialog.value = true
+}
+const confirm = () => {
+    auditShowDialog.value = false
+    cashOutAuditFn(auditFailure.value)
+}
+
+const repeat = ref(false)
 const cashOutAuditFn = (data:any) => {
+    if (repeat.value) return
+    repeat.value = true
     memberAudit({
         ...data
     }).then(res => {
+        repeat.value = false
         auditPassShowDialog.value = false
         loadOrderList()
     }).catch(() => {
+        repeat.value = false
         auditPassShowDialog.value = false
         loadOrderList()
     })
 }
 
-/**
- *  拒绝审核
- */
-const confirm = () => {
-    auditShowDialog.value = false
-    cashOutAuditFn(auditFailure.value)
+// 取消提现
+const memberCancelFn = (data: any) => {
+    ElMessageBox.confirm(t('cancelTips'), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        memberCancel({ id: data.id }).then((res) => {
+            loadOrderList()
+        })
+    })
 }
 
 /**

@@ -16,6 +16,9 @@
   "cancel": "取消",
   "search": "搜索",
   "reset": "重置",
+  "refresh": "刷新",
+  "refreshSuccess": "刷新成功",
+  "select": "选择",
   "export": "导出列表",
   "exportPlaceholder": "确定要导出数据吗？",
   "exportTip": "批量导出数据",
@@ -177,5 +180,12 @@
     "write": "可写",
     "cloudbuildSuccess": "编译完成",
     "showDialogCloseTips": "编译任务尚未完成，关闭将取消编译，是否要继续关闭？"
-  }
+  },
+  "formSelectContentTitle": "表单名称",
+  "formSelectContentTitlePlaceholder": "请输入表单名称",
+  "formSelectContentTypeName": "表单类型",
+  "formSelectContentTypeNamePlaceholder": "请选择表单类型",
+  "formSelectContentTypeAll": "全部",
+  "formSelectContentTips": "请选择表单"
+
 }

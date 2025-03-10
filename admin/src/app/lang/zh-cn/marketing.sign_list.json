@@ -1,6 +1,6 @@
 {
     "memberId":"会员编号",
-	"memberInfoPlaceholder":"请输入会员信息",
+	"memberInfoPlaceholder":"请输入会员编码/昵称/手机号搜索",
 	"memberInfo":"会员信息",
 	"mobile":"手机号码",
     "nickName":"会员昵称",

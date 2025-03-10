@@ -10,6 +10,7 @@
 						<el-radio label="static">{{ t('carouselSearchShowWayStatic') }}</el-radio>
 						<el-radio label="fixed">{{ t('carouselSearchShowWayFixed') }}</el-radio>
 					</el-radio-group>
+                    <div v-if="diyStore.editComponent.positionWay == 'fixed'" class="text-sm text-gray-400 mb-[10px]">滑动页面查看效果</div>
 				</el-form-item>
 				<el-form-item :label="t('carouselSearchFixedBgColor')" v-show="diyStore.editComponent.positionWay == 'fixed'">
 					<el-color-picker v-model="diyStore.editComponent.fixedBgColor" show-alpha :predefine="diyStore.predefineColors"/>

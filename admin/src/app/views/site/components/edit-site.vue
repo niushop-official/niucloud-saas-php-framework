@@ -42,11 +42,11 @@
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model.trim="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
+                        <el-input v-model.trim="formData.password" autocomplete="off" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model.trim="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
+                        <el-input v-model.trim="formData.confirm_password" autocomplete="off" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
                     </el-form-item>
                 </div>
             </div>

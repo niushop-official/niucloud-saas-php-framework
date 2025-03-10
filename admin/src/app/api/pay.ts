@@ -99,3 +99,25 @@ export function pay(params: Record<string, any>) {
 export function getFriendsPay(tradeType : string, tradeId : number, channel: string) {
    return request.get(`pay/friendspay/info/${tradeType}/${tradeId}/${channel}`, { showErrorMessage: false })
 }
+
+
+/**
+ *转账场景
+ */
+export function getTransferScene() {
+    return request.get(`pay/transfer_scene`)
+}
+
+/**
+ * 更改场景id
+ */
+export function setSceneId(params: Record<string, any>) {
+    return request.post(`pay/transfer_scene/set_scene_id/${params.scene}`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 设置业务场景配置
+ */
+export function setTradeScene(params: Record<string, any>) {
+    return request.post(`pay/transfer_scene/set_trade_scene/${params.type}`, params)
+}

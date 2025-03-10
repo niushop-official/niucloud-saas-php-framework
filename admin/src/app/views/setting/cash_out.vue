@@ -33,7 +33,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item :label="t('transfer')" v-if="formData.is_open" class="items-baseline">
+                    <!-- <el-form-item :label="t('transfer')" v-if="formData.is_open" class="items-baseline">
                         <div>
                             <el-radio-group v-model="formData.is_auto_transfer">
                                 <el-radio label="0" size="large">{{t('manualTransfer')}}</el-radio>
@@ -41,7 +41,7 @@
                             </el-radio-group>
                             <div class="text-[12px] text-[#999] leading-[24px]">{{ t('transferTips') }}</div>
                         </div>
-                    </el-form-item>
+                    </el-form-item> -->
                     <el-form-item :label="t('transferMode')" v-if="formData.is_open" class="items-baseline">
                         <div>
                             <el-checkbox-group v-model="formData.transfer_type" size="large">

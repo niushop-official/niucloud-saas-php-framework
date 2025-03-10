@@ -127,13 +127,11 @@
                             <span class="mr-3" v-if="copyright.company_name">{{ copyright.company_name }}</span>
                     </a>
                     <a href="https://beian.miit.gov.cn/" v-if="copyright.icp" target="_blank">
-                            <span class="mr-3">备案号: {{ copyright.icp }}</span>
+                            <span class="mr-3">{{ copyright.icp }}</span>
                     </a>
                 </div>
-                <div class="flex items-center">
-                    <span class="mx-1" @click="getInfoFn">版权信息</span>
-                     <!-- | <span class="mx-1">隐私政策</span> | <span class="mx-1">联系我们</span>  -->
-                    <!-- 版权信息 | 开发者联盟与隐私的声明 | 隐私政策 | 联系我们 | Cookies -->
+                <div class="flex items-center  cursor-pointer"> 
+                    <span class="mx-1" @click="getInfoFn">版权信息</span> | <span class="mx-1">开发者联盟与隐私的声明</span> | <span class="mx-1">隐私政策</span> | <span class="mx-1">联系我们</span> | <span class="mx-1">Cookies</span> 
                 </div>
             </div>
             </div>

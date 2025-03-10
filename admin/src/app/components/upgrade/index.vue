@@ -134,6 +134,7 @@ const emits = defineEmits(['complete', 'cloudbuild'])
 const upgradeTipsShowDialog = ref<boolean>(false)
 
 let upgradeLog: any = []
+let errorLog: any = []
 /**
  * 查询升级任务
  */
@@ -158,12 +159,18 @@ const getUpgradeTaskFn = () => {
         })
         // 安装失败
         if (data.error) {
-            upgradeTask.value = data
-            ElMessage({ message: '升级失败', type: 'error' })
-            terminalRef.value.pushMessage({ content: data.error, class: 'error' })
+            data.error.forEach(item => {
+                if (!errorLog.includes(item)) {
+                    terminalRef.value.pushMessage({ content: item, class: 'error' })
+                    errorLog.push(item)
+                }
+            })
+        }
+        // 恢复完毕
+        if (data.step == 'restoreComplete') {
             return
         }
-        // 安装完成
+        // 升级完成
         if (data.step == 'upgradeComplete') {
             active.value = 'complete'
             notificationEl && notificationEl.close()
@@ -316,6 +323,7 @@ const clearUpgradeTaskFn = () => {
     uploading.value = false
     upgradeTask.value = null
     upgradeLog = []
+    errorLog = []
     flashInterval && clearInterval(flashInterval)
     clearUpgradeTask().then(() => {}).catch()
 }

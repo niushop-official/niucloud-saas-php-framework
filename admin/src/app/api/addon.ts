@@ -90,3 +90,4 @@ export function cancelInstall(addon: string) {
 export function getInstalledAddonList() {
     return request.get('addon/list/install')
 }
+

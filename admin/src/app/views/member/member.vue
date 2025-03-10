@@ -28,7 +28,7 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item :label="t('memberLevel')" prop="member_label">
+                    <el-form-item :label="t('memberLevel')" prop="member_level">
                         <el-select v-model="memberTableData.searchParam.member_level" collapse-tags clearable :placeholder="t('memberLevelPlaceholder')" class="input-width">
                             <el-option :label="t('selectPlaceholder')" value="" />
                             <el-option :label="item['level_name']" :value="item['level_id']" v-for="(item, index) in levelSelectData" :key="index" />
@@ -60,7 +60,7 @@
                                     <img class="max-w-[50px] max-h-[50px]" v-if="row.headimg" :src="img(row.headimg)" alt="">
                                     <img class="max-w-[50px] max-h-[50px]" v-else src="@/app/assets/images/member_head.png" alt="">
                                 </div>
-                                <div class="flex flex flex-col">
+                                <div class="flex flex-col">
                                     <span>{{ row.nickname || '' }}</span>
                                 </div>
                             </div>

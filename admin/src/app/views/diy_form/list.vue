@@ -53,29 +53,29 @@
                 <el-table-column :label="t('operation')" fixed="right" align="right" min-width="100">
                     <template #default="{ row }">
                         <div class="flex items-center justify-end">
-                            <el-button type="primary" v-if="row.status == 1" link @click="spreadEvent(row)">{{ t('推广') }}</el-button>
+                            <el-button type="primary" v-if="row.status == 1 && row.type=='DIY_FORM'" link @click="spreadEvent(row)">{{ t('promotion') }}</el-button>
 <!--                            <el-button type="primary" link @click="toPreview(row)">{{ t('preview') }}</el-button>-->
                             <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button v-if="row.status == 0" type="primary" link @click="deleteEvent(row.form_id)">{{ t('delete') }}</el-button>
-                            <el-button type="primary" link @click="detailEvent(row)">{{ t('详情') }}</el-button>
+                            <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
                             <el-dropdown placement="bottom" trigger="click" class="ml-[12px]">
-                                <el-button type="primary" link>更多</el-button>
+                                <el-button type="primary" link>{{ t('more') }}</el-button>
                                 <template #dropdown>
                                     <el-dropdown-menu>
-                                        <el-dropdown-item>
-                                            <el-button type="primary" class="w-full" link @click="submitConfigEvent(row)">{{ t('提交成功页') }}</el-button>
+                                        <el-dropdown-item v-if="row.type=='DIY_FORM'">
+                                            <el-button type="primary" class="w-full" link @click="submitConfigEvent(row)">{{ t('submitSuccess') }}</el-button>
                                         </el-dropdown-item>
                                         <el-dropdown-item>
-                                            <el-button type="primary" class="w-full" link @click="writeConfigEvent(row)">{{ t('填写设置') }}</el-button>
+                                            <el-button type="primary" class="w-full" link @click="writeConfigEvent(row)">{{ t('writeSet') }}</el-button>
                                         </el-dropdown-item>
-                                        <el-dropdown-item>
+                                        <el-dropdown-item v-if="row.type=='DIY_FORM'">
                                             <el-button type="primary" class="w-full" link @click="openShare(row)">{{ t('shareSet') }}</el-button>
                                         </el-dropdown-item>
                                         <el-dropdown-item>
-                                            <el-button type="primary" class="w-full" link @click="exportEvent(row)">{{ t('导出') }}</el-button>
+                                            <el-button type="primary" class="w-full" link @click="exportEvent(row)">{{ t('export') }}</el-button>
                                         </el-dropdown-item>
                                         <el-dropdown-item>
-                                            <el-button type="primary" class="w-full" link @click="copyEvent(row.form_id)">{{ t('复制') }}</el-button>
+                                            <el-button type="primary" class="w-full" link @click="copyEvent(row.form_id)">{{ t('copy') }}</el-button>
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
@@ -239,12 +239,14 @@ const addEvent = async (formEl: FormInstance | undefined) => {
 }
 
 const showClick = (row: any) => {
-    row.status = row.status === 1 ? 0 : 1
+    const data = row.status === 1 ? 0 : 1
     const obj = {
         form_id: row.form_id,
-        status: row.status,
+        status: data
     }
-    editFormStatus(obj)
+    editFormStatus(obj).then((res) => {
+        row.status = data
+    })
 }
 
 // 获取万能表单类型

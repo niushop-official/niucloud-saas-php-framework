@@ -14,7 +14,7 @@
             </el-form-item>
 
             <el-form-item :label="t('adjustBalance')" prop="adjust">
-                <el-input-number v-model="formData.adjust" clearable :min="0" :max="999999" :placeholder="t('adjustPlaceholder')"/>
+                <el-input-number v-model="formData.adjust" clearable :min="0" :max="999999" :placeholder="t('adjustBalancePlaceholder')" @focus="formData.adjust = ''"  class="!w-[200px]"/>
             </el-form-item>
 
             <el-form-item :label="t('memo')" prop="memo">

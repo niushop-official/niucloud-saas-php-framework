@@ -35,6 +35,15 @@
                     </div>
                     <img src="@/app/assets/images/tools/sys_dict_list.png" class="w-[256px] h-[128px]" />
                 </div>
+                <div class="w-[256px] tools-item-shadow mb-[24px] mx-[14px] rounded-[8px] flex flex-col cursor-pointer leading-[1]" @click="toLink('/admin/tools/update_cache')">
+                    <div class="flex-1 pt-[18px] pb-[14px] px-[24px] flex flex-col">
+                        <span class="text-[16px] text-[#222] font-bold">更新缓存</span>
+                        <div class="text-[13px] text-[#6D7278] leading-[18px] mt-[8px] truncate">
+                            更新缓存
+                        </div>
+                    </div>
+                    <img src="@/app/assets/images/tools/tools_Update_cache.png" class="w-[256px] h-[128px]" />
+                </div>
                 <div class="w-[256px] tools-item-shadow m-[20px] !mr-[0px] !mt-[0px] rounded-[8px] flex flex-col cursor-pointer leading-[1]" @click="toLink('/admin/tools/detection')">
                     <div class="flex-1 pt-[18px] pb-[14px] px-[24px] flex flex-col bg-[var(--el-bg-color)]">
                         <span class="text-[16px] font-bold">环境监测</span>

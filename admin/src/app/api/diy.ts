@@ -219,6 +219,29 @@ export function getDiyTheme(params: Record<string, any>) {
     return request.get(`diy/theme`, {params})
 }
 
+/**
+ * 添加配色
+ * @param params
+ */
+export function addTheme(params: Record<string, any>) {
+    return request.post(`diy/theme/add`, params)
+}
+
+/**
+ * 编辑配色
+ * @param params
+ */
+export function editTheme(params: Record<string, any>) {
+    return request.put(`diy/theme/edit/${params.id}`, params, {showSuccessMessage: true})
+}
+
+/**
+ * 删除配色
+ * @param params
+ */
+export function deleteTheme(id: number) {
+    return request.delete(`diy/theme/delete/${id}`, {showSuccessMessage: true})
+}
 
 /**
  * 设置主题配色 

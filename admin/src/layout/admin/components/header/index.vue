@@ -2,8 +2,8 @@
     <el-container class="h-[64px] w-full layout-admin flex items-center justify-between px-[15px]" >
         <!-- :class="['h-full px-[10px]',{'layout-header border-b border-color': !dark}]"  -->
         <div class="flex items-center">
-            <div class="w-[120px] flex justify-center items-center flex-shrink-0">
-                <div class="w-[120px] h-[40px] overflow-hidden">
+            <div class="max-w-[120px] flex justify-center items-center flex-shrink-0">
+                <div class="max-w-[120px] h-[40px] overflow-hidden">
                     <el-image style="width: 100%; height: 100%" :src="img(logoUrl)" fit="contain">
                         <template #error>
                             <div class="flex justify-center items-center w-full h-full"><img class="max-w-[120px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>

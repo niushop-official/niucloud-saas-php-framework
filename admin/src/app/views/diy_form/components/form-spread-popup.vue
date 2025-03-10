@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog v-model="showDialog" :title="t('表单推广')" width="500px" :destroy-on-close="true">
+        <el-dialog v-model="showDialog" :title="t('formPromotion')" width="500px" :destroy-on-close="true">
 
             <el-tabs v-model="channel" class="mb-[10px]">
                 <el-tab-pane label="H5" name="h5"></el-tab-pane>
@@ -13,13 +13,13 @@
                 </div>
 
                 <div class="px-[20px] flex-1">
-                    <div class="mb-[10px]">{{ t('推广链接') }}</div>
+                    <div class="mb-[10px]">{{ t('promoteUrl') }}</div>
                     <el-input class="mb-[10px]" readonly :value="wapPreview">
                         <template #append>
                             <el-button @click="copyEvent(wapPreview)">{{ t('copy') }}</el-button>
                         </template>
                     </el-input>
-                    <a class="text-primary" :href="wapImage" download>{{ t('下载二维码') }}</a>
+                    <a class="text-primary" :href="wapImage" download>{{ t('downLoadQRCode') }}</a>
                 </div>
 
             </div>
@@ -28,14 +28,14 @@
                 <div class="promote-img flex justify-center items-center bg-[#f8f8f8] w-[150px] h-[150px]">
                     <el-image :src="img(weappData.path)" v-if="weappData.path" class="w-[150px] h-[150px]">
                         <template #error>
-                            <div class="w-[150px] h-[150px] text-[14px] text-center leading-[150px]">配置失败</div>
+                            <div class="w-[150px] h-[150px] text-[14px] text-center leading-[150px]">{{ t('configureFailed') }}</div>
                         </template>
                     </el-image>
-                    <div v-else class="w-[150px] h-[150px] text-[14px] text-center leading-[150px]">配置失败</div>
+                    <div v-else class="w-[150px] h-[150px] text-[14px] text-center leading-[150px]">{{ t('configureFailed') }}</div>
                 </div>
 
                 <div class="px-[20px] flex-1">
-                    <a class="text-primary" :href="img(weappData.path)" target="_blank" download>{{ t('下载二维码') }}</a>
+                    <a class="text-primary" :href="img(weappData.path)" target="_blank" download>{{ t('downLoadQRCode') }}</a>
                 </div>
 
             </div>

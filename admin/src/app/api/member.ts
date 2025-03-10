@@ -359,6 +359,14 @@ export function getCashOutDetail(id: number) {
 export function memberAudit(params: Record<string, any>) {
     return request.put(`member/cash_out/audit/${params.id}/${params.action}`, params, { showSuccessMessage: true })
 }
+/**
+ * 会员取消提现
+ * @param params
+ */
+export function memberCancel(params: Record<string, any>) {
+    return request.put(`member/cash_out/cancel/${params.id}`, params, { showSuccessMessage: true,showErrorMessage: true })
+}
+
 
 /**
  * 会员提现转账

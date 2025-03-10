@@ -6,43 +6,43 @@
 		<slot name="field"></slot>
 
 		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('开始时间') }}</h3>
+			<h3 class="mb-[10px]">{{ t('startTime') }}</h3>
 			<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-				<el-form-item :label="t('提示语')">
+				<el-form-item :label="t('formPlaceholder')">
 					<el-input v-model.trim="diyStore.editComponent.start.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
 				</el-form-item>
-				<el-form-item :label="t('默认值')">
+				<el-form-item :label="t('defaultValue')">
 					<el-switch v-model="diyStore.editComponent.start.defaultControl"/>
 				</el-form-item>
 				<el-form-item v-if="diyStore.editComponent.start.defaultControl">
 					<el-radio-group v-model="diyStore.editComponent.start.timeWay">
-						<el-radio label="current">{{ t('当天时间') }}</el-radio>
-						<el-radio label="diy">{{ t('指定时间') }}</el-radio>
+						<el-radio label="current">{{ t('currentTime') }}</el-radio>
+						<el-radio label="diy">{{ t('diyTime') }}</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item v-if="diyStore.editComponent.start.defaultControl && diyStore.editComponent.start.timeWay == 'diy'">
-                    <el-time-picker v-model="diyStore.editComponent.field.default.start.date" placeholder="请选择开始时间" format="HH:mm" value-format="HH:mm" @change="startTimePickerChange" />
+                    <el-time-picker v-model="diyStore.editComponent.field.default.start.date" :placeholder="t('startTimePlaceholder')" format="HH:mm" value-format="HH:mm" @change="startTimePickerChange" />
 				</el-form-item>
 			</el-form>
 		</div>
 
 		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('结束时间') }}</h3>
+			<h3 class="mb-[10px]">{{ t('endTime') }}</h3>
 			<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-				<el-form-item :label="t('提示语')">
+				<el-form-item :label="t('formPlaceholder')">
 					<el-input v-model.trim="diyStore.editComponent.end.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
 				</el-form-item>
-				<el-form-item :label="t('默认值')">
+				<el-form-item :label="t('defaultValue')">
 					<el-switch v-model="diyStore.editComponent.end.defaultControl"  />
 				</el-form-item>
 				<el-form-item v-if="diyStore.editComponent.end.defaultControl">
 					<el-radio-group v-model="diyStore.editComponent.end.timeWay">
-						<el-radio label="current">{{ t('当天时间') }}</el-radio>
-						<el-radio label="diy">{{ t('指定时间') }}</el-radio>
+						<el-radio label="current">{{ t('currentTime') }}</el-radio>
+						<el-radio label="diy">{{ t('diyTime') }}</el-radio>
 					</el-radio-group>
 				</el-form-item>
 				<el-form-item v-if="diyStore.editComponent.end.defaultControl && diyStore.editComponent.end.timeWay == 'diy'">
-                    <el-time-picker  :disabled-hours="disabledHours" :disabled-minutes="disabledMinutes" v-model="diyStore.editComponent.field.default.end.date" placeholder="请选择结束时间" format="HH:mm" value-format="HH:mm" />
+                    <el-time-picker  :disabled-hours="disabledHours" :disabled-minutes="disabledMinutes" v-model="diyStore.editComponent.field.default.end.date" :placeholder="t('endTimePlaceholder')" format="HH:mm" value-format="HH:mm" />
 				</el-form-item>
 			</el-form>
 		</div>
@@ -55,7 +55,7 @@
 	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
 		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('文字样式') }}</h3>
+			<h3 class="mb-[10px]">{{ t('textStyle') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
 				<el-form-item :label="t('textFontSize')">
 					<el-slider v-model="diyStore.editComponent.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="18" />
@@ -105,18 +105,18 @@ diyStore.editComponent.verify = (index: number) => {
 
     if(diyStore.editComponent.start.defaultControl && starTime == ''){
         res.code = false
-        res.message = "开始时间不能为空"
+        res.message = t('startTimeTips')
         return res
     }
     if(diyStore.editComponent.end.defaultControl && endTime == ''){
         res.code = false
-        res.message = "结束时间不能为空"
+        res.message = t('endTimeTips')
         return res
     }
 
     if(diyStore.editComponent.start.defaultControl && diyStore.editComponent.end.defaultControl && timeInvertSecond(starTime)  > timeInvertSecond(endTime)){
         res.code = false
-        res.message = "开始时间不能大于结束时间"
+        res.message = t('startEndTimeTips')
         return res
     }
     return res

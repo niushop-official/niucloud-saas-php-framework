@@ -142,23 +142,23 @@
                                 <template #content>
                                     <!-- 表单布局 页面设置 -->
                                     <div class="edit-attr-item-wrap" v-if="diyStore.currentComponent == 'edit-page'">
-                                        <h3 class="mb-[10px]">{{ t('表单布局') }}</h3>
+                                        <h3 class="mb-[10px]">{{ t('formLayout') }}</h3>
                                         <el-form label-width="90px" class="px-[10px]">
                                             <el-form-item class="display-block">
                                                 <template #label>
                                                     <div class="flex items-center">
-                                                        <span class="mr-[3px]">{{ t('排版风格') }}</span>
+                                                        <span class="mr-[3px]">{{ t('layoutStyle') }}</span>
                                                         <el-tooltip effect="light" placement="top">
                                                             <template #content>
-                                                                <h6 class="font-bold text-[13px] mb-[5px]">单列平铺‌</h6>
-                                                                <p class="ml-[10px]">将所有需要填写的表单内容项直接罗列在页面上。</p>
-                                                                <p class="ml-[10px]">适用于表单内容项较少且项目之间无逻辑关系的情况。</p>
-                                                                <p class="ml-[10px]">其优势在于相对简洁、便于操作</p>
-                                                                <p class="ml-[10px]">但当表单项数量较大时，一次性展示全部信息会增加用户的操作负担，填写效率较低</p>
+                                                                <h6 class="font-bold text-[13px] mb-[5px]">{{ t('singleTiling') }}</h6>
+                                                                <p class="ml-[10px]">{{ t('singleTilingTipsOne') }}</p>
+                                                                <p class="ml-[10px]">{{ t('singleTilingTipsTwo') }}</p>
+                                                                <p class="ml-[10px]">{{ t('singleTilingTipsThree') }}</p>
+                                                                <p class="ml-[10px]">{{ t('singleTilingTipsFour') }}</p>
 
-                                                                <h6 class="font-bold text-[13px] mb-[5px] mt-[10px]">左右排列‌</h6>
-                                                                <p class="ml-[10px]">将表单分为左右两部分，左侧为标题和描述，右侧为输入区域。</p>
-                                                                <p class="ml-[10px]">这种布局适用于标题和描述内容较少的情况，能够提高表单的紧凑性和用户体验。</p>
+                                                                <h6 class="font-bold text-[13px] mb-[5px] mt-[10px]">{{ t('arrangeSideBySide') }}</h6>
+                                                                <p class="ml-[10px]">{{ t('arrangeSideBySideTipsOne') }}</p>
+                                                                <p class="ml-[10px]">{{ t('arrangeSideBySideTipsTwo') }}</p>
                                                             </template>
                                                             <el-icon>
                                                                 <QuestionFilled color="#999999" />
@@ -167,10 +167,10 @@
                                                     </div>
                                                 </template>
                                                 <el-radio-group v-model="diyStore.global.completeLayout" @change="completeLayoutChange">
-                                                    <el-radio label="style-1">{{ t('单列平铺‌') }}</el-radio>
-                                                    <el-radio label="style-2">{{ t('左右排列‌') }}</el-radio>
+                                                    <el-radio label="style-1">{{ t('singleTiling') }}</el-radio>
+                                                    <el-radio label="style-2">{{ t('arrangeSideBySide') }}</el-radio>
                                                 </el-radio-group>
-                                                <div class="text-sm text-gray-400">{{ t('切换后将同步所有表单组件的展示形式') }}</div>
+                                                <div class="text-sm text-gray-400">{{ t('layoutStyleTips') }}</div>
                                             </el-form-item>
                                             <el-form-item :label="t('textAlign')" v-show="diyStore.global.completeLayout == 'style-2'">
                                                 <el-radio-group v-model="diyStore.global.completeAlign">
@@ -178,7 +178,7 @@
                                                     <el-radio :label="'right'">{{ t('textAlignRight') }}</el-radio>
                                                 </el-radio-group>
                                             </el-form-item>
-                                            <el-form-item :label="t('边框开关')" v-show="diyStore.global.completeLayout == 'style-2'">
+                                            <el-form-item :label="t('borderControl')" v-show="diyStore.global.completeLayout == 'style-2'">
                                                 <el-switch v-model="diyStore.global.borderControl" />
                                             </el-form-item>
                                         </el-form>
@@ -187,12 +187,12 @@
                                 <template #field>
                                     <!-- 表单组件 字段内容设置 -->
                                     <div class="edit-attr-item-wrap" v-if="diyStore.editComponent.componentType == 'diy_form'">
-                                        <h3 class="mb-[10px]">{{ t('字段内容') }}</h3>
+                                        <h3 class="mb-[10px]">{{ t('fieleContent') }}</h3>
                                         <el-form label-width="100px" class="px-[10px]">
-                                            <el-form-item :label="t('字段名称')">
+                                            <el-form-item :label="t('fieldName')">
                                                 <el-input v-model.trim="diyStore.editComponent.field.name" :placeholder="t('fieldNamePlaceholder')" clearable :maxlength="inputMaxLength" show-word-limit />
                                             </el-form-item>
-                                            <el-form-item :label="t('字段说明')">
+                                            <el-form-item :label="t('filedRemark')">
                                                 <el-input v-model.trim="diyStore.editComponent.field.remark.text" :placeholder="t('fieldRemarkPlaceholder')" clearable maxlength="60" show-word-limit />
                                             </el-form-item>
                                         </el-form>
@@ -201,7 +201,7 @@
                                 <template #other>
                                     <!-- 表单组件 其他设置 -->
                                     <div class="edit-attr-item-wrap" v-if="diyStore.editComponent.componentType == 'diy_form'">
-                                        <h3 class="mb-[10px]">{{ t('其他设置') }}</h3>
+                                        <h3 class="mb-[10px]">{{ t('otherSetting') }}</h3>
                                         <el-form label-width="100px" class="px-[10px]">
                                             <el-form-item :label="t('isRequired')">
                                                 <el-switch v-model="diyStore.editComponent.field.required" />
@@ -243,11 +243,11 @@
                                             <el-form-item>
                                                 <template #label>
                                                     <div class="flex items-center">
-                                                        <span class="mr-[3px]">{{ t('隐藏该组件') }}</span>
+                                                        <span class="mr-[3px]">{{ t('hideControl') }}</span>
                                                         <el-tooltip effect="light" placement="top">
                                                             <template #content>
-                                                                <p>勾选后填表人填表时看不到该字段。</p>
-                                                                <p>适用于你不再收集该字段又不希望删除已收集的数据。</p>
+                                                                <p>{{ t('hideControlTipsOne') }}</p>
+                                                                <p>{{ t('hideControlTipsTwo') }}</p>
                                                             </template>
                                                             <el-icon>
                                                                 <QuestionFilled color="#999999" />
@@ -264,7 +264,7 @@
                                     <!-- 表单组件 字段样式设置 -->
                                     <template v-if="diyStore.editComponent.componentType == 'diy_form'">
                                         <div class="edit-attr-item-wrap">
-                                            <h3 class="mb-[10px]">{{ t('文字样式') }}</h3>
+                                            <h3 class="mb-[10px]">{{ t('textStyle') }}</h3>
                                             <el-form label-width="80px" class="px-[10px]">
                                                 <el-form-item :label="t('textFontSize')">
                                                     <el-slider v-model="diyStore.editComponent.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="18" />
@@ -282,7 +282,7 @@
                                         </div>
 
                                         <div class="edit-attr-item-wrap">
-                                            <h3 class="mb-[10px]">{{ t('字段说明样式') }}</h3>
+                                            <h3 class="mb-[10px]">{{ t('filedRemarkStyle') }}</h3>
                                             <el-form label-width="80px" class="px-[10px]">
                                                 <el-form-item :label="t('textFontSize')">
                                                     <el-slider v-model="diyStore.editComponent.field.remark.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="18" />
@@ -750,7 +750,7 @@ const verifyFormComponent = () => {
             if (diyStore.value[i].componentType == 'diy_form' && diyStore.value[i].componentName != 'FormSubmit' && diyStore.value[i].field.name == '') {
                 diyStore.changeCurrentIndex(i, diyStore.value[i])
                 ElMessage({
-                    message: t('请输入字段名称'),
+                    message: t('fieldNamePlaceholder'),
                     type: 'warning'
                 })
                 return false;

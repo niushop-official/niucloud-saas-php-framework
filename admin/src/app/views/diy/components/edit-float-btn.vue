@@ -28,9 +28,9 @@
                 </template>
 
             </el-dialog> -->
-			<h3 class="mb-[10px]">{{ t('floatBtnBtton') }}</h3>
+			<h3 class="mb-[10px]">{{ t('floatBtnButton') }}</h3>
 			<el-form label-width="80px" class="px-[10px]">
-				<el-form-item :label="t('floatBtnBtton')">
+				<el-form-item :label="t('floatBtnButton')">
 					<span>{{ selectTemplate.name }}</span>
                     <ul class="ml-[10px] flex items-center">
                         <template v-for="(item,i) in templateList" :key="i">
@@ -42,6 +42,9 @@
 				</el-form-item>
                 <el-form-item :label="t('floatBtnOffset')">
 					<el-slider v-model="diyStore.editComponent.offset" show-input size="small" class="ml-[10px] diy-nav-slider" :max="100"/>
+				</el-form-item>
+                <el-form-item :label="t('lateralBtnOffset')">
+					<el-slider v-model="diyStore.editComponent.lateralOffset" show-input size="small" class="ml-[10px] diy-nav-slider" :max="15" :min="-10"/>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -91,7 +94,7 @@ import { t } from '@/lang'
 import Sortable from 'sortablejs'
 import useDiyStore from '@/stores/modules/diy'
 import { img } from '@/utils/common'
-import { range } from 'lodash-es'
+import { min, range } from 'lodash-es'
 
 const diyStore = useDiyStore()
 diyStore.editComponent.ignore = ['pageBgColor','marginTop','marginBottom','marginBoth','componentBgUrl'] // 忽略公共属性

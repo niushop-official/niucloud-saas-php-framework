@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <el-dialog v-model="ruleDialog" :title="'规则配置'" width="600px" :close-on-press-escape="false" :destroy-on-close="true" :close-on-click-modal="false">
+            <el-dialog v-model="ruleDialog" :title="'规则配置'" width="600px" :destroy-on-close="true" :close-on-click-modal="false">
                 <div v-for="(item, key) in rules.grant" :key="key" class="pl-[60px]">
                     <component :is="item.component" v-model="formData.grant[item.key]" ref="ruleRefs" v-if="item.component && currRule == key"/>
                 </div>

@@ -1,7 +1,6 @@
 {
-      "refresh":"刷新",
-      "refreshMenu":"刷新菜单",
-      "refreshMenuDesc":"新增/修改插件菜单后，需要刷新插件菜单",
-      "dataCache":"数据缓存",
-      "dataCacheDesc":"新增/修改数据表后，需要清除数据表缓存"
+      "dataCache":"清除缓存",
+      "dataCacheDesc":"清除系统的所有缓存",
+      "refresh": "立即清除",
+      "clearCacheTips": "确定要清除缓存吗？"
 }

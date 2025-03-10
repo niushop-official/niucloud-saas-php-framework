@@ -16,11 +16,11 @@
 			<el-form-item>
 				<template #label>
 					<div class="flex items-center">
-						<span class="mr-[3px]">{{ t('内容防重复') }}</span>
+						<span class="mr-[3px]">{{ t('preventDuplication') }}</span>
 						<el-tooltip effect="light" placement="top">
 							<template #content>
-								<p>该组件填写的内容不能与已提交的数据重复。</p>
-								<p>极端情况下可能存在延时导致限制失效。</p>
+								<p>{{ t('preventDuplicationTipsOne') }}</p>
+								<p>{{ t('preventDuplicationTipsTwo') }}</p>
 							</template>
 							<el-icon>
 								<QuestionFilled color="#999999" />
@@ -33,11 +33,11 @@
 			<el-form-item class="display-block">
 				<template #label>
 					<div class="flex items-center">
-						<span class="mr-[3px]">{{ t('隐私保护') }}</span>
+						<span class="mr-[3px]">{{ t('privacyProtection') }}</span>
 						<el-tooltip effect="light" placement="top">
 							<template #content>
-								<p>会自动将提交的个人信息做加密展示。</p>
-								<p>适用于公开展示收集的数据且不暴露用户隐私。</p>
+								<p>{{ t('privacyProtectionTipsOne') }}</p>
+								<p>{{ t('privacyProtectionTipsTwo') }}</p>
 							</template>
 							<el-icon>
 								<QuestionFilled color="#999999" />
@@ -46,7 +46,7 @@
 					</div>
 				</template>
 				<el-switch v-model="diyStore.editComponent.field.privacyProtection" />
-				<div class="text-sm text-gray-400">{{ t('提交后自动隐藏中间5位数字，仅管理员可查看') }}</div>
+				<div class="text-sm text-gray-400">{{ t('privacyProtectionTipsFive') }}</div>
 			</el-form-item>
 		</el-form>
 

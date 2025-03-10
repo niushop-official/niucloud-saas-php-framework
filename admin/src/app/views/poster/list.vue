@@ -66,7 +66,7 @@
         </el-card>
 
         <!--添加海报-->
-        <el-dialog v-model="dialogVisible" :title="t('addPosterTitle')" width="350px">
+        <el-dialog v-model="dialogVisible" :title="t('addPosterTitle')" width="350px" destroy-on-close="true">
 
             <el-form :model="formData" label-width="90px" ref="formRef" :rules="formRules">
                 <el-form-item :label="t('posterName')" prop="name">

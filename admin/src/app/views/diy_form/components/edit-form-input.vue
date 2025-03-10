@@ -12,7 +12,7 @@
 				<template #label>
 					<div class="flex items-center">
 						<span class="mr-[3px]">{{ t('defaultValue') }}</span>
-						<el-tooltip effect="light" :content="t('设置后，默认值会自动填充到输入框，填表人可在此基础上进行修改。')" placement="top">
+						<el-tooltip effect="light" :content="t('defaultValueTips')" placement="top">
 							<el-icon>
 								<QuestionFilled color="#999999" />
 							</el-icon>
@@ -29,11 +29,11 @@
 			<el-form-item>
 				<template #label>
 					<div class="flex items-center">
-						<span class="mr-[3px]">{{ t('内容防重复') }}</span>
+						<span class="mr-[3px]">{{ t('preventDuplication') }}</span>
 						<el-tooltip effect="light" placement="top">
 							<template #content>
-								<p>该组件填写的内容不能与已提交的数据重复。</p>
-								<p>极端情况下可能存在延时导致限制失效。</p>
+								<p>{{ t('preventDuplicationTipsOne') }}</p>
+								<p>{{ t('preventDuplicationTipsTwo') }}</p>
 							</template>
 							<el-icon>
 								<QuestionFilled color="#999999" />

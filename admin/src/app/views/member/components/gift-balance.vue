@@ -5,7 +5,7 @@
                 <el-checkbox v-model="formData.is_use" :true-label="1" :false-label="0" label="" size="large" />
                 <span class="ml-[10px] el-form-item__label">送</span>
                 <div class="w-[70px]">
-                    <el-input v-model.trim="formData.money" :maxlength="5" clearable />
+                    <el-input v-model.trim="formData.money" :maxlength="5" clearable :disabled="formData.is_use == 0" />
                 </div>
                 <span class="ml-[15px] el-form-item__label">元红包</span>
             </div>

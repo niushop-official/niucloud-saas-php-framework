@@ -202,6 +202,9 @@ import storage from '@/utils/storage'
 
 const attachmentCategoryName = ref('')
 const operate = ref(false)
+
+const repeat = ref(false)
+
 const prop = defineProps({
     // 选择数量限制
     limit: {
@@ -261,7 +264,6 @@ const attachmentParam = reactive({
  * 查询分组
  */
 const getAttachmentCategoryList = debounce(() => {
-
     const getFn = prop.type == 'icon' ? getIconCategoryList : attachmentCategoryList
     getFn({
         type: prop.type,
@@ -304,6 +306,7 @@ const getAttachmentList = debounce((page: number = 1) => {
         attachment.loading = false
     })
 })
+
 getAttachmentList()
 
 watch(() => attachmentParam.cate_id, () => {
@@ -314,14 +317,18 @@ watch(() => attachmentParam.cate_id, () => {
  * 添加分组
  */
 const addAttachmentCategory = (name: string) => {
+    if (repeat.value) return
+    repeat.value = true
+
     addCategory({
         type: prop.type,
         name
     }).then(res => {
+        repeat.value = false
         attachmentCategoryName.value = ''
         getAttachmentCategoryList(1)
     }).catch(() => {
-
+        repeat.value = false
     })
 }
 
@@ -331,13 +338,16 @@ const addAttachmentCategory = (name: string) => {
  * @param index
  */
 const updateAttachmentCategory = (name: string, index: number) => {
+    if (repeat.value) return
+    repeat.value = true
     updateCategory({
         id: attachmentCategory.data[index].id,
         name
     }).then(res => {
+        repeat.value = false
         attachmentCategory.data[index].name = name
     }).catch(() => {
-
+        repeat.value = false
     })
 }
 
@@ -345,6 +355,8 @@ const updateAttachmentCategory = (name: string, index: number) => {
  * 删除分组
  */
 const deleteAttachmentCategory = (index: number) => {
+    if (repeat.value) return
+    repeat.value = true
     ElMessageBox.confirm(t('upload.deleteCategoryTips'), t('warning'),
         {
             confirmButtonText: t('confirm'),
@@ -354,7 +366,9 @@ const deleteAttachmentCategory = (index: number) => {
     ).then(() => {
         deleteCategory(attachmentCategory.data[index].id).then(() => {
             attachmentCategory.data.splice(index, 1)
+            repeat.value = false
         }).catch(() => {
+            repeat.value = false
         })
     })
 }
@@ -387,7 +401,7 @@ const upload = computed(() => {
                         clearTimeout(time.value)
                         time.value=null
                     },500)
-                
+
                 }else{
                     clearTimeout(time.value)
                     time.value=null

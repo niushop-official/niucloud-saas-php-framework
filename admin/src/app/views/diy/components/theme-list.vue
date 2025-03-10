@@ -1,26 +1,41 @@
 <template>
-    <el-dialog v-model="dialogThemeVisible" :title="data.addon_title"  width="550px"  align-center>
-        <el-form class="page-form mt-[15px]" :model="formData" label-width="90px" v-loading="loading">
-            <el-form-item label="选择配色">
-                <div class="flex items-center flex-wrap">
-                    <template v-for="(tempItem,tempIndex) in theme_temp">
-                        <div :key="tempIndex" v-if="tempItem.name != 'diy'" class="flex items-center border-[1px] border-solid border-[#dcdee2] rounded-[5px] h-[40px] px-[15px] mr-[10px] cursor-pointer my-[5px]" :class="{'!border-[var(--el-color-primary)]': curr_theme_mark == tempItem.name}" @click="themeTempChange(tempItem)">
-                            <span v-if="data.theme" class="w-[20px] h-[20px] mr-[5px] rounded-[3px]" :style="{backgroundColor: data.theme['--primary-color']}"></span>
-                            <span class="text-[14px]" :class="{'!text-[var(--el-color-primary)]': curr_theme_mark == tempItem.name}">{{tempItem.title}}</span>
+    <el-dialog v-model="dialogThemeVisible" :title="dialogTitle" width="535px" align-center class="custom-theme-dialog" @close="cancelFn">
+        <div class="flex flex-col items-baseline">
+            <div class="flex items-center flex-wrap max-h-[365px] overflow-auto [&>:nth-child(3n)]:mr-0" >
+                <div :key="tempIndex" v-for="(tempItem, tempIndex) in themeTemp"
+                    class="flex flex-col border-[1px] border-solid border-[#dcdee2] rounded-[4px] px-[10px] pt-[10px] pb-[15px] mr-[10px] cursor-pointer my-[5px]"
+                    :class="{ '!border-[var(--el-color-primary)]': currTheme.id == tempItem.id }"
+                    @click="themeTempChange(tempItem)">
+                    <div class="flex justify-between pb-[5px]">
+                        <div class="text-[14px] text-[#666] max-w-[85px] whitespace-nowrap overflow-hidden text-ellipsis" :class="{ '!text-[#333]': currTheme.id == tempItem.id }">{{ tempItem.title }}</div>
+                        <div>
+                            <span class="iconfont iconshanchu-fanggaiV6xx !text-[14px] text-[#999]" v-if="currTheme.id != tempItem.id && tempItem.theme_type != 'default' && currTableTheme != tempItem.id" @click.stop="deleteThemeFn(tempItem)"></span>
+                            <span class="nc-iconfont nc-icon-bianjiV6xx1 !text-[14px] text-[#999] ml-[5px]" @click.stop="editThemeFn('edit', tempItem)"></span>
                         </div>
-                    </template>
-                    <div class="flex items-center border-[1px] border-solid border-[#dcdee2] rounded-[5px] h-[40px] px-[15px] cursor-pointer" :class="{'!border-[var(--el-color-primary)]': curr_theme_mark == 'diy'}" @click="themeTempChange('diy')">
-                        <span class="nc-iconfont nc-icon-tianjiaV6xx mr-[5px]" :class="{'!text-[var(--el-color-primary)]': curr_theme_mark == 'diy'}"></span>
-                        <span class="text-[14px]" :class="{'!text-[var(--el-color-primary)]': curr_theme_mark == 'diy'}">自定义</span>
+                    </div>
+                    <div class="flex">
+                        <div class="w-[70px] h-[54px] pl-[7px] pt-[9px] flex flex-col mr-[4px] rounded-[4px] text-[10px] leading-[1] text-[#fff]" :style="{ backgroundColor: tempItem.theme['--primary-color'] }">
+                            <span>主色调</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="secod-color-item mb-[4px]" :style="{ backgroundColor: tempItem.theme['--primary-help-color2'] }">
+                                <span>辅色</span>
+                            </div>
+                            <div class="secod-color-item" :style="{ backgroundColor: tempItem.theme['--primary-color-dark'] }">
+                                <span>配色</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </el-form-item>
-        </el-form>
-        <edit-theme ref="editThemeRef"  @confirm="editThemeConfirm"/>
+            </div>
+            <div class="flex items-center border-[1px] border-solid border-[var(--el-color-primary)] rounded-[2px] h-[32px] px-[15px] cursor-pointer mt-[15px]" @click="editThemeFn()">
+                <span class="text-[14px] text-[var(--el-color-primary)]">新增配色</span>
+            </div>
+        </div>
+        <edit-theme ref="editThemeRef" @confirm="editThemeConfirm" />
         <template #footer>
             <div class="dialog-footer">
-                <el-button @click="dialogThemeVisible = false">取消</el-button>
-                <el-button type="primary" plain @click="editThemeFn()">编辑</el-button>
+                <el-button @click="cancelFn()">取消</el-button>
                 <el-button type="primary" @click="confirmFn()">确定</el-button>
             </div>
         </template>
@@ -30,137 +45,142 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
 import { t } from '@/lang'
-import { setDiyTheme, getDefaultTheme } from '@/app/api/diy'
+import { setDiyTheme, getDefaultTheme, deleteTheme } from '@/app/api/diy'
 import { cloneDeep } from 'lodash-es'
 import editTheme from './edit-theme.vue'
 import useDiyStore from '@/stores/modules/diy'
 import { time } from 'echarts'
 const diyStore = useDiyStore()
 
-const editThemeRef = ref(null)
+const editThemeRef = ref()
 const dialogThemeVisible = ref(false)
 let confirmRepeat = false
-const curr_theme_title = ref('') //当前配色title
-const curr_theme_mark = ref('') //当前配色标识
-const curr_theme_value = ref('') //当前配色theme
-const theme_temp = ref([]);
-const mode = ref('default'); // 当前模式
+const currTheme = reactive({
+    title: '',
+    id: '',
+    theme: {},
+    default_theme: {},
+    new_theme: [],
+    addon_title: '',
+    key: ''
+})
+const themeTemp = ref([])
+const emit = defineEmits(['confirm'])
 
-const data = ref({})
-const open = (res:any) => {
-
-    confirmRepeat = false;
-    data.value = cloneDeep(res);
-    curr_theme_value.value = res.value;
-    curr_theme_mark.value = res.color_mark;
-    curr_theme_title.value = res.color_name;
-
-    // 新增颜色
-    theme_temp.value.forEach((item,index)=>{
-        if(item.name == data.value.color_mark){
-            item.diy_value = data.value.diy_value;
-            item.title = res.color_name;
+const initData = (params: any, callback: any = '') => {
+    getDefaultTheme({ addon: params.key }).then((res) => {
+        themeTemp.value = res.data || []
+        if (callback) {
+            callback(res.data[res.data.length - 1])
         }
     })
+}
 
-    mode.value = res.mode;
+const currTableTheme = ref('')
+const open = (res: any) => {
+    currTableTheme.value = res.id
+    initData(res)
+    confirmRepeat = false
+    currTheme.title = res.title
+    currTheme.id = res.id
+    currTheme.theme = res.theme
+    currTheme.addon_title = res.addon_title
+    currTheme.key = res.key
     dialogThemeVisible.value = true
 }
 
-const emit = defineEmits(['confirm'])
-
-const initData = () => {
-    getDefaultTheme().then((res) => {
-        theme_temp.value = res.data || [];
-
-        // 将自定义添加到里面
-        let diy_theme_temp = {
-            name: 'diy',
-            theme: '',
-            title: ''
-        }
-        theme_temp.value.push(diy_theme_temp);
-    })
-}
-initData()
+const dialogTitle = computed(() => {
+    const name = `选择${currTheme.addon_title}配色`
+    return name
+})
 
 // 切换不同配色
-const themeTempChange = (item)=>{
-    if(item.name == data.value.color_mark){ // 选择默认配色的情况
-        curr_theme_title.value = data.value.color_name;
-        curr_theme_mark.value = data.value.color_mark;
-        curr_theme_value.value = data.value.value;
-    }else if(typeof item == 'object'){ // 选择除默认配色的情况
-        curr_theme_title.value = item.title;
-        curr_theme_mark.value = item.name;
-        curr_theme_value.value = item.theme;
-    }else{ // 自定义情况
-        curr_theme_title.value = '自定义';
-        curr_theme_mark.value = item;
-        curr_theme_value.value = '';
-    }
+const themeTempChange = (item: any = {}) => {
+    currTheme.title = item.title
+    currTheme.id = item.id
+    currTheme.theme = item.theme
+    currTheme.default_theme = item.default_theme
+    currTheme.new_theme = item.new_theme
 }
 
 // 编辑色调
-const editThemeFn = ()=>{
-    let theme = {
-        default: {}, // 当前色调的默认值
-        data: {}, // 当前色调
-        title:'',
-        mark: '', // 标识，区分是自定义还是模版色调,
-        diy_value: [] // 新增颜色值
+const editThemeFn = (type = 'add', item = {}) => {
+    const theme = {
+        default_theme: {}, // 当前色调的默认值
+        theme: {}, // 当前色调
+        title: '',
+        id: '', // 标识，区分是自定义还是模版色调,
+        new_theme: [], // 新增颜色值
+        key: '', // 表示是哪个插件
+        theme_field: ''
     }
-    theme.data = cloneDeep(curr_theme_value.value) || {};
-    theme.mark = curr_theme_mark.value;
-    theme_temp.value.forEach((item,index)=>{
-        if(item.name == curr_theme_mark.value){
-            theme.default = item.theme ? cloneDeep(item.theme) : '';
-            theme.diy_value= item.diy_value || [];
-            theme.title = item.title;
+    if (type == 'edit') {
+        theme.title = item.title
+        theme.theme = cloneDeep(item.theme) || {}
+        theme.id = item.id
+        theme.default_theme = cloneDeep(item.default_theme) || ''
+        theme.new_theme = cloneDeep(item.new_theme) || []
+        theme.new_theme = cloneDeep(item.new_theme) || []
+    }
+    theme.key = currTheme.key
+    // 颜色展示的默认数据
+    themeTemp.value.forEach((item, index) => {
+        if (item.id == currTheme.id) {
+            theme.theme_field = item.theme_field
         }
     })
     editThemeRef.value.open(theme)
 }
 
 // 编辑色调回调
-const editThemeConfirm = (res)=>{
-    if(curr_theme_mark.value == data.value.color_mark){
-        data.value.value = res.theme;
-    }
-    theme_temp.value.forEach((item,index)=>{
-        if(item.name == curr_theme_mark.value){
-            item.diy_value= res.diy_value || [];
-        }
+const editThemeConfirm = (res: any) => {
+    initData(currTheme, (params: any) => {
+        currTheme.new_theme = res.new_theme
+        currTheme.theme = res.theme
+        currTheme.title = res.title
+        currTheme.id = res.id || params.id // 若是新增的色调，id为空, 需要把之前的的id赋值
     })
-    data.value.title = res.title;
-    curr_theme_value.value = res.theme;
+}
+
+// 删除色调
+let deleteRepeat = false
+const deleteThemeFn = (res: any) => {
+    if (deleteRepeat) return false
+    deleteRepeat = true
+    const id = res.id
+    deleteTheme(id).then((res) => {
+        initData(currTheme)
+        deleteRepeat = false
+    }).catch(() => {
+        deleteRepeat = false
+    })
 }
 
 // 点击保存
 const confirmFn = () => {
     if (confirmRepeat) return
     confirmRepeat = true
-    let params = {}
-    params.id = data.value.id;
-    params.mode = mode.value;
-    params.color_mark = curr_theme_mark.value;
-    params.value = curr_theme_value.value;
-    params.key = data.value.key;
-    params.color_name = curr_theme_mark.value == 'diy' ? (data.value.title || '自定义') : curr_theme_title.value;
-    theme_temp.value.forEach((item,index)=>{
-        if(item.name == curr_theme_mark.value){
-            params.diy_value = cloneDeep(item.diy_value);
-        }
-    })
+
+    const params = {}
+    params.addon = currTheme.key
+    params.id = currTheme.id
+    params.title = currTheme.title
+    params.theme = currTheme.theme
+    params.new_theme = currTheme.new_theme
 
     setDiyTheme(params).then((res) => {
-        emit('confirm', data);
-        confirmRepeat = false;
-        dialogThemeVisible.value = false;
-    }).catch(()=>{
-        confirmRepeat = false;
+        confirmRepeat = false
+        dialogThemeVisible.value = false
+        emit('confirm')
+    }).catch(() => {
+        confirmRepeat = false
     })
+}
 
+// 点击取消
+const cancelFn = () => {
+    dialogThemeVisible.value = false
+    emit('confirm')
 }
 
 defineExpose({
@@ -170,5 +190,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-
+    .secod-color-item {
+        @apply w-[60px] h-[25px] flex flex-col rounded-[4px] text-[10px] text-[#fff] leading-[1] items-end pt-[8px] pr-[7px];
+    }
 </style>

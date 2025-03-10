@@ -73,7 +73,10 @@ import { t } from '@/lang'
 import { FormInstance } from 'element-plus'
 import { getSiteGroupAll } from '@/app/api/site'
 import { addUser, getUserInfo, editUser } from '@/app/api/user'
+import useUserStore from '@/stores/modules/user'
 import Test from '@/utils/test'
+
+const userStore = useUserStore()
 
 const showDialog = ref(false)
 const loading = ref(true)
@@ -95,13 +98,13 @@ const formRules = computed(() => {
             { required: true, message: t('usernamePlaceholder'), trigger: 'blur' }
         ],
         password: [
-            { required: formData.value.uid == 0, message: t('passwordPlaceholder'), trigger: 'blur' }
+            { required: userStore.userInfo && userStore.userInfo.is_super_admin == true, message: t('passwordPlaceholder'), trigger: 'blur' }
         ],
         real_name: [
             { required: true, message: t('userRealNamePlaceholder'), trigger: 'blur' }
         ],
         confirm_password: [
-            { required: formData.value.uid == 0, message: t('confirmPasswordPlaceholder'), trigger: 'blur' },
+            { required: userStore.userInfo && userStore.userInfo.is_super_admin == true, message: t('confirmPasswordPlaceholder'), trigger: 'blur' },
             {
                 validator: (rule: any, value: string, callback: any) => {
                     if (value != formData.value.password) callback(new Error(t('confirmPasswordError')))

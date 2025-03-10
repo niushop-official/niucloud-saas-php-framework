@@ -1,13 +1,13 @@
 <template>
-    <el-drawer v-model="showDialog" :title="t('数据与统计')" direction="rtl" size="70%" :before-close="handleClose" class="member-detail-drawer">
+    <el-drawer v-model="showDialog" :title="t('dataAndStatistics')" direction="rtl" size="70%" :before-close="handleClose" class="member-detail-drawer">
         <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-            <el-tab-pane :label="t('明细数据')" name="detail_data">
+            <el-tab-pane :label="t('detailData')" name="detail_data">
                 <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                     <el-form :inline="true" :model="formData.searchParam" ref="searchFormDiyFormRef">
-                        <el-form-item :label="t('填表人')" prop="keyword">
-                            <el-input v-model.trim="formData.searchParam.keyword" placeholder="请输入填表人" />
+                        <el-form-item :label="t('fillInFormPerson')" prop="keyword">
+                            <el-input v-model.trim="formData.searchParam.keyword" :placeholder="t('fillInFormPersonplaceholder')" />
                         </el-form-item>
-                        <el-form-item :label="t('填表时间')" prop="create_time">
+                        <el-form-item :label="t('fillInFormDate')" prop="create_time">
                             <el-date-picker v-model="formData.searchParam.create_time" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('startDate')" :end-placeholder="t('endDate')" />
                         </el-form-item>
                         <el-form-item>
@@ -22,7 +22,7 @@
                     <template #empty>
                         <span>{{ !formData.loading ? t('emptyData') : '' }}</span>
                     </template>
-                    <el-table-column fixed :label="t('填表人信息')" min-width="160">
+                    <el-table-column fixed :label="t('fillInFormPersonInfo')" min-width="160">
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer" @click="detailEvent(row.member.member_id)">
                                 <div class="min-w-[50px] h-[50px] flex items-center justify-center">
@@ -42,7 +42,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column fixed prop="create_time" :label="t('填表时间')" min-width="120" />
+                    <el-table-column fixed prop="create_time" :label="t('fillInFormDate')" min-width="120" />
 
                     <el-table-column v-for="item in formFieldsList" :key="item.field_key" :label="item.field_name" min-width="200">
                         <template #default="{ row }">
@@ -67,11 +67,11 @@
                                    @size-change="loadFormRecordsListFn()" @current-change="loadFormRecordsListFn" />
                 </div>
             </el-tab-pane>
-            <el-tab-pane :label="t('填表人统计')" name="member_stat">
+            <el-tab-pane :label="t('fillInFormPersonStatics')" name="member_stat">
                 <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                     <el-form :inline="true" :model="formMemberList.searchParam" ref="searchFormDiyMemberRef">
-                        <el-form-item :label="t('填表人')" prop="keyword">
-                            <el-input v-model.trim="formMemberList.searchParam.keyword" placeholder="请输入填表人" />
+                        <el-form-item :label="t('fillInFormPerson')" prop="keyword">
+                            <el-input v-model.trim="formMemberList.searchParam.keyword" :placeholder="t('fillInFormPersonplaceholder')" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="getFormRecordsMemberFn()">{{ t('search') }}</el-button>
@@ -84,7 +84,7 @@
                     <template #empty>
                         <span>{{ !formMemberList.loading ? t('emptyData') : '' }}</span>
                     </template>
-                    <el-table-column fixed :label="t('填表人信息')" min-width="200">
+                    <el-table-column fixed :label="t('fillInFormPersonInfo')" min-width="200">
                         <template #default="{ row }">
                             <div class="flex items-center cursor-pointer" @click="detailEvent(row.member.member_id)">
                                 <div class="min-w-[50px] h-[50px] flex items-center justify-center">
@@ -105,7 +105,7 @@
                         </template>
                     </el-table-column>
                     <!-- <el-table-column fixed prop="create_time" :label="t('填表时间')" min-width="120" /> -->
-                    <el-table-column fixed prop="create_time" :label="t('总计(表单填写数)')" min-width="500">
+                    <el-table-column fixed prop="create_time" :label="t('fillInFormTotal')" min-width="500">
                         <template #default="{ row }" @click="">
                             {{ row.write_count }}
                         </template>
@@ -119,7 +119,14 @@
                 </div>
 
             </el-tab-pane>
-            <el-tab-pane :label="t('字段统计')" name="field_stat">
+            <el-tab-pane :label="t('fieldStatistics')" name="field_stat">
+                <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+                    <el-form :inline="true" :model="formData.searchParam" ref="searchFormDiyFieldsRef">
+                        <el-form-item>
+                            <el-button type="primary" @click="exportFieldsEvent">{{ t('export') }}</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
                 <el-collapse v-model="activeNames" class="diy-collapse mt-[15px]">
                     <el-collapse-item :title="item.field_name" :name="item.field_id" v-for="(item, index) in formFieldsStat" :key="index">
                         <template #title>
@@ -143,7 +150,7 @@
             </el-tab-pane>
         </el-tabs>
 
-        <el-dialog v-model="dialogVisible" :title="t('查看信息')" width="400px">
+        <el-dialog v-model="dialogVisible" :title="t('viewInformation')" width="400px">
             <div class="flex flex-col">
                 <div class="flex mb-[10px]"  v-for="(item, index) in formDetail"  :key="index">
                     <div class="flex justify-end w-[100px]">{{ item.label }}：</div>
@@ -166,6 +173,7 @@
     </el-drawer>
     <export-sure ref="exportSureDialog" :show="flag" type="diy_form_records" :searchParam="formData.searchParam" @close="handleExportClose" />
     <export-sure ref="exportSureDialog" :show="flagMember" type="diy_form_records_member" :searchParam="formMemberList.searchParam" @close="handleMemberExportClose" />
+    <export-sure ref="exportSureDialog" :show="flagFields" type="diy_form_records_fields" :searchParam="formData.searchParam" @close="handleFieldsExportClose" />
 </template>
 
 <script lang="ts" setup>
@@ -184,6 +192,7 @@ const formId = ref(0)
 const dialogVisible = ref(false)
 const searchFormDiyFormRef = ref<FormInstance>()
 const searchFormDiyMemberRef = ref<FormInstance>()
+const searchFormDiyFieldsRef = ref<FormInstance>()
 const handleClose = (done: () => void) => {
     showDialog.value = false;
 }
@@ -236,7 +245,7 @@ const formDetailEvent = (row: any) => {
 
 // 删除
 const deleteEvent = (row: any) => {
-    ElMessageBox.confirm(t('确定删除该条数据吗'), t('warning'),
+    ElMessageBox.confirm(t('deleteTips'), t('warning'),
         {
             confirmButtonText: t('confirm'),
             cancelButtonText: t('cancel'),
@@ -353,6 +362,14 @@ const handleMemberExportClose = (val) => {
 }
 const exportMemberEvent = () => {
     flagMember.value = true
+}
+
+const flagFields = ref(false)
+const handleFieldsExportClose = (val) => {
+    flagFields.value = val
+}
+const exportFieldsEvent = () => {
+    flagFields.value = true
 }
 
 defineExpose({

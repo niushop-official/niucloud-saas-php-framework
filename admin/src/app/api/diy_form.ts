@@ -19,6 +19,14 @@ export function getDiyFormPageList(params: Record<string, any>) {
 export function getDiyFormList(params: Record<string, any>) {
     return request.get(`diy/form/list`, { params })
 }
+/**
+ * 获取万能表单分页列表（用于弹框选择）
+ * @param params
+ * @returns
+ */
+export function getDiyFormSelectPageList(params: Record<string, any>) {
+    return request.get(`diy/form/select`, { params })
+}
 
 /**
  * 获取万能表单详情

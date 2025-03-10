@@ -8,17 +8,17 @@
 			<el-form-item :label="t('formPlaceholder')">
 				<el-input v-model.trim="diyStore.editComponent.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
 			</el-form-item>
-			<el-form-item :label="t('默认值')">
+			<el-form-item :label="t('defaultValue')">
 				<el-switch v-model="diyStore.editComponent.defaultControl" @change="changeDateDefaultControl" />
 			</el-form-item>
 			<el-form-item v-if="diyStore.editComponent.defaultControl">
 				<el-radio-group v-model="diyStore.editComponent.timeWay">
-					<el-radio label="current">{{ t('当天时间') }}</el-radio>
-					<el-radio label="diy">{{ t('指定时间') }}</el-radio>
+					<el-radio label="current">{{ t('currentTime') }}</el-radio>
+					<el-radio label="diy">{{ t('diyTime') }}</el-radio>
 				</el-radio-group>
 			</el-form-item>
 			<el-form-item v-if="diyStore.editComponent.defaultControl && diyStore.editComponent.timeWay == 'diy'">
-                <el-time-picker v-model="diyStore.editComponent.field.default" placeholder="请选择时间" format="HH:mm" value-format="HH:mm" />
+                <el-time-picker v-model="diyStore.editComponent.field.default" :placeholder="t('timePlaceholder')" format="HH:mm" value-format="HH:mm" />
 			</el-form-item>
 		</el-form>
 

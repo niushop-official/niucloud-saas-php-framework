@@ -84,37 +84,78 @@
             </el-card>
 
             <el-card class="box-card !border-none mt-[15px]" shadow="never">
-                <div class="flex">
+                <div class="flex items-start justify-between">
                     <h3 class="panel-title !text-sm">{{ t('functionSetting') }}</h3>
+                    <el-button type="primary" link @click="modifyDomainFn" v-if="formData.is_authorization">{{ t('update') }}</el-button>
                 </div>
 
-                <el-form-item :label="t('requestUrl')">
-                    <el-input :model-value="formData.request_url" placeholder="Please input" class="input-width" :readonly="true">
-                        <template #append>
-                            <div class="cursor-pointer" @click="copyEvent(formData.request_url)">{{ t('copy') }}</div>
-                        </template>
-                    </el-input>
-                </el-form-item>
-                <el-form-item :label="t('socketUrl')">
-                    <el-input :model-value="formData.socket_url" placeholder="Please input" class="input-width" :readonly="true">
-                        <template #append>
-                            <div class="cursor-pointer" @click="copyEvent(formData.socket_url)">{{ t('copy') }}</div>
-                        </template>
-                    </el-input>
-                </el-form-item>
-                <el-form-item :label="t('uploadUrl')">
-                    <el-input :model-value="formData.upload_url" placeholder="Please input" class="input-width" :readonly="true">
-                        <template #append>
-                            <div class="cursor-pointer" @click="copyEvent(formData.upload_url)">{{ t('copy') }}</div>
-                        </template>
-                    </el-input>
-                </el-form-item>
-                <el-form-item :label="t('downloadUrl')">
-                    <el-input :model-value="formData.download_url" placeholder="Please input" class="input-width" :readonly="true">
-                        <template #append>
-                            <div class="cursor-pointer" @click="copyEvent(formData.download_url)">{{ t('copy') }}</div>
-                        </template>
-                    </el-input>
+                <div v-if="!formData.is_authorization">
+                    <el-form-item :label="t('requestUrl')">
+                        <el-input :model-value="formData.request_url" placeholder="Please input" class="input-width" :readonly="true">
+                            <template #append>
+                                <div class="cursor-pointer" @click="copyEvent(formData.request_url)">{{ t('copy') }}</div>
+                            </template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item :label="t('socketUrl')">
+                        <el-input :model-value="formData.socket_url" placeholder="Please input" class="input-width" :readonly="true">
+                            <template #append>
+                                <div class="cursor-pointer" @click="copyEvent(formData.socket_url)">{{ t('copy') }}</div>
+                            </template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item :label="t('uploadUrl')">
+                        <el-input :model-value="formData.upload_url" placeholder="Please input" class="input-width" :readonly="true">
+                            <template #append>
+                                <div class="cursor-pointer" @click="copyEvent(formData.upload_url)">{{ t('copy') }}</div>
+                            </template>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item :label="t('downloadUrl')">
+                        <el-input :model-value="formData.download_url" placeholder="Please input" class="input-width" :readonly="true">
+                            <template #append>
+                                <div class="cursor-pointer" @click="copyEvent(formData.download_url)">{{ t('copy') }}</div>
+                            </template>
+                        </el-input>
+                    </el-form-item>
+                </div>
+                <div v-else>
+                    <el-form-item :label="t('requestUrl')">
+                        <div v-if="formData.domain.requestdomain">{{ formData.domain.requestdomain }}</div>
+                        <div v-else>-</div>
+                    </el-form-item>
+                    <el-form-item :label="t('socketUrl')">
+                        <div v-if="formData.domain.wsrequestdomain">{{ formData.domain.wsrequestdomain }}</div>
+                        <div v-else>-</div>
+                    </el-form-item>
+                    <el-form-item :label="t('uploadUrl')">
+                        <div v-if="formData.domain.uploaddomain">{{ formData.domain.uploaddomain }}</div>
+                        <div v-else>-</div>
+                    </el-form-item>
+                    <el-form-item :label="t('downloadUrl')">
+                        <div v-if="formData.domain.downloaddomain">{{ formData.domain.downloaddomain }}</div>
+                        <div v-else>-</div>
+                    </el-form-item>
+                    <el-form-item :label="t('udpUrl')">
+                        <div v-if="formData.domain.udpdomain">{{ formData.domain.udpdomain }}</div>
+                        <div v-else>-</div>
+                    </el-form-item>
+                    <el-form-item :label="t('tcpUrl')">
+                        <div v-if="formData.domain.tcpdomain">{{ formData.domain.tcpdomain }}</div>
+                        <div v-else>-</div>
+                    </el-form-item>
+                </div>
+            </el-card>
+
+            <el-card class="box-card !border-none mt-[15px]" shadow="never" v-if="formData.is_authorization">
+                <div class="flex items-start justify-between">
+                    <h3 class="panel-title !text-sm">{{ t('serviceContentStatement') }}</h3>
+                </div>
+                <el-form-item :label="t('privacyAgreement')">
+                    <div class="flex items-center">
+                        <div class="form-tip !mt-0">{{ t('privacyAgreementTips') }}</div>
+                        <el-button type="primary" link @click="modifyPrivacyAgreementFn">{{ t('setting') }}</el-button>
+                    </div>
                 </el-form-item>
             </el-card>
         </el-form>
@@ -125,6 +166,9 @@
             </div>
         </div>
     </div>
+
+    <modify-domain ref="modifyDomainRef" @complete="modifyDomainComplete"/>
+    <modify-privacy-agreement :config="formData" ref="modifyPrivacyAgreementRef"/>
 </template>
 
 <script lang="ts" setup>
@@ -135,6 +179,8 @@ import { useClipboard } from '@vueuse/core'
 import { ElMessage, FormInstance } from 'element-plus'
 import { ArrowLeft } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
+import ModifyDomain from '@/app/views/channel/weapp/components/modify-domain.vue'
+import ModifyPrivacyAgreement from '@/app/views/channel/weapp/components/modify-privacy-agreement.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -159,7 +205,15 @@ const formData = reactive<Record<string, any>>({
     upload_url: '',
     download_url: '',
     upload_private_key: '',
-    is_authorization: 0
+    is_authorization: 0,
+    domain: {
+        requestdomain: '',
+        wsrequestdomain: '',
+        uploaddomain: '',
+        downloaddomain: '',
+        tcpdomain: '',
+        udpdomain: ''
+    }
 })
 
 const formRef = ref<FormInstance>()
@@ -242,6 +296,20 @@ const save = async (formEl: FormInstance | undefined) => {
     })
 }
 
+const modifyDomainRef = ref(null)
+const modifyDomainFn = () => {
+    modifyDomainRef.value.setFormData(formData.domain)
+    modifyDomainRef.value.showDialog = true
+}
+
+const modifyDomainComplete = (data) => {
+    formData.domain = data
+}
+
+const modifyPrivacyAgreementRef = ref(null)
+const modifyPrivacyAgreementFn = () => {
+    modifyPrivacyAgreementRef.value.setFormData()
+}
 </script>
 
 <style lang="scss" scoped></style>

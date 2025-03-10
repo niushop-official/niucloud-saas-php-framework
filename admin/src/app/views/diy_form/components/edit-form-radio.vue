@@ -5,31 +5,31 @@
 		<!-- 表单组件 字段内容设置 -->
 		<slot name="field"></slot>
 		<el-form label-width="100px" class="px-[10px]">
-			<el-form-item :label="t('样式')">
+			<el-form-item :label="t('style')">
 				<el-radio-group v-model="diyStore.editComponent.style">
-					<el-radio label="style-1">{{ t('默认') }}</el-radio>
-					<el-radio label="style-2">{{ t('列表') }}</el-radio>
-					<el-radio label="style-3">{{ t('下拉') }}</el-radio>
+					<el-radio label="style-1">{{ t('defaultSources') }}</el-radio>
+					<el-radio label="style-2">{{ t('listStyle') }}</el-radio>
+					<el-radio label="style-3">{{ t('dropDownStyle') }}</el-radio>
 				</el-radio-group>
 			</el-form-item>
-			<el-form-item :label="t('选项')">
+			<el-form-item :label="t('option')">
                 <div ref="formRadioRef">
                     <div v-for="(option, index) in diyStore.editComponent.options" :key="option.id" class="option-item flex items-center mb-[15px]">
                         <el-input v-model="diyStore.editComponent.options[index].text" class="!w-[215px]" :placeholder="t('optionPlaceholder')" clearable maxlength="30" />
                         <span v-if="diyStore.editComponent.options.length > 1" @click="removeOption(index)" class="cursor-pointer ml-[5px] nc-iconfont nc-icon-shanchu-yuangaizhiV6xx"></span>
                     </div>
                 </div>
-				<span class="text-primary cursor-pointer mr-[10px]" @click="addOption">添加单个选项</span>
+				<span class="text-primary cursor-pointer mr-[10px]" @click="addOption">{{ t('addSingleOption') }}</span>
 				<el-popover :visible="visible" placement="bottom" :width="300">
-					<p class="mb-[5px]">批量添加选项</p>
-					<p class="text-[#888] text-[12px] mb-[5px]">可添加多个选项，每个选项之间用英文","隔开</p>
+					<p class="mb-[5px]">{{ t('addMultipleOption') }}</p>
+					<p class="text-[#888] text-[12px] mb-[5px]">{{ t('addOptionTips') }}</p>
 					<el-input v-model.trim="optionsValue" type="textarea"  clearable maxlength="200" show-word-limit />
 					<div class="mt-[10px] text-right">
-						<el-button size="small" text @click="visible = false">取消</el-button>
-						<el-button size="small" type="primary" @click="batchAddOptions">确定</el-button>
+						<el-button size="small" text @click="visible = false">{{ t('cancel') }}</el-button>
+						<el-button size="small" type="primary" @click="batchAddOptions">{{ t('confirm') }}</el-button>
 					</div>
 					<template #reference>
-						<span class="text-primary cursor-pointer" @click="visible = true">批量添加选项</span>
+						<span class="text-primary cursor-pointer" @click="visible = true">{{ t('addMultipleOption') }}</span>
 					</template>
 				</el-popover>
 			</el-form-item>
@@ -123,7 +123,7 @@ diyStore.editComponent.verify = (index: number) => {
 
 	if (uniqueOptions.length != diyStore.value[index].options.length) {
 		res.code = false;
-		res.message = t('存在重复选项，请检查内容')
+		res.message = t('errorTipsOne')
 	}
 	return res
 }
@@ -167,7 +167,7 @@ const batchAddOptions = () => {
 			diyStore.editComponent.options.push(...filteredNewOptions);
 		} else {
 			ElMessage({
-				message: "选项已存在，请重新输入",
+				message: t('errorTipsTwo'),
 				type: "warning",
 			});
 		}

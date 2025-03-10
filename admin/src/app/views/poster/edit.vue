@@ -229,9 +229,9 @@ import { t } from '@/lang'
 import { img } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 import usePosterStore from '@/stores/modules/poster'
-import { initPoster,addPoster,editPoster,getPosterTemplate,getPreviewPoster } from '@/app/api/poster'
+import { initPoster, addPoster, editPoster, getPosterTemplate, getPreviewPoster } from '@/app/api/poster'
 
 const setLayout = inject('setLayout')
 setLayout('decorate')
@@ -249,8 +249,8 @@ if(route && route.query){
 }
 
 const backPath:any = route.query.back
-const template = ref('');
-const oldTemplate = ref('');
+const template = ref('')
+const oldTemplate = ref('')
 
 const component = ref([])
 const componentType: string[] = reactive([])
@@ -268,39 +268,39 @@ const previewIframeStyle = (data: any)=>{
         left: '',
         right: '',
         bottom: ''
-    };
-    style.transform =  `rotate(${data.angle}deg)`;
-    style.zIndex =  `${data.zIndex}`;
+    }
+    style.transform =  `rotate(${data.angle}deg)`
+    style.zIndex =  `${data.zIndex}`
     switch(data.y) {
         case 'top':
-            style.top = 0;
+            style.top = 0
             break;
         case 'center':
-            style.top = '50%';
-            style.transform = style.transform + ' translateY(-50%)';
+            style.top = '50%'
+            style.transform = style.transform + ' translateY(-50%)'
             break;
         case 'bottom':
-            style.bottom = 0;
+            style.bottom = 0
             break;
         default:
-            style.top = data.y + 'px';
+            style.top = data.y + 'px'
     } 
     switch(data.x) {
         case 'left':
-            style.left = 0;
+            style.left = 0
             break;
         case 'center':
-            style.left = '50%';
-            style.transform = style.transform + ' translateX(-50%)';
+            style.left = '50%'
+            style.transform = style.transform + ' translateX(-50%)'
             break;
         case 'right':
-            style.right = 0;
+            style.right = 0
             break;
         default:
-            style.left = data.x + 'px';
+            style.left = data.x + 'px'
     }
     // console.log(data.x,data.y)
-    return style;
+    return style
 }
 
 // 水平方向对齐
@@ -341,14 +341,14 @@ const yAlignList = ref([
     },
 ])
 const alignChangeFn = (type: any,data: any)=>{
-    posterStore.editComponent[type] = data.className;
+    posterStore.editComponent[type] = data.className
 }
 
 // 返回上一页
 const isChange = ref(true) // 数据是否发生变化，true：没变化，false：变化了
 const goBack = () => {
     if (isChange.value) {
-        location.href = `${location.origin}${backPath}`;
+        location.href = `${location.origin}${backPath}`
         router.push(backPath)
     } else {
         // 数据发生变化，弹框提示：确定离开此页面
@@ -362,7 +362,7 @@ const goBack = () => {
                 autofocus: false
             }
         ).then(() => {
-            location.href = `${location.origin}${backPath}`;
+            location.href = `${location.origin}${backPath}`
         }).catch(() => {
         })
     }
@@ -390,6 +390,9 @@ const loadPosterTemplate = ()=> {
     }).then(res => {
         if (res.data) {
             templatePoster.splice(0, templatePoster.length, ...res.data)
+            if (posterStore.id) {
+                template.value = templatePoster.findIndex((item:any) => item.type == posterStore.type)
+            }
         }
     })
 }
@@ -398,7 +401,7 @@ const loadPosterTemplate = ()=> {
 watch(
     () => template.value,
     (newValue, oldValue) => {
-        oldTemplate.value = oldValue;
+        oldTemplate.value = oldValue
     }
 )
 
@@ -413,51 +416,51 @@ const changeTemplatePoster = (index:any)=> {
         }).then(() => {
             posterStore.changeCurrentIndex(-99)
             if (index !== '') {
-                let data = templatePoster[index].data;
-                posterStore.global = data.global;
+                let data = templatePoster[index].data
+                posterStore.global = data.global
                 if (data.value.length) {
                     posterStore.value = data.value
                 }
             } else {
                 // 清空
-                posterStore.init();
+                posterStore.init()
             }
         }).catch(() => {
             // 还原
-            template.value = oldTemplate.value;
-        });
+            template.value = oldTemplate.value
+        })
     }else{
         if (index !== '') {
-            let data = templatePoster[index].data;
-            posterStore.global = data.global;
+            let data = templatePoster[index].data
+            posterStore.global = data.global
             if (data.value.length) {
                 posterStore.value = data.value
             }
         } else {
             // 清空
-            posterStore.init();
+            posterStore.init()
         }
     }
-};
+}
 
 // 根据当前页面路由查询页面初始化数据
 initPoster({
     id: route.query.id,
     type: route.query.type,
     name: route.query.name
-}).then( async (res:any)=>{
+}).then(async (res:any) => {
     const data = res.data
 
-    posterStore.init(); // 初始化清空数据
+    posterStore.init() // 初始化清空数据
 
-    posterStore.id = data.id;
-    posterStore.name = data.name;
-    posterStore.channel = data.channel;
-    posterStore.status = data.status;
-    posterStore.isDefault = data.is_default;
-    posterStore.addon = data.addon;
-    posterStore.type = data.type;
-    posterStore.typeName = data.poster_type.name;
+    posterStore.id = data.id
+    posterStore.name = data.name
+    posterStore.channel = data.channel
+    posterStore.status = data.status
+    posterStore.isDefault = data.is_default
+    posterStore.addon = data.addon
+    posterStore.type = data.type
+    posterStore.typeName = data.poster_type.name
 
     if (data.value) {
         const sources = data.value
@@ -497,18 +500,18 @@ const save = (callback: any) => {
     posterStore.value.forEach((item:any,index:any, originalArr:any)=> {
         const box: any = document.getElementById(item.id)
         if (box) {
-            item.width = box.offsetWidth;
-            item.height = box.offsetHeight;
+            item.width = box.offsetWidth
+            item.height = box.offsetHeight
             if (item.type == 'draw') {
                 // [x,y]：左上，右上，右下，左下
-                let leftTop = [item.x * 1, item.y * 1]; // 左上
-                let rightTop = [(item.x + item.width) * 1, item.y * 1]; // 右上
-                let rightBottom = [(item.x + item.width) * 1, (item.y + item.height) * 1]; // 右下
-                let leftBottom = [item.x * 1, (item.y + item.height) * 1]; // 左下
-                item.points = [leftTop, rightTop, rightBottom, leftBottom];
+                let leftTop = [item.x * 1, item.y * 1] // 左上
+                let rightTop = [(item.x + item.width) * 1, item.y * 1] // 右上
+                let rightBottom = [(item.x + item.width) * 1, (item.y + item.height) * 1] // 右下
+                let leftBottom = [item.x * 1, (item.y + item.height) * 1] // 左下
+                item.points = [leftTop, rightTop, rightBottom, leftBottom]
             }
         }
-        delete item.verify;
+        delete item.verify
     })
 
     let data = {
@@ -532,7 +535,7 @@ const save = (callback: any) => {
             if (posterStore.id) {
                 isRepeat.value = false // 不刷新
             } else {
-                location.href = `${location.origin}${backPath}`;
+                location.href = `${location.origin}${backPath}`
             }
             if (callback) callback(res.data.id)
         }
@@ -554,8 +557,8 @@ const preview = () => {
         type:posterStore.type
     }).then(((res:any)=>{
         if(res.data) {
-            previewPosterUrl.value = res.data;
-            previewDialogVisible.value = true;
+            previewPosterUrl.value = res.data
+            previewDialogVisible.value = true
         }
         isRepeat.value = false
     }))

@@ -1,0 +1,10 @@
+{
+    "transferSceneId":"转账场景ID",
+    "transferType":"业务类型",
+    "recvPerception":"收款感知",
+    "recvPerceptionTips":"请选择收款感知",
+    "reportInfos":"报备背景",
+    "operation":"操作",
+    "deploy":"配置",
+    "noData":"暂无数据"
+}

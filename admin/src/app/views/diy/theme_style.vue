@@ -27,16 +27,16 @@
 
                 <el-table-column label="配色名称" min-width="120" >
                     <template #default="{ row }">
-                        <div>{{ row.color_name }}</div>
+                        <div>{{ row.title }}</div>
                     </template>
                 </el-table-column>
 
                 <el-table-column label="配色方案" min-width="120" >
                     <template #default="{ row }">
-                        <div class="rounded-[3px] inline-flex items-center justify-center border-[1px] border-solid border-[#f2f2f2] overflow-hidden" v-if="row.value">
-                            <span class="w-[18px] h-[18px]" :style="{backgroundColor: row.value['--primary-color']}"></span>
-                            <span class="w-[18px] h-[18px]" :style="{backgroundColor: row.value['--primary-help-color']}"></span>
-                            <span class="w-[18px] h-[18px]" :style="{backgroundColor: '#fff'}"></span>
+                        <div class="rounded-[3px] inline-flex items-center justify-center border-[1px] border-solid border-[#f2f2f2] overflow-hidden" v-if="row.theme">
+                            <span class="w-[18px] h-[18px]" :style="{backgroundColor: row.theme['--primary-color']}"></span>
+                            <span class="w-[18px] h-[18px]" :style="{backgroundColor: row.theme['--primary-help-color2']}"></span>
+                            <span class="w-[18px] h-[18px]" :style="{backgroundColor: row.theme['--primary-color-dark']}"></span>
                         </div>
                     </template>
                 </el-table-column>
@@ -85,11 +85,17 @@ const initData = () => {
 }
 initData()
 
-
 // 编辑
-const editEvent = (data)=>{
-    themeListRef.value.open(data);
+const editEvent = (data)=> {
+    themeListRef.value.open(data)
 }
 </script>
 
 <style lang="scss" scoped></style>
+<!-- 设置弹窗标题 -->
+<style scoped>
+/* 使用深度选择器 */
+::v-deep .custom-theme-dialog .el-dialog__title {
+  font-size: 16px;
+}
+</style>

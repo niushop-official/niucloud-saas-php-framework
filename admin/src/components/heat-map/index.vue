@@ -6,7 +6,7 @@
                 <div v-else class="cursor-pointer">{{ t('addHotArea') }}</div>
             </slot>
         </div>
-        <el-dialog v-model="showDialog" :title="t('hotAreaSet')" width="810px" :close-on-press-escape="false" :destroy-on-close="true" :close-on-click-modal="false">
+        <el-dialog v-model="showDialog" :title="t('hotAreaSet')" width="810px" :destroy-on-close="true" :close-on-click-modal="false">
 
             <div class="flex">
 

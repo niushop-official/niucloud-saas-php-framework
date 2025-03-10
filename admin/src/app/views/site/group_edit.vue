@@ -19,7 +19,7 @@
                     <el-checkbox-group v-model="formData.app" class="flex flex-wrap w-full" v-else>
                         <template #default>
                             <div class="flex w-[300px]" v-for="(item, index) in appList" :key="index">
-                                <el-checkbox :label="item.key" name="" class="w-full !h-auto border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
+                                <el-checkbox :label="item.key" class="w-full !h-auto border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
                                     <template #default>
                                         <div class="w-full">
                                             <div class="flex">
@@ -28,7 +28,9 @@
                                                     <el-image v-else class="w-full h-full">
                                                         <template #error>
                                                             <div class="image-error">
-                                                                <el-icon><icon-picture /></el-icon>
+                                                                <el-icon>
+                                                                    <icon-picture />
+                                                                </el-icon>
                                                             </div>
                                                         </template>
                                                     </el-image>
@@ -51,7 +53,7 @@
                     <el-checkbox-group v-model="formData.addon" class="flex flex-wrap w-full" v-else>
                         <template #default>
                             <div class="flex w-[300px]" v-for="(item, index) in addonList" :key="index">
-                                <el-checkbox :label="item.key" name="" class="w-full !h-auto border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
+                                <el-checkbox :label="item.key" :disabled="item.disabled" @click="prompt(item)" class="w-full !h-auto border border-[var(--el-color-info-light-7)] border-solid p-[10px] !mr-[10px] !mb-[10px] rounded-md">
                                     <template #default>
                                         <div class="w-full">
                                             <div class="flex">
@@ -60,7 +62,9 @@
                                                     <el-image v-else class="w-full h-full">
                                                         <template #error>
                                                             <div class="image-error">
-                                                                <el-icon><icon-picture /></el-icon>
+                                                                <el-icon>
+                                                                    <icon-picture />
+                                                                </el-icon>
                                                             </div>
                                                         </template>
                                                     </el-image>
@@ -90,14 +94,14 @@
 </template>
 
 <script lang="ts" setup async>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { t } from '@/lang'
-import type { FormInstance } from 'element-plus'
+import { ElMessage, FormInstance } from 'element-plus'
 import { ArrowLeft } from '@element-plus/icons-vue'
 import { menuRefresh } from '@/app/api/sys'
 import { addSiteGroup, editSiteGroup, getSiteGroupInfo } from '@/app/api/site'
 import { getInstalledAddonList } from '@/app/api/addon'
-import { img, deepClone } from '@/utils/common'
+import { deepClone } from '@/utils/common'
 import { useRouter, useRoute } from 'vue-router'
 
 const loading = ref(true)
@@ -119,8 +123,16 @@ const formData: Record<string, any> = ref({
     addon: []
 })
 
-let installAddon = []
-const getInstalledAddonListFn = async () => {
+watch(() => formData.value.app, (val) => {
+    checkAddon()
+}, { deep: true })
+
+watch(() => formData.value.addon, (val) => {
+    checkAddon()
+}, { deep: true })
+
+const installAddon = []
+const getInstalledAddonListFn = async() => {
     await getInstalledAddonList().then(({ data }) => {
         const apps: any[] = []
         const addons: any[] = []
@@ -128,18 +140,20 @@ const getInstalledAddonListFn = async () => {
         Object.keys(data).forEach(key => {
             installAddon.push(key)
             const item = data[key]
+            item.disabled = false
             item.type == 'addon' ? addons.push(item) : apps.push(item)
         })
 
         appList.value = apps
         addonList.value = addons
+        checkAddon()
     }).catch()
 }
 getInstalledAddonListFn()
 
 if (route.query.id) {
     getSiteGroupInfo(route.query.id).then((res) => {
-        let data = deepClone(res.data)
+        const data = deepClone(res.data)
         formData.value = data
         loading.value = false
     }).catch()
@@ -169,11 +183,11 @@ const formRules = computed(() => {
  * 确认
  * @param formEl
  */
-const confirm = async (formEl: FormInstance | undefined) => {
+const confirm = async(formEl: FormInstance | undefined) => {
     if (saveLoading.value || !formEl) return
     const save = formData.value.group_id ? editSiteGroup : addSiteGroup
 
-    await formEl.validate(async (valid) => {
+    await formEl.validate(async(valid) => {
         if (valid) {
             saveLoading.value = true
             save(formData.value).then(res => {
@@ -189,18 +203,49 @@ const confirm = async (formEl: FormInstance | undefined) => {
 }
 const menuRefreshFn = () => {
     menuRefresh({}).then(res => {
-    }).catch(() => {})
+    }).catch(() => {
+    })
+}
+
+// 检测插件是否禁用
+const checkAddon = () => {
+    addonList.value.forEach((addon: any) => {
+        // 找到插件
+        if (addon.support_app == '' || formData.value.app.indexOf(addon.support_app) != -1) {
+            addon.disabled = false
+        } else {
+            // 如果未选中应用，则移除已选中的关联插件
+            addon.disabled = true
+            if (formData.value.addon.indexOf(addon.key) != -1) {
+                formData.value.addon.splice(formData.value.addon.indexOf(addon.key), 1)
+            }
+        }
+    })
+}
+
+const prompt = (item: any) => {
+    if (item.disabled && item.support_app) {
+        const currApp: any = appList.value.filter((app: any) => {
+            return app.key == item.support_app
+        })
+        if (currApp.length) {
+            ElMessage({
+                message: `请先选择 ${ currApp[0].title } 应用`,
+                type: 'warning'
+            })
+        }
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-    .image-error {
-        background: var(--el-border-color-extra-light);
-        width: 100%;
-        height: 100%;
-    }
+.image-error {
+    background: var(--el-border-color-extra-light);
+    width: 100%;
+    height: 100%;
+}
 
-    :deep(.el-checkbox__label) {
-        width: 100%;
-    }
+:deep(.el-checkbox__label) {
+    width: 100%;
+}
 </style>

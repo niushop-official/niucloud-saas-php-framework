@@ -42,5 +42,6 @@
 	"uploadSuccessTips": "小程序上传成功后还需到<a href='https://mp.weixin.qq.com/' target='_blank' class='text-primary'>微信公众平台</a>提交审核，审核通过后发布才算正式上线。",
 	"knownToKnow": "我已知晓，不需要再次提示",
 	"siteAuthTips": "上传代码需先绑定授权码，请联系平台管理员进行绑定",
-	"againUpload": "重新上传"
+	"againUpload": "重新上传",
+	"uploadWeapp": "上传小程序"
 }

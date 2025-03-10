@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-dialog v-model="showDialog" :title="t('提交成功页')" width="850px" :close-on-press-escape="true" :destroy-on-close="true" :close-on-click-modal="false">
+        <el-dialog v-model="showDialog" :title="t('submitSuccess')" width="850px" :close-on-press-escape="true" :destroy-on-close="true" :close-on-click-modal="false">
 
             <div class="flex flex-1 mt-[24px] mx-[24px] mb-0">
                 <div class="preview-wrap">
@@ -17,19 +17,19 @@
                                 <el-icon><SuccessFilled color="#20bf64" /></el-icon>
                             </div>
                             <div class="record-name">
-                                <span class="text-[#1E1E1E] font-bold text-[24px]" v-if="formData.tips_type == 'default'">填写成功</span>
+                                <span class="text-[#1E1E1E] font-bold text-[24px]" v-if="formData.tips_type == 'default'">{{ t('writeSuccess') }}</span>
                                 <span class="text-[#1E1E1E] font-bold text-[16px]" v-else-if="formData.tips_type == 'diy'">{{ formData.tips_text ? formData.tips_text : '填写成功' }}</span>
                             </div>
                             <div class="to-detail">
-                                <div class="text-[14px] mt-[16px] py-[4px] px[8px] text-[#576b95]">查看填写详情</div>
+                                <div class="text-[14px] mt-[16px] py-[4px] px[8px] text-[#576b95]">{{ t('viewFillingDetails') }}</div>
                             </div>
                         </div>
                         <div class="relative pt-[8px] pb-[48px] h-[112px]">
                             <div v-if="formData.success_after_action.finish" class="!mt-[16px] rounded-[3px] mx-auto text-[15px] w-[100px] min-w-[160px] h-[32px] leading-[32px] text-center max-w-[274px] truncate bg-[#20bf64] text-[#ffffff]">
-                                <div class="text-[15px]">完成</div>
+                                <div class="text-[15px]">{{ t('finish') }}</div>
                             </div>
                             <div v-if="formData.success_after_action.goback" class="!mt-[16px] rounded-[3px] mx-auto text-[15px] w-[100px] min-w-[160px] h-[32px] leading-[32px] text-center max-w-[274px] truncate bg-[#f2f2f2] text-[#353535]">
-                                <div class="text-[14px]">返回</div>
+                                <div class="text-[14px]">{{ t('back') }}</div>
                             </div>
                         </div>
                     </div>
@@ -60,13 +60,13 @@
 
                 <div class="flex-1">
                     <div class="item-wrap">
-                        <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">填表人提交后</div>
+                        <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">{{ t('afterSubmission') }}</div>
                         <el-radio-group v-model="formData.submit_after_action" class="!block">
                             <el-radio label="text" class="!flex">
-                                <span class="mr-[3px]">{{ t('显示文字信息') }}</span>
+                                <span class="mr-[3px]">{{ t('displayTextMessages') }}</span>
                                 <el-tooltip effect="light" placement="top">
                                     <template #content>
-                                        <p>{{ t('提交后页面显示文字信息。') }}</p>
+                                        <p>{{ t('displayTextMessagesTips') }}</p>
                                     </template>
                                     <el-icon>
                                         <QuestionFilled color="#999999" />
@@ -89,16 +89,16 @@
                     </div>
 
                     <div class="item-wrap" v-if="formData.submit_after_action == 'text'">
-                        <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">{{ t('提示文字') }}</div>
+                        <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">{{ t('promptText') }}</div>
                         <div>
                             <el-radio-group v-model="formData.tips_type" class="!block">
                                 <el-radio label="default" class="!block">
-                                    <span class="mr-[3px]">{{ t('默认提示') }}</span>
-                                    <span class="!text-[#999] text-[12px] ml-[8px]">{{ t('将显示： 填写成功') }}</span>
+                                    <span class="mr-[3px]">{{ t('defaultPrompt') }}</span>
+                                    <span class="!text-[#999] text-[12px] ml-[8px]">{{ t('defaultPromptTips') }}</span>
                                 </el-radio>
-                                <el-radio label="diy" class="!block">{{ t('自定义提示') }}</el-radio>
+                                <el-radio label="diy" class="!block">{{ t('diyPrompt') }}</el-radio>
                             </el-radio-group>
-                            <el-input v-if="formData.tips_type == 'diy'" v-model.trim="formData.tips_text" :placeholder="t('感谢你的填写')" class="w-[350px]" maxlength="30" clearable show-word-limit />
+                            <el-input v-if="formData.tips_type == 'diy'" v-model.trim="formData.tips_text" :placeholder="t('tipsTextPlaceholder')" class="w-[350px]" maxlength="30" clearable show-word-limit />
                         </div>
                     </div>
 
@@ -106,15 +106,15 @@
                     <template v-else-if="formData.submit_after_action == 'voucher'">
 
                         <div class="item-wrap">
-                            <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">{{ t('凭证有效期') }}</div>
+                            <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">{{ t('validityPeriodOfVoucher') }}</div>
                             <div>
                                 <el-radio-group v-model="formData.time_limit_type" class="!block">
-                                    <el-radio label="no_limit" class="!block">{{ t('不限制') }}</el-radio>
+                                    <el-radio label="no_limit" class="!block">{{ t('noLimit') }}</el-radio>
                                     <el-radio label="specify_time" class="!block">
-                                        <span class="mr-[3px]">{{ t('设置固定有效期') }}</span>
+                                        <span class="mr-[3px]">{{ t('specifyTime') }}</span>
                                         <el-tooltip effect="light" placement="top">
                                             <template #content>
-                                                <p>{{ t('每条记录的凭证有效期都是一样的，例如：会议凭证可设置有效期为会议举行时间。') }}</p>
+                                                <p>{{ t('specifyTimeTips') }}</p>
                                             </template>
                                             <el-icon>
                                                 <QuestionFilled color="#999999" />
@@ -122,10 +122,10 @@
                                         </el-tooltip>
                                     </el-radio>
                                     <el-radio label="submission_time" class="!block">
-                                        <span class="mr-[3px]">按提交时间设置有效期</span>
+                                        <span class="mr-[3px]">{{ t('submissionTime') }}</span>
                                         <el-tooltip effect="light" placement="top">
                                             <template #content>
-                                                <p class="w-[250px]">每条记录的凭证有效期按照提交时间来计算，例如：优惠凭证的有效期可以设置为领取后3天内有效。</p>
+                                                <p class="w-[250px]">{{ t('submissionTimeTips') }}</p>
                                             </template>
                                             <el-icon>
                                                 <QuestionFilled color="#999999" />
@@ -135,44 +135,44 @@
                                 </el-radio-group>
                                 <el-date-picker v-if="formData.time_limit_type == 'specify_time'" v-model="formData.validity_time" type="datetimerange" range-separator="至" start-placeholder="开始时间" end-placeholder="结束时间" />
                                 <div class="flex items-center mt-[5px]" v-if="formData.time_limit_type == 'submission_time'">
-                                    <span>提交记录后</span>
+                                    <span>{{ t('afterSubmissionRecords') }}</span>
     <!--                                <div class="flex items-center px-[5px]">-->
     <!--                                    v-model.trim="formData.length"-->
                                     <el-input v-model.trim="formData.submission_time_value" @keyup="filterNumber($event)" size="small" clearable class="!w-[100px] px-[5px]" maxlength="3" />
                                     <el-select v-model="formData.timeUnit" clearable class="!w-[100px] pr-[5px]" size="small">
                                         <el-option v-for="(item, index) in validityOptions" :key="item.value" :label="item.text" :value="item.value"></el-option>
                                     </el-select>
-                                    <span>有效</span>
+                                    <span>{{ t('effective') }}</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="item-wrap">
-                            <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">凭证样式</div>
+                            <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">{{ t('voucherStyle') }}</div>
                             <div>
-                                <el-form-item :label="t('码上方标题')">
+                                <el-form-item :label="t('titleAboveTheCode')">
     <!--                                    v-model.trim="formData.active_name"-->
-                                    <el-input clearable :placeholder="t('请妥善保存你的核销凭证')" class="input-width" :maxlength="20" />
+                                    <el-input clearable :placeholder="t('titleAboveTheCodePlaceholder')" class="input-width" :maxlength="20" />
                                 </el-form-item>
-                                <el-form-item :label="t('码上方内容')">
-                                    <el-input clearable :placeholder="t('请输入码上方内容')" class="input-width" :maxlength="20" />
+                                <el-form-item :label="t('contentAboveTheCode')">
+                                    <el-input clearable :placeholder="t('contentAboveTheCodePlaceholder')" class="input-width" :maxlength="20" />
                                     <div>
-                                        <span class="text-primary cursor-pointer mr-[10px]">添加换行符</span>
-                                        <span class="text-primary cursor-pointer">添加字段</span>
+                                        <span class="text-primary cursor-pointer mr-[10px]">{{ t('addLinefeeds') }}</span>
+                                        <span class="text-primary cursor-pointer">{{ t('addFields') }}</span>
                                     </div>
                                 </el-form-item>
-                                <el-form-item :label="t('码下方内容')">
+                                <el-form-item :label="t('contentBelowTheCode')">
                                     <div class="block">
-                                        <el-checkbox class="!block" label="展示提交记录时间" value="" />
+                                        <el-checkbox class="!block" :label="t('submissionRecordTime')" value="" />
 
-                                        <el-checkbox class="!block !h-[20px]" label="展示当前时间" value="" />
-                                        <div class="text-[#999] ml-[22px]">会以秒进行跳动，可起到防作假的功能</div>
+                                        <el-checkbox class="!block !h-[20px]" :label="t('currentTime')" value="" />
+                                        <div class="text-[#999] ml-[22px]">{{ t('currentTimeTips') }}</div>
 
-                                        <el-checkbox class="!block" label="展示提示文字" value="" />
-                                        <el-input class="ml-[22px]" :rows="4" type="textarea" placeholder="感谢你的填写" maxlength="100" />
+                                        <el-checkbox class="!block" :label="t('dispalyPromptText')" value="" />
+                                        <el-input class="ml-[22px]" :rows="4" type="textarea" :placeholder="t('tipsTextPlaceholder')" maxlength="100" />
 
-                                        <el-checkbox class="!block" label="展示凭证截止时间" value="" />
-                                        <el-checkbox class="!block" label="支持填表人保存凭证" value="" />
+                                        <el-checkbox class="!block" :label="t('voucherDeadline')" value="" />
+                                        <el-checkbox class="!block" :label="t('saveVoucher')" value="" />
                                     </div>
                                 </el-form-item>
                             </div>
@@ -182,7 +182,7 @@
                     <!-- todo 后续完善 -->
                     <div class="item-wrap">
                         <div class="text-[16px] h-[24px] font-bold text-[#262626] mb-[16px] w-[140px] mr-[32px] flex-shrink-0">
-                            <span>后续操作按钮</span>
+                            <span>{{ t('subsequentPperationButtons') }}</span>
 <!--                            <p class="text-[12px] text-[#999] mt-[4px] font-normal">最多选择2个</p>-->
                         </div>
                         <div class="content-list-wrap">
@@ -192,15 +192,15 @@
 <!--                            </el-checkbox>-->
 <!--                            <p class="text-[#999] text-[12px] pl-[24px] mt-[4px]">提交表单后，可转发给微信好友查看。支持按钮文案自定义，提醒填表人转发给特定人员查看</p>-->
 
-                            <el-checkbox v-model="formData.success_after_action.finish" label="完成" value="finish">
-                                <div class="text-[#333]">完成</div>
+                            <el-checkbox v-model="formData.success_after_action.finish" :label="t('finish')" value="finish">
+                                <div class="text-[#333]">{{ t('finish') }}</div>
                             </el-checkbox>
-                            <p class="text-[#999] text-[12px] pl-[24px] mt-[4px]">点击后进入首页</p>
+                            <p class="text-[#999] text-[12px] pl-[24px] mt-[4px]">{{ t('finishTips') }}</p>
 
-                            <el-checkbox v-model="formData.success_after_action.goback" label="返回" value="goback">
-                                <div class="text-[#333]">返回</div>
+                            <el-checkbox v-model="formData.success_after_action.goback" :label="t('back')" value="goback">
+                                <div class="text-[#333]">{{ t('back') }}</div>
                             </el-checkbox>
-                            <p class="text-[#999] text-[12px] pl-[24px] mt-[4px]">点击后返回表单</p>
+                            <p class="text-[#999] text-[12px] pl-[24px] mt-[4px]">{{ t('backTips') }}</p>
                             <!--                                            </el-checkbox-group>-->
                         </div>
                     </div>
@@ -210,7 +210,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="showDialog = false">{{ t('cancel') }}</el-button>
-                    <el-button type="primary" @click="confirm">{{ t('保存') }}</el-button>
+                    <el-button type="primary" @click="confirm">{{ t('save') }}</el-button>
                 </div>
             </template>
 

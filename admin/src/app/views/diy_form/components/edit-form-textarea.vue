@@ -12,7 +12,7 @@
 				<template #label>
 					<div class="flex items-center">
 						<span class="mr-[3px]">{{ t('defaultValue') }}</span>
-						<el-tooltip effect="light" :content="t('设置后，默认值会自动填充到输入框，填表人可在此基础上进行修改。')" placement="top">
+						<el-tooltip effect="light" :content="t('defaultValueTips')" placement="top">
 							<el-icon>
 								<QuestionFilled color="#999999" />
 							</el-icon>
@@ -21,8 +21,8 @@
 				</template>
 				<el-input v-model.trim="diyStore.editComponent.field.default" :placeholder="t('defaultValuePlaceholder')" clearable maxlength="18" show-word-limit />
 			</el-form-item>
-			<el-form-item :label="t('显示行数')">
-				<el-input v-model.trim="diyStore.editComponent.rowCount" :placeholder="t('请输入显示行数')" clearable maxlength="2" show-word-limit />
+			<el-form-item :label="t('rowCount')">
+				<el-input v-model.trim="diyStore.editComponent.rowCount" :placeholder="t('rowCountPlaceholder')" clearable maxlength="2" show-word-limit />
 			</el-form-item>
 		</el-form>
 

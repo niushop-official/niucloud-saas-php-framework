@@ -17,6 +17,9 @@
                 <el-button type="primary" @click="insert" :loading="uploading" :disabled="loading">{{ t('cloudRelease') }}</el-button>
                 <el-button @click="localInsert" :disabled="loading">{{ t('localRelease') }}</el-button>
             </div>
+            <div class="mt-[20px]" v-else>
+                <el-button type="primary" @click="againUpload" :loading="uploading" :disabled="loading">{{ t('uploadWeapp') }}</el-button>
+            </div>
 
             <el-table class="mt-[15px]" :data="weappTableData.data" v-loading="weappTableData.loading" size="default">
                 <template #empty>

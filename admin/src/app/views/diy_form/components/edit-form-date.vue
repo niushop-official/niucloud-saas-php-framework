@@ -5,7 +5,7 @@
 		<!-- 表单组件 字段内容设置 -->
 		<slot name="field"></slot>
 		<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-			<el-form-item :label="t('日期格式')">
+			<el-form-item :label="t('dataFormat')">
 				<el-radio-group v-model="diyStore.editComponent.dateFormat" class="!block">
 					<el-radio class="!block" label="YYYY年M月D日">{{ dateFormat.format1 }}</el-radio>
 					<el-radio class="!block" label="YYYY-MM-DD">{{ dateFormat.format2 }}</el-radio>
@@ -16,18 +16,18 @@
 			<el-form-item :label="t('formPlaceholder')">
 				<el-input v-model.trim="diyStore.editComponent.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
 			</el-form-item>
-			<el-form-item :label="t('默认值')">
+			<el-form-item :label="t('defaultValue')">
 				<el-switch v-model="diyStore.editComponent.defaultControl"/>
 			</el-form-item>
 			<el-form-item v-if="diyStore.editComponent.defaultControl">
 				<el-radio-group v-model="diyStore.editComponent.dateWay">
-					<el-radio label="current">{{ t('当天日期') }}</el-radio>
-					<el-radio label="diy">{{ t('指定日期') }}</el-radio>
+					<el-radio label="current">{{ t('currentDate') }}</el-radio>
+					<el-radio label="diy">{{ t('diyDate') }}</el-radio>
 				</el-radio-group>
 			</el-form-item>
 			<el-form-item v-if="diyStore.editComponent.defaultControl && diyStore.editComponent.dateWay == 'diy'">
-				<el-date-picker v-if="diyStore.editComponent.dateFormat != 'YYYY-MM-DD HH:mm'" v-model="diyStore.editComponent.field.default.date" format="YYYY/MM/DD" value-format="YYYY-MM-DD" type="date" placeholder="请选择日期" @change="dateChange"/>
-                <el-date-picker v-else v-model="diyStore.editComponent.field.default.date" format="YYYY/MM/DD HH:mm" value-format="YYYY-MM-DD HH:mm" type="datetime" placeholder="请选择日期" @change="dateChange"/>
+				<el-date-picker v-if="diyStore.editComponent.dateFormat != 'YYYY-MM-DD HH:mm'" v-model="diyStore.editComponent.field.default.date" format="YYYY/MM/DD" value-format="YYYY-MM-DD" type="date" :placeholder="t('dataPlaceholder')" @change="dateChange"/>
+                <el-date-picker v-else v-model="diyStore.editComponent.field.default.date" format="YYYY/MM/DD HH:mm" value-format="YYYY-MM-DD HH:mm" type="datetime" :placeholder="t('dataPlaceholder')" @change="dateChange"/>
 			</el-form-item>
 		</el-form>
 
