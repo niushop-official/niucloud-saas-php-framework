@@ -1,0 +1,1 @@
+const i="余额明细",a="佣金明细",m="暂无余额明细",t="暂无提现明细",e="暂无佣金明细",o={balanceDetail:i,commissionDetail:a,balanceEmptyTip:m,moneyEmptyTip:t,commissionEmptyTip:e};export{i as balanceDetail,m as balanceEmptyTip,a as commissionDetail,e as commissionEmptyTip,o as default,t as moneyEmptyTip};

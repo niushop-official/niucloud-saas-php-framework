@@ -1,0 +1,1 @@
+const o="快捷登录/注册",i="登录",e="其他方式登录",n="账号密码登录",g="手机号登录",t="其他手机号登录",L="账号被锁定",c={quickLoginOrLogout:o,login:"登录",otherLogin:e,accountLogin:n,mobileLogin:g,otherMobileLogin:t,memberLock:L};export{n as accountLogin,c as default,i as login,L as memberLock,g as mobileLogin,e as otherLogin,t as otherMobileLogin,o as quickLoginOrLogout};

@@ -1,0 +1,1 @@
+const a="充值",e="提现",c="余额明细",l="账户余额（元）",n="余额（元）",t="可提现余额（元）",o="可用余额",u="元",b={recharge:"充值",cashOut:"提现",balanceDetail:c,accountBalance:l,balance:n,money:t,availableBalance:o,yuan:"元"};export{l as accountBalance,o as availableBalance,n as balance,c as balanceDetail,e as cashOut,b as default,t as money,a as recharge,u as yuan};

@@ -1,0 +1,1 @@
+const o="实付金额",e="帮付订单信息",n="共",a="种商品",d="该订单已完成",f="该订单已关闭",r="找朋友帮忙付",s={payMoney:o,friendPayOrderInfo:e,common:"共",goods:"种商品",finish:d,close:f,friendPay:r};export{f as close,n as common,s as default,d as finish,r as friendPay,e as friendPayOrderInfo,a as goods,o as payMoney};
