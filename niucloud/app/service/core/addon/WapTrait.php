@@ -79,8 +79,11 @@ trait WapTrait
                 $addon_arr[] = $v[ 'key' ];
             }
         }
-        $addon_arr[] = $addon; // 追加新装插件
+        if(!empty($addon)) {
+            $addon_arr[] = $addon; // 追加新装插件
+        }
         $addon_arr = array_unique($addon_arr);
+
         foreach ($addon_arr as $k => $v) {
             $addon_path = $compile_path . str_replace('/', DIRECTORY_SEPARATOR, 'addon/' . $v . '/components/diy'); // 插件自定义组件根目录
             $addon_file_arr = getFileMap($addon_path);

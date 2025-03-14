@@ -197,6 +197,7 @@ class UpgradeService extends BaseAdminService
         if (!$this->upgrade_task) return true;
 
         $steps = isset($this->upgrade_task['steps']) ? array_keys($this->upgrade_task['steps']) : array_keys($this->steps);
+        if (isset($this->upgrade_task['steps'])) $this->steps = $this->upgrade_task['steps'];
         $index = array_search($this->upgrade_task['step'], $steps);
         $step = $steps[ $index + 1 ] ?? '';
         $params = $this->upgrade_task['params'] ?? [];
