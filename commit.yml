@@ -3,21 +3,33 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '9920870e58bc99f91a379f20e29fabb9e7c2dad8'
-    oldFile: !uuid '2dc2854bc5e2d171f0b2ab4dda0c144583948674'
+    newFile: !uuid 'fd52ae4605814234e9f9a000b2da9dec841cb680'
+    oldFile: !uuid '9920870e58bc99f91a379f20e29fabb9e7c2dad8'
   /niucloud/app:
-    newFile: !uuid 'be4fa4337e11033860d4ca1432d3e7e8fd8d0b7c'
-    oldFile: !uuid 'a202f40bec7ab423c144c6cddc65beef620b2dd6'
-  /niucloud/app/upgrade:
-    newFile: !uuid '7f3b28f033d056434880e9a20f8a3240dfe15ce0'
-    oldFile: !uuid '54a527a2baa30150e9c41b0d935a2aec4258eb48'
-  /niucloud/app/upgrade/v101:
-    newFile: !uuid '782d380704ad9d89a2443d72ded225c9cdfde057'
-    oldFile: !uuid '48fe26aff5f608f608d6cb9665f51ccb9f8eab2e'
-  /niucloud/app/upgrade/v101/Upgrade.php:
-    newFile: !uuid '5d102592dcb6daff6a9102eb480374a36de561ba'
-    oldFile: !uuid '6f31229ff5764507e0a0bfc63401d5ec341fd8ef'
-gitCommitId: !uuid '6ee13de48e7763f37484727f0118e4e18b232104'
+    newFile: !uuid 'c435f9d06bee6e4aafe06b6603fd8221bab3dc94'
+    oldFile: !uuid 'be4fa4337e11033860d4ca1432d3e7e8fd8d0b7c'
+  /niucloud/app/service:
+    newFile: !uuid 'd738adc19c6a0c1649dc92e8557c28410021261a'
+    oldFile: !uuid 'dc38f25ee1f868b778d25659edfc1e7f03c5d125'
+  /niucloud/app/service/admin:
+    newFile: !uuid '11e133e6551ae0ad326fe0b5a261b2c50ab16c8b'
+    oldFile: !uuid '6b9c216876e4908c61fabcf928bc4296121a361c'
+  /niucloud/app/service/admin/upgrade:
+    newFile: !uuid 'fcf5c4fb2e7e1e6405efb436ce9d2f861fb7bc1e'
+    oldFile: !uuid '12eec2a53010ede41e4d53b4b3bd8752e91fc5ca'
+  /niucloud/app/service/admin/upgrade/UpgradeService.php:
+    newFile: !uuid '7111ddc24dec9de218b4839d4a99dbe2836ddf3a'
+    oldFile: !uuid 'ce08e66f3cb806213103c8f5ce5063001543283e'
+  /niucloud/app/service/core:
+    newFile: !uuid '134d5f59142788f9a252ebb5c90400a91e7e3338'
+    oldFile: !uuid '26ebabec5dcab8c2cd31efc4742790bc3a61eac9'
+  /niucloud/app/service/core/addon:
+    newFile: !uuid '328f268a2aaa6ad301695eec1552c0e0284e521b'
+    oldFile: !uuid '0cedf01dd49d14b9b91d868148447a404cb2cadf'
+  /niucloud/app/service/core/addon/WapTrait.php:
+    newFile: !uuid '96db5254cacfeb92d5b3b30b84375446fafb53c1'
+    oldFile: !uuid '062990cb3a65890c2f1189f8454ffa3de1023c5e'
+gitCommitId: !uuid 'a9de59b00a2fce904b5511c2f88d929eb614a2b4'
 renames: {
   }
-revisionId: 273
+revisionId: 274
