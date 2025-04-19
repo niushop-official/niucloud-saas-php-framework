@@ -3,12 +3,195 @@ branches: {
   }
 fileChange:
   /uni-app:
-    newFile: !uuid '22f6793098ed99a339b2f33e557a7fcc8fe0cf16'
-    oldFile: !uuid 'd475d5ac58c4509c1299519ddc2fb56b5ff6aa60'
-  /uni-app/publish.cjs:
-    newFile: !uuid '2c3ef2590b86264e4b16b5a1d2071246c9f154d9'
-    oldFile: !uuid '115123a671fc5291c865bdab58efbacc1cee793b'
-gitCommitId: !uuid 'a602c4645b04b6a2d551e53af0afc2c90ee77a2c'
+    newFile: !uuid 'fe6829d853a32b852ec4b68572fd968e9c7db1d4'
+    oldFile: !uuid '22f6793098ed99a339b2f33e557a7fcc8fe0cf16'
+  /uni-app/src:
+    newFile: !uuid '4ca35326a421aab437df2814dcad46bcd616da35'
+    oldFile: !uuid 'e9757698a862a8036be9e9edcd34a1bd0442c4f9'
+  /uni-app/src/app:
+    newFile: !uuid '3ce794e2ff4bb2e732d2749d715c7a15c271e3b2'
+    oldFile: !uuid 'ae6db47b8f594407a03383503cb36a268cd9e8d9'
+  /uni-app/src/app/components:
+    newFile: !uuid '58bb81f41cfb72ad1a2af83c2366012d0f3e71e0'
+    oldFile: !uuid '4c1f293c5cf857596ced807ec087340d0016a865'
+  /uni-app/src/app/components/diy:
+    newFile: !uuid 'ef741fb7673702d9e75b12cb342075647db51417'
+    oldFile: !uuid 'b4636f067f0766dcf1f88328e9505a288b5d829a'
+  /uni-app/src/app/components/diy/carousel-search:
+    newFile: !uuid '6ef8b95ed1a35a067f5017cfe66932bd5af9e2ca'
+    oldFile: !uuid 'b3a982572b588375d01758d17c6a6d28ceebbb23'
+  /uni-app/src/app/components/diy/carousel-search/index.vue:
+    newFile: !uuid 'beb3221c1483ce64b4974bb6d96cd95105eabd68'
+    oldFile: !uuid 'b899e7a174bece51b32cb6e3874d65d4cc786ef9'
+  /uni-app/src/app/components/diy/form-address:
+    newFile: !uuid 'cfed64e6865af0eaf243cc346e62a0d1ba9a2981'
+    oldFile: !uuid 'c6a5918260bcfbb9eb2011c20b5c1e160bbbc27a'
+  /uni-app/src/app/components/diy/form-address/index.vue:
+    newFile: !uuid '3695689c4b07be16f68d1ed7ae1dd49e278fd0b3'
+    oldFile: !uuid '7b0bce15c0a1caacad8f184320f0ebea1d3b349c'
+  /uni-app/src/app/components/diy/form-file:
+    newFile: !uuid 'ca77302e71cfcfb67c85b248b2b5e0d458839171'
+    oldFile: !uuid '0574808542580cff32e9e122367d1dbfc9afb99d'
+  /uni-app/src/app/components/diy/form-file/index.vue:
+    newFile: !uuid '406fa9e6d8f584e0cd82051c397eee5413c125fb'
+    oldFile: !uuid '514697ed998cb6ec93ac56d824dc5f16f38aef36'
+  /uni-app/src/app/components/diy/form-location:
+    newFile: !uuid '36a7119b7d0770a0d34bcd05b2cf7d1b120d58d9'
+    oldFile: !uuid 'b845490174b64a53db6a8766298f8ab7d0a5a78c'
+  /uni-app/src/app/components/diy/form-location/index.vue:
+    newFile: !uuid 'e2197ae3268eee2dc0734181956ed1156a5fe49c'
+    oldFile: !uuid 'f43abd16729544ec55d32b07c60b6e9db86ce780'
+  /uni-app/src/app/components/diy/form-table:
+    newFile: !uuid 'a977ca7962a52464f20ac5b8745df63f18e6b9bd'
+    oldFile: !uuid '2d55085203d54eda8aa21794448ba89dc4f4515d'
+  /uni-app/src/app/components/diy/form-table/index.vue:
+    newFile: !uuid 'bdace8752907e0678fee82f8e505242fc2807d96'
+    oldFile: !uuid '8778d3363bbc8fb85c1cf141627ccafead0c9421'
+  /uni-app/src/app/components/diy/form-video:
+    newFile: !uuid '4449bed643861519ddb3f07b110dfefd2a5069cb'
+    oldFile: !uuid 'dfd77331359d5f37ca2e66b9c5210d04c71d6a8b'
+  /uni-app/src/app/components/diy/form-video/index.vue:
+    newFile: !uuid 'a0a2295134a3730b8bd6c768d1e64ae1b4f6096f'
+    oldFile: !uuid '78346bee827a71d94aaf2ebf2993f8167f89f2b8'
+  /uni-app/src/app/components/diy/form-wechat-name:
+    newFile: !uuid 'a8a7fb4fcd6c61174b2459346d1baae1aae91018'
+    oldFile: !uuid '0e778ba713716f28d6d3f8a5fe118ba66de18683'
+  /uni-app/src/app/components/diy/form-wechat-name/index.vue:
+    newFile: !uuid 'bdb02c292d95d13da904fcb39b00053b6a19d012'
+    oldFile: !uuid 'a85338bd43780dac7ee65d87ede0da53e8e6006f'
+  /uni-app/src/app/components/diy/graphic-nav:
+    newFile: !uuid 'b5d814c28c0870b9337423c4e3a6eb358430a0cf'
+    oldFile: !uuid '8eb4f8c74ea005c9e79fef90b438863d191e7321'
+  /uni-app/src/app/components/diy/graphic-nav/index.vue:
+    newFile: !uuid 'e5051f495b0eccda4a6be8246f7fa3c5df192e7f'
+    oldFile: !uuid 'cf8c0e12bfd8e6b1711ccf2676c730306c97fb55'
+  /uni-app/src/app/components/diy/notice:
+    newFile: !uuid '6df01f511386cb668381fdc72c6e416e712c6f2d'
+    oldFile: !uuid '796f6db8c306a7cf7f7a2297ab307c47ba050925'
+  /uni-app/src/app/components/diy/notice/index.vue:
+    newFile: !uuid '8ea308b14a6b18e4db494f37a73974d86eb0ed85'
+    oldFile: !uuid 'e5eb2618e23e5808edb3daccea4a087b1998a616'
+  /uni-app/src/app/components/diy/text:
+    newFile: !uuid '3f9c687be46fe901fdc51a4997c697e4a2c116f9'
+    oldFile: !uuid '81de0eaef104af4e25e3545735adce8bc22e1292'
+  /uni-app/src/app/components/diy/text/index.vue:
+    newFile: !uuid 'f008f960b0637ed1bb955876ac4cfa0232ad0d9a'
+    oldFile: !uuid '35c431c4291f582b9182ffe02f241c941e2fc4ae'
+  /uni-app/src/app/pages:
+    newFile: !uuid '5fc96082e4cb8419645d28429eb00bd0aaf464e7'
+    oldFile: !uuid '8ce6cc0ded79e9d44456502cf430f52fd67706e0'
+  /uni-app/src/app/pages/auth:
+    newFile: !uuid '4ac2379e5f2ac34a3f47618f16dd230dfe78cf4d'
+    oldFile: !uuid 'a4dd0b44619931e47d49f0ca44b89b3152b22f1d'
+  /uni-app/src/app/pages/auth/login.vue:
+    newFile: !uuid '0a791138f4009f9cbedde175a1c9f63a2b70ea42'
+    oldFile: !uuid '989ce7cac9f71cd4b8de03aea3824d7a1d7c61f3'
+  /uni-app/src/app/pages/friendspay:
+    newFile: !uuid '0a1cc1aaf9692bb2108531fce9b112c3f34a1592'
+    oldFile: !uuid 'df2549f7c578fa00bd819d53bf4bedbb583565ba'
+  /uni-app/src/app/pages/friendspay/components:
+    newFile: !uuid '37c8de6e48bf07cbbee7259f20b6f28cc4d02463'
+    oldFile: !uuid 'ec6b33cfa263d5af00d401aefbc6b1db6d3362f0'
+  /uni-app/src/app/pages/friendspay/components/message.vue:
+    newFile: !uuid '712ff71aee1a0aac53930975bc4a6a36f772b68e'
+    oldFile: !uuid 'df6f1c501bcc170c1ccc7685eba33a66dd0709a0'
+  /uni-app/src/app/pages/index:
+    newFile: !uuid '3d4a549c3fa73b4a23e1982a2c4a092fd665057d'
+    oldFile: !uuid 'c6bed2e8baa1b2b7c8d6b274dc4e5227d2f954cd'
+  /uni-app/src/app/pages/index/index.vue:
+    newFile: !uuid '183f3838eb76d6fecadca25c9bcaa611f94b458d'
+    oldFile: !uuid 'c9a78e3194a16681a26ea296f1524932ceca70e8'
+  /uni-app/src/app/pages/member:
+    newFile: !uuid '24a48aeb2e887bfd940010aa510865fbc6c04b5e'
+    oldFile: !uuid '8204348b9b499406bfc7f4bb24c1ef3390801ca6'
+  /uni-app/src/app/pages/member/account_edit.vue:
+    newFile: !uuid '4e1de616d87387bbac41e60c3aef4c06e7d3a8de'
+    oldFile: !uuid 'cc12ce4d0b1b440fecb5406f46e825d72ed0a473'
+  /uni-app/src/app/pages/member/balance.vue:
+    newFile: !uuid 'ab9c3a66ef34a0a0acd5507e3b0205fcd5aa8c10'
+    oldFile: !uuid 'cd536da32d3e588d741c3296ed0c29cb24d63ea7'
+  /uni-app/src/app/pages/member/cash_out_detail.vue:
+    newFile: !uuid '025cf50505d13ff298fab5adfb1b330ef9613440'
+    oldFile: !uuid 'e5987c1c1ae359558e25fe20009dd260c805159a'
+  /uni-app/src/app/pages/member/index.vue:
+    newFile: !uuid 'c5d04f58b4eb27705d780ff67e83165b259bbf41'
+    oldFile: !uuid '9a79e2d2badfb698283cbfb5917c5fcaafcc56b6'
+  /uni-app/src/app/pages/member/level.vue:
+    newFile: !uuid 'b71ba5a1b2241043a95c19e769ce8cf6d53e4e12'
+    oldFile: !uuid 'a9a40ea1ff11a585362112ac059faaddb1685e45'
+  /uni-app/src/app/pages/member/point.vue:
+    newFile: !uuid '5b3521d2920b9d52441b9474dbb4770a120d688b'
+    oldFile: !uuid 'bfd451f41d7df5eb101373418b06096071c093b4'
+  /uni-app/src/app/pages/member/point_detail.vue:
+    newFile: !uuid '0e6c3fa7374481304d570e74dc0400d219745187'
+    oldFile: !uuid '42e038e1caf43d9168e0fc40012685da0fd22cb9'
+  /uni-app/src/app/pages/member/sign_in.vue:
+    newFile: !uuid 'a4bdc036943f21683004099ba3b680a322102c59'
+    oldFile: !uuid '59f5a87b9c73fa745281df4a64d65da04473e98b'
+  /uni-app/src/app/pages/verify:
+    newFile: !uuid 'd43b5ef37a2d28f81eeeb843ac9e31aeef4b1030'
+    oldFile: !uuid 'e31d54d5026723a78082562386b638107840e0da'
+  /uni-app/src/app/pages/verify/detail.vue:
+    newFile: !uuid 'bd3c4609d4990dfcf5431262bcc996491d68d16f'
+    oldFile: !uuid 'dff8d87959bbd918ffcde10f417c9716f79a1263'
+  /uni-app/src/app/pages/verify/record.vue:
+    newFile: !uuid '2810a5a30ce06e44bac18c3659933f12b334d6b7'
+    oldFile: !uuid '117abdd7c0745564922808beaee0de53d1cdbd3d'
+  /uni-app/src/app/pages/verify/verify.vue:
+    newFile: !uuid 'a568e599718805d30be1c9e454e70fbbfbc75761'
+    oldFile: !uuid '1f989323bc2795cc55a85205e4aaf9bacd89563e'
+  /uni-app/src/components:
+    newFile: !uuid '910c4e7a35b8348ed593723c316a7a97ee0a6a82'
+    oldFile: !uuid 'e8ec1be83690275c4132c59312bde570a3b5df2e'
+  /uni-app/src/components/information-filling:
+    newFile: !uuid 'be37089a83035516ac31b5d6bf71b5750754a97a'
+    oldFile: !uuid 'a346513568bbd9fdf11b8c213efe3a290a735580'
+  /uni-app/src/components/information-filling/information-filling.vue:
+    newFile: !uuid '98cfbd8ae0e7ee3e183039600f532d11ce0c9ab0'
+    oldFile: !uuid 'dc95cda603affe89c1838040910b58f35b7223d4'
+  /uni-app/src/components/mescroll:
+    newFile: !uuid '19c50a0c77a3a1a2f531bee1198708f439f7287a'
+    oldFile: !uuid '3f0deb5ec3a42fcaa4129ed7fecaf9ea87a1a6b7'
+  /uni-app/src/components/mescroll/mescroll-body:
+    newFile: !uuid 'bfa10c1fcefef31e45ed3a9f0576a07862f6efca'
+    oldFile: !uuid '4747ec723509554396e01f77abc34930d76c02ab'
+  /uni-app/src/components/mescroll/mescroll-body/mescroll-body.vue:
+    newFile: !uuid 'dac6427ac8f3be953b7c03256fcfae2fdec289e0'
+    oldFile: !uuid 'ef01f2d5f980336093dc1152e91da054eafea112'
+  /uni-app/src/components/pay:
+    newFile: !uuid '811df2de227f5dd259c6fea51eb1ae7fb5721b9b'
+    oldFile: !uuid '59f19dbdbe7ed71d4228b3e7ba3075ce2bb4f575'
+  /uni-app/src/components/pay/pay.vue:
+    newFile: !uuid 'b07f5a9238c6492340004eccd4fff43647a1704c'
+    oldFile: !uuid '53b90f1a3b29ef76adb0ec349f52c0361c5a9f93'
+  /uni-app/src/components/tabbar:
+    newFile: !uuid 'e60c4328cd2bbd7ca07354c7d20d4fd4a7646efd'
+    oldFile: !uuid '2b80f871588c0ae0ca37d27afa7faedc3fa36bf1'
+  /uni-app/src/components/tabbar/tabbar.vue:
+    newFile: !uuid '4827e7bfc08a07739d33a2caecb6ee98e9832ed8'
+    oldFile: !uuid 'a144cd1734ea682ab346af51c7a96c50d8b7b69a'
+  /uni-app/src/components/wx-privacy-popup:
+    newFile: !uuid '828edcc58a9c3468621eaf6fd7143b9fd791fd1c'
+    oldFile: !uuid '8e6634492a3598b4dd3d76487c13076b7b89d472'
+  /uni-app/src/components/wx-privacy-popup/wx-privacy-popup.vue:
+    newFile: !uuid '51935d00579d99cc9a28d369c122c091a6869697'
+    oldFile: !uuid '84df5ead10629b7e531a404992feb885b7bdf762'
+  /uni-app/src/hooks:
+    newFile: !uuid '23d6c8677caaf670e7a74190492b2a75129e5ddd'
+    oldFile: !uuid 'a751069c62324efc0fcb37d8389b012e891eebf0'
+  /uni-app/src/hooks/useLogin.ts:
+    newFile: !uuid 'f1d90b19199c554d276b37e60a93fadf7f77daf5'
+    oldFile: !uuid 'fbe3681bbc73df29b00a56362af34f088cae0d3a'
+  /uni-app/src/utils:
+    newFile: !uuid 'fd35fafa5111dea6f44c9139dddc33b2a122e766'
+    oldFile: !uuid 'b2027ffac5515cd76b07fe457e0ad40dafb9259f'
+  /uni-app/src/utils/common.ts:
+    newFile: !uuid 'c734209c20ce3f8bc3b4f80d9be40dd979a1e671'
+    oldFile: !uuid '68bb0c9ecaa49b2df11aad0d87daa78e61b237ca'
+  /uni-app/src/utils/pages.ts:
+    newFile: !uuid '0dc5726dc94300d475a6e87bf7000760b0cf041e'
+    oldFile: !uuid '0396d6f5ee745ab0aca989d1f3c9884676346f3b'
+gitCommitId: !uuid '3fe60374bc375fceb4881ebf0c320281feee7b84'
 renames: {
   }
-revisionId: 277
+revisionId: 278
