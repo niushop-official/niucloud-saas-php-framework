@@ -1,0 +1,1 @@
+const e="编号",r="内容",o="前一版本",c="版本",s="请输入内容",t="升级时间",a={id:e,upgradeName:r,prevVersion:o,currentVersion:c,upgradeNamePlaceholder:s,completeTime:t};export{t as completeTime,c as currentVersion,a as default,e as id,o as prevVersion,r as upgradeName,s as upgradeNamePlaceholder};
