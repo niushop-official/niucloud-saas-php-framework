@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yansongda\Pay;
 
+use JetBrains\PhpStorm\Deprecated;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Yansongda\Artful\Contract\ConfigInterface;
@@ -13,19 +14,20 @@ use Yansongda\Artful\Exception\InvalidParamsException;
 use Yansongda\Artful\Exception\ServiceNotFoundException;
 use Yansongda\Artful\Plugin\AddPayloadBodyPlugin;
 use Yansongda\Artful\Plugin\ParserPlugin;
+use Yansongda\Artful\Plugin\StartPlugin;
 use Yansongda\Pay\Exception\DecryptException;
 use Yansongda\Pay\Exception\Exception;
 use Yansongda\Pay\Exception\InvalidSignException;
 use Yansongda\Pay\Plugin\Wechat\AddRadarPlugin;
 use Yansongda\Pay\Plugin\Wechat\ResponsePlugin;
-use Yansongda\Pay\Plugin\Wechat\StartPlugin;
 use Yansongda\Pay\Plugin\Wechat\V3\AddPayloadSignaturePlugin;
 use Yansongda\Pay\Plugin\Wechat\V3\WechatPublicCertsPlugin;
 use Yansongda\Pay\Provider\Alipay;
+use Yansongda\Pay\Provider\Douyin;
+use Yansongda\Pay\Provider\Jsb;
 use Yansongda\Pay\Provider\Unipay;
 use Yansongda\Pay\Provider\Wechat;
 use Yansongda\Supports\Collection;
-use Yansongda\Supports\Str;
 
 use function Yansongda\Artful\get_radar_body;
 use function Yansongda\Artful\get_radar_method;
@@ -37,12 +39,12 @@ function get_tenant(array $params = []): string
 
 function get_public_cert(string $key): string
 {
-    return Str::endsWith($key, ['.cer', '.crt', '.pem']) ? file_get_contents($key) : $key;
+    return is_file($key) ? file_get_contents($key) : $key;
 }
 
 function get_private_cert(string $key): string
 {
-    if (Str::endsWith($key, ['.crt', '.pem'])) {
+    if (is_file($key)) {
         return file_get_contents($key);
     }
 
@@ -64,6 +66,19 @@ function get_radar_url(array $config, ?Collection $payload): ?string
  * @throws ContainerException
  * @throws ServiceNotFoundException
  */
+function get_provider_config(string $provider, array $params = []): array
+{
+    /** @var ConfigInterface $config */
+    $config = Pay::get(ConfigInterface::class);
+
+    return $config->get($provider, [])[get_tenant($params)] ?? [];
+}
+
+/**
+ * @throws ContainerException
+ * @throws ServiceNotFoundException
+ */
+#[Deprecated(reason: '自 v3.7.5 开始废弃', replacement: 'get_provider_config')]
 function get_alipay_config(array $params = []): array
 {
     $alipay = Pay::get(ConfigInterface::class)->get('alipay');
@@ -114,6 +129,7 @@ function verify_alipay_sign(array $config, string $contents, string $sign): void
  * @throws ContainerException
  * @throws ServiceNotFoundException
  */
+#[Deprecated(reason: '自 v3.7.5 开始废弃', replacement: 'get_provider_config')]
 function get_wechat_config(array $params = []): array
 {
     $wechat = Pay::get(ConfigInterface::class)->get('wechat');
@@ -232,7 +248,7 @@ function verify_wechat_sign(ResponseInterface|ServerRequestInterface $message, a
     $body = (string) $message->getBody();
 
     $content = $timestamp."\n".$random."\n".$body."\n";
-    $public = get_wechat_config($params)['wechat_public_cert_path'][$wechatSerial] ?? null;
+    $public = get_provider_config('wechat', $params)['wechat_public_cert_path'][$wechatSerial] ?? null;
 
     if (empty($sign)) {
         throw new InvalidSignException(Exception::SIGN_EMPTY, '签名异常: 微信签名为空', ['headers' => $message->getHeaders(), 'body' => $body]);
@@ -309,7 +325,7 @@ function reload_wechat_public_certs(array $params, ?string $serialNo = null): st
         $params
     )->get('data', []);
 
-    $wechatConfig = get_wechat_config($params);
+    $wechatConfig = get_provider_config('wechat', $params);
 
     foreach ($data as $item) {
         $certs[$item['serial_no']] = decrypt_wechat_resource($item['encrypt_certificate'], $wechatConfig)['ciphertext'] ?? '';
@@ -338,7 +354,7 @@ function get_wechat_public_certs(array $params = [], ?string $path = null): void
 {
     reload_wechat_public_certs($params);
 
-    $config = get_wechat_config($params);
+    $config = get_provider_config('wechat', $params);
 
     if (empty($path)) {
         var_dump($config['wechat_public_cert_path']);
@@ -419,12 +435,12 @@ function get_wechat_serial_no(array $params): string
         return $params['_serial_no'];
     }
 
-    $config = get_wechat_config($params);
+    $config = get_provider_config('wechat', $params);
 
     if (empty($config['wechat_public_cert_path'])) {
         reload_wechat_public_certs($params);
 
-        $config = get_wechat_config($params);
+        $config = get_provider_config('wechat', $params);
     }
 
     mt_srand();
@@ -440,7 +456,7 @@ function get_wechat_public_key(array $config, string $serialNo): string
     $publicKey = $config['wechat_public_cert_path'][$serialNo] ?? null;
 
     if (empty($publicKey)) {
-        throw new InvalidParamsException(Exception::PARAMS_WECHAT_SERIAL_NOT_FOUND, '参数异常: 微信公钥序列号为找到 -'.$serialNo);
+        throw new InvalidParamsException(Exception::PARAMS_WECHAT_SERIAL_NOT_FOUND, '参数异常: 微信公钥序列号未找到 - '.$serialNo);
     }
 
     return $publicKey;
@@ -467,6 +483,7 @@ function get_wechat_miniprogram_user_sign(string $sessionKey, string $payload): 
  * @throws ContainerException
  * @throws ServiceNotFoundException
  */
+#[Deprecated(reason: '自 v3.7.5 开始废弃', replacement: 'get_provider_config')]
 function get_unipay_config(array $params = []): array
 {
     $unipay = Pay::get(ConfigInterface::class)->get('unipay');
@@ -575,4 +592,60 @@ function verify_unipay_sign_qra(array $config, array $destination): void
     if (get_unipay_sign_qra($config, $destination) !== $sign) {
         throw new InvalidSignException(Exception::SIGN_ERROR, '签名异常: 验证银联签名失败', $destination);
     }
+}
+
+function get_jsb_url(array $config, ?Collection $payload): string
+{
+    $url = get_radar_url($config, $payload) ?? '';
+
+    if (str_starts_with($url, 'http')) {
+        return $url;
+    }
+
+    return Jsb::URL[$config['mode'] ?? Pay::MODE_NORMAL];
+}
+
+/**
+ * @throws InvalidConfigException
+ * @throws InvalidSignException
+ */
+function verify_jsb_sign(array $config, string $content, string $sign): void
+{
+    if (empty($sign)) {
+        throw new InvalidSignException(Exception::SIGN_EMPTY, '签名异常: 江苏银行签名为空', func_get_args());
+    }
+
+    $publicCert = $config['jsb_public_cert_path'] ?? null;
+
+    if (empty($publicCert)) {
+        throw new InvalidConfigException(Exception::CONFIG_JSB_INVALID, '配置异常: 缺少配置参数 -- [jsb_public_cert_path]');
+    }
+
+    $result = 1 === openssl_verify(
+        $content,
+        base64_decode($sign),
+        get_public_cert($publicCert)
+    );
+
+    if (!$result) {
+        throw new InvalidSignException(Exception::SIGN_ERROR, '签名异常: 验证江苏银行签名失败', func_get_args());
+    }
+}
+
+/**
+ * @throws InvalidParamsException
+ */
+function get_douyin_url(array $config, ?Collection $payload): string
+{
+    $url = get_radar_url($config, $payload);
+
+    if (empty($url)) {
+        throw new InvalidParamsException(Exception::PARAMS_DOUYIN_URL_MISSING, '参数异常: 抖音 `_url` 参数缺失：你可能用错插件顺序，应该先使用 `业务插件`');
+    }
+
+    if (str_starts_with($url, 'http')) {
+        return $url;
+    }
+
+    return Douyin::URL[$config['mode'] ?? Pay::MODE_NORMAL].$url;
 }

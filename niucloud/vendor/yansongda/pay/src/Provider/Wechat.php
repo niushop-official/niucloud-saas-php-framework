@@ -16,6 +16,7 @@ use Yansongda\Artful\Exception\InvalidParamsException;
 use Yansongda\Artful\Exception\ServiceNotFoundException;
 use Yansongda\Artful\Plugin\AddPayloadBodyPlugin;
 use Yansongda\Artful\Plugin\ParserPlugin;
+use Yansongda\Artful\Plugin\StartPlugin;
 use Yansongda\Artful\Rocket;
 use Yansongda\Pay\Contract\ProviderInterface;
 use Yansongda\Pay\Event\CallbackReceived;
@@ -24,7 +25,6 @@ use Yansongda\Pay\Exception\Exception;
 use Yansongda\Pay\Pay;
 use Yansongda\Pay\Plugin\Wechat\AddRadarPlugin;
 use Yansongda\Pay\Plugin\Wechat\ResponsePlugin;
-use Yansongda\Pay\Plugin\Wechat\StartPlugin;
 use Yansongda\Pay\Plugin\Wechat\V3\AddPayloadSignaturePlugin;
 use Yansongda\Pay\Plugin\Wechat\V3\CallbackPlugin;
 use Yansongda\Pay\Plugin\Wechat\V3\VerifySignaturePlugin;
@@ -56,9 +56,9 @@ class Wechat implements ProviderInterface
      * @throws InvalidParamsException
      * @throws ServiceNotFoundException
      */
-    public function __call(string $shortcut, array $params): null|Collection|MessageInterface
+    public function __call(string $shortcut, array $params): null|Collection|MessageInterface|Rocket
     {
-        $plugin = '\\Yansongda\\Pay\\Shortcut\\Wechat\\'.Str::studly($shortcut).'Shortcut';
+        $plugin = '\Yansongda\Pay\Shortcut\Wechat\\'.Str::studly($shortcut).'Shortcut';
 
         return Artful::shortcut($plugin, ...$params);
     }

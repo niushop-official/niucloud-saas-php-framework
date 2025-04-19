@@ -22,6 +22,7 @@ use Yansongda\Pay\Event\MethodCalled;
 use Yansongda\Pay\Pay;
 use Yansongda\Pay\Plugin\Alipay\V2\AddPayloadSignaturePlugin;
 use Yansongda\Pay\Plugin\Alipay\V2\AddRadarPlugin;
+use Yansongda\Pay\Plugin\Alipay\V2\AppCallbackPlugin;
 use Yansongda\Pay\Plugin\Alipay\V2\CallbackPlugin;
 use Yansongda\Pay\Plugin\Alipay\V2\FormatPayloadBizContentPlugin;
 use Yansongda\Pay\Plugin\Alipay\V2\ResponsePlugin;
@@ -54,7 +55,7 @@ class Alipay implements ProviderInterface
      */
     public function __call(string $shortcut, array $params): null|Collection|MessageInterface|Rocket
     {
-        $plugin = '\\Yansongda\\Pay\\Shortcut\\Alipay\\'.Str::studly($shortcut).'Shortcut';
+        $plugin = '\Yansongda\Pay\Shortcut\Alipay\\'.Str::studly($shortcut).'Shortcut';
 
         return Artful::shortcut($plugin, ...$params);
     }
@@ -129,6 +130,17 @@ class Alipay implements ProviderInterface
         return $this->pay([CallbackPlugin::class], $request->merge($params)->all());
     }
 
+    /**
+     * @throws ContainerException
+     * @throws InvalidParamsException
+     */
+    public function appCallback(null|array|ServerRequestInterface $contents = null, ?array $params = null): Collection
+    {
+        $request = $this->getCallbackParams($contents);
+
+        return $this->pay([AppCallbackPlugin::class], $request->merge($params)->all());
+    }
+
     public function success(): ResponseInterface
     {
         return new Response(200, [], 'success');
@@ -143,7 +155,7 @@ class Alipay implements ProviderInterface
         );
     }
 
-    protected function getCallbackParams(array|ServerRequestInterface $contents = null): Collection
+    protected function getCallbackParams(null|array|ServerRequestInterface $contents = null): Collection
     {
         if (is_array($contents)) {
             return Collection::wrap($contents);

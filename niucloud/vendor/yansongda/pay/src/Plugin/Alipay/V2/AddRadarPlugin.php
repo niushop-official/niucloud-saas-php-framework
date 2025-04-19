@@ -11,9 +11,11 @@ use Yansongda\Artful\Exception\ContainerException;
 use Yansongda\Artful\Exception\ServiceNotFoundException;
 use Yansongda\Artful\Logger;
 use Yansongda\Artful\Rocket;
+use Yansongda\Supports\Collection;
 
-use function Yansongda\Pay\get_alipay_config;
+use function Yansongda\Artful\get_radar_method;
 use function Yansongda\Pay\get_alipay_url;
+use function Yansongda\Pay\get_provider_config;
 
 class AddRadarPlugin implements PluginInterface
 {
@@ -26,11 +28,12 @@ class AddRadarPlugin implements PluginInterface
         Logger::debug('[Alipay][AddRadarPlugin] 插件开始装载', ['rocket' => $rocket]);
 
         $params = $rocket->getParams();
-        $config = get_alipay_config($params);
+        $config = get_provider_config('alipay', $params);
         $payload = $rocket->getPayload();
 
         $rocket->setRadar(new Request(
-            strtoupper($params['_method'] ?? 'POST'),
+            // 这里因为支付宝的 payload 里不包含 _method，所以需要取 params 中的
+            get_radar_method(new Collection($params)) ?? 'POST',
             get_alipay_url($config, $payload),
             $this->getHeaders(),
             // 不能用 packer，支付宝接收的是 x-www-form-urlencoded 返回的又是 json，packer 用的是返回.

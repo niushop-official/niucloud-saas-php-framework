@@ -18,7 +18,7 @@ use Yansongda\Pay\Pay;
 use Yansongda\Supports\Collection;
 
 use function Yansongda\Pay\encrypt_wechat_contents;
-use function Yansongda\Pay\get_wechat_config;
+use function Yansongda\Pay\get_provider_config;
 use function Yansongda\Pay\get_wechat_public_key;
 use function Yansongda\Pay\get_wechat_serial_no;
 
@@ -41,7 +41,7 @@ class RefundAbnormalPlugin implements PluginInterface
 
         $params = $rocket->getParams();
         $payload = $rocket->getPayload();
-        $config = get_wechat_config($params);
+        $config = get_provider_config('wechat', $params);
         $refundId = $payload?->get('refund_id') ?? null;
 
         if (empty($refundId)) {
@@ -105,6 +105,8 @@ class RefundAbnormalPlugin implements PluginInterface
     {
         if ($payload->has('bank_account') && $payload->has('real_name')) {
             $data['_serial_no'] = get_wechat_serial_no($params);
+
+            $config = get_provider_config('wechat', $params);
             $publicKey = get_wechat_public_key($config, $data['_serial_no']);
 
             $data['real_name'] = encrypt_wechat_contents($payload->get('real_name'), $publicKey);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yansongda\Pay\Plugin\Wechat\V3\Marketing\Transfer\Batch;
 
 use Closure;
+use JetBrains\PhpStorm\Deprecated;
 use Yansongda\Artful\Contract\PluginInterface;
 use Yansongda\Artful\Exception\ContainerException;
 use Yansongda\Artful\Exception\InvalidParamsException;
@@ -15,11 +16,12 @@ use Yansongda\Pay\Exception\Exception;
 use Yansongda\Pay\Pay;
 
 use function Yansongda\Artful\filter_params;
-use function Yansongda\Pay\get_wechat_config;
+use function Yansongda\Pay\get_provider_config;
 
 /**
  * @see https://pay.weixin.qq.com/docs/merchant/apis/batch-transfer-to-balance/transfer-batch/get-transfer-batch-by-out-no.html
  */
+#[Deprecated(reason: '由于微信支付变更，自 v3.7.12 开始废弃, 并将在 v3.8.0 移除')]
 class QueryPlugin implements PluginInterface
 {
     /**
@@ -31,7 +33,7 @@ class QueryPlugin implements PluginInterface
     {
         Logger::debug('[Wechat][Marketing][Transfer][Batch][QueryPlugin] 插件开始装载', ['rocket' => $rocket]);
 
-        $config = get_wechat_config($rocket->getParams());
+        $config = get_provider_config('wechat', $rocket->getParams());
         $payload = $rocket->getPayload();
         $outBatchNo = $payload?->get('out_batch_no') ?? null;
 

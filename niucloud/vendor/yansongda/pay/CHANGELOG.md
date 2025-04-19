@@ -1,3 +1,116 @@
+## v3.7.13
+
+### added
+
+- feat: 新增支付宝APP同步回调验签 (#1061, #1064)
+
+## v3.7.12
+
+### added
+
+- feat: 支持最新版微信商户转账 (#1058)
+
+## v3.7.11
+
+### added
+
+- feat: 新增微信分账申请分账账单插件 (#1041)
+
+## v3.7.10
+
+### fixed
+
+- fix: 未配置微信证书时，自动获取证书后仍然使用之前的微信配置(#1026)
+
+## v3.7.9
+
+### added
+
+- feat: 新增抖音支付(#1014)
+
+## v3.7.8
+
+### added
+
+- feat: 新增 v3 付款码服务商模式(#1010)
+
+## v3.7.7
+
+### added
+
+- feat: 新增江苏银行e融支付(#1002)
+
+## v3.7.6
+
+### fixed
+
+- fix: 微信关闭订单报解包错误的问题(#1000, #1001)
+
+## v3.7.5
+
+### fixed
+
+- fix: 支付宝响应空签名时签名验证逻辑错误的问题(#998)
+
+### optimized
+
+- optimize: 优化微信 `ResponsePlugin` 插件去除不必要的返回参数(#996)
+
+### deprecated
+
+- deprecate: 微信 `StartPlugin` 改为使用 `yansongda/artful` 中的插件(#993)
+- deprecate: `get_wechat_config`, `get_alipay_config`, `get_unipay_config` 方法已废弃，使用 `get_provider_config` 方法代替(#994)
+
+## v3.7.4
+
+### optimized
+
+- optimize: 使用 is_file 代替字符串结尾判断(#982)
+
+## v3.7.3
+
+### fixed
+
+- fix: 修复商家转账参数缺失的问题(#977)
+
+## v3.7.2
+
+### added
+
+- feat: 微信V2版本支持普通红包(#973)
+
+### chore
+
+- chore: 升级 `yansongda/artful` 到最新版解决 http 配置不生效的问题(#974)
+
+## v3.7.1
+
+### fixed
+
+- fix: 修复微信付款码 shortcut 支付插件执行顺序错误(#972)
+
+## v3.7.0
+
+### added
+
+- feat: 支持微信 v3 版付款码支付(#969)
+
+### changed
+
+- changed: 微信付款码支付更改为 v3 版(#969)
+
+## v3.6.5
+
+### added
+
+- feat: 支付宝根证书配置支持直接配置内容(#959)
+
+## v3.6.4
+
+### fixed
+
+- fix: 修复支付宝授权访问令牌插件参数问题(#954)
+
 ## v3.6.3
 
 ### optimized

@@ -6868,17 +6868,17 @@
         },
         {
             "name": "yansongda/artful",
-            "version": "v1.0.9",
-            "version_normalized": "1.0.9.0",
+            "version": "v1.1.2",
+            "version_normalized": "1.1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yansongda/artful.git",
-                "reference": "1fbf987c0deb95a9b67eb343f2b96c8489635e6f"
+                "reference": "bad726c6287aca219750823bff46f70287ec3995"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yansongda/artful/zipball/1fbf987c0deb95a9b67eb343f2b96c8489635e6f",
-                "reference": "1fbf987c0deb95a9b67eb343f2b96c8489635e6f",
+                "url": "https://api.github.com/repos/yansongda/artful/zipball/bad726c6287aca219750823bff46f70287ec3995",
+                "reference": "bad726c6287aca219750823bff46f70287ec3995",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6895,7 +6895,7 @@
                 "psr/http-client": "^1.0",
                 "psr/http-message": "^1.1 || ^2.0",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
-                "yansongda/supports": "~4.0.9"
+                "yansongda/supports": "~4.0.10"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.44",
@@ -6903,7 +6903,7 @@
                 "hyperf/pimple": "^2.2",
                 "mockery/mockery": "^1.4",
                 "monolog/monolog": "^2.2",
-                "phpstan/phpstan": "^1.0.0",
+                "phpstan/phpstan": "^1.0.0 || ^2.0.0",
                 "phpunit/phpunit": "^9.0",
                 "symfony/event-dispatcher": "^5.2.0",
                 "symfony/http-foundation": "^5.2.0",
@@ -6914,7 +6914,7 @@
                 "hyperf/pimple": "其它/无框架下使用 SDK，请安装，任选其一",
                 "illuminate/container": "其它/无框架下使用 SDK，请安装，任选其一"
             },
-            "time": "2024-02-06T13:19:54+00:00",
+            "time": "2025-01-09T12:39:39+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -6951,17 +6951,17 @@
         },
         {
             "name": "yansongda/pay",
-            "version": "v3.6.3",
-            "version_normalized": "3.6.3.0",
+            "version": "v3.7.11",
+            "version_normalized": "3.7.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yansongda/pay.git",
-                "reference": "fba0bb30636cb936eed9e9078d781e0dc4e4282b"
+                "reference": "0c8bcb8f67b56fae6c852a5b3ec0a1793f5c8ddb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yansongda/pay/zipball/fba0bb30636cb936eed9e9078d781e0dc4e4282b",
-                "reference": "fba0bb30636cb936eed9e9078d781e0dc4e4282b",
+                "url": "https://api.github.com/repos/yansongda/pay/zipball/0c8bcb8f67b56fae6c852a5b3ec0a1793f5c8ddb",
+                "reference": "0c8bcb8f67b56fae6c852a5b3ec0a1793f5c8ddb",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -6977,8 +6977,8 @@
                 "ext-openssl": "*",
                 "ext-simplexml": "*",
                 "php": ">=8.0",
-                "yansongda/artful": "~1.0.9",
-                "yansongda/supports": "~4.0.9"
+                "yansongda/artful": "~1.1.1",
+                "yansongda/supports": "~4.0.10"
             },
             "conflict": {
                 "hyperf/framework": "<3.0"
@@ -6987,6 +6987,7 @@
                 "friendsofphp/php-cs-fixer": "^3.44",
                 "guzzlehttp/guzzle": "^7.0",
                 "hyperf/pimple": "^2.2",
+                "jetbrains/phpstorm-attributes": "^1.1",
                 "mockery/mockery": "^1.4",
                 "monolog/monolog": "^2.2",
                 "phpstan/phpstan": "^1.0.0",
@@ -6996,7 +6997,7 @@
                 "symfony/psr-http-message-bridge": "^2.1",
                 "symfony/var-dumper": "^5.1"
             },
-            "time": "2024-02-29T12:19:11+00:00",
+            "time": "2024-11-23T03:29:59+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -7032,17 +7033,17 @@
         },
         {
             "name": "yansongda/supports",
-            "version": "v4.0.9",
-            "version_normalized": "4.0.9.0",
+            "version": "v4.0.10",
+            "version_normalized": "4.0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yansongda/supports.git",
-                "reference": "c3479723be665360a5635c15f184a1d0a8dc995a"
+                "reference": "11cc73776e6d4d763a84c8c733f64820abdc44e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yansongda/supports/zipball/c3479723be665360a5635c15f184a1d0a8dc995a",
-                "reference": "c3479723be665360a5635c15f184a1d0a8dc995a",
+                "url": "https://api.github.com/repos/yansongda/supports/zipball/11cc73776e6d4d763a84c8c733f64820abdc44e5",
+                "reference": "11cc73776e6d4d763a84c8c733f64820abdc44e5",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -7064,7 +7065,7 @@
                 "monolog/monolog": "Use logger",
                 "symfony/console": "Use stdout logger"
             },
-            "time": "2024-01-06T05:14:33+00:00",
+            "time": "2024-06-09T15:49:21+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {

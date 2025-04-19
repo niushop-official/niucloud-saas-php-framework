@@ -16,7 +16,7 @@ use Yansongda\Pay\Exception\DecryptException;
 use Yansongda\Supports\Collection;
 
 use function Yansongda\Pay\encrypt_wechat_contents;
-use function Yansongda\Pay\get_wechat_config;
+use function Yansongda\Pay\get_provider_config;
 use function Yansongda\Pay\get_wechat_public_key;
 use function Yansongda\Pay\get_wechat_serial_no;
 
@@ -38,7 +38,7 @@ class CreatePlugin implements PluginInterface
 
         $params = $rocket->getParams();
         $payload = $rocket->getPayload();
-        $config = get_wechat_config($params);
+        $config = get_provider_config('wechat', $params);
 
         $rocket->mergePayload(array_merge([
             '_method' => 'POST',
@@ -60,6 +60,8 @@ class CreatePlugin implements PluginInterface
     protected function encryptSensitiveData(?Collection $payload, array $params, array $config): array
     {
         $data['_serial_no'] = get_wechat_serial_no($params);
+
+        $config = get_provider_config('wechat', $params);
         $publicKey = get_wechat_public_key($config, $data['_serial_no']);
 
         $phone = $payload?->get('buyer_information.phone') ?? null;

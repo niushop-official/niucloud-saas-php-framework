@@ -82,7 +82,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
         return new static(Arr::except($this->items, $keys));
     }
 
-    public function filter(callable $callback = null): self
+    public function filter(?callable $callback = null): self
     {
         if ($callback) {
             return new static(Arr::where($this->items, $callback));
@@ -223,7 +223,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
         return new static($chunks);
     }
 
-    public function sort(callable $callback = null): self
+    public function sort(?callable $callback = null): self
     {
         $items = $this->items;
         $callback ? uasort($items, $callback) : asort($items);
