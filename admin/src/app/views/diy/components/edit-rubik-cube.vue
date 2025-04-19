@@ -1,73 +1,75 @@
 <template>
-	<!-- 内容 -->
-	<div class="content-wrap rubik-cube" v-show="diyStore.editTab == 'content'">
+    <!-- 内容 -->
+    <div class="content-wrap rubik-cube" v-show="diyStore.editTab == 'content'">
 
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('selectStyle') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
-				<el-form-item :label="t('template')">
-					<span>{{ selectTemplate.name }}</span>
-				</el-form-item>
-				<ul class="selected-template-list">
-					<li v-for="(item,i) in templateList" :key="i" :class="[(item.className == diyStore.editComponent.mode) ?  'selected' : '' ]" @click="changeTemplateList(i)">
-						<icon :name="'iconfont ' + item.src" size="16px"/>
-					</li>
-				</ul>
-			</el-form>
-		</div>
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('rubikCubeLayout') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('selectStyle') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
+                <el-form-item :label="t('template')">
+                    <span>{{ selectTemplate.name }}</span>
+                </el-form-item>
+                <ul class="selected-template-list">
+                    <li v-for="(item,i) in templateList" :key="i"
+                        :class="[(item.className == diyStore.editComponent.mode) ?  'selected' : '' ]"
+                        @click="changeTemplateList(i)">
+                        <icon :name="'iconfont ' + item.src" size="16px" />
+                    </li>
+                </ul>
+            </el-form>
+        </div>
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('rubikCubeLayout') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
 
-				<ul class="layout">
-					<li v-for="(li,i) in selectTemplate.dimensionScale" :key="i" :class="[selectTemplate.className]">
-						<div class="have-preview-image" v-show="diyStore.editComponent.list[i].imageUrl && diyStore.editComponent.list[i].imageUrl != 'static/resource/images/diy/figure.png'">
-							<img :src="img(diyStore.editComponent.list[i].imageUrl)"/>
-						</div>
-						<div class="empty" :class="[selectTemplate.className]" v-show="!diyStore.editComponent.list[i].imageUrl || diyStore.editComponent.list[i].imageUrl == 'static/resource/images/diy/figure.png'">
-							<p>{{li.name}}</p>
-							<p>{{li.desc}}</p>
-						</div>
-					</li>
-				</ul>
+                <ul class="layout">
+                    <li v-for="(li,i) in selectTemplate.dimensionScale" :key="i" :class="[selectTemplate.className]">
+                        <div class="have-preview-image" v-show="diyStore.editComponent.list[i].imageUrl && diyStore.editComponent.list[i].imageUrl != 'static/resource/images/diy/figure.png'">
+                            <img :src="img(diyStore.editComponent.list[i].imageUrl)" />
+                        </div>
+                        <div class="empty" :class="[selectTemplate.className]" v-show="!diyStore.editComponent.list[i].imageUrl || diyStore.editComponent.list[i].imageUrl == 'static/resource/images/diy/figure.png'">
+                            <p>{{ li.name }}</p>
+                            <p>{{ li.desc }}</p>
+                        </div>
+                    </li>
+                </ul>
 
-				<div v-for="(item) in diyStore.editComponent.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
-					<el-form-item :label="t('image')">
-						<upload-image v-model="item.imageUrl" :limit="1" @change="selectImg"/>
-					</el-form-item>
+                <div v-for="(item) in diyStore.editComponent.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
+                    <el-form-item :label="t('image')">
+                        <upload-image v-model="item.imageUrl" :limit="1" @change="selectImg" />
+                    </el-form-item>
 
-					<el-form-item :label="t('link')">
-						<diy-link v-model="item.link"/>
-					</el-form-item>
-				</div>
+                    <el-form-item :label="t('link')">
+                        <diy-link v-model="item.link" />
+                    </el-form-item>
+                </div>
 
-			</el-form>
+            </el-form>
 
-		</div>
+        </div>
 
-	</div>
+    </div>
 
-	<!-- 样式 -->
-	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+    <!-- 样式 -->
+    <div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('rubikCubeStyle') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
-				<el-form-item :label="t('imageGap')">
-					<el-slider v-model="diyStore.editComponent.imageGap" show-input size="small" class="ml-[10px] diy-nav-slider" :max="30"/>
-				</el-form-item>
-				<el-form-item :label="t('topRounded')">
-					<el-slider v-model="diyStore.editComponent.topElementRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50"/>
-				</el-form-item>
-				<el-form-item :label="t('bottomRounded')">
-					<el-slider v-model="diyStore.editComponent.bottomElementRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50"/>
-				</el-form-item>
-			</el-form>
-		</div>
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('rubikCubeStyle') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
+                <el-form-item :label="t('imageGap')">
+                    <el-slider v-model="diyStore.editComponent.imageGap" show-input size="small" class="ml-[10px] diy-nav-slider" :max="30" />
+                </el-form-item>
+                <el-form-item :label="t('topRounded')">
+                    <el-slider v-model="diyStore.editComponent.topElementRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50" />
+                </el-form-item>
+                <el-form-item :label="t('bottomRounded')">
+                    <el-slider v-model="diyStore.editComponent.bottomElementRounded" show-input size="small" class="ml-[10px] diy-nav-slider" :max="50" />
+                </el-form-item>
+            </el-form>
+        </div>
 
-		<!-- 组件样式 -->
-		<slot name="style"></slot>
-	</div>
+        <!-- 组件样式 -->
+        <slot name="style"></slot>
+    </div>
 
 </template>
 
@@ -312,16 +314,16 @@ const changeTemplateList = (v: number) => {
     }
 }
 
-const selectImg = (url:string) => {
+const selectImg = (url: string) => {
     handleHeight(true)
 }
 
 // 处理高度
-const handleHeight = (isCalcHeight:boolean = false) => {
+const handleHeight = (isCalcHeight: boolean = false) => {
     diyStore.editComponent.list.forEach((item: any, index: number) => {
         const image = new Image()
         image.src = img(item.imageUrl)
-        image.onload = async () => {
+        image.onload = async() => {
             item.imgWidth = image.width
             item.imgHeight = image.height
         }
@@ -332,307 +334,307 @@ defineExpose({})
 </script>
 
 <style lang="scss" scoped>
-	.rubik-cube .selected-template-list {
-		/*padding-left: 15px;*/
-		margin-bottom: 20px;
-		overflow: hidden;
-		display: flex;
-		flex-wrap: wrap;
+.rubik-cube .selected-template-list {
+    /*padding-left: 15px;*/
+    margin-bottom: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
 
-		li {
-			color: #909399;
-			width: 46px;
-			height: 32px;
-			text-align: center;
-			line-height: 29px;
-			border: 1px solid #e5e5e5;
-			cursor: pointer;
-			background: #ffffff;
-			box-sizing: border-box;
-			border-right: 1px transparent solid;
+    li {
+        color: #909399;
+        width: 46px;
+        height: 32px;
+        text-align: center;
+        line-height: 29px;
+        border: 1px solid #e5e5e5;
+        cursor: pointer;
+        background: #ffffff;
+        box-sizing: border-box;
+        border-right: 1px transparent solid;
 
-			&:last-child {
-				border-right: 1px solid #e5e5e5;
-			}
+        &:last-child {
+            border-right: 1px solid #e5e5e5;
+        }
 
-			&.selected {
-				color: var(--el-color-primary);
-				border-color: var(--el-color-primary);
-			}
+        &.selected {
+            color: var(--el-color-primary);
+            border-color: var(--el-color-primary);
+        }
 
-			img {
-				display: inline-block;
-			}
+        img {
+            display: inline-block;
+        }
 
-			div {
-				font-size: 12px;
-			}
-		}
-	}
+        div {
+            font-size: 12px;
+        }
+    }
+}
 
-	.layout {
-		overflow: hidden;
-		position: relative;
-		margin-bottom: 15px;
+.layout {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 15px;
 
-		li {
-			float: left;
-			color: #909399;
-			border: 1px solid #e5e5e5;
-			cursor: pointer;
-			font-size: 12px;
-			position: relative;
+    li {
+        float: left;
+        color: #909399;
+        border: 1px solid #e5e5e5;
+        cursor: pointer;
+        font-size: 12px;
+        position: relative;
 
-			div.empty {
-				left: 0;
-				text-align: center;
-				width: 100%;
-				position: absolute;
-				top: 50%;
-				margin-top: -26px;
+        div.empty {
+            left: 0;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            margin-top: -26px;
 
-				p {
-					margin: 0;
-					line-height: 26px;
-				}
-			}
+            p {
+                margin: 0;
+                line-height: 26px;
+            }
+        }
 
-			div.have-preview-image {
-				box-sizing: border-box;
+        div.have-preview-image {
+            box-sizing: border-box;
 
-				img {
-					display: inline-block;
-					width: auto;
-					height: auto;
-					max-width: 100%;
-					max-height: 100%;
-				}
-			}
+            img {
+                display: inline-block;
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
 
-			// 1行2个
-			&.row1-of2 {
-				width: 49.2%;
-				height: 160px;
-				border-right: 1px transparent solid;
+        // 1行2个
+        &.row1-of2 {
+            width: 49.2%;
+            height: 160px;
+            border-right: 1px transparent solid;
 
-				&:last-child {
-					border-right: 1px solid #e5e5e5;
-				}
+            &:last-child {
+                border-right: 1px solid #e5e5e5;
+            }
 
-				div.empty {
-				}
+            div.empty {
+            }
 
-				div.have-preview-image {
-					text-align: center;
-					height: 100%;
-					line-height: 160px;
-					background: #ffffff;
-				}
+            div.have-preview-image {
+                text-align: center;
+                height: 100%;
+                line-height: 160px;
+                background: #ffffff;
+            }
 
-			}
+        }
 
-			// 1行3个
-			&.row1-of3 {
-				width: 32.5%;
-				height: 100px;
-				border-right: 1px transparent solid;
+        // 1行3个
+        &.row1-of3 {
+            width: 32.5%;
+            height: 100px;
+            border-right: 1px transparent solid;
 
-				&:last-child {
-					border-right: 1px solid #bdf;
-				}
+            &:last-child {
+                border-right: 1px solid #bdf;
+            }
 
-				div.empty {
-				}
+            div.empty {
+            }
 
-				div.have-preview-image {
-					text-align: center;
-					height: 100%;
-					line-height: 100px;
-					background: #ffffff;
-				}
-			}
+            div.have-preview-image {
+                text-align: center;
+                height: 100%;
+                line-height: 100px;
+                background: #ffffff;
+            }
+        }
 
-			// 1行4个
-			&.row1-of4 {
-				width: 24.2%;
-				height: 80px;
-				border-right: 1px transparent solid;
+        // 1行4个
+        &.row1-of4 {
+            width: 24.2%;
+            height: 80px;
+            border-right: 1px transparent solid;
 
-				&:last-child {
-					border-right: 1px solid #bdf;
-				}
+            &:last-child {
+                border-right: 1px solid #bdf;
+            }
 
-				div.empty {
-				}
+            div.empty {
+            }
 
-				div.have-preview-image {
-					text-align: center;
-					height: 100%;
-					line-height: 80px;
-					background: #ffffff;
-				}
-			}
+            div.have-preview-image {
+                text-align: center;
+                height: 100%;
+                line-height: 80px;
+                background: #ffffff;
+            }
+        }
 
-			// 2左2右
-			&.row2-lt-of2-rt {
-				width: 49.2%;
-				height: 160px;
+        // 2左2右
+        &.row2-lt-of2-rt {
+            width: 49.2%;
+            height: 160px;
 
-				&:nth-child(1) {
-					border-right: 1px transparent solid;
-					border-bottom: 1px transparent solid;
-				}
+            &:nth-child(1) {
+                border-right: 1px transparent solid;
+                border-bottom: 1px transparent solid;
+            }
 
-				&:nth-child(2) {
-					border-bottom: 1px transparent solid;
-				}
+            &:nth-child(2) {
+                border-bottom: 1px transparent solid;
+            }
 
-				&:nth-child(3) {
-					border-right: 1px transparent solid;
-					clear: both;
-				}
+            &:nth-child(3) {
+                border-right: 1px transparent solid;
+                clear: both;
+            }
 
-				div.empty {
-				}
+            div.empty {
+            }
 
-				div.have-preview-image {
-					text-align: center;
-					height: 100%;
-					line-height: 160px;
-					background: #ffffff;
-				}
-			}
+            div.have-preview-image {
+                text-align: center;
+                height: 100%;
+                line-height: 160px;
+                background: #ffffff;
+            }
+        }
 
-			// 1左2右
-			&.row1-lt-of2-rt {
-				width: 49.2%;
-				font-size: 12px;
+        // 1左2右
+        &.row1-lt-of2-rt {
+            width: 49.2%;
+            font-size: 12px;
 
-				&:nth-child(1) {
-					height: 322px;
-					border-right: 1px transparent solid;
+            &:nth-child(1) {
+                height: 322px;
+                border-right: 1px transparent solid;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 322px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 322px;
+                    background: #ffffff;
+                }
+            }
 
-				&:nth-child(2) {
-					height: 160px;
-					border-bottom: 1px transparent solid;
+            &:nth-child(2) {
+                height: 160px;
+                border-bottom: 1px transparent solid;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 160px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 160px;
+                    background: #ffffff;
+                }
+            }
 
-				&:nth-child(3) {
-					height: 160px;
+            &:nth-child(3) {
+                height: 160px;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 160px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 160px;
+                    background: #ffffff;
+                }
+            }
 
-				div.empty {
-				}
-			}
+            div.empty {
+            }
+        }
 
-			// 1上2下
-			&.row1-tp-of2-bm {
-				height: 160px;
+        // 1上2下
+        &.row1-tp-of2-bm {
+            height: 160px;
 
-				&:nth-child(1) {
-					width: 99.4%;
-					border-bottom: 1px transparent solid;
-				}
+            &:nth-child(1) {
+                width: 99.4%;
+                border-bottom: 1px transparent solid;
+            }
 
-				&:nth-child(2) {
-					width: 49.2%;
-					border-right: 1px transparent solid;
-				}
+            &:nth-child(2) {
+                width: 49.2%;
+                border-right: 1px transparent solid;
+            }
 
-				&:nth-child(3) {
-					width: 49.2%;
-				}
+            &:nth-child(3) {
+                width: 49.2%;
+            }
 
-				div.empty {
-				}
+            div.empty {
+            }
 
-				div.have-preview-image {
-					text-align: center;
-					height: 100%;
-					line-height: 160px;
-					background: #ffffff;
-				}
-			}
+            div.have-preview-image {
+                text-align: center;
+                height: 100%;
+                line-height: 160px;
+                background: #ffffff;
+            }
+        }
 
-			// 1左3右
-			&.row1-lt-of1-tp-of2-bm {
-				&:nth-child(1) {
-					height: 320px;
-					width: 49.2%;
-					border-right: 1px transparent solid;
+        // 1左3右
+        &.row1-lt-of1-tp-of2-bm {
+            &:nth-child(1) {
+                height: 320px;
+                width: 49.2%;
+                border-right: 1px transparent solid;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 320px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 320px;
+                    background: #ffffff;
+                }
+            }
 
-				&:nth-child(2) {
-					height: 160px;
-					width: 49.2%;
-					border-bottom: 1px transparent solid;
+            &:nth-child(2) {
+                height: 160px;
+                width: 49.2%;
+                border-bottom: 1px transparent solid;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 160px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 160px;
+                    background: #ffffff;
+                }
+            }
 
-				&:nth-child(3) {
-					height: 160px;
-					width: 24.2%;
-					border-right: 1px transparent solid;
+            &:nth-child(3) {
+                height: 160px;
+                width: 24.2%;
+                border-right: 1px transparent solid;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 160px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 160px;
+                    background: #ffffff;
+                }
+            }
 
-				&:nth-child(4) {
-					height: 160px;
-					width: 24.2%;
+            &:nth-child(4) {
+                height: 160px;
+                width: 24.2%;
 
-					div.have-preview-image {
-						text-align: center;
-						height: 100%;
-						line-height: 160px;
-						background: #ffffff;
-					}
-				}
+                div.have-preview-image {
+                    text-align: center;
+                    height: 100%;
+                    line-height: 160px;
+                    background: #ffffff;
+                }
+            }
 
-				div.empty {
-				}
-			}
+            div.empty {
+            }
+        }
 
-		}
-	}
+    }
+}
 </style>

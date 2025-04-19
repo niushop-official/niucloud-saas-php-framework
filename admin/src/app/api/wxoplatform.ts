@@ -42,8 +42,8 @@ export function getAuthorizationResult(params: Record<string, any>) {
  * 小程序代码提交
  * @returns
  */
-export function weappCommit() {
-    return request.post('wxoplatform/weapp/version/commit', {}, { showSuccessMessage: true })
+export function weappCommit(params: Record<string, any>) {
+    return request.post('wxoplatform/weapp/version/commit', params, { showSuccessMessage: true })
 }
 
 /**
@@ -67,3 +67,11 @@ export function getWeappLastCommitRecord() {
 export function siteWeappCommit() {
     return request.post('wxoplatform/site/weapp/commit', {}, { showSuccessMessage: true })
 }
+
+/**
+ * 按站点套餐获取提交记录
+ */
+export function getSiteGroupCommitRecord(params: Record<string, any>) {
+    return request.get('wxoplatform/sitegroup/commit', { params })
+}
+

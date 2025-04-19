@@ -23,7 +23,7 @@
                                 <div class="flex flex-col justify-between w-[180px]">
                                     <div class="text-[14px] flex items-center">
                                         <span class="app-text max-w-[170px]">{{ childItem.title }}</span>
-                                        <span class="iconfont iconxiaochengxu2 text-[#00b240] ml-[4px] !text-[14px]"></span>
+<!--                                        <span class="iconfont iconxiaochengxu2 text-[#00b240] ml-[4px] !text-[14px]"></span>-->
                                     </div>
                                         <!-- <el-icon color="#666">
                                             <QuestionFilled />
@@ -68,7 +68,6 @@ const getAppList = async () => {
 getAppList()
 
 const toLink = (item: any) => {
-    console.log('tol', item)
     if (item.url) {
         router.push(item.url)
     } else {

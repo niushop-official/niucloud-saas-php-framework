@@ -20,6 +20,18 @@
                         <p class="text-[12px] text-[#a9a9a9]">{{ t('iconPlaceholder') }}</p>
                     </div>
                 </el-form-item>
+                <el-form-item :label="t('siteLoginLogo')" v-if="appType == 'admin'">
+                    <div>
+                        <upload-image v-model="formData.site_login_logo" />
+                        <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginLogoTips') }}</p>
+                    </div>
+                </el-form-item>
+                <el-form-item :label="t('siteLoginBgImg')" v-if="appType == 'admin'">
+                    <div>
+                        <upload-image v-model="formData.site_login_bg_img" />
+                        <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginBgImgTips') }}</p>
+                    </div>
+                </el-form-item>
                 <el-form-item :label="t('keywords')">
                     <el-input v-model.trim="formData.keywords" :placeholder="t('keywordsPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
                 </el-form-item>
@@ -57,6 +69,7 @@
                     <upload-image v-model="formData.enterprise_wechat" />
                 </el-form-item>
             </el-card>
+
         </el-form>
 
         <div class="fixed-footer-wrap">
@@ -73,15 +86,12 @@ import { t } from '@/lang'
 import { setWebsite, getWebsite, getService } from '@/app/api/sys'
 import { FormInstance, FormRules } from 'element-plus'
 import { getAppType } from '@/utils/common'
-import { useRoute } from 'vue-router'
 import useUserStore from '@/stores/modules/user'
-import useSystemStore from '@/stores/modules/system';
+import useSystemStore from '@/stores/modules/system'
 
-const route = useRoute()
-const pageName = route.meta.title
 const loading = ref(true)
 const appType = ref(getAppType())
-const formData = reactive<Record<string, string>>({
+const formData: any = reactive<Record<string, string>>({
     site_name: '',
     logo: '',
     desc: '',
@@ -101,7 +111,9 @@ const formData = reactive<Record<string, string>>({
     icon: '',
     wechat_code: '',
     enterprise_wechat: '',
-    tel: ''
+    tel: '',
+    site_login_logo: '',
+    site_login_bg_img: ''
 })
 
 const setFormData = async () => {
@@ -110,10 +122,12 @@ const setFormData = async () => {
         if (data[key] != undefined) formData[key] = data[key]
     })
 
-    const service_data = await (await getService()).data
-    formData['wechat_code'] = service_data.wechat_code
-    formData['enterprise_wechat'] = service_data.enterprise_wechat
-    formData['tel'] = service_data.tel
+    const service_data: any = await (await getService()).data
+    formData.wechat_code = service_data.wechat_code
+    formData.enterprise_wechat = service_data.enterprise_wechat
+    formData.tel = service_data.tel
+    formData.site_login_logo = service_data.site_login_logo
+    formData.site_login_bg_img = service_data.site_login_bg_img
     loading.value = false
 }
 setFormData()
@@ -139,7 +153,6 @@ const save = async (formEl: FormInstance | undefined) => {
     await formEl.validate(async (valid) => {
         if (valid) {
             loading.value = true
-
             setWebsite(formData).then(() => {
                 loading.value = false
                 appType.value == 'admin' ? useSystemStore().getWebsiteInfo() : useUserStore().getSiteInfo()

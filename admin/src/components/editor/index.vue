@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { getToken, img } from '@/utils/common'
 import { VueUeditorWrap } from 'vue-ueditor-wrap'
 import storage from '@/utils/storage'
@@ -85,11 +85,15 @@ const handleEditorReady = (editor) => {
     //     // 同步到统计栏（需操作DOM）
     //     updateStatsDisplay(charCount.value)
     // })
-    console.log('扩展原型链', editor)
+    // console.log('扩展原型链', editor)
+    editor.addListener('blur', () => {
+        // console.log('失焦了')
+        emit('handleBlur', editor.getContent()) // 把内容传出去
+    })
 
     // 方案二：原型链扩展（如果编辑器版本支持）
     const originalCount = editor.getContentLength; // 原生统计方法
-  
+
   // 覆盖方法：去除空格后统计
   editor.getContentLength = function () {
     const rawContent = editor.getContent();

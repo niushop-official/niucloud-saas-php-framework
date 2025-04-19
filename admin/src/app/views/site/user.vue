@@ -98,8 +98,7 @@ import { img } from '@/utils/common'
 import type { FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import userEdit from './components/user-edit.vue'
-import {ElMessageBox} from "element-plus";
-import {deleteSite} from "@/app/api/site";
+import { ElMessageBox } from "element-plus";
 
 const router = useRouter()
 const route = useRoute()

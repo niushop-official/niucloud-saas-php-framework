@@ -18,7 +18,7 @@ export function getSiteList(params: Record<string, any>) {
  * @param site_id
  */
 export function getSiteInfo(site_id: number) {
-    return request.get(`site/site/${site_id}`);
+    return request.get(`site/site/${ site_id }`);
 }
 
 /**
@@ -35,7 +35,7 @@ export function addSite(params: Record<string, any>) {
  * @param params
  */
 export function editSite(params: Record<string, any>) {
-    return request.put(`site/site/${params.site_id}`, params, { showSuccessMessage: true })
+    return request.put(`site/site/${ params.site_id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -43,7 +43,7 @@ export function editSite(params: Record<string, any>) {
  * @param siteId
  */
 export function deleteSite(siteId: number) {
-    return request.delete(`site/site/${siteId}`)
+    return request.delete(`site/site/${ siteId }`)
 }
 
 /**
@@ -51,7 +51,7 @@ export function deleteSite(siteId: number) {
  * @param params
  */
 export function closeSite(params: Record<string, any>) {
-    return request.put(`site/closesite/${params.site_id}`, params, { showSuccessMessage: true })
+    return request.put(`site/closesite/${ params.site_id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -59,7 +59,7 @@ export function closeSite(params: Record<string, any>) {
  * @param params
  */
 export function openSite(params: Record<string, any>) {
-    return request.put(`site/opensite/${params.site_id}`, params, { showSuccessMessage: true })
+    return request.put(`site/opensite/${ params.site_id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -85,7 +85,7 @@ export function getSiteGroupList(params: Record<string, any>) {
  * @param groupId
  */
 export function getSiteGroupInfo(groupId: number) {
-    return request.get(`site/group/${groupId}`);
+    return request.get(`site/group/${ groupId }`);
 }
 
 /**
@@ -102,7 +102,7 @@ export function addSiteGroup(params: Record<string, any>) {
  * @param params
  */
 export function editSiteGroup(params: Record<string, any>) {
-    return request.put(`site/group/${params.group_id}`, params, { showSuccessMessage: true })
+    return request.put(`site/group/${ params.group_id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -110,7 +110,7 @@ export function editSiteGroup(params: Record<string, any>) {
  * @param group_id
  */
 export function deleteSiteGroup(group_id: number) {
-    return request.delete(`site/group/${group_id}`, { showSuccessMessage: true });
+    return request.delete(`site/group/${ group_id }`, { showSuccessMessage: true });
 }
 
 /**
@@ -146,7 +146,7 @@ export function getUserList(params: Record<string, any>) {
  * @param uid
  */
 export function getUserInfo(uid: number) {
-    return request.get(`site/user/${uid}`);
+    return request.get(`site/user/${ uid }`);
 }
 
 /**
@@ -163,7 +163,7 @@ export function addUser(params: Record<string, any>) {
  * @param params
  */
 export function editUser(params: Record<string, any>) {
-    return request.put(`site/user/${params.uid}`, params, { showSuccessMessage: true })
+    return request.put(`site/user/${ params.uid }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -172,7 +172,7 @@ export function editUser(params: Record<string, any>) {
  * @returns
  */
 export function lockUser(uid: number) {
-    return request.put(`site/user/lock/${uid}`)
+    return request.put(`site/user/lock/${ uid }`)
 }
 
 /**
@@ -181,7 +181,7 @@ export function lockUser(uid: number) {
  * @returns
  */
 export function unlockUser(uid: number) {
-    return request.put(`site/user/unlock/${uid}`)
+    return request.put(`site/user/unlock/${ uid }`)
 }
 
 /**
@@ -190,7 +190,7 @@ export function unlockUser(uid: number) {
  * @param uid
  */
 export function deleteUser(uid: number) {
-    return request.delete(`site/user/${uid}`)
+    return request.delete(`site/user/${ uid }`)
 }
 
 /***************************************************** 操作日志 **************************************************/
@@ -209,7 +209,7 @@ export function getLogList(params: Record<string, any>) {
  * @param id
  */
 export function getLogInfo(id: number) {
-    return request.get(`site/log/${id}`)
+    return request.get(`site/log/${ id }`)
 }
 
 /***************************************************** 账单列表 **************************************************/
@@ -228,7 +228,7 @@ export function getAccountList(params: Record<string, any>) {
  * @param id
  */
 export function getAccountInfo(id: number) {
-    return request.get(`site/account/${id}`)
+    return request.get(`site/account/${ id }`)
 }
 
 /**

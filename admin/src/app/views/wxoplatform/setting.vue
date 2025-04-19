@@ -91,12 +91,8 @@ import { reactive, ref, watch } from 'vue'
 import { t } from '@/lang'
 import { getStatic, getConfig, editConfig } from '@/app/api/wxoplatform'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
-import { useRoute } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { guid } from '@/utils/common'
-
-const route = useRoute()
-const pageName = route.meta.title
 
 const loading = ref(true)
 const formData = ref({

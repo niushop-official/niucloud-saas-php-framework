@@ -9,7 +9,7 @@
                     <el-button type="primary" class="w-[100px]" @click="addEvent">
                         {{ t('addSite') }}
                     </el-button>
-                    <el-button type="default" class="w-[100px]" @click="toSiteLink()">
+                    <el-button class="w-[100px]" @click="toSiteLink()">
                         {{ t('toSite') }}
                     </el-button>
                 </div>

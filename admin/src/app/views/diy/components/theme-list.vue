@@ -1,11 +1,11 @@
 <template>
     <el-dialog v-model="dialogThemeVisible" :title="dialogTitle" width="535px" align-center class="custom-theme-dialog" @close="cancelFn">
         <div class="flex flex-col items-baseline">
-            <div class="flex items-center flex-wrap max-h-[365px] overflow-auto [&>:nth-child(3n)]:mr-0" >
+            <div class="flex items-center flex-wrap max-h-[365px] overflow-auto [&>:nth-child(3n)]:mr-0">
                 <div :key="tempIndex" v-for="(tempItem, tempIndex) in themeTemp"
-                    class="flex flex-col border-[1px] border-solid border-[#dcdee2] rounded-[4px] px-[10px] pt-[10px] pb-[15px] mr-[10px] cursor-pointer my-[5px]"
-                    :class="{ '!border-[var(--el-color-primary)]': currTheme.id == tempItem.id }"
-                    @click="themeTempChange(tempItem)">
+                     class="flex flex-col border-[1px] border-solid border-[#dcdee2] rounded-[4px] px-[10px] pt-[10px] pb-[15px] mr-[10px] cursor-pointer my-[5px]"
+                     :class="{ '!border-[var(--el-color-primary)]': currTheme.id == tempItem.id }"
+                     @click="themeTempChange(tempItem)">
                     <div class="flex justify-between pb-[5px]">
                         <div class="text-[14px] text-[#666] max-w-[85px] whitespace-nowrap overflow-hidden text-ellipsis" :class="{ '!text-[#333]': currTheme.id == tempItem.id }">{{ tempItem.title }}</div>
                         <div>
@@ -14,7 +14,8 @@
                         </div>
                     </div>
                     <div class="flex">
-                        <div class="w-[70px] h-[54px] pl-[7px] pt-[9px] flex flex-col mr-[4px] rounded-[4px] text-[10px] leading-[1] text-[#fff]" :style="{ backgroundColor: tempItem.theme['--primary-color'] }">
+                        <div class="w-[70px] h-[54px] pl-[7px] pt-[9px] flex flex-col mr-[4px] rounded-[4px] text-[10px] leading-[1] text-[#fff]"
+                            :style="{ backgroundColor: tempItem.theme['--primary-color'] }">
                             <span>主色调</span>
                         </div>
                         <div class="flex flex-col">
@@ -43,14 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
 import { setDiyTheme, getDefaultTheme, deleteTheme } from '@/app/api/diy'
 import { cloneDeep } from 'lodash-es'
 import editTheme from './edit-theme.vue'
-import useDiyStore from '@/stores/modules/diy'
-import { time } from 'echarts'
-const diyStore = useDiyStore()
 
 const editThemeRef = ref()
 const dialogThemeVisible = ref(false)
@@ -90,7 +88,7 @@ const open = (res: any) => {
 }
 
 const dialogTitle = computed(() => {
-    const name = `选择${currTheme.addon_title}配色`
+    const name = `选择${ currTheme.addon_title }配色`
     return name
 })
 
@@ -190,7 +188,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-    .secod-color-item {
-        @apply w-[60px] h-[25px] flex flex-col rounded-[4px] text-[10px] text-[#fff] leading-[1] items-end pt-[8px] pr-[7px];
-    }
+.secod-color-item {
+    @apply w-[60px] h-[25px] flex flex-col rounded-[4px] text-[10px] text-[#fff] leading-[1] items-end pt-[8px] pr-[7px];
+}
 </style>

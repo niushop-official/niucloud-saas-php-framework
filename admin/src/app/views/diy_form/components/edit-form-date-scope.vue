@@ -1,93 +1,98 @@
 <template>
-	<!-- 内容 -->
-	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
+    <!-- 内容 -->
+    <div class="content-wrap" v-show="diyStore.editTab == 'content'">
 
-		<!-- 表单组件 字段内容设置 -->
-		<slot name="field"></slot>
-		<el-form label-width="100px" class="px-[10px]">
-			<el-form-item :label="t('dataFormat')">
-				<el-radio-group v-model="diyStore.editComponent.dateFormat">
-					<div class="flex flex-col">
+        <!-- 表单组件 字段内容设置 -->
+        <slot name="field"></slot>
+        <el-form label-width="100px" class="px-[10px]">
+            <el-form-item :label="t('dataFormat')">
+                <el-radio-group v-model="diyStore.editComponent.dateFormat">
+                    <div class="flex flex-col">
                         <el-radio label="YYYY年M月D日">{{ dateFormat.format1 }}</el-radio>
                         <el-radio label="YYYY-MM-DD">{{ dateFormat.format2 }}</el-radio>
                         <el-radio label="YYYY/MM/DD">{{ dateFormat.format3 }}</el-radio>
                     </div>
-				</el-radio-group>
-			</el-form-item>
-		</el-form>
+                </el-radio-group>
+            </el-form-item>
+        </el-form>
 
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('startDate') }}</h3>
-			<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-				<el-form-item :label="t('formPlaceholder')">
-					<el-input v-model.trim="diyStore.editComponent.start.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
-				</el-form-item>
-				<el-form-item :label="t('defaultValue')">
-					<el-switch v-model="diyStore.editComponent.start.defaultControl" />
-				</el-form-item>
-				<el-form-item v-if="diyStore.editComponent.start.defaultControl">
-					<el-radio-group v-model="diyStore.editComponent.start.dateWay">
-						<el-radio label="current">{{ t('currentDate') }}</el-radio>
-						<el-radio label="diy">{{ t('diyDate') }}</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item v-if="diyStore.editComponent.start.defaultControl && diyStore.editComponent.start.dateWay == 'diy'">
-					<el-date-picker v-model="diyStore.editComponent.field.default.start.date" format="YYYY/MM/DD" value-format="YYYY-MM-DD" type="date" :placeholder="t('startDataPlaceholder')" @change="startDateChange" />
-				</el-form-item>
-			</el-form>
-		</div>
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('startDate') }}</h3>
+            <el-form label-width="100px" class="px-[10px]" @submit.prevent>
+                <el-form-item :label="t('formPlaceholder')">
+                    <el-input v-model.trim="diyStore.editComponent.start.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('defaultValue')">
+                    <el-switch v-model="diyStore.editComponent.start.defaultControl" />
+                </el-form-item>
+                <el-form-item v-if="diyStore.editComponent.start.defaultControl">
+                    <el-radio-group v-model="diyStore.editComponent.start.dateWay">
+                        <el-radio label="current">{{ t('currentDate') }}</el-radio>
+                        <el-radio label="diy">{{ t('diyDate') }}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item
+                    v-if="diyStore.editComponent.start.defaultControl && diyStore.editComponent.start.dateWay == 'diy'">
+                    <el-date-picker v-model="diyStore.editComponent.field.default.start.date" format="YYYY/MM/DD" value-format="YYYY-MM-DD" type="date" :placeholder="t('startDataPlaceholder')" @change="startDateChange" />
+                </el-form-item>
+            </el-form>
+        </div>
 
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('endDate') }}</h3>
-			<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-				<el-form-item :label="t('formPlaceholder')">
-					<el-input v-model.trim="diyStore.editComponent.end.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
-				</el-form-item>
-				<el-form-item :label="t('defaultValue')">
-					<el-switch v-model="diyStore.editComponent.end.defaultControl" />
-				</el-form-item>
-				<el-form-item v-if="diyStore.editComponent.end.defaultControl">
-					<el-radio-group v-model="diyStore.editComponent.end.dateWay">
-						<el-radio label="current">{{ t('currentDate') }}</el-radio>
-						<el-radio label="diy">{{ t('diyDate') }}</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item v-if="diyStore.editComponent.end.defaultControl && diyStore.editComponent.end.dateWay == 'diy'">
-					<el-date-picker :disabled-date="disabledEndDate" v-model="diyStore.editComponent.field.default.end.date" format="YYYY/MM/DD" value-format="YYYY-MM-DD" type="date" :placeholder="t('endDataPlaceholder')" @change="endDateChange" />
-				</el-form-item>
-			</el-form>
-		</div>
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('endDate') }}</h3>
+            <el-form label-width="100px" class="px-[10px]" @submit.prevent>
+                <el-form-item :label="t('formPlaceholder')">
+                    <el-input v-model.trim="diyStore.editComponent.end.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('defaultValue')">
+                    <el-switch v-model="diyStore.editComponent.end.defaultControl" />
+                </el-form-item>
+                <el-form-item v-if="diyStore.editComponent.end.defaultControl">
+                    <el-radio-group v-model="diyStore.editComponent.end.dateWay">
+                        <el-radio label="current">{{ t('currentDate') }}</el-radio>
+                        <el-radio label="diy">{{ t('diyDate') }}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item
+                    v-if="diyStore.editComponent.end.defaultControl && diyStore.editComponent.end.dateWay == 'diy'">
+                    <el-date-picker :disabled-date="disabledEndDate"
+                                    v-model="diyStore.editComponent.field.default.end.date" format="YYYY/MM/DD"
+                                    value-format="YYYY-MM-DD" type="date" :placeholder="t('endDataPlaceholder')"
+                                    @change="endDateChange" />
+                </el-form-item>
+            </el-form>
+        </div>
 
-		<!-- 表单组件 其他设置 -->
-		<slot name="other"></slot>
+        <!-- 表单组件 其他设置 -->
+        <slot name="other"></slot>
 
-	</div>
+    </div>
 
-	<!-- 样式 -->
-	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+    <!-- 样式 -->
+    <div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('textStyle') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
-				<el-form-item :label="t('textFontSize')">
-					<el-slider v-model="diyStore.editComponent.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="18" />
-				</el-form-item>
-				<el-form-item :label="t('textFontWeight')">
-					<el-radio-group v-model="diyStore.editComponent.fontWeight">
-						<el-radio :label="'normal'">{{ t('fontWeightNormal') }}</el-radio>
-						<el-radio :label="'bold'">{{ t('fontWeightBold') }}</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item :label="t('textColor')">
-					<el-color-picker v-model="diyStore.editComponent.textColor" />
-				</el-form-item>
-			</el-form>
-		</div>
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('textStyle') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
+                <el-form-item :label="t('textFontSize')">
+                    <el-slider v-model="diyStore.editComponent.fontSize" show-input size="small" class="ml-[10px] diy-nav-slider" :min="12" :max="18" />
+                </el-form-item>
+                <el-form-item :label="t('textFontWeight')">
+                    <el-radio-group v-model="diyStore.editComponent.fontWeight">
+                        <el-radio :label="'normal'">{{ t('fontWeightNormal') }}</el-radio>
+                        <el-radio :label="'bold'">{{ t('fontWeightBold') }}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item :label="t('textColor')">
+                    <el-color-picker v-model="diyStore.editComponent.textColor" />
+                </el-form-item>
+            </el-form>
+        </div>
 
-		<!-- 组件样式 -->
-		<slot name="style"></slot>
+        <!-- 组件样式 -->
+        <slot name="style"></slot>
 
-	</div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -142,7 +147,7 @@ const dateFormat: any = reactive({
 })
 
 // 结束日期-禁止的日期
-const disabledEndDate = (time:Date)=>{
+const disabledEndDate = (time: Date) => {
     let cutoffDate = null
     let bool = false
     if (diyStore.editComponent.start && diyStore.editComponent.start.defaultControl) {
@@ -177,10 +182,10 @@ onMounted(() => {
 
     const hours = String(today.getHours()).padStart(2, '0')
     const minutes = String(today.getMinutes()).padStart(2, '0')
-    dateFormat.format1 = `${year}年${month}月${day}日`
-    dateFormat.format2 = `${year}-${month}-${day}`
-    dateFormat.format3 = `${year}/${month}/${day}`
-    dateFormat.format4 = `${year}-${month}-${day} ${hours}:${minutes}`
+    dateFormat.format1 = `${ year }年${ month }月${ day }日`
+    dateFormat.format2 = `${ year }-${ month }-${ day }`
+    dateFormat.format3 = `${ year }/${ month }/${ day }`
+    dateFormat.format4 = `${ year }-${ month }-${ day } ${ hours }:${ minutes }`
 })
 
 // 开始日期选择器

@@ -1,0 +1,8 @@
+{
+  "id": "编号",
+  "upgradeName": "内容",
+  "prevVersion": "前一版本",
+  "currentVersion": "版本",
+  "upgradeNamePlaceholder": "请输入内容",
+  "completeTime": "升级时间"
+}

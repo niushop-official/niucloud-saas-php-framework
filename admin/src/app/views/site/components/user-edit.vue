@@ -16,11 +16,23 @@
                     </el-form-item>
 
                     <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model.trim="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="passwordInput" @click="passwordInput = false" @blur="passwordInput = true"  />
+                        <el-input v-model.trim="formData.password" :class="passwordType == 'text' ? '' :'displayPass'" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :readonly="passwordInput" @click="passwordInput = false" @blur="passwordInput = true"  >
+                            <template #suffix>
+                                <el-icon @click="togglePasswordVisibility" class="cursor-pointer">
+                                    <component :is=" passwordType === 'password' ? 'Hide' : 'View'" />
+                                </el-icon>
+                            </template>
+                        </el-input>
                     </el-form-item>
 
                     <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model.trim="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirmPasswordInput" @click="confirmPasswordInput = false" @blur="confirmPasswordInput = true" />
+                        <el-input v-model.trim="formData.confirm_password" :class="confirmPasswordType == 'text' ? '' :'displayPass'"  :placeholder="t('confirmPasswordPlaceholder')" clearable class="input-width" :readonly="confirmPasswordInput" @click="confirmPasswordInput = false" @blur="confirmPasswordInput = true" >
+                            <template #suffix>
+                                <el-icon @click="toggleConfirmPasswordVisibility" class="cursor-pointer">
+                                    <component :is=" confirmPasswordType === 'password' ? 'Hide' : 'View'" />
+                                </el-icon>
+                            </template>
+                        </el-input>
                     </el-form-item>
 
                     <el-form-item :label="t('userCreateSiteLimit')" v-if="!formData.uid && Object.keys(siteGroup).length" prop="create_site_limit">
@@ -223,6 +235,18 @@ const realnameInput = ref(true)
 const passwordInput = ref(true)
 const confirmPasswordInput = ref(true)
 
+const passwordType = ref('password')
+
+const togglePasswordVisibility = () => {
+    passwordType.value = passwordType.value === 'password' ? 'text' : 'password'
+}
+const confirmPasswordType = ref('password')
+
+const toggleConfirmPasswordVisibility = () => {
+    confirmPasswordType.value = confirmPasswordType.value === 'password' ? 'text' : 'password'
+}
+
+
 defineExpose({
     showDialog,
     setFormData
@@ -230,5 +254,9 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-
+.displayPass {
+  ::v-deep .el-input__inner{
+    -webkit-text-security: disc !important;
+  }
+}
 </style>

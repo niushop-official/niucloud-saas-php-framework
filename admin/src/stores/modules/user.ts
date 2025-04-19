@@ -59,6 +59,9 @@ const userStore = defineStore('user', {
                 })
             })
         },
+        clearRouters() {
+            this.routers = []
+        },
         logout() {
             if (!this.token) return
             this.token = ''

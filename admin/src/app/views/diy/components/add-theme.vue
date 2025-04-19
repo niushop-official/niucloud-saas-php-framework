@@ -27,19 +27,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
-import { getAreaListByPid } from '@/app/api/sys'
-import { addMemberAddress } from '@/app/api/member'
-import { filterNumber } from '@/utils/common'
 import type { FormInstance } from 'element-plus'
-import { FormRules } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
 import useDiyStore from '@/stores/modules/diy'
 const diyStore = useDiyStore()
 
 const dialogThemeVisible = ref(false)
-let confirmRepeat = false
+const confirmRepeat = ref(false)
 const emit = defineEmits(['confirm'])
 /**
 * 表单数据
@@ -73,35 +69,50 @@ const open = (option:any) => {
 const formRef = ref<FormInstance>()
 
 // 表单验证规则
-const formRules = reactive<FormRules>({
-    title: [
-        { required: true, message: "请输入颜色名称", trigger: 'blur' }
-    ],
-    value: [
-        { required: true, message: "请输入颜色value值", trigger: 'blur' }
-    ],
-    label: [
-        { required: true, message: "请输入颜色key值", trigger: 'blur' },
-        {
-            validator: (rule: any, value: any, callback: any) => {
-                const regex = /^[a-zA-Z0-9-]+$/
-                if (keyArr.indexOf(value) != -1) {
-                    callback('新增颜色key值与已存在颜色key值命名重复，请修改命名')
-                } if (!regex.test(value)) {
-                    callback('颜色key值只能输入字母、数字和连字符')
-                } else{
-                    callback();
-                }
-            },
-            trigger: 'blur'
-        }
-    ]
+const formRules = computed(() => {
+    return {
+        title: [
+            { required: true, message: "请输入颜色名称", trigger: 'blur' }
+        ],
+        value: [
+            {
+                required: true,
+                validator: (rule: any, value: any, callback: any) => {
+                    if (!value) {
+                        callback('请输入颜色value值')
+                    } else{
+                        callback();
+                    }
+                },
+                trigger: ['blur', 'change']
+            }
+        ],
+        label: [
+            { required: true, message: "请输入颜色key值", trigger: 'blur' },
+            {
+                validator: (rule: any, value: any, callback: any) => {
+                    const regex = /^[a-zA-Z0-9-]+$/
+                    if (keyArr.indexOf(value) != -1) {
+                        callback('新增颜色key值与已存在颜色key值命名重复，请修改命名')
+                    } if (!regex.test(value)) {
+                        callback('颜色key值只能输入字母、数字和连字符')
+                    } else{
+                        callback();
+                    }
+                },
+                trigger: 'blur'
+            }
+        ]
+    }
 })
 
 const confirmFn = async (formEl: FormInstance | undefined) => {
-    if (confirmRepeat || !formEl) return
-    await formEl.validate(async (valid) => {
+    if (confirmRepeat.value) return
+    await formRef.value?.validate(async (valid) => {
+        if (confirmRepeat.value) return
+        confirmRepeat.value = true
         if (valid) {
+            confirmRepeat.value = false
             emit('confirm', cloneDeep(formData));
             dialogThemeVisible.value = false;
         }

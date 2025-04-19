@@ -26,7 +26,6 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
-import { img } from '@/utils/common'
 import menuItem from './menu-item.vue'
 import useUserStore from '@/stores/modules/user'
 
@@ -51,14 +50,14 @@ const addons = computed(() => {
 </script>
 
 <style lang="scss">
-    .el-sub-menu {
+.el-sub-menu {
 
-        .el-icon {
-            width: auto;
-        }
-
-        li {
-            font-size: 15px;
-        }
+    .el-icon {
+        width: auto;
     }
+
+    li {
+        font-size: 15px;
+    }
+}
 </style>

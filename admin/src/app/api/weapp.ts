@@ -33,6 +33,7 @@ export function getTemplateList() {
 export function getBatchAcquisition(params: Record<string, any>) {
     return request.put('weapp/template/sync', params, { showSuccessMessage: true })
 }
+
 /**
  * 添加微信小程序版本
  * @param params
@@ -65,7 +66,7 @@ export function getWeappVersionList(params: Record<string, any>) {
  * @returns
  */
 export function getWeappUploadLog(key: string) {
-    return request.get(`weapp/upload/${key}`)
+    return request.get(`weapp/upload/${ key }`)
 }
 
 /***************************************************** 管理端 ****************************************************/
@@ -103,7 +104,7 @@ export function getVersionList(params: Record<string, any>) {
  * @returns
  */
 export function getVersionInfo(id: string) {
-    return request.get(`applet/version/${id}`)
+    return request.get(`applet/version/${ id }`)
 }
 
 /**
@@ -112,7 +113,7 @@ export function getVersionInfo(id: string) {
  * @returns
  */
 export function editVersion(params: Record<string, any>) {
-    return request.put(`applet/version/${params.id}`, params, { showSuccessMessage: true })
+    return request.put(`applet/version/${ params.id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -121,7 +122,7 @@ export function editVersion(params: Record<string, any>) {
  * @returns
  */
 export function deleteVersion(id: string) {
-    return request.delete(`applet/version/${id}`)
+    return request.delete(`applet/version/${ id }`)
 }
 
 /**

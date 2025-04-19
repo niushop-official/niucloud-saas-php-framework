@@ -237,7 +237,7 @@
                 </div>
             </div>
         </div>
-        
+
         <point-edit ref="pointDialog" @complete="getMemberInfoFn" />
         <balance-edit ref="balanceDialog" @complete="getMemberInfoFn" />
         <edit-member ref="editMemberDialog" @complete="getMemberInfoFn()" />
@@ -245,32 +245,23 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, computed } from 'vue'
+import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { addMember, getMemberList, getMemberNo, getMemberInfo } from '@/app/api/member'
+import { getMemberInfo } from '@/app/api/member'
 import { FormInstance, ElMessage } from 'element-plus'
-import { ArrowLeft } from '@element-plus/icons-vue'
-import { useRouter, useRoute } from 'vue-router'
-import { img, filterNumber } from '@/utils/common'
+import { useRouter } from 'vue-router'
+import { img } from '@/utils/common'
 import PointEdit from '@/app/views/member/components/member-point-edit.vue'
 import BalanceEdit from '@/app/views/member/components/member-balance-edit.vue'
 import EditMember from '@/app/views/member/components/edit-member.vue'
-import useAppStore from '@/stores/modules/app'
 
 const showDialog = ref(false)
 const loading = ref(false)
-const repeat = ref(false)
 let popTitle: string = '会员详情'
-let memberNo: string = ''
 let id = '';
 
-const route = useRoute()
 const router = useRouter()
 const emit = defineEmits(['load'])
-
-const nickname_name_input = ref(true)
-const password_input = ref(true)
-const password_copy_input = ref(true)
 
 const handleClose = (done: () => void) => {
     showDialog.value = false;
@@ -289,8 +280,6 @@ const initialFormData = {
     password_copy: ''
 }
 const formData: Record<string, any> = reactive({ ...initialFormData })
-
-const formRef = ref<FormInstance>()
 
 const pointDialog: Record<string, any> | null = ref(null)
 const balanceDialog: Record<string, any> | null = ref(null)

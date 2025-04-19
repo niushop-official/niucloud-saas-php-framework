@@ -106,7 +106,6 @@
 import { computed, reactive, ref } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
-import Test from '@/utils/test'
 import SettingList from './setting-list.vue'
 import { getWeappPrivacySetting, setWeappPrivacySetting } from '@/app/api/weapp'
 

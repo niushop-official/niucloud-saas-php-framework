@@ -1,18 +1,71 @@
 <template>
     <div class="main-container">
         <el-card class="box-card !border-none" shadow="never">
-
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
+                <el-button type="primary" class="w-[100px]" @click="commit()">
+                    {{ t('oneClickSync') }}
+                </el-button>
             </div>
 
-            <div class="mt-[50px] ml-[100px] h-[60vh]">
-                <el-button type="primary" :loading="uploading" @click="commit">{{ t('weappVersionUpdate') }}</el-button>
-                <p class="text-secondary text-sm mt-[10px]">{{ t('updateTips') }}</p>
-                <p class="text-secondary text-sm mt-[10px]" v-if="lastRecord.create_time">
-                    {{ t('lastTime') }}：{{ lastRecord.create_time }}
-                    <el-button type="primary" link @click="commitRecordDialogShow = true">{{ t('seeUpdateRecord') }}</el-button>
-                </p>
+            <div class="mt-[20px]">
+                <el-alert :title="t('updateTips')" type="info" show-icon />
+            </div>
+
+            <div class="mt-[20px]">
+                <el-table :data="siteGroupCommitRecordTableData.data" size="large" v-loading="siteGroupCommitRecordTableData.loading">
+                    <template #empty>
+                        <span>{{ !siteGroupCommitRecordTableData.loading ? t('emptyData') : '' }}</span>
+                    </template>
+
+                    <el-table-column prop="group_name" :label="t('groupName')" />
+
+                    <el-table-column :label="t('userVersion')" :show-overflow-tooltip="true">
+                        <template #default="{ row }">
+                            {{ row.commit_record.user_version || '--' }}
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="create_time" :label="t('createTime')">
+                        <template #default="{ row }">
+                            {{ row.commit_record.create_time || '--' }}
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="create_time" :label="t('status')">
+                        <template #default="{ row }">
+                            <div v-if="row.commit_record.user_version">
+                                {{ row.commit_record.status_name }}
+                                <div v-if="row.commit_record.template_id == '0'" class="text-error">
+                                    {{ t('syncTemplateError') }}
+                                </div>
+                            </div>
+                            <div>
+                                --
+                            </div>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="create_time" :label="t('templateID')">
+                        <template #default="{ row }">
+                            {{ row.commit_record.template_id || '--' }}
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="330">
+                        <template #default="{ row }">
+                            <el-button type="primary" link @click="showCommitRecordDialog(row.group_id)">{{ t('commitRecord') }}</el-button>
+                            <el-button type="primary" link @click="commit(row.group_id)">{{ t('weappVersionUpdate') }}</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+
+            <div class="mt-[16px] flex justify-end">
+                <el-pagination v-model:current-page="siteGroupCommitRecordTableData.page"
+                               v-model:page-size="siteGroupCommitRecordTableData.limit" layout="total, sizes, prev, pager, next, jumper"
+                               :total="siteGroupCommitRecordTableData.total" @size-change="loadSiteGroupCommitRecordTableData()"
+                               @current-change="loadSiteGroupCommitRecordTableData" />
             </div>
         </el-card>
     </div>
@@ -24,7 +77,6 @@
             </template>
 
             <el-table-column prop="user_version" :label="t('userVersion')" />
-            <el-table-column prop="site_group_name" :label="t('groupName')" />
             <el-table-column :label="t('status')" prop="status_name"></el-table-column>
             <el-table-column prop="create_time" :label="t('createTime')"></el-table-column>
             <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
@@ -49,7 +101,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord } from '@/app/api/wxoplatform'
+import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord, getSiteGroupCommitRecord } from '@/app/api/wxoplatform'
 import { t } from '@/lang'
 
 const route = useRoute()
@@ -64,8 +116,16 @@ const commitRecordTableData = reactive({
     loading: true,
     data: [],
     searchParam: {
-        search: ''
+        site_group_id: ''
     }
+})
+const siteGroupCommitRecordTableData = reactive({
+    page: 1,
+    limit: 10,
+    total: 0,
+    loading: true,
+    data: [],
+    searchParam: {}
 })
 const failReason = ref('')
 const failReasonDialogShow = ref(false)
@@ -79,11 +139,11 @@ getWeappLastCommitRecord().then(({ data }) => {
     lastRecord.value = data
 })
 
-const commit = () => {
+const commit = (siteGroupId = '') => {
     if (uploading.value) return
     uploading.value = true
 
-    weappCommit().then(() => {
+    weappCommit({ site_group_id: siteGroupId }).then(() => {
         uploading.value = false
     }).catch(() => {
         uploading.value = false
@@ -100,7 +160,7 @@ const loadCommitRecordList = (page: number = 1) => {
     getWeappCommitRecord({
         page: commitRecordTableData.page,
         limit: commitRecordTableData.limit,
-        role_name: commitRecordTableData.searchParam.search
+        site_group_id: commitRecordTableData.searchParam.site_group_id
     }).then(res => {
         commitRecordTableData.loading = false
         commitRecordTableData.data = res.data.data
@@ -109,7 +169,33 @@ const loadCommitRecordList = (page: number = 1) => {
         commitRecordTableData.loading = false
     })
 }
-loadCommitRecordList()
+
+const loadSiteGroupCommitRecordTableData = (page: number = 1) => {
+    siteGroupCommitRecordTableData.loading = true
+    siteGroupCommitRecordTableData.page = page
+
+    getSiteGroupCommitRecord({
+        page: siteGroupCommitRecordTableData.page,
+        limit: siteGroupCommitRecordTableData.limit
+    }).then(res => {
+        siteGroupCommitRecordTableData.loading = false
+        siteGroupCommitRecordTableData.data = res.data.data
+        siteGroupCommitRecordTableData.total = res.data.total
+    }).catch(() => {
+        siteGroupCommitRecordTableData.loading = false
+    })
+}
+loadSiteGroupCommitRecordTableData()
+
+const showCommitRecordDialog = (siteGroupId: number) => {
+    commitRecordTableData.searchParam.site_group_id = siteGroupId
+    loadCommitRecordList()
+    commitRecordDialogShow.value = true
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.el-alert__title) {
+    white-space: pre;
+}
+</style>

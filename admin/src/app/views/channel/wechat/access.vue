@@ -104,7 +104,6 @@ const router = useRouter()
 const pageName = route.meta.title
 
 const activeName = ref('/channel/wechat')
-const active = ref(2)
 const qrcode = ref('')
 const wechatConfig = ref({})
 const oplatformConfig = ref({})

@@ -1,5 +1,5 @@
 <template>
-    <el-container :class="['w-full h-screen bg-page flex flex-col', { 'login-wrap': loginType == 'admin' }, { 'site-login-wrap': loginType == 'site' }]">
+    <el-container :class="['w-full h-screen bg-page flex flex-col', { 'login-wrap': loginType == 'admin' }, { 'site-login-wrap': loginType == 'site' }]" :style="loginType == 'site' ? siteBackgroundStyle : {}">
         <!-- 平台端登录 -->
         <el-main class="login-main items-center justify-center flex-1 h-0" v-if="loginType == 'admin'">
             <div class="flex rounded-2xl shadow overflow-hidden">
@@ -33,18 +33,20 @@
         <el-main class="login-main w-full mt-[120px] justify-center h-0" v-else-if="!imgLoading && loginType == 'site'">
             <div>
                 <div class="login-main-left flex flex-col items-center justify-center">
-                    <div class="w-[130px] h-[40px] overflow-hidden" v-if="webSite.icon">
-                        <el-image class="w-full h-full" :src="img(webSite.icon)" fit="contain">
+                    <div class="w-[130px] h-[40px] overflow-hidden" v-if="webSite.site_login_logo">
+                        <el-image class="w-full h-full" :src="img(webSite.site_login_logo)" fit="contain">
                             <template #error>
-                                <div class="flex justify-center items-center w-full h-full"><img class="max-w-[130px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
+                                <div class="flex justify-center items-center w-full h-full">
+                                    <img class="max-w-[130px]" src="@/app/assets/images/white_logo.png" alt="" object-fit="contain" />
+                                </div>
                             </template>
                         </el-image>
                     </div>
-                    <div class="text-[30px] mt-[10px]">{{ webSite.site_name || t('siteTitle') }}</div>
+                    <div class="text-[30px] mt-[10px] text-[#fff]">{{ webSite.site_name || t('siteTitle') }}</div>
                 </div>
                 <div class="login flex flex-col w-[400px] mt-[60px] h-[350px] rounded-[10px] py-[20px] px-[40px]">
                     <h3 class="text-center mt-[20px] text-[24px]">{{ t('欢迎登录') }}</h3>
-                    <el-form :model="form" ref="formRef" :rules="formRules" class="mt-[30px] formtwo">
+                    <el-form :model="form" ref="formRef" :rules="formRules" class="mt-[30px] form-two">
                         <el-form-item prop="username">
                             <el-input v-model.trim="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" :input-style="{boxShadow: 'none'}" @keyup.enter="handleLogin(formRef)" class="h-[40px]">
                                 <template #prefix>
@@ -64,12 +66,12 @@
                             <el-button type="primary" class="mt-[30px] !h-[40px] w-full" @click="handleLogin(formRef)" :loading="loading">{{ loading ? t('logging') : t('login') }}</el-button>
                         </el-form-item>
                     </el-form>
-                </div> 
+                </div>
             </div>
-            
+
         </el-main>
 
-        <div class="flex items-center justify-center mt-[20px] pb-[20px] text-sm text-[#666]" v-if="copyright">
+        <div class="flex items-center justify-center mt-[20px] pb-[20px] text-sm" :class="[loginType == 'admin' ? 'text-[#666]' : 'text-[#fff]']" v-if="copyright">
             <a :href="copyright.copyright_link" target="_blank">
                 <span class="mr-3" v-if="copyright.copyright_desc">{{ copyright.copyright_desc }}</span>
                 <span class="mr-3" v-if="copyright.company_name">{{ copyright.company_name }}</span>
@@ -108,20 +110,26 @@ const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const copyright = ref(null)
-const systemStore = useSystemStore()
 
 getWebCopyright().then(({ data }) => {
     copyright.value = data
 })
-route.redirectedFrom && (route.query.redirect = route.redirectedFrom.path)
-const webSite = computed(() => useSystemStore().website)
 
+route.redirectedFrom && (route.query.redirect = route.redirectedFrom.path)
+const webSite: any = computed(() => useSystemStore().website)
+
+const siteBackgroundStyle = computed(() => ({
+    backgroundImage: webSite.value?.site_login_bg_img ? `url(${img(webSite.value.site_login_bg_img)})` : '',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center'
+}))
 
 // 判断登录页面[平台或者站点]
 const loginType = ref(getAppType())
 
 // 验证码 - start
-const verifyRef = ref(null)
+const verifyRef: any = ref(null)
 const success = (params:any) => {
     loginFn({ captcha_code: params.captchaVerification })
 }
@@ -133,12 +141,11 @@ const form = reactive({
 })
 
 // 获取登录配置信息
-const loginConfig = ref(null)
+const loginConfig: any = ref(null)
+
 const getLoginConfigFn = async () => {
     imgLoading.value = true
-    const data = await (await getLoginConfig()).data
-    loginConfig.value = data
-    
+    loginConfig.value = await (await getLoginConfig()).data
     imgLoading.value = false
 }
 getLoginConfigFn()
@@ -159,7 +166,11 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
 
     await formEl.validate((valid, fields) => {
         if (valid) {
-            if (parseInt(loginConfig.value.is_captcha) && loginType.value == 'admin' || parseInt(loginConfig.value.is_site_captcha) && loginType.value == 'site') { verifyRef.value.show() } else { loginFn() }
+            if (parseInt(loginConfig.value.is_captcha) && loginType.value == 'admin' || parseInt(loginConfig.value.is_site_captcha) && loginType.value == 'site') {
+                verifyRef.value.show()
+            } else {
+                loginFn()
+            }
         }
     })
 }
@@ -188,7 +199,6 @@ const loginFn = (data = {}) => {
 }
 
 .site-login-wrap {
-    background-image: url("@/app/assets/images/login/login_bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -203,10 +213,9 @@ const loginFn = (data = {}) => {
     .el-form-item__error {
         top : 45px;
     }
-    
 
 }
-.formtwo .el-input__wrapper{
+.form-two .el-input__wrapper{
         // border: none !important;
         box-shadow: none !important;
         border-bottom: 1px solid #DCDEE0 !important;

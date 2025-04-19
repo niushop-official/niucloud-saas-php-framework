@@ -2,8 +2,7 @@
     <el-dialog v-model="dialogThemeVisible" title="编辑色调" width="850px" align-center destroy-on-close="true">
         <el-form :model="openData" label-width="150px" :rules="formRules">
             <el-form-item label="色调名称" prop="title">
-                <el-input v-model="openData.title" placeholder="请输入色调名称" maxlength="15" class="!w-[250px]"
-                    :disabled="openData.id != ''" />
+                <el-input v-model="openData.title" placeholder="请输入色调名称" maxlength="15" class="!w-[250px]" :disabled="openData.id != ''" @keydown.enter.native.prevent />
             </el-form-item>
         </el-form>
 
@@ -19,8 +18,7 @@
                 <div class="flex items-center">
                     <el-color-picker v-model="item.value" show-alpha :predefine="diyStore.predefineColors" />
                     <span class="text-primary cursor-pointer text-[14px] ml-[20px]" @click="editThemeFn(item)">编辑</span>
-                    <span class="text-primary cursor-pointer text-[14px] ml-[8px]"
-                        @click="deleteThemeFn(item)">删除</span>
+                    <span class="text-primary cursor-pointer text-[14px] ml-[8px]" @click="deleteThemeFn(item)">删除</span>
                 </div>
                 <div class="form-tip">{{ item.tip }}</div>
             </el-form-item>
@@ -45,15 +43,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { t } from '@/lang'
-import { deepClone, filterNumber } from '@/utils/common'
 import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
 import addThemeComponent from './add-theme.vue'
 import useDiyStore from '@/stores/modules/diy'
-import { deleteTheme, addTheme, editTheme } from '@/app/api/diy'
+import { addTheme, editTheme } from '@/app/api/diy'
 import type { FormInstance } from 'element-plus'
+
 const diyStore = useDiyStore()
 
 const dialogThemeVisible = ref(false)

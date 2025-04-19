@@ -2,14 +2,26 @@
     <template v-if="meta.show">
         <el-sub-menu  v-if="meta.type == 0 && routes.children"  :index="String(routes.name)">
             <template #title>
-                <icon v-if="meta.icon && systemStore.menuIsCollapse || props.level != 1"  :name="meta.icon" :size="(meta.icon && systemStore.menuIsCollapse && props.level == 1) ? '20px' : '16px'" class="absolute" />
+                <div class="flex h-full flex-col items-center justify-center" v-if="systemStore.menuIsCollapse && props.level == 1">
+                    <icon v-if="meta.icon"  :name="meta.icon" :size="'20px'" class="leading-none"/>
+                    <div class="leading-none mt-[5px]">{{ meta.short_title || meta.title }}</div>
+                </div>
+                <template v-else>
+                    <icon v-if="meta.icon && props.level != 1"  :name="meta.icon" :size="props.level == 1 ? '20px' : '16px'" class="absolute" />
+                </template>
                 <span class="text-[14px]" :class="{ 'font-bold': props.level === 1 , ' ml-[20px]': (meta.icon && props.level != 1) }">{{ meta.title }}</span>
             </template>
             <menu-item v-for="(route, index) in routes.children" :routes="route" :key="index" :level="props.level + 1" />
         </el-sub-menu>
         <template v-else>
             <el-menu-item :index="String(routes.name)" @click="router.push({ name: routes.name })" >
-                <icon v-if="meta.icon && systemStore.menuIsCollapse || props.level != 1" :name="meta.icon" :size="(meta.icon && systemStore.menuIsCollapse && props.level == 1) ? '20px' : '16px'" class="absolute"   />
+                <div class="flex h-full flex-col items-center justify-center" v-if="systemStore.menuIsCollapse && props.level == 1">
+                    <icon v-if="meta.icon"  :name="meta.icon" :size="'20px'" class="leading-none"/>
+                    <div class="leading-none mt-[5px]">{{ meta.short_title || meta.title }}</div>
+                </div>
+                <template v-else>
+                    <icon v-if="meta.icon && props.level != 1"  :name="meta.icon" :size="props.level == 1 ? '20px' : '16px'" class="absolute" />
+                </template>
                 <template #title>
                     <span class="text-[14px]" :class="{ 'font-bold': props.level === 1 , ' ml-[20px]': (meta.icon && props.level != 1) }">{{ meta.title }}</span>
                 </template>
@@ -87,7 +99,7 @@ watch(route, () => {
             color: var(--el-color-primary);
         }
     }
-    
+
     .el-icon.el-sub-menu__icon-arrow{
         font-size: 15px;
         top: 50%;

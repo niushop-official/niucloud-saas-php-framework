@@ -36,7 +36,7 @@ export function addUser(params: Record<string, any>) {
  * @param uid
  */
 export function deleteUser(uid: number) {
-    return request.delete(`user/user/${uid}`, { showSuccessMessage: true })
+    return request.delete(`user/user/${ uid }`, { showSuccessMessage: true })
 }
 
 /**
@@ -44,7 +44,7 @@ export function deleteUser(uid: number) {
  * @param uid
  */
 export function editUser(params: Record<string, any>) {
-    return request.put(`user/user/${params.uid}`, params, { showSuccessMessage: true })
+    return request.put(`user/user/${ params.uid }`, params, { showSuccessMessage: true })
 }
 
 /**

@@ -121,8 +121,12 @@ defaultOpeneds.value = menuData.value.map(item => item.name)
             justify-content: center;
             align-items: center;
         }
-        &.el-menu--collapse .el-sub-menu__title{
-            justify-content: center;
+        
+        &.el-menu--collapse {
+            .el-menu-item, .el-sub-menu__title {
+                --el-menu-item-height: 60px;
+                justify-content: center;
+            }
         }
     }
 

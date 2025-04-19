@@ -1,13 +1,13 @@
 <template>
-	<!-- 内容 -->
-	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
+    <!-- 内容 -->
+    <div class="content-wrap" v-show="diyStore.editTab == 'content'">
 
-		<!-- 表单组件 字段内容设置 -->
-		<slot name="field"></slot>
-		<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-			<el-form-item :label="t('imageLimit')">
-				<el-input v-model.trim="diyStore.editComponent.limit" :placeholder="t('imageLimitPlaceholder')" clearable maxlength="2" />
-			</el-form-item>
+        <!-- 表单组件 字段内容设置 -->
+        <slot name="field"></slot>
+        <el-form label-width="100px" class="px-[10px]" @submit.prevent>
+            <el-form-item :label="t('imageLimit')">
+                <el-input v-model.trim="diyStore.editComponent.limit" :placeholder="t('imageLimitPlaceholder')" clearable maxlength="2" />
+            </el-form-item>
 
             <el-form-item :label="t('上传方式')">
                 <el-checkbox-group v-model="diyStore.editComponent.uploadMode" :min="1">
@@ -15,23 +15,23 @@
                     <el-checkbox label="从相册选择" value="select_from_album" />
                 </el-checkbox-group>
             </el-form-item>
-		</el-form>
+        </el-form>
 
-		<!-- 表单组件 其他设置 -->
-		<slot name="other"></slot>
+        <!-- 表单组件 其他设置 -->
+        <slot name="other"></slot>
 
-	</div>
+    </div>
 
-	<!-- 样式 -->
-	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+    <!-- 样式 -->
+    <div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<!-- 表单组件 字段样式 -->
-		<slot name="style-field"></slot>
+        <!-- 表单组件 字段样式 -->
+        <slot name="style-field"></slot>
 
-		<!-- 组件样式 -->
-		<slot name="style"></slot>
+        <!-- 组件样式 -->
+        <slot name="style"></slot>
 
-	</div>
+    </div>
 </template>
 
 <script lang="ts" setup>

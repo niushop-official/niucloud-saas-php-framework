@@ -40,11 +40,7 @@ import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { getConfigLogin, setConfigLogin } from '@/app/api/sys'
 import { FormInstance } from 'element-plus'
-import { useRoute } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
-
-const route = useRoute()
-const pageName = route.meta.title
 
 const loading = ref(true)
 const ruleFormRef = ref<FormInstance>()

@@ -788,3 +788,11 @@ export function deleteExport(id: number) {
 export function getWxoplatform() {
     return request.get('sys/wxoplatform/config')
 }
+
+/**
+ * 获取二维码
+ * @returns
+ */
+export function getQrcode(params: Record<string, any>) {
+    return request.get(`sys/qrcode`, { params, showErrorMessage: false })
+}

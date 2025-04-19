@@ -1,46 +1,49 @@
-
 <template>
-	<!-- 内容 -->
-	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('selectStyle') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
-				<el-form-item :label="t('selectStyle')" class="flex">
-					<span class="text-primary flex-1 cursor-pointer" @click="showStyle">{{ diyStore.editComponent.styleName }}</span>
-					<el-icon>
-						<ArrowRight />
-					</el-icon>
-				</el-form-item>
-			</el-form>
+    <!-- 内容 -->
+    <div class="content-wrap" v-show="diyStore.editTab == 'content'">
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('selectStyle') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
+                <el-form-item :label="t('selectStyle')" class="flex">
+                    <span class="text-primary flex-1 cursor-pointer"
+                          @click="showStyle">{{ diyStore.editComponent.styleName }}</span>
+                    <el-icon>
+                        <ArrowRight />
+                    </el-icon>
+                </el-form-item>
+            </el-form>
 
-			<el-dialog v-model="showDialog" :title="t('selectStyle')" width="660px">
+            <el-dialog v-model="showDialog" :title="t('selectStyle')" width="660px">
 
-				<div class="flex flex-wrap">
-					<template v-for="(item,index) in styleList" :key="index">
-						<div :class="{ 'border-primary': selectStyle.value == item.value, '!mr-[0]': [(index+1)%3] == 0 }" @click="changeStyle(item)" class="flex my-[5px] items-center justify-center overflow-hidden w-[200px] h-[100px] mr-[12px] cursor-pointer border bg-gray-50">
-							<img :src="img(item.url)" />
-						</div>
-					</template>
-				</div>
+                <div class="flex flex-wrap">
+                    <template v-for="(item,index) in styleList" :key="index">
+                        <div
+                            :class="{ 'border-primary': selectStyle.value == item.value, '!mr-[0]': [(index+1)%3] == 0 }"
+                            @click="changeStyle(item)"
+                            class="flex my-[5px] items-center justify-center overflow-hidden w-[200px] h-[100px] mr-[12px] cursor-pointer border bg-gray-50">
+                            <img :src="img(item.url)" />
+                        </div>
+                    </template>
+                </div>
 
-				<template #footer>
-					<span class="dialog-footer">
-						<el-button @click="showDialog = false">{{ t('cancel') }}</el-button>
-						<el-button type="primary" @click="confirmStyle">{{ t('confirm') }}</el-button>
-					</span>
-				</template>
+                <template #footer>
+                    <span class="dialog-footer">
+                        <el-button @click="showDialog = false">{{ t('cancel') }}</el-button>
+                        <el-button type="primary" @click="confirmStyle">{{ t('confirm') }}</el-button>
+                    </span>
+                </template>
 
-			</el-dialog>
-		</div>
-	</div>
+            </el-dialog>
+        </div>
+    </div>
 
-	<!-- 样式 -->
-	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+    <!-- 样式 -->
+    <div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<!-- 组件样式 -->
-		<slot name="style"></slot>
+        <!-- 组件样式 -->
+        <slot name="style"></slot>
 
-	</div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -50,7 +53,7 @@ import { img } from '@/utils/common'
 import { ref, reactive } from 'vue'
 
 const diyStore = useDiyStore()
-diyStore.editComponent.ignore = ['componentBgColor','componentBgUrl'] // 忽略公共属性
+diyStore.editComponent.ignore = ['componentBgColor', 'componentBgUrl'] // 忽略公共属性
 
 const selectStyle = reactive({
     title: diyStore.editComponent.styleName,
@@ -94,7 +97,7 @@ const styleList = reactive([
     }
 ])
 
-const changeStyle = (item:any) => {
+const changeStyle = (item: any) => {
     selectStyle.title = item.title;
     selectStyle.value = item.value;
 }
@@ -108,22 +111,22 @@ const confirmStyle = () => {
 
 
 const initStyle = (style: any) => {
-	if (style == 'style-1') {
-		diyStore.editComponent.bottomRounded = 0;
-		diyStore.editComponent.topRounded = 12;
-	} else if (style == 'style-2') {
-		diyStore.editComponent.bottomRounded = 0;
-		diyStore.editComponent.topRounded = 12;
-	} else if (style == 'style-3') {
-		diyStore.editComponent.bottomRounded = 12;
-		diyStore.editComponent.topRounded = 12;
-	} else if (style == 'style-4') {
-		diyStore.editComponent.bottomRounded = 12;
-		diyStore.editComponent.topRounded = 12;
-	} else if (style == 'style-5') {
-		diyStore.editComponent.bottomRounded = 12;
-		diyStore.editComponent.topRounded = 12;
-	}
+    if (style == 'style-1') {
+        diyStore.editComponent.bottomRounded = 0;
+        diyStore.editComponent.topRounded = 12;
+    } else if (style == 'style-2') {
+        diyStore.editComponent.bottomRounded = 0;
+        diyStore.editComponent.topRounded = 12;
+    } else if (style == 'style-3') {
+        diyStore.editComponent.bottomRounded = 12;
+        diyStore.editComponent.topRounded = 12;
+    } else if (style == 'style-4') {
+        diyStore.editComponent.bottomRounded = 12;
+        diyStore.editComponent.topRounded = 12;
+    } else if (style == 'style-5') {
+        diyStore.editComponent.bottomRounded = 12;
+        diyStore.editComponent.topRounded = 12;
+    }
 
 }
 

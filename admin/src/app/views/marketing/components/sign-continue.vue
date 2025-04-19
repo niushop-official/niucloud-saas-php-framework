@@ -38,6 +38,10 @@ const props = defineProps({
         default: () => {
             return {}
         }
+    },
+    sign_period: {
+        type: Number,
+        default: 0
     }
 })
 const emits = defineEmits(['update:modelValue'])
@@ -94,6 +98,8 @@ const formRules = reactive<FormRules>({
                     callback(t('continueSignFormatError'))
                 } else if (value < 2 || value > 365) {
                     callback(t('continueSignBerweenDays'))
+                } else if (Number(value) > Number(props.sign_period)) { 
+                    callback(t('continueSignMustLessThanSignPeriod')) // 添加这个校验
                 } else{
                     callback();
                 }

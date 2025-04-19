@@ -6,7 +6,7 @@ import request from '@/utils/request'
  * @param app_type
  */
 export function login(params: Record<string, any>, app_type: string) {
-    return request.get(`login/${app_type}`, {params})
+    return request.get(`login/${ app_type }`, { params })
 }
 
 /**
@@ -21,7 +21,7 @@ export function logout() {
  * @returns
  */
 export function getAuthMenus(params: Record<string, any>) {
-    return request.get('auth/authmenu', {params})
+    return request.get('auth/authmenu', { params })
 }
 
 /**

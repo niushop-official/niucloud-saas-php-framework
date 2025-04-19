@@ -57,14 +57,10 @@
 import { reactive, ref, watch, computed } from 'vue'
 import { t } from '@/lang'
 import { img } from '@/utils/common'
-import { setDiyTheme, getDiyTheme, getDefaultTheme } from '@/app/api/diy'
-import { useClipboard } from '@vueuse/core'
-import { ElMessage, FormInstance } from 'element-plus'
-import { ArrowLeft } from '@element-plus/icons-vue'
+import { getDiyTheme } from '@/app/api/diy'
 import { useRoute } from 'vue-router'
 import themeList from './components/theme-list.vue'
 import { cloneDeep } from 'lodash-es'
-import { tr } from 'element-plus/es/locale'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -74,7 +70,7 @@ const data = ref([])
 
 const initData = () => {
     loading.value = true;
-    getDiyTheme().then((res) => {
+    getDiyTheme({}).then((res) => {
         let obj = cloneDeep(res.data);
         for(let key in obj){
             obj[key].key = key;

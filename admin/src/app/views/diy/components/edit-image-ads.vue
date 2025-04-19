@@ -1,50 +1,54 @@
 <template>
-	<!-- 内容 -->
-	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
-		<div class="edit-attr-item-wrap">
-			<h3 class="mb-[10px]">{{ t('imageSet') }}</h3>
-			<el-form label-width="80px" class="px-[10px]">
-                
-				<el-form-item :label="t('sameScreen')" v-if="diyStore.currentIndex == 0">
+    <!-- 内容 -->
+    <div class="content-wrap" v-show="diyStore.editTab == 'content'">
+        <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('imageSet') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
+
+                <el-form-item :label="t('sameScreen')" v-if="diyStore.currentIndex == 0">
                     <el-switch v-model="diyStore.editComponent.isSameScreen" />
                     <div class="text-sm text-gray-400 leading-[1.4]">{{ t('imageAdsSameScreenTips') }}</div>
-				</el-form-item>
+                </el-form-item>
 
-				<el-form-item :label="t('imageHeight')" class="display-block">
-					<el-input v-model.trim="diyStore.editComponent.imageHeight" :placeholder="t('imageHeightPlaceholder')" clearable maxlength="10" @blur="blurImageHeight">
-						<template #append>px</template>
-					</el-input>
-					<div class="text-sm text-gray-400 mb-[10px]">{{ t('imageAdsTips') }}</div>
-				</el-form-item>
+                <el-form-item :label="t('imageHeight')" class="display-block">
+                    <el-input v-model.trim="diyStore.editComponent.imageHeight" :placeholder="t('imageHeightPlaceholder')" clearable maxlength="10" @blur="blurImageHeight">
+                        <template #append>px</template>
+                    </el-input>
+                    <div class="text-sm text-gray-400 mb-[10px]">{{ t('imageAdsTips') }}</div>
+                </el-form-item>
 
-				<div ref="imageBoxRef">
-					<div v-for="(item,index) in diyStore.editComponent.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
-						<el-form-item :label="t('image')">
-							<upload-image v-model="item.imageUrl" :limit="1" @change="selectImg" />
-						</el-form-item>
+                <div ref="imageBoxRef">
+                    <div v-for="(item,index) in diyStore.editComponent.list" :key="item.id" class="item-wrap p-[10px] pb-0 relative border border-dashed border-gray-300 mb-[16px]">
+                        <el-form-item :label="t('image')">
+                            <upload-image v-model="item.imageUrl" :limit="1" @change="selectImg" />
+                        </el-form-item>
 
-						<div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]" v-show="diyStore.editComponent.list.length > 1" @click="diyStore.editComponent.list.splice(index,1)">
-							<icon name="element CircleCloseFilled" color="#bbb" size="20px"/>
-						</div>
+                        <div class="del absolute cursor-pointer z-[2] top-[-8px] right-[-8px]"
+                             v-show="diyStore.editComponent.list.length > 1"
+                             @click="diyStore.editComponent.list.splice(index,1)">
+                            <icon name="element CircleCloseFilled" color="#bbb" size="20px" />
+                        </div>
 
-						<el-form-item :label="t('link')">
-							<diy-link v-model="item.link"/>
-						</el-form-item>
-					</div>
-				</div>
+                        <el-form-item :label="t('link')">
+                            <diy-link v-model="item.link" />
+                        </el-form-item>
+                    </div>
+                </div>
 
-				<el-button v-show="diyStore.editComponent.list.length < 10" class="w-full" @click="addImageAd">{{ t('addImageAd') }}</el-button>
+                <el-button v-show="diyStore.editComponent.list.length < 10" class="w-full" @click="addImageAd">
+                    {{ t('addImageAd') }}
+                </el-button>
 
-			</el-form>
-		</div>
-	</div>
+            </el-form>
+        </div>
+    </div>
 
-	<!-- 样式 -->
-	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+    <!-- 样式 -->
+    <div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<!-- 组件样式 -->
-		<slot name="style"></slot>
-	</div>
+        <!-- 组件样式 -->
+        <slot name="style"></slot>
+    </div>
 
 </template>
 
@@ -105,22 +109,22 @@ const addImageAd = () => {
     })
 }
 
-const selectImg = (url:string) => {
+const selectImg = (url: string) => {
     handleHeight(true)
 }
 
 // 处理高度
-const handleHeight = (isCalcHeight:boolean = false)=> {
+const handleHeight = (isCalcHeight: boolean = false) => {
     diyStore.editComponent.list.forEach((item: any, index: number) => {
         const image = new Image()
         image.src = img(item.imageUrl)
-        image.onload = async () => {
+        image.onload = async() => {
             item.imgWidth = image.width
             item.imgHeight = image.height
             // 计算第一张图片高度
             if (isCalcHeight && index == 0) {
                 const ratio = item.imgHeight / item.imgWidth
-                item.width = 375 - (diyStore.editComponent.margin.both*2)
+                item.width = 375 - (diyStore.editComponent.margin.both * 2)
                 item.height = item.width * ratio
                 diyStore.editComponent.imageHeight = parseInt(item.height)
             }
@@ -158,18 +162,18 @@ defineExpose({})
 </script>
 
 <style lang="scss" scoped>
-	.edit-image-ads {
+.edit-image-ads {
 
-		.item-wrap {
-			.del {
-				display: none;
-			}
+    .item-wrap {
+        .del {
+            display: none;
+        }
 
-			&:hover {
-				.del {
-					display: block;
-				}
-			}
-		}
-	}
+        &:hover {
+            .del {
+                display: block;
+            }
+        }
+    }
+}
 </style>

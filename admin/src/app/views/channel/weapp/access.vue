@@ -116,7 +116,6 @@ const router = useRouter()
 const pageName = route.meta.title
 
 const activeName = ref('/channel/weapp')
-const active = ref(2)
 const qrCode = ref('')
 const weappConfig = ref({})
 const oplatformConfig = ref({})

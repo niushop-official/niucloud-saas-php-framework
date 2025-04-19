@@ -84,8 +84,8 @@ getMenuList()
 // 重置菜单
 const refreshMenu = () => {
     ElMessageBox.confirm(h('div', null, [
-        h('p', null, t('initializeMenuTipsOne')),
-        h('p', null, t('initializeMenuTipsTwo')),
+            h('p', null, t('initializeMenuTipsOne')),
+            h('p', null, t('initializeMenuTipsTwo')),
         ]), t('warning'),
         {
             confirmButtonText: t('confirm'),
@@ -97,8 +97,8 @@ const refreshMenu = () => {
             location.reload()
         }).catch(() => {
         })
-    }).catch(()=>{})
-    
+    }).catch(() => {
+    })
 }
 
 /**

@@ -17,7 +17,6 @@ import useSystemStore from '@/stores/modules/system'
 import side from './side.vue'
 
 const route = useRoute()
-
 const systemStore = useSystemStore()
 const dark = computed(() => {
     return systemStore.dark
@@ -31,14 +30,14 @@ watch(route, () => {
 </script>
 
 <style lang="scss">
-    .layout-aside {
-        border-right: 1px solid var(--el-border-color-lighter);
-    }
+.layout-aside {
+    border-right: 1px solid var(--el-border-color-lighter);
+}
 
-    .aside-drawer {
+.aside-drawer {
 
-        .el-drawer__body {
-            padding: 0px !important;
-        }
+    .el-drawer__body {
+        padding: 0px !important;
     }
+}
 </style>

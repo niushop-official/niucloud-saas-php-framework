@@ -156,10 +156,6 @@ const enablePaymentMode = async (data: any) => {
     }
 }
 
-interface SortableEvt extends SortableEvent {
-    originalEvent?: DragEvent
-}
-
 // 拖动
 const fieldBoxRefs = ref<any>([])
 watch(isEdit, (newValue, oldValue) => {

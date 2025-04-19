@@ -50,7 +50,7 @@
                 </el-form-item>
             </el-card>
 
-            <el-card class="box-card !border-none mt-[15px]" shadow="never">
+            <el-card class="box-card !border-none mt-[15px]" shadow="never" v-show="!formData.is_authorization">
                 <h3 class="panel-title !text-sm">{{ t('theServerSetting') }}</h3>
 
                 <el-form-item label="URL">
@@ -234,10 +234,10 @@ const formRules = computed(() => {
             { required: !formData.is_authorization, message: t('appSecretPlaceholder'), trigger: 'blur' }
         ],
         token: [
-            { required: true, message: t('tokenPlaceholder'), trigger: 'blur' }
+            { required: !formData.is_authorization, message: t('tokenPlaceholder'), trigger: 'blur' }
         ],
         encoding_aes_key: [
-            { required: true, message: t('encodingAesKeyPlaceholder'), trigger: 'blur' }
+            { required: !formData.is_authorization, message: t('encodingAesKeyPlaceholder'), trigger: 'blur' }
         ]
     }
 })

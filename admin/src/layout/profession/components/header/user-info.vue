@@ -106,15 +106,15 @@ const saveInfo = reactive({
 });
 // 表单验证规则
 const formRules = reactive<FormRules>({
-  original_password: [
-    { required: true, message: t("originalPasswordPlaceholder"), trigger: "blur" },
-  ],
-  password: [
-    { required: true, message: t("passwordPlaceholder"), trigger: "blur" },
-  ],
-  password_copy: [
-    { required: true, message: t("passwordPlaceholder"), trigger: "blur" },
-  ]
+    original_password: [
+        { required: true, message: t("originalPasswordPlaceholder"), trigger: "blur" },
+    ],
+    password: [
+        { required: true, message: t("passwordPlaceholder"), trigger: "blur" },
+    ],
+    password_copy: [
+        { required: true, message: t("passwordPlaceholder"), trigger: "blur" },
+    ]
 });
 const submitForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return

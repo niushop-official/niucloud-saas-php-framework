@@ -1,67 +1,67 @@
 <template>
-	<!-- 内容 -->
-	<div class="content-wrap" v-show="diyStore.editTab == 'content'">
+    <!-- 内容 -->
+    <div class="content-wrap" v-show="diyStore.editTab == 'content'">
 
-		<!-- 表单组件 字段内容设置 -->
-		<slot name="field"></slot>
-		<el-form label-width="100px" class="px-[10px]" @submit.prevent>
-			<el-form-item :label="t('formPlaceholder')">
-				<el-input v-model.trim="diyStore.editComponent.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
-			</el-form-item>
-		</el-form>
+        <!-- 表单组件 字段内容设置 -->
+        <slot name="field"></slot>
+        <el-form label-width="100px" class="px-[10px]" @submit.prevent>
+            <el-form-item :label="t('formPlaceholder')">
+                <el-input v-model.trim="diyStore.editComponent.placeholder" :placeholder="t('formPlaceholderTips')" clearable maxlength="15" show-word-limit />
+            </el-form-item>
+        </el-form>
 
-		<!-- 表单组件 其他设置 -->
-		<slot name="other"></slot>
-		<el-form label-width="100px" class="px-[10px]">
-			<el-form-item>
-				<template #label>
-					<div class="flex items-center">
-						<span class="mr-[3px]">{{ t('preventDuplication') }}</span>
-						<el-tooltip effect="light" placement="top">
-							<template #content>
-								<p>{{ t('preventDuplicationTipsOne') }}</p>
-								<p>{{ t('preventDuplicationTipsTwo') }}</p>
-							</template>
-							<el-icon>
-								<QuestionFilled color="#999999" />
-							</el-icon>
-						</el-tooltip>
-					</div>
-				</template>
-				<el-switch v-model="diyStore.editComponent.field.unique" />
-			</el-form-item>
-			<el-form-item class="display-block">
-				<template #label>
-					<div class="flex items-center">
-						<span class="mr-[3px]">{{ t('privacyProtection') }}</span>
-						<el-tooltip effect="light" placement="top">
-							<template #content>
-								<p>{{ t('privacyProtectionTipsOne') }}</p>
-								<p>{{ t('privacyProtectionTipsTwo') }}</p>
-							</template>
-							<el-icon>
-								<QuestionFilled color="#999999" />
-							</el-icon>
-						</el-tooltip>
-					</div>
-				</template>
-				<el-switch v-model="diyStore.editComponent.field.privacyProtection" />
-				<div class="text-sm text-gray-400">{{ t('privacyProtectionTipsThree') }}</div>
-			</el-form-item>
-		</el-form>
+        <!-- 表单组件 其他设置 -->
+        <slot name="other"></slot>
+        <el-form label-width="100px" class="px-[10px]">
+            <el-form-item>
+                <template #label>
+                    <div class="flex items-center">
+                        <span class="mr-[3px]">{{ t('preventDuplication') }}</span>
+                        <el-tooltip effect="light" placement="top">
+                            <template #content>
+                                <p>{{ t('preventDuplicationTipsOne') }}</p>
+                                <p>{{ t('preventDuplicationTipsTwo') }}</p>
+                            </template>
+                            <el-icon>
+                                <QuestionFilled color="#999999" />
+                            </el-icon>
+                        </el-tooltip>
+                    </div>
+                </template>
+                <el-switch v-model="diyStore.editComponent.field.unique" />
+            </el-form-item>
+            <el-form-item class="display-block">
+                <template #label>
+                    <div class="flex items-center">
+                        <span class="mr-[3px]">{{ t('privacyProtection') }}</span>
+                        <el-tooltip effect="light" placement="top">
+                            <template #content>
+                                <p>{{ t('privacyProtectionTipsOne') }}</p>
+                                <p>{{ t('privacyProtectionTipsTwo') }}</p>
+                            </template>
+                            <el-icon>
+                                <QuestionFilled color="#999999" />
+                            </el-icon>
+                        </el-tooltip>
+                    </div>
+                </template>
+                <el-switch v-model="diyStore.editComponent.field.privacyProtection" />
+                <div class="text-sm text-gray-400">{{ t('privacyProtectionTipsThree') }}</div>
+            </el-form-item>
+        </el-form>
 
-	</div>
+    </div>
 
-	<!-- 样式 -->
-	<div class="style-wrap" v-show="diyStore.editTab == 'style'">
+    <!-- 样式 -->
+    <div class="style-wrap" v-show="diyStore.editTab == 'style'">
 
-		<!-- 表单组件 字段样式 -->
-		<slot name="style-field"></slot>
+        <!-- 表单组件 字段样式 -->
+        <slot name="style-field"></slot>
 
-		<!-- 组件样式 -->
-		<slot name="style"></slot>
+        <!-- 组件样式 -->
+        <slot name="style"></slot>
 
-	</div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -75,7 +75,7 @@ diyStore.editComponent.ignore = ['componentBgUrl'] // 忽略公共属性
 // 组件验证
 diyStore.editComponent.verify = (index: number) => {
     const res = { code: true, message: '' }
-	// todo 只需要考虑该组件自身的验证
+    // todo 只需要考虑该组件自身的验证
     return res
 }
 defineExpose({})
