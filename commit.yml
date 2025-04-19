@@ -3,12 +3,960 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '2864e080648b4bcdf78a4eaad355898b00fded7c'
-    oldFile: !uuid 'fd52ae4605814234e9f9a000b2da9dec841cb680'
-  /niucloud/README.md:
-    newFile: !uuid 'e836c5cf9a38ca7bc5b84ea7e3a70026f5a89f31'
-    oldFile: !uuid 'a8c4d1cd4779f736c8e37102a0e353c7863775d3'
-gitCommitId: !uuid 'c19349e588ec37bc673b522efddd315883e61d30'
+    newFile: !uuid 'b47d16d30f756e1d8e78e2d685b58e69d8e203db'
+    oldFile: !uuid '2864e080648b4bcdf78a4eaad355898b00fded7c'
+  /niucloud/vendor:
+    newFile: !uuid 'b635e3bbe99d32b6f138dd77e34cc03b93de9dcb'
+    oldFile: !uuid 'b8460094088eabaf372fd91e535a719d2f20dfcc'
+  /niucloud/vendor/composer:
+    newFile: !uuid 'b1789e1b6052475c45337723f4d7cb719dec657c'
+    oldFile: !uuid 'dfe8091868f30acfc48e417a2a072ddef3b2a5af'
+  /niucloud/vendor/composer/ClassLoader.php:
+    newFile: !uuid '7824d8f7eafe8db890975f0fa2dfab31435900da'
+    oldFile: !uuid 'a72151c77c8eb0c43635bfb2ac1ca2d834ac01a7'
+  /niucloud/vendor/composer/InstalledVersions.php:
+    newFile: !uuid '6d29bff66aace8e892717577539275845aa38074'
+    oldFile: !uuid '51e734a774b3ed9ca110a921cb40a74f8c7905c2'
+  /niucloud/vendor/composer/autoload_psr4.php:
+    newFile: !uuid '86fc3706eb367325198090f581c5fab59b82e2b3'
+    oldFile: !uuid 'a234978f95bd6e096d22cfd1daa995cfe96b2bff'
+  /niucloud/vendor/composer/autoload_static.php:
+    newFile: !uuid 'd1eea661dd7127c4fc7f13cb47075acf84cae8f5'
+    oldFile: !uuid 'fe89f840e31cceecbb892424276cb9191700f34e'
+  /niucloud/vendor/composer/installed.json:
+    newFile: !uuid '59f41264a57a88591564e275e676c1acc4fc3458'
+    oldFile: !uuid 'b4af6ae1ddf345b1549d5a5fdfd89dd5eb3c239b'
+  /niucloud/vendor/composer/installed.php:
+    newFile: !uuid '42204abcce54a63e006c02f833f0bef0322995c3'
+    oldFile: !uuid '04dceec4db96ce6dd13d299c1d524d300f506cd2'
+  /niucloud/vendor/kkokk:
+    newFile: !uuid '7b129efe87ea9e7f112513f351fa1380faba04ed'
+    oldFile: !uuid '7b9a9764eed3495d99006ffe8de8c58dbb7ed511'
+  /niucloud/vendor/kkokk/poster:
+    newFile: !uuid '573cca004bff3f9de2f1b0b2390613c0f6c373f0'
+    oldFile: !uuid '622d0b211ad219cb7cb372cd6fe339e4b70bfed3'
+  /niucloud/vendor/kkokk/poster/src:
+    newFile: !uuid '76b428ee77f9318dc6ae6021ea02ad3101134fd2'
+    oldFile: !uuid '6654b575c4cda262af2832752e8f4ae2d601c94b'
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode:
+    newFile: !uuid 'e4a9e1f1c7ae8bd372b9184497f04791a3f59185'
+    oldFile: !uuid '448d7563b3f002e071a58e23e92aa7cb5166fb7a'
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/bindings:
+    newFile: !uuid 'd5a5831dd718d9e2834ccbdc20b12e67cae4530e'
+    oldFile: !uuid '2b0ccda72cf6cf5410c6ac7de73019db33c5750c'
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/bindings/tcpdf:
+    newFile: !uuid '766bb700330d56fc5a2b5836c1235a6ca027c1a4'
+    oldFile: !uuid 'b5467f103f9ab105729940c529404a0c9ada8cd1'
+  /niucloud/vendor/kkokk/poster/src/PHPQrcode/bindings/tcpdf/qrcode.php:
+    newFile: !uuid 'e84b5e54bbd5dd55bbfa345aeea5479816aeb6c5'
+    oldFile: !uuid '4e91e8cf906796b50f44d81f4ec757447943e9c2'
+  /niucloud/vendor/services.php:
+    newFile: !uuid '84a4638da6eaa54fd15675a89b5dddc6587300bf'
+    oldFile: !uuid '2bbc02f037b442e95d7b1149037a3a7c4264bd1b'
+  /niucloud/vendor/yansongda:
+    newFile: !uuid '695c38d0f2cf5c1f193a04ef0903fd712575b8a3'
+    oldFile: !uuid 'b1e4c963328ca9ec64ff1b089c5fc82a0035a842'
+  /niucloud/vendor/yansongda/artful:
+    newFile: !uuid '35305b6eeaada146175583047700c65fc2316f33'
+    oldFile: !uuid 'ef1504dcac85005ddc81e836bc508b16b321b393'
+  /niucloud/vendor/yansongda/artful/CHANGELOG.md:
+    newFile: !uuid '695af808ae1b97583506913dae21045b5b40f671'
+    oldFile: !uuid 'c1a5730a6045ca73fc952fd44812efd92354cf6c'
+  /niucloud/vendor/yansongda/artful/README.md:
+    newFile: !uuid '80e55850841453ebbf5607dab27daa7d2a7900df'
+    oldFile: !uuid '4cbba59f76fa2c9c2cd7f9528406e0f03adef6c6'
+  /niucloud/vendor/yansongda/artful/composer.json:
+    newFile: !uuid '4f6398815a7df6e3e06da768898bc66155ce384e'
+    oldFile: !uuid '4223a86f12c033c2b328e0db40df6328d6c0de9d'
+  /niucloud/vendor/yansongda/artful/src:
+    newFile: !uuid 'ebce58dd1e8b18f62d257dde8c48ee7ccb15dc6e'
+    oldFile: !uuid '6421e96630fc09aacc033cbd97ffa0748a562a5d'
+  /niucloud/vendor/yansongda/artful/src/Artful.php:
+    newFile: !uuid 'cf9ba4875b139e29d0fa4551830e0c6c7e4e429d'
+    oldFile: !uuid 'bc32771893d7062da97428990c5fd732335af8b0'
+  /niucloud/vendor/yansongda/artful/src/Functions.php:
+    newFile: !uuid '8f1db92497bbcce204110a0bba3879b4658d3515'
+    oldFile: !uuid '57ee1af3bba4664d5e6c92c21b394b4469c0bbde'
+  /niucloud/vendor/yansongda/artful/src/Plugin:
+    newFile: !uuid '0aa105393a2351aa0761ccdc51726df67dce5598'
+    oldFile: !uuid 'dc80d3a3962190b2d2bdecaba6ff9183e00dbc33'
+  /niucloud/vendor/yansongda/artful/src/Plugin/AddRadarPlugin.php:
+    newFile: !uuid 'f842f4dafb51255b904ba1e4b6d1fae230c3e19d'
+    oldFile: !uuid '0f906f5274fd7e7cc7cbc709090b91c42702b7b9'
+  /niucloud/vendor/yansongda/pay:
+    newFile: !uuid 'd2a633da48598f0b08484bc4f3c14ef4a2697bbe'
+    oldFile: !uuid '99369e55a24a6849e8933ed138637e891110cc3a'
+  /niucloud/vendor/yansongda/pay/CHANGELOG.md:
+    newFile: !uuid '324e96d3f498b66591332316cb4737b0b8f6c4bf'
+    oldFile: !uuid 'b52628d8db25f5ed2660532e4368c79f6aeb427e'
+  /niucloud/vendor/yansongda/pay/README.md:
+    newFile: !uuid 'b50dd80482177341a7993ee99dd0efccded0e7bd'
+    oldFile: !uuid '461e4bc954d6e646915415b84862577683d69f0d'
+  /niucloud/vendor/yansongda/pay/composer.json:
+    newFile: !uuid '311d5a35353166ddac5bf9b7fb10fcf572eea216'
+    oldFile: !uuid '77322af79f0aec6d495abeccd16709ab5b69f11c'
+  /niucloud/vendor/yansongda/pay/src:
+    newFile: !uuid '0ba6d937f985c218e57774208c5d624ade6c0e5b'
+    oldFile: !uuid '78576aa33c4505f8f174a3ab3dd8e694368a9ca7'
+  /niucloud/vendor/yansongda/pay/src/Exception:
+    newFile: !uuid '7bca63834c8c853abb084178715dfccaf0fb4ae2'
+    oldFile: !uuid 'd3310f26684bedd66ef63b6092151de28de9be2e'
+  /niucloud/vendor/yansongda/pay/src/Exception/Exception.php:
+    newFile: !uuid '8aa3d6ed8ed006c6d5b9c8e633b6b38a179ba646'
+    oldFile: !uuid '1085168ff293fd658794ef6866c93e1d89a069fb'
+  /niucloud/vendor/yansongda/pay/src/Functions.php:
+    newFile: !uuid '4c7826e649d50f961f3573ea10ebaf6bbc316757'
+    oldFile: !uuid '420b50bb3a56bc3eeeaef02a220aa9410f2ba954'
+  /niucloud/vendor/yansongda/pay/src/Pay.php:
+    newFile: !uuid 'd10beba66880e001016848fba403c5de708819d3'
+    oldFile: !uuid '9fad1ac393bc3e952ed6b90dcca2e554df0a0177'
+  /niucloud/vendor/yansongda/pay/src/Plugin:
+    newFile: !uuid '13d396da4e5b0fa8252062ab37abcf887aa6b8ca'
+    oldFile: !uuid 'e26dd9c1c3b9bb1bd7d76f08c3d28ee2bdd91b7f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay:
+    newFile: !uuid 'f20ee3423ff4d956ff38093caafa52aa13fcabd6'
+    oldFile: !uuid '80ab53306e4e632b0db0e73009715914578f4537'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2:
+    newFile: !uuid 'c2ad08f2a19681f233226405e50bc19ee1e2bdd6'
+    oldFile: !uuid '2730281a7e29cd2f9ea468624d26b72f0ca10e36'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/AddPayloadSignaturePlugin.php:
+    newFile: !uuid 'dd3614f0e3fa6ed332705315a9d5992f36cfec23'
+    oldFile: !uuid 'a89a2a942b24727a140f088c4584cf1b811e8392'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/AddRadarPlugin.php:
+    newFile: !uuid 'cc99de1c5f18689aaa8dd17ae7df2e17dfae03f9'
+    oldFile: !uuid '09d08ca9204832649554f29db1b0355832c2efac'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/AppCallbackPlugin.php:
+    newFile: !uuid 'ab9129ac2a57eb6991cc88fffb5c996153236141'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/CallbackPlugin.php:
+    newFile: !uuid 'cb6c8504a284d7a6985b65990fd9e37eb563736f'
+    oldFile: !uuid '13ca83595cd92d3aa2225f6cb964655d460603c1'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/Member:
+    newFile: !uuid '6e856650d0c46f76fcdca941b2f3bcd7aca84365'
+    oldFile: !uuid 'df7cd07d79dafa6aef3d956450eaa0d01ce880e0'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/Member/Authorization:
+    newFile: !uuid '1a9df79b3a1afd4b9185239a42160b56ac7b802b'
+    oldFile: !uuid '4c1c2885a8f73fd8ffec7018d0a90952d8d8968e'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/Member/Authorization/TokenPlugin.php:
+    newFile: !uuid 'a267e8034067f25adaf64622568e12f6164f8874'
+    oldFile: !uuid 'd8c3de130e24c14fc07f4d8cb3bac1275f9d4727'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/ResponsePlugin.php:
+    newFile: !uuid '36f2870e6fb48394087d27c98161a5c74ca1e671'
+    oldFile: !uuid '5ceafa7e8639274f6a66b7be4f6528090d62db1f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/StartPlugin.php:
+    newFile: !uuid '187a762b9ad8486ae1b9f9941aa3fd72cb4e097c'
+    oldFile: !uuid '2b75590eadf53546d38b86b4b27a9d6e6e82e79c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Alipay/V2/VerifySignaturePlugin.php:
+    newFile: !uuid '5e667e506ae22c23f42ccab0568ab38dad37b8fa'
+    oldFile: !uuid '738b8e6dbbe5bda2ea5ae6639afaab0806868404'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin:
+    newFile: !uuid '2dd3c2378473aa9fa1482570de823a569435bcea'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1:
+    newFile: !uuid '7bb40ae02b34f10714bce3451bc80f2e3b78ff2e'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay:
+    newFile: !uuid '8084f40d936bad67d338152aba32f04185a4baf3'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/AddPayloadSignaturePlugin.php:
+    newFile: !uuid '7a83f97c932a50c92e40e5be93d1b7c5713bb133'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/AddRadarPlugin.php:
+    newFile: !uuid 'b7a020c9a53006a59607f78cca1ee57a31042378'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/CallbackPlugin.php:
+    newFile: !uuid 'c348f488267d694ff52c24259ce7c7a4e76967d5'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/Mini:
+    newFile: !uuid '75de847ccc2e141c1187653ff89d2b1347c80305'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/Mini/PayPlugin.php:
+    newFile: !uuid '3926149669eac10655b8ee031a794f91fd3bfbcf'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/Mini/QueryPlugin.php:
+    newFile: !uuid '3dbca6db25a4176bf35663328a105ad8254792d5'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/Mini/QueryRefundPlugin.php:
+    newFile: !uuid '8f15e3a9a8c371db650b21552a2536c23da88361'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/Mini/RefundPlugin.php:
+    newFile: !uuid '718646168d05049179d10257c54d68c70c4cea05'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Douyin/V1/Pay/ResponsePlugin.php:
+    newFile: !uuid 'df4939a6a75c78b3041edec297f09bcb3d732d18'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb:
+    newFile: !uuid '171cc7edfde2c14d33514cc15f5385dc568ba9c2'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/AddPayloadSignPlugin.php:
+    newFile: !uuid 'a3c029552cf0b1d427db39bc56e87639a97d29d0'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/AddRadarPlugin.php:
+    newFile: !uuid '870382a1be7c6a9f38bd7775e966d8f62b15f825'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/CallbackPlugin.php:
+    newFile: !uuid 'bb9940dd5ff784c810ac4a5eb8ad80f767483352'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/Pay:
+    newFile: !uuid '22efa25b4681c78c14711cc6738e119a006de260'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/Pay/Scan:
+    newFile: !uuid 'd43f5bdb871fbe8114405d2371bde28ac6802ef9'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/Pay/Scan/PayPlugin.php:
+    newFile: !uuid 'dc9392d110928734282be7a87cb5c707b79d79ec'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/Pay/Scan/QueryPlugin.php:
+    newFile: !uuid '47b4e89680c7eaee7d79e05cbc5e9e5af1bc9559'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/Pay/Scan/RefundPlugin.php:
+    newFile: !uuid 'e770810366ce9be2546a6032f13dd94e20a1b501'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/ResponsePlugin.php:
+    newFile: !uuid '023ba953823b7ef0c82ad19ae1a25b1f2cc40447'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/StartPlugin.php:
+    newFile: !uuid '22a1b12469e9be39f2c78073b88b85f30e77ee85'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Jsb/VerifySignaturePlugin.php:
+    newFile: !uuid '635cbf1dde18103397cb0d1a40a1b9901249b184'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay:
+    newFile: !uuid 'ecabba50017624c027921e83abaaeb8d2f61b14f'
+    oldFile: !uuid '5ff04a60777166ad7e100e9561afcf6df663d9e1'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/AddRadarPlugin.php:
+    newFile: !uuid '4b5b569311d060001ea0fb1b0fab689fb9e99ed3'
+    oldFile: !uuid '01a590b961f12f7a18562cffba58bc0e964feab1'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open:
+    newFile: !uuid 'a50d99a79733b33c32f3d2a138667f7be84e1e88'
+    oldFile: !uuid '2bb161139b3214c4c0e8c52cd4dde02babcc07b7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/AddPayloadSignaturePlugin.php:
+    newFile: !uuid '62a95854b3a4b68f7d0739fd4e9c90aa51076374'
+    oldFile: !uuid 'a0b0b6bbf1d0e45f09e7d8db369b239614384cb5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/CallbackPlugin.php:
+    newFile: !uuid '2fc127b60eedac99acc508d40476cc1d6e5583a4'
+    oldFile: !uuid '740cb89d7c5ab560915a5d60b3ea2aaa0780a876'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay:
+    newFile: !uuid '6e34c359d47603677697f0132118bd556b628975'
+    oldFile: !uuid '0606a51a635d24d8b081b6d678c21519af291bb7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/H5:
+    newFile: !uuid '039f3b46849b889d6338f5982923dd2e1e12d79d'
+    oldFile: !uuid '60a440388e9f7a145b6ce11df5af4e84adcd9fc4'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/H5/PayPlugin.php:
+    newFile: !uuid '991670b32a8c2e60db0a907b6d5eaa73bd83039f'
+    oldFile: !uuid 'd4c8c5e43a5743a7f0b9baddba383abf499755c6'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode:
+    newFile: !uuid '5e1075f42ebfe204cc1c918e956113dcbddab9d6'
+    oldFile: !uuid '517860cdf446d2df4174de6ae7cbc0b669edf1c5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/CancelPlugin.php:
+    newFile: !uuid '6c82829849c49bda2a98d5a0d3e41228bb4b5259'
+    oldFile: !uuid 'eab69d1dd92c50406752a6711bb407ee8d5b78f0'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/PosPlugin.php:
+    newFile: !uuid '7d361bfebf0f14993404c78a6c4117423fa89212'
+    oldFile: !uuid 'ef9dc7c3addf69f199c8d537475becd945b3d9fb'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/PosPreAuthPlugin.php:
+    newFile: !uuid 'b3f3f0fba286dc487280a10653062b71bcb0baf1'
+    oldFile: !uuid '71856adefdbf4e54f3ced1d06d52037ab5e00277'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/QueryPlugin.php:
+    newFile: !uuid '2594d39d423d39e2f8ade2c37d32cc6821857d6d'
+    oldFile: !uuid '089dba973fca6d50ddbefa6efc440dde9a5d5bc2'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/RefundPlugin.php:
+    newFile: !uuid 'ff445db229084912075cd9a1f99fbdb84d689a6e'
+    oldFile: !uuid '0d1491e226956b0ec7c5db48545072af47059648'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/ScanFeePlugin.php:
+    newFile: !uuid 'a7de9cc7fad41066c60492c761a8b1c5ea4e8019'
+    oldFile: !uuid '7381d93bdc9352e780aa59ab6018715f21144bd9'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/ScanPlugin.php:
+    newFile: !uuid '5a0e241bf0aebcd8983c78791ca710a7104a2353'
+    oldFile: !uuid '18a00f9a2cddbb4cf51d7f0e07c6cb0d10ceac85'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/ScanPreAuthPlugin.php:
+    newFile: !uuid 'ee494365139db2f139f510a2e89d71dc7cb1b889'
+    oldFile: !uuid '92ca3d132f8f886f830b4123d997162efcdbb6da'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/QrCode/ScanPreOrderPlugin.php:
+    newFile: !uuid '0c44b8b18705402514ac16cc53017264286fe1b5'
+    oldFile: !uuid 'acb18ac58fee9fe7f6ffed9a54d2453ae5a2ac43'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/Web:
+    newFile: !uuid 'c6a2c6848b9180b2fd230b81ce2b3e4e542e1e90'
+    oldFile: !uuid '830a8cc24a6c0386afa7557706de80d12332de4f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/Web/CancelPlugin.php:
+    newFile: !uuid '4379948adfbc632fbc2c3e5bfc0277bfa446cc6d'
+    oldFile: !uuid '9d811d1d8b9c0eea7a531e4545dcf50780acd791'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/Web/PayPlugin.php:
+    newFile: !uuid 'df20095cb80b8387a03acd61247def710bc5a47f'
+    oldFile: !uuid '632586f66673f6763c5b5eeb3c8ae709d6927fe5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/Web/QueryPlugin.php:
+    newFile: !uuid 'e57e372726d2b7878a66b5bacb8253826195ddab'
+    oldFile: !uuid 'a78fb4b69f9a4da1ae0d2cc5ff812a62f0d6db60'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/Pay/Web/RefundPlugin.php:
+    newFile: !uuid 'ab7b0b5fe082ae67c3629cd704bf40deff17ffbd'
+    oldFile: !uuid '11a89b0836082d94f5e19c30ba2cc135887a49d3'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/StartPlugin.php:
+    newFile: !uuid 'ed3252ce36cb9ab10846b6bbad9fe8047cc1b50f'
+    oldFile: !uuid 'c92ff681c1b0e4673bb211221147dc5541e5ab7b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Open/VerifySignaturePlugin.php:
+    newFile: !uuid 'aca6db473deb26b979f255765891b1634c359603'
+    oldFile: !uuid 'c20c1f0ecb4cd60c63ab4f43a5dabd522780350f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra:
+    newFile: !uuid '89687b056f6528b56f6cbcc60666ff9f9b76685b'
+    oldFile: !uuid 'ff52c1caf9b6cf32ba617dba7f289ffebab27082'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/AddPayloadSignaturePlugin.php:
+    newFile: !uuid '7c205e7eb19e7aad49bbb752e951d1920aaf96bf'
+    oldFile: !uuid '56afd94bd5a936d33b4dc5ec6c9cd157a9dd597b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/CallbackPlugin.php:
+    newFile: !uuid '3cc00ff6deb5f5a249f81021e3066339d4578223'
+    oldFile: !uuid 'eb61bf0648d7f8bfe718a21c2be17088c041154b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos:
+    newFile: !uuid 'fd4058198bc43ccc58e699b7b3017d34e6ceda40'
+    oldFile: !uuid '9887709f9f1988a757b99e9e3859ecfd7e5008bf'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos/CancelPlugin.php:
+    newFile: !uuid 'ecfe1b964df99ce06fc5c0873a5ae9eed47262a8'
+    oldFile: !uuid 'e354c05d827743066fc381c3cb0991ab72293692'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos/PayPlugin.php:
+    newFile: !uuid '5ae7815f9a0dfa7cef20444b53227575cf0c4738'
+    oldFile: !uuid 'c88752d8962226ffbe0ed2df367e07ce4a985261'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos/QueryOpenIdPlugin.php:
+    newFile: !uuid 'd6dffd29b11ac843c77300eb19dc679f0440abbf'
+    oldFile: !uuid '4405143b6320e52e31b1dfa45655373044471aac'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos/QueryPlugin.php:
+    newFile: !uuid 'c8aebabf9d21aac90df0a9d021f0a8458b20c934'
+    oldFile: !uuid '76f79eff88013e8ffa847796ca20543cd839ef05'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos/QueryRefundPlugin.php:
+    newFile: !uuid '7d9280a17b8c22be72e88a48404a3d66bf94f1aa'
+    oldFile: !uuid 'ce25dc22b0e707d6353c38d8a8cb3d9164a3347c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Pos/RefundPlugin.php:
+    newFile: !uuid '58096b9c5ecd964efefc475db467434f901751a6'
+    oldFile: !uuid 'cfbb08abdd2d00bf8df518b363f4b343c9f930fc'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Scan:
+    newFile: !uuid 'b6d2bc9c1dca3aed0a5aa498bfec6babb9cd3e6a'
+    oldFile: !uuid '942adc623baa82a1ed54d421470f2036e828c04d'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Scan/ClosePlugin.php:
+    newFile: !uuid 'c6e486ff8850a06e02ce8525225b5fd8816d0a5f'
+    oldFile: !uuid '6e6277cf7f8083e7b1e1db4b6ddcb6526a089344'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Scan/PayPlugin.php:
+    newFile: !uuid 'ea253de5e2d4d791f2b352fe2bb804a798f7bf40'
+    oldFile: !uuid '8e22f92ea636ce8304036481143bb3be8355f755'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Scan/QueryPlugin.php:
+    newFile: !uuid 'bff614dc6325bfadd5c259c76c656beafe1a0a64'
+    oldFile: !uuid '9a1515a9c3f3453dc58fe94c2aec76577ba04dc0'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Scan/QueryRefundPlugin.php:
+    newFile: !uuid '9458bbe5adc466eee3136e35b7faa32fda6e4891'
+    oldFile: !uuid '4981b48908dc3fc9ddec07992a2f0fd07142a40c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/Scan/RefundPlugin.php:
+    newFile: !uuid 'd0c57b8720c19834ea517e713c1bdc8de49658d1'
+    oldFile: !uuid '242c61c3a3645b6b265f0d87bc60c519555aff60'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Unipay/Qra/VerifySignaturePlugin.php:
+    newFile: !uuid '5f866227535d407d11d2d5165d90fb17718fe18e'
+    oldFile: !uuid '135cb80a6d03afd052e78deb92284ae09067f719'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat:
+    newFile: !uuid '92713478947c5ba91adb4770b1aa4078cf7a208e'
+    oldFile: !uuid '03b3a89de8ab4dc3262c703b91088383d8122f3b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/AddRadarPlugin.php:
+    newFile: !uuid '9b085ef44f692934d9489a10bd4d907dd469e5da'
+    oldFile: !uuid '3df82b636168f233c5de6f20199a67a161469d99'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/ResponsePlugin.php:
+    newFile: !uuid 'f284dc1b030daeb40d8f99314d3c3d48279b8ee6'
+    oldFile: !uuid '90ac4dea47b6649d41eb921b470df428b477aa24'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/StartPlugin.php:
+    newFile: !uuid '101deee58ecf7b667d58a986193ac10303fee48d'
+    oldFile: !uuid '98dc068f8e1fc7fdce5ad640d8ea3a78912fea1c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2:
+    newFile: !uuid 'fb4babd057dbd4cc76204bfe8e27a01bdaf9bd0e'
+    oldFile: !uuid '212e6304d5db9c9808f5d603bb40e4c51804268a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/AddPayloadSignaturePlugin.php:
+    newFile: !uuid '9bc0d315e0f1a54e274c676e1db9d12fb05b3dc0'
+    oldFile: !uuid 'c8521c3d6e94fe99e1ba841d3fa0c12fad8c752a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Papay:
+    newFile: !uuid '4b1bff611e5f583cf88e6293c706ab945a670a43'
+    oldFile: !uuid 'fa02529b18ce50130afac4a50a150f09dd543b83'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Papay/Direct:
+    newFile: !uuid '7e46bf5998d24390c2bd71756e4a49a1bab85eea'
+    oldFile: !uuid '6a27eb07c4c8ebe9dc6fef98c1a93792def5b5a5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Papay/Direct/ApplyPlugin.php:
+    newFile: !uuid '36bc989182ee3a3f790eecbc7c792f2691375e8a'
+    oldFile: !uuid '9fd1ec2eb2810487f620c86583ca2b350ab447b6'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Papay/Direct/ContractOrderPlugin.php:
+    newFile: !uuid 'fb7c1d50cb11333cd933ca6a102b3d6247485f2a'
+    oldFile: !uuid 'adffba5c253856e8ac7fe7f992d787a21b6ff2d7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Papay/Direct/MiniOnlyContractPlugin.php:
+    newFile: !uuid '7f30d7ad2ab313cff509342f3795f35f8ed82b71'
+    oldFile: !uuid 'acdf7cf0fca7e1f0dd726d404a6a9013206524b3'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay:
+    newFile: !uuid '3dd82a6ce66f07453f099c13e1cec6b7800a2d14'
+    oldFile: !uuid '704f31e2d7c99ee3eae4bf3571e286afd46cfd78'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/App:
+    newFile: !uuid '25c81230c80614ab76f4863190dad6cb7e9c0243'
+    oldFile: !uuid '61ca9e9a3e478b988de46193e313c8b791a903aa'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/App/InvokePlugin.php:
+    newFile: !uuid 'b30e2cf163878da9713bc5ad8ff4e4237470f057'
+    oldFile: !uuid '72cb573bc8b9bdcacc765bd41ff1276c19cee2cf'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Mini:
+    newFile: !uuid '10a57e7a2cef05f7d37df942584521fad608673b'
+    oldFile: !uuid 'f882dd74a9633751401dc193b84a46d3d51fa9e2'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Mini/InvokePlugin.php:
+    newFile: !uuid '992fc72e9e336cc17854afd21b1b5536bd523e9b'
+    oldFile: !uuid 'e144dc6a5e43b9d5353797f313c3c176398868e5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Pos:
+    newFile: !uuid '758252f639bab10083b9d619f056fdbd1e2b06a9'
+    oldFile: !uuid '36f51e8a63b132fd2895e4bd73a2d01859a0b09a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Pos/CancelPlugin.php:
+    newFile: !uuid '831cf4b31170252df276b2ee258179239cfaaf61'
+    oldFile: !uuid '00b957bf5c1904b40f43b7d9d42b696f3b48f509'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Pos/PayPlugin.php:
+    newFile: !uuid 'e3961f040ed3195e82354e423569d36b2da4009d'
+    oldFile: !uuid 'f3bbd7e7e0e53a2034a8910168e096784d61d733'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Pos/QueryPlugin.php:
+    newFile: !uuid '02625780c623c58a6b98f244cee425ada2217e66'
+    oldFile: !uuid '49b1c841f2f5aa7699fdb117a61be3889b026fbd'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Redpack:
+    newFile: !uuid '71c6e8494b1eb8d63c1bbd75d3a677699c827997'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/Pay/Redpack/SendPlugin.php:
+    newFile: !uuid '453c6c2457825cda3990a80b7de3bc65af20d604'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V2/VerifySignaturePlugin.php:
+    newFile: !uuid '9c7031ef8b667d9ca42e9c8be0d3faf7877f24bb'
+    oldFile: !uuid '7875e8c01662633a2e66ab4c57069ad15707e1bc'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3:
+    newFile: !uuid '65643114961c9f41140f354da709a8780b88681c'
+    oldFile: !uuid '4088add2fa742a8f95c4580c78193d9124a0885f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/AddPayloadSignaturePlugin.php:
+    newFile: !uuid 'fa84bfb1c8ca1638abb7f9c03af0ff1a99143ce1'
+    oldFile: !uuid '1b426af3dd2a83253632cc877570dc7c63879ea3'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/CallbackPlugin.php:
+    newFile: !uuid '107924c761271efcc497d16c3258b2d851eb67a6'
+    oldFile: !uuid '79e4eb7d601c863654e1b26941ff6ef0411712c7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend:
+    newFile: !uuid 'b1610cadd74503de099680ee29a804274a882f88'
+    oldFile: !uuid '82fa61d61a92e0f96e71693f9cbc2f42afa70bf5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/Complaints:
+    newFile: !uuid 'c5c2cb90bf3e9794aada3e3d586544e04004b28f'
+    oldFile: !uuid '05440b039185c5ae21f5bae55a42dbb2eb0e8530'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/Complaints/CompletePlugin.php:
+    newFile: !uuid '9e6aeb6297c2ef621ad1f024c754abd499db47bd'
+    oldFile: !uuid '53b4e1b3e309512feb1630a864414cafe4ae754a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/Complaints/QueryDetailPlugin.php:
+    newFile: !uuid '57647162c24324753d0c59e272d35398f95978bb'
+    oldFile: !uuid '955a3e780a41f1921acd7cb2b7f73b63f04638b9'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/Complaints/ResponsePlugin.php:
+    newFile: !uuid '6ed6050eaea458815387d2a0a8b9022f5b851fa9'
+    oldFile: !uuid '854f0ef3fc9faa3ee0e40313cd13151857f6cc0a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing:
+    newFile: !uuid 'aef9a28e48690ea85afbac3d2861d88b2c9ecccc'
+    oldFile: !uuid '0d7e56fbf226262d63165e138e9ac92da9062d01'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/AddReceiverPlugin.php:
+    newFile: !uuid 'f3877c543fe555d0a81b82a1cced8e02ef9b90b5'
+    oldFile: !uuid '6627888be53dce61581603f1f914667b095bc41c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/CreatePlugin.php:
+    newFile: !uuid '1b3e3464e2b4d0232f1bbc86e1747d5ffc7875fc'
+    oldFile: !uuid '8e33e0318c90d163f637f44f645a3a886086f34a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/DeleteReceiverPlugin.php:
+    newFile: !uuid '07dac6ed0045b513f8a3c9c525c8d21b50952f39'
+    oldFile: !uuid 'c4f65fc8db51226654e451f2a4341d37e50643c0'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/GetBillPlugin.php:
+    newFile: !uuid '09bac2d44d5f5c4899a74f1916409d6d636ef779'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/QueryMerchantConfigsPlugin.php:
+    newFile: !uuid '3620fa5021ff5b1e56873a4dd7bcac35cbbc3b99'
+    oldFile: !uuid '96deebc1ed23efb20fb4b04a83ae7cff24a108d8'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/QueryPlugin.php:
+    newFile: !uuid '02ba6e06681f6ff162b7ab486f50216d2c7bf09b'
+    oldFile: !uuid '032687802915fe5983f5f006ee665701723438d1'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/QueryReturnPlugin.php:
+    newFile: !uuid '5509b2d523a91387c3b0bbf11121fe6a11b8e132'
+    oldFile: !uuid '84cc5e2df5bcafae340a63d460056bdcfd4085dc'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/ReturnPlugin.php:
+    newFile: !uuid 'dd8c616116029229808bb8592b639f07572bb980'
+    oldFile: !uuid '974b47a939b1e87a7a7351e674a28bf7c2bdd12d'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Extend/ProfitSharing/UnfreezePlugin.php:
+    newFile: !uuid '3c85140bd13151fe7331aa90ead7861d7d5bb088'
+    oldFile: !uuid '04befc0d5d3b7b6415d952838a973ed401054677'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing:
+    newFile: !uuid '97810b6de1373cd3e363e0680f2effe9de2e5a8c'
+    oldFile: !uuid '867d260fbff08ceb7ae4b7b03de03d5fbf533465'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon:
+    newFile: !uuid '20b1eca571339f8b330ca2cae3acd15fb6df6fa4'
+    oldFile: !uuid 'f94422321ba639005003656902361db395b36e18'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Callback:
+    newFile: !uuid 'fe2db297265fb12f1dcedbefd7bf35e3a7b86a7f'
+    oldFile: !uuid '54d14094bf7f6766233fd54e0d55f0cc21354d75'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Callback/QueryPlugin.php:
+    newFile: !uuid 'd64a3024bf6193e4fbb3c009af7b501edbd2bce3'
+    oldFile: !uuid 'b0b7ee3d0177d7fdb42b620470d5e36bc445206b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Callback/SetPlugin.php:
+    newFile: !uuid 'e066ecbe2dd4137c1cab3dcb54a8f4d6e471d0e5'
+    oldFile: !uuid 'dedb15ce19365863df97caae676a714bd6a29336'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Coupons:
+    newFile: !uuid 'b5cf8cdc940234bc8c0d9b6afae16ca6fefa70e9'
+    oldFile: !uuid '7a68a1e0c54631503a10a37d8e98615d957575fc'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Coupons/DetailPlugin.php:
+    newFile: !uuid '84a2577ae47ff846028082b62e763d6f8ab59873'
+    oldFile: !uuid '49d7c3f64d246046207a08d0b36c8630b36a8414'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Coupons/QueryUserPlugin.php:
+    newFile: !uuid 'dc94d70f7bdf4de5f5876b3430935ca96d26374a'
+    oldFile: !uuid '6429e4bee1a8b3f7448ca722a8d270990726ab95'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Coupons/SendPlugin.php:
+    newFile: !uuid '178690e2003bcb1388a19b573cdc2b5c886b487e'
+    oldFile: !uuid 'ca991e00b95f1d5efe0775ab95bef71df9a585f7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock:
+    newFile: !uuid 'a5380ae65ac8baf546d035a6961bebc16378f9d2'
+    oldFile: !uuid '2026a0a863cbd1f05ff8005f68b7a6f7c3f27f5a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/CreatePlugin.php:
+    newFile: !uuid '3d34944e117689c9eb942dffaed138b0c94fa2be'
+    oldFile: !uuid '3ae3dd1e3747b0d954fcd448364c09ba6308eb3a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/PausePlugin.php:
+    newFile: !uuid '780b1a11a8337bd29a2ca6b6ae9f1267703d12ff'
+    oldFile: !uuid 'ceb775be370dd445b2c0707f6b736cdbf7f8d95b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/QueryDetailPlugin.php:
+    newFile: !uuid '4b311d47fa969b288d78fa596368264cd58b2f21'
+    oldFile: !uuid 'f8d56081e70622ae89c9862669ecb4bcf31e5798'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/QueryItemsPlugin.php:
+    newFile: !uuid 'ef68a986c641b193052b734bdef493b10a898f3f'
+    oldFile: !uuid '138e0637fd31af52edb69412a544602dbb17432f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/QueryMerchantsPlugin.php:
+    newFile: !uuid '0777a46d0b3ec3e171adaa4e3afb116055f303f9'
+    oldFile: !uuid '1566fde0bbbe542dbacf1570f0f458f775b09a97'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/QueryPlugin.php:
+    newFile: !uuid '503c2381a0d749c82b783d7684c3142144531d12'
+    oldFile: !uuid '2f1a2d4128060d96057605fe1bdf152753409c5b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/RestartPlugin.php:
+    newFile: !uuid 'c1393dc50fad6d1088e96362b54724a14bbd526c'
+    oldFile: !uuid '13771a9ef4fbeedc17da25626c06869fdb79d93c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Coupon/Stock/StartPlugin.php:
+    newFile: !uuid '8fae020ac636cf4a62f2e32b297c6399aa055a2a'
+    oldFile: !uuid '9df16474e6eb1af388df6ff0d3eab1e342997ed6'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceBalance:
+    newFile: !uuid '88c173ed6d017f793efa280230ce9b295c3c5395'
+    oldFile: !uuid '81655e95c265fb2bbe873d78606e5b67a30864d5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceBalance/QueryDayEndPlugin.php:
+    newFile: !uuid 'c1a5c82990967a4be02f5f423a7876ce436bdd85'
+    oldFile: !uuid '2d848536ce6b0b0a80c2302fd6b2a1844eebc3b5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceBalance/QueryPlugin.php:
+    newFile: !uuid '942064a3405261d6d4591d41cd4c26bd6212cd07'
+    oldFile: !uuid 'b11355b531ea7efa7cc3d5803c0c3134cc729abb'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceRefund:
+    newFile: !uuid '4b707c6f4a0e91373d232a4bb8f1e180111c7858'
+    oldFile: !uuid 'b3e9a19b76302f8ca576e213c64c3121363266d8'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceRefund/ApplyPlugin.php:
+    newFile: !uuid 'c7aa7d366bd1ee0f69367c6590bbdae1631eae58'
+    oldFile: !uuid '87daaf9b980dcb4413fc8d520d807fb7b35462a8'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceRefund/QueryByWxPlugin.php:
+    newFile: !uuid '6caf71053414eef4250e2b82de34fd820ffcfb32'
+    oldFile: !uuid '6e4bda6af3d2ef9be4dfd0e23bc66b88ba579c4b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceRefund/QueryPlugin.php:
+    newFile: !uuid '00f910fe9a2474c941e51fe28de099019e4b42df'
+    oldFile: !uuid '351c70b8c751e8de85da04df5845c6e80cbae953'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceRefund/QueryReturnAdvancePlugin.php:
+    newFile: !uuid 'f4a22a3645ace2d95a9e3ffbde688244a6898ba7'
+    oldFile: !uuid '6f88523ffa56401f3a69d273dd083dd650f81df4'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/ECommerceRefund/ReturnAdvancePlugin.php:
+    newFile: !uuid '9a256f5414eddc7f7cb6282a6176318f673ce721'
+    oldFile: !uuid 'd6d494b6ea225aee8b1de39a177c9135f5c96d41'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Fapiao:
+    newFile: !uuid '0490b3c48e4633e9328a5e782ec298b44eed27b5'
+    oldFile: !uuid '2bed829ff9c6bef3348ae757c95874dd588ba21b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Fapiao/Blockchain:
+    newFile: !uuid 'cbd1145c7aaec846564a80b239c5275c2981bb4e'
+    oldFile: !uuid '30a1d6fa06f1e24c5f11f3949c7fb9bfae247556'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Fapiao/Blockchain/CreatePlugin.php:
+    newFile: !uuid 'c197545658af60e7dd9eb0d0f4a605e210980a01'
+    oldFile: !uuid 'bfc3581641248f010ac593e3f125a9a2555d01f6'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Fapiao/CreateCardTemplatePlugin.php:
+    newFile: !uuid 'd7436f1661dec14df4ef3fbae74359592e950b28'
+    oldFile: !uuid 'c1a4802b4472fbedc931bfc9a0bbc53a01d2e631'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Fapiao/GetTitleUrlPlugin.php:
+    newFile: !uuid 'ed6ccbf522a78c299bd9298bf8eac2fa43e13762'
+    oldFile: !uuid 'd5352a41abaedce2c085de93f7ab9f73d08db30c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer:
+    newFile: !uuid 'f4f55b2de17a4e660c8d77f837f28d2374b7ad1e'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/CancelPlugin.php:
+    newFile: !uuid '91cd6995e9c4ebe2521757aa99447d824e3d035a'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/CreatePlugin.php:
+    newFile: !uuid 'fd2de0cd44aebf6a02ee4917a581fe0d1daba2d3'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/InvokeAndroidPlugin.php:
+    newFile: !uuid 'b8ac3ea870253d58e0472b794d7e9a4143446b14'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/InvokeIosPlugin.php:
+    newFile: !uuid 'f124cc98bb5ae4a57a30c04ca64bfeb5b4109228'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/InvokeJsapiPlugin.php:
+    newFile: !uuid 'ac7c5ac345db2ed6b1fea73ab2f83aa2200c5dad'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/QueryByWxPlugin.php:
+    newFile: !uuid 'a1129005ed9674601ead5a64acfbee168809b27a'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/MchTransfer/QueryPlugin.php:
+    newFile: !uuid 'f7b80209851381fa3c89f8cb0e54a79e4e4c666c'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer:
+    newFile: !uuid '6670197fe4df326c5f965e21d2efcd129f4917d5'
+    oldFile: !uuid '3b4d0dd7a1d8cb394842752f056404f502317cd5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Batch:
+    newFile: !uuid '3ab102f8a7364a98e77f2821ce74091f9f571684'
+    oldFile: !uuid '79bc6aa9332c08994a1f0acdde70ff8ef4e92f29'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Batch/QueryByWxPlugin.php:
+    newFile: !uuid 'd0e949096e80e08f5f9a9ec7109c391d0d96a5a2'
+    oldFile: !uuid 'bc99dab5c8cd1aa097c5c69670208595aa8155a7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Batch/QueryPlugin.php:
+    newFile: !uuid 'd787f3ec4ce5e6a85c82afb8013ecd5cb8d23c3b'
+    oldFile: !uuid '33e2844c4d3149c9f1a7c3bfb9dbb8b454e8686c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/CreatePlugin.php:
+    newFile: !uuid 'a617255832e7ae75004a5a8e46cca93590d7c2cb'
+    oldFile: !uuid 'af213653fd2d57acfa0c07d507da699a214142b8'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Detail:
+    newFile: !uuid 'd24becb4a1facac133346653e7d01db112ce6726'
+    oldFile: !uuid 'd4e76d74dc6cbf68a95a855349ff3a0e7f395869'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Detail/QueryByWxPlugin.php:
+    newFile: !uuid 'e2d75057354ea944c553d34af0b5e59fc8d4154b'
+    oldFile: !uuid 'e384654f51a0411b5926fb13017af2f83eeb27be'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Detail/QueryPlugin.php:
+    newFile: !uuid 'd401a686c284f500b9cd66c931ef87f58820f1e8'
+    oldFile: !uuid 'aa35507f8370d5e261f4ebc8bd1d13c34ba910ea'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/DownloadReceiptPlugin.php:
+    newFile: !uuid '049ea5f65d45e09e506ead1ce4027c34636a554b'
+    oldFile: !uuid '5d33e13ca216a2679416e17ec8d8412c262a5a63'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Receipt:
+    newFile: !uuid 'e46671f32f287ab9d2ba5c03fb7508cb915c3a72'
+    oldFile: !uuid '6437b86c2e683a3554769a9c5a5c4500f53ea0c7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Receipt/CreatePlugin.php:
+    newFile: !uuid '9775669ba6222a76802a314f0ca26ad92ce18261'
+    oldFile: !uuid 'af3a248b94f2cb80b54497ae44e364de3c30b23b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/Receipt/QueryPlugin.php:
+    newFile: !uuid 'c4032ccee89d7029f3c4e640cbb27da566df9ea1'
+    oldFile: !uuid '457f8e0cc2a44f7145f325bcdbbd0bb4910f8fa0'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/ReceiptDetail:
+    newFile: !uuid 'b508abd9f833d6f2e2e15e209cc6138b765946d7'
+    oldFile: !uuid 'ed28a654044dc24db90bacc8411abb4d86ade35f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/ReceiptDetail/CreatePlugin.php:
+    newFile: !uuid '28cd2a886faf8eb8501f8ffe9c40b98a30997115'
+    oldFile: !uuid '9fb5a2a29bbff40e9c086e2d4baf732eb8279482'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Marketing/Transfer/ReceiptDetail/QueryPlugin.php:
+    newFile: !uuid 'efe467082265fb4af183ecf9e49acd362cc2a258'
+    oldFile: !uuid 'aa752ae09ddc5a1a571f8af1879e0cc309b6a788'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay:
+    newFile: !uuid '443269669e4ec07849eb246de67c224a35f458cb'
+    oldFile: !uuid 'ca737e47eebdcf263ed7308d3e1441c7cd579094'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App:
+    newFile: !uuid '74bbb50914a818c6e50c02cc84e4cf2da1a72a24'
+    oldFile: !uuid '7e82ee7543fcdcb4d356529f9ef8e3752adee249'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/ClosePlugin.php:
+    newFile: !uuid 'e6209e8db4ab8180e3a851c12075f26f32818898'
+    oldFile: !uuid '7b89ec5a4756b9251c2e60354dcc538a8c59955e'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/InvokePlugin.php:
+    newFile: !uuid 'def54a1f0b3c5eca0bc5627938f060fa2cd87aac'
+    oldFile: !uuid '37b48c01954df77d2972b96b017d1350e33388fd'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/PayPlugin.php:
+    newFile: !uuid '2b8008d1cbdbd148fa1d956d1e5f4bdce10ff63b'
+    oldFile: !uuid '00fc7ef3fa2dc8a77ccb34a8355f3f2da929795e'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/QueryByWxPlugin.php:
+    newFile: !uuid 'b0a7bd7096795708ce4b3cdfd97be4cafeac12a8'
+    oldFile: !uuid '9ed125bf45fbc14d2010ae5c6fc6a3dd4b2c093d'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/QueryPlugin.php:
+    newFile: !uuid 'eb2ded4089ae054c99272e7cdc32aa5afbe52a7b'
+    oldFile: !uuid '11ba37ff70239f1a86c6c49f566bb0fee37956a8'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/QueryRefundPlugin.php:
+    newFile: !uuid '9c09f15857b3b7ac015352eb7dbb1ae10e3182a0'
+    oldFile: !uuid 'b7bbaab863664d4dadf7fab6c6a6d79d57ea129b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/App/RefundPlugin.php:
+    newFile: !uuid 'c66896e6a2ed85d91224e34741319e704e7ce355'
+    oldFile: !uuid '4ef97108e2db56964568b7f9f0162416b304b82d'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine:
+    newFile: !uuid '0289a1f87ea03a344988d6fac4b11ba0fa14830f'
+    oldFile: !uuid 'db3603a721b57e5ce75651a39c34a4b4ba84ae18'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/AppInvokePlugin.php:
+    newFile: !uuid 'e7649874d63fe61168b4eef8687aef9ff57f472c'
+    oldFile: !uuid '752101d7331a2bf41c08ba61952a59b2d97f2268'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/AppPayPlugin.php:
+    newFile: !uuid '5044c4c6e97fae63e23b1dbfd3d674abbfba8f49'
+    oldFile: !uuid '3ac6007f8110de357f51f71b5eae4027d0bac793'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/ClosePlugin.php:
+    newFile: !uuid '8af52630ae9b1b9da6af4c868a10fe67fe33aa55'
+    oldFile: !uuid 'd30c050422a1da56fb4fb981de816c872e5bcfd6'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/H5PayPlugin.php:
+    newFile: !uuid '76efcd5dcdc6972947a474ea00b70fdcf2cd7a58'
+    oldFile: !uuid '328387fea95c7bab28c05a6c255d289e00de0a3f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/JsapiInvokePlugin.php:
+    newFile: !uuid '7d976290e4c4a0dd4c0b16d6ce4b852114f6c654'
+    oldFile: !uuid '8d98517a0089a243d2f7e40a4a3e28a3bfd9bbcd'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/JsapiPayPlugin.php:
+    newFile: !uuid 'f4323bd83ada0452f97e6a72d611a0e980220622'
+    oldFile: !uuid '06976ef3b4ab16f8ffc58cec822a12247b661172'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/MiniInvokePlugin.php:
+    newFile: !uuid '2bb1a53419b9109effd45c63986f94f680e71964'
+    oldFile: !uuid 'b68473df0fc7c9beb454684fb0ce8ed3b541950a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/MiniPayPlugin.php:
+    newFile: !uuid '3ec706b958016e35135d66610bae3f298d1a6d6e'
+    oldFile: !uuid '98f4987993237bcaeecfa7a7d7dd1e876b8dec74'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/NativePayPlugin.php:
+    newFile: !uuid 'c435b674b43c1454aa4c27d88db4781d12e24d2c'
+    oldFile: !uuid 'cdcfffd5e4b758ccf34953934945ec2c5dd88fd0'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/QueryRefundPlugin.php:
+    newFile: !uuid '9f1c637b270d5a9cdbd3232077e45288fb927c9a'
+    oldFile: !uuid 'eededc773aca14a7a729d0fa76e6a4ea254a32b7'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Combine/RefundPlugin.php:
+    newFile: !uuid '08efaa8c03be7661e42d305c95233e8b01a47bd3'
+    oldFile: !uuid 'c2a433397b30fe07b6aaddf76035632d4d2da39a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5:
+    newFile: !uuid '408f7e8f6ead1e9e057408a29a0e9ba8e23a3d01'
+    oldFile: !uuid 'a5208e175a9d85ce9abf1f9f9ce92722921dd0bb'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5/ClosePlugin.php:
+    newFile: !uuid '4b946bb12bb8ab1b1e90872f88dfee731d8967ff'
+    oldFile: !uuid 'be3f5286526c26577106bf9fd5cce2821844ad86'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5/PayPlugin.php:
+    newFile: !uuid '6fde0cbdbef2f1419596fd85c3d25ae71af45527'
+    oldFile: !uuid '60de9c3195390e2b1378786c36c14a21b5196328'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5/QueryByWxPlugin.php:
+    newFile: !uuid 'aa811523d1c45769346e4dc51d86ec08972c62f7'
+    oldFile: !uuid '2fd7668e53fdc05257859acbaaaaf1e812c7eb32'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5/QueryPlugin.php:
+    newFile: !uuid '9786a4bd7042cd3402ac1afa0c3e4500a4318f38'
+    oldFile: !uuid 'b87713e6333e58d7f5039fdfc164806054e61324'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5/QueryRefundPlugin.php:
+    newFile: !uuid 'c282160fc93b83be471e922ca8bbac3628704db4'
+    oldFile: !uuid '613c81f646086435256ceb103190d7b99b73a252'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/H5/RefundPlugin.php:
+    newFile: !uuid '9dbd42ff9b370b34f938ce4556fa75b38ba1db22'
+    oldFile: !uuid '1be65d3acd8888131ca545f370d9b80ee66658d9'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi:
+    newFile: !uuid '8b591ee8ec9cb451e3547d4862797d680ff9b1ce'
+    oldFile: !uuid '1eec17ccab9b59beaaf39ae5869d07dee2dcf19b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/ClosePlugin.php:
+    newFile: !uuid '4aad2b0072fa0d08b9e4cea94d6a1441de91de6e'
+    oldFile: !uuid 'e600e6dde2ecf09e1f3c8cdaa6f20275aef7e4ac'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/InvokePlugin.php:
+    newFile: !uuid '82a721b7e19385dd75d740ff1941856538bc942a'
+    oldFile: !uuid '64f56c22a81c58344e6dc4d05fcca8a32101c136'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/PayPlugin.php:
+    newFile: !uuid '7642cf32a752b0212fb0f5119e49095f428d937a'
+    oldFile: !uuid '9ba20bedc22b76e555bc7e85d18ed6818761dad5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/QueryByWxPlugin.php:
+    newFile: !uuid 'bbd08cdb75efccb1c4ccfe0e2b90d0dd79810910'
+    oldFile: !uuid '01c18ceed6f5719f1c5f47ca118571d29909cdca'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/QueryPlugin.php:
+    newFile: !uuid 'c52825a3735e9b4369f75c2541e6f3d59c26303b'
+    oldFile: !uuid '871c7fa27efaafe91805a8dcbd9c70bc31b5d5b5'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/QueryRefundPlugin.php:
+    newFile: !uuid 'f050eb35ae35217b797e24fdfa8c9f899bd60628'
+    oldFile: !uuid '9e8a244c747d84187cb0b6cd1a819c2a7e19462a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Jsapi/RefundPlugin.php:
+    newFile: !uuid 'b419cd614b57f8dac3a2bb387192da3a898ea4fd'
+    oldFile: !uuid '5a02639efebaf1bc3aca5ad0b777231814fdc023'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini:
+    newFile: !uuid '63d96929de35e7f66ae8d921e523152eaa149940'
+    oldFile: !uuid 'e65794079941694c0794ba0bf28de5de294b910f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/ClosePlugin.php:
+    newFile: !uuid 'cfaf85c307a446da0bb78ae6059487247939af11'
+    oldFile: !uuid '64c1f595521ed529cb8128cc89bb12665b69d711'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/InvokePlugin.php:
+    newFile: !uuid '0016fbad8d2486c2560ea74b319f94437ba8ae1f'
+    oldFile: !uuid 'deb95283ea7d8e495ba8512393be2bead07f5771'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/PayPlugin.php:
+    newFile: !uuid '5549c0d3052a2429874a667509808a3d23f5535a'
+    oldFile: !uuid 'c76052261cc09a110132ba40ce813fe122db3c00'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/QueryByWxPlugin.php:
+    newFile: !uuid '90d6da1f8cb844f7739892cb64921ac115ad21dd'
+    oldFile: !uuid '6c67e387fc48ac2a78b192c7aac5d879cf1cc6b2'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/QueryPlugin.php:
+    newFile: !uuid '22450b18ab3fd5385f2659e2642d3e227b177d39'
+    oldFile: !uuid 'cf2ed91e494e375971d8c727a323d094c009be1c'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/QueryRefundPlugin.php:
+    newFile: !uuid '9302ea0afe552adbf6f4df637e202e6a32863698'
+    oldFile: !uuid 'faa35372b8e838da9e5dd498fd6711c73ab9bc8a'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Mini/RefundPlugin.php:
+    newFile: !uuid '306f978a2af24d36913928a2dc2c5bcc409515b4'
+    oldFile: !uuid '107710dc7aedb779267b055b83560b1cd47e1466'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native:
+    newFile: !uuid '4a20e7655407c8b9b5e7cb0c1d7b52d8b84ce105'
+    oldFile: !uuid '7b619aa239b8b5cad1343857508c059ae7c9ddca'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native/ClosePlugin.php:
+    newFile: !uuid '62c65eb85798af2af6d31903758ccf6e5fa125a1'
+    oldFile: !uuid '7cd2143010a5d54880011d1ae06961d8ac51d7aa'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native/PayPlugin.php:
+    newFile: !uuid '151b2813feecbc700f8db9038706c789b6793e52'
+    oldFile: !uuid '5b27098b4ddb4fdeb93d93e8349ddc246e85b349'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native/QueryByWxPlugin.php:
+    newFile: !uuid 'e5b67ad867341e5dd98c0f4e63819d0f97fbf146'
+    oldFile: !uuid 'fb2592b2b4e6aa02899d5c12d2a660d1da2062bb'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native/QueryPlugin.php:
+    newFile: !uuid '50a14d71c5cdcd9046112eb34903b86bea4ba494'
+    oldFile: !uuid 'da61c1a94fec817cacf9da18a00471cc2a4222dc'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native/QueryRefundPlugin.php:
+    newFile: !uuid 'ff323c3ef7b8bced5331c004b0de400ff451ccfd'
+    oldFile: !uuid '8ddfcb1b2581fb1c9570b6f98cdc399576b2ff3b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Native/RefundPlugin.php:
+    newFile: !uuid '4a22300d61fa5fe003b0a812c11be9348b2111f5'
+    oldFile: !uuid '8fc6b8c71d041b1397d574f620c04176be05b20f'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Pos:
+    newFile: !uuid '1e6bef4933a542b3756e1ff519d8acf771d1c852'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Pos/CancelPlugin.php:
+    newFile: !uuid '2da3ac3e146f0c793c4d85ccb28e2da1021bae28'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Pos/PayPlugin.php:
+    newFile: !uuid 'c97f7cb283516b75f28af6831fdcabf9d00128eb'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Refund:
+    newFile: !uuid '05c9ab863e0d5173a2b11c0bdb79c95b15b02acf'
+    oldFile: !uuid '1baa760077e1f8ba2f8b1b6692d1ba44542df99b'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Refund/QueryPlugin.php:
+    newFile: !uuid '52a4122ec2ac2095e16db77bbc6871fe90b4dfbe'
+    oldFile: !uuid '46bf6eac321da50aa771ec496281afff5826d853'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Refund/RefundAbnormalPlugin.php:
+    newFile: !uuid '9203689cd65c1c9140c5bbb35f0a8250cea3bda7'
+    oldFile: !uuid 'f365d278130dbd6078c2074cfa50018a55921481'
+  /niucloud/vendor/yansongda/pay/src/Plugin/Wechat/V3/Pay/Refund/RefundPlugin.php:
+    newFile: !uuid '51bf5b46958e6afcbb52f3f1c9e471cde90249b2'
+    oldFile: !uuid '98a96728eba1b63e6a5edc33060b6f6260d469d5'
+  /niucloud/vendor/yansongda/pay/src/Provider:
+    newFile: !uuid 'e36f9956e6562d589e47ac71dff16fec08eb964c'
+    oldFile: !uuid 'a247ca800b02f27d6d29281a76b5a9bf99640d8e'
+  /niucloud/vendor/yansongda/pay/src/Provider/Alipay.php:
+    newFile: !uuid '7e73ccab78cf7c6aac569f95e6f3cadb85e9b802'
+    oldFile: !uuid '583557d4ab65727a99fcaa38aaab54e2b3dac759'
+  /niucloud/vendor/yansongda/pay/src/Provider/Douyin.php:
+    newFile: !uuid 'dfe77c1c057832140bdc4569321e5ab26011af98'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Provider/Jsb.php:
+    newFile: !uuid '11908465ef44ea5a4dd448a1b7c0ab186d3f51a9'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Provider/Unipay.php:
+    newFile: !uuid '08d7cce20a3ebca37b3c2f3fe4528481a7ded9de'
+    oldFile: !uuid '2bbc5911370b322bc6aaea59bcfbdd41a78b7ab4'
+  /niucloud/vendor/yansongda/pay/src/Provider/Wechat.php:
+    newFile: !uuid 'fb88094099ab115fb1653553890b3f910c8f053d'
+    oldFile: !uuid '6e96b99cf7fc89a07c54ee28751c1090fc569546'
+  /niucloud/vendor/yansongda/pay/src/Service:
+    newFile: !uuid '62ed7c2413d2dd9d174f7d0c4decf705f7512d21'
+    oldFile: !uuid 'e413a01f835e1903a402f6a2bfad166f0a6d9ebd'
+  /niucloud/vendor/yansongda/pay/src/Service/DouyinServiceProvider.php:
+    newFile: !uuid '404c48af44caa6ad0469cf7f8501017876b6b994'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Service/JsbServiceProvider.php:
+    newFile: !uuid '67997424daf6a925acd9c888cac02ba47bf2ad10'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut:
+    newFile: !uuid '2cd334f43e2b2aaa647a8081ec7a9dde659f9341'
+    oldFile: !uuid 'ed3fb61d4ed3933f86799608edea1068c3c714ac'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Alipay:
+    newFile: !uuid 'c149c74f14f730e10e3a7641e0efc208beeb928b'
+    oldFile: !uuid '2f1d061d13a1d0b27aadf399b9eaa92123398a14'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Alipay/CancelShortcut.php:
+    newFile: !uuid 'acec946cca4655291effa56e9541aaad5387d0a7'
+    oldFile: !uuid '3a68e289e34f4149911e8280c7bf19aac3ca24bd'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Alipay/CloseShortcut.php:
+    newFile: !uuid '016d8495a0b619be4e0f818df12da461179f34ef'
+    oldFile: !uuid '984ca966973d7045372bd877f6179dc505bacce3'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Alipay/QueryShortcut.php:
+    newFile: !uuid '27ecfcfe50ce5c486d4f1533dd0e9d0d3a15c74f'
+    oldFile: !uuid 'e58574b82602dbff61614e0deb6a074e36afbaf2'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Alipay/RefundShortcut.php:
+    newFile: !uuid 'bf30461228b66bd63da904e5488761fb84a14647'
+    oldFile: !uuid 'cf3e70b5d4179f1226b22de389150d35d5ae18da'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Douyin:
+    newFile: !uuid '6991eb86c500fdade3a8810e92047cc83ec91a9b'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Douyin/MiniShortcut.php:
+    newFile: !uuid 'd91216419340aa0f490854343b2dc2237f0101bd'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Douyin/QueryShortcut.php:
+    newFile: !uuid 'c023e2f0a2c9942b59c25f84e5c749dadd198c9d'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Douyin/RefundShortcut.php:
+    newFile: !uuid '6bbac50d52c4a9699426a71c237e1ed43667c917'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Jsb:
+    newFile: !uuid '71a6073df514b99558751a6d29fa2b897cbf58d9'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Jsb/QueryShortcut.php:
+    newFile: !uuid '83af51c83843a78d89533fec1574330e4e53020d'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Jsb/RefundShortcut.php:
+    newFile: !uuid '49ef593053f501f80e235b130ec55b449efe7d78'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Jsb/ScanShortcut.php:
+    newFile: !uuid '56ca79fa5eb82f8a66ef70436a6f9f58afe77b6b'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Unipay:
+    newFile: !uuid '65e07be4a4d1f610c2143c3b65a8165ffe14494e'
+    oldFile: !uuid '596c58c5710d7ce1fa01598334eeae324476c3b2'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Unipay/CancelShortcut.php:
+    newFile: !uuid '6cc9569799e02310baebc4cae16dfb4ce8525a38'
+    oldFile: !uuid '40abc57db2f106346805919f9a67b753fa6af8f0'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Unipay/PosShortcut.php:
+    newFile: !uuid '0ecbc6486f6b9f359ba3349836b51d23a794f9be'
+    oldFile: !uuid '2337957ad520a2f39a9733ea95f9f5e3595ebe1f'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Unipay/QueryShortcut.php:
+    newFile: !uuid '7f0b29e9cc525138a01b32e0d39141893cf84621'
+    oldFile: !uuid '1c1322d7928edd78bd00155c8f650ee55e8003a5'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Unipay/RefundShortcut.php:
+    newFile: !uuid '75396772e40d2b975783950efa8d4dbfe56d0822'
+    oldFile: !uuid '6852c5b6d4530056ee059072c42eac0d0e7593a1'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Unipay/ScanShortcut.php:
+    newFile: !uuid '74cbf9eb4123cde617748a2dd8091bfb5af9fca2'
+    oldFile: !uuid 'e678f30d6c7658f3853a1d96debdcef15910060a'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat:
+    newFile: !uuid '6e56fe8ad617b3d1880345723abaf6bc420e75d5'
+    oldFile: !uuid 'cfe312c2f6db72fbb51f11a610cc85c3167a9e5f'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/AppShortcut.php:
+    newFile: !uuid '59805472b787e7022da14e50dd000ff04693298f'
+    oldFile: !uuid '9ed3d4f354b4055c154f81e1885d72ea2f7c607b'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/CloseShortcut.php:
+    newFile: !uuid '3b4a17881b95789c0d64b5cb872224e17f3bc987'
+    oldFile: !uuid '5048e76302ab84d450997ce5050cff884f95d298'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/H5Shortcut.php:
+    newFile: !uuid 'f8a95ec024f5d2f3f0c5e2390954f9c88b1c4fd6'
+    oldFile: !uuid '3587924b7d95e7357cb6ff43ed621a401692396a'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/MiniShortcut.php:
+    newFile: !uuid '25ae6dbe08dbc58c71bbbb25b92e81da90d415a4'
+    oldFile: !uuid '005362a213d3cf0b4c2bac9aefed65b6db5a54eb'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/MpShortcut.php:
+    newFile: !uuid '929445cc42bb729f32d6c6de7c5888b51ffa7783'
+    oldFile: !uuid '854f22ce7fa58b07b775f65fac5189f4f0bec2b4'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/PapayShortcut.php:
+    newFile: !uuid '1e3eabe6a9fa98e288c541d08dca9cdb0a5e9677'
+    oldFile: !uuid '1538880a7646dc2c697b3d5cdfc0778b6761dbbb'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/PosShortcut.php:
+    newFile: !uuid '9681f2074d92a3df3e1c93feb2753a454ff33310'
+    oldFile: !uuid '5b78560ae7b68b860c97036f6c827c6629f0e92c'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/QueryShortcut.php:
+    newFile: !uuid 'ff6f5a9ffceecebe7a79ceb92f8f00c25601ec4c'
+    oldFile: !uuid 'eff4c23dcc9f5025e8ce9cd4797712c5ccc0377d'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/RedpackShortcut.php:
+    newFile: !uuid '3d5ed4eb0cf513a3ebbe52957f10bf99a81dfbe8'
+    oldFile: null
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/RefundShortcut.php:
+    newFile: !uuid '2aa9bed629dc902e0715320dbf023af780d9f76b'
+    oldFile: !uuid '6e575ad84db66669e15c2f323a33cc0f7d66e1ad'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/ScanShortcut.php:
+    newFile: !uuid '9059e51659b8e22a74814499f7e2d219c08741b2'
+    oldFile: !uuid '0827e459151c1987d1408bae1dc872d3c39ea7e9'
+  /niucloud/vendor/yansongda/pay/src/Shortcut/Wechat/TransferShortcut.php:
+    newFile: !uuid '80dc278c79782ef4cb70c469b0712a1755608195'
+    oldFile: !uuid '0927b43f80575ffcf54c9c6bd1708ab7c8cb1f88'
+  /niucloud/vendor/yansongda/pay/src/Traits:
+    newFile: !uuid 'ddb83ab4c56d7159e4e60591c931283548e39d93'
+    oldFile: !uuid '00c87a36cfd20fbeab4e64cada43dcbad4ab6c46'
+  /niucloud/vendor/yansongda/pay/src/Traits/SupportServiceProviderTrait.php:
+    newFile: !uuid '14ae8ae3f338b7995c4df2e63fe82a6499307c2d'
+    oldFile: !uuid '0ba57fe946e10b07fe5475600f4e4f383cd21213'
+  /niucloud/vendor/yansongda/supports:
+    newFile: !uuid 'd1f16a091648dbdbb31d7ce9ab68fff5527ac8cb'
+    oldFile: !uuid '2577ad197d750e948723745fb4fdcd4cea6aead2'
+  /niucloud/vendor/yansongda/supports/.php-cs-fixer.php:
+    newFile: !uuid 'c638d19fdc9aae026bb2c4262cc3750cc4f276f4'
+    oldFile: !uuid '1d27b98f3da0a712813fae754dbe88756697b8d0'
+  /niucloud/vendor/yansongda/supports/src:
+    newFile: !uuid '66df0bd24b4205716cc7d485236d0409c4bef75e'
+    oldFile: !uuid '9f22fe41d6ed0d689437ef2caf5ec7656aa53a3d'
+  /niucloud/vendor/yansongda/supports/src/Arr.php:
+    newFile: !uuid 'a7a4022379da5242a1f1a2751b7ba411b82536fc'
+    oldFile: !uuid '081c1ae53b1bd3d55f358bc50001b4b41953f18d'
+  /niucloud/vendor/yansongda/supports/src/Collection.php:
+    newFile: !uuid '2c3d34918bbbb665cfb218b0b4d539abaaf63855'
+    oldFile: !uuid '167c3f45da00d88da9b44fda76741a43ab8e27cf'
+gitCommitId: !uuid '0964fcfe436d09bf62c511b1777c7dc22c30f9d4'
 renames: {
   }
-revisionId: 280
+revisionId: 281
