@@ -2,25 +2,25 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'a3cbd955e9a0d4f89e69cfff4586b5c0a4676d44'
-    oldFile: !uuid 'caffc42d407a6954892aa666e400cd44bf53d914'
-  /niucloud/app:
-    newFile: !uuid '8e0fdc254412d06525d4e3e19b88b64fc27c2a0c'
-    oldFile: !uuid '6a2c66c702ee8d9b70b1e5f2a97ffbd9944265d1'
-  /niucloud/app/service:
-    newFile: !uuid 'de9a5e197579e0027a85c3db546eb18644c6d12d'
-    oldFile: !uuid 'd2c1851c52d7433cfc1d20f8ba8cbaf2f14053fc'
-  /niucloud/app/service/core:
-    newFile: !uuid '16d2eb6b868a0e703ec6e686e0fd0815cce90aac'
-    oldFile: !uuid '8322c9988682d7a74d1d2cc393e9763a5b735fbb'
-  /niucloud/app/service/core/menu:
-    newFile: !uuid '76394561944ea4ff6575d5bdf1e0a5b676788dfc'
-    oldFile: !uuid '8b480a5a77efd52e02e82acab72ba2bafffb61af'
-  /niucloud/app/service/core/menu/CoreMenuService.php:
-    newFile: !uuid '2b1455812baa75b40504a7adcb7d1a283440c772'
-    oldFile: !uuid 'd9e1132cf06a6254b8ba75aadedc38f32b0159ac'
-gitCommitId: !uuid 'fcd3ec6ae12bde1c78a32324b3c26a9fa05cc458'
+  /admin:
+    newFile: !uuid 'f955cd59ed5f08cecafd1faa61fe6af4f4fda48e'
+    oldFile: !uuid '93322ce84f3ffa7cbb0949e1125aa4c89eb1e21f'
+  /admin/src:
+    newFile: !uuid 'c83e1fda5eb754a3c997ee23ad11b170e1e8b243'
+    oldFile: !uuid '9f981f3ca6899c074798e922116ed50bb486678e'
+  /admin/src/app:
+    newFile: !uuid 'a4b272f44a553d826bf964b5048866a68eef2630'
+    oldFile: !uuid 'fcdd7d0e6b4a2688f359414eecb154926ed22b3e'
+  /admin/src/app/components:
+    newFile: !uuid '7ce792c8ae604db23d99ff1e9c84f80fa1b38258'
+    oldFile: !uuid 'c82d4f26a221bc2e4305ca7427e3df0dbfba232a'
+  /admin/src/app/components/upgrade:
+    newFile: !uuid 'ca07b4bb2be36cdfc9e5ea6291075feade048ec2'
+    oldFile: !uuid 'ff45e5830b1ee72e9d4b5c1a18b34718bb9dffc6'
+  /admin/src/app/components/upgrade/index.vue:
+    newFile: !uuid '3fda77dfbd061cf208c658adee0851a4f4b54e21'
+    oldFile: !uuid '08cc2a12f57e13b931f3fef324e21ebaf0abfabf'
+gitCommitId: !uuid '88ba3a410f4c916580faf26c652aece3029c6284'
 renames: {
   }
-revisionId: 285
+revisionId: 286
