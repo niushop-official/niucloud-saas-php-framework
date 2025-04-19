@@ -115,6 +115,20 @@ const listenWeappRunDev = () => {
             handleWeappLanguage('dev')
         }
     });
+
+    // 监听 stderr 输出，用于捕获错误信息
+    devProcess.stderr.on('data', (data) => {
+        console.error(data.toString());
+    });
+
+    // 监听子进程退出事件
+    devProcess.on('close', (code) => {
+        if (code !== 0) { // 如果退出码不是0，则认为发生了错误
+            console.error(`Child process exited with code ${code}`);
+        } else {
+            console.log('Child process exited successfully.');
+        }
+    });
 }
 
 main()
