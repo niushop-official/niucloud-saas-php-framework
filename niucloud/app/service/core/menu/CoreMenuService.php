@@ -92,15 +92,17 @@ class CoreMenuService extends BaseCoreService
 
         if (isset($addon_admin_tree['delete'])) unset($addon_admin_tree['delete']);
         if (isset($addon_site_tree['delete'])) unset($addon_site_tree['delete']);
-
+        $menu_list = [];
+        if (!empty($addon_admin_tree)) {
+            $menu_list = array_merge($menu_list, $this->loadMenu($addon_admin_tree, "admin", $addon));
+        }
         if (!empty($addon_site_tree)) {
-            $admin_menu = $this->loadMenu($addon_admin_tree, "admin", $addon);
-            $site_menu = $this->loadMenu($addon_site_tree, "site", $addon);
-            $this->deleteByAddon($addon, false);
-            if(!empty($site_menu))
-            {
-                $this->install(array_merge($admin_menu, $site_menu));
-            }
+            $menu_list = array_merge($menu_list, $this->loadMenu($addon_site_tree, "site", $addon));
+        }
+        $this->deleteByAddon($addon, false);
+        if(!empty($menu_list))
+        {
+            $this->install($menu_list);
         }
 
         return true;
