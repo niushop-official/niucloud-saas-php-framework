@@ -2,34 +2,22 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'fd52ae4605814234e9f9a000b2da9dec841cb680'
-    oldFile: !uuid '9920870e58bc99f91a379f20e29fabb9e7c2dad8'
-  /niucloud/app:
-    newFile: !uuid 'c435f9d06bee6e4aafe06b6603fd8221bab3dc94'
-    oldFile: !uuid 'be4fa4337e11033860d4ca1432d3e7e8fd8d0b7c'
-  /niucloud/app/service:
-    newFile: !uuid 'd738adc19c6a0c1649dc92e8557c28410021261a'
-    oldFile: !uuid 'dc38f25ee1f868b778d25659edfc1e7f03c5d125'
-  /niucloud/app/service/admin:
-    newFile: !uuid '11e133e6551ae0ad326fe0b5a261b2c50ab16c8b'
-    oldFile: !uuid '6b9c216876e4908c61fabcf928bc4296121a361c'
-  /niucloud/app/service/admin/upgrade:
-    newFile: !uuid 'fcf5c4fb2e7e1e6405efb436ce9d2f861fb7bc1e'
-    oldFile: !uuid '12eec2a53010ede41e4d53b4b3bd8752e91fc5ca'
-  /niucloud/app/service/admin/upgrade/UpgradeService.php:
-    newFile: !uuid '7111ddc24dec9de218b4839d4a99dbe2836ddf3a'
-    oldFile: !uuid 'ce08e66f3cb806213103c8f5ce5063001543283e'
-  /niucloud/app/service/core:
-    newFile: !uuid '134d5f59142788f9a252ebb5c90400a91e7e3338'
-    oldFile: !uuid '26ebabec5dcab8c2cd31efc4742790bc3a61eac9'
-  /niucloud/app/service/core/addon:
-    newFile: !uuid '328f268a2aaa6ad301695eec1552c0e0284e521b'
-    oldFile: !uuid '0cedf01dd49d14b9b91d868148447a404cb2cadf'
-  /niucloud/app/service/core/addon/WapTrait.php:
-    newFile: !uuid '96db5254cacfeb92d5b3b30b84375446fafb53c1'
-    oldFile: !uuid '062990cb3a65890c2f1189f8454ffa3de1023c5e'
-gitCommitId: !uuid 'a9de59b00a2fce904b5511c2f88d929eb614a2b4'
+  /admin:
+    newFile: !uuid '6b26316a973cc10edb1c82db15a7bb1be2e0e33b'
+    oldFile: !uuid '6e50c05f23ebf4ec57646a764b816cf0633674ae'
+  /admin/auto-imports.d.ts:
+    newFile: !uuid '07b6235c0bede691c0460fcd57c26baf4e59ca71'
+    oldFile: !uuid 'a51b7a66e7ad9a532e83b4cab6e64bd9ab09aeb6'
+  /admin/components.d.ts:
+    newFile: !uuid 'ddc25615123cc0e689d7fa1fd13b61ff63c4d1d5'
+    oldFile: !uuid '71cc66d39e5810f1dead5e23f742239539200210'
+  /admin/package-lock.json:
+    newFile: !uuid '64fda158d99f5d390170bcc24089bf75fd560d1b'
+    oldFile: !uuid '2621871f10f2e17079dad37510abaf42c9ea1c8a'
+  /admin/package.json:
+    newFile: !uuid '8ba77be16af23964494f4a6668dc80222a699929'
+    oldFile: !uuid 'a113a30d64be809841f9158c45ce29e9837674a1'
+gitCommitId: !uuid '8fa97dd4a76e611c75825a5664d49e1ebf6a9d41'
 renames: {
   }
-revisionId: 274
+revisionId: 275
