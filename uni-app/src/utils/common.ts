@@ -289,12 +289,17 @@ export function isUrl(str: string): boolean {
  */
 export function img(path: string): string {
     // #ifdef H5
-    return isUrl(path) ? path : `${ import.meta.env.VITE_IMG_DOMAIN || location.origin }/${ path }`
+    let imgDomain = import.meta.env.VITE_IMG_DOMAIN || location.origin
     // #endif
 
     // #ifndef H5
-    return isUrl(path) ? path : `${ import.meta.env.VITE_IMG_DOMAIN }/${ path }`
+    let imgDomain = import.meta.env.VITE_IMG_DOMAIN
     // #endif
+
+    if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
+    if (typeof imgDomain == 'string' && imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)
+
+    return isUrl(path) ? path : `${imgDomain}/${path}`
 }
 
 /**
@@ -640,7 +645,7 @@ export function setThemeColor (path: string) {
     if (configStore.addon != route) {
         configStore.addon = route;
     }
-	
+
     // 设置插件应用的主色调，排除系统
 	const theme_color_list = uni.getStorageSync('theme_color_list');
 	const current_theme_color = uni.getStorageSync('current_theme_color');
@@ -660,7 +665,7 @@ export function setThemeColor (path: string) {
 			}
         } catch (e) {
             // 设置插件应用的主色调发生错误，若不存在则使用最后有效的主色调
-			if(!current_theme_color && theme_color_list){
+			if(!current_theme_color && theme_color_list  && theme_color_list.length>0){
 				currTheme = theme_color_list.app || Object.values(theme_color_list)[0];
 				configStore.themeColor = themeColorToHex(currTheme.theme)
 				uni.setStorageSync('current_theme_color', JSON.stringify(themeColorToHex(currTheme.theme)));
@@ -669,11 +674,11 @@ export function setThemeColor (path: string) {
 			}
         }
 
-    }else if(!current_theme_color && theme_color_list){
-		currTheme = theme_color_list.app || Object.values(theme_color_list)[0];
-		configStore.themeColor = themeColorToHex(currTheme.theme)
-		uni.setStorageSync('current_theme_color', JSON.stringify(themeColorToHex(currTheme.theme)));
-	}
+    }else if (!current_theme_color && theme_color_list && theme_color_list.length>0) {
+      currTheme = theme_color_list.app || Object.values(theme_color_list)[0]
+      configStore.themeColor = themeColorToHex(currTheme.theme)
+      uni.setStorageSync("current_theme_color", JSON.stringify(themeColorToHex(currTheme.theme)))
+    }
 }
 
 export function themeColorToHex (param: any) {

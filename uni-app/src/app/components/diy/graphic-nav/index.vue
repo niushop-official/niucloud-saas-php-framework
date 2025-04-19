@@ -57,11 +57,11 @@
                     </swiper-item>
                 </swiper>
                 <view class="graphic-nav-indicator-dot" v-if="shouldShowIndicator && swiperHeight">
-                    <div class="dots-wrap" :class="[diyComponent.swiper.indicatorAlign]">
-                        <div v-for="(item,index) in Math.ceil(diyComponent.list.length / (diyComponent.pageCount * diyComponent.rowCount))"
+                    <view class="dots-wrap" :class="[diyComponent.swiper.indicatorAlign]">
+                        <view v-for="(item,index) in Math.ceil(diyComponent.list.length / (diyComponent.pageCount * diyComponent.rowCount))"
                             :class="['dot',index == swiperIndex ? 'dot-active' : '',diyComponent.swiper.indicatorStyle]"
-                            :style="{ background : index == swiperIndex ? diyComponent.swiper.indicatorActiveColor : diyComponent.swiper.indicatorColor}"></div>
-                    </div>
+                            :style="{ background : index == swiperIndex ? diyComponent.swiper.indicatorActiveColor : diyComponent.swiper.indicatorColor}"></view>
+                    </view>
                 </view>
             </view>
 
