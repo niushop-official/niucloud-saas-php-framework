@@ -3,7 +3,7 @@
 
         <template v-if="upgradeContent">
             <!-- 检测服务是否到期 -->
-            <template v-if="step == 1 && upgradeContent.upgrade_version != upgradeContent.last_version">
+            <template v-if="step == 1">
                 <div class="text-lg">
                     <template v-if="upgradeContent.upgrade_version">
                         <span>本次升级将从</span>
