@@ -12,6 +12,8 @@
 namespace app\service\admin\upgrade;
 
 
+use app\dict\sys\AppTypeDict;
+use app\model\site\Site;
 use core\util\DbBackup;
 
 /**
@@ -24,8 +26,9 @@ class RestoreService extends UpgradeService
      * 恢复代码备份
      * @return true
      */
-    public function restoreCode() {
-        $backup_dir = $this->upgrade_dir .$this->upgrade_task['key'] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+    public function restoreCode()
+    {
+        $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         if (is_dir($backup_dir)) {
             // 删除前端文件
 //            if (is_dir(public_path() . 'admin')) del_target_dir(public_path() . 'admin', true);
@@ -40,20 +43,20 @@ class RestoreService extends UpgradeService
      * 恢复数据库备份
      * @return true
      */
-    public function restoreSql() {
-        $backup_dir = $this->upgrade_dir .$this->upgrade_task['key'] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+    public function restoreSql()
+    {
+        $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         if (is_dir($backup_dir)) {
-            $db = new DbBackup([
-                'path'     => $backup_dir //数据库备份路径
-            ]);
-            $file_list = $db->fileList();
-            if (!empty($file_list)) {
-                $db->setSqlMode();
-                foreach ($file_list as $file) {
-                    $db->setFile($file)->import(0, $file['time']);
-                }
-            }
+            $db = new DbBackup($backup_dir);
+            $db->restoreDatabase();
+
+            $site_model = new Site();
+            $site_model->where([
+                [ 'site_id', '<>', 0 ],
+                [ 'app_type', '=', AppTypeDict::ADMIN ]
+            ])->update([ 'site_id' => 0 ]);
         }
         return true;
     }
+
 }

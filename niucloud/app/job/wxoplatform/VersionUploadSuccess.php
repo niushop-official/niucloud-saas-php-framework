@@ -25,9 +25,9 @@ class VersionUploadSuccess extends BaseJob
      * @param $data
      * @return true
      */
-    protected function doJob($task_key)
+    protected function doJob($task_key, $is_all)
     {
-        WeappVersionService::uploadSuccess($task_key);
+        WeappVersionService::uploadSuccess($task_key, $is_all);
         return true;
     }
 

@@ -25,9 +25,9 @@ class GetVersionUploadResult extends BaseJob
      * @param $data
      * @return true
      */
-    protected function doJob($task_key)
+    protected function doJob($task_key, $is_all)
     {
-        WeappVersionService::getVersionUploadResult($task_key);
+        WeappVersionService::getVersionUploadResult($task_key, $is_all);
         return true;
     }
 

@@ -104,6 +104,9 @@ class CoreWeappDeliveryService extends BaseCoreService
 
             Log::write('发货信息录入接口，参数打印：' . json_encode($data));
 
+            //微信订单录入有时差 延时3秒执行发货通知
+            sleep(3);
+
             $api = CoreWeappService::appApiClient($site_id);
             $result = $api->postJson('wxa/sec/order/upload_shipping_info', $data)->toArray();
 
@@ -151,6 +154,9 @@ class CoreWeappDeliveryService extends BaseCoreService
             ];
 
             Log::write('确认收货提醒接口，参数打印：' . json_encode($data));
+
+            //微信订单录入有时差 延时3秒执行发货通知
+            sleep(3);
 
             $api = CoreWeappService::appApiClient($site_id);
 

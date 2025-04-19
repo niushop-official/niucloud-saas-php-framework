@@ -80,4 +80,11 @@ class NiucloudService extends BaseAdminService
     public function getFrameworkVersionList() {
         return (new CoreModuleService())->getFrameworkVersionList();
     }
+
+    /**
+     * 获取应用/插件的版本更新记录
+     */
+    public function getAppVersionList($app_key) {
+        return (new CoreModuleService())->getAppVersionList($app_key);
+    }
 }

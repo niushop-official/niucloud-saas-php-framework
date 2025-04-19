@@ -13,10 +13,8 @@ namespace app\service\api\diy;
 
 use app\dict\diy\PagesDict;
 use app\dict\diy\TemplateDict;
-use app\dict\sys\FileDict;
 use app\model\diy\Diy;
 use app\model\diy\DiyTheme;
-use app\service\core\diy\CoreDiyService;
 use app\service\core\site\CoreSiteService;
 use core\base\BaseApiService;
 
@@ -159,26 +157,28 @@ class DiyService extends BaseApiService
     public function getDiyTheme()
     {
         $site_addon = ( new CoreSiteService() )->getSiteCache($this->site_id);
-        $addon_list = array_merge($site_addon['apps'],$site_addon['site_addons']);
-        $theme_data = (new DiyTheme())->where([['site_id', '=', $this->site_id], ['is_selected', '=', 1]])->column('id,title,theme,new_theme','addon');
-        $system_theme = array_values(array_filter(event('ThemeColor', [ 'key' => 'app'])))[0] ?? [];
-        $app_theme['app'] = [
-            'title' => $theme_data['app']['title'] ?? (!empty($system_theme) ? $system_theme['theme_color'][0]['title'] : ''),
-            'theme' => $theme_data['app']['theme'] ?? (!empty($system_theme) ? $system_theme['theme_color'][0]['theme'] : ''),
-            'new_theme' => $theme_data['app']['new_theme'] ?? '',
+        $addon_list = array_merge($site_addon[ 'apps' ], $site_addon[ 'site_addons' ]);
+        $theme_data = ( new DiyTheme() )->where([ [ 'site_id', '=', $this->site_id ], [ 'is_selected', '=', 1 ] ])->column('id,title,theme,new_theme', 'addon');
+        $system_theme = array_values(array_filter(event('ThemeColor', [ 'key' => 'app' ])))[ 0 ] ?? [];
+        $app_theme[ 'app' ] = [
+            'title' => $theme_data[ 'app' ][ 'title' ] ?? ( !empty($system_theme) ? $system_theme[ 'theme_color' ][ 0 ][ 'title' ] : '' ),
+            'theme' => $theme_data[ 'app' ][ 'theme' ] ?? ( !empty($system_theme) ? $system_theme[ 'theme_color' ][ 0 ][ 'theme' ] : '' ),
+            'new_theme' => $theme_data[ 'app' ][ 'new_theme' ] ?? '',
         ];
         $data = [];
-        foreach ($addon_list as $key => $value){
-            if (isset($value['support_app']) && empty($value['support_app']) && $value['type'] == 'addon'){
+        foreach ($addon_list as $key => $value) {
+            if (isset($value[ 'support_app' ]) && empty($value[ 'support_app' ]) && $value[ 'type' ] == 'addon') {
                 continue;
             }
-            $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value['key']])))[0] ?? [];
-            $data[$value['key']]['title'] = $theme_data[$value['key']]['title'] ?? (!empty($addon_theme) ? $addon_theme['theme_color'][0][ 'title' ] : '');
-            $data[$value['key']]['theme'] = $theme_data[$value['key']]['theme'] ?? (!empty($addon_theme) ? $addon_theme['theme_color'][0][ 'theme' ] : '');
-            $data[$value['key']]['new_theme'] = $theme_data[$value['key']]['new_theme'] ?? '';
+            $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value[ 'key' ] ])))[ 0 ] ?? [];
+            if (!empty($addon_theme) && !empty($addon_theme[ 'theme_color' ])) {
+                $data[ $value[ 'key' ] ][ 'title' ] = $theme_data[ $value[ 'key' ] ][ 'title' ] ?? $addon_theme[ 'theme_color' ][ 0 ][ 'title' ];
+                $data[ $value[ 'key' ] ][ 'theme' ] = $theme_data[ $value[ 'key' ] ][ 'theme' ] ?? $addon_theme[ 'theme_color' ][ 0 ][ 'theme' ];
+                $data[ $value[ 'key' ] ][ 'new_theme' ] = $theme_data[ $value[ 'key' ] ][ 'new_theme' ] ?? '';
+            }
         }
-        if (count($site_addon[ 'apps' ]) > 1) {// 应用数量大于1时，展示系统主题色设置，只有一个应用时，不展示系统主题色设置
-            $data = array_merge($app_theme,$data);
+        if (empty($data) || count($site_addon[ 'apps' ]) > 1) {// 应用数量大于1时，展示系统主题色设置，只有一个应用时，不展示系统主题色设置
+            $data = array_merge($app_theme, $data);
         }
         return $data;
     }

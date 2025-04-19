@@ -277,7 +277,7 @@ class CorePayService extends BaseCoreService
                 ]
             );
             if (env('queue.state', true)) {
-                PayReturnTo::dispatch([ 'site_id' => $site_id, 'out_trade_no' => $out_trade_no ], secs: 15);
+                PayReturnTo::dispatch([ 'site_id' => $site_id, 'out_trade_no' => $out_trade_no ], secs: 60);
             }
         }
         return $pay_result;

@@ -11,6 +11,7 @@
 
 namespace app\adminapi\controller\addon;
 
+use app\service\admin\upgrade\UpgradeRecordsService;
 use app\service\admin\upgrade\UpgradeService;
 use core\base\BaseAdminController;
 use think\Response;
@@ -24,7 +25,7 @@ class Upgrade extends BaseAdminController
      */
     public function upgrade($addon = '')
     {
-        return success(data:( new UpgradeService() )->upgrade($addon));
+        return success(data: ( new UpgradeService() )->upgrade($addon));
     }
 
     /**
@@ -32,9 +33,9 @@ class Upgrade extends BaseAdminController
      * @param $app_key
      * @return Response
      */
-    public function execute($addon = '')
+    public function execute()
     {
-        return success(data:( new UpgradeService() )->execute());
+        return success(data: ( new UpgradeService() )->execute());
     }
 
     /**
@@ -44,7 +45,7 @@ class Upgrade extends BaseAdminController
      */
     public function getUpgradeContent($addon = '')
     {
-        return success(data:( new UpgradeService() )->getUpgradeContent($addon));
+        return success(data: ( new UpgradeService() )->getUpgradeContent($addon));
     }
 
     /**
@@ -53,7 +54,7 @@ class Upgrade extends BaseAdminController
      */
     public function getUpgradeTask()
     {
-        return success(data:( new UpgradeService() )->getUpgradeTask());
+        return success(data: ( new UpgradeService() )->getUpgradeTask());
     }
 
     /**
@@ -63,7 +64,7 @@ class Upgrade extends BaseAdminController
      */
     public function upgradePreCheck($addon = '')
     {
-        return success(data:( new UpgradeService() )->upgradePreCheck($addon));
+        return success(data: ( new UpgradeService() )->upgradePreCheck($addon));
     }
 
     /**
@@ -72,6 +73,23 @@ class Upgrade extends BaseAdminController
      */
     public function clearUpgradeTask()
     {
-        return success(data:( new UpgradeService() )->clearUpgradeTask());
+        return success(data: ( new UpgradeService() )->clearUpgradeTask());
     }
+
+    public function operate($operate) {
+        return success(( new UpgradeService() )->operate($operate));
+    }
+
+    /**
+     * 获取升级记录分页列表
+     * @return Response
+     */
+    public function getRecords()
+    {
+        $data = $this->request->params([
+            [ "name", "" ],
+        ]);
+        return success(( new UpgradeRecordsService() )->getPage($data));
+    }
+
 }

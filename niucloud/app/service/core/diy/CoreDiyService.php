@@ -31,48 +31,48 @@ class CoreDiyService extends BaseCoreService
     public function initDefaultDiyTheme($site_id)
     {
         $site_addon = ( new CoreSiteService() )->getSiteCache($site_id);
-        $system_theme = array_values(array_filter(event('ThemeColor', [ 'key' => 'app'])))[0] ?? [];
-        foreach ($system_theme['theme_color'] as $k => $v) {
+        $system_theme = array_values(array_filter(event('ThemeColor', [ 'key' => 'app' ])))[ 0 ] ?? [];
+        foreach ($system_theme[ 'theme_color' ] as $k => $v) {
             $data[] = [
                 'type' => 'app',
                 'addon' => 'app',
                 'site_id' => $site_id,
-                'title' => $v['title'],
-                'theme' => $v['theme'],
-                'default_theme' => $v['theme'],
+                'title' => $v[ 'title' ],
+                'theme' => $v[ 'theme' ],
+                'default_theme' => $v[ 'theme' ],
                 'theme_type' => 'default',
                 'is_selected' => $k == 0 ? 1 : 0,
                 'create_time' => time(),
             ];
         }
-        foreach ($site_addon[ 'apps' ] as $value){
-            $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value['key'] ])))[0] ?? [];
+        foreach ($site_addon[ 'apps' ] as $value) {
+            $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value[ 'key' ] ])))[ 0 ] ?? [];
             if (empty($addon_theme)) continue;
 
-            foreach ($addon_theme['theme_color'] as $k => $v){
+            foreach ($addon_theme[ 'theme_color' ] ?? [] as $k => $v) {
                 $data[] = [
                     'type' => 'app',
-                    'addon' => $value['key'],
+                    'addon' => $value[ 'key' ],
                     'site_id' => $site_id,
-                    'title' => $v['title'],
-                    'theme' => $v['theme'],
-                    'default_theme' => $v['theme'],
+                    'title' => $v[ 'title' ],
+                    'theme' => $v[ 'theme' ],
+                    'default_theme' => $v[ 'theme' ],
                     'theme_type' => 'default',
                     'is_selected' => $k == 0 ? 1 : 0,
                     'create_time' => time(),
                 ];
             }
-            $addon_data = (new addon())->field('key')->where([['support_app', '=', $value['key']]])->select()->toArray();
-            if (!empty($addon_data)){
-                foreach ($addon_data as $v){
-                    foreach ($addon_theme['theme_color'] as $theme_k => $theme_v){
+            $addon_data = ( new addon() )->field('key')->where([ [ 'support_app', '=', $value[ 'key' ] ] ])->select()->toArray();
+            if (!empty($addon_data)) {
+                foreach ($addon_data as $v) {
+                    foreach ($addon_theme[ 'theme_color' ] as $theme_k => $theme_v) {
                         $data[] = [
                             'type' => 'addon',
-                            'addon' => $v['key'],
+                            'addon' => $v[ 'key' ],
                             'site_id' => $site_id,
-                            'title' => $theme_v['title'],
-                            'theme' => $theme_v['theme'],
-                            'default_theme' => $theme_v['theme'],
+                            'title' => $theme_v[ 'title' ],
+                            'theme' => $theme_v[ 'theme' ],
+                            'default_theme' => $theme_v[ 'theme' ],
                             'theme_type' => 'default',
                             'is_selected' => $theme_k == 0 ? 1 : 0,
                             'create_time' => time(),
@@ -86,7 +86,7 @@ class CoreDiyService extends BaseCoreService
             $theme_count = $diy_theme_model->where([
                 [ 'site_id', "=", $site_id ],
                 [ 'title', "=", $v[ 'title' ] ],
-                [ 'addon', "=", $v['addon'] ]
+                [ 'addon', "=", $v[ 'addon' ] ]
             ])->count();
             // 如果已有该主题风格颜色则不再添加
             if ($theme_count > 0) {

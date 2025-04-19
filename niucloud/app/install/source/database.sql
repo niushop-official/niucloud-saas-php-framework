@@ -150,7 +150,7 @@ CREATE TABLE `diy_form_submit_config` (
   `site_id` INT(11) NOT NULL DEFAULT 0 COMMENT '站点id',
   `form_id` INT(11) NOT NULL DEFAULT 0 COMMENT '所属万能表单id',
   `submit_after_action` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '填表人提交后操作，text：文字信息，voucher：核销凭证',
-  `tips_type` VARCHAR(255) NOT NULL COMMENT '提示内容类型，default：默认提示，diy：自定义提示',
+  `tips_type` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '提示内容类型，default：默认提示，diy：自定义提示',
   `tips_text` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '自定义提示内容',
   `time_limit_type` VARCHAR(255) NOT NULL DEFAULT '0' COMMENT '核销凭证有效期限制类型，no_limit：不限制，specify_time：指定固定开始结束时间，submission_time：按提交时间设置有效期',
   `time_limit_rule` TEXT DEFAULT NULL COMMENT '核销凭证时间限制规则，json格式',
@@ -290,7 +290,7 @@ CREATE TABLE `generate_table`  (
 DROP TABLE IF EXISTS `jobs`;
 CREATE TABLE `jobs`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `queue` varchar(255) NOT NULL,
+  `queue` varchar(255) NOT NULL DEFAULT '',
   `payload` longtext NOT NULL,
   `attempts` tinyint(4) UNSIGNED NOT NULL DEFAULT 0,
   `reserve_time` int(11) UNSIGNED NULL DEFAULT 0,
@@ -514,7 +514,7 @@ CREATE TABLE `pay`  (
   `trade_id` int(11) NOT NULL DEFAULT 0 COMMENT '业务id',
   `trade_no` varchar(255) NOT NULL DEFAULT '' COMMENT '交易单号',
   `body` varchar(1000) NOT NULL DEFAULT '' COMMENT '支付主体',
-  `money` decimal(10, 2) NOT NULL COMMENT '支付金额',
+  `money` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '支付金额',
   `voucher` varchar(255) NOT NULL DEFAULT '' COMMENT '支付票据',
   `status` int(11) NOT NULL DEFAULT 0 COMMENT '支付状态（0.待支付 1. 支付中 2. 已支付 -1已取消）',
   `json` varchar(255) NOT NULL DEFAULT '' COMMENT '支付扩展用支付信息',
@@ -599,7 +599,7 @@ CREATE TABLE `pay_transfer`  (
   `transfer_payee` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '在线转账数据(json)',
   `out_batch_no` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '扩展数据,主要用于记录接收到线上打款的业务数据编号',
   `package_info` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '跳转领取页面的package信息',
-  `extra` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '扩展信息',
+  `extra` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '扩展信息',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '转账表' ROW_FORMAT = Dynamic;
 
@@ -618,7 +618,7 @@ CREATE TABLE `pay_transfer_scene` (
 
 DROP TABLE IF EXISTS `site`;
 CREATE TABLE `site`  (
-  `site_id` int(11) NOT NULL AUTO_INCREMENT,
+  `site_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `site_name` varchar(50) NOT NULL DEFAULT '' COMMENT '站点名称',
   `group_id` int(11) NOT NULL DEFAULT 0 COMMENT '分组ID(0:不限制)',
   `keywords` varchar(255) NOT NULL DEFAULT '' COMMENT '关键字',
@@ -773,6 +773,22 @@ CREATE TABLE `sys_attachment_category`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '附件分类表' ROW_FORMAT = Dynamic;
+
+
+DROP TABLE IF EXISTS `sys_backup_records`;
+CREATE TABLE `sys_backup_records`
+(
+    `id`            INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `version`       VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备份版本号',
+    `backup_key`    VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备份标识',
+    `content`       VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备份内容',
+    `status`        VARCHAR(255) NOT NULL DEFAULT '' COMMENT '状态',
+    `fail_reason`   LONGTEXT              DEFAULT NULL COMMENT '失败原因',
+    `remark`        VARCHAR(500) NOT NULL DEFAULT '' COMMENT '备注',
+    `create_time`   INT(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
+    `complete_time` INT(11) NOT NULL DEFAULT 0 COMMENT '完成时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='备份记录表';
 
 
 DROP TABLE IF EXISTS `sys_config`;
@@ -1051,6 +1067,24 @@ CREATE TABLE `sys_schedule_log` (
   `job` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '计划任务执行记录' ROW_FORMAT = Dynamic;
+
+
+DROP TABLE IF EXISTS `sys_upgrade_records`;
+CREATE TABLE `sys_upgrade_records`
+(
+    `id`              INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `upgrade_key`     VARCHAR(255) NOT NULL DEFAULT '' COMMENT '升级标识',
+    `app_key`         VARCHAR(255) NOT NULL DEFAULT '' COMMENT '插件标识',
+    `name`            VARCHAR(255) NOT NULL DEFAULT '' COMMENT '升级名称',
+    `content`         VARCHAR(255) NOT NULL DEFAULT '' COMMENT '升级内容',
+    `prev_version`    VARCHAR(255) NOT NULL DEFAULT '' COMMENT '前一版本',
+    `current_version` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '当前版本',
+    `status`          VARCHAR(255) NOT NULL DEFAULT '' COMMENT '状态',
+    `fail_reason`     LONGTEXT              DEFAULT NULL COMMENT '失败原因',
+    `create_time`     INT(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
+    `complete_time`   INT(11) NOT NULL DEFAULT 0 COMMENT '完成时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='升级记录表';
 
 
 DROP TABLE IF EXISTS `sys_user`;

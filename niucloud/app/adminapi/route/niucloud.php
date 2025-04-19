@@ -17,7 +17,7 @@ use think\facade\Route;
 /**
  * 应用插件相关路由
  */
-Route::group('niucloud', function () {
+Route::group('niucloud', function() {
     //设置 授权信息
     Route::post('authinfo', 'niucloud.Module/setAuthorize');
     //获取 授权设置
@@ -41,6 +41,9 @@ Route::group('niucloud', function () {
     Route::get('framework/newversion', 'niucloud.Module/getFrameworkLastVersion');
     // 获取框架版本更新记录
     Route::get('framework/version/list', 'niucloud.Module/getFrameworkVersionList');
+
+    // 获取应用/插件的版本更新记录
+    Route::get('app_version/list', 'niucloud.Module/getAppVersionList');
 
     // 云编译
     Route::post('build', 'niucloud.Cloud/build');

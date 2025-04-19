@@ -38,6 +38,8 @@ Route::group('wxoplatform', function () {
     Route::get('weapp/commit', 'wxoplatform.WeappVersion/commitRecord');
     // 站点小程序提交审核
     Route::post('site/weapp/commit', 'wxoplatform.WeappVersion/siteWeappCommit');
+    // 按站点套餐获取提交记录
+    Route::get('sitegroup/commit', 'wxoplatform.WeappVersion/getSiteGroupCommitRecord');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

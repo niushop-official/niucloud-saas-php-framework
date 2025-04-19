@@ -46,6 +46,18 @@ class WxOplatfromWeappVersion extends BaseModel
     public function getStatusNameAttr($value, $data)
     {
         if (!isset($data['status'])) return '';
-        return CloudDict::getAppletUploadSatus($data['status']);
+        return CloudDict::getAppletUploadStatus($data['status']);
+    }
+
+    /**
+     * @param $query
+     * @param $value
+     * @param $data
+     * @return void
+     */
+    public function searchSiteGroupIdAttr($query, $value, $data) {
+        if (!empty($value)) {
+            $query->where('site_group_id', '=', $value);
+        }
     }
 }

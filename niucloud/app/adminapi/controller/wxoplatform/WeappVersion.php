@@ -22,8 +22,17 @@ class WeappVersion extends BaseAdminController
      * @return Response
      */
     public function weappCommit() {
-        (new WeappVersionService())->add();
+        $data = $this->request->params([
+            ['site_group_id', ""]
+        ]);
+        $data['is_all'] = empty($data['site_group_id']) ? 1 : 0;
+        (new WeappVersionService())->add($data);
         return success();
+    }
+
+
+    public function getSiteGroupCommitRecord() {
+        return success(data:(new WeappVersionService())->getSiteGroupCommitRecord());
     }
 
     /**
@@ -35,7 +44,10 @@ class WeappVersion extends BaseAdminController
     }
 
     public function commitRecord() {
-        return success(data:(new WeappVersionService())->getPage());
+        $data = $this->request->params([
+            ['site_group_id', ""]
+        ]);
+        return success(data:(new WeappVersionService())->getPage($data));
     }
 
     /**

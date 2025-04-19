@@ -52,7 +52,7 @@ class WeappVersionService extends BaseAdminService
         $site_group = (new SiteGroup())->field("group_id, group_name, group_desc, create_time, update_time, app")->order('create_time asc')->select()->toArray();
         if (empty($site_group)) throw new CommonException('PLEASE_ADD_FIRST_SITE_GROUP');
 
-        $site_group_id = $data['site_group_id'] ?? $site_group[0]['group_id'];
+        $site_group_id = isset($data['site_group_id']) && !empty($data['site_group_id']) ? $data['site_group_id'] : $site_group[0]['group_id'];
         $base_url = $data['base_url'] ?? cache_remember('base_url', function (){
             return (string)url('/', [], '', true);
         });
@@ -89,8 +89,27 @@ class WeappVersionService extends BaseAdminService
         ]);
 
         // 获取小程序版本提交结果
-        GetVersionUploadResult::dispatch(['task_key' => $upload_res['key']], secs: 10);
+        GetVersionUploadResult::dispatch(['task_key' => $upload_res['key'], 'is_all' => $data['is_all'] ?? 1], secs: 10);
         return $res->id;
+    }
+
+    /**
+     * 获取小程序提交记录
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getSiteGroupCommitRecord($where = []) {
+        $field = 'group_id, group_name';
+        $search_model = (new SiteGroup())->withSearch([ 'keywords' ], $where)->field($field)->order('create_time desc');
+        $site_group = $this->pageQuery($search_model);
+        if (!empty($site_group['data'])) {
+            foreach ($site_group['data'] as $key => $item) {
+                $site_group['data'][$key]['commit_record'] = $this->model->where([ ['site_group_id', '=', $item['group_id'] ] ])->order('id desc')->field('id, user_version, user_desc, status, fail_reason, create_time, update_time, template_id')->append(['status_name'])->findOrEmpty()->toArray();
+            }
+        }
+        return $site_group;
     }
 
     /**
@@ -106,10 +125,9 @@ class WeappVersionService extends BaseAdminService
      * @return array
      * @throws \think\db\exception\DbException
      */
-    public function getPage() {
-        $search_model = $this->model->field('*')->append(['status_name'])
-            ->order('id desc')
-            ->with('site_group');
+    public function getPage($data = []) {
+        $search_model = $this->model->field('*')->append(['status_name'])->withSearch([ 'site_group_id' ], $data)
+            ->order('id desc');
         return $this->pageQuery($search_model);
     }
 
@@ -118,21 +136,22 @@ class WeappVersionService extends BaseAdminService
      * @param string $task_key
      * @return void
      */
-    public static function getVersionUploadResult(string $task_key) {
+    public static function getVersionUploadResult(string $task_key, $is_all = 1) {
         $build_log = (new CoreWeappCloudService())->getWeappCompileLog($task_key);
 
         if (isset($build_log['data']) && isset($build_log['data'][0]) && is_array($build_log['data'][0])) {
             $last = end($build_log['data'][0]);
             if ($last['code'] == 0) {
                 (new WxOplatfromWeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_FAIL, 'fail_reason' => $last['msg'] ?? '', 'update_time' => time() ], ['task_key' => $task_key]);
+                VersionUploadSuccess::dispatch(['task_key' => $task_key, 'is_all' => $is_all]);
                 return true;
             }
             if ($last['percent'] == 100) {
                 (new WxOplatfromWeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS, 'update_time' => time() ], ['task_key' => $task_key]);
-                VersionUploadSuccess::dispatch(['task_key' => $task_key]);
+                VersionUploadSuccess::dispatch(['task_key' => $task_key, 'is_all' => $is_all]);
                 return true;
             }
-            GetVersionUploadResult::dispatch(['task_key' => $task_key], secs: 10);
+            GetVersionUploadResult::dispatch(['task_key' => $task_key, 'is_all' => $is_all], secs: 10);
         }
     }
 
@@ -141,7 +160,7 @@ class WeappVersionService extends BaseAdminService
      * @param $task
      * @return void
      */
-    public static function uploadSuccess(string $task_key) {
+    public static function uploadSuccess(string $task_key, $is_all = 1) {
         $version = (new WxOplatfromWeappVersion())->where(['task_key' => $task_key])->findOrEmpty();
         if ($version->isEmpty()) return true;
 
@@ -176,7 +195,7 @@ class WeappVersionService extends BaseAdminService
         }
 
         $site_group = (new SiteGroup())->where([ ['group_id', '>', $version['site_group_id'] ] ])->order('group_id asc')->findOrEmpty();
-        if (!$site_group->isEmpty()) {
+        if (!$site_group->isEmpty() && $is_all == 1) {
             WeappCommit::dispatch(['data' => ['site_group_id' => $site_group['group_id'], 'base_url' => Cache::get('base_url') ] ]);
         }
     }

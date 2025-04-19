@@ -28,7 +28,7 @@ class CloudDict
 
     const APPLET_AUDIT_FAIL = -2;
 
-    public static function getAppletUploadSatus($status) {
+    public static function getAppletUploadStatus($status) {
         $status_list = [
             self::APPLET_UPLOADING => get_lang('dict_cloud_applet.uploading'),
             self::APPLET_UPLOAD_SUCCESS => get_lang('dict_cloud_applet.upload_success'),

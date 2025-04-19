@@ -410,5 +410,15 @@ return [
     // 打印机品牌
     'dict_printer' => [
         'yilianyun' => '易联云打印机'
+    ],
+    'dict_upgrade' => [
+        'ready' => '准备执行',
+        'complete' => '完成',
+        'fail' => '失败'
+    ],
+    'dict_backup' => [
+        'ready' => '准备执行',
+        'complete' => '完成',
+        'fail' => '失败'
     ]
 ];

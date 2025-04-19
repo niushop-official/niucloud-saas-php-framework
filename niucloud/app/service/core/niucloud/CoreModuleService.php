@@ -122,4 +122,14 @@ class CoreModuleService extends BaseNiucloudClient
     public function getFrameworkVersionList() {
         return $this->httpGet('store/framework/version', ['product_key' => self::PRODUCT])['data'] ?? false;
     }
+
+    /**
+     * 获取应用/插件的版本更新记录
+     * @return false|mixed
+     * @throws GuzzleException
+     */
+    public function getAppVersionList($app_key)
+    {
+        return $this->httpGet('store/app_version/list', [ 'product_key' => self::PRODUCT, 'app_key' => $app_key ])[ 'data' ] ?? false;
+    }
 }

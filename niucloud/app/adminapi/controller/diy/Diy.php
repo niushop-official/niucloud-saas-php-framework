@@ -49,8 +49,7 @@ class Diy extends BaseAdminController
      */
     public function getPageByCarouselSearch()
     {
-        $data = $this->request->params([]);
-        return success(( new DiyService() )->getPageByCarouselSearch($data));
+        return success(( new DiyService() )->getPageByCarouselSearch());
     }
 
     /**
@@ -275,7 +274,7 @@ class Diy extends BaseAdminController
      */
     public function getDiyTheme()
     {
-        return  success(( new DiyService() )->getDiyTheme());
+        return success(( new DiyService() )->getDiyTheme());
     }
 
     /**
@@ -292,7 +291,7 @@ class Diy extends BaseAdminController
             [ 'new_theme', '' ],
         ]);
         ( new DiyService() )->setDiyTheme($data);
-        return  success('ADD_SUCCESS');
+        return success('ADD_SUCCESS');
     }
 
     /**
@@ -304,7 +303,7 @@ class Diy extends BaseAdminController
         $data = $this->request->params([
             [ 'addon', '' ],
         ]);
-        return  success(( new DiyService() )->getDefaultThemeColor($data));
+        return success(( new DiyService() )->getDefaultThemeColor($data));
     }
 
     /**

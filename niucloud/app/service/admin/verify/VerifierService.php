@@ -77,6 +77,13 @@ class VerifierService extends BaseAdminService
         return $data;
     }
 
+    public function getDetail($id)
+    {
+        return $this->model->with(['member' => function($query){
+            $query->field('member_id, nickname, mobile, headimg');
+        }])->field('')->findOrEmpty($id)->toArray();
+    }
+
     /**
      * 添加核销员
      * @param array $data
@@ -88,12 +95,22 @@ class VerifierService extends BaseAdminService
         if ($member->isEmpty()) throw new CommonException('MEMBER_NOT_EXIST');
 
         $model = $this->model->where([ ['site_id', '=', $this->site_id], ['member_id', '=', $data['member_id'] ] ])->findOrEmpty();
-        if (!$model->isEmpty()) return $model->id;
+        if (!$model->isEmpty()) throw new CommonException('VERIFIER_EXIST');
 
         $data['create_time'] = time();
         $data['site_id'] = $this->site_id;
         $res = $this->model->create($data);
         return $res->id;
+    }
+
+    /**
+     * 编辑核销员
+     * @param array $data
+     * @return mixed
+     */
+    public function edit($id, $data)
+    {
+        $this->model->where([ ['site_id', '=', $this->site_id], ['id', '=',$id] ])->update($data);
     }
 
     /**

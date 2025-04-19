@@ -23,6 +23,7 @@ Route::group('sys', function() {
     //系统信息
     Route::get('info', 'sys.System/info');
     Route::get('url', 'sys.System/url');
+    Route::get('qrcode', 'sys.System/getSpreadQrcode');
     /***************************************************** 用户组 ****************************************************/
     //用户组列表
     Route::get('role', 'sys.Role/lists');

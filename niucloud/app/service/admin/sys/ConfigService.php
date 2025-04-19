@@ -11,13 +11,11 @@
 
 namespace app\service\admin\sys;
 
-use app\model\site\Site;
 use app\service\admin\site\SiteService;
 use app\service\core\channel\CoreH5Service;
 use app\service\core\sys\CoreConfigService;
 use app\service\core\sys\CoreSysConfigService;
 use core\base\BaseAdminService;
-use core\exception\AdminException;
 
 /**
  * 配置服务层
@@ -70,7 +68,11 @@ class ConfigService extends BaseAdminService
      */
     public function getWebSite()
     {
-        return ( new SiteService() )->getInfo($this->site_id);
+        $info = ( new SiteService() )->getInfo($this->site_id);
+        $service_info = $this->getService();
+        $info['site_login_logo'] = $service_info[ 'site_login_logo' ];
+        $info['site_login_bg_img'] = $service_info[ 'site_login_bg_img' ];
+        return $info;
 
     }
 
@@ -80,9 +82,7 @@ class ConfigService extends BaseAdminService
      */
     public function setWebSite($data)
     {
-
         return ( new SiteService() )->edit($this->site_id, $data);
-
     }
 
     /**
@@ -100,16 +100,14 @@ class ConfigService extends BaseAdminService
      */
     public function getService()
     {
-        $info = ( new CoreConfigService() )->getConfig(0, 'SERVICE_INFO');
-        if (empty($info)) {
-            $info = [];
-            $info[ 'value' ] = [
-                'wechat_code' => '',
-                'enterprise_wechat' => '',
-                'tel' => '',
-            ];
-        }
-        return $info[ 'value' ];
+        $info = ( new CoreConfigService() )->getConfig(0, 'SERVICE_INFO')[ 'value' ] ?? [];
+        return [
+            'wechat_code' => $info[ 'wechat_code' ] ?? '',
+            'enterprise_wechat' => $info[ 'enterprise_wechat' ] ?? '',
+            'site_login_logo' => $info[ 'site_login_logo' ] ?? '',
+            'site_login_bg_img' => $info[ 'site_login_bg_img' ] ?? 'static/resource/images/site/login_bg.jpg',
+            'tel' => $info[ 'tel' ] ?? ''
+        ];
     }
 
     /**
@@ -121,6 +119,8 @@ class ConfigService extends BaseAdminService
     {
         $data = [
             "wechat_code" => $value[ 'wechat_code' ],
+            "site_login_logo" => $value[ 'site_login_logo' ],
+            "site_login_bg_img" => $value[ 'site_login_bg_img' ],
             "enterprise_wechat" => $value[ 'enterprise_wechat' ],
             "tel" => $value[ 'tel' ]
         ];
@@ -154,7 +154,7 @@ class ConfigService extends BaseAdminService
         if (empty($info)) {
             $info = [];
             $info[ 'value' ] = [
-                'key' => 'IZQBZ-3UHEU-WTCVD-2464U-I5N4V-ZFFU3',
+                'key' => '',
                 'is_open' => 1, // 是否开启定位
                 'valid_time' => 5 // 定位有效期/分钟，过期后将重新获取定位信息，0为不过期
             ];

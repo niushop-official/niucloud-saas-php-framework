@@ -202,9 +202,16 @@ class Member extends BaseModel
      */
     public function searchMemberLabelAttr(Query $query, $value, $data)
     {
+
         if ($value) {
-            $query->whereLike('member_label', '%"' . $value . '"%');
+            if (is_array($value)) {
+                $temp_where = array_map(function($item) { return '%"' . $item . '"%'; }, $value);
+            } else {
+                $temp_where = [ '%"' . $value . '"%' ];
+            }
+            $query->where('member_label', 'like', $temp_where, 'or');
         }
+
     }
 
     /**

@@ -57,6 +57,8 @@ class Config extends BaseAdminController
         $service_data = $this->request->params([
             [ "wechat_code", "" ],
             [ "enterprise_wechat", "" ],
+            [ "site_login_logo", "" ],
+            [ "site_login_bg_img", "" ],
             [ "tel", "" ],
         ]);
         ( new ConfigService() )->setService($service_data);

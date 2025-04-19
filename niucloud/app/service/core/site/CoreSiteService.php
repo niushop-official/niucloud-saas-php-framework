@@ -55,7 +55,6 @@ class CoreSiteService extends BaseCoreService
                     [ 'site_id', '=', $site_id ],
                 ];
                 $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo,front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain')->append([ 'status_name' ])->findOrEmpty()->toArray();
-//                dump($info);die;
                 if (!empty($info)) {
                     $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId((int) $site_id);
                     $info[ 'apps' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::APP ] ])->field('key,title,desc,icon,type,support_app')->select()->toArray();
@@ -161,7 +160,7 @@ class CoreSiteService extends BaseCoreService
                 }
                 //在查询站点所拥有的应用插件,两者结合
                 $site_addon_keys = is_array($site_info[ 'addons' ]) ? $site_info[ 'addons' ] : [];
-                return array_merge($group_addon_keys ?? [], $site_addon_keys);
+                return array_unique(array_merge($group_addon_keys ?? [], $site_addon_keys));
             },
             self::$cache_tag_name . $site_id
         );

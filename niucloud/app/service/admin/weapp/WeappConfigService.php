@@ -123,7 +123,10 @@ class WeappConfigService extends BaseAdminService
         $data['privacy_ver'] = 1;
         CoreOplatformService::setPrivacySetting($this->site_id, $data);
         // 提交小程序
-        (new WeappVersionService())->siteWeappCommit();
+        try {
+            (new WeappVersionService())->siteWeappCommit();
+        } catch (\Exception $e) {
+        }
     }
 
 }

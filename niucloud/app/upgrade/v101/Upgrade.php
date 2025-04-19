@@ -425,20 +425,25 @@ class Upgrade
                 }
             }
         }
-        if (!empty($data)) {
-            $diy_theme_model = new DiyTheme();
-            foreach ($data as $k => &$v) {
-                $theme_count = $diy_theme_model->where([
-                    [ 'site_id', "=", $site_id ],
-                    [ 'title', "=", $v[ 'title' ] ],
-                    [ 'addon', "=", $v[ 'addon' ] ]
-                ])->count();
-                // 如果已有该主题风格颜色则不再添加
-                if ($theme_count > 0) {
-                    unset($data[ $k ]);
+
+        try {
+            if (!empty($data)) {
+                $diy_theme_model = new DiyTheme();
+                foreach ($data as $k => &$v) {
+                    $theme_count = $diy_theme_model->where([
+                        [ 'site_id', "=", $site_id ],
+                        [ 'title', "=", $v[ 'title' ] ],
+                        [ 'addon', "=", $v[ 'addon' ] ]
+                    ])->count();
+                    // 如果已有该主题风格颜色则不再添加
+                    if ($theme_count > 0) {
+                        unset($data[ $k ]);
+                    }
                 }
+                $diy_theme_model->insertAll($data);
             }
-            $diy_theme_model->insertAll($data);
+        } catch (\Exception $e) {
+            
         }
         return true;
     }

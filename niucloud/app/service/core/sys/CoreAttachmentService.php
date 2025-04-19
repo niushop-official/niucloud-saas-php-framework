@@ -60,7 +60,7 @@ class CoreAttachmentService extends BaseCoreService
         );
         $user = $this->model->where($where)->findOrEmpty();
         if ($user->isEmpty())
-            throw new AdminException('USER_NOT_EXIST');
+            throw new AdminException('ATTACHMENT_NOE_EXIST');
         return $user;
     }
 

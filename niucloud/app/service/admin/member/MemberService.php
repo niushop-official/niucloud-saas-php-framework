@@ -65,7 +65,11 @@ class MemberService extends BaseAdminService
     public function getList(array $where = [])
     {
         $field = 'member_id, nickname, headimg';
-        return  $this->model->where([['site_id', '=', $this->site_id]])->withSearch(['keyword'],$where)->field($field)->order('member_id desc')->limit($this->getPageParam()['limit'] ?? 0)->select()->toArray();
+        $temp_where[] = ['site_id', '=', $this->site_id];
+        if (!empty($where['member_ids'])){
+            $temp_where[] = ['member_id', 'in', implode(',',$where['member_ids'])];
+        }
+        return  $this->model->where($temp_where)->withSearch(['keyword'],$where)->field($field)->order('member_id desc')->limit($this->getPageParam()['limit'] ?? 0)->select()->toArray();
     }
     /**
      * 会员详情
