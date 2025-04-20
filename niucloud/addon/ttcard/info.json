@@ -1,0 +1,11 @@
+{
+  "title": "名片系统",
+  "desc": "",
+  "key": "ttcard",
+  "version": "1.0.2",
+  "author": "周小杰",
+  "type": "app",
+  "support_app": "",
+  "compile":[],
+  "support_version": "0.5.3"
+}

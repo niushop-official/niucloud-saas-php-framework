@@ -1,0 +1,19 @@
+{
+      "id":"",
+      "idPlaceholder":"请输入",
+      "userId":"用户ID",
+      "userIdPlaceholder":"全部",
+      "title":"标题",
+      "titlePlaceholder":"请输入标题",
+      "content":"内容",
+      "contentPlaceholder":"请输入内容",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "addFeedback":"添加意见反馈管理",
+      "updateFeedback":"编辑意见反馈管理",
+      "feedbackDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

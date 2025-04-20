@@ -1,0 +1,17 @@
+{
+  "addRanking": "添加榜单",
+  "rankName": "榜单名称",
+  "rankType": "排行周期",
+  "rankNamePlaceholder": "请输入榜单名称",
+  "batchDeletion": "批量删除",
+  "showGoodsNum": "榜单商品数量",
+  "goodsSource": "商品来源",
+  "ruleType": "排序规则",
+  "createTime": "创建时间",
+  "deleteTips": "确定删除该榜单吗？",
+  "batchEmptySelectedGoodsTips": "请先选择要删除的榜单",
+  "batchGoodsDeleteTips": "确定删除选中的榜单吗？",
+  "sortTips": "排序号格式输入错误",
+  "sortRules": "按照排序号从大到小排序",
+  "isShow": "状态"
+}

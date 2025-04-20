@@ -1,0 +1,7 @@
+page{
+	background: #ffffff; 
+}
+
+p{
+  line-height: 50rpx;
+}

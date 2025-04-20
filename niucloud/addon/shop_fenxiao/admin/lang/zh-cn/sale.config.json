@@ -1,0 +1,50 @@
+{
+    "baseTitle": "基础设置",
+    "isEnable": "是否启用",
+    "are": "是",
+    "no": "否",
+    "salePeriodType": "结算周期类型",
+    "salePeriod": "结算日期",
+    "salePeriodTypePlaceholder": "请选择结算周期类型",
+    "saleSendType": "奖励发放方式",
+    "saleSendTypePlaceholder": "请选择奖励发放方式",
+    "all": "全部",
+    "selectDatePlaceholder": "请选择日期",
+    "fillDatePlaceholder": "请填写日期",
+    "monthDatePlaceholder": "请输入日期",
+    "quarterPlaceholder": "每个季度结束后下个月的结算日期，例如：1-3季度结束后，4月*号就是1-3季度的结算日期",
+    "monthQuarterPlaceholder": "当结算日期大于当月总天数的话则视为在当月最后一天执行",
+    "yearQuarterPlaceholder": "当结算日期大于当月总天数的话则视为在当月最后一天执行",
+    "add": "添加",
+    "condition": "排名指标",
+    "selectConditionPlaceholder": "请选择一个排名指标",
+    "fillConditionPlaceholder": "请填写销售额",
+    "orderMoney": "销售额",
+    "orderMoneyPlaceholder": "销售额不能小于等于零",
+    "delete": "删除",
+    "orderMoneyTips1": "元",
+    "reward": "规则奖励",
+    "rewardTips1": "阶奖励",
+    "rewardTips2": "增加",
+    "rewardTips3": "不能小于等于",
+    "rewardTips4": "不能大于等于",
+    "rewardTips5": "请输入大于零的正整数",
+    "rewardIndex": "奖励指标：",
+    "rewardIndexTips1": "前",
+    "rewardIndexTips2": "名",
+    "rewardContent": "奖励内容：",
+    "rewardContentTips1": "返",
+    "rewardContentTips2": "元",
+    "correctNumber": "请输入正确的数字",
+    "correctNumber1": "请输入1-31中的数字",
+    "rewardCommissionPlaceholder": "奖励内容需大于零且最多保留两位小数",
+    "moreThanZero": "请输入大于零的数字"
+
+    
+    
+
+
+    
+    
+    
+}

@@ -1,0 +1,7 @@
+/* pages/biographicalDetail/index.wxss */
+
+.p_class{
+  margin-top:30rpx!important
+}
+
+rich-text{word-wrap: break-word;}

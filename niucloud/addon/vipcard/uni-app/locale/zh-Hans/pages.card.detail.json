@@ -1,0 +1,22 @@
+{
+    "hitCount": "卡项内项目/商品总的可用次数为",
+    "unlimitedNumberTimes": "次数不限 ,",
+    "periodValidity": "有效期为",
+    "perpetual": "永久",
+    "day": "天",
+    "packageIncluded": "包含套餐",
+    "hitCountOne": "可用次数",
+    "purchaseNotes": "购买须知",
+    "noPurchaseNotes": "暂无购买须知",
+    "cardDetail": "卡项详情",
+    "noCardDetail": "暂无卡项详情",
+    "buy": "立即购买",
+    "index": "首页",
+    "service": "客服",
+    "collect": "收藏",
+    "soldOut": "已售",
+    "create": "有效期",
+	"usable": "总次数：",
+	"haveBeen": "已使用次数：",
+	"price": "价格"
+}

@@ -1,0 +1,39 @@
+<scroll-view scroll-y class="scrollPage"bindscrolltolower='isonReachBottom'>
+<view  style="padding-bottom:120px">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">相册</view>
+  </cu-custom>
+ 
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding margin-lr hidden relative"wx:if="{{list.length>0}}" wx:for="{{list}}" wx:key='index' bind:tap="goImagesDetail"  data-imagesid='{{item.id}}'>  
+    <view class="cu-card dynamic">
+      <view class="cu-item " style="margin: 0;"> 
+        <view class="grid flex-sub col-3  grid-square">
+          <view class="bg-img" bindtap="ViewImage" data-url="{{item[index]}}"  style="background-image:url({{item}});" wx:for="{{item.images}}" wx:if="{{index < 3}}" wx:key="index">
+          </view>
+        </view> 
+      </view>
+    </view>
+        <view class="absolute right-0 padding-lr-sm padding-tb-xs bg-orange light text-sm top-0 text-orange" style='border-bottom-left-radius: 30rpx;'>{{item.images.length}}张</view>
+
+        <view class="flex solid-top padding-top margin-top justify-between align-center text-gray">
+            <view  hover-class="none" bind:tap="goEditImages" data-imagesid='{{item.id}}'  class="flex-1 text-center"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+            <view class="solid-left text-center flex-1"  bind:tap="goDeleteimages" data-imagesid='{{item.id}}' data-userid='{{item.user_id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view> 
+          </view>
+       
+  </view>
+
+
+
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+ 
+
+  <view class="fixed bottom-0 padding-tb w--100 bg-white flex"  wx:if="{{sourceUrl == 'my'}}">  
+    <view class="padding-tb breathing-element text-xl margin-left flex-1 margin-right text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddimages"><text class="cuIcon-roundaddfill"></text> 添加</view>
+  </view>
+
+
+</view>
+</scroll-view>

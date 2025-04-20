@@ -1,0 +1,97 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:120px">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">微官网</view>
+  </cu-custom>
+
+  
+  <view class="margin-top-lg margin-lr ">
+    <radio-group bindchange="radioChange" class="flex flex-wrap ">
+
+        <view  class="flex column padding-lr padding-tb shadow-gray-light margin-bottom radius-30 hidden  w--100" wx:for="{{list}}" wx:key="index" >
+            <view class="align-center flex" >
+              <view class="cu-avatar radius-12" style="background-image:url({{item.logo}});"bind:tap="goWebsite" data-websiteid='{{item.id}}'  data-userid='{{item.user_id}}'></view> 
+              <view class="flex column margin-left hidden flex-1"bind:tap="goWebsite" data-websiteid='{{item.id}}'  data-userid='{{item.user_id}}'>
+                  <view class='text-lg text-black text-bold'>{{item.name}}</view>
+                  <view class="flex margin-top-xs align-center" wx:if="{{item.authentication_info.examine_status == 1 && config.authentication_switch ==1}}"> 
+                    <text class="cu-tag sm round bg-cyan" ><text class="cuIcon-choicenessfill"></text>  企业认证</text>
+                  </view> 
+                  <view class="flex text-sm column margin-top-xs  hidden">
+                    <text class="">{{item.industry_name}}</text>  
+                    <text class="text-gray margin-top-xs text-cut-1 hidden" style="height:30rpx">{{item.description}}</text>  
+                  </view>   
+                </view>
+                <view class="margin-left-lg"  wx:if="{{sourceType == 'select'}}"><radio class="orange" value="{{index}}" ></radio></view>
+            </view>  
+            <view class="flex solid-top margin-top padding-top justify-between align-center text-df text-gray" wx:if="{{sourceType == 'auditing'}}">  
+            <view class="text-gray" wx:if="{{!item.authentication_info}}"><text class="cuIcon-title"></text> 未认证</view>
+            <view class="text-cyan"  wx:if="{{item.authentication_info && item.authentication_info.examine_status == 1}}"><text class="cuIcon-title"></text> 审核通过</view>
+            <view class="text-gray"  wx:if="{{item.authentication_info && item.authentication_info.examine_status == 2}}"><text class="cuIcon-title"></text> 审核失败</view>
+            <view class="text-orange"  wx:if="{{item.authentication_info && item.authentication_info.examine_status == 3}}"><text class="cuIcon-title"></text> 审核中</view>
+            <view class="text-red"  wx:if="{{item.authentication_info && item.authentication_info.examine_status == 4}}"><text class="cuIcon-title"></text> 待支付</view> 
+            <view class="bg-gray text-gray round padding-tb-xs padding-lr"  bind:tap="withdraw" data-authenticationid='{{item.authentication_info.id}}' data-examinestatus='{{item.authentication_info.examine_status}}' data-websiteid='{{item.id}}' data-index='{{index}}' wx:if="{{item.authentication_info && (item.authentication_info.examine_status == 3  || item.authentication_info.examine_status == 4)}}">撤回认证</view> 
+            <view class="bg-gradual-green shadow-cyan round padding-tb-xs padding-lr "  bind:tap="goAddauthentication" data-authenticationid='{{item.authentication_info.id}}' data-examinestatus='{{item.authentication_info.examine_status}}' data-websiteid='{{item.id}}' data-index='{{index}}' wx:if="{{item.authentication_info}}">认证详情</view> 
+            <view class="bg-gradual-orange orange-shadow round padding-tb-xs padding-lr " hover-class="none" bind:tap="goAddauthentication" data-websiteid='{{item.id}}'  data-webistename='{{item.name}}'  wx:if="{{!item.authentication_info || item.authentication_info.examine_status == 2}}">{{item.authentication_info.examine_status == 2 ? '再次认证' :'立即认证'}}</view>
+          </view>
+
+          <view class="flex solid-top margin-top padding-top justify-between align-center text-df text-gray" wx:if="{{sourceType == 'all'}}">
+            <view  hover-class="none" bind:tap="getWebsiteCode" data-websiteid='{{item.id}}'class="text-center flex-1"><text class="cuIcon-share margin-right-xs"></text>邀请</view>
+            <view  hover-class="none" bind:tap="goColleague" data-websiteid='{{item.id}}' data-index='{{index}}' class="solid-left text-center flex-1"><text class="cuIcon-my margin-right-xs"></text>同事</view>
+            <view  hover-class="none" bind:tap="goEditWebsite" data-websiteid='{{item.id}}'  data-userid='{{item.user_id}}' class="solid-left text-center flex-1"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+            <view class="solid-left text-center flex-1"  bind:tap="goDeleteWebsite" data-websiteid='{{item.id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view> 
+          </view>
+        </view> 
+
+       
+
+      </radio-group> 
+    </view>
+
+
+
+
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+    <view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{sourceType == 'select'}}">
+      <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goBack">确定</view>
+    </view>
+    <view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{sourceType == 'all'}}">
+      <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddWebsite"><text class="cuIcon-roundaddfill"></text> 创建微官网</view>
+    </view>
+
+
+
+
+    <view class="cu-modal {{modalName=='Image'?'show':''}}">
+  <view class="bg-white cu-dialog">
+    <view class="action absolute right-0 top-0 margin-top-sm margin-right-xs z-9999" bindtap="closeModal">
+        <text class="cuIcon-close text-red closeBox"></text>
+      </view>
+    <view class="cu-bar flex align-center margin-top  justify-center">
+      <text class="cuIcon-title text-cyan opacity-03"></text>
+      <text class="cuIcon-title text-cyan opacity-06"></text>
+      <text class="cuIcon-title text-cyan"></text>
+      <text class=" text-bold flex margin-lr-sm justify-center text-black text-lg">微官网邀请码</text> 
+      <text class="cuIcon-title text-cyan"></text>
+      <text class="cuIcon-title text-cyan opacity-06"></text>
+      <text class="cuIcon-title text-cyan opacity-03"></text>
+    </view>
+    <view class="flex column justify-center">
+      <view class="text-lg padding-tb"><image src="{{minicode_image}}" show-menu-by-longpress="{{true}}" mode="widthFix"/></view> 
+      <view class="padding-bottom-xl text-gray">长按小程序码保存 / 转发</view>
+    </view> 
+  </view>
+</view>
+
+
+
+
+</view>
+</scroll-view>
+
+
+
+  

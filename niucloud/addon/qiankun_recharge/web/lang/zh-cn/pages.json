@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "qiankun_recharge": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

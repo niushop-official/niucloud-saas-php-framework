@@ -1,0 +1,18 @@
+{
+      "id":"ID",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "userId":"用户",
+      "userIdPlaceholder":"全部",
+      "cardId":"绑定名片",
+      "cardIdPlaceholder":"全部",
+      "images":"图片",
+      "imagesPlaceholder":"请输入图片",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addImages":"添加",
+      "updateImages":"编辑",
+      "imagesDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

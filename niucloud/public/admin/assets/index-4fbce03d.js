@@ -1,0 +1,1 @@
+import{P as t,d as o,r as a,h as n,c as l,t as r}from"./index-1befb66e.js";function s(){return t.get("qiankun_recharge/hello_world")}const c={class:"text-[20px]"},f=o({__name:"index",setup(_){const e=a("");return(async()=>{e.value=await(await s()).data})(),(i,p)=>(n(),l("span",c,r(e.value),1))}});export{f as default};

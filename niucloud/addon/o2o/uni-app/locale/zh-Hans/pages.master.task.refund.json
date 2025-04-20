@@ -1,0 +1,11 @@
+{
+	"refundType": "退款方式",
+	"refundCause": "退款原因",
+	"refundNo": "退款编号",
+	"createTime": "申请时间",
+	"createExplain": "退款说明",
+	"check": "查看",
+	"refundMoney":"退款金额",
+	"voucher":"凭证",
+	"nothingMore":"没有更多内容啦~"
+}

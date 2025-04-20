@@ -1,0 +1,3 @@
+# .env.app
+VITE_BUILD_TARGET=app
+VITE_CACHE_ID=app_v1

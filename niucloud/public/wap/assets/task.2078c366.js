@@ -1,0 +1,1 @@
+import{ao as t}from"./index-84ca9378.js";function n(){return t.get("shop_fenxiao/task/config")}function a(n){return t.get("shop_fenxiao/task/lists",n)}function o(n){return t.get(`shop_fenxiao/task/detail/${n}`)}function s(n){return t.get(`shop_fenxiao/task_reward_list/${n}`)}export{a,o as b,s as c,n as g};

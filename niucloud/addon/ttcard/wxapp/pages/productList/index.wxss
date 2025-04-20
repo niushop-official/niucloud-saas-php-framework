@@ -1,0 +1,20 @@
+/* pages/productList/index.wxss */
+
+page{
+	background: #ffffff; 
+}
+.Image{
+  height:305rpx;
+  overflow:hidden;
+  display: flex;
+  align-items: center;
+}
+.p-item{
+  width:335rpx;
+  border-radius: 24rpx;
+}
+.p-item:nth-child(odd){
+ margin-right:20rpx
+}
+
+ 

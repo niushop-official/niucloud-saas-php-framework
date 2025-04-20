@@ -1,0 +1,15 @@
+{
+    "usageRecord": "使用记录",
+    "instructions": "使用说明",
+    "noInstructions": "暂无使用说明",
+    "serviceContent": "服务内容",
+    "periodValidity": "有效期",
+    "createTime": "创建时间",
+    "verification": "去核销",
+	"verificationCode": "核销码",
+	"usable": "总次数：",
+	"haveBeen": "已使用次数：",
+    "hitCount": "卡项内项目/商品总的可用次数为",
+    "unlimitedNumberTimes": "次数不限 ,",
+	"codeDesc": "未消费前请不要将券码提供给商家"
+}

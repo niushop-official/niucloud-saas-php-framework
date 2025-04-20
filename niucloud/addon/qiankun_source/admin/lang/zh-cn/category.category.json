@@ -1,0 +1,21 @@
+{
+      "id":"",
+      "idPlaceholder":"请输入",
+      "title":"标题",
+      "titlePlaceholder":"请输入标题",
+      "icon":"图标",
+      "iconPlaceholder":"请输入图标",
+      "sort":"排序",
+      "sortPlaceholder":"请输入排序",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addCategory":"添加素材分类",
+      "updateCategory":"编辑素材分类",
+      "categoryDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间",
+      "status1":"显示",
+      "status0":"隐藏"
+}

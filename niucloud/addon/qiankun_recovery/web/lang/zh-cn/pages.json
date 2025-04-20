@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "qiankun_recovery": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

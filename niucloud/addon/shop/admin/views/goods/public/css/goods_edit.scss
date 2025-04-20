@@ -1,0 +1,231 @@
+.goods-type-wrap {
+  width: 120px;
+  height: 60px;
+  background: #fff;
+  border-radius: 3px;
+  float: left;
+  text-align: center;
+  padding-top: 8px;
+  position: relative;
+  cursor: pointer;
+  line-height: 23px;
+  border: 1px solid #e7e7e7;
+
+  .goods-type-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .85);
+  }
+
+  .goods-type-desc {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+  }
+
+  .triangle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 26px solid var(--el-color-primary);
+    border-left: 26px solid transparent;
+  }
+
+  .selected {
+    position: absolute;
+    bottom: -2px;
+    right: 2px;
+    color: #fff;
+  }
+
+  &.selected {
+    border: 1px solid var(--el-color-primary);
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    .goods-type-name {
+      color: #999;
+    }
+  }
+
+  &:nth-child(2n) {
+    margin: 0 12px;
+  }
+
+}
+
+.spec-wrap {
+  flex: 1;
+
+  .spec-edit-list {
+    .spec-item {
+      background: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      border-radius: 6px;
+
+      .spec-name-wrap {
+        /*margin-bottom: 20px;*/
+      }
+
+      .spec-value-wrap {
+        padding: 25px 30px 0 30px;
+        position: relative;
+
+        ul {
+
+          display: flex;
+          flex-wrap: wrap;
+          flex: 1;
+          align-items: baseline;
+
+          li {
+            margin: 0 10px 10px 0;
+            position: relative;
+
+            .input-width {
+              width: 200px;
+            }
+
+            .icon {
+              width: 32px;
+              padding: 0;
+              display: none;
+              position: absolute;
+              top: -12px;
+              right: -20px;
+              cursor: pointer;
+            }
+
+            &:hover {
+              .icon {
+                display: block;
+              }
+            }
+          }
+
+        }
+
+        .add-spec-value {
+          cursor: pointer;
+          user-select: none;
+        }
+
+        .box {
+          position: absolute;
+          top: 0;
+          left: 10px;
+          width: 20px;
+          height: 40px;
+          border: 1px solid #b8b9bd;
+          border-top: none;
+          border-right: none;
+        }
+      }
+
+      .del-spec {
+        border: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: none;
+        cursor: pointer;
+
+      }
+
+      &:hover {
+        .del-spec {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.el-input__suffix {
+  cursor: pointer;
+}
+
+.el-table__row:focus {
+  outline: none !important;
+}
+
+.add-spec {
+  margin-bottom: 16px;
+}
+
+.batch-operation-sku {
+  display: flex;
+  margin-bottom: 16px;
+  background-color: #ffffff;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  label {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .set-spec-select {
+    margin-right: 10px;
+    max-width: 130px;
+  }
+
+  .set-input {
+    max-width: 130px;
+    min-width: 60px;
+    margin-right: 10px;
+  }
+}
+
+.editor-width {
+  width: 990px;
+}
+
+.sku-table {
+  :focus {
+    outline: none;
+  }
+}
+
+.sku-form-item-wrap :deep(.el-form-item__content) {
+  margin-left: 0 !important;
+}
+
+.sku-table :deep(.el-table__cell .cell) {
+  overflow: initial !important;
+}
+
+.attr-table {
+  width: 859px;
+  border: 1px solid #e6e6e6;
+
+  thead tr, tbody tr {
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  thead th, tbody td {
+    padding: 5px 10px;
+    border-right: 1px solid #e6e6e6;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: normal;
+    font-size: 14px;
+    color: #666;
+    box-sizing: border-box;
+  }
+}
+
+.fixed-footer {
+  z-index: 4;
+}

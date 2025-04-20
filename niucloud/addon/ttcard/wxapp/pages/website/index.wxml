@@ -1,0 +1,253 @@
+<web-view src="{{website_url}}" wx:if="{{websiteSwitch == 1 && website_url}}" /> 
+
+  <cu-custom bgColor="bg-white" isCustom="{{true}}"><view slot="content" class="text-bold text-black text-lg">微官网</view></cu-custom>
+
+  
+<scroll-view scroll-y bindscroll='scroll' class="scrollPage" scroll-with-animation wx:if="{{websiteSwitch != 1 || !website_url}}" scroll-into-view="{{toView}}" scroll-with-animation style="height:calc(100vh - 100rpx)">
+  <view>
+ 
+    <block wx:if="{{hasWebsite == true}}">
+      <view class="hidden" wx:if="{{detail.swiper_images.length>0}}">
+        <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+          <swiper-item wx:for="{{detail.swiper_images}}" wx:key='index'>
+            <image src="{{item}}" mode="aspectFill"></image>
+          </swiper-item>
+        </swiper>
+      </view>
+
+      <view class="absolute w--100 left-0" style="margin-top:-120rpx;padding-bottom:300rpx">
+
+      <view class="flex column radius-30 bg-white shadow-gray-light padding-lr padding-tb margin-lr " style="margin-top:{{detail.swiper_images.length==0 ? CustomBar+20 : '15'}}px">
+        <view class="align-center flex">
+          <view class="cu-avatar radius-12" style="background-image:url({{detail.logo}});"></view>
+          <view class="flex column margin-left hidden">
+            <view class='text-lg text-black text-bold'>{{detail.name}}</view>
+            <view class="flex margin-top-xs align-center" wx:if="{{detail.authentication_info.website_authentication == 1 && config.authentication_switch ==1}}">
+              <text class="cu-tag sm round bg-gradual-green"><text class="cuIcon-choicenessfill"></text> 企业认证</text>
+            </view>
+
+            <view class="flex text-sm column margin-top-xs  hidden">
+              <text class="">{{detail.industry_name}}</text>
+              <text class="text-gray margin-top-xs text-cut-1 hidden" style="height:30rpx">{{detail.short_description}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr jianjie" id='jianjie' wx:if="{{detail.description}}" >
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">企业简介</text>
+            <text class="text-ABC text-orange">Introduction</text>
+          </view>
+        </view>
+        <view class="margin-top text-justify letter-spacing-2">
+          <rich-text style='word-wrap: break-word' nodes="{{detail.description}}" />
+        </view>
+      </view>
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr " id='shipin' wx:if="{{detail.video}}"id='video'>
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">企业视频</text>
+            <text class="text-ABC text-orange">Video</text>
+          </view>
+        </view>
+        <view class="margin-top text-justify">
+          <video src="{{detail.video}}" class="radius-30 w--100" />
+        </view>
+      </view>
+
+
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr " wx:if="{{detail.programme.length>0}}"id='fangan'>
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">解决方案</text>
+            <text class="text-ABC text-orange">Solution</text>
+          </view>
+        </view>
+        <view class="margin-top">
+          <view class="flex flex-wrap ">
+            <view class="{{index != 0 && index != 1? 'margin-top-sm' :''}}  w--50" wx:for="{{detail.programme}}" wx:key="index">
+              <view class="  {{index%2==0?'padding-right-xs':'padding-left-xs'}}  ">
+                <view class='bg-gray radius-30 fnItem flex column padding-lr' style="box-sizing: border-box;">
+                  <text class=' text-center margin-top-lg cuIcon-{{item.select_icon}} text-{{item.icon_color}} {{item.color_status == "deep" ? "opacity-1" : "opacity-03" }}' style="font-size:100rpx;"></text>
+                  <text class="text-lg text-black text-center margin-top text-cut-1">{{item.title}}</text>
+                  <text class="text-sm text-cut-2 text-gray margin-top-xs text-center">{{item.description}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr " wx:if="{{detail.case.length>0}}"id='anli'>
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">成功案例</text>
+            <text class="text-ABC text-orange">success cases</text>
+          </view>
+        </view>
+        <view class="margin-top">
+          <view class="flex">
+
+            <view bind:tap="goDetail" data-sourceurl='case' data-id="{{item.id}}" class="flex column flex-1 scroll-view-item_H" wx:for="{{detail.case}}" wx:key="index">
+              <view class="caseBoxImage bg-img" style="background-image: url({{item.images[0]}});height:400rpx"></view>
+              <view class="hidden margin-top text-cut-1"><text class=" w--100 text-black">{{item.title}}</text></view>
+            </view>
+
+          </view>
+          <view class="justify-between solid-top padding-top margin-top">
+            <view class="text-gray align-center flex  justify-center" bind:tap="goCaseList">更多<text class="cuIcon-right"></text></view>
+          </view>
+        </view>
+      </view>
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr " wx:if="{{detail.product.length>0}}"id='chanpin'>
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">热销产品</text>
+            <text class="text-ABC text-orange">hot products</text>
+          </view>
+        </view>
+        <view class="margin-top">
+          <view class="justify-between flex">
+            <view bind:tap="goDetail" data-sourceurl='product' data-id="{{item.id}}" class="flex column caseBox scroll-view-item_H " wx:for="{{detail.product}}" wx:key="index">
+              <view class="caseBoxImage bg-img" style="background-image: url({{item.images[0]}});"></view>
+              <view class="hidden margin-top text-cut-1"><text class=" w--100 text-black">{{item.title}}</text></view>
+              <view class="flex align-center  margin-top-xs ">
+                <view class="text-price text-red text-xl" wx:if="{{item.price}}">{{item.price}}</view>
+                <text class="text-delete margin-left-sm text-gray text-price text-sm" wx:if="{{item.originalprice}}">{{item.originalprice}}</text>
+              </view>
+            </view>
+
+          </view>
+          <view class="justify-between solid-top padding-top margin-top">
+            <view class="text-gray align-center flex  justify-center" bind:tap="goProductList">更多<text class="cuIcon-right"></text></view>
+          </view>
+        </view>
+      </view>
+
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr " id='jieshao'id='xiangce'>
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">企业相册</text>
+            <text class="text-ABC text-orange">album</text>
+          </view>
+        </view>
+        <view class="margin-top">
+          <image show-menu-by-longpress="{{true}}" bindtap="ViewImage" data-url="{{detail.images[index]}}" class="flex imgList w--100" src="{{item}}" mode="widthFix" wx:for="{{detail.images}}" wx:key="index"></image>
+        </view>
+      </view>
+
+      
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " id='news'  wx:if="{{detail.news}}"> 
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>新闻资讯</view>
+      <view class="text-gray" bind:tap="goNews" data-userid='{{detail.user_id}}' data-websiteid='{{detail.id}}'>更多<text class="cuIcon-right"></text></view>
+    </view>
+    <view class="margin-top">
+      <view class="flex column flex {{(index+1) != detail.news.length ? 'margin-bottom' :''}} hidden" wx:for="{{detail.news}}" wx:key="index" bind:tap="goNewsDetail" data-id='{{item.id}}'>
+      <view class="flex align-center">
+        <view class="cu-avatar radius-12 text-sl" style="background-image:url({{item.image}});width:160rpx;min-width:160rpx;height:160rpx"><text wx:if="{{!item.image}}" class="cuIcon-pic"></text></view>
+        <view class="flex column margin-left flex-1 grow-1">
+          <text class="text-lg text-cut-2">{{item.title}}</text>
+          <text class="text-gray margin-top-sm text-sm">发布时间：{{item.createtime}}</text>
+        </view>
+      </view> 
+    </view>
+    </view>
+  </view> 
+
+
+      <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb margin-lr " id='jianjie' wx:if="{{detail.description}}">
+        <view class="cu-bar flex justify-center">
+          <view class="action sub-title w--100">
+            <text class="text-xxl text-bold text-orange">联系我们</text>
+            <text class="text-ABC text-orange">contact us</text>
+          </view>
+        </view>
+
+        <view class="margin-top-lg flex justify-between align-center flex-1" wx:if="{{detail.phone}}"id='lianxiwomen'>
+          <view><text class="cuIcon-dianhua text-orange"></text> {{detail.phone}}</view>
+          <view class="flex align-center">
+            <button bind:tap="savePhone" class="cu-btn sm round shadow line margin-right-sm">保存</button>
+            <button bind:tap="phone" class="cu-btn sm round shadow line">打电话</button>
+          </view>
+        </view>
+        <view class="margin-top-lg flex justify-between align-center flex-1" wx:if="{{detail.wechat_num}}">
+          <view><text class="cuIcon-weixin text-cyan"></text> {{detail.wechat_num}}</view>
+          <button bind:tap="copyText" data-type='wechat_num' class="cu-btn sm round shadow line">复制微信</button>
+        </view>
+        <view class="margin-top-lg " wx:if="{{detail.address}}"><text class="cuIcon-locationfill  text-pink"></text> {{detail.address}}</view>
+        <view class="text-lg align-center column margin-top-xl flex justify-center" wx:if="{{detail.weixin_image.length>0}}">
+          <view class=" flex codeBox">
+            <image src="{{detail.weixin_image}}" show-menu-by-longpress="{{true}}" bindlongpress="handleLongPress" mode="widthFix" />
+          </view>
+          <view class="text-lg text-bold text-center margin-lg round lg padding-lr ">长按二维码添加微信好友</view>
+        </view>
+      </view>
+
+    </view>
+
+    </block>
+
+
+
+    <view class="emptyBox" wx:if="{{!hasWebsite}}">
+      <image src="../../images/empty.png" />
+      <view class="text text-gray">~ 你还没有创建微官网哦 ~</view>
+    </view>
+
+
+  </view>
+</scroll-view>
+
+
+
+<view class="cu-bar tabbar bg-white shadow foot" >
+    <view class="flex justify-between flex-1 bg-white solid-top">
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget"  data-dom='jianjie'wx:if="{{detail.description}}"> 
+        <text class="cuIcon-newshotfill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">简介</text>
+      </view>
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='video' wx:if="{{detail.video}}"> 
+        <text class="cuIcon-videofill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">视频</text>
+      </view> 
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='fangan' wx:if="{{detail.programme.length>0}}"> 
+        <text class="cuIcon-creativefill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">方案</text>
+      </view>
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='anli'  wx:if="{{detail.case.length>0}}"> 
+        <text class="cuIcon-appreciatefill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">案例</text>
+      </view> 
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='chanpin' wx:if="{{detail.product.length>0}}" > 
+        <text class="cuIcon-goodsnewfill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">产品</text>
+      </view>  
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='xiangce'  wx:if="{{detail.images.length>0}}"> 
+        <text class="cuIcon-picfill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">相册</text>
+      </view> 
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='news'  wx:if="{{detail.news.length>0}}"> 
+        <text class="cuIcon-picfill text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">资讯</text>
+      </view> 
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bindtap="scrollToTarget" data-dom='lianxiwomen'wx:if="{{detail.phone}}" > 
+        <text class="cuIcon-dianhua text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">联系</text>
+      </view>  
+    </view>
+  </view> 
+
+ 

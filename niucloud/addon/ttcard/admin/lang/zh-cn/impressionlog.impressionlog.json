@@ -1,0 +1,16 @@
+{
+      "id":"ID",
+      "impressionId":"印象",
+      "impressionIdPlaceholder":"全部",
+      "userId":"用户",
+      "userIdPlaceholder":"全部",
+      "cardId":"名片",
+      "cardIdPlaceholder":"全部",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addImpressionlog":"添加",
+      "updateImpressionlog":"编辑",
+      "impressionlogDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

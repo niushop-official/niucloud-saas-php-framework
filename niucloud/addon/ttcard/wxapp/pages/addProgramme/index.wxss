@@ -1,0 +1,59 @@
+page{
+	background: #ffffff; 
+}
+
+.cu-form-group picker .picker {
+  text-align: left;
+}
+.cu-form-group picker .picker {
+  line-height:unset; 
+}
+.cu-form-group picker::after { 
+  line-height: unset; 
+}
+.cu-form-group .title {
+  min-width:210rpx;
+}
+::placeholder{
+  font-size: 32rpx!important;
+}
+.title,textarea{
+  font-size: 32rpx!important;
+  color: #000000;
+}
+.cu-form-group input { 
+  font-size: 32rpx;
+  color: #000000;
+  padding-right: 0;
+}
+textarea{
+  font-size: 32rpx;
+  color: #000000;
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+input{
+  color:#000000
+}
+.m-t{
+  margin-top:7rpx;
+}
+scroll-view{
+  white-space: nowrap;
+}
+.colorBlock{
+  width:70rpx;
+  height:70rpx;
+  line-height:70rpx;
+  text-align: center;
+  margin-right:15rpx; 
+  display: inline-block;
+}
+.colorBlock:last-child{
+  margin-right:0
+}
+.margin-auto{
+  left:0;
+  right:0
+}

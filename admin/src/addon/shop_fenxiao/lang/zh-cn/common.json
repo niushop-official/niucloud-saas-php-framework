@@ -1,0 +1,10 @@
+{
+  "isBecomeFenxiao": "成为分销商",
+  "isBecomeFenxiaoDesc": "是否展示会员成为分销商的按钮",
+  "are": "是",
+  "no": "否",
+  "fenxiaoName": "分销商信息",
+  "fenxiaoLevel": "分销等级",
+  "currentState": "状态",
+  "fenxiaoNamePlaceholder": "请输入分销商昵称或者手机号"
+}

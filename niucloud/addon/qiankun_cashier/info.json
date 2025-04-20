@@ -1,0 +1,19 @@
+{
+  "title": "收银台",
+  "desc": "收银台",
+  "key": "qiankun_cashier",
+  "version": "1.0.0",
+  "author": "乾坤科技",
+  "type": "app",
+  "support_app": "",
+  "compile": [],
+  "support_version": "1.0.0",
+  "port": [
+    {
+      "name": "cashier",
+      "title": "收银台",
+      "command": "npm i;npm run build",
+      "outDir": "dist/build/cashier"
+    }
+  ]
+}

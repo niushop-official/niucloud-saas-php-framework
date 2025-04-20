@@ -1,0 +1,171 @@
+<scroll-view scroll-y 	bindscroll='scroll' class="scrollPage" 	scroll-with-animation >
+<view class="mainBox"style="padding-bottom:40rpx">
+ 
+  
+  <view class="fixed top-0 w--100  topBar {{scrolltop > CustomBar  ? 'showTopBar bg-white' : ''}}" style="height:{{CustomBar}}px;z-index: 99999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="relative align-center justify-center flex flex-1"> 
+        <view class="text-bold w--30 text-lg text-cut-1 text-center {{scrolltop > CustomBar || !detail.title ? 'text-black' : 'text-white'}}">{{detail.title || ''}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="fixed top-0 w--100 " style="z-index: 9999999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="left-0 z-index-9 absolute flex align-center padding-lr-sm">
+        <view class="text-xl flex align-center margin-right-sm " bind:tap="goBack"><text class=" cuIcon-back {{scrolltop > CustomBar || detail.swiper_images.length==0? 'text-black' : 'text-black'}}"></text></view> 
+      </view>
+    </view>
+  </view>
+ 
+  
+ 
+  <view  style="margin-top:{{CustomBar+10}}px;"> 
+
+    <view class="flex column radius-30 bg-white shadow-gray-light padding-top-lg padding-bottom-xl padding-lr margin-lr">  
+      <view class="flex column">
+        <view class="text-lg flex align-center justify-between">
+          <view class="hidden  flex flex-1">  
+            <text class="text-cut-1 text-black text-bold hidden">{{detail.title || ''}}</text> 
+          </view>
+          <view class="text-red text-xl flex align-center margin-left-xl text-ABC">
+          {{detail.month_salary}} 
+          </view>
+        </view>
+        <view class="flex align-center justify-between margin-top-sm">
+          <view class="text-df">
+            {{detail.city}} 
+            <text class="opacity-03 margin-lr-xs">|</text> 
+            {{detail.position}}
+            <text class="opacity-03 margin-lr-xs">|</text>
+             {{detail.type_status == 1 ? '全职' :'兼职'}}
+          </view>  
+        </view>
+        <view class="flex align-center margin-top-sm padding-bottom-xs flex-wrap">
+          <view class="margin-top-sm margin-right-sm padding-lr-sm padding-tb-xs text-sm bg-orange light round" wx:for="{{detail.tags}}" wx:key="i">{{item}}</view> 
+        </view>
+      </view>  
+ 
+    <view class="align-center flex {{detail.website ? 'solid-top padding-top-xl margin-top' : ''}}  ">
+      <view class="cu-avatar radius-12"  wx:if="{{detail.website}}" style="background-image:url({{detail.website.logo}});"></view> 
+      <view class="flex column margin-left hidden"  wx:if="{{detail.website}}" >
+          <view class='text-lg text-black text-bold'>{{detail.website.name}}</view>
+          <view class="flex margin-top-sm align-center" wx:if="{{detail.website.authentication_info && detail.website.authentication_info.examine_status == 1 && detail.authenticationSwitch ==1}}"> 
+            <text class="cu-tag sm round bg-cyan" ><text class="cuIcon-choicenessfill"></text>  企业认证</text>
+          </view> 
+         
+          <view class="flex align-center text-sm text-gray  margin-top-xs hidden">
+            <text class="">{{detail.website.industry_name}}</text>  
+            <text class="opacity-03 margin-lr-xs" wx:if="{{detail.scale}}">|</text>
+            <text class="">{{detail.scale || ''}}</text>  
+          </view>  
+          <view class="flex margin-top-xs align-center hidden" wx:if="{{detail.address}}">
+            <text class="text-sm text-gray margin-right-xs text-cut-1 hidden">{{detail.address}}</text>  
+          </view>
+        </view>
+    </view> 
+    <view class="flex justify-between margin-top-xs">
+    <view class="flex flex-1 {{detail.website ? 'margin-right-xs ' : ''}}">
+      <view class="tagItem flex-1  padding-lr-xl padding-tb-sm  round justify-center margin-top-lg websiteBox flex align-center  {{detail.website ? 'bg-orange' : 'bg-gradual-orange'}}  shadow-orange" bind:tap="goDelive">
+        <view class="text-xl"><text class="cuIcon-forwardfill text-white"></text></view>
+        <text class="text-bold margin-left-xs">投简历</text>
+      </view>
+    </view>
+    <view class="flex flex-1 margin-left-xs" wx:if="{{detail.website}}">
+      <view class="tagItem flex-1 padding-lr-xl padding-tb-sm bg-orange round justify-center margin-top-lg websiteBox flex align-center  bg-gradual-orange shadow-orange" bind:tap="goWebsite">
+        <view class="text-xl"><text class="cuIcon-choicenessfill text-white"></text></view>
+        <text class="text-bold margin-left-xs">微官网</text>
+      </view>
+    </view> 
+    </view>
+  </view>
+
+  
+  <view class="margin-lr padding margin-top radius-30 shadow-gray-light hidden" wx:if="{{config.ad && config.ad.ad_status == 1 && config.ad.ad_banner}}">
+      <ad unit-id="{{config.ad.ad_banner}}" bindload="adLoad" binderror="adError" bindclose="adClose"></ad>
+    </view>
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " id='jianjie' wx:if="{{detail.content}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>职位描述</view>
+    <view class="margin-top text-justify letter-spacing-2">
+      <rich-text nodes="{{detail.content}}"/>
+    </view>
+  </view>
+
+
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " id='jianjie' wx:if="{{detail.website.description && detail.website}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>企业简介</view>
+    <view class="margin-top text-justify ">
+      <rich-text nodes="{{detail.website.description}}"/>
+    </view>
+  </view>
+
+  <view class="margin-lr margin-top radius-30 shadow-gray-light hidden" wx:if="{{config.ad && config.ad.ad_status == 1 && config.ad.ad_video}}">
+      <ad unit-id="{{config.ad.ad_video}}" ad-type="video" ad-theme="white" bindload="adLoad" binderror="adError" bindclose="adClose"></ad>
+    </view>
+
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " id='jianjie' wx:if="{{lists.length>0}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>职位推荐</view>
+    <view class="text-justify letter-spacing-2">
+      <view class='flex padding-tb-lg dashed-bottom  justify-between align-center' wx:for="{{lists}}" wx:key="index" bind:tap="goRecruitDetail" data-id="{{item.id}}">
+        <view class="text-cut-1 flex-1 text-black">{{item.title || ''}}</view>
+        <view class="text-red text-xl flex align-center text-ABC">
+          {{item.month_salary}}
+        </view>
+      </view>
+    </view>
+    <view class="flex margin-top-lg align-center justify-center text-bold text-orange" bind:tap="goMyRecruit">更多职位 <text class="cuIcon-right margin-left-xs"></text></view>
+  </view>
+ 
+
+ 
+ 
+
+ 
+ 
+  
+</view> 
+ 
+
+ 
+
+
+</view>
+</scroll-view>
+ 
+
+<view class="HyBoxModel" style="opacity: {{HyBoxModel ? '.5' : 0}};visibility: {{HyBoxModel?'':'hidden'}}" bindtap="hideModal"></view>
+  <view class="fixed bg-white w--100 HyBox {{HyboxShow ? 'showHyBox' : ''}}">
+      <view class="action absolute right-0 top-0 margin-top-sm margin-right-xs" bindtap="hideModal">
+        <text class="cuIcon-close bg-gray closeBox"></text>
+      </view>
+      <view class="flex column" > 
+        <view class="margin-top-sm padding-top flex column text-black">
+          <view class="text-bold padding-lr text-lg">选择简历</view>
+          <scroll-view scroll-y bindscrolltolower='isonReachBottom'>
+            <radio-group bindchange="radioChange" class="margin-top-lg w--100" style="padding-bottom:360rpx">
+            <label  class="flex shadow-gray-light padding margin-bottom radius-30 margin-lr justify-between align-center" wx:for="{{list}}" wx:key="index">
+              <view class="align-center hidden flex">
+                <view class="cu-avatar round" style="background-image:url({{item.avatar}});width: 140rpx;min-width: 140rpx;height:140rpx"><text class="cuIcon-pic" wx:if="{{!item.avatar}}"></text></view> 
+                <view class="flex column margin-left flex-1 hidden">
+                  <view class="flex justify-between align-center">
+                    <view class='text-lg text-cut-1 flex-1 text-black text-bold  hidden'>{{item.position || ''}}</view> 
+                  </view> 
+                  <view class='text-sm margin-top-xs text-bold hidden '>{{item.name}}</view> 
+                  <view class='text-sm margin-top-xs text-gray hidden '>{{item.createtime}}</view>  
+                </view>
+              </view>
+              <view class="margin-left-lg"><radio class="orange" value="{{item.id}}" ></radio></view>
+            </label>
+          </radio-group>
+          </scroll-view>
+        </view>
+      </view>
+  
+
+    <view class=" absolute flex bg-white bottom-0 w--100 z-9999">  
+      <view class="breathing-element padding-tb text-lg text-bold text-center bg-gradual-orange red-shadow flex-1 round lg margin-tb padding-lr margin-lr relative" bindtap="submit">发送</view>  
+    </view>
+  </view>

@@ -1,0 +1,10 @@
+{
+  "title": "礼品卡",
+  "desc": "商城礼品卡插件，帮助商家获得新客、促进客户活跃度、提升复购率，并支持自用和转赠，可进行多次消费，礼物特产、粮油米面、超市购物等",
+  "key": "shop_giftcard",
+  "version": "1.0.7",
+  "author": "niucloud",
+  "type": "addon",
+  "support_app": "shop",
+  "support_version": "1.0.2"
+}

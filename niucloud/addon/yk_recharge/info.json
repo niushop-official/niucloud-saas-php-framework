@@ -1,0 +1,11 @@
+{
+  "title": "会员充值赠送",
+  "desc": "在线充值到会员账户",
+  "key": "yk_recharge",
+  "version": "1.0.1",
+  "author": "diwujiv5",
+  "url": "https://www.niucloud.com",
+  "type": "addon",
+  "support_app": "",
+  "support_version": "0.5.4"
+}

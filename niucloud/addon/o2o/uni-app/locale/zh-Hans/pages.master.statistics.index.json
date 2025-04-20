@@ -1,0 +1,14 @@
+{
+    "orderNum":"订单数(个)",
+    "orderAmount":"订单金额(元)",
+    "orderManagement":"订单管理",
+    "viewMore":"查看更多",
+    "pendingOrder":"待服务订单",
+    "orderInService":"服务中订单",
+    "finishedOrder":"已服务订单",
+    "amount":"数量：",
+    "viewDetails":"查看详情",
+    "serviceItem":"服务项目",
+    "loadingText":"加载中",
+    "nothingMore":"没有更多内容啦~"
+}

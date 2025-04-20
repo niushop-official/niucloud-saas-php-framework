@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "huodong": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

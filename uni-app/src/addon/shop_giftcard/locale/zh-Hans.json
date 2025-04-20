@@ -1,0 +1,21 @@
+{
+    "pages.index": "礼品卡首页",
+    "pages.list": "礼品卡列表",
+    "pages.detail": "加载中",
+    "pages.order_list": "礼品卡订单列表",
+    "pages.order_detail": "礼品卡订单详情",
+    "pages.member": "我的",
+    "pages.my_card_list": "我的卡包",
+    "pages.card_bag": "我的卡包",
+    "pages.activate": "卡密激活",
+    "pages.receive_list": "收到的礼品卡",
+    "pages.give_list": "送出的礼品卡",
+    "pages.give_detail": "送出礼品卡详情",
+    "pages.give": "礼品卡赠送",
+    "pages.receive_info": "领取礼品卡",
+    "pages.use_card": "礼品卡使用",
+    "pages.use_goods_select": "选择兑换商品",
+    "pages.payment": "待付款订单",
+    "pages.member_give_info": "送出礼品卡详情",
+    "pages.give_info": "领取礼品卡"
+}

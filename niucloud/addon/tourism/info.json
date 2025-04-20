@@ -1,0 +1,11 @@
+{
+  "title": "旅游系统",
+  "desc": "旅游系统",
+  "key": "tourism",
+  "version": "1.1.5",
+  "author": "niucloud",
+  "url": "https://www.niucloud.com",
+  "type": "app",
+  "support_app": "",
+  "support_version": "1.0.2"
+}

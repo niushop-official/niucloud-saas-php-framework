@@ -1,0 +1,28 @@
+<scroll-view scroll-y class="scrollPage">
+<view style="padding-bottom:80rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">使用帮助</view>
+  </cu-custom>
+
+
+  <view class="flex margin-top-lg column margin-lr">
+    <view class="flex column padding padding-tb-lg shadow-gray-light  margin-bottom radius-24 bg-white " wx:for="{{list}}" wx:key="index" bind:tap="checkStatusChange" data-id="{{item.id}}">
+      <view class="text-black text-lg flex align-center justify-between" >
+      <text class="text-bold ">{{item.title}} </text>
+      <text class="cuIcon-{{item.check ? 'fold' : 'unfold'}} text-gray"></text>
+      </view>
+      <view class="margin-top text-black text-lg" wx:if="{{item.check}}">
+        <rich-text style="line-height: 60rpx;" nodes="{{item.content}}"/>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+
+</view>
+</scroll-view>

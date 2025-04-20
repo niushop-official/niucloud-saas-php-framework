@@ -1,0 +1,13 @@
+{
+    "goodsId":"商品id",
+    "isLian":"是否参与链动：0否，1是",
+    "isRule":"是否独立设置规则：0否，1是",
+    "rewardSet":"奖励设置",
+    "goodsIdPlaceholder":"请输入商品id",
+    "isLianPlaceholder":"请选择是否参与链动：0否，1是",
+    "isRulePlaceholder":"请选择是否独立设置规则：0否，1是",
+    "rewardSetPlaceholder":"请输入奖励设置",
+    "addGoods":"添加链动2+1商品",
+    "updateGoods":"编辑链动2+1商品",
+    "goodsDeleteTips":"确定要删除该链动2+1商品吗？"
+}

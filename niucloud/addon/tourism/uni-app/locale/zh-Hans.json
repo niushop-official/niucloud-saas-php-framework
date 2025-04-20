@@ -1,0 +1,16 @@
+{
+    "pages.way.list": "线路列表",
+    "pages.way.detail": "线路详情",
+    "pages.way.order": "线路订单",
+    "pages.hotel.list": "酒店列表",
+    "pages.hotel.detail": "酒店详情",
+    "pages.hotel.order": "酒店订单",
+    "pages.scenic.list": "景点列表",
+    "pages.scenic.detail": "景点详情",
+    "pages.scenic.order": "景点订单",
+    "pages.order.list": "旅游订单",
+    "pages.order.detail": "订单详情",
+    "pages.verify.index": "核销",
+    "pages.verify.record": "核销记录",
+    "pages.verify.detail": "核销详情"
+}

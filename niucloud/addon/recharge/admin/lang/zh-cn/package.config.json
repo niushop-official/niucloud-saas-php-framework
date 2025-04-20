@@ -1,0 +1,16 @@
+{
+  "enableRecharge": "充值开关",
+  "rechargeExplain": "充值说明",
+  "rechargeExplainPlaceholder": "请输入充值说明",
+  "min_price": "最低充值金额",
+  "limitTipsTwo": "最低充值金额不能小于0.01",
+  "limitTips": "格式不正确",
+  "minPricePlaceholder": "请输入最低充值金额",
+  "enableRechargeTips": "关闭后前台将隐藏充值入口",
+  "closeOrderInfo": "自动取消订单",
+  "closeOrderInfoLeft": "提交订单",
+  "closeOrderInfoRight": "分钟未付款",
+  "closeOrderInfoBottom": "订单取消时间必须在10-1440分钟之间",
+  "CloseLengthPlaceholder": "请输入订单取消时间",
+  "isClose": "自动取消订单"
+}

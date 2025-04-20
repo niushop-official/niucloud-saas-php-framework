@@ -1,0 +1,16 @@
+<scroll-view scroll-y class="scrollPage">
+<view style="padding-bottom:80rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">{{pageTitle}}</view>
+  </cu-custom>
+
+<view class="flex column radius-30 margin-top-lg bg-white shadow-gray-light padding-lr padding-tb-xl margin-lr ">
+    <view class="align-center flex">
+      <textarea maxlength="-1" class="text-justify w--100" bindinput="textareaAInput" value="{{msg}}" maxlength="500" placeholder="请输入一些你想说的话..." style="height:400rpx"></textarea>
+    </view>
+    <view class="tagItem padding-lr-sm padding-tb-sm bg-gradual-orange round margin-top flex align-center justify-center" bind:tap="sendMsg" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);"> 
+        <text class="text-bold">提交</text>
+      </view>
+  </view>
+</view> 
+</scroll-view>

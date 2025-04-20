@@ -1,0 +1,24 @@
+/* pages/addWebsite/index.wxss */
+
+page{
+	background: #ffffff; 
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+
+.cu-form-group picker .picker {
+  text-align: left;
+}
+
+
+.cu-form-group .title {
+  font-size: 32rpx;
+  min-width: calc(4em + 50rpx);
+}
+.cu-form-group picker .picker {
+  line-height:unset; 
+}
+.cu-form-group picker::after { 
+  line-height: unset; 
+}

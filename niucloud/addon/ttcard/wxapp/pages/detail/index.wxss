@@ -1,0 +1,85 @@
+page{
+	background:#ffffff; 
+}
+.showTopBar{
+  top:0!important;
+}
+.topBar{
+  top:-200px;
+  transition: .3s;
+}
+swiper{
+  z-index: -1;
+}
+rich-text{
+  word-wrap: break-word
+}
+.step{
+  width:60rpx;
+  height:60rpx;
+  font-size:40rpx;
+}
+.step_num{
+  width:100rpx;
+  height:60rpx;
+}
+.cu-bar .action:first-child {
+  margin-left: 0; 
+}
+.cu-modal {
+  transform:unset;
+  -ms-transform:unset;
+}
+.showFooterTab{
+  bottom:0; 
+}
+.footerIcon{
+  width:60rpx;
+  height:60rpx;
+}
+
+
+.modalBox_zz{ 
+  z-index: 99;
+} 
+.modalBox{
+  bottom:-1000px;
+  z-index: 999;
+  height:500rpx;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx; 
+  transition: .3s;
+}
+.show_modalBox{
+  bottom:0!important;
+}
+
+
+
+
+.HyBox{
+  transition: .3s;
+  height:1000rpx;
+  z-index: 99;
+  bottom:-800px;
+  border-top-left-radius:30rpx; 
+  border-top-right-radius:30rpx; 
+  overflow: hidden;
+}
+.HyBox scroll-view{
+  height:800rpx;
+}
+.showHyBox{
+  bottom:0!important;
+  transition: .3s;
+}
+.HyBoxModel{
+  background-color: rgba(0,0,0,.5);
+  position: fixed;
+  bottom:0;
+  left: 0;
+  width: 100%;
+  height:100vh;
+  transition: .5s; 
+  z-index: 0;
+}

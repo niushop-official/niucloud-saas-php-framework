@@ -1,0 +1,11 @@
+{
+  "title": "幸运抽奖",
+  "desc": "幸运抽奖小游戏",
+  "key": "turntable",
+  "version": "1.2.2",
+  "author": "joker",
+  "type": "addon",
+  "support_app": "shop",
+  "support_version": "1.0.1",
+  "compile":[]
+}

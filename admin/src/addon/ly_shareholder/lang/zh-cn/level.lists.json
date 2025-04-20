@@ -1,0 +1,10 @@
+{
+    "addLevel":"添加等级",
+    "levelNum":"等级",
+    "levelName":"等级名称",
+    "Rate":"分红比例",
+    "upgradeConditions":"升级条件",
+    "startDate":"开始时间",
+    "endDate":"结束时间",
+    "levelDeleteTips":"确定要删除该数据吗？"
+}

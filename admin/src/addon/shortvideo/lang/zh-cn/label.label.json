@@ -1,0 +1,16 @@
+{
+      "id":"ID",
+      "name":"名称",
+      "namePlaceholder":"请输入名称",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "adddate":"添加时间",
+      "adddatePlaceholder":"请输入添加时间",
+      "sort":"排序",
+      "sortPlaceholder":"请输入排序",
+      "addLabel":"添加话题管理",
+      "updateLabel":"编辑话题管理",
+      "labelDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

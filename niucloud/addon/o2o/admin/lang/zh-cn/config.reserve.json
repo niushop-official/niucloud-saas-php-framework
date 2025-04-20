@@ -1,0 +1,16 @@
+{
+    "reserveTime":"预约时间",
+    "reserveTimeInterval":"预约间隔",
+    "reserveEarly":"预约提前",
+    "monday":"周一",
+    "tuesday":"周二",
+    "wednesday":"周三",
+    "thursday":"周四",
+    "friday":"周五",
+    "saturday":"周六",
+    "sunday":"周日",
+    "minute":"分钟",
+    "hour":"小时",
+    "startTime":"开始时间",
+    "endTime":"结束时间"
+}

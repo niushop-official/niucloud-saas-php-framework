@@ -1,0 +1,11 @@
+{
+   "orderNum":"订单数",
+   "workingAge" :"工龄",
+   "year":"年",
+   "age":"年龄",
+   "annum":"岁",
+   "position":"岗位",
+   "basicInfo":"基本信息",
+   "serviceItem":"服务项目",
+   "nothingMore":"没有更多内容啦~"
+}

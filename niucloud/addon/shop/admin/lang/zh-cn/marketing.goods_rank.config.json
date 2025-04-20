@@ -1,0 +1,13 @@
+{
+  "rankName": "榜单标题",
+  "rankImages": "榜单图片",
+  "rankRemark": "榜单说明",
+  "save": "保存",
+  "imagePlaceholder": "请上传榜单图片",
+  "rankNamePlaceholder": "请输入榜单名称",
+  "rankRemarkPlaceholder": "请输入榜单说明",
+  "useDefaultRankRemark": "使用默认说明",
+  "noColor": "常规颜色",
+  "selectedColor": "选中文字颜色",
+  "selectedBgColor": "选中背景颜色"
+}

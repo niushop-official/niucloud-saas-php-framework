@@ -1,0 +1,117 @@
+<view >
+<view style="padding-bottom:80rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}" >
+    <view slot="content" class="text-lg text-bold text-black">{{sourceType == 'edit' ? '编辑招聘' : '创建招聘'}} </view>
+  </cu-custom>
+ 
+   
+
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden padding-top-sm padding-bottom-sm"> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">招聘标题 <text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入招聘标题" bindinput='titleInput' maxlength="30" value='{{sub.title}}'  class="text-black"></input>
+    </view>  
+
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">招聘岗位 <text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入招聘岗位" bindinput='positionInput' maxlength="30" value='{{sub.position}}'  class="text-black"></input>
+    </view>   
+    <view class="cu-form-group padding-top margin-lr text-lg relative">
+        <view class="flex align-center" bind:tap='goWebsiteList' >
+          <view class="title flex text-black">绑定微官网</view>
+          <input placeholder="请绑定微官网" disabled value='{{websiteName}}' class="text-black"></input>
+        </view>
+        <view class='cuIcon-questionfill tipsBox margin-left text-gray' bind:tap="showTips" data-type="wgw"></view>
+      </view> 
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">类型<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="type_statusChange" class="text-left" value="{{type_statusIndex}}" range="{{type_status}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{type_statusIndex || type_statusIndex == 0}}">{{type_status[type_statusIndex]}}</text>
+          <text wx:else>请选择招聘类型</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">月薪<text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="如：8k" value='{{sub.month_salary}}'maxlength="30" bindinput='month_salaryInput' class="text-black"></input>
+    </view> 
+     
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">年龄范围<text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="如：20-35岁"maxlength="30" value='{{sub.age}}' bindinput='ageChange' class="text-black"></input>
+    </view>
+     
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">学历<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="educationChange" class="text-left" value="{{educationIndex}}" range="{{education}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{educationIndex || educationIndex==0}}">{{education[educationIndex]}}</text>
+          <text wx:else>请选择招聘类型</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">工作城市<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+      <picker mode="region" bindchange="RegionChange" value="{{region}}">
+			<view class="picker ">
+        <view class="text-left f-32" wx:if="{{!region[0] || !region[1] || !region[2]}}">
+        请选择省市区
+        </view>
+				<view class="text-left f-32 text-black" wx:else>{{region[0]}} {{region[1]}} {{region[2]}}</view>
+			</view>
+		</picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">工作地点<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+      <input placeholder="请输入工作详细地址" bindinput='addressInput'maxlength="50" value='{{sub.address}}'   class="text-black"></input>
+    </view>   
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">公司规模 <text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="如：10-50人" bindinput='scaleInput' maxlength="20" value='{{sub.scale}}'  class="text-black"></input>
+    </view>  
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">标签<text class="text-red margin-left-xs m-t">*</text></view>
+      <view class="flex  flex-1 justify-start">
+        <view class="flex column">
+          <view class="solid tagsBox padding-xs margin-tb-xs flex justify-between align-center text-sm"wx:for="{{inputs}}" wx:key="index">
+            <input placeholder="如：五险一金" value='' bindinput='year_salaryInput' class="text-black text-sm margin-left-xs margin-right-xl" value="{{item.value}}" bindinput="inputChanged" data-index="{{index}}" ></input> 
+            <view class="cuIcon-roundclose absolute delBox right-0 z-9999 margin-right-xs" bind:tap="removeInput" data-index='{{index}}'></view>
+          </view>
+          <view class="flex bg-gray flex align-center justify-center padding-tb-sm align-start"bind:tap="addInput">
+            <view class="cuIcon-roundaddfill" ></view>
+          </view>
+          
+        </view>
+      </view>
+    </view>
+  
+  </view>
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group align-center margin-left">
+      <view class="title flex flex-1 justify-between text-black">
+        <view>职位描述<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-gray">{{textLength}}/2000</view>
+      </view>
+    </view>
+    <view class="margin-lr padding-bottom"> 
+      <view class="container" style="height:{{editorHeight}}px;">
+        <editor id="editor" class="ql-container" placeholder="{{placeholder}}" bindinput="editorContentChange" bindready="onEditorReady">
+        </editor>
+      </view>
+ 
+    </view>
+  </view>
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group align-center margin-lr ">
+      <view class="title flex text-black">推送到招聘</view>
+      <switch class="cyan" checked="{{sub.recruit_status == '1'}}"  bindchange='switchChange'></switch>
+    </view>
+  </view> 
+ 
+  <view class="padding-tb text-lg text-bold text-center bg-gradual-orange round lg margin-top-xl shadow-gray padding-lr margin-lr orange-shadow" bind:tap="checkUserExpirationTime"   >{{subtype == 'edit' ? '提交修改' : '创建'}} 
+  </view> 
+
+
+</view>
+</view>

@@ -1,0 +1,14 @@
+{
+      "id":"ID",
+      "image":"图片",
+      "imagePlaceholder":"请上传图片",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "adddate":"添加时间",
+      "adddatePlaceholder":"请输入添加时间",
+      "addBanner":"添加",
+      "updateBanner":"编辑",
+      "bannerDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

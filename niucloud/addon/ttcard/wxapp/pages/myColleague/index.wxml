@@ -1,0 +1,52 @@
+<view class="fixed top-0 w--100 bg-white" style="height:{{CustomBar}}px;z-index: 999999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="relative align-center justify-center flex flex-1">
+        
+        <view class="left-0 z-index-9 absolute flex align-center padding-lr-sm">
+          <view class="text-xl flex align-center margin-right-sm " bind:tap="goBack"><text class="cuIcon-back"></text></view> 
+        </view>
+        <view class="text-black text-bold text-lg">我的同事</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="fixed w--100 flex z-9999 justify-center align-center" style="top:{{CustomBar+20}}px;" wx:if="{{triggered}}">
+  <view class="text-gray text-xl flex align-center"><text class="cuIcon-loading2 loading"></text> <text class="text-df margin-left-xs">加载中...</text></view>
+</view>
+<scroll-view scroll-y class="scrollPage" bindscrolltolower='isonReachBottom' enable-back-to-top refresher-enabled refresher-default-style='none' bindrefresherrefresh='refresherrefresh' 	bindrefresherpulling='refresherpulling' refresher-triggered='{{triggered}}'>  
+  <view class="flex column"style="padding-bottom:100rpx">
+  <view style="margin-top:{{CustomBar+10}}px;">
+    <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-top-lg margin-lr hidden relative" wx:for="{{list}}" wx:key="index" > 
+      <view class="flex justify-between align-center">
+        <view class="align-center flex">
+          <view class="cu-avatar xl round" style="background-image:url({{item.avatar}});" wx:if="{{item.avatar}}"></view>
+          <view class="cu-avatar xl round"  wx:else> <view class='text-white cuIcon-my'></view> </view> 
+          <view class="flex margin-left-sm column">
+            <view class='text-lg text-black text-bold'>{{item.nickname}}</view>   
+          </view> 
+        </view>
+        <view class="flex align-center">
+          <view class="padding-lr-sm padding-tb-xs bg-orange round flex align-center justify-center margin-right-sm shadow-orange text-df" wx:if="{{item.card_info.id}}" bind:tap="goCard" data-cardid='{{item.card_info.id}}'> 
+            <text>TA的名片</text>
+          </view> 
+        </view>
+      </view>
+
+      <view class="flex solid-top margin-top-lg padding-tb justify-between align-center text-df text-gray" > 
+            <view class="text-center flex-1"  bind:tap="goEcharts" data-userid='{{item.id}}' ><text class="cuIcon-rank margin-right-xs"></text>数据</view> 
+            <view  hover-class="none" bind:tap="submit" data-inviteid='{{item.invite_id}}'  data-userid='{{item.id}}' data-cardid='{{item.card_info.id}}' data-websiteid='{{item.website_info.id}}'data-websitename='{{item.website_info.name}}' class="text-center flex-1 solid-left "><text class="cuIcon-forward margin-right-xs"></text>转让</view>
+            <view class="text-center solid-left flex-1"  bind:tap="deleteInvite" data-inviteid='{{item.invite_id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view> 
+          </view> 
+
+    </view>
+    </view>
+  </view>
+
+
+  <view class="emptyBox" wx:if="{{empty}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+ 
+</scroll-view>
+ 

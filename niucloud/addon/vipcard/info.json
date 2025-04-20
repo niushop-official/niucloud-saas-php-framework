@@ -1,0 +1,11 @@
+{
+  "title": "会员卡管理",
+  "desc": "项目管理，卡项管理，会员预约",
+  "key": "vipcard",
+  "version": "1.1.5",
+  "author": "niucloud",
+  "url": "https://www.niucloud.com",
+  "type": "app",
+  "support_app": "",
+  "support_version": "1.0.2"
+}

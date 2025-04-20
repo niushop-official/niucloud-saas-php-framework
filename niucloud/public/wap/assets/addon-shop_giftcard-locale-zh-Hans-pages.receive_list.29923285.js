@@ -1,0 +1,1 @@
+const a="赠送好友",d="全部",e="去使用",s="已使用",t="已失效",i="暂无卡记录",l={giftToFriends:a,all:"全部",canUse:"去使用",used:"已使用",invalid:"已失效",cardEmpty:i};export{d as all,e as canUse,i as cardEmpty,l as default,a as giftToFriends,t as invalid,s as used};

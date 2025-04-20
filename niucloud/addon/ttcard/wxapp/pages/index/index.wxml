@@ -1,0 +1,342 @@
+
+<share-box isCanDraw="{{isCanDraw}}" info='{{info}}' bind:initData="handleClose" />
+
+<scroll-view scroll-y class="scrollPage" bindscroll="onScroll" wx:if="{{hasDefaultCard == true}}"> 
+<view style="padding-bottom:240rpx"> 
+  <view class="fixed top-0 w--100 bg-white" style="height:{{CustomBar}}px;z-index: 999999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="relative align-center justify-center flex flex-1">
+        
+        <view class="left-0 z-index-9 absolute flex align-center padding-lr"> 
+          <view class="solid round flex padding-lr-sm align-center " bind:tap="clickCollect" style="width:{{width}}px;height:{{Height}}px"> 
+            <text class="text-orange cuIcon-{{collect.collectStatus? 'favorfill':'favor'}}"></text>
+            <text class="badge text-xs round padding-lr-xs">收藏 {{collect.collectTotal || 0}}</text>
+          </view>
+        </view>
+        <view class="text-bold text-lg text-black" wx:if="{{scrollTop > CustomBar}}">{{detail.name}}的名片</view>
+         
+      </view>
+    </view>
+  </view>
+
+ 
+
+<view class="cu-modal {{modalName=='Image'?'show':''}}">
+  <view class="bg-white cu-dialog">
+    <view class="action absolute right-0 top-0 margin-top-sm margin-right-xs z-9999" bindtap="hideModal">
+        <text class="cuIcon-close text-red closeBox"></text>
+      </view>
+    <view class="cu-bar flex align-center margin-top  justify-center">
+      <text class="cuIcon-title text-cyan opacity-03"></text>
+      <text class="cuIcon-title text-cyan opacity-06"></text>
+      <text class="cuIcon-title text-cyan"></text>
+      <text class=" text-bold flex margin-lr-sm justify-center text-black text-lg">微信二维码</text> 
+      <text class="cuIcon-title text-cyan"></text>
+      <text class="cuIcon-title text-cyan opacity-06"></text>
+      <text class="cuIcon-title text-cyan opacity-03"></text>
+    </view>
+    <view class="flex justify-center">
+      <view class="text-lg margin-top codeBox"><image src="{{detail.wechat_code_image}}" show-menu-by-longpress="{{true}}" bindlongpress="handleLongPress" mode="widthFix"/></view> 
+    </view>
+    <view class="text-lg text-bold text-center margin-xl round lg padding-lr ">长按二维码识别添加好友</view> 
+  </view>
+</view>
+
+  <view class=" " style="margin-top:{{CustomBar+20}}px">
+  <view class="flex margin-lr shadow-gray-light column margin-top-lg radius-30 hidden relative {{!detail.card_diy_bg && !detail.cardbackground ? 'bg-gradual-orange' : ''}}">
+    
+    <view class="cardBox flex column hidden flex-1 padding padding-tb-xl" style="background-image:url({{detail.card_diy_bg||detail.cardbackground}});">
+      <view class="absolute flex align-center justify-center text-sm bg-gradual-orange flagBox" wx:if="{{detail.recommend == 1}}"><text class="flagText">推荐</text></view>
+      <view class="flex align-center">
+        <view class="cu-avatar xl round solids" style="background-image:url({{detail.avatar}});"></view>
+        <view class="flex column text-white margin-left">
+          <view class='text-xxl flex align-center  text-bold'>
+            {{detail.name}} 
+            <view class="flex margin-left-sm " wx:if="{{detail.authentication_info.geren_authentication ==1 && config.authentication_switch == 1}}">  
+              <text class="cu-tag sm round bg-gradual-orange light"><text class="cuIcon-profilefill"></text> 个人认证</text> 
+            </view> 
+          </view>
+          <view class='text-df text-white margin-top-xs flex align-center'>
+            <view class='' wx:if="{{detail.gender == 1}}">女</view>
+            <view class='' wx:if="{{detail.gender == 0}}">男</view>  
+            <text class='margin-lr-sm opacity-03' >|</text>
+            <text class='' >{{detail.position}}</text>
+            <text class='margin-lr-sm opacity-03' >|</text>
+            <text wx:if="{{detail.industry_name}}">{{detail.industry_name}}</text>  
+          </view>
+          <view class="action margin-top-sm"> 
+            <view class="cu-tag round text-white margin-bottom-xs tagbox " wx:for="{{detail.tags}}" wx:key="index">{{item}}</view> 
+          </view>
+        </view>
+      </view>
+      <view class='text-sm text-white margin-top-lg lineOpa line-white padding-tb-lg hidden'>
+        <text class=" text-cut-1 letter-spacing-2" style="display: block;">{{detail.short_description}}</text>
+      </view>
+      
+      <view class='text-white margin-top-lg line-white '>
+        <view class="flex justify-between">
+          <view class='flex align-center hidden'><text class='cuIcon-dianhua margin-right-xs'></text><text class='text-cut-1'>{{detail.phone}}</text></view> 
+          <view class='flex justify-end align-center acBtn text-sm opacity-08' bind:tap="savePhone">保存到手机<text class='cuIcon-right  margin-left-xs'></text></view>
+        </view> 
+        <view class="flex justify-between margin-top" wx:if="{{detail.wechat_num}}">
+          <view class='flex align-center hidden'><text class='cuIcon-weixin margin-right-xs'></text><text class='text-cut-1'>{{detail.wechat_num}}</text></view> 
+          <view class='flex justify-end align-center acBtn text-sm opacity-08' bind:tap="copyText" data-type='wechat_num'>复制微信号<text class='cuIcon-right  margin-left-xs'></text></view>
+        </view>
+        <view class="flex justify-between margin-top" wx:if="{{detail.email}}">
+          <view class='flex align-center hidden'><text class='cuIcon-mail margin-right-xs'></text><text class='text-cut-1'>{{detail.email}}</text></view>
+          <view class='flex justify-end align-center acBtn text-sm opacity-08'  bind:tap="copyText" data-type='email'>复制邮箱<text class='cuIcon-right  margin-left-xs'></text></view> 
+        </view>
+        <view class="flex justify-between margin-top" wx:if="{{detail.address}}">
+          <view class='flex align-center hidden'><text class='cuIcon-locationfill margin-right-xs'></text><text class='text-df text-cut-2'>{{detail.address}}</text></view>
+          <!-- <view class='flex justify-end align-center acBtn text-sm opacity-08'></view> -->
+        </view>
+      </view>
+    </view>
+    <view class="flex bg-white hidden">
+    <view class="bg-white flex-1 padding-tb-lg flex align-center justify-center margin-right-sm column "bindtap="phone" >  
+      <view class="myIcon"><text class="cuIcon-dianhua text-orange"></text></view>
+      <text class="text-bold text-black text-df">打电话</text>
+    </view>
+    <view class="bg-white flex-1 radius-30 padding-tb flex align-center justify-center margin-right-sm column" bind:tap="copyText" data-type='wechat_num' wx:if="{{detail.wechat_num}}"> 
+      <view class="myIcon"><text class="cuIcon-weixin text-cyan"></text></view>
+      <text class="text-bold text-black text-df">加微信</text>
+    </view>
+    <view class="bg-white flex-1 radius-30 padding-tb flex align-center justify-center margin-right-sm column" bindtap="showModal" data-target="Image">  
+      <view class="myIcon"><image src="/images/wxcode.png" class="minicode" mode="aspectFit"></image></view>
+      <text class="text-bold text-black text-df">微信码</text>
+    </view> 
+    <view class="bg-white flex-1 radius-30 padding-tb flex align-center justify-center margin-right-sm column" bind:tap="getCardCode">
+      <view class="myIcon">
+        <image src="/images/minicode.png" class="minicode" mode="widthFix"></image>
+      </view>
+      <text class="text-bold text-black text-df">名片码</text>
+    </view>
+    <view class="bg-white flex-1 radius-30 padding-tb flex align-center justify-center column" bind:tap="copyText" data-type='email'> 
+      <view class="myIcon"><image src="/images/email.png" class="minicode" mode="aspectFit"></image></view>
+      <text class="text-bold text-black text-df">邮箱</text>
+    </view>
+  </view> 
+</view>
+ 
+<view class="flex column radius-30 margin-top bg-white shadow-gray-light margin-lr padding-tb-sm ">
+  
+  <view class="flex justify-between align-center bg-white">
+      <view class="flex align-center radius-30 bg-white  padding-lr padding-tb flex-1 avatarList" bind:tap="goViewCardUser">
+        <view class="cu-avatar-group flex justify-center" style="margin-left:40rpx;">
+          <view class="cu-avatar round"  style="background-image:url({{item}});" wx:for="{{detail.view_avatars}}" wx:key='index'  wx:if="{{detail.view_avatars.length>0}}"><view class="cuIcon-my" wx:if="{{!item}}"></view></view>
+          
+          <view class="cu-avatar round cuIcon-my"   wx:for="{{3}}" wx:key='index'  wx:if="{{detail.view_avatars.length==0}}"></view>
+        </view> 
+        <view class="text-sm margin-left-xs flex cloumn">
+          <view>{{detail.view_total || 0}} 人访问 </view>
+          <view class="cu-tag round bg-orange light sm margin-top-xs">今日 {{detail.today_view_total || 0}}</view>
+        </view> 
+      </view>
+      <view class="breathing-element padding-tb-sm text-lg text-bold text-center bg-gradual-orange  round lg margin-tb-lg padding-lr margin-lr relative" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);"><text class='cuIcon-forwardfill margin-right-xs'></text>转发名片
+      
+        <button open-type="share"  class="bg-gray absolute w--100 h--100 opacity-0 top-0 left-0"></button></view> 
+    </view> 
+ 
+</view>
+ 
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " wx:if="{{detail.description}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>个人简介</view>
+    <view class="margin-top text-justify letter-spacing-2"> 
+      <rich-text style='word-wrap: break-word' nodes="{{detail.description}}"/>
+    </view>
+  </view> 
+  
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-top-lg padding-bottom margin-lr " wx:if="{{detail.video}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>视频介绍</view>
+    <view class="margin-top text-justify letter-spacing-2">  
+      <video src="{{detail.video}}" binderror="videoErrorCallback" show-center-play-btn='{{false}}' show-play-btn="{{true}}" controls></video>
+    </view>
+  </view> 
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr "wx:if="{{detail.images.length>0}}"> 
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>个人相册</view>
+      <view class="text-gray" bind:tap="goImages" wx:if="{{detail.images.length>9}}">更多<text class="cuIcon-right"></text></view>
+    </view>
+<view class="cu-card dynamic margin-top">
+  <view class="cu-item" style="margin: 0;"> 
+    <view class="grid flex-sub col-3  grid-square">
+      <view class="bg-img" bindtap="ViewImage" data-url="{{detail.images[index]}}"  style="background-image:url({{item}});" wx:for="{{detail.images}}" wx:if="{{index < 9}}" wx:key="index">
+      </view>
+    </view> 
+  </view>
+</view>
+  </view>
+
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " wx:if="{{detail.case.length>0}}">
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>成功案例</view>
+      <view class="text-gray" bind:tap="goCaseList">更多<text class="cuIcon-right"></text></view>
+    </view>
+    <view class="margin-top">
+      <view class="flex">
+
+        <view bind:tap="goDetail" data-sourceurl='case' data-id="{{item.id}}" class="flex column flex-1 scroll-view-item_H margin-right-sm" wx:for="{{detail.case}}" wx:key="index"  >
+          <view class="radius-12 bg-img" style="background-image: url({{item.images[0]}});height:400rpx"></view>
+          <view class="hidden margin-top text-cut-1"><text class=" w--100 text-black">{{item.title}}</text></view> 
+        </view>
+       
+      </view> 
+    </view>
+  </view>
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " wx:if="{{detail.product.length>0}}">
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>热销产品</view>
+      <view class="text-gray" bind:tap="goProductList">更多<text class="cuIcon-right"></text></view>
+    </view>
+    <view class="margin-top">
+      <view class="justify-between flex">
+
+        <view  bind:tap="goDetail" data-sourceurl='product' data-id="{{item.id}}" class="flex column caseBox scroll-view-item_H margin-right-sm" wx:for="{{detail.product}}" wx:key="index">
+          <view class="caseBoxImage bg-img" style="background-image: url({{item.images[0]}});"></view>
+          <view class="hidden margin-top text-cut-1"><text class=" w--100 text-black">{{item.title}}</text></view> 
+          <view class="flex align-center  margin-top-xs ">
+            <view class="text-price text-red text-xl" wx:if="{{item.price}}">{{item.price}}</view>
+            <text class="text-delete margin-left-sm text-gray text-price text-sm" wx:if="{{item.originalprice}}">{{item.originalprice}}</text>
+          </view>
+        </view>
+     
+      </view> 
+    </view>
+  </view>
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " wx:if="{{impression.length>0}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>个人印象</view>
+    <view class="flex flex-wrap">
+
+
+      <view class="tagItem padding-lr-sm padding-tb-xs {{item.check == 1 ?'bg-orange' :'bg-gray'}} round light margin-right-sm margin-top flex align-center text-gray" wx:for="{{impression}}" wx:key="index" bind:tap="clickImpression" data-id='{{item.id}}'  data-index='{{index}}'>
+        <text class="cuIcon-appreciate{{item.check == 1 ? 'fill':''}} margin-right-xs"></text>
+        <text>{{item.name}} {{item.clickTotal}}</text>
+      </view> 
+
+
+    </view> 
+  </view>
+
+
+   
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " wx:if="{{detail.website}}">
+    <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>我的企业</view>
+    <view class="margin-top align-center flex">
+      <view class="cu-avatar xl radius-12" style="background-image:url({{detail.website.logo}});width: 180rpx;min-width: 180rpx;height:180rpx"></view> 
+      <view class="flex column margin-left  hidden">
+        <view class='text-lg text-black text-bold  hidden'>{{detail.website.name}}</view>
+        <view class="margin-top-xs"wx:if="{{detail.authentication_info.qiye_authentication ==1 && config.authentication_switch == 1}}">
+          <text class="cu-tag sm round bg-gradual-green" ><text class="cuIcon-choicenessfill"></text>  企业认证</text>
+        </view> 
+        <view class="flex text-sm column margin-top-xs  hidden">
+          <text class="">{{detail.website.industry_name}}</text> 
+          <text class="text-gray margin-top-xs text-cut-1 hidden">{{detail.website.description}}</text>  
+        </view> 
+      </view>
+    </view>
+    <view class="flex justify-center">
+      <view class="tagItem padding-lr-xl padding-tb-sm bg-orange round margin-top-lg websiteBox flex align-center bg-gradual-orange" bind:tap="goWebsite">
+        <view class="text-xl"><text class="cuIcon-choicenessfill text-white"></text></view>
+        <text class="text-bold margin-left-xs">微官网</text>
+      </view>
+    </view>
+  </view>
+
+  
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr ">
+    <view class="text-lg text-black flex align-center justify-between">
+      <view class="text-bold "><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>给我留言</view>
+      <text class="text-gray text-sm">{{t_num}}/500</text>
+    </view>
+    <view class="margin-top align-center flex">
+      <textarea maxlength="-1" class="text-justify w--100" bindinput="textareaAInput" value="{{msg}}" maxlength="500" placeholder="请输入一些你想说的话..." style="height:200rpx"></textarea>
+    </view>
+    <view class="tagItem padding-lr-sm padding-tb-sm bg-gray round margin-top flex align-center justify-center {{textareaValue?'text-black':'text-gray'}}"  bind:tap="sendMsg"> 
+        <text class="text-bold">提交留言</text>
+      </view>
+  </view>
+</view>
+
+
+<view class="fixed bottom-0 padding-tb w--100 bg-white z-9999 flex"> 
+  <view wx:if="{{scrollTop > 500}}" class="padding-tb text-xl margin-left text-bold text-center bg-orange round homeBox transition_3 lg shadow-orange  flex align-center justify-center align-center justify-center relative"><text class="cuIcon-forwardfill "></text>
+    <button open-type="share"  class="bg-gray absolute w--100 h--100 opacity-0 top-0 left-0"></button>
+  </view> 
+  <view class="padding-tb-sm flex align-center justify-center text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange transition_3 round lg shadow-orange align-center " bind:tap="goAddcard"><text class="cuIcon-roundaddfill margin-right-xs"></text> 创建名片</view>
+</view>
+   
+
+</view>
+</scroll-view>
+
+
+<scroll-view scroll-y class="scrollPage" wx:if="{{!hasDefaultCard}}">
+<view style="padding-bottom:80rpx">
+  <cu-custom bgColor="bg-white" isBack="{{false}}">
+    <view slot="content" class="text-lg text-bold text-black">{{config.miniappIndexTitle}}</view>
+  </cu-custom> 
+  <view class="flex column h--100 justify-center acBox margin-top-lg">
+    <view class="flex column radius-30 padding-bottom-xl bg-white shadow-gray-light margin-lr hidden">
+      <view class="flex margin-lg padding-top-lg margin-tb-xl  justify-center cardIcon" wx:if="{{config.indexSwiper.length == 0}}">
+        <image src="../../images/card.png" class="icon" />
+      </view> 
+      <view class="hidden margin-bottom-xl" wx:else>
+        <swiper class="screen-swiper margin-bottom square-dot swiperRadius" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" style="height:690rpx">
+          <swiper-item wx:for="{{config.indexSwiper}}" wx:key='index'>
+            <image src="{{item}}" mode="aspectFill"></image> 
+          </swiper-item>
+        </swiper>
+      </view>
+      <view class="padding-tb margin-lr-lg margin-top-xs breathing-element text-xl margin-bottom-lg text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddcard"><text class="cuIcon-roundaddfill"></text> 创建名片</view>
+    </view> 
+    <view class="flex column margin-lr margin-top-xl padding-top">
+      <view class="flex align-center margin-bottom-lg">
+        <view class="cuIcon-lightfill radius-24 bg-orange light iconBox flex align-center justify-center"></view>
+        <view class="flex column  margin-left">
+          <text class="text-lg">快速创建名片</text>
+          <text class="text-gray text-sm margin-top-xs">一分钟快速创建名片</text>
+        </view>
+      </view>
+      <view class="flex align-center margin-bottom-lg">
+        <view class="cuIcon-peoplefill radius-24 bg-orange light  iconBox flex align-center justify-center"></view>
+        <view class="flex column  margin-left">
+          <text class="text-lg">访客即客户</text>
+          <text class="text-gray text-sm margin-top-xs">让自己离客户更近一步</text>
+        </view>
+      </view>
+      <view class="flex align-center margin-bottom-lg">
+        <view class="cuIcon-choicenessfill radius-24 bg-orange light  iconBox flex align-center justify-center"></view>
+        <view class="flex column  margin-left">
+          <text class="text-lg">微官网</text>
+          <text class="text-gray text-sm margin-top-xs">让企业信息更具传播力</text>
+        </view>
+      </view>
+      <view class="flex align-center margin-bottom-lg">
+        <view class="cuIcon-group_fill radius-24 bg-orange light iconBox flex align-center justify-center"></view>
+        <view class="flex column  margin-left">
+          <text class="text-lg">人脉</text>
+          <text class="text-gray text-sm margin-top-xs">主动获取商机，成交更轻松</text>
+        </view>
+      </view>
+      <view class="flex align-center margin-bottom-lg">
+        <view class="cuIcon-rankfill radius-24 bg-orange light iconBox flex align-center justify-center"></view>
+        <view class="flex column  margin-left">
+          <text class="text-lg">名片数据尽在指尖</text>
+          <text class="text-gray text-sm margin-top-xs">名片所有数据在小程序中一览无余</text>
+        </view>
+      </view>
+    </view>
+  </view> 
+
+  <view> 
+  <urgentPop></urgentPop>
+</view>
+
+</view>
+</scroll-view>

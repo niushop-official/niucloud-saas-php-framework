@@ -1,0 +1,137 @@
+<scroll-view scroll-y class="scrollPage">
+  <view style="padding-bottom:80rpx">
+    <cu-custom bgColor="bg-white" isBack="{{true}}">
+      <view slot="content" class="text-lg text-bold text-black">{{TabCur == 1?'企业认证':'个人认证'}}</view>
+    </cu-custom>
+ 
+    <view class="margin-top-lg margin-lr shadow-gray-light bg-white light padding-lr-lg padding-bottom radius-30 flex column  letter-spacing-2" wx:if="{{(examinestatus == 3 || examinestatus == 4) && sub.orderInfo.pay_status == 2 && examinestatus}}">
+      <view class="cu-bar flex align-center margin-top-xl  justify-center">
+        <text class="cuIcon-title text-cyan opacity-03"></text>
+        <text class="cuIcon-title text-cyan opacity-06"></text>
+        <text class="cuIcon-title text-cyan"></text>
+        <text class=" text-bold flex margin-lr-sm justify-center text-black text-lg">{{TabCur == 1?'企业认证':'个人认证'}}</text>
+        <text class="cuIcon-title text-cyan"></text>
+        <text class="cuIcon-title text-cyan opacity-06"></text>
+        <text class="cuIcon-title text-cyan opacity-03"></text>
+      </view>
+      <view class="text-lg text-center margin-top-lg text-sl text-price text-red">{{sub.orderInfo.price}}</view>
+      <view class="padding-lr text-center margin-top padding-bottom-lg text-df text-gray">您的认证订单还未支付</view>
+      <view class="breathing-element padding-tb text-lg text-bold text-center bg-gradual-green shadow-cyan  round lg margin-tb-xl padding-lr margin-lr" bind:tap="gopay">立即支付</view> 
+    </view>
+
+
+    <view class="flex margin-lr shadow-gray-light column margin-top-lg radius-30 bg-white hidden padding-tb-sm">
+      <view class="cu-form-group margin-lr text-lg">
+        <view class="title flex text-black">姓名<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <input placeholder="请输入姓名" bindinput='nameInput' value='{{sub.name}}' maxlength="30" disabled="{{!examinestatus? false : true}}" class="text-black"></input>
+      </view>
+      <block wx:if="{{wechat_auditing == 0}}">
+      <view class="cu-form-group margin-lr text-lg">
+        <view class="title flex text-black">身份证号<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <input placeholder="请输入身份证号" bindinput='idcardNumInput' value='{{sub.idcard_num}}' disabled="{{!examinestatus? false : true}}" class="text-black"></input>
+      </view>
+      <view class="cu-bar bg-white solid-top margin-lr" style="min-height: 120rpx;">
+        <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+          身份证正面<text class="text-red margin-left-xs margin-top-xs">*</text>
+        </view>
+        <view class="action text-gray">
+          {{idcard_z_image.length}}/1
+        </view>
+      </view>
+      <view class="cu-form-group margin-lr" style="padding:0 0 10rpx 0">
+        <view class="grid col-4 grid-square flex-sub">
+          <view class="bg-img ekal" wx:for="{{idcard_z_image}}" wx:key="index">
+            <image src='{{idcard_z_image[index]}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red" catchtap="DelImg" data-t='idcard_z' data-index="{{index}}" wx:if="{{examinestatus==''}}">
+              <text class="cuIcon-close"></text>
+            </view>
+          </view>
+          <view class="solids ekal" bindtap="ChooseImage" data-t='idcard_z' wx:if="{{idcard_z_image.length<1}}">
+            <text class="cuIcon-cameraadd"></text>
+          </view>
+        </view>
+      </view> 
+
+      <view class="cu-bar bg-white solid-top margin-lr" style="min-height: 120rpx;">
+        <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+          身份证反面<text class="text-red margin-left-xs margin-top-xs">*</text>
+        </view>
+        <view class="action text-gray">
+          {{idcard_f_image.length}}/1
+        </view>
+      </view>
+      <view class="cu-form-group margin-lr" style="padding:0 0 10rpx 0">
+        <view class="grid col-4 grid-square flex-sub">
+          <view class="bg-img ekal" wx:for="{{idcard_f_image}}" wx:key="index">
+            <image src='{{idcard_f_image[index]}}' mode='aspectFill'></image>
+            <view class="cu-tag bg-red" catchtap="DelImg" data-t='idcard_f' data-index="{{index}}" wx:if="{{examinestatus==''}}">
+              <text class="cuIcon-close"></text>
+            </view>
+          </view>
+          <view class="solids ekal" bindtap="ChooseImage" data-t='idcard_f' wx:if="{{idcard_f_image.length<1}}">
+            <text class="cuIcon-cameraadd"></text>
+          </view>
+        </view>
+      </view>
+      </block>
+
+      <block wx:if="{{TabCur == 1}}">
+
+        <view class="cu-bar bg-white solid-top margin-lr" style="min-height: 120rpx;">
+          <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+            营业执照<text class="text-red margin-left-xs margin-top-xs">*</text>
+          </view>
+          <view class="action text-gray">
+            {{businesslicense_image.length}}/1
+          </view>
+        </view>
+        <view class="cu-form-group margin-lr" style="padding:0 0 10rpx 0">
+          <view class="grid col-4 grid-square flex-sub">
+            <view class="bg-img ekal" wx:for="{{businesslicense_image}}" wx:key="index">
+              <image src='{{businesslicense_image[index]}}' mode='aspectFill'></image>
+              <view class="cu-tag bg-red" catchtap="DelImg" data-t='business' data-index="{{index}}" wx:if="{{examinestatus==''}}">
+                <text class="cuIcon-close"></text>
+              </view>
+            </view>
+            <view class="solids ekal" bindtap="ChooseImage" data-t='business' wx:if="{{businesslicense_image.length<1}}">
+              <text class="cuIcon-cameraadd"></text>
+            </view>
+          </view>
+        </view>
+
+      </block>
+
+    </view>
+
+
+
+    <block wx:if="{{examinestatus==''}}">
+      <view class="breathing-element padding-tb text-lg text-bold text-center bg-gradual-orange  round lg margin-top-xl shadow-gray padding-lr margin-lr" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);" bind:tap="add">提交审核</view>
+    </block>
+
+
+
+
+
+    <view class="cu-modal {{modalName=='Modal'?'show':''}}">
+      <view class="bg-white cu-dialog padding-bottom-lg">
+        <view class="action absolute right-0 top-0 margin-top-sm margin-right-xs" bindtap="hideModal">
+          <text class="cuIcon-close text-red closeBox"></text>
+        </view>
+        <view class="cu-bar flex align-center margin-top-xl  justify-center">
+          <text class="cuIcon-title text-cyan opacity-03"></text>
+          <text class="cuIcon-title text-cyan opacity-06"></text>
+          <text class="cuIcon-title text-cyan"></text>
+          <text class=" text-bold flex margin-lr-sm justify-center text-black text-xxl">{{TabCur == 1?'企业认证':'个人认证'}}</text>
+          <text class="cuIcon-title text-cyan"></text>
+          <text class="cuIcon-title text-cyan opacity-06"></text>
+          <text class="cuIcon-title text-cyan opacity-03"></text>
+        </view>
+        <view class="text-lg margin-top-lg text-sl text-price text-red">{{sub.orderInfo.price}}</view>
+        <view class="padding-lr margin-top padding-bottom-lg text-lg">您的认证订单还未支付~</view>
+        <view class="breathing-element padding-tb text-lg text-bold text-center bg-gradual-green margin-xl round lg shadow padding-lr " bind:tap="gopay" data-type='a'>立即支付</view>
+      </view>
+    </view>
+
+  </view>
+</scroll-view>

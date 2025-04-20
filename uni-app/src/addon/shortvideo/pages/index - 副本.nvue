@@ -1,0 +1,2029 @@
+<template>
+	<view>
+		<view v-if="index_type==2">
+			
+			<indexlist :videolist="videolist" v-if="videolist.length>0"></indexlist>
+		</view>
+		<view class="page" v-if="isload&&index_type==1" :style="{height:pageHeight+'px'}">
+
+			<!-- <scroll-view :scroll-x="true" class="cover-view-top catebox" :style="{'top': statusBarHeight}"
+					style="margin:130rpx 0 0;width:720rpx;height: 100rpx;padding: 15rpx 30rpx;white-space: nowrap;display: inline-block;font-size: 16px;overflow-y: hidden;z-index: 33;">
+					<view class="cover-view-top-item " v-for="(item,index) in catelist" @click="changecate(item.id)"
+						style="white-space: nowrap;display: inline-block;">
+		
+						<text class="toptext" :class="{toptextbottom:cate_id==item.id}">{{item.name}}</text>
+					</view>
+				</scroll-view> -->
+				<view @click="goback" v-if="opt.tauid||opt.id>0" :style="{'top': (statusBarHeight+20)+'px'}"
+					style="position: fixed;left: 30rpx;z-index: 3;background: rgba(255,255,255,0.2);padding: 15rpx;z-index: 4;">
+					<u-icon name="arrow-left" color="#fff" size="24"></u-icon>
+				</view>
+				<!-- #ifdef H5 -->
+				<view class="cover-view-top catebox flexm" v-else :style="{'top': statusBarHeight}"
+					style="margin:30rpx 0 0;width:720rpx;height: 100rpx;padding: 15rpx 30rpx;white-space: nowrap;display: flex;font-size: 16px;overflow-y: hidden;z-index: 33;width: 94%;justify-content: center;margin-left: 10rpx;">
+					<view class="cover-view-top-item " v-if="config?.open_fabu==1" @click="tourl('/addon/shortvideo/pages/my',0,0)"
+						style="white-space: nowrap;display: inline-block;margin-left: 25rpx;vertical-align: -10rpx;">
+						<u-icon name="man-add" color="#fff" size="26"></u-icon>
+					</view>
+					<view class="cover-view-top-item " v-for="(item,index) in catelist" @click="changecate(item.id)"
+						style="white-space: nowrap;display: inline-block;margin-left: 25rpx;">
+						<text class="toptext" :class="{toptextbottom:cate_id==item.id}">{{item.name}}</text>
+					</view>
+					<view class="cover-view-top-item " @click="tourl('/addon/shortvideo/pages/search',0,0)"
+						style="white-space: nowrap;display: inline-block;margin-left: 35rpx;vertical-align: -10rpx;">
+						<u-icon name="search" color="#fff" size="26"></u-icon>
+					</view>
+					<view class="cover-view-top-item " v-if="config?.open_fabu==1" @click="tourl('/addon/shortvideo/pages/add',0,0)"
+						style="white-space: nowrap;display: inline-block;margin-left: 40rpx;vertical-align: -10rpx;">
+						<u-icon name="camera" color="#fff" size="26"></u-icon>
+					</view>
+				</view>
+				<!-- #endif -->
+			<!-- #ifdef MP -->
+			<view class="cover-view-top catebox flexm" v-else :style="{'top': statusBarHeight}"
+				style="margin:30rpx 0 0;width:720rpx;height: 100rpx;padding: 15rpx 10rpx;white-space: nowrap;display: flex;font-size: 16px;overflow-y: hidden;z-index: 33;width: 94%;justify-content: center;margin-left: 0;">
+				<view class="cover-view-top-item " v-if="config?.open_fabu==1" @click="tourl('/addon/shortvideo/pages/my',0,0)"
+					style="white-space: nowrap;display: inline-block;margin-left: 10rpx;vertical-align: -10rpx;">
+					<u-icon name="man-add" color="#fff" size="26"></u-icon>
+				</view>
+				<view class="cover-view-top-item " v-for="(item,index) in catelist" @click="changecate(item.id)"
+					style="white-space: nowrap;display: inline-block;margin-left: 15rpx;">
+					<u-icon name="list" v-if="item.id==5" color="#fff" size="26"></u-icon>
+					<text class="toptext" v-else :class="{toptextbottom:cate_id==item.id}" style="margin: 10rpx 20rpx;">{{item.name}}</text>
+				</view>
+				<view class="cover-view-top-item " @click="tourl('/addon/shortvideo/pages/search',0,0)"
+					style="white-space: nowrap;display: inline-block;margin-left: 10rpx;vertical-align: -10rpx;">
+					<u-icon name="search" color="#fff" size="26"></u-icon>
+				</view>
+				<view class="cover-view-top-item " v-if="config?.open_fabu==1" @click="tourl('/addon/shortvideo/pages/add',0,0)"
+					style="white-space: nowrap;display: inline-block;margin-left: 20rpx;vertical-align: -10rpx;">
+					<u-icon name="camera" color="#fff" size="26"></u-icon>
+				</view>
+				<view style="width: 150rpx;height: 10rpx;"></view>
+			</view>
+			<!-- #endif -->
+
+			
+
+			<block v-if="videoList.length>0&&videolist[videoindex]&&videolist[videoindex].member">
+				<swiper class="swiper" v-if="videoList.length>0" :style="{height:pageHeight+'px'}" :circular="circular"
+					:vertical="true" @change="onSwiperChange">
+					<swiper-item v-for="item in videoList" :key="item.id">
+						<video class="video" :style="{height:pageHeight+'px'}" :id="item.id" :ref="item.id"
+							:src="img(item.url)" :controls="false" :loop="true" :show-center-play-btn="false"
+							@tap="playpause" @play="onplay" @pause="onpause" @ended="playend" @error="onerror"></video>
+						<view v-if="!isplayst" class="coverbox" @tap.stop="playClick" :style="{height:pageHeight+'px'}">
+							<image :src="img(item.pic)" mode="widthFix" />
+						</view>
+					</swiper-item>
+				</swiper>
+
+				<!-- 
+					<view v-if="!isplayst" class="playbox" @tap.stop="playClick">
+						<image :src="img('addon/shortvideo/static/img/video_icon.png')" class="playbox-img" />
+					</view> -->
+
+
+				<view class="headimg">
+					<up-avatar :src="img(''+videolist[videoindex].member?.headimg)" class="headimg-img"
+						@click="tourl('./ta?member_id='+videolist[videoindex].member_id)" size="50"></up-avatar>
+
+					<image :src="img('addon/shortvideo/static/img/yiguan.png')" class="right-text-yiguan"
+						@tap.stop="toguanzhu" :data-uid="videolist[videoindex].member_id" :data-ind="ind"
+						:data-index="index" :data-isfollow="videolist[videoindex].isfollow"
+						v-if="videolist[videoindex].isfollow" mode="">
+					</image>
+					<text class="right-text-avater" @tap.stop="toguanzhu" v-else :data-ind="ind" :data-index="index"
+						:data-uid="videolist[videoindex].member_id"
+						:data-isfollow="videolist[videoindex].isfollow">+</text>
+
+
+				</view>
+
+
+				<view class="pingnum" @tap="commentClick">
+					<image :src="img('addon/shortvideo/static/img/xiaoxi.png')" class="pingnum-img" /><text
+						class="pingnum-txt">{{videolist[videoindex].pingnum||0}}</text>
+				</view>
+
+				<view class="likenum" @tap="dianzan">
+					<image v-if="videolist[videoindex].is_like"
+						:src="img('addon/shortvideo/static/img/shortvideo_like2.png')" class="xihuan"></image>
+					<image v-else :src="img('addon/shortvideo/static/img/shortvideo_like.png')" class="xihuan"></image>
+					<text class="likenum-txt">{{videolist[videoindex].like_num||0}}</text>
+				</view>
+
+				<view class="viewnum">
+					<image :src="img('/addon/shortvideo/static/img/shortvideo_view.png')" class="viewnum-img" /><text
+						class="viewnum-txt">{{videolist[videoindex].view_num}}</text>
+				</view>
+
+				<view class="fenxiangnum" @tap="showShareBtn=true">
+					<image :src="img('addon/shortvideo/static/img/share-fill.png')" class="fenxiangnum-img" />
+					<!-- <text class="fenxiangnum-txt">{{videolist[videoindex].share_num||0}}</text> -->
+				</view>
+				<view class="bottombox">
+					<view class="title"><text class="title-txt">@{{videolist[videoindex].member?.nickname}}</text>
+					</view>
+					<view class="desc"><text class="desc-txt">{{videolist[videoindex].name}}</text></view>
+
+
+					<view class="goodsbox flex" v-if="videolist.length>0&&videolist[videoindex].goods?.goods_id">
+						<image
+							:src="img(videolist[videoindex].goods.goods_cover||videolist[videoindex].goods.goods_image)">
+						</image>
+						<view class="right" style="flex:1;">
+							<view class="line2">{{videolist[videoindex].goods.goods_name}}</view>
+							<view class="flexb"
+								style="display: flex;flex-direction: row;justify-content: space-between;margin-top: 10rpx;">
+								<view style="color: #fb5c3a;font-size: 16px;font-weight: bold;">
+									￥{{videolist[videoindex].goods.sale_price}}</view>
+								<view class="buybtn"
+									@click="tourl('/addon/shop/pages/goods/detail?goods_id='+videolist[videoindex].goods.goods_id,0,0)">
+									<u-icon name="shopping-cart" color="#fff" size="20"></u-icon> 立即购买</view>
+							</view>
+						</view>
+					</view>
+
+				</view>
+			</block>
+			<view v-if="videoList.length==0" style="margin-top: 500rpx;color: #fff;" class="flexmc">
+				<view>暂无相关作品</view>
+			</view>
+
+
+
+
+
+
+			<up-popup class="haibaoModel" :show="showhaibao" v-if="showhaibao" mode="center" closeable
+				@close="haibaoModelClose">
+				<view class="haibaoModel-main">
+					<view class="haibaoModel-content">
+						<image class="haibaoModel-content-img" :src="haibaopic" mode="widthFix" @tap="previewImage"
+							:data-url="haibaopic"></image>
+					</view>
+				</view>
+			</up-popup>
+
+
+			<up-popup class="pingjiabox" :show="showcomment" v-if="showcomment"
+				:style="caidan > -1? 'bottom:110rpx':'bottom:0rpx'" closeable @close="commentClick">
+				<view style="padding:30rpx 3%">
+
+
+					<view class="pingjiabox_title"><text class="pingjiabox_title-t1">评论</text><text
+							class="pingjiabox_title-t2">({{videolist[videoindex].pingnum||0}})</text></view>
+					<scroll-view class="pingbox" scroll-y="true" @scrolltolower="getmorecomment">
+						<block v-for="(item, idx) in commentlist" :key="item.id">
+							<view class="pingitem">
+								<view class="pingitem-f1 flex0">
+									<up-avatar :src="img(item.headimg)" size="35" class="pingitem-f1-img"></up-avatar>
+								</view>
+								<view class="pingitem-f2 flex-col">
+									<view style="display:flex;justify-content: space-between;flex-direction: row;">
+										<text class="pingitem-f2-t1" style="flex:1">{{item.nickname}}</text>
+										<view class="pingitem-f2-pzan" @tap="pzan" :data-id="item.id" :data-index="idx"
+											style="display:flex;flex-direction: row;">
+											<up-icon name="thumb-up-fill" v-if="item.is_like==1" color="#fb4456"
+												size="23"></up-icon>
+											<up-icon name="thumb-up" v-else size="23"></up-icon>
+											<text class="pingitem-f2-pzan-txt">{{item.like_num}}</text>
+										</view>
+									</view>
+									<view class="pingitem-f2-t2 pingbox-plcontent">
+										{{item.content}}
+									</view>
+									<block v-if="item.replylist.length>0">
+										<view class="pingbox-relist">
+											<block v-for="(hfitem, index) in item.replylist" :key="index">
+												<view class="pingbox-relist-item2">
+													<view class="flex-row">
+														<up-avatar :src="img(hfitem.headimg)" size="25"
+															class="pingbox-relist-headimg"></up-avatar>
+														<text class="pingbox-relist-nickname">{{hfitem.nickname}}</text>
+													</view>
+													<view class="pingbox-relist-f2 " style="padding-left: 50rpx;">
+														{{hfitem.content}}
+														<view style="color:#999">{{hfitem.adddate}}</view>
+													</view>
+
+												</view>
+											</block>
+										</view>
+									</block>
+									<view class="pingitem-f2-t3">
+										<text class="pingitem-f2-t3-x1">{{item.adddate}}</text>
+										<view class="pingitem-f2-t3-x2" v-if="config&&config.open_ping==1"><text
+												class="pingitem-f2-phuifu" @tap="replyClick" :data-id="item.id"
+												:data-nickname="item.nickname">回复</text></view>
+
+									</view>
+								</view>
+							</view>
+						</block>
+						<view v-if="nomore"><text class="comment-nomore">无更多数据</text></view>
+						<view v-if="nodata"><text class="comment-nodata">暂无评论!</text></view>
+					</scroll-view>
+
+					<view style="height:100rpx"></view>
+					<view class="pingjiabox-replyshadow" v-if="hfid!=0" @tap.stop="replyshadowClick"></view>
+					<view class="pinglun" v-if="config&&config.open_ping==1">
+						<input @confirm="sendMessage" @focus="onInputFocus" @input="messageChange" class="pinglun-input"
+							confirmHold="true" confirmType="send" cursorSpacing="20" type="text" :value="message"
+							:placeholder="messageholder" />
+						<view class="pinglun-buybtn" @tap="sendcomment"><text class="pinglun-buybtn-txt">提交</text>
+						</view>
+					</view>
+				</view>
+			</up-popup>
+
+
+			<!-- <view class="footnav" v-if="!opt.tauid" style="border-top: none">
+				<view class="item active">
+					<image class="footimg" :src="img('addon/shortvideo/static/img/home.png')" mode=""></image>
+					<view class="foottext">短视频</view>
+				</view>
+				<view class="item addbox " v-if="config?.open_fabu==1" @click="tourl('/addon/shortvideo/pages/add',1,0)">
+					<view class="addbox">
+						<image class="addboximg" :src="img('addon/shortvideo/static/img/add.png')"></image>
+					</view>
+				</view>
+				<view class="item" @click="tourl('/addon/shortvideo/pages/my',1,0)" hover-class="none">
+					<image class="footimg" :src="img('addon/shortvideo/static/img/mineno.png')" mode=""></image>
+					<view class="foottext">我的</view>
+				</view>
+			</view> -->
+			
+			<!-- <view style=""床></view> -->
+
+			
+
+		</view>
+		<sharepopup :showshare="showShareBtn==true" :share-id="videolist[videoindex]?.id" :config="{}"
+			@hide="showShareBtn=false" />
+	</view>
+</template>
+<script>
+	import {
+		reactive,
+		ref,
+		onMounted
+	} from 'vue'
+	import {
+		onLoad
+	} from '@dcloudio/uni-app'
+	import {
+		t
+	} from '@/locale'
+	import {
+		redirect,
+		img
+	} from '@/utils/common';
+	import {
+		useShare
+	} from '@/hooks/useShare'
+	import {
+		lookimg,
+		tourl
+	} from '@/addon/shortvideo/utils/common';
+	import {
+		getVideolistApi,
+		addViewsApi,
+		videoLikeApi,
+		getvideoCommentlistApi,
+		tocommentApi,
+		commentLikeApi,
+		getConfigApi,
+		getcatelistApi,
+		tofollowuser
+	} from '@/addon/shortvideo/api/video'
+	import sharepopup from '@/addon/shortvideo/components/share-popup/share-popup.vue'
+	import indexlist from '@/addon/shortvideo/components/common/indexlist.vue'
+	var app = getApp();
+	export default {
+		components: {
+			sharepopup,indexlist
+		},
+		data() {
+			return {
+				tourl: tourl,
+				img: img,
+				opt: {},
+				loading: false,
+				isload: false,
+				caidan: -1,
+				nomore: false,
+				nodata: false,
+				platform: app.globalData.platform,
+				pre_url: app.globalData.pre_url,
+				gobacktopHeight: 40,
+
+				playst: true,
+				circular: true,
+				videoList: [{
+					id: "video0",
+					src: "",
+					img: ""
+				}, {
+					id: "video1",
+					src: "",
+					img: ""
+				}, {
+					id: "video2",
+					src: "",
+					img: ""
+				}],
+				videoindex: 0,
+				videolist: [],
+				proModelshow: true,
+				showfenxiang: false,
+				showhaibao: false,
+				haibaopic: "",
+				showcomment: false,
+				commentlist: [],
+				page: 1,
+				message: "",
+				trimMessage: "",
+				faceshow: false,
+				hfid: 0,
+				messageholder: '发表评论',
+				showproduct: false,
+				prolist: [],
+				isplay: false,
+				isplayst: true,
+
+				isalipay: false,
+				pageHeight: "",
+				statusBarHeight: 0,
+				catelist: [],
+				cate_id: 2,
+				showShareBtn: false,
+				config: '',
+				title: '',
+				loading: false,
+				loadend: false,
+				where: {
+					page: 1,
+					limit: 10,
+					keyword: '',
+				},
+				index_type:1
+			}
+		},
+		onLoad: function(opt) {
+			this.opt = this.getparams(opt);
+			uni.setNavigationBarColor({
+				frontColor: '#ffffff',
+				backgroundColor: '#ffffff'
+			})
+			this.getcate();
+			getConfigApi({}).then(res => {
+				this.config = res.data;
+			})
+		},
+		onReady() {
+			this.init();
+			this.reload(true);
+			var sysinfo = uni.getSystemInfoSync();
+			this.pageHeight = sysinfo.windowHeight;
+			this.statusBarHeight = uni.getSystemInfoSync().statusBarHeight
+
+			// #ifdef H5
+			this.gobacktopHeight = 20;
+			// #endif
+			if (uni.getSystemInfoSync().uniPlatform == 'mp-alipay' || uni.getSystemInfoSync().uniPlatform == 'mp-baidu') {
+				this.isalipay = true;
+			}
+		},
+		onShareAppMessage: function() {
+			return this._sharewx({
+				title: this.videolist[this.videoindex].name,
+				pic: this.videolist[this.videoindex].coverimg
+			});
+		},
+		onShareTimeline: function() {
+			var sharewxdata = this._sharewx({
+				title: this.videolist[this.videoindex].name,
+				pic: this.videolist[this.videoindex].coverimg
+			});
+			var query = (sharewxdata.path).split('?')[1];
+			return {
+				title: sharewxdata.title,
+				imageUrl: sharewxdata.imageUrl,
+				query: query
+			}
+		},
+		methods: {
+			getlist(isPage) {
+				var that = this;
+				if (that.loadend) return;
+				if (that.loading) return;
+			
+				that.loading = true;
+				that.loadTitle = '';
+				
+				this.where.is_follow= this.curcate==1?1:0;
+				getVideolistApi({
+					ismyguanzhu: that.cate_id == 1 ? 1 : 0,
+					id: this.opt.id || '',
+					tauid: this.opt.tauid || '',
+					page: this.where.page,
+					limit: this.where.limit
+				
+				}).then(res => {
+					console.log(res.data);
+					if (isPage === true) that.$set(that, 'videolist', []);
+					let list = res.data.videoList;
+					let lists = that.SplitArray(list, that.videolist);
+					let loadend = list.length < that.where.limit;
+					that.videolist = lists;
+					// that.total = res.data.list.total;
+					that.loadend = loadend;
+					that.loading = false;
+			
+					that.$set(that.where, 'page', that.where.page + 1);
+					// that.$refs.waterfallsFlowRef.refresh();
+					
+			 
+					// that.videolist = res.data.videoList;
+					that.isload = true;
+					
+					if (that.videolist.length > 0) {
+						that.title = that.videolist[that.videoindex].name;
+						that.desc = that.videolist[that.videoindex].desc;
+						that.pic = that.videolist[that.videoindex].cover;
+					
+						setTimeout(() => {
+							that.updateVideo(true);
+						}, 200)
+					} else {
+						this._videoContextList = [];
+						uni.createVideoContext(`video` + this._videoIndex).pause();
+						uni.createVideoContext(`video` + this._videoIndex).seek(0);
+						that.title = '';
+						that.desc = '';
+						that.pic = '';
+					}
+					console.log(that.videolist)
+				})
+			},
+			SplitArray(list, sp) {
+				if (typeof list != 'object') return [];
+				if (sp === undefined) sp = [];
+				for (var i = 0; i < list.length; i++) {
+					sp.push(list[i]);
+				}
+				return sp;
+			},
+			reload(isPage) {
+				if (isPage === true) {
+					this.loadend = false;
+					this.$set(this.where, 'page', 1);
+				}
+				this.getlist(isPage);
+			},
+			/* getdata(e) {
+				var that = this;
+				that.nomore = false;
+				that.loading = true;
+
+				getVideolistApi({
+					ismyguanzhu: that.cate_id == 1 ? 1 : 0,
+					id: this.opt.id || '',
+					tauid: this.opt.tauid || '',
+					page: 1,
+					limit: 100
+
+				}).then((res) => {
+					that.loading = false;
+					that.videolist = res.data.videoList;
+					that.isload = true;
+
+					if (that.videolist.length > 0) {
+						that.title = that.videolist[that.videoindex].name;
+						that.desc = that.videolist[that.videoindex].desc;
+						that.pic = that.videolist[that.videoindex].cover;
+
+						setTimeout(() => {
+							that.updateVideo(true);
+						}, 200)
+					} else {
+						this._videoContextList = [];
+						uni.createVideoContext(`video` + this._videoIndex).pause();
+						uni.createVideoContext(`video` + this._videoIndex).seek(0);
+						that.title = '';
+						that.desc = '';
+						that.pic = '';
+					}
+
+
+
+				});
+			}, */
+			getcate() {
+				var that = this;
+				that.catelist = [{
+					id: 5,
+					'name': '逛逛'
+				},{
+					id: 1,
+					'name': '关注'
+				}, {
+					id: 2,
+					name: '推荐'
+				}]
+				// getcatelistApi().then((res) => {
+				// 	that.catelist = res.data;
+				// });
+			},
+			changecate(cate_id) {
+				if (cate_id == 5) {
+					uni.navigateTo({
+						url:'/addon/shortvideo/pages/list'
+					})
+					return;
+				}
+				if (cate_id == 3) {
+					uni.showToast({
+						title: '即将上线, 敬请期待~',
+						icon: 'none'
+					});
+					return;
+				}
+				this.cate_id = cate_id;
+				this.videolist = [];
+				this.videoindex = 0;
+				this.reload(true);
+				// if(cate_id==5){
+				// 	this.index_type = 2;
+				// }
+			},
+			getparams: function(opt) {
+				if (opt && opt.scene) {
+					var scene = opt.scene
+					var scene2 = scene.split('-');
+					var opts = {};
+					for (var i in scene2) {
+						var a = scene2[i].split('_');
+						opts[a[0]] = a[1];
+					}
+					return opts;
+				} else {
+					return opt
+				}
+			},
+			init() {
+				this._videoIndex = 0;
+				this._videoContextList = [];
+				for (var i = 0; i < this.videoList.length; i++) {
+					this._videoContextList.push(uni.createVideoContext('video' + i, this));
+				}
+				this.videoindex = 0;
+			},
+
+			onSwiperChange(e) {
+				let currentIndex = e.detail.current;
+				if (currentIndex === this._videoIndex) {
+					return;
+				}
+				let isNext = false;
+				if (currentIndex === 0 && this._videoIndex === this.videoList.length - 1) {
+					isNext = true;
+				} else if (currentIndex === this.videoList.length - 1 && this._videoIndex === 0) {
+					isNext = false;
+				} else if (currentIndex > this._videoIndex) {
+					isNext = true;
+				}
+
+				if (isNext) {
+					this.videoindex++;
+				} else {
+					this.videoindex--;
+				}
+
+				if (this.videoindex < 0) {
+					this.videoindex = this.videolist.length - 1;
+				} else if (this.videoindex >= this.videolist.length) {
+					this.videoindex = 0;
+				}
+
+				this.circular = (this.videoindex != 0);
+
+				if (this._videoIndex >= 0) {
+					uni.createVideoContext(`video` + this._videoIndex).pause();
+					uni.createVideoContext(`video` + this._videoIndex).seek(0);
+				}
+
+				this._videoIndex = currentIndex;
+				setTimeout(() => {
+					this.updateVideo(isNext);
+				}, 200);
+
+				this.showcomment = false;
+				this.proModelshow = true;
+				addViewsApi({
+					id: this.videolist[this.videoindex].id
+				});
+				console.log(this.videoindex)
+				if(this.videoindex>=this.videoList.length-1){
+					this.reload()
+				}
+			},
+			getNextIndex(isNext) {
+				let index = this._videoIndex + (isNext ? 1 : -1);
+				if (index < 0) {
+					return this.videoList.length - 1;
+				} else if (index >= this.videoList.length) {
+					return 0;
+				}
+				return index;
+			},
+			getNextDataIndex(isNext) {
+				let index = this.videoindex + (isNext ? 1 : -1);
+				if (index < 0) {
+					return this.videolist.length - 1;
+				} else if (index >= this.videolist.length) {
+					return 0;
+				}
+				return index;
+			},
+			onerror(e) {
+				console.log(e)
+			},
+			onpause() {
+				var that = this;
+				// setTimeout(function(){
+				// 	that.isplay = false;
+				// 	that.isplayst = false;
+				// },500)
+				// uni.createVideoContext(`video` + this._videoIndex).pause();
+			},
+			onplay: function() {
+				this.isplay = true;
+				this.isplayst = true;
+			},
+			playClick: function() {
+				console.log(1)
+				this.isplay = true;
+				this.isplayst = true;
+				uni.createVideoContext(`video` + this._videoIndex).play();
+			},
+			playpause: function() {
+				if (this.playst) {
+					uni.createVideoContext(`video` + this._videoIndex).pause();
+				} else {
+					uni.createVideoContext(`video` + this._videoIndex).play();
+				}
+				this.playst = !this.playst;
+			},
+			updateVideo(isNext) {
+				this.$set(this.videoList[this._videoIndex], 'url', this.videolist[this.videoindex].url);
+				this.$set(this.videoList[this.getNextIndex(isNext)], 'url', this.videolist[this.getNextDataIndex(
+					isNext)].url);
+
+				this.isplay = false;
+				this.isplayst = true;
+				setTimeout(() => {
+					uni.createVideoContext(`video` + this._videoIndex).play()
+
+				}, 200);
+				setTimeout(() => {
+					if (this.isplay == false) this.isplayst = false;
+				}, 400)
+			},
+			proModelClose: function() {
+				this.proModelshow = false
+			},
+			dianzan: function() {
+				var that = this
+
+				videoLikeApi({
+					id: this.videolist[this.videoindex].id
+				}).then((res) => {
+					that.videolist[that.videoindex].is_like = res.data.is_like;
+					that.videolist[that.videoindex].like_num = res.data.like_num;
+				});
+			},
+			proboxClick: function() {
+				var that = this;
+				this.showproduct = !this.showproduct;
+				if (this.showproduct) {
+					this.getprolist();
+				}
+			},
+			playend: function(e) {
+				
+			},
+
+			commentClick: function() {
+				var that = this;
+				this.showcomment = !this.showcomment;
+				if (this.showcomment) {
+					this.getcommentlist();
+				}
+			},
+			getcommentlist: function(loadmore) {
+				var that = this;
+				if (!loadmore) {
+					this.page = 1;
+					this.commentlist = [];
+				}
+				that.nodata = false;
+				that.nomore = false;
+
+				getvideoCommentlistApi({
+					id: this.videolist[this.videoindex].id,
+					page: this.page
+				}).then((res) => {
+					var data = res.data.data;
+					if (that.page == 1) {
+						that.commentlist = data;
+						if (data.length == 0) {
+							that.nodata = true;
+						}
+					} else {
+						if (data.length == 0) {
+							that.nomore = true;
+						} else {
+							var commentlist = that.commentlist;
+							var newdata = commentlist.concat(data);
+							that.commentlist = newdata;
+						}
+					}
+				});
+			},
+			getmorecomment: function() {
+				this.page = this.page + 1;
+				if (!this.nomore && !this.nodata) {
+					this.getcommentlist(true);
+				}
+			},
+			replyClick: function(e) {
+				var id = e.currentTarget.dataset.id
+				this.message = '';
+				this.hfid = e.currentTarget.dataset.id;
+				this.messageholder = '回复 ' + e.currentTarget.dataset.nickname + '：';
+			},
+			replyshadowClick: function() {
+				this.hfid = 0;
+				this.message = '';
+				this.messageholder = '发表评论';
+			},
+			sendcomment: function() {
+				var that = this;
+				var message = this.message;
+				var hfid = this.hfid;
+				uni.showLoading({
+					title: '提交中'
+				});
+
+				tocommentApi({
+					id: this.videolist[this.videoindex].id,
+					hfid: hfid,
+					content: message
+				}).then((res) => {
+					uni.hideLoading();
+					uni.showToast({
+						title: res.data.msg,
+						icon: 'none'
+					});
+					if (res.data.status == 0) {
+
+					} else {
+						that.videolist[that.videoindex].pingnum = res.pingnum;
+						that.getcommentlist();
+						that.message = '';
+						that.hfid = 0;
+						that.messageholder = '发表评论';
+						that.faceshow = false;
+					}
+				});
+
+			},
+			pzan: function(e) {
+				var that = this;
+				var id = e.currentTarget.dataset.id;
+				var index = e.currentTarget.dataset.index;
+				var commentlist = that.commentlist;
+
+
+
+				commentLikeApi({
+					id: id
+				}).then((res) => {
+
+					if (res.data.type == 0) {
+						//取消点赞
+						var is_like = 0;
+					} else {
+						var is_like = 1;
+					}
+					commentlist[index].is_like = is_like;
+					commentlist[index].like_num = res.data.like_num;
+					that.commentlist = commentlist;
+				});
+			},
+			shareClick: function() {
+				this.showfenxiang = !this.showfenxiang;
+			},
+			handleClickMask: function() {
+				this.showfenxiang = false
+			},
+			toshowhaibao: function() {
+				var that = this;
+				that.showhaibao = true;
+				that.showfenxiang = false;
+				app.showLoading('生成海报中');
+
+
+				/* app.post('ApiShortvideo/gethaibao', {
+					id: this.videolist[this.videoindex].id
+				}, function(data) {
+					app.showLoading(false);
+					if (data.status == 0) {
+						app.alert(data.msg);
+					} else {
+						that.haibaopic = data.haibao;
+					}
+				}); */
+			},
+			haibaoModelClose: function() {
+				this.showhaibao = false;
+			},
+			toggleFaceBox: function() {
+				this.faceshow = !this.faceshow
+			},
+			onInputFocus: function(e) {
+				this.faceshow = false
+			},
+			messageChange: function(e) {
+				this.message = e.detail.value;
+				this.trimMessage = e.detail.value.trim();
+			},
+			sharemp: function() {
+				uni.showToast({
+					title: '点击右上角发送给好友或分享到朋友圈',
+					icon: 'none'
+				});
+				this.showfenxiang = false
+			},
+			//关注
+			toguanzhu(e) {
+				var that = this;
+				var {
+					index,
+					ind
+				} = e.currentTarget.dataset;
+				console.log('index', index);
+
+				var videolist = this.videolist;
+				var videoindex = this.videoindex;
+				var isfollow = videolist[videoindex].isfollow;
+				// console.log(index);
+				// console.log(videoList);
+				videolist[videoindex].isfollow = !isfollow;
+				// that.setData({
+				// 	videoList: videoList
+				// });
+				tofollowuser({
+					member_id: that.videolist[videoindex].member_id,
+					isfollow: !isfollow
+				}).then((res) => {
+					uni.showToast({
+						title: that.videolist[videoindex].isfollow ? '关注成功' : '取消成功',
+						icon: 'none',
+						duration: 1000
+					});
+				});
+
+			},
+			goback() {
+				const pages = getCurrentPages(); //判断跳转了多少页
+				if (pages.length === 2) {
+					uni.navigateBack({
+						delta: 1
+					});
+				} else if (pages.length === 1) { //如果没有上一页返回首页
+					uni.reLaunch({
+						url: '/addon/shortvideo/pages/index',
+					})
+				} else {
+					uni.navigateBack();
+				}
+			}
+		},
+		onPullDownRefresh() {
+			this.reload(true)
+			setTimeout(() => {
+				uni.stopPullDownRefresh()
+				//this.tui.toast("刷新成功");
+			}, 200);
+		},
+		onReachBottom() {
+			this.reload()
+		},
+	}
+</script>
+
+<style>
+	@import '@/addon/shortvideo/static/css/base.css';
+
+	.page {
+		background: #000;
+	}
+
+	/* #ifndef APP-PLUS */
+	.page {
+		width: 750rpx;
+		height: 100vh;
+		overflow: hidden;
+		position: relative;
+	}
+
+	/* #endif */
+	.page {
+		position: absolute;
+		width: 750rpx;
+		top: 0;
+		left: 0;
+		/* width: 750rpx; */
+	}
+
+	.swiper {
+		position: absolute;
+		width: 750rpx;
+		top: 0;
+		left: 0;
+	}
+
+	.video {
+		position: absolute;
+		width: 750rpx;
+		top: 0;
+		left: 0;
+	}
+
+	.coverbox {
+		position: absolute;
+		width: 750rpx;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+		display: flex;
+		;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.coverbox image {
+		width: 100%;
+		height: 100%;
+	}
+
+	.flex-row {
+		display: flex;
+		flex-direction: row
+	}
+
+	.goback {
+		position: absolute;
+		z-index: 4;
+		top: 40px;
+		left: 15px;
+		width: 30px;
+		height: 30px;
+		display: flex;
+		flex-direction: column;
+		align-items: center
+	}
+
+	.goback-img {
+		width: 30px;
+		height: 30px
+	}
+
+	.playbox {
+		position: absolute;
+		width: 750rpx;
+		height: 100%;
+		flex: 1;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 32
+	}
+
+	.playbox-img {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 90rpx;
+		height: 90rpx;
+		margin-left: -30rpx;
+		margin-top: -30rpx
+	}
+
+	.headimg {
+		position: absolute;
+		z-index: 4;
+		top: 360rpx;
+		right: 12rpx;
+		/* border: 4rpx solid #FFFFFF; */
+		margin-top: 80rpx;
+
+	}
+
+	.headimg-img {
+		width: 86rpx;
+		height: 86rpx;
+		border-radius: 50%;
+	}
+
+	.viewnum {
+		position: absolute;
+		z-index: 4;
+		top: 760rpx;
+		right: 20rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 90rpx;
+
+	}
+
+	.viewnum-img {
+		width: 82rpx;
+		height: 82rpx
+	}
+
+	.viewnum-txt {
+		font-size: 24rpx;
+		color: #fff;
+		text-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
+	}
+
+	.likenum {
+		position: absolute;
+		z-index: 4;
+		top: 500rpx;
+		right: 12rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 80rpx;
+	}
+
+	.xihuan {
+		width: 90rpx;
+		height: 90rpx
+	}
+
+	.likenum-txt {
+		font-size: 24rpx;
+		color: #fff;
+		text-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
+	}
+
+	.pingnum {
+		position: absolute;
+		z-index: 4;
+		top: 630rpx;
+		right: 20rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 100rpx;
+	}
+
+	.pingnum-img {
+		width: 71rpx;
+		height: 71rpx;
+	}
+
+	.pingnum-txt {
+		font-size: 24rpx;
+		color: #fff;
+		text-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
+	}
+
+	.fenxiangnum {
+		position: absolute;
+		z-index: 4;
+		top: 890rpx;
+		right: 23rpx;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 120rpx;
+	}
+
+	.fenxiangnum-img {
+		width: 65rpx;
+		height: 65rpx
+	}
+
+	.fenxiangnum-txt {
+		font-size: 24rpx;
+		color: #fff;
+		text-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
+	}
+
+	.linkurl {
+		position: absolute;
+		z-index: 4;
+		bottom: 160rpx;
+		right: 0;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		background: rgba(100, 100, 100, 0.5);
+		padding: 10rpx 0 10rpx 20rpx;
+		border-radius: 30rpx 0 0 30rpx
+	}
+
+	.linkurl-img {
+		width: 36rpx;
+		height: 36rpx
+	}
+
+	.linkurl-txt {
+		font-size: 26rpx;
+		color: #fff;
+	}
+
+	.bottomshadow {
+		position: absolute;
+		z-index: 4;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 400rpx;
+		background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%);
+		border-radius: 10px;
+	}
+
+	.cart {
+		position: absolute;
+		z-index: 5;
+		bottom: 40rpx;
+		right: 50rpx;
+		width: 88rpx;
+		height: 88rpx;
+		display: relative
+	}
+
+	.cart-img {
+		width: 88rpx;
+		height: 88rpx
+	}
+
+	.cart-txt {
+		position: absolute;
+		z-index: 5;
+		bottom: 6rpx;
+		color: #fff;
+		width: 88rpx;
+		text-align: center;
+		font-size: 28rpx;
+		font-weight: bold
+	}
+
+	.title {
+		/* position: absolute;
+		z-index: 3;
+		bottom: 160rpx;
+		left: 30rpx; */
+		width: 500rpx;
+		overflow: hidden;
+	}
+
+	.title-txt {
+		font-size: 36rpx;
+		color: #fff;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+		overflow: hidden;
+	}
+
+	.bottombox {
+		position: absolute;
+		z-index: 3;
+		bottom: 35rpx;
+		width: 650rpx;
+		left: 30rpx;
+		justify-content: flex-start;
+	}
+
+	.goodsbox {
+		display: flex;
+		flex-direction: row;
+		background: #fff;
+		padding: 15rpx;
+		border-radius: 10rpx;
+		width: 580rpx;
+		margin-top: 30rpx;
+	}
+
+	.goodsbox image {
+		width: 150rpx;
+		height: 140rpx;
+		margin-right: 15rpx;
+	}
+
+	.goodsbox {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.goodsbox .buybtn {
+		background: linear-gradient(to right, #ff8023 0, #ff4b50 100%) !important;
+		color: #fff;
+		padding: 5rpx 10rpx;
+		border-radius: 5rpx;
+		font-size: 12px;
+		display: flex;
+		;
+		align-items: center;
+		flex-direction: row;
+		width: 150rpx;
+		justify-content: center;
+	}
+
+	.goodsbox .right {
+		color: #000;
+		line-height: 36rpx;
+		font-size: 14px;
+	}
+
+	.desc {
+
+		width: 580rpx;
+		overflow: hidden;
+	}
+
+	.desc-txt {
+		font-size: 28rpx;
+		height: 88rpx;
+		line-height: 44rpx;
+		color: #fff;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+	}
+
+	.proModel {
+		width: 480rpx;
+		height: 190rpx;
+		position: absolute;
+		bottom: 120rpx;
+		right: 10rpx;
+		z-index: 10;
+		display: flex
+	}
+
+	.proModel-bgimg {
+		width: 480rpx;
+		height: 190rpx;
+	}
+
+	.proModel-content {
+		width: 470rpx;
+		display: flex;
+		flex-direction: row;
+		flex: 1;
+		padding: 20rpx;
+		position: relative;
+		position: absolute;
+		bottom: 24rpx;
+		right: 10rpx
+	}
+
+	.proModel-content-img {
+		width: 128rpx;
+		height: 128rpx;
+		border-radius: 10rpx;
+		flex-shrink: 0
+	}
+
+	.proModel-content-info {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding-left: 20rpx
+	}
+
+	.proModel-content-name {
+		color: #212121;
+		font-size: 28rpx;
+		height: 40rpx;
+		line-height: 40rpx;
+		font-weight: bold;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 1;
+		overflow: hidden;
+	}
+
+	.proModel-content-sales {
+		color: #999999;
+		font-size: 24rpx;
+		height: 40rpx;
+		line-height: 40rpx
+	}
+
+	.proModel-content-price {
+		color: #0067ff;
+		font-size: 28rpx;
+		font-weight: bold;
+		height: 50rpx;
+		line-height: 50rpx
+	}
+
+	.probox {
+		width: 750rpx;
+		height: 700rpx;
+		padding: 20rpx 20rpx;
+		background: #fff;
+		z-index: 6;
+		position: absolute
+	}
+
+	.probox-replyshadow {
+		position: absolute;
+		z-index: 7;
+		background: rgba(0, 0, 0, 0.4);
+		width: 750rpx;
+		flex: 1;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+	}
+
+	.probox-close {
+		position: absolute;
+		top: 10rpx;
+		right: 10rpx;
+		z-index: 7;
+		width: 50rpx;
+		height: 50rpx;
+		padding: 10rpx;
+	}
+
+	.probox_title {
+		height: 60rpx;
+		line-height: 60rpx;
+		margin-bottom: 20rpx;
+		display: flex;
+		flex-direction: row
+	}
+
+	.probox_title-t1 {
+		font-size: 28rpx;
+		color: #000;
+		font-weight: bold
+	}
+
+	.probox_title-t2 {
+		font-size: 28rpx;
+		color: #000;
+		font-weight: bold
+	}
+
+	.probox_content {
+		height: 580rpx;
+		overflow: scroll;
+		display: flex;
+	}
+
+	.probox_content-item {
+		display: flex;
+		flex-direction: row;
+		flex: 1;
+		padding: 20rpx;
+		position: relative
+	}
+
+	.probox_content-item-img {
+		width: 188rpx;
+		height: 188rpx;
+		border-radius: 10rpx;
+		flex-shrink: 0
+	}
+
+	.probox_content-item-info {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		padding-left: 20rpx
+	}
+
+	.probox_content-item-name {
+		color: #212121;
+		font-size: 28rpx;
+		height: 80rpx;
+		line-height: 40rpx;
+		font-weight: bold;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		overflow: hidden;
+	}
+
+	.probox_content-item-sales {
+		color: #999999;
+		font-size: 24rpx;
+		height: 50rpx;
+		line-height: 50rpx
+	}
+
+	.probox_content-item-price {
+		color: #0067ff;
+		font-size: 36rpx;
+		font-weight: bold;
+		height: 50rpx;
+		line-height: 50rpx
+	}
+
+	.probox_content-item-btn {
+		position: absolute;
+		top: 140rpx;
+		right: 20rpx;
+		background: linear-gradient(-90deg, #0067ff 0%, rgba(253, 74, 70, 0.76) 100%);
+		border-radius: 26px;
+		width: 150rpx;
+		height: 54rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center
+	}
+
+	.probox_content-item-btn-txt {
+		color: #FFFFFF;
+		font-size: 24rpx;
+		font-weight: bold;
+		text-align: center
+	}
+
+	.fenxiao_content {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 999;
+		width: 750rpx;
+		height: 280rpx;
+		padding: 20rpx 0;
+		background: #fff;
+		display: flex;
+	}
+
+	.popupshare__close2 {
+		position: absolute;
+		top: 10rpx;
+		right: 10rpx;
+		z-index: 1000;
+		width: 50rpx;
+		height: 50rpx;
+		padding: 10rpx;
+	}
+
+	.sharetypecontent {
+		flex: 1;
+		width: 710rpx;
+		height: 250rpx;
+		margin: 0 20rpx;
+		display: flex;
+		flex-direction: row;
+		padding: 50rpx;
+	}
+
+	.fenxiaoitem {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		background: #fff;
+		font-size: 24rpx;
+		border: 0
+	}
+
+	.sharetypecontent button::after {
+		border: 0
+	}
+
+	.fenxiaoitem-img {
+		width: 90rpx;
+		height: 90rpx;
+		padding: 0;
+		margin: 0
+	}
+
+	.fenxiaoitem-t1 {
+		font-size: 24rpx;
+		color: #111111;
+		height: 60rpx;
+		line-height: 60rpx
+	}
+
+	.sharetypecontent-f2 {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center
+	}
+
+	.sharetypecontent-f2-img {
+		width: 90rpx;
+		height: 90rpx;
+	}
+
+	.sharetypecontent-f2-t1 {
+		font-size: 24rpx;
+		color: #111111;
+		height: 60rpx;
+		line-height: 60rpx
+	}
+
+	.haibaoModel {
+		position: absolute;
+		z-index: 99;
+		width: 750rpx;
+		height: 1200rpx;
+		top: 100rpx;
+		left: 0
+	}
+
+	.haibaoModel-main {
+		width: 670rpx;
+		height: 1100rpx;
+		margin: 60rpx 40rpx 30rpx 40rpx;
+		background: #fff;
+		position: relative;
+		border-radius: 20rpx;
+		display: flex
+	}
+
+	.haibaoModel-close {
+		position: absolute;
+		padding: 20rpx;
+		top: 0;
+		right: 0;
+		z-index: 10;
+	}
+
+	.haibaoModel-img {
+		width: 40rpx;
+		height: 40rpx;
+	}
+
+	.haibaoModel-content {
+		flex: 1;
+		padding: 70rpx 20rpx 30rpx 20rpx;
+		color: #333;
+		font-size: 30rpx;
+		text-align: center;
+		display: flex
+	}
+
+	.haibaoModel-content-img {
+		flex: 1;
+	}
+
+	.proModel-close {
+		width: 36rpx;
+		height: 36rpx;
+		padding: 10rpx;
+		position: absolute;
+		top: 6rpx;
+		right: 14rpx;
+		z-index: 9
+	}
+
+
+	.pinglun {
+		width: 750rpx;
+		padding: 0 20rpx;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 100rpx;
+		background: #fff;
+		z-index: 8;
+		border-top: 1px solid #ccc;
+	}
+
+	.pinglun-faceicon {
+		width: 46rpx;
+		height: 46rpx;
+		margin-left: 10rpx;
+		margin-right: 18rpx
+	}
+
+	.pinglun-input {
+		flex: 1;
+		color: #000;
+		font-size: 32rpx;
+		padding: 0;
+		line-height: 100rpx
+	}
+
+	.pinglun-buybtn {
+		margin-left: 0.08rpx;
+		background: #0067ff;
+		height: 60rpx;
+		line-height: 60rpx;
+		padding: 0 30rpx;
+		border-radius: 6rpx
+	}
+
+	.pinglun-buybtn-txt {
+		color: #fff;
+		font-size: 28rpx;
+		height: 60rpx;
+		line-height: 60rpx;
+	}
+
+
+	.pingjiabox {
+		/* width: 750rpx;
+		height: 700rpx;
+		padding: 20rpx 20rpx;
+		background: #fff;
+		z-index: 6; */
+
+	}
+
+	.pingjiabox-replyshadow {
+		position: absolute;
+		z-index: 7;
+		background: rgba(0, 0, 0, 0.4);
+		width: 750rpx;
+		flex: 1;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+	}
+
+	.pingjiabox-close {
+		position: absolute;
+		top: 10rpx;
+		right: 10rpx;
+		z-index: 7;
+		width: 50rpx;
+		height: 50rpx;
+		padding: 10rpx;
+	}
+
+	.pingjiabox_title {
+		height: 60rpx;
+		line-height: 60rpx;
+		margin-bottom: 20rpx;
+		display: flex;
+		flex-direction: row
+	}
+
+	.pingjiabox_title-t1 {
+		font-size: 28rpx;
+		color: #000;
+		font-weight: bold
+	}
+
+	.pingjiabox_title-t2 {
+		font-size: 28rpx;
+		color: #000;
+		font-weight: bold
+	}
+
+	.pingbox {
+		height: 880rpx;
+		overflow: scroll;
+		display: flex;
+	}
+
+	.pingbox-plcontent {
+		display: flex;
+		flex-direction: row;
+		vertical-align: middle;
+		color: #111;
+		font-size: 14px;
+		line-height: 23px;
+	}
+
+	.pingitem {
+		flex: 1;
+		margin-bottom: 20rpx;
+		display: flex;
+		flex-direction: row
+	}
+
+	.pingitem-f1 {
+		width: 80rpx;
+	}
+
+	.pingitem-f1-img {
+		width: 60rpx;
+		height: 60rpx;
+		border-radius: 50%
+	}
+
+	.pingitem-f2 {
+		flex: 1
+	}
+
+	.pingitem-f2-t1 {
+		font-size: 28rpx
+	}
+
+	.pingitem-f2-t2 {
+		color: #000;
+		margin: 10rpx 0;
+		line-height: 50rpx;
+	}
+
+	.pingitem-f2-t3 {
+		display: flex;
+		flex-direction: row;
+		flex: 1
+	}
+
+	.pingitem-f2-t3-x1 {
+		color: #999;
+		font-size: 26rpx;
+	}
+
+	.pingitem-f2-t3-x2 {
+		flex: 1;
+		display: flex;
+		flex-direction: row;
+	}
+
+	.pingitem-f2-pzan {
+		display: flex;
+		flex-direction: row
+	}
+
+	.pingitem-f2-pzan-img {
+		width: 32rpx;
+		height: 32rpx;
+		margin-right: 10rpx
+	}
+
+	.pingitem-f2-pzan-txt {
+		font-size: 28rpx;
+		text-align: center;
+		display: block;
+		color: #666
+	}
+
+	.pingitem-f2-phuifu {
+		margin-left: 6px;
+		color: #507DAF;
+		font-size: 26rpx
+	}
+
+	.pingbox-relist {
+		flex: 1;
+		background: #f5f5f5;
+		padding: 20rpx 20rpx 10rpx 20rpx;
+		margin-bottom: 20rpx
+	}
+
+	.pingbox-relist-item2 {
+		font-size: 24rpx;
+		margin-bottom: 10rpx
+	}
+
+	.pingbox-relist-headimg {
+		width: 30rpx;
+		height: 30rpx;
+		border-radius: 15rpx;
+		margin-right: 8rpx
+	}
+
+	.pingbox-relist-nickname {
+		color: #333;
+		font-size: 24rpx
+	}
+
+	.pingbox-relist-f2 {
+		margin-top: 10rpx
+	}
+
+	.comment-nodata {
+		color: #666;
+		font-size: 26rpx
+	}
+
+	.comment-nomore {
+		flex: 1;
+		color: #999;
+		height: 60rpx;
+		line-height: 60rpx;
+		font-size: 26rpx;
+		text-align: center
+	}
+
+	@supports(bottom: env(safe-area-inset-bottom)) {
+		.dp-tabbar-bot {
+			padding-bottom: 0 !important;
+		}
+
+		.dp-tabbar-bar {
+			padding-bottom: 0 !important;
+		}
+	}
+</style>
+<style>
+	/* 自定义导航 */
+	.footnav {
+		position: fixed;
+		z-index: 1;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		height: 110rpx;
+		flex-direction: row;
+		background-color: rgba(0, 0, 0, 0.7);
+		opacity: 1;
+		box-shadow: 0px -7px 7px -7px #5E5E5E;
+	}
+
+	.footnav .item {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		color: #999;
+	}
+
+	.footnav .item.active {
+		color: #fff;
+	}
+
+	.footnav .item .footimg {
+		width: 74rpx;
+		height: 74rpx;
+		margin-top: -14rpx;
+	}
+
+	.footnav .item .foottext {
+		margin-top: -14rpx;
+		font-size: 14px;
+	}
+
+	.footnav .item .iconfont {
+		font-size: 22px;
+		color: #999;
+	}
+
+	.footnav .item .addbox {
+		width: 120rpx;
+		height: 120rpx;
+		border-radius: 50%;
+		margin-top: 0;
+		/* background-color: #161923; */
+		text-align: center;
+		line-height: 120rpx;
+		/* box-shadow: 0px -7px 7px -7px #5E5E5E; */
+	}
+
+	.footnav .item .addbox .addboximg {
+		width: 80rpx;
+		height: 80rpx;
+		margin: 16rpx;
+	}
+
+	.footnav .item.active .iconfont {
+		font-size: 22px;
+		color: #e73d3d;
+	}
+</style>
+
+<style>
+	.cover-view-top {
+		width: 450rpx;
+		top: 40rpx;
+		margin-left: 150rpx;
+		z-index: 99;
+		position: fixed;
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		padding: 10rpx;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		-webkit-flex-direction: row;
+		flex-direction: row;
+		color: #fff;
+	}
+
+	.toptext {
+		color: #fff;
+		font-weight: 600;
+		text-align: center;
+		font-size: 16px;
+		padding: 10rpx 0;
+		opacity: 1;
+		margin: 10rpx 30rpx;
+	}
+
+	.toptextbottom {
+		color: #fff;
+		opacity: 1;
+		border-bottom-style: solid;
+		border-bottom-width: 7rpx;
+		border-bottom-color: #fff;
+	}
+
+	.toptexton {
+		color: #fff;
+		font-weight: 600;
+		text-align: center;
+		font-size: 22px;
+		opacity: 1;
+		position: relative;
+	}
+
+	.toptexton:after {
+		position: absolute;
+		left: 33%;
+		top: 10px;
+		bottom: -14rpx;
+		right: 0;
+		height: 6rpx;
+		width: 46%;
+		background-color: #fff;
+	}
+
+	.cover-view-search {
+		width: 50rpx;
+		height: 50rpx;
+		color: #fff;
+		font-size: 18px;
+		position: absolute;
+		top: 7.5%;
+		right: 250rpx;
+	}
+
+	.right-text-avater {
+		position: absolute;
+		font-size: 22px;
+		top: 80rpx;
+		left: 27rpx;
+		height: 40rpx;
+		width: 40rpx;
+		background-color: #dd524d;
+		color: #fff;
+		border-radius: 50%;
+		text-align: center;
+		line-height: 34rpx;
+		z-index: 999;
+	}
+
+	.right-text-yiguan {
+		position: absolute;
+		font-size: 22px;
+		top: 80rpx;
+		left: 27rpx;
+		height: 40rpx;
+		width: 40rpx;
+		background-color: #fff;
+		color: #dd524d;
+		border-radius: 50%;
+		text-align: center;
+		line-height: 40rpx;
+		z-index: 999;
+	}
+
+	.cover-view-top-back {
+		position: absolute;
+		top: 60rpx;
+		left: 10rpx;
+		padding: 50rpx;
+	}
+
+	.cover-view-top-backimg {
+		width: 40rpx;
+		height: 40rpx;
+		z-index: 99;
+	}
+
+	.cover-view-top {
+		margin-left: 100rpx;
+	}
+</style>

@@ -1,0 +1,22 @@
+{
+      "goodsName":"房型名称",
+      "goodsNamePlaceholder":"请输入房型名称",
+      "goodsCover":"房型封面",
+      "sort":"排序",
+      "price":"房型价格",
+      "createTime":"添加时间",
+      "stock":"房间数量",
+      "status":"房型状态",
+      "up":"上架",
+      "down": "下架",
+      "addTourismGoods":"添加房型",
+      "tourismGoodsDeleteTips":"确定要删除该房型吗？",
+      "startDate": "开始时间",
+      "endDate": "结束时间",
+      "roomInfo": "房型信息",
+      "upPrompt": "确定要上架该房型吗？",
+      "downPrompt": "如果酒店还在上架，不允许全部下架",
+      "saleArrStartDatePlaceholder":"请选择开始时间",
+      "saleArrEndDatePlaceholder":"请选择结束时间",
+      "sortTips": "排序号格式输入错误"
+}

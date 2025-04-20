@@ -1,0 +1,13 @@
+{
+    "baseTitle": "基础设置",
+    "isEnable": "是否启用",
+    "are": "是",
+    "no": "否",
+    "teamLevel": "设置分红等级",
+    "fenxiaoLevel": "分销商等级",
+    "bonus": "分红比率",
+    "bonus_flat": "平级分红比率",
+    "setBonus": "设置分红比率",
+    "teamTips": "请输入大于等于0的数字",
+    "teamTipsNumericalRange": "请输入小于等于100的数字"
+}

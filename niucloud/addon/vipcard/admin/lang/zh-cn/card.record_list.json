@@ -1,0 +1,19 @@
+{
+	"memberInfo": "会员信息",
+	"cardInfo": "卡项信息",
+	"cardType": "卡项类型",
+	"cardTypePlaceholder": "请输入订单编号",
+	"goodsType": "商品类型",
+	"detail": "详情",
+	"orderNo": "订单编号",
+	"orderNoPlaceholder": "请输入订单编号",
+	"startDate": "开始时间",
+	"endDate": "结束时间",
+	"recordInfo": "记录详情",
+	"headimg": "会员头像",
+	"cardTotalNum": "卡项总次数",
+	"cardTotalUseNum": "使用次数",
+	"expireTime": "到期时间",
+	"statusPlaceholder": "请选择状态",
+	"useNum": "使用数量"
+}	

@@ -1,0 +1,17 @@
+{
+      "id":"ID",
+      "idPlaceholder":"请输入ID",
+      "memberId":"用户",
+      "memberIdPlaceholder":"全部",
+      "fxuserId":"上级推广员ID",
+      "fxuserIdPlaceholder":"请输入上级推广员ID",
+      "fxuserId2":"上上级推广员ID",
+      "fxuserId2Placeholder":"请输入上上级推广员ID",
+      "adddate":"绑定时间",
+      "adddatePlaceholder":"请输入绑定时间",
+      "addRelation":"添加推广关系",
+      "updateRelation":"编辑推广关系",
+      "relationDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

@@ -1,0 +1,74 @@
+.remove-border {
+  &::after {
+    border: none;
+  }
+}
+
+/******************** 商品列表 state **********************/
+.brand-tag {
+  position: relative;
+  top: -2rpx;
+  display: inline;
+  line-height: 38rpx;
+  padding: 4rpx 8rpx;
+  border-radius: 4rpx;
+  margin-right: 8rpx;
+  background: red;
+  vertical-align: middle;
+  font-size: 18rpx;
+  color: #fff;
+  border: 2rpx solid transparent;
+
+  &.middle {
+    padding: 4rpx 8rpx;
+    border-radius: 8rpx;
+    font-size: 20rpx;
+    margin-right: 6rpx;
+  }
+}
+
+.base-tag {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 34rpx;
+  font-size: 18rpx;
+  padding: 0 8rpx;
+  color: #333;
+  border-radius: 4rpx;
+  background-color: #fff;
+  margin-right: 8rpx;
+  box-sizing: border-box;
+  margin-top: 8rpx;
+  border: 2rpx solid transparent;
+
+  &.middle {
+    height: 40rpx;
+    padding: 0 12rpx;
+    border-radius: 8rpx;
+    font-size: 20rpx;
+    margin-right: 16rpx;
+  }
+}
+
+.img-tag {
+  display: block;
+  height: 34rpx;
+  width: auto;
+  border-radius: 4rpx;
+  margin-right: 14rpx;
+  box-sizing: border-box;
+  margin-top: 8rpx;
+
+  &.middle {
+    height: 38rpx;
+    border-radius: 8rpx;
+    margin-right: 16rpx;
+  }
+}
+
+/******************** 商品列表 end **********************/
+// 购物车按钮背景颜色
+.cart-btn-bg{
+	background: linear-gradient(127deg, var(--primary-help-color1) 0%, var(--primary-help-color5) 100%);
+}

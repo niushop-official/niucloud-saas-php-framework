@@ -1,0 +1,14 @@
+{
+    "reservedTechnician": "预约技师",
+    "reservedTime": "预约时间",
+    "reservedInfo": "预约信息",
+    "orderNo": "订单编号",
+    "createTime": "创建时间",
+    "mobile": "联系电话",
+    "sumTo": "共计",
+	"goodsNum": "个商品",
+	"cancelReserved": "取消预约",
+	"pay": "立即支付",
+	"remark": "买家留言",
+	"reserveStateName": "预约状态"
+}

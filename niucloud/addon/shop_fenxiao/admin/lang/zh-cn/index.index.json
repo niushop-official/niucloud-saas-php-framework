@@ -1,0 +1,22 @@
+{
+  "sumCommission":"可提现佣金（元）",
+  "sumCommissionTips":"所有分销订单已完成，佣金已结算，可以提现的佣金(不包含已提现的佣金)",
+  "sumCommissionGet":"累计结算佣金（元）",
+  "sumCommissionGetTips":"所有已经提现成功的佣金总和",
+  "sumCommissionCashOuting":"提现中佣金（元）",
+  "sumCommissionCashOutingTips":"已申请提现等待管理审核的佣金",
+  "unsettlementCommission":"待结算佣金（元）",
+  "unsettlementCommissionTips":"待结算佣金总和",
+  "fenxiaoOverview":"分销商概览",
+  "applyCount":"申请中 (人)",
+  "fenxiaoCount":"分销商 (人)",
+  "agentCount":"渠道代理 (人)",
+  "fenxiaoCommission":"分销佣金",
+  "commissionCount":"佣金总额（元）",
+  "sumFenxiaoCommission":"分销佣金（元）",
+  "sumTaskCommission":"任务奖励（元）",
+  "sumTeamCommission":"团队分红（元）",
+  "sumAgentCommission":"渠道代理（元）",
+  "sumSaleCommission":"销售奖励（元）",
+  "addFenxiaoNum":"新增分销商人数"
+}

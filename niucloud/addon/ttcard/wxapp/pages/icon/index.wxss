@@ -1,0 +1,10 @@
+page{
+  padding-top: 100rpx;
+}
+item.none{
+  display: none;
+}
+
+.cu-bar.fixed, .nav.fixed { 
+  box-shadow: unset;
+}

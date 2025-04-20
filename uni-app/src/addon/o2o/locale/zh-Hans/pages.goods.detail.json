@@ -1,0 +1,19 @@
+{
+    "selectNum":"人选择",
+    "selected":"已选",
+    "time":"次",
+    "noProjectInt":"暂无项目介绍",
+    "noPurchase":"暂无购买须知",
+    "noMore":"暂无更多数据",
+    "projectName":"项目名称",
+    "price":"价格",
+    "unit":"单位",
+    "noPriceList":"暂无价目表",
+    "index":"首页",
+	"share":"分享",
+    "service":"客服",
+    "bookNow":"立即预约",
+    "orderNow":"立即下单",
+    "delisted":"已下架",
+    "nothingMore":"没有更多内容啦~"
+}

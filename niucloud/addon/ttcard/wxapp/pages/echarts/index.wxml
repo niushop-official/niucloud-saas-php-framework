@@ -1,0 +1,84 @@
+<view>
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">数据统计</view>
+  </cu-custom>
+  
+<view style="padding-bottom:80rpx" wx:if="{{loginStatus}}">
+  <view class="flex column radius-30 margin-top-lg bg-white shadow-gray-light padding-lr padding-top-lg padding-bottom margin-lr ">
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>综合数据</view> 
+      <picker mode="date" bindchange='dateChange'>
+      <view class="text-gray flex align-center text-sm" ><text class="cuIcon-time margin-right-xs"></text> {{date}}<text class="cuIcon-unfold margin-left-xs"></text></view></picker>
+    </view>
+
+    <view class="flex justify-between margin-top">
+      <view class="cu-list grid col-4 no-border">
+        <view class="cu-item">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayViews}}</view>
+          <text>访问</text>
+        </view>
+        <view class="cu-item">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayShare}}</view>
+          <text>转发浏览</text>
+        </view>
+        <view class="cu-item">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayMessage}}</view>
+          <text>留言</text>
+        </view>
+        <view class="cu-item">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayEmail}}</view>
+          <text>点击邮箱</text>
+        </view>
+        <view class="cu-item margin-top-sm">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayWechat}}</view>
+          <text>复制微信号</text>
+        </view>
+        <view class="cu-item margin-top-sm">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayPresswechatcode}}</view>
+          <text>长按二维码</text>
+        </view>
+        <view class="cu-item margin-top-sm">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayImpression}}</view>
+          <text>点击印象</text>
+        </view>
+        <view class="cu-item margin-top-sm">
+          <view class="text-xxl flex justify-center text-black">{{todayStatistics.todayPhone}}</view>
+          <text>点击打电话</text>
+        </view>
+      </view> 
+
+
+
+    </view> 
+  </view>
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr ">
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>30天访问趋势</view> 
+    </view>  
+    <view class="container"> 
+      <ec-canvas id="views" canvas-id="mychart-bar" force-use-old-canvas="true"  ec="{{ viewsEc }}"></ec-canvas>
+    </view> 
+</view>
+
+
+<view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr ">
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>30天打电话趋势</view> 
+    </view>  
+    <view class="container"> 
+      <ec-canvas id="callme" force-use-old-canvas="true"  canvas-id="mychart-bar" ec="{{ callMeEc }}"></ec-canvas>
+    </view> 
+</view>
+
+
+</view>
+
+
+
+
+<view class="emptyBox" wx:if="{{!loginStatus}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+</view>

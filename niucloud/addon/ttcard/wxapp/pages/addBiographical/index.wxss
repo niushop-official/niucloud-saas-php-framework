@@ -1,0 +1,54 @@
+/* pages/addRecruit/index.wxss */
+page{
+	background: #ffffff; 
+}
+editor{
+height: 600rpx!important
+}
+.avatarBox {
+  width: 140rpx!important;
+  height: 140rpx!important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 52rpx;
+}
+.cu-form-group .title {
+  min-width: calc(4em + 120rpx);
+}
+::placeholder{
+  font-size: 32rpx!important;
+}
+.title,textarea{
+  font-size: 32rpx!important;
+  color: #000000;
+}
+.cu-form-group input { 
+  font-size: 32rpx;
+  color: #000000;
+  padding-right: 0;
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+input{
+  color:#000000
+}
+
+.m-t{
+  margin-top:7rpx;
+}
+switch{
+  padding: 26rpx 0; 
+}
+.cu-form-group picker .picker {
+  line-height:unset; 
+}
+.cu-form-group picker::after { 
+  line-height: unset; 
+}
+
+.cu-form-group picker .picker { 
+  font-size: 32rpx; 
+  text-align: left;
+}

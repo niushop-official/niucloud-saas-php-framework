@@ -1,0 +1,22 @@
+{
+      "id":"ID",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "fromUserId":"发送者用户",
+      "fromUserIdPlaceholder":"全部",
+      "toUserId":"接收者用户",
+      "toUserIdPlaceholder":"全部",
+      "recruitId":"招聘",
+      "recruitIdPlaceholder":"全部",
+      "biographicalId":"简历",
+      "biographicalIdPlaceholder":"全部",
+      "viewStatus":"招聘者是否查看",
+      "viewStatusPlaceholder":"请输入招聘者是否查看",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addBiographicaldelive":"添加简历投递",
+      "updateBiographicaldelive":"编辑简历投递",
+      "biographicaldeliveDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

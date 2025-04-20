@@ -1,0 +1,18 @@
+{
+      "id":"ID",
+      "title":"标题",
+      "titlePlaceholder":"请输入标题",
+      "type":"背景图类型",
+      "typePlaceholder":"请输入背景图类型",
+      "image":"背景图",
+      "imagePlaceholder":"请输入背景图",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "addCardbackground":"添加背景图",
+      "updateCardbackground":"编辑背景图",
+      "cardbackgroundDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

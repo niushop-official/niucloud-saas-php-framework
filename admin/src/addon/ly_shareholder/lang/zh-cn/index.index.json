@@ -1,0 +1,19 @@
+{
+  "sumCommission":"总分红（元）",
+  "sumCommissionTips":"所有已结算，已发放可以提现的分红金额(不包含已提现的分红金额)",
+  "sumCommissionGet":"已提现分红（元）",
+  "sumCommissionGetTips":"所有已经提现成功的分红总和",
+  "sumCommissionCashOuting":"提现中分红（元）",
+  "sumCommissionCashOutingTips":"已申请提现等待管理审核的分红金额",
+  "unsettlementCommission":"待结算分红（元）",
+  "unsettlementCommissionTips":"待结算分红总和",
+  "fenxiaoOverview":"股东概览",
+  "applyCount":"申请中 (人)",
+  "fenxiaoCount":"股东 (人)",
+  "blackShareholderCount":"冻结股东 (人)",
+  "fenxiaoCommission":"股东佣金",
+  "commissionCount":"佣金总额（元）",
+  "sumFenxiaoCommission":"股东佣金（元）",
+  "addFenxiaoNum":"新增股东人数",
+  "monthShareholderCount":"新增股东(本月)"
+}

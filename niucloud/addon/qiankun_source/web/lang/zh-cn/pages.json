@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "qiankun_source": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

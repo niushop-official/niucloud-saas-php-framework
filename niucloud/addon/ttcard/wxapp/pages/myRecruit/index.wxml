@@ -1,0 +1,97 @@
+<scroll-view scroll-y class="scrollPage" bindscrolltolower='isonReachBottom'>
+  <view style="padding-bottom:100px">
+    <view class="fixed top-0 w--100 bg-white" style="height:{{CustomBar}}px;z-index:9999;">
+      <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+        <view class="relative align-center flex flex-1">
+          <view class="cu-bar bg-white search " style="box-shadow:none">
+            <view class="cuIcon-back margin-left-sm" bind:tap="goback"></view>
+            <view class="search-form round" style="height:{{Height}}px">
+              <text class="cuIcon-search"></text>
+              <input type="text" value="{{searchValue}}" placeholder="搜索职位" confirm-type="search" bindinput="searchV" bindconfirm='search'></input>
+            </view>
+            <view class="flex align-center text-black" bindtap="showModal" style="margin-right:{{Width}}px;">
+              <text class="text-bold">{{industryName}}</text>
+              <view class="text-xl "><text class="cuIcon-triangledownfill margin-right" style="font-size: 60rpx;"></text></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view style="margin-top:{{CustomBar+25}}px;">
+      <view class="margin-top-lg margin-lr " wx:key="{{list.length>0}}">
+        <view class="flex column">
+          <view class="p-item flex column  shadow-gray-light margin-bottom hidden flex-1  padding-top padding-bottom-lg padding-lr radius-30" wx:for="{{list}}" wx:key="index">
+            <view class="flex column w--100">
+              <view class="flex column" bind:tap="goRecruitDetail" data-id="{{item.id}}">
+                <view class="flex align-center justify-between margin-top-xs">
+                  <view class="text-lg text-bold text-cut">{{item.title || ''}}</view>
+                  <view class="text-red text-xl flex align-center text-ABC">
+                    {{item.month_salary}}
+                  </view>
+                </view>
+                <view class=" text-df align-center margin-top-sm" wx:if="{{item.recruit_status == 0}}">
+                   <text class="cu-tag round bg-red light">已暂停招聘</text> 
+                </view>
+                <view class=" text-df align-center margin-top-sm">
+                  {{item.city}} <text class="opacity-03 margin-lr-xs">|</text> {{item.position}}
+                  <text class="opacity-03 margin-lr-xs"> | </text> {{item.type_status == 1 ? '全职' :'兼职'}}
+                </view>
+                <view class="flex align-center margin-top-xs">
+                  <view class="text-df text-gray text-cut-2">{{item.content}}</view>
+                </view>
+                <view class="flex align-center margin-top-xs flex-wrap">
+                  <view class="margin-top-sm margin-right-sm padding-lr-sm padding-tb-xs text-sm bg-orange light round" wx:for="{{item.tags}}" wx:key="i">{{item}}</view>
+                </view>
+              </view>
+              <view class="flex solid-top margin-top padding-top align-center justify-between margin-top-sm" wx:if="{{item.website}}">
+                <view class="flex align-center" bind:tap="goWebsite" data-index='{{index}}'>
+                  <view class="cu-avatar sm round " style="background-image:url({{item.website.logo}});"></view>
+                  <text class="margin-left-sm text-df">{{item.website.name}}</text>
+                </view>
+                <button class="cu-btn round bg-gradual-orange shadow-orange" bind:tap="phone" data-index='{{index}}'>电话咨询</button>
+              </view>
+            </view>
+            <view class="flex solid-top margin-top justify-between padding-top align-center text-gray"wx:if="{{source == 'my'}}">
+              <view hover-class="none" bind:tap="goEditRecruit" data-recruitid='{{item.id}}' class="flex-1 text-center"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+              <view class="solid-left text-center flex-1" bind:tap="goDeleteRecruit" data-recruitid='{{item.id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view>
+            </view>
+          </view>
+
+
+
+        </view>
+      </view>
+    </view>
+
+    <view class="emptyBox" wx:if="{{list.length == 0}}">
+      <image src="../../images/empty.png" />
+      <view class="text text-gray">~ 暂无相关内容 ~</view>
+    </view>
+
+    <view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{source == 'my'}}">
+      <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddRecruit"><text class="cuIcon-roundaddfill"></text> 创建招聘</view>
+    </view>
+
+    <view class="HyBoxModel" style="opacity: {{HyBoxModel ? '.5' : 0}};visibility: {{HyBoxModel?'':'hidden'}}" bindtap="hideModal"></view>
+    <view class="fixed bg-white w--100 HyBox {{HyboxShow ? 'showHyBox' : ''}}" style="top:{{CustomBar}}px;">
+      <scroll-view scroll-y>
+        <view class="flex padding-lr flex-wrap" style="padding-bottom:280rpx">
+          <view class="flex w--50 hyItemBox" wx:for="{{industry}}" wx:key='index'>
+            <view class="margin-top radius padding redius  text-center flex-1 hyItem {{checkIndustryId == item.id ? 'bg-orange light' : 'bg-white solid'}}" bind:tap="checkIndustry" data-id='{{item.id}}' data-name='{{item.name}}'>
+              <view>{{item.name}}</view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class=" absolute flex bg-white bottom-0 w--100">
+        <view class="padding-tb-sm text-lg text-bold text-center bg-orange  flex-1 round lg margin-tb-lg padding-lr margin-left margin-right-xs relative" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);" bindtap="goSearch">确定</view>
+        <view class="padding-tb-sm text-lg text-bold text-center bg-white shadow-gray-light flex-1 round lg margin-tb-lg padding-lr margin-right margin-left-xs relative" bindtap="hideModal">重置</view>
+      </view>
+    </view>
+
+
+
+  </view>
+</scroll-view>

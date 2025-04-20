@@ -1,0 +1,13 @@
+{
+    "uploadProof":"上传凭证",
+    "optional":"选填",
+    "description":"补充描述",
+    "descriptionPlaceholder":"补充描述,有助于更好的处理售后问题",
+    "refundReason":"退款原因",
+    "refundMoney":"退款金额",
+    "confirm":"确定",
+    "placeholder":"请选择",
+    "moreInputMoney":"最多可输入金额￥",
+    "submit":"提交",
+    "nothingMore":"没有更多内容啦~"
+}

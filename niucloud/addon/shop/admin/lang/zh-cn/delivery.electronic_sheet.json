@@ -1,0 +1,17 @@
+{
+  "tabESTemplate": "电子面单模板",
+  "tabESConfig": "设置",
+  "templateName": "模板名称",
+  "templateNamePlaceholder": "请输入模板名称",
+  "expressCompany": "物流公司",
+  "expressCompanyPlaceholder": "请选择物流公司",
+  "status": "状态",
+  "statusOn": "开启",
+  "statusOff": "关闭",
+  "addElectronicSheet": "添加电子面单",
+  "payType": "邮费支付方式",
+  "isDefault": "默认",
+  "setDefault": "设为默认",
+  "electronicSheetDeleteTips": "确定要删除该数据吗？",
+  "electronicSheetSetDefaultTips": "确定要设置为默认模版吗？"
+}

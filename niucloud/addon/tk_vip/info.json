@@ -1,0 +1,11 @@
+{
+  "title": "会员权益",
+  "desc": "超多会员权益、灵活搭配运营",
+  "key": "tk_vip",
+  "version": "0.1.6",
+  "author": "TK",
+  "type": "addon",
+  "support_app": "",
+  "compile":[],
+  "support_version": "1.0.0"
+}

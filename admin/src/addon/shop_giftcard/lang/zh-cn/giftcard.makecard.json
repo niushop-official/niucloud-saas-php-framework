@@ -1,0 +1,19 @@
+{
+  "makeCardWay": "制卡方式",
+  "cardRightType": "权益类型",
+  "totalCount": "在线/导入总数量",
+  "successCount": "成功数量",
+  "failCount": "失败数量",
+  "failRemark": "失败原因",
+  "createTime": "制卡时间",
+  "status": "状态",
+  "addCard": "添加卡密",
+  "cardDeleteTips": "确定要删除该数据吗？",
+  "exportAction": "导出",
+
+  "importLog": "导入记录",
+  "importErrorLog": "导入失败记录",
+  "number": "序号",
+  "fileName": "文件名",
+  "download": "下载"
+}

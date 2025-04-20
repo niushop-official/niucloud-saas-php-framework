@@ -1,0 +1,10 @@
+{
+    "orderNo": "订单号",
+    "actualPayment": "实付款",
+    "orderClose": "关闭订单",
+    "orderFinish": "确认收货",
+    "coupon":"优惠劵",
+    "emptyAddress": "暂无收货地址，请先创建地址",
+    "addAddress": "新增收货地址",
+    "selectAddress": "选择地址"
+}

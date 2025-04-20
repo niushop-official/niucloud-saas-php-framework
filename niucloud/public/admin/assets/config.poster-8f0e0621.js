@@ -1,0 +1,1 @@
+const t="海报设置",o="宣传语",s="邀您一起分享赚佣金",e="分销海报图",n="分销中心分销海报图片，建议尺寸720x1280像素",r="推广规则设置",p="点击设置",c={posterEdit:t,shareContent:o,shareContentPlaceholder:s,posterBg:e,posterBgTip:n,promotionSettings:r,settings:p};export{c as default,e as posterBg,n as posterBgTip,t as posterEdit,r as promotionSettings,p as settings,o as shareContent,s as shareContentPlaceholder};

@@ -1,0 +1,350 @@
+<?php
+return [
+    [
+        "name" => "分销模板", // 海报模板名称
+        'type' => 'fenxiao', // 海报类型
+        "data" => [
+            "global" => [
+                "bgType" => "url",
+                "bgColor" => "#ffffff",
+                "bgUrl" => "addon/shop_fenxiao/poster/fenxiao_1.jpg",
+                "width" => 720,
+                "height" => 1280
+            ],
+            "value" => [
+                [
+                    "id" => "2rlojy3o60i0",
+                    "componentName" => "Qrcode",
+                    "componentTitle" => "二维码",
+                    "type" => "qrcode",
+                    "path" => "qrcode",
+                    "uses" => 1,
+                    "relate" => "url",
+                    "value" => "",
+                    "width" => 152,
+                    "height" => 152,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 74,
+                    "y" => 1054,
+                    "angle" => 0,
+                    "zIndex" => 1
+                ],
+                [
+                    "id" => "6o17udv6t840",
+                    "componentName" => "HeadImg",
+                    "componentTitle" => "头像",
+                    "type" => "image",
+                    "path" => "headimg",
+                    "uses" => 1,
+                    "relate" => "headimg",
+                    "value" => "",
+                    "width" => 100,
+                    "height" => 100,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 256,
+                    "y" => 1054,
+                    "angle" => 0,
+                    "zIndex" => 2,
+                    "imgWidth" => "",
+                    "imgHeight" => "",
+                    "shape" => "circle"
+                ],
+                [
+                    "id" => "305haruphgq0",
+                    "componentName" => "NickName",
+                    "componentTitle" => "昵称",
+                    "type" => "text",
+                    "path" => "nickname",
+                    "uses" => 1,
+                    "relate" => "nickname",
+                    "value" => "",
+                    "width" => 226,
+                    "height" => 60,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 380,
+                    "y" => 1040,
+                    "angle" => 0,
+                    "zIndex" => 3,
+                    "fontFamily" => "",
+                    "fontSize" => 32,
+                    "weight" => false,
+                    "space" => 0,
+                    "lineHeight" => 28,
+                    "fontColor" => "#303133"
+                ]
+            ]
+        ]
+    ],
+    [
+        "name" => "分销商品模板", // 海报模板名称
+        'type' => 'fenxiao_goods', // 海报类型
+        "data" => [
+            "global" => [
+                "bgType" => "color",
+                "bgColor" => "#ffffff",
+                "bgUrl" => "",
+                "width" => 720,
+                "height" => 1280
+            ],
+            "value" => [
+                [
+                    "id" => "hhat8kfzcog",
+                    "componentName" => "Draw",
+                    "componentTitle" => "绘画",
+                    "type" => "draw",
+                    "path" => "draw",
+                    "uses" => 0,
+                    "relate" => "",
+                    "value" => "",
+                    "width" => 720,
+                    "height" => 130,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 0,
+                    "y" => 0,
+                    "angle" => 0,
+                    "zIndex" => 1,
+                    "draw_type" => "Polygon",
+                    "points" => [
+                        [
+                            0,
+                            0
+                        ],
+                        [
+                            720,
+                            0
+                        ],
+                        [
+                            720,
+                            130
+                        ],
+                        [
+                            0,
+                            130
+                        ]
+                    ],
+                    "bgColor" => "#eeeeee",
+                    "drawType" => "Polygon"
+                ],
+                [
+                    "id" => "6o17udv6t840",
+                    "componentName" => "HeadImg",
+                    "componentTitle" => "头像",
+                    "type" => "image",
+                    "path" => "headimg",
+                    "uses" => 1,
+                    "relate" => "headimg",
+                    "value" => "",
+                    "width" => 100,
+                    "height" => 100,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 20,
+                    "y" => 20,
+                    "angle" => 0,
+                    "zIndex" => 2,
+                    "imgWidth" => "",
+                    "imgHeight" => "",
+                    "shape" => "circle"
+                ],
+                [
+                    "id" => "305haruphgq0",
+                    "componentName" => "NickName",
+                    "componentTitle" => "昵称",
+                    "type" => "text",
+                    "path" => "nickname",
+                    "uses" => 1,
+                    "relate" => "nickname",
+                    "value" => "",
+                    "width" => 510,
+                    "height" => 60,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 150,
+                    "y" => 20,
+                    "angle" => 0,
+                    "zIndex" => 3,
+                    "fontFamily" => "",
+                    "fontSize" => 40,
+                    "weight" => false,
+                    "space" => 0,
+                    "lineHeight" => 10,
+                    "fontColor" => "#303133"
+                ],
+                [
+                    "id" => "2v1nc497xhc0",
+                    "componentName" => "GoodsImage",
+                    "componentTitle" => "商品图片",
+                    "type" => "image",
+                    "path" => "goods-image",
+                    "uses" => 1,
+                    "relate" => "goods_img",
+                    "value" => "",
+                    "width" => 720,
+                    "height" => 720,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 00,
+                    "y" => 130,
+                    "angle" => 0,
+                    "zIndex" => 4
+                ],
+                [
+                    "id" => "29f3czpuw134",
+                    "componentName" => "GoodsName",
+                    "componentTitle" => "商品名称",
+                    "type" => "text",
+                    "path" => "goods-name",
+                    "uses" => 1,
+                    "relate" => "goods_name",
+                    "value" => "",
+                    "width" => 640,
+                    "height" => 85,
+                    "minWidth" => 120,
+                    "minHeight" => 44,
+                    "x" => 20,
+                    "y" => 880,
+                    "angle" => 0,
+                    "zIndex" => 5,
+                    "fontFamily" => "",
+                    "fontSize" => 40,
+                    "weight" => false,
+                    "space" => 0,
+                    "lineHeight" => 1,
+                    "fontColor" => "#303133"
+                ],
+                [
+                    "id" => "2vmf9ovhene0",
+                    "componentName" => "GoodsPrice",
+                    "componentTitle" => "销售价",
+                    "type" => "text",
+                    "path" => "goods-price",
+                    "uses" => 1,
+                    "relate" => "goods_price",
+                    "value" => "",
+                    "width" => 330,
+                    "height" => 60,
+                    "minWidth" => 120,
+                    "minHeight" => 44,
+                    "x" => 20,
+                    "y" => 980,
+                    "angle" => 0,
+                    "zIndex" => 6,
+                    "fontFamily" => "static/font/price.ttf",
+                    "fontSize" => 44,
+                    "weight" => false,
+                    "space" => 0,
+                    "lineHeight" => 0,
+                    "fontColor" => "#E4163F"
+                ],
+                [
+                    "id" => "2vef9ovhene9",
+                    "componentName" => "GoodsMarketPrice",
+                    "componentTitle" => "划线价",
+                    "type" => "text",
+                    'path' => "goods-market-price",
+                    "uses" => 1,
+                    'relate' => 'goods_market_price',
+                    "value" => "",
+                    "width" => 330,
+                    "height" => 54,
+                    "minWidth" => 120,
+                    "minHeight" => 44,
+                    "x" => 20,
+                    "y" => 1080,
+                    "angle" => 0,
+                    "zIndex" => 7,
+                    "fontFamily" => "static/font/price.ttf",
+                    "fontSize" => 32,
+                    "weight" => false,
+                    "space" => 0,
+                    "lineHeight" => 0,
+                    "fontColor" => "#999999"
+                ],
+                [
+                    "id" => "2rlojy3o60i0",
+                    "componentName" => "Qrcode",
+                    "componentTitle" => "二维码",
+                    "type" => "qrcode",
+                    "path" => "qrcode",
+                    "uses" => 1,
+                    "relate" => "url",
+                    "value" => "",
+                    "width" => 200,
+                    "height" => 200,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 480,
+                    "y" => 980,
+                    "angle" => 0,
+                    "zIndex" => 8
+                ],
+                [
+                    "id" => "7a18udv7t950",
+                    "componentName" => "draw",
+                    "componentTitle" => "绘画",
+                    "type" => "draw",
+                    "path" => "draw",
+                    "uses" => 1,
+                    "relate" => "draw",
+                    "value" => "",
+                    "width" => 720,
+                    "height" => 70,
+                    "minWidth" => 60,
+                    "minHeight" => 60,
+                    "x" => 0,
+                    "y" => 1206,
+                    "angle" => 0,
+                    "zIndex" => 9,
+                    "drawType" => "Polygon",
+                    "bgColor" => "#eeeeee",
+                    "points" => [
+                        [
+                            0,
+                            1206
+                        ],
+                        [
+                            720,
+                            1206
+                        ],
+                        [
+                            720,
+                            1280
+                        ],
+                        [
+                            0,
+                            1280
+                        ]
+                    ]
+                ],
+                [
+                    "id" => "6hlj5l3as0w0",
+                    "componentName" => "Text",
+                    "componentTitle" => "文本",
+                    "type" => "text",
+                    "path" => "text",
+                    "uses" => 0,
+                    "relate" => "",
+                    "value" => "长按识别图中的二维码查看商品详情",
+                    "width" => 512,
+                    "height" => 48,
+                    "minWidth" => 120,
+                    "minHeight" => 44,
+                    "x" => 110,
+                    "y" => 1230,
+                    "angle" => 0,
+                    "zIndex" => 10,
+                    "fontFamily" => "",
+                    "fontSize" => 32,
+                    "weight" => false,
+                    "space" => 0,
+                    "lineHeight" => 0,
+                    "fontColor" => "#666666"
+                ],
+            ]
+        ]
+    ]
+];

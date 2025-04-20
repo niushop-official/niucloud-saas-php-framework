@@ -1,0 +1,172 @@
+<scroll-view scroll-y class="scrollPage">
+<view style="padding-bottom:80rpx">
+  <cu-custom bgColor="bg-white" isBack="{{false}}">
+    <view slot="content" class="text-lg text-bold text-black">我的</view>
+  </cu-custom>
+ 
+
+  <view class="margin-lr margin-top-lg flex align-center jsutify-between">
+    <view class="flex align-center flex-1">
+      <view bindtap="goLogin" class="cu-avatar solids margin-lr-xs xl round" wx:if="{{!loginStatus}}"><text class="cuIcon-my"></text></view>
+      <view class="cu-avatar solids margin-lr-xs xl round" style="background-image:url({{userInfo.avatar}});" wx:if="{{loginStatus && userInfo.avatar}}"></view> 
+      <view class="cu-avatar solids margin-lr-xs xl round"  wx:if="{{loginStatus && !userInfo.avatar}}"><text class="cuIcon-my"></text></view>
+      <view class="margin-left-sm flex column">
+        <view class="flex align-center">
+        <view class="flex column" bindtap="goLogin"  wx:if="{{!loginStatus}}">
+          <text class=" text-bold text-xl ">登录 / 注册</text>
+          <text class="text-gray margin-top-xs  text-sm">登录后可享更多服务~</text>
+        </view>
+        <text class=" text-bold text-xl" wx:if="{{loginStatus}}">{{userInfo.nickname}}</text> 
+        </view>
+        <view class="flex margin-top-xs" wx:if="{{config.vip_switch == 1 && loginStatus && wechat_auditing == 0}}"> 
+          <view class="vipBox v-tag flex align-center  padding-lr-xs" wx:if="{{userInfo.ordertype_id != 3}}"><image src="/images/vip_icon.png" class="v-icon"/><text class="text-xs  vipTitle text-ABC ">{{userInfo.ordertype_name}}</text></view>
+          <view class="bg-gray v-tag flex align-center  padding-lr-xs" wx:else>
+            <image   src="/images/vip_icon.png" class="v-icon no-hy"/><text class="text-xs text-gray"> {{userInfo.ordertype_name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view bind:tap="goEditUserInfo" hover-class="none" class="text-xl margin-right-xs" ><text class="cuIcon-settingsfill lg text-gray"></text></view>
+  </view>  
+  <view class="flex bgimg justify-between shadow-gray-light radius-30 padding-lg relative padding-tb-xl margin-lr margin-top-lg vipBox_1" wx:if="{{wechat_auditing == 0 && config.vip_switch == 1}}">
+    <view class="flex column text-lg justify-center">
+      <view class="flex align-center">
+        <image src="/images/vip_icon.png" class="v-icon margin-right-xs"/>
+        <text class="text-bold vipTitle text-ABC">{{userInfo.ordertype_name || '未开通会员'}}</text>
+      </view>
+      <view class="text-sm c613C14 opacity-06  margin-top-xs">
+      <text wx:if="{{userInfo.grade_status == 'hidden'}}">试用期已结束，开通会员享更多服务 ~</text> 
+      <block wx:elif="{{userInfo.grade_status == 'normal' }}">
+        <text wx:if="{{userInfo.ordertype_id != 7 && userInfo.ordertype_id != 11}}">到期时间：{{userInfo.expirationtime}} ~</text> 
+        <text wx:if="{{userInfo.ordertype_id == 7}}">尊贵的VIP永久会员，不限时使用 ~</text> 
+        <text wx:if="{{userInfo.ordertype_id == 11}}">尊贵的SVIP永久会员，不限时使用 ~</text>  
+      </block>
+      <text wx:else>立即开通会员享更多服务 ~</text> 
+      </view>
+    </view>
+    <view class="tagItem padding-lr  round flex align-center justify-center vipBox c613C14" bind:tap="goVipProduct" data-type='{{userInfo.ordertype_id != 11 && userInfo.grade_status == "normal" ? "upgrade":""}}' wx:if="{{userInfo.ordertype_id != 11}}">
+      <text class="text-bold vipTitle">{{userInfo.grade_status == 'normal' ? '升级会员' :'开通会员'}}</text>
+    </view>
+    <view class="absolute right-0 top-0 margin-top-lg margin-right" wx:else bind:tap="goVipProduct">
+      <image src="/images/svip.png" style="width: 140rpx;height:120rpx"/>
+    </view>
+  </view> 
+  <view class="padding-tb-lg flex text-center text-grey bg-white margin-top shadow-gray-light margin-lr radius-30" bindtap="goEcharts">
+    <view class="flex flex-sub flex-direction">
+      <view class="text-xxl text-orange">{{today}}</view>
+      <view class="margin-top-sm text-gray">
+        今日访问</view>
+    </view>
+    <view class="flex flex-sub flex-direction">
+      <view class="text-xxl text-red">{{week}}</view>
+      <view class="margin-top-sm text-gray">
+        本周访问</view>
+    </view>
+    <view class="flex flex-sub flex-direction">
+      <view class="text-xxl text-cyan">{{month}}</view>
+      <view class="margin-top-sm text-gray"> 本月访问</view>
+    </view>  
+  </view>
+  
+  <view class="flex margin-lr margin-top">  
+    <view class="flex column flex-1">
+      <view class="flex">
+        <view class="bg-white padding-lr-xl radius-30 shadow-gray-light flex align-center justify-center column block-nav" bind:tap="goCardholder">  
+          <view class="myIcon"><text class="cuIcon-newsfill text-orange  "></text></view>
+          <text class="text-bold text-black text-df">名片</text>
+        </view>
+        <view class="bg-white flex-1 radius-30 shadow-gray-light padding-tb flex align-center justify-center column margin-left-sm block-nav" bind:tap="goWebsiteList">  
+          <view class="myIcon"><text class="cuIcon-choicenessfill text-blue"></text></view>
+          <text class="text-bold text-black text-df">微官网</text>
+        </view> 
+        <view class="bg-white flex-1 radius-30 shadow-gray-light padding-tb flex align-center justify-center column margin-left-sm block-nav" bind:tap="goCaseList">  
+          <view class="myIcon"><text class="cuIcon-appreciatefill text-pink"></text></view>
+          <text class="text-bold text-black text-df">成功案例</text>
+        </view>
+        <view class="bg-white flex-1 radius-30 shadow-gray-light padding-tb flex align-center justify-center column margin-left-sm block-nav" bind:tap="goImages">  
+          <view class="myIcon"><text class="cuIcon-picfill text-cyan"></text></view>
+          <text class="text-bold text-black text-df">个人相册</text>
+        </view> 
+      </view>
+      <view class="margin-top-sm flex">
+        <view class="bg-white flex-1 radius-30 shadow-gray-light padding-tb flex align-center justify-center column block-nav" bind:tap="goProductList">  
+          <view class="myIcon"><text class="cuIcon-goodsnewfill text-red"></text></view>
+          <text class="text-bold text-black text-df">热销产品</text>
+        </view> 
+        <view class="bg-white flex-1 margin-left-sm radius-30 shadow-gray-light padding-tb flex align-center justify-center column block-nav" bind:tap="goProgramme">  
+          <view class="myIcon"><text class="cuIcon-creativefill text-orange"></text></view>
+          <text class="text-bold text-black text-df">解决方案</text>
+        </view>
+        <view class="bg-white flex-1 margin-left-sm radius-30 shadow-gray-light padding-tb flex align-center justify-center column block-nav" bind:tap="goNews">  
+          <view class="myIcon"><text class="cuIcon-formfill text-blue"></text></view>
+          <text class="text-bold text-black text-df">资讯</text>
+        </view>
+        <view class="bg-white flex-1 margin-left-sm radius-30 shadow-gray-light padding-tb flex align-center justify-center column block-nav" bind:tap="goMyRecruit" wx:if="{{wechat_auditing == 0 && config.recruit_switch == 1}}">  
+          <view class="myIcon"><text class="cuIcon-friendaddfill text-pink"></text></view>
+          <text class="text-bold text-black text-df">招聘</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+ 
+
+  <view class="cu-list menu card-menu margin-top shadow-lg radius shadow-gray-light padding-lr">
+    <view class="cu-item arrow" bindtap="goCardholder"  data-index='2'>
+      <button class="cu-btn content flex"  >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-favorfill text-orange"></text></view> 
+        <text class="text-black text-lg">我的收藏</text>
+      </button>
+    </view>  
+    <view class="cu-item arrow" bind:tap="goMyOrder" wx:if="{{wechat_auditing == 0}}">
+      <button class="cu-btn content flex"  >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-cartfill text-red"></text></view> 
+        <text class="text-black text-lg">我的订单</text>
+      </button>
+    </view>  
+    <view class="cu-item arrow" bind:tap="goMyMessage">
+      <button class="cu-btn content flex"  >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-formfill text-blue"></text></view> 
+        <text class="text-black text-lg">我的消息</text>
+      </button>
+    </view>   
+    <view class="cu-item arrow" bind:tap="goMyBiographical" wx:if="{{wechat_auditing == 0 && config.recruit_switch == 1}}">
+      <button class="cu-btn content flex"  >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-newshotfill text-pink"></text></view> 
+        <text class="text-black text-lg">我的简历</text>
+      </button>
+    </view>  
+  </view>
+ 
+  <view class="cu-list margin-top menu card-menu shadow-lg radius shadow-gray-light padding-lr">   
+    <view class="cu-item arrow" bind:tap="goAuthentication" wx:if="{{config.authentication_switch ==1  && wechat_auditing == 0}}">
+      <button class="cu-btn content flex"  >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-profilefill text-cyan"></text></view> 
+        <text class="text-black text-lg">身份认证</text>
+      </button>
+    </view> 
+    <view class="cu-item arrow">
+      <button open-type="contact" class="cu-btn content flex"  >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-servicefill text-blue" style="color:#59ADF8"></text></view> 
+        <text class="text-black text-lg">联系客服</text>
+      </button>
+    </view> 
+    <navigator url="/pages/help/index" hover-class="none" class="cu-item arrow">
+      <button class="cu-btn content flex" >
+        <view class="margin-right-sm text-xl"><text class="cuIcon-creativefill text-orange"></text></view>  
+        <text class="text-black text-lg">使用帮助</text>
+      </button>
+    </navigator>
+    <view bind:tap="goSubmitMsg" class="cu-item arrow">
+      <button class="content cu-btn flex">
+        <view class="margin-right-sm text-xl"><text class="cuIcon-writefill text-cyan"></text></view>   
+        <text class="text-black text-lg">意见反馈</text>
+      </button>
+    </view>
+  </view>
+  <copyright></copyright>
+  </view>
+</scroll-view>
+
+ 

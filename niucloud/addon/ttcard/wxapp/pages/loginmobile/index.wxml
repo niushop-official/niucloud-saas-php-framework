@@ -1,0 +1,30 @@
+<cu-custom bgColor="" isBack="{{true}}">
+  <view slot="content" class="text-lg text-bold text-black"></view>
+</cu-custom>  
+<view class="fixed top-0 left-0 w--100 h--100 flex align-center">
+  <view class="margin-lr-lg flex-1 ">
+    <view class="column flex align-center" style="margin-top:-100rpx"> 
+      <view class="text-xxl text-bold margin-top-sm">登录 / 注册</view>
+      <view class="margin-top-xs text-xxl text-orange opacity-06">——</view>
+      <view class="text-gray margin-top-xs">~ 欢迎使用名片生成系统 ~</view>
+    </view>
+    <view class="hidden flex align-center justify-between bg-white shadow-gray-light round" style="margin-top:60px">
+      <view class="margin-left-lg  text-xxl"><text class="cuIcon-mobile text-gray margin-right-sm"></text></view>
+      <input type="text"  placeholder-style="color:#aaaaaa"  bind:input='getPhone' class="flex-1 flex text-black" placeholder="输入手机号" />
+      <view class="padding-lr-sm light text-center align-center bg-orange radius" bind:tap="{{smsStatus?'' :'sendCode'}}" style="width: 200rpx;height:116rpx;line-height:116rpx; ">{{smsText}}</view>
+    </view>
+    <view class="hidden flex align-center justify-between bg-white shadow-gray-light round margin-top-lg"style="height:116rpx;line-height:116rpx; ">
+      <view class="margin-left-lg  text-xxl"><text class="cuIcon-command text-gray margin-right-sm"></text></view>
+      <input type="text" placeholder-style="color:#aaaaaa" bind:input='getSms' class=" flex flex-1  text-black" placeholder="输入验证码" />
+    </view>
+    <view style="margin-top:60px">
+      <view class="padding-tb text-xl text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="login">登录 / 注册</view>
+    </view>
+  </view>
+</view>
+
+
+    
+<view class="vipBox_1 a1"></view>
+<view class="vipBox_1 a2"></view>
+<view class="vipBox_1 a3"></view>

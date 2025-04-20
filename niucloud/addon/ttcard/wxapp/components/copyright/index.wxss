@@ -1,0 +1,28 @@
+page{
+	background: #ffffff; 
+}
+.ekal{width:100%!important;height:300rpx!important;} 
+.cu-form-group .title {
+  min-width: calc(4em + 50rpx);
+}
+::placeholder{
+  font-size: 32rpx!important;
+}
+.title,textarea{
+  font-size: 32rpx!important;
+  color: #000000;
+}
+.cu-form-group input { 
+  font-size: 32rpx;
+  color: #000000;
+  padding-right: 0;
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+input{
+  color:#000000
+}
+.m-t{
+  margin-top:7rpx;
+}

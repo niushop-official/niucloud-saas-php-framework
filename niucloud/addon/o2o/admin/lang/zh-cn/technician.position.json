@@ -1,0 +1,15 @@
+{
+    "addPosition":"添加岗位",
+    "updatePosition":"编辑岗位",
+    "positionNamePlaceholder":"请输入岗位名称",
+    "positionName":"岗位名称",
+    "remark":"备注",
+    "remarkPlaceholder":"请输入备注",
+    "createTime":"创建时间",
+    "emptyData":"暂无数据",
+    "edit":"编辑",
+	"operation":"操作",
+	"status":"状态",
+	"search":"搜索",
+	"reset":"重置"
+}

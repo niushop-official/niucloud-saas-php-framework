@@ -1,0 +1,115 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:200rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black"></view>
+  </cu-custom>
+
+
+  <view class="flex column bg-white shadow-gray-light padding-xl" >
+    <view class="text-lg text-black flex justify-center">
+      <view class="cu-avatar round" style="background-image:url({{detail.avatar}});width:200rpx;min-width: 200rpx;height:200rpx"><text class="cuIcon-pic" wx:if="{{!detail.avatar}}"></text></view> 
+    </view>
+    <view class='text-xl text-black flex justify-center text-bold margin-top-sm'>{{detail.name || '无名氏'}}</view>
+    <view class="text-center margin-xs text-gray">
+    
+      {{detail.gender_status? '男' :'女'}}  
+      <text wx:if="{{detail.age}}"><text class="opacity-03 margin-lr-xs">|</text> {{detail.age}}岁 </text> 
+      <text wx:if="{{detail.unemployed_status == 1}}"><text class="opacity-03 margin-lr-xs">|</text> 待业</text>
+    </view> 
+    <view class="flex margin-top justify-center margin-top-xs" wx:if="{{tabCur == 2}}">
+      <view class="bg-gradual-orange round padding-lr-xl padding-tb-sm orange-shadow flex align-center" bind:tap="goRecruitDetail" data-recruitid='{{detail.recruit.id}}'> 
+      <text class="text-bold ">查看应聘职位详情</text>
+      <text class="cuIcon-pullright margin-left-sm" style="font-size:60rpx"></text></view>
+    </view>
+    <view class="flex justify-between margin-top-xs" wx:if="{{tabCur != 2}}">
+      <view class="flex flex-1 margin-right-sm">
+        <view class="tagItem flex-1  padding-lr-xl padding-tb-sm bg-orange round justify-center margin-top-lg websiteBox flex align-center  bg-orange  shadow-orange" bind:tap="phone">
+          <view class="text-xl"><text class="cuIcon-dianhua text-white"></text></view>
+          <text class="text-bold margin-left-xs">联系{{detail.gender_status? '他' :'她'}}</text>
+        </view>
+      </view>
+      <view class="flex flex-1 margin-left-sm">
+        <view class="tagItem flex-1 padding-lr-xl padding-tb-sm bg-orange round justify-center margin-top-lg websiteBox flex align-center  bg-cyan shadow-cyan-light" bind:tap="copyText" data-type='wechat_num'>
+          <view class="text-xl"><text class="cuIcon-weixin text-white"></text></view>
+          <text class="text-bold margin-left-xs">加微信</text>
+        </view>
+      </view> 
+      </view>
+  </view>
+ 
+  <view class="flex radius-24 margin-top-lg bg-white shadow-gray-light column padding-lr text-black padding-tb-lg margin-lr">
+    <view wx:if="{{detail.position}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>应聘 <text class="text-bold">{{detail.position}} </text> 岗位
+    </view>
+    <view class="margin-top" wx:if="{{detail.working}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>工作经验 <text class="text-bold">{{detail.working}} </text>
+    </view>
+    <view class="margin-top" wx:if="{{detail.expected}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>期望工资 <text class="text-bold text-ABC">{{detail.expected}} </text>
+    </view>
+    <view class="margin-top" wx:if="{{detail.type_status}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>应聘类型 <text class="text-bold text-ABC">{{detail.type_status == 1 ? '全职' :'兼职'}} </text>
+    </view>
+    <view class="margin-top" wx:if="{{detail.education}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>学历 <text class="text-bold text-ABC">{{detail.education}} </text>
+    </view>
+    <view class="margin-top" wx:if="{{detail.city}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>期望工作城市 <text class="text-bold text-ABC">{{detail.city}} </text>
+    </view>
+    <view class="margin-top" wx:if="{{detail.city}}">
+      <text class="margin-right-xs cuIcon-title text-orange"></text>最快到岗时间 <text class="text-bold text-ABC">{{detail.reporttime}} </text>
+    </view>
+    <view class="margin-top flex align-center justify-between" wx:if="{{detail.email}}" bind:tap="copyText" data-type='email'>
+      <view>
+        <text class="margin-right-xs cuIcon-title text-orange"></text>邮箱 <text class="text-bold text-ABC">{{detail.email}} </text>
+      </view>
+      <text class="cuIcon-copy text-gray"></text>
+    </view>
+     
+  </view>
+
+  <view class="flex column radius-24 margin-top-lg bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr ">
+    <view class="text-lg text-black column flex ">
+      <view class="text-bold "><text class="cuIcon-titles lg text-orange margin-right-xs"></text>个人优势</view>
+      <view class="margin-top-lg">
+      <rich-text nodes="{{detail.advantage_content}}"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="flex column radius-24 margin-top-lg bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr ">
+    <view class="text-lg text-black column flex ">
+      <view class="text-bold "><text class="cuIcon-titles lg text-orange margin-right-xs"></text>工作经历</view>
+      <view class="margin-top-lg">
+      <rich-text nodes="{{detail.experience_content}}"/>
+      </view>
+    </view>
+  </view>
+
+  <view class="flex column radius-24 margin-top-lg bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr ">
+    <view class="text-lg text-black column flex ">
+      <view class="text-bold "><text class="cuIcon-titles lg text-orange margin-right-xs"></text>教育经历</view>
+      <view class="margin-top-lg">
+      <rich-text nodes="{{detail.learning_content}}"/>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="flex column radius-24 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr "wx:if="{{detail.certificate_images.length>0}}"> 
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>资质证书</view> 
+    </view>
+<view class="cu-card dynamic margin-top">
+  <view class="cu-item" style="margin: 0;"> 
+    <view class="grid flex-sub col-3  grid-square">
+      <view class="bg-img" bindtap="ViewImage" data-url="{{detail.certificate_images[index]}}"  style="background-image:url({{item}});" wx:for="{{detail.certificate_images}}"  wx:key="index">
+      </view>
+    </view> 
+  </view>
+</view>
+  </view>
+
+
+</view>
+</scroll-view>

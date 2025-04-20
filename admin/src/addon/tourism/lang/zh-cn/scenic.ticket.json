@@ -1,0 +1,15 @@
+{		
+	  "addTicket": "添加门票",
+      "ticketName":"门票名称",
+      "scenicNamePlaceholder":"请输入门票名称",
+      "createTime":"添加时间",
+      "createTimePlaceholder":"请输入添加时间",
+	  "ticketPrice": "门票价格",
+	  "ticketStock": "门票数",
+	  "up": "上架",
+	  "down": "下架",
+	  "status": "状态",
+	  "startDate":"开始时间",
+	  "endDate":"结束时间",
+	  "tourismScenicDeleteTips":"确定要删除该门票吗?"
+	}

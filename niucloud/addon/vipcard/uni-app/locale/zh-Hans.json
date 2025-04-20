@@ -1,0 +1,14 @@
+{
+    "pages.verify.index": "核销",
+    "pages.verify.record": "核销记录",
+    "pages.verify.detail": "核销详情",
+    "pages.order.payment": "订单结算",
+    "pages.order.list": "订单列表",
+    "pages.order.my_reserved": "我的预约",
+    "pages.order.my_reserved_detail": "我的预约详情",
+    "pages.order.my_card": "我的卡项",
+    "pages.order.detail": "订单详情",
+    "pages.service.list": "项目列表",
+    "pages.card.list": "卡项列表",
+    "pages.card.detail": "卡项详情"
+}

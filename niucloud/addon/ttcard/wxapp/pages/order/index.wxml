@@ -1,0 +1,62 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:120px">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">我的订单</view>
+  </cu-custom>
+
+  <view class="cu-bar bg-white search fixed" style="top:{{CustomBar}}px;">
+    <scroll-view scroll-x class="bg-white nav">
+      <view class="flex text-center">
+        <view class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}" wx:for="{{nav}}" wx:key='index' bindtap="tabSelect" data-index="{{index}}">
+          {{item}}
+        </view>
+      </view>
+    </scroll-view>
+</view>
+
+
+  <view class="margin-lr" style="margin-top:calc({{CustomBar+10}}px )" >
+  
+    <view  class="p-item padding flex column  shadow-gray-light margin-bottom radius-30 hidden" wx:for="{{list}}" wx:key="index" bind:tap="goDetail" data-index='{{index}}'>
+      <view class="flex align-center justify-between">
+        <text class="text-df"> <text class="cuIcon-time"></text> {{item.createtime}}</text>
+        <view class="text-cyan" wx:if="{{item.pay_status == 1}}">已支付</view>
+        <view class="text-orange" wx:if="{{item.pay_status == 2}}">待支付</view>
+        <view class="text-gray" wx:if="{{item.pay_status == 3}}">已关闭</view>
+        <view class="text-red" wx:if="{{item.pay_status == 4}}">售后中</view>
+      </view>
+      <view class="solid-top margin-top padding-top">
+        <view class="align-center hidden flex">
+          <view class="cu-avatar xl radius-12" style="background-image:url({{item.product.images}});width: 140rpx;min-width: 140rpx;height:140rpx"><text class="cuIcon-pic" wx:if="{{!item.product.images}}"></text></view> 
+          <view class="flex column margin-left flex-1 hidden">
+            <view class='text-lg text-cut-1 text-black text-bold  hidden'>{{item.product.title || item.ordertype.name}}</view> 
+            <view class="flex justify-between align-center margin-top-xs flex-1"> 
+            <view class="flex align-center ">
+              <text class="text-price text-red  text-xl">{{item.product.price || item.ordertype.price}}</text>
+              <text class="text-delete margin-left-sm text-gray text-price text-sm" wx:if="{{item.product.originalprice}}">{{item.product.originalprice}}</text>
+            </view> 
+            <text class="text-gray">× {{item.buy_num}}</text>
+          </view>  
+        
+          <view class="margin-top-xs"  wx:if="{{item.pay_status == 2}}">
+            <view class="text-xs bg-gradual-red text-center radius-30" style="width: 124rpx;padding:6rpx 0" bind:tap="gopay" data-index='{{index}}'>立即支付</view>
+          </view>
+          </view>
+        </view>
+      </view>
+      <view class="padding-top">
+        <view class="flex align-center justify-between">
+          <text class="text-gray text-sm">订单号：{{item.order_num}}</text>  
+        </view>
+      </view>
+    </view> 
+  </view>
+ 
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+</view>
+</scroll-view>
+

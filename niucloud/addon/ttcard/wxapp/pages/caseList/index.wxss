@@ -1,0 +1,14 @@
+/* pages/productList/index.wxss */
+
+page{
+	background: #ffffff; 
+}
+.Image{
+  height:400rpx;
+  overflow:hidden;
+  display: flex;
+  align-items: center;
+}
+.p-item:first-child{
+  margin-top:0
+}

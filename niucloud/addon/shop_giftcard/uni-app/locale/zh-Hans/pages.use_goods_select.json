@@ -1,0 +1,18 @@
+{
+	"pageTips":"以下商品存在已售罄或已下架的商品，请耐心等待卖家备货",
+	"goodsTitle":"请在以下商品中任选",
+	"goodsTitleAnd":"件商品",
+	"goodsTitleTwo":"请兑换以下商品",
+	"cardGoodsTypeAllTips":"最多可选",
+	"cardGoodsTypeAllTipsAnd":"件 已兑换",
+	"unit":"件",
+	"goodsSellOut":"该商品已售罄",
+	"goodsRemove":"该商品已下架",
+	"cardBag":"卡包",
+	"confirmExchange":"确认兑换",
+	"used":"已使用",
+	"invalid":"已失效",
+	"notCard":"礼品卡不存在",
+	"saveTipsOne":"请选择需要兑换的商品",
+	"saveTipsTwo":"该礼品卡必须全部提货"
+}

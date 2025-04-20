@@ -1,0 +1,67 @@
+<view >
+  <view style="padding-bottom:80rpx">
+    
+  <cu-custom isBack='{{true}}' bgColor="bg-white"><view slot="content" class="text-bold text-black text-lgbg-white">{{sub.subtype == 'editProgramme' ? '编辑解决方案' : '添加解决方案'}}</view></cu-custom>
+
+    <view class="flex margin-lr shadow-gray-light column margin-top-lg radius-30 bg-white hidden padding-tb-sm" >  
+      <view class="cu-form-group padding-top margin-lr text-lg relative">
+        <view class="flex align-center" bind:tap='goWebsiteList' >
+          <view class="title flex text-black">绑定微官网</view>
+          <input placeholder="请绑定微官网" disabled value='{{websiteName}}' class="text-black"></input>
+        </view>
+        <view class='cuIcon-questionfill tipsBox margin-left text-gray' bind:tap="showTips" data-type="wgw"></view>
+      </view>   
+    </view>
+    <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden padding-tb-sm">
+      <view class="cu-form-group margin-lr text-lg ">
+        <view class="title flex text-black">图标<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="flex flex-1 align-center" bind:tap="goIcon">
+          <text class="cuIcon-{{select_icon}} {{color_status == 'light'? 'opacity-06' :'opacity-1' }}" style="font-size:100rpx;color:{{selectIndex || selectIndex == 0 ? colorList[selectIndex].color:''}}"></text>
+          <input placeholder="{{select_icon ?'':'请选择方案图标'}}" bindinput='titleInput' disabled maxlength="30" class="text-black"></input>
+          <text class="cuIcon-right text-grey"></text>
+        </view>
+      </view>
+      <view>
+
+      </view>
+    </view>
+
+    <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden padding-tb-sm">
+      <view class="cu-form-group margin-lr text-lg">
+        <view class="title flex text-black">图标颜色<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+      </view>
+      <view class="cu-form-group flex flex-wrap justify-start margin-lr text-lg">
+       
+        <scroll-view scroll-x class="w--100 hidden margin-top-sm">
+          <view class="colorBlock relative radius flex align-center w--100" style="background:{{item.color}}" bind:tap="selectColor" data-colortype='deep' data-index='{{index}}' wx:for="{{colorList}}" wx:key="index">
+            <view class="cuIcon-roundcheckfill absolute margin-auto text-white" wx:if="{{selectIndex == index && color_status != 'light'}}"> </view>
+          </view>
+    
+          <view class="colorBlock relative radius bg-{{item.name}} light flex w--100" wx:for="{{colorList}}" wx:key="index" bind:tap="selectColor" data-colortype='light' data-index='{{index}}'>
+            <view class="cuIcon-roundcheckfill absolute margin-auto  text-white" wx:if="{{selectIndex == index && color_status == 'light'}}"></view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+
+    <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden padding-tb-sm">
+      <view class="cu-form-group margin-lr text-lg">
+        <view class="title flex text-black">标题<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <input placeholder="请输入方案标题" value='{{sub.title}}' bindinput='titleInput' maxlength="15" class="text-black"></input>
+      </view>
+    </view>
+ 
+    <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+      <view class="cu-form-group align-start margin-lr">
+        <view class="title flex text-black">描述<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <textarea auto-height disable-default-padding bindinput='descriptionInput' value='{{sub.description}}' placeholder="请输入方案描述"></textarea>
+      </view>
+    </view>
+ 
+    <view class="breathing-element padding-tb text-lg text-bold text-center bg-gradual-orange  round lg margin-top-xl shadow-gray padding-lr margin-lr" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);" bind:tap="checkUserExpirationTime">{{sub.subtype == 'editProgramme' ? '提交修改' : '添加解决方案'}}</view>
+
+
+
+  </view>
+</view>

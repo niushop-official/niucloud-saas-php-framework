@@ -1,0 +1,21 @@
+{
+	"yuan":"元",
+	"convertibleGoods":"可兑换商品",
+	"goodsTitleOne":"该兑换卡可在以下商品中任选",
+	"goodsTitleOneAnd":"件商品兑换",
+	"goodsTitleTwo":"该兑换卡可兑换以下商品",
+	"cardGoodsTypeAllTips":"最多可选",
+	"cardGoodsTypeAllTipsAnd":"件 已兑换",
+	"unit":"件",
+	"instruction":"使用须知",
+	"cardDesc":"礼品卡详情",
+	"canUse":"去使用",
+	"used":"已使用",
+	"invalid":"已失效",
+	"giftToFriends":"赠送好友",
+	"cardBag":"卡包",
+	"popupTipsOne":"恭喜您 到账成功！",
+	"popupTipsTwo":"元已充值到您的账户中~",
+	"gouToSee":"去看看",
+	"notCard":"礼品卡不存在"
+}

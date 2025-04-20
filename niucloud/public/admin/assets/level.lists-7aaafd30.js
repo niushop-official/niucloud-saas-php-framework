@@ -1,0 +1,1 @@
+const e="添加等级",t="等级",l="等级名称",s="分红比例",a="升级条件",n="开始时间",o="结束时间",d="确定要删除该数据吗？",c={addLevel:e,levelNum:t,levelName:l,Rate:s,upgradeConditions:a,startDate:n,endDate:o,levelDeleteTips:d};export{s as Rate,e as addLevel,c as default,o as endDate,d as levelDeleteTips,l as levelName,t as levelNum,n as startDate,a as upgradeConditions};

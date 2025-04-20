@@ -1,0 +1,1 @@
+const e="查看服务项目",i="服务项目",o="价格",r="元",t="项目图片",c="加载中...",n="没有更多内容啦~",s={showServiceItem:e,serviceItem:i,price:"价格",yuan:"元",serviceImg:t,loading:c,nothingMore:n};export{s as default,c as loading,n as nothingMore,o as price,t as serviceImg,i as serviceItem,e as showServiceItem,r as yuan};

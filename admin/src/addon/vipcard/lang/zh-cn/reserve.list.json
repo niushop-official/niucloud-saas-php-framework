@@ -1,0 +1,17 @@
+{
+    "memberId":"预约会员",
+    "memberIdPlaceholder":"请输入预约会员",
+    "reserveName":"预约人姓名",
+    "reserveNamePlaceholder":"请输入预约人姓名",
+    "reserveTime":"预约时间",
+    "reserveTimePlaceholder":"请输入预约时间",
+    "reserveState":"预约状态",
+    "reserveStatePlaceholder":"请输入预约状态",
+    "createTime":"创建时间",
+    "createTimePlaceholder":"请输入创建时间",
+    "goodsIds":"预约项目",
+    "goodsIdsPlaceholder":"请输入预约项目",
+    "addVipcardReserve":"添加预约",
+    "updateVipcardReserve":"编辑预约",
+    "vipcardReserveDeleteTips":"确定要删除该预约吗？"
+}

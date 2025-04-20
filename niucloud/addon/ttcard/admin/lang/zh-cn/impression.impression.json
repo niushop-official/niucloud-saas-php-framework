@@ -1,0 +1,10 @@
+{
+      "id":"ID",
+      "name":"类型",
+      "namePlaceholder":"请输入类型",
+      "addImpression":"添加个人印象",
+      "updateImpression":"编辑个人印象",
+      "impressionDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

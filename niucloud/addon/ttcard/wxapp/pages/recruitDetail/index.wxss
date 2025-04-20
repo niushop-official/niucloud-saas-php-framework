@@ -1,0 +1,97 @@
+/* pages/recruitDetail/index.wxss */
+.cu-avatar {
+  width: 180rpx;
+    height: 180rpx;
+    min-width: 180rpx;
+}
+.tagBox {
+  font-size: 24rpx;
+  vertical-align: middle;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0rpx 16rpx;
+  height: 48rpx;
+  margin-right:10rpx;
+  border-radius:4rpx
+}
+.mainBox::before{
+  display: block;
+  content:'';
+  position: fixed;
+  top:0;
+  z-index: -1;
+  width: 100%;
+  height:50%;
+  opacity: .3;
+  background: linear-gradient(0deg,#fff,#ffb73b)
+}
+
+.topBar{
+  top:-200px;
+  transition: .3s;
+}
+.showTopBar{
+  top:0;
+}
+.codeBox{
+  width:550rpx;
+  height: 550rpx;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .04);
+}
+
+
+
+.modalBox_zz{ 
+  z-index: 99;
+} 
+.modalBox{
+  bottom:-1000px;
+  z-index: 999;
+  height:500rpx;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx; 
+  transition: .3s;
+}
+.show_modalBox{
+  bottom:0!important;
+}
+
+
+
+
+.HyBox{
+  transition: .3s;
+  min-height:400rpx;
+  max-height:1000rpx;
+  z-index: 99;
+  bottom:-800px;
+  border-top-left-radius:30rpx; 
+  border-top-right-radius:30rpx; 
+  border-bottom-left-radius:0; 
+  border-bottom-right-radius:0; 
+  overflow: hidden;
+}
+.HyBox scroll-view{
+  height:800rpx;
+}
+.showHyBox{
+  bottom:0!important;
+  transition: .3s;
+}
+.HyBoxModel{
+  background-color: rgba(0,0,0,.5);
+  position: fixed;
+  bottom:0;
+  left: 0;
+  width: 100%;
+  height:100vh;
+  transition: .5s; 
+  z-index: 0;
+}

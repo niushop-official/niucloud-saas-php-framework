@@ -1,0 +1,15 @@
+{
+      "id":"ID",
+      "idPlaceholder":"请输入ID",
+      "orderId":"订单编号",
+      "orderIdPlaceholder":"全部",
+      "status":"打印状态",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addZxPrintlog":"添加记录",
+      "updateZxPrintlog":"编辑记录",
+      "zxPrintlogDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间",
+      "print":"打印"
+}

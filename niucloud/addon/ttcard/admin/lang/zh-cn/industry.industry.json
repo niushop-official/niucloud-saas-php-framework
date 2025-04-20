@@ -1,0 +1,14 @@
+{
+      "id":"ID",
+      "name":"名称",
+      "namePlaceholder":"请输入名称",
+      "flagStatus":"标志",
+      "flagStatusPlaceholder":"请输入标志",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "addIndustry":"添加行业",
+      "updateIndustry":"编辑行业",
+      "industryDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

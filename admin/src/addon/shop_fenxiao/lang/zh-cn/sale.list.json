@@ -1,0 +1,19 @@
+{
+
+    "saleStartTime": "开始时间",
+    "saleEndTime": "结束时间",
+    "periodType": "结算类型",
+    "orderMoney": "销售金额",
+    "rewardMoney": "奖励金额",
+    "settlementTime": "结算时间",
+    "sendTime": "发放时间",
+    "startDate": "开始时间",
+    "endDate": "结束时间",
+    "detail": "查看明细",
+    "settlementStatusPlaceholder": "请选择结算状态",
+    "settlementStatus": "结算状态",
+    "sendStatus": "发放状态",
+    "sendStatusPlaceholder": "请现在发放状态",
+    "grant":"发放",
+    "grantTip":"是否确认发放奖励"
+}

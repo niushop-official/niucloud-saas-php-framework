@@ -145,7 +145,7 @@ div.edui-box {
     background-color: white;
     position: relative;
     overflow: visible;
-    z-index: 1 !important;
+    z-index: 1;
 }
 
 .edui-editor div {

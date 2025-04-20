@@ -1,0 +1,13 @@
+<cu-custom bgColor="bg-white" isBack="{{true}}"><view slot="backText"></view><view slot="content" class="text-bold text-lg text-black">图标</view></cu-custom>
+<view class="cu-bar bg-white search fixed" style="top:{{CustomBar}}px">
+  <view class="search-form round">
+    <text class="cuIcon-search"></text>
+    <input type="text" placeholder="搜索icon" confirm-type="search" bindinput="searchIcon"></input>
+  </view>
+</view>
+<view class="cu-list grid col-4">
+  <view class=" padding-tb-xl" bind:tap="select" data-name='{{item.name}}' style="font-size:50rpx;" wx:for="{{icon}}" wx:key='index' wx:if="{{item.isShow}}">
+    <text class="cuIcon-{{item.name}} text-black"></text>
+    
+  </view>
+</view>

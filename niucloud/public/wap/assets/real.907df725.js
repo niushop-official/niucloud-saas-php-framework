@@ -1,0 +1,1 @@
+import{ao as t}from"./index-84ca9378.js";function e(){return t.get("tk_vip/real/getrealconfig")}function r(){return t.get("tk_vip/real/checkreal")}function a(e){return t.post("tk_vip/real/submitreal",e)}function n(){return t.get("tk_vip/real/getrealinfo")}export{e as a,r as c,n as g,a as s};

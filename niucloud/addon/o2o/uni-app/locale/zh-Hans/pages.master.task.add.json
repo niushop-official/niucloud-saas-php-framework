@@ -1,0 +1,13 @@
+{
+    "addServiceItem":"添加服务项目",
+    "editServiceItem":"编辑服务项目",
+    "serviceItem":"服务项目",
+    "serviceItemPlaceholder":"请输入服务项目",
+    "price":"价格",
+    "pricePlaceholder":"请输入价格",
+    "yuan":"元",
+    "serviceImg":"项目图片",
+    "save":"提交",
+    "loading":"加载中...",
+    "nothingMore":"没有更多内容啦~"
+}

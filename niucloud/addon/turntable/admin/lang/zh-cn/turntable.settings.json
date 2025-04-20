@@ -1,0 +1,7 @@
+{
+  "commonSetting": "通用设置",
+  "isPayNiuCloudShop": "是否关联商城",
+  "are": "是",
+  "no": "否",
+  "isPayNiuCloudShopTips": "必须授权了官方NiuCloud商城才可开启此开关。"
+}
