@@ -216,15 +216,6 @@
     ],
     "subPackages": [
         // {{ PAGE_BEGAIN }}
-                // QIANKUN_CASHIER_PAGE_BEGIN
-                // *********************************** hello world ***********************************
-                {
-                    "path": "qiankun_cashier/pages/hello_world/index",
-                    "style": {
-                        "navigationBarTitleText": "%qiankun_cashier.pages.hello_world.index%"
-                    }
-				},
-                // QIANKUN_CASHIER_PAGE_END
         // VIPCARD_PAGE_BEGIN
         {
             "root": "addon/vipcard",
