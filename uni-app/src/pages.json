@@ -216,6 +216,20 @@
     ],
     "subPackages": [
         // {{ PAGE_BEGAIN }}
+        // QIANKUN_RECHARGE_PAGE_BEGIN
+        {
+            "root": "addon/qiankun_recharge", 
+            "pages": [
+				{
+                    "path": "pages/recharge/recharge",
+                    "style": {
+                        "navigationBarTitleText": "充值",
+                        "enablePullDownRefresh": false
+                    }
+                }
+			]
+        },
+// QIANKUN_RECHARGE_PAGE_END
         // VIPCARD_PAGE_BEGIN
         {
             "root": "addon/vipcard",
@@ -1624,20 +1638,6 @@
 			]
         },
 // LY_AREA_PAGE_END
-        // QIANKUN_RECHARGE_PAGE_BEGIN
-        {
-            "root": "addon/qiankun_recharge", 
-            "pages": [
-				{
-                    "path": "pages/recharge/recharge",
-                    "style": {
-                        "navigationBarTitleText": "充值",
-                        "enablePullDownRefresh": false
-                    }
-                }
-			]
-        },
-// QIANKUN_RECHARGE_PAGE_END
         // QIANKUN_RECOVERY_PAGE_BEGIN
         {
             "root": "addon/qiankun_recovery", 
@@ -1681,6 +1681,8 @@
                     ]
 				},
                 // QIANKUN_VIP_CARD_PAGE_END
+                // QIANKUN_CASHIER_PAGE_BEGIN
+                // QIANKUN_CASHIER_PAGE_END
 // {{ PAGE_END }}
         {
             "root": "app/components",

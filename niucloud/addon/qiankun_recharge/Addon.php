@@ -22,10 +22,10 @@ class Addon
             $content = file_get_contents($balanceFile);
             file_put_contents($balanceFile . '.install.bak', $content); // 备份文件
             if (!str_contains($content, '<!-- qiankun_recharge_backup_code -->')) {
-                $content = str_replace('<block v-if="systemStore.siteAddons.includes(\'recharge\')">', '<!-- qiankun_recharge_backup_code --><block v-if="systemStore.siteAddons.includes(\'qiankun_recharge\') && rechargeConfigObj.open == 1">
+                $content = str_replace('<template v-if="systemStore.siteAddons.includes(\'recharge\')">', '<!-- qiankun_recharge_backup_code --><template v-if="systemStore.siteAddons.includes(\'qiankun_recharge\') && rechargeConfigObj.open == 1">
                 <button class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border" hover-class="none" shape="circle" @click="redirect({url: \'/addon/qiankun_recharge/pages/recharge/recharge\'})">立即充值</button>
-              </block>
-              <block v-else-if="systemStore.siteAddons.includes(\'recharge\')">
+              </template>
+              <template v-else-if="systemStore.siteAddons.includes(\'recharge\')">
               <!-- qiankun_recharge_backup_code_end -->
               <!-- qiankun_recharge_backup <block v-if="systemStore.siteAddons.includes(\'recharge\')"> -->', $content);
                 // 替换if(systemStore.siteAddons.includes('recharge')) {
