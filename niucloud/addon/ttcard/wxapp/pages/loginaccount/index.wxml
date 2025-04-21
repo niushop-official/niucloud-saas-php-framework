@@ -1,0 +1,37 @@
+<cu-custom bgColor="" isBack="{{true}}">
+  <view slot="content" class="text-lg text-bold text-black"></view>
+</cu-custom>  
+<view class="fixed top-0 left-0 w--100 h--100 flex align-center">
+  <view class="margin-lr-lg flex-1 ">
+    <view class="column flex align-center" style="margin-top:-100rpx"> 
+      <view class="text-xxl text-bold margin-top-sm">{{type == 'login' ? '登录' :'注册'}}</view>
+      <view class="margin-top-xs text-xxl text-orange opacity-06">——</view>
+      <view class="text-gray margin-top-xs">~ 欢迎使用名片生成系统 ~</view>
+    </view>
+    <view class="hidden flex align-center justify-between bg-white shadow-gray-light round" style="margin-top:60rpx;height:116rpx;line-height:116rpx;">
+      <view class="margin-left-lg  text-xxl"><text class="cuIcon-my text-gray margin-right-sm"></text></view>
+      <input type="text"  placeholder-style="color:#aaaaaa"  bind:input='getUsername' class="flex-1 flex text-black" placeholder="输入用户名" />
+    </view>
+    <view class="hidden flex align-center justify-between bg-white shadow-gray-light round margin-top-lg"style="height:116rpx;line-height:116rpx; ">
+      <view class="margin-left-lg  text-xxl"><text class="cuIcon-lock text-gray margin-right-sm"></text></view>
+      <input type="password" placeholder-style="color:#aaaaaa" bind:input='getPassword' class=" flex flex-1  text-black" placeholder="输入登录密码" />
+    </view>
+    <view class="hidden flex align-center justify-between bg-white shadow-gray-light round margin-top-lg"style="height:116rpx;line-height:116rpx; "wx:if="{{type != 'login'}}">
+      <view class="margin-left-lg  text-xxl"><text class="cuIcon-lock text-gray margin-right-sm"></text></view>
+      <input type="password" placeholder-style="color:#aaaaaa" bind:input='getPasswordagain' class=" flex flex-1  text-black" placeholder="再次输入登录密码" />
+    </view>
+    <view style="margin-top:60rpx">
+      <view class="padding-tb text-xl text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="login">{{type == 'login' ? '登录' :'注册'}}</view>
+    </view>
+    <view class="flex justify-center margin-top-xl text-sm text-gray">
+      <view bind:tap="clickRegist" wx:if="{{type == 'login'}}">还没有账号？<text class="text-orange">去注册</text></view>
+      <view bind:tap="clickLogin" wx:if="{{type != 'login'}}">已有账号？<text class="text-orange">去登录</text></view>
+    </view>
+  </view>
+</view>
+
+
+    
+<view class="vipBox_1 a1"></view>
+<view class="vipBox_1 a2"></view>
+<view class="vipBox_1 a3"></view>

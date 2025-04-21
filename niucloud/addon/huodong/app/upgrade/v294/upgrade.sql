@@ -1,0 +1,1 @@
+ALTER TABLE `huodong_act` ADD COLUMN `hxstartime` datetime(0) NULL DEFAULT NULL

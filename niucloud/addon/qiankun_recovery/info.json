@@ -1,0 +1,11 @@
+{
+  "title": "推N返本",
+  "desc": "推N返本，可适用于商品、等级、以及其他消费产品",
+  "key": "qiankun_recovery",
+  "version": "1.0.0",
+  "author": "乾坤科技",
+  "type": "app",
+  "support_app": "",
+  "compile":[],
+  "support_version": "1.0.0"
+}

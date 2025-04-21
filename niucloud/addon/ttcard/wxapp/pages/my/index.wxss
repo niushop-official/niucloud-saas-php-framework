@@ -1,0 +1,109 @@
+page{
+	background: #ffffff; 
+}
+.cu-list.menu>.cu-item { 
+  min-height: 110rpx; 
+  padding: 0;
+}
+.block-nav{
+  height:156.66rpx
+}
+.cu-list.menu>.cu-item.arrow:before {
+ right:0
+}
+.no-hy{ 
+  filter: grayscale(100%);
+  filter: gray;
+  opacity:0.7; 
+}
+.v-tag{
+  padding-top:4rpx;
+  padding-bottom:4rpx;
+  border-top-right-radius: 20rpx;
+  border-bottom-left-radius: 20rpx;
+}
+.v-tag image{
+  width: 30rpx;
+  height: 30rpx;
+}
+.myIcon-s{
+  transform: rotate(45deg); 
+}
+.vipIcon{
+  width:120rpx;
+  height:28rpx
+}
+.cu-list.menu>.cu-item.arrow {
+  padding-right:0;
+}  
+
+map,.mapBox{
+  left: 0;
+  z-index: 99;
+  mix-blend-mode: screen;  
+  height: 100rpx;   
+}
+
+map,.mapBox{
+  width: 750rpx;
+  height: 300rpx;
+}
+
+button,button::after{
+  border:none
+}
+.cu-dialog { 
+  border-radius: 30rpx; 
+  padding: 20px 0;
+  overflow: unset;
+}
+.geren{
+  box-shadow: 0 15px 30px 0 rgba(239,222,151,.16);
+} 
+.qiye{
+  box-shadow: 0 0 30px 0 rgba(141,153,169,.46);
+} 
+.iconBox{
+  font-size:120rpx;
+
+}
+ .action{
+   position: absolute;
+   bottom:-200rpx; 
+ }
+ .action::before{
+   display:block;
+   content:'';
+   width:1rpx;
+   height: 190rpx;
+   background-color: #ffffff;
+   margin:auto; 
+   position: absolute;
+   top:-160rpx;
+   left:0;
+   right:0
+ }
+
+
+
+ .breathing-element {  
+  animation: breathe 2s infinite;  
+}
+
+@keyframes breathe {  
+  0% {  
+    transform: scale(1);  
+  }  
+  50% {  
+    transform: scale(1.1);  
+  }  
+  100% {  
+    transform: scale(1);  
+  }  
+}  
+ .v-icon{
+   width:50rpx;
+   height:50rpx;
+   margin-right:4rpx
+ }
+

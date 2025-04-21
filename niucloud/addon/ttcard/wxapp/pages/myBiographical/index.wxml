@@ -1,0 +1,87 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:120px">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">简历</view>
+  </cu-custom>
+
+  <view class="cu-bar bg-white search fixed" style="top:{{CustomBar}}px;">
+    <scroll-view scroll-x class="bg-white nav">
+      <view class="flex text-center">
+        <view class="cu-item flex-sub {{index==tabCur?'text-orange cur':''}}" wx:for="{{nav}}" wx:key='index' bindtap="tabSelect" data-index="{{index}}">
+          {{item}}
+        </view>
+      </view>
+    </scroll-view>
+</view>
+
+
+  <view class="margin-lr" style="margin-top:calc({{CustomBar+10}}px )" >
+  
+    <view  class="p-item padding-tb-lg padding-lr flex column  shadow-gray-light margin-bottom radius-30 hidden" wx:for="{{list}}" wx:key="index" wx:if="{{tabCur == 0 || tabCur == 1}}"> 
+      <view class="" bind:tap="goBiographicalDetail" data-biographicalid='{{item.id}}'>
+        <view class="align-center hidden flex">
+          <view class="cu-avatar round" style="background-image:url({{item.avatar}});width: 140rpx;min-width: 140rpx;height:140rpx"><text class="cuIcon-pic" wx:if="{{!item.avatar}}"></text></view> 
+          <view class="flex column margin-left flex-1 hidden">
+            <view class="flex justify-between align-center">
+              <view class='text-lg text-cut-1 flex-1 text-black text-bold  hidden'>{{item.position || ''}}</view>
+              <view class="flex align-center text-gray margin-left" wx:if="{{tabCur == 0}}">
+                <text class="cuIcon-attentionfill"> {{item.view_num || 0}}</text>
+                <text class="margin-left-sm sm cuIcon-forwardfill"> {{item.delive_num || 0}}</text>
+              </view>
+              <view class="flex align-center text-gray margin-left" wx:if="{{tabCur == 2}}">
+                <text class="text-cyan"> {{item.view_status == 1 ? '已被阅' :''}}</text> 
+              </view>
+            </view> 
+            <view class='text-sm margin-top-xs text-bold hidden '>{{item.name}}</view> 
+            <view class='text-sm margin-top-xs text-gray hidden 'wx:if="{{tabCur == 0}}">{{item.createtime}}</view>  
+            <view class='text-sm margin-top-xs text-gray hidden 'wx:if="{{tabCur == 1 || tabCur == 2}}">{{item.delivetime}}</view>  
+          </view>
+        </view>
+      </view> 
+      <view class="flex solid-top margin-top-lg justify-between padding-top align-center text-gray"  wx:if="{{tabCur == 0}}">
+        <view hover-class="none" bind:tap="goEditBiographical" data-biographicalid='{{item.id}}' class="flex-1 text-center"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+        <view class="solid-left text-center flex-1" bind:tap="goDeleteBiographical" data-biographicalid='{{item.id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view>
+      </view>
+    </view> 
+
+    <view  class="p-item padding-tb-lg padding-lr flex column  shadow-gray-light margin-bottom radius-30 hidden " wx:for="{{list}}" wx:key="index" wx:if="{{tabCur == 2}}"> 
+      <view class="" bind:tap="goRecruitDetail" data-recruitid='{{item.recruit.id}}'>
+        <view class="align-center hidden flex">
+          <view class="flex column flex-1 hidden">
+            <view class="flex justify-between align-center">
+              <view class='text-lg text-cut-1 flex-1 text-black text-bold  hidden'>{{item.recruit.title || ''}}</view> 
+              <view class="flex align-center text-gray margin-left">
+                <text class="text-cyan"> {{item.view_status == 1 ? '已被阅' :''}}</text> 
+              </view>
+            </view> 
+            <view class='text-sm margin-top-xs text-bold hidden '>{{item.recruit.position}}</view> 
+            <view class='text-sm margin-top-xs text-gray hidden '>{{item.delivetime}}</view>  
+          </view>
+        </view>
+      </view> 
+      <view class="solid-top flex  align-center justify-between margin-top-lg padding-top-lg" bind:tap="goBiographicalDetail" data-biographicalid='{{item.biographical.id}}'>
+        <view>
+          <view class="cu-avatar   round" style="background-image:url({{item.biographical.avatar}});"><text class="cuIcon-pic" wx:if="{{!item.biographical.avatar}}"></text></view> 
+          <text class="text-df margin-left-sm">{{item.biographical.name}}</text>
+        </view>
+        <view class="cuIcon-right text-grey" ></view>
+      </view>
+     
+    </view> 
+  </view>
+
+
+ 
+
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+</view>
+</scroll-view>
+
+
+<view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{tabCur == '0'}}">
+  <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddBiographical"><text class="cuIcon-roundaddfill"></text> 创建简历</view>
+</view>

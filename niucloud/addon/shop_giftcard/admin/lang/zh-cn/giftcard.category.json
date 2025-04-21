@@ -1,0 +1,13 @@
+{
+  "categoryName": "分类名称",
+  "categoryNamePlaceholder": "请输入分类名称",
+  "sort": "排序号",
+  "sortPlaceholder": "请输入排序号",
+  "createTime": "创建时间",
+  "addCategory": "添加礼品卡分类",
+  "updateCategory": "编辑礼品卡分类",
+  "categoryDeleteTips": "确定要删除该数据吗？",
+  "status": "状态",
+  "statusOn": "开启",
+  "statusOff": "关闭"
+}

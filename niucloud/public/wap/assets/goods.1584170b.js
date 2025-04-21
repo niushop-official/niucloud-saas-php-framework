@@ -1,0 +1,1 @@
+import{ao as o}from"./index-84ca9378.js";function t(){return o.get("o2o/category")}function n(t){return o.get("o2o/goods",t)}function e(t){return o.get("o2o/goods/detail",t)}function r(t){return o.get("o2o/goods/components",t)}function s(){return o.get("o2o/config/reserve")}export{t as a,n as b,e as c,s as d,r as g};

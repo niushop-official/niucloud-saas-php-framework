@@ -1,0 +1,23 @@
+{
+      "up": "上架",
+      "down": "下架",
+	  "tooUp": "已上架",
+	  "tooDown": "已下架",
+      "goodsInfo": "卡项信息", 
+      "price":"价格",
+      "goodsName":"卡项名称",
+      "goodsNamePlaceholder":"请输入卡项名称",
+      "startDate":"开始时间",
+      "endDate":"结束时间",
+      "vipcardGoodsDeleteTips":"确定要删除该卡项吗？",
+      "saleNum":"销量",
+      "cardType":"卡项类型",
+      "addGoods": "添加卡项",
+	  "collectionRecord": "购买记录",
+      "spread":"推广",
+      "sortPlaceholder": "请输入排序号",
+      "cardSpreadTitle": "卡项推广",
+      "spreadLink": "推广链接",
+      "copy": "复制",
+      "downloadQrcode": "下载二维码"
+}

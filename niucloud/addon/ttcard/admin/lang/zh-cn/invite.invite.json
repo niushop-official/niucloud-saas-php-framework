@@ -1,0 +1,20 @@
+{
+      "id":"ID",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "fromUserId":"邀请者",
+      "fromUserIdPlaceholder":"全部",
+      "fromWebsiteId":"邀请者微官网",
+      "fromWebsiteIdPlaceholder":"全部",
+      "toUserId":"被邀请者",
+      "toUserIdPlaceholder":"全部",
+      "toUserCardId":"被邀请者创建的名片",
+      "toUserCardIdPlaceholder":"全部",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addInvite":"添加",
+      "updateInvite":"编辑",
+      "inviteDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

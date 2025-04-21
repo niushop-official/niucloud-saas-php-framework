@@ -1,0 +1,38 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:120px">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">资讯</view>
+  </cu-custom>
+
+  <view class="margin-lr margin-top-lg">
+    <view class="p-item flex column padding flex shadow-gray-light margin-bottom radius-30 hidden" wx:for="{{list}}" wx:key="index" >
+      <view class="flex align-center"bind:tap="goDetail" data-id='{{item.id}}'>
+        <view class="cu-avatar radius-12 text-sl" style="background-image:url({{item.image}});width:160rpx;min-width:160rpx;height:160rpx"><text wx:if="{{!item.image}}" class="cuIcon-pic"></text></view>
+        <view class="flex column margin-left flex-1 grow-1">
+          <text class="text-lg text-cut-2">{{item.title}}</text>
+          <text class="text-gray margin-top text-sm">发布时间：{{item.createtime}}</text>
+        </view>
+      </view>
+
+      <view class="flex solid-top margin-top w--100 padding-top justify-between align-center text-gray" wx:if="{{sourceUrl == 'my'}}">
+        <view  hover-class="none" bind:tap="goEditNews" data-newsid='{{item.id}}'  class="flex-1 text-center"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+        <view class="solid-left text-center flex-1"  bind:tap="goDeleteNews" data-newsid='{{item.id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view> 
+      </view>
+    </view>
+  </view>
+ 
+ 
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+
+  <view class="fixed bottom-0 padding-tb w--100 bg-white flex"  wx:if="{{sourceUrl == 'my'}}">  
+    <view class="padding-tb breathing-element text-xl margin-left flex-1 margin-right text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddNews"><text class="cuIcon-roundaddfill"></text> 添加</view>
+  </view>
+
+
+</view>
+</scroll-view>
+

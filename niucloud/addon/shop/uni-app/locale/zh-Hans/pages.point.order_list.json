@@ -1,0 +1,14 @@
+{
+  "orderNo": "订单号",
+  "actualPayment": "订单金额",
+  "orderClose": "关闭订单",
+  "orderFinish": "确认收货",
+  "topay": "支付",
+  "orderDetail": "详情",
+  "evaluate": "评价",
+  "selectedEvaluate": "查看评价",
+  "orderListempty": "暂无订单",
+  "deliveryType":"配送方式",
+  "money":"元",
+  "point": "积分"
+}

@@ -1,0 +1,250 @@
+/* .acBox{
+  height:1240rpx
+} */
+page{
+	background: #ffffff; 
+}
+.acBox-item{
+  height:450rpx
+}
+
+.iconBox{
+  width:100rpx;
+  height:100rpx;
+  font-size: 70rpx;
+}
+ .cardIcon{
+   height:240rpx;
+   overflow: hidden;
+ }
+.icon{
+	width:300rpx;
+	height:300rpx;
+}
+.kk-p{
+  margin-left: -10rpx;
+}
+
+.tbBox{
+  margin-top:-60rpx
+}
+
+.cardBox{
+  position: relative;
+  background-position: center;
+  background-size: cover; 
+} 
+ 
+.acBtn{
+  min-width: 180rpx; 
+}
+
+.flagBox{
+  width:200rpx;
+  height:50rpx;
+  transform: rotate(45deg);
+  right: -76rpx;
+  top: 0;
+}
+.flagText{
+  margin-top:6rpx
+}
+.lineOpa::before{
+  display: block;
+  content:'';
+  position: absolute;
+  width: 100%;
+  bottom:0;
+  height:2rpx;
+  background: linear-gradient(to right, transparent,rgb(255 255 255 / 30%),rgb(255 255 255 / 30%), transparent);
+}
+.lineOpa::after{
+  display: block;
+  content:'';
+  position: absolute;
+  width: 100%;
+  top:0;
+  height:2rpx;
+  background: linear-gradient(to right, transparent,rgb(255 255 255 / 50%),rgb(255 255 255 / 50%), transparent);
+}
+.lineOpa{
+  position: relative;
+  background: linear-gradient(to right, transparent,rgb(255 255 255 / 17%),rgb(255 255 255 / 17%), transparent);
+} 
+.cu-avatar-group{
+  padding:0
+}
+.pyq{
+  width:100rpx;
+  height:100rpx
+}
+
+.collect-head-li {
+
+  background:#feeacd; 
+  overflow: hidden;
+}
+.w--200{ 
+ width:200rpx
+}
+@keyframes breathe {  
+  0% {  
+    transform: scale(1);  
+  }  
+  50% {  
+    transform: scale(1.1);  
+  }  
+  100% {  
+    transform: scale(1);  
+  }  
+}  
+  
+.breathing-element {  
+  animation: breathe 2s infinite;  
+}
+.websiteBox image {
+  width: 50rpx;
+  height: 50rpx;
+  filter: grayscale(100%) brightness(200%);
+}
+.img-hui{
+  filter: grayscale(100%);
+}
+.tongshiBox{
+  width:196.666666666rpx;
+}
+.tongshiBoxImage{
+  width:196.666666666rpx;
+  height:196.666666666rpx;
+  overflow: hidden;
+  border-radius: 12rpx;
+}
+.avatarList .cu-avatar {
+  width: 90rpx;
+    height: 90rpx;
+}
+.avatarList .cu-avatar-group .cu-avatar {
+  margin-left: -45rpx; 
+}
+.cu-avatar { 
+  background-color: #e8e8e8; 
+}
+
+
+.cu-dialog { 
+  border-radius: 24rpx; 
+}
+.closeBox{
+  padding: 10rpx;
+  background: rgba(0,0,0,.1);
+  border-radius: 50rpx;
+  width: 32rpx;
+  height: 32rpx;
+  color: #9e9e9e;
+  text-align: center;
+  font-size: 32rpx;
+}
+ 
+.cu-avatar.xl {
+  min-width: 148rpx; 
+  height: 148rpx
+}
+.caseBox{
+  width:305rpx; 
+}
+.caseBoxImage{
+  width:305rpx;
+  height:305rpx;
+  overflow: hidden;
+  border-radius: 12rpx;
+}
+.tongshiItem:first-child{
+  margin-left:0!important
+}
+.page-section-spacing{
+  margin-top: 60rpx;
+}
+.scroll-view_H{
+  white-space: nowrap;
+}
+ 
+.scroll-view-item_H{
+  display: inline-block; 
+}
+.scroll-view-item_H:last-child{
+  margin-right:0
+}
+
+.screen-swiper {
+  height: 260rpx;
+  min-height: 260rpx;
+} 
+
+.dotItem{
+  width:10rpx;
+  height:10rpx;
+  border-radius: 30rpx;
+  background-color: #cccccc;
+  margin:0 4rpx
+}
+.dotCur{
+  width:40rpx!important;
+  height:10rpx;
+  border-radius: 30rpx;
+  background-color: #cccccc;
+}
+
+.solid::after {
+
+  border: 1rpx solid #DBDBDB; 
+  border-top-color: rgba(0, 0, 0, .2);
+  border-right-color: rgba(0, 0, 0, 0.2);
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  border-left-color: rgba(0, 0, 0, 0.2);
+}
+.cu-tag+.cu-tag {
+  margin-left: 0;
+}
+.cu-tag {
+  margin-left: 0!important;
+  margin-right: 10rpx!important;
+}
+
+
+.scroll{
+  display: inline-block;
+}
+ 
+.scroll-view_H{
+  white-space: nowrap;
+} 
+/* .scroll-view-item_H{ddd
+  display: inline-block;  
+  min-width: 160rpx;
+  width: 160rpx;
+  height: 160rpx;
+} */
+.tagbox{
+  /* background:none!important; */
+  overflow: hidden;
+  background: rgba(0, 0, 0, .05)!important;
+}
+.p_class:first-child{
+  margin-top:0
+}
+.p_class{
+  margin-top:30rpx
+}
+.scroll-view-item_H:last-child{
+  margin-right:0
+}
+.codeBox{
+  width:550rpx;
+  height: 550rpx;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .04);
+}
+

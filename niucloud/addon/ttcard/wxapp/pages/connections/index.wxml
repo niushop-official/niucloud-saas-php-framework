@@ -1,0 +1,90 @@
+<view class="fixed top-0 w--100 bg-white" style="height:{{CustomBar}}px;z-index:9999;">
+  <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+    <view class="relative align-center flex flex-1">
+      <view class="cu-bar bg-white search " style="box-shadow:none">
+        <view class="search-form round" style="height:{{Height}}px">
+          <text class="cuIcon-search"></text>
+          <input type="text" value="{{searchValue}}" placeholder="搜姓名、职位、标签" confirm-type="search" bindinput="searchV" bindconfirm='search'></input>
+        </view>
+        <view class="flex align-center text-black" bindtap="showModal" style="margin-right:{{Width}}px;">
+          <text class="text-bold">{{industryName}}</text>
+          <view class="text-xl "><text class="cuIcon-triangledownfill margin-right" style="font-size: 60rpx;"></text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="fixed w--100 flex justify-center align-center top-0" style="margin-top:{{CustomBar+25}}px;" wx:if="{{triggered}}">
+  <view class="text-gray text-xl flex align-center"><text class="cuIcon-loading2 loading"></text> <text class="text-df margin-left-xs">加载中...</text></view>
+</view>
+<scroll-view scroll-y class="scrollPage" bindscrolltolower='isonReachBottom' enable-back-to-top refresher-enabled refresher-default-style='none' bindrefresherrefresh='refresherrefresh' 	bindrefresherpulling='refresherpulling'	refresher-triggered='{{triggered}}'> 
+  <view class="flex column" style="margin-top:{{CustomBar+10}}px;padding-bottom:100rpx">
+    <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr hidden relative" wx:for="{{list}}" wx:key="index" bind:tap="goCard" data-cardid='{{item.id}}'>
+      <view class="absolute flex align-center justify-center text-sm bg-gradual-orange flagBox" wx:if="{{item.recommend == 1}}"><text class="flagText">推荐</text></view>
+      <view class="flex column">
+        <view class="align-center flex">
+          <view class="cu-avatar margin-lr-xs xl round" style="background-image:url({{item.avatar}});"></view>
+          <view class="flex column  margin-left hidden">
+            <view class="flex align-center">
+              <view class='text-lg text-black text-bold'>{{item.name}}</view>
+              <view class="flex margin-left-sm " wx:if="{{authenticationSwitch ==1 && item.authentication_info.geren_authentication == 1}}">
+                <text class="cu-tag sm round bg-gradual-orange"><text class="cuIcon-choicenessfill"></text> 个人认证</text> 
+              </view>
+            </view>
+            <view class="flex align-center text-df margin-top-xs">
+              <view class='' wx:if="{{item.gender == 1}}">女</view>
+              <view class='' wx:if="{{item.gender == 0}}">男</view>
+              <view class='' wx:if="{{item.position}}">
+                <text class='margin-lr-sm opacity-03'>|</text>
+                <text>{{item.position}}</text>
+              </view>
+              <view class='' wx:if="{{item.industry_name}}">
+                <text class='margin-lr-sm opacity-03'>|</text>
+                <text>{{item.industry_name}}</text>
+              </view>
+            </view>
+            <view class="flex justify-between text-gray  margin-top-xs text-sm" style="height:40rpx">
+              <view class='flex hidden'><text class='text-cut-1'>{{item.description}}</text></view>
+            </view>
+
+            <view class="action margin-top-sm">
+              <view class="cu-tag round margin-bottom-xs {{'item_'+index}} " wx:for="{{item.tags}}" wx:key="index">{{item}}</view>
+            </view>
+
+          </view>
+        </view>
+
+      </view>
+
+
+
+    </view> 
+  </view>
+
+  <view class="emptyBox" wx:if="{{empty}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+ 
+</scroll-view>
+
+
+
+<view class="HyBoxModel" style="opacity: {{HyBoxModel ? '.5' : 0}};visibility: {{HyBoxModel?'':'hidden'}}" bindtap="hideModal"></view>
+  <view class="fixed bg-white top-0 w--100 HyBox {{HyboxShow ? 'showHyBox' : ''}}"  style="padding-top:{{CustomBar}}px;">
+    <scroll-view scroll-y>
+      <view class="flex padding-lr flex-wrap" style="padding-bottom:280rpx">
+        <view class="flex w--50 hyItemBox" wx:for="{{industry}}" wx:key='index'>
+          <view class="margin-top radius padding redius  text-center flex-1 hyItem {{checkIndustryId == item.id ? 'bg-orange light' : 'bg-white solid'}}" bind:tap="checkIndustry" data-id='{{item.id}}' data-name='{{item.name}}'>
+            <view>{{item.name}}</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class=" absolute flex bg-white bottom-0 w--100" style="z-index:99999999">
+      <view class="breathing-element padding-tb-sm text-lg text-bold text-center bg-orange  flex-1 round lg margin-tb-lg padding-lr margin-left margin-right-xs relative" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);" bindtap="goSearch">确定</view>
+      <view class="breathing-element padding-tb-sm text-lg text-bold text-center bg-white shadow-gray-light flex-1 round lg margin-tb-lg padding-lr margin-right margin-left-xs relative" bindtap="hideModal">重置</view>
+    </view>
+  </view>

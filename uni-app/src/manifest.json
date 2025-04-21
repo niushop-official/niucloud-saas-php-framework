@@ -1,6 +1,6 @@
 {
-    "name" : "",
-    "appid" : "__UNI__ED923AB",
+    "name" : "乾坤saas",
+    "appid" : "__UNI__9B03DBD",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -50,7 +50,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx18d5ff2cf3e09426",
         "setting" : {
             "urlCheck" : false
         },

@@ -202,6 +202,33 @@ class CoreOplatformService extends BaseCoreService
     }
 
     /**
+     * 撤回审核
+     * @param $site_id
+     * @param array $json
+     * @return array|mixed[]
+     * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public static function undocodeaudit($site_id) {
+        $app = CoreWeappService::app($site_id);
+        // 查询最后一次审核状态
+        $lastAudit = $app->getClient()->get('/wxa/get_latest_auditstatus')->toArray();
+        if($lastAudit['errcode']) throw new CommonException($lastAudit['errmsg']);
+        if ($lastAudit['status'] == 3) {
+            $undoAudit = ['errcode'=>0, 'errmsg'=>'已撤回'];
+        } else {
+            $undoAudit = $app->getClient()->get('/wxa/undocodeaudit')->toArray();
+        }
+
+        return compact('lastAudit', 'undoAudit');
+    }
+
+    /**
      * 发布小程序
      * @return array|mixed[]
      * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException

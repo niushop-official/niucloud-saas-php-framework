@@ -2,4 +2,4 @@
 /.vscode
 *.log
 /runtime
-install.lock
+/.env

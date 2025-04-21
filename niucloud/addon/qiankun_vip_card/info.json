@@ -1,0 +1,11 @@
+{
+  "title": "等级卡密",
+  "desc": "等级卡密",
+  "key": "qiankun_vip_card",
+  "version": "1.0.0",
+  "author": "乾坤科技",
+  "type": "addon",
+  "support_app": "",
+  "compile":[],
+  "support_version": "1.0.0"
+}

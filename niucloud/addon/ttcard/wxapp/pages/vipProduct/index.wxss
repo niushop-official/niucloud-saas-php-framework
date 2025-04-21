@@ -1,0 +1,33 @@
+/* pages/vipProduct/index.wxss */
+
+.w--50:nth-child(even) .v-item{ 
+  margin-left:10rpx
+}
+.w--50:nth-child(odd) .v-item{
+  margin-right:10rpx; 
+}
+ 
+.hui{
+  filter: grayscale(100%)
+}
+
+ .c-643b24{
+   color:#64481e;
+   opacity: .7;
+ }
+
+ .title-bg:after {
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTE3IiBoZWlnaHQ9IjE4IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik00LjQ1MSAwSDExN2wtNC44MTcgMThIMEw0LjQ1MSAwWiIgZmlsbD0idXJsKCNhKSIgZmlsbC1vcGFjaXR5PSIuMiIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iYSIgeDE9IjQuNTk0IiB5MT0iMTgiIHgyPSIxMjUuMjExIiB5Mj0iMTgiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjRkZCMzM5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkI5ODczIiBzdG9wLW9wYWNpdHk9IjAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=) no-repeat 50%;
+  background-size: contain;
+  bottom:-16rpx;
+    content: "";
+    display: inline-block;
+    height:60rpx;
+    left: -26rpx;
+    position: absolute;
+    width: 87px;
+    z-index: -1;
+}
+.viptitle-shadow{ 
+ text-shadow: 0 2px 4px #dfba93;
+} 

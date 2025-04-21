@@ -1,0 +1,18 @@
+{
+  "attrName": "参数模板名称",
+  "attrNamePlaceholder": "请输入参数名称",
+  "updateAttr": "编辑参数模板",
+  "sort": "排序号",
+  "sortPlaceholder": "请输入排序号",
+  "addShopGoodsAttr": "添加商品参数",
+  "attrValueType": "参数类型",
+  "attrValueTypeRadio": "单选",
+  "attrValueTypeCheckbox": "多选",
+  "attrValueTypeText": "输入",
+  "attrValueChild": "参数内容",
+  "updateShopGoodsAttr": "编辑商品参数",
+  "goodsAttrDeleteTips": "确定要删除该数据吗？",
+  "attrValueName": "参数名称",
+  "addAttrValue": "添加参数",
+  "attrValueNamePlaceholder": "请输入参数名称"
+}

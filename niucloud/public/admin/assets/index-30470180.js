@@ -1,0 +1,1 @@
+import{P as t,d as o,r as a,h as n,c as l,t as s}from"./index-31c6606f.js";function r(){return t.get("qiankun_cashier/hello_world")}const c={class:"text-[20px]"},f=o({__name:"index",setup(_){const e=a("");return(async()=>{e.value=await(await r()).data})(),(d,p)=>(n(),l("span",c,s(e.value),1))}});export{f as default};

@@ -1,0 +1,1 @@
+import{ak as e}from"./index-8fe4bece.js";function r(){return e.get("ly_shareholder/level")}function t(){return e.get("ly_shareholder/shareholder/stat")}function a(){return e.get("ly_shareholder/shareholder/detail")}export{r as a,t as b,a as g};

@@ -1,0 +1,18 @@
+{
+      "id":"ID",
+      "memberId":"用户信息",
+      "memberIdPlaceholder":"全部",
+      "realname":"姓名",
+      "realnamePlaceholder":"请输入姓名",
+      "mobile":"联系电话",
+      "mobilePlaceholder":"请输入联系电话",
+      "idcard":"身份证号码",
+      "idcardPlaceholder":"请输入身份证号码",
+      "adddate":"添加时间",
+      "adddatePlaceholder":"请输入添加时间",
+      "addUser":"添加报名者信息",
+      "updateUser":"编辑报名者信息",
+      "userDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

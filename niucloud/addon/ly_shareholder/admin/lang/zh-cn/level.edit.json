@@ -1,0 +1,23 @@
+{
+    "titleOne":"等级佣金比例",
+    "titleTwo":"升级条件",
+    "titleThree":"升级条件限制",
+    "levelWeight":"等级权重",
+    "levelWeightPlaceholder":"请选择等级权重",
+    "levelWeightTip":"等级权重越大，等级越高",
+    "levelName":"等级名称",
+    "levelNamePlaceholder":"请输入等级名称",
+    "Rate":"分红比例",
+    "oneRatePlaceholder":"当前等级股东的的分红比例",
+   
+    "upgradeMethod":"升级方式",
+    "upgradeMethodPlaceholder":"请选择升级条件",
+    "upgradeMethodLabelOne":"满足以下任意条件",
+    "upgradeMethodLabelTwo":"满足以下全部条件",
+    "rulesPlaceholderOne":"请输入",
+    "rulesPlaceholderTwo":"格式错误",
+    "rulesPlaceholderThree":"不可小于等于0",
+    "Max": "封顶金额",
+    "maxMoneyTip":"单次周期结算时最高可获得的分红金额，封顶金额为0时，不限制"
+
+}

@@ -1,0 +1,20 @@
+{
+      "id":"ID",
+      "type":"事件",
+      "typePlaceholder":"请输入事件",
+      "fromUserId":"来自用户",
+      "fromUserIdPlaceholder":"全部",
+      "userId":"名片用户",
+      "userIdPlaceholder":"全部",
+      "cardId":"名片",
+      "cardIdPlaceholder":"全部",
+      "ip":"IP",
+      "ipPlaceholder":"请输入IP",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addStatistics":"添加数据统计管理",
+      "updateStatistics":"编辑数据统计管理",
+      "statisticsDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

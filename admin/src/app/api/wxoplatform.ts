@@ -47,6 +47,14 @@ export function weappCommit(params: Record<string, any>) {
 }
 
 /**
+ * 撤回小程序代码提交
+ * @returns
+ */
+export function siteWeappUndocodeaudit(id: Number) {
+    return request.get(`wxoplatform/weapp/version/undocodeaudit/${id}`, { showSuccessMessage: true })
+}
+
+/**
  * 获取提交记录
  */
 export function getWeappCommitRecord(params: Record<string, any>) {

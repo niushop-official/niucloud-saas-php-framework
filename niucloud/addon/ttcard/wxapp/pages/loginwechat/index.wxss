@@ -1,0 +1,51 @@
+/* pages/login/index.wxss */
+.a1{
+  display: block;
+  content:'';
+  width:600rpx;
+  height:400rpx;
+  transform: rotate(45deg);
+  position: fixed;
+  right:-260rpx;
+  top:-100rpx;
+  border-radius:50%;
+  opacity: .5;
+}
+.a2{
+  display: block;
+  content:'';
+  width:600rpx;
+  height:400rpx;
+  transform: rotate(45deg);
+  position: fixed;
+  left:-260rpx;
+  bottom:-100rpx;
+  border-radius:50%;
+  opacity: .6;
+  z-index: -1;
+}
+.a3{
+  display: block;
+  content:'';
+  width:600rpx;
+  height:600rpx;
+  /* transform: rotate(45deg); */
+  position: fixed;
+  left:80rpx;
+  bottom:-400rpx;
+  border-radius:50%;
+  opacity: .5;
+  z-index: -1;
+}
+.mobileBox{
+  width:100rpx;
+  height:100rpx
+} 
+
+ 
+button::after{
+  border:none
+}
+.checkBox{
+  transform:scale(.5); 
+}

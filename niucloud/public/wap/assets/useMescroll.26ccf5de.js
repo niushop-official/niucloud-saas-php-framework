@@ -1,0 +1,1 @@
+function e(e,l,o){let t=null;return o&&o((()=>{t&&t.onPullDownRefresh()})),e&&e((e=>{t&&t.onPageScroll(e)})),l&&l((()=>{t&&t.onReachBottom()})),{getMescroll:()=>t,mescrollInit:e=>{t=e},downCallback:()=>{t.optUp.use?t.resetUpScroll():setTimeout((()=>{t.endSuccess()}),500)},upCallback:()=>{setTimeout((()=>{t.endErr()}),500)}}}export{e as u};

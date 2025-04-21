@@ -1,0 +1,14 @@
+{
+      "id":"ID",
+      "userId":"用户",
+      "userIdPlaceholder":"全部",
+      "cardId":"名片",
+      "cardIdPlaceholder":"全部",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "addCollect":"添加收藏",
+      "updateCollect":"编辑收藏",
+      "collectDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

@@ -1,0 +1,8 @@
+{
+    "all": "全部",
+    "notPaid":"未支付",
+    "payMoney": "实付金额：",
+    "orderMoney": "订单金额：",
+    "emptyTips": "未获取到订单信息",
+    "nothingMore":"没有更多内容啦~"
+}

@@ -1,0 +1,94 @@
+{
+  "pages": [
+    "pages/index/index", 
+    "pages/addNews/index",
+    "pages/news/index", 
+    "pages/loginwechat/index",
+    "pages/addAuthentication/index",
+    "pages/myColleague/index",
+    "pages/viewCardUser/index",
+    "pages/biographicalDetail/index",
+    "pages/myBiographical/index",
+    "pages/addBiographical/index",
+    "pages/addRecruit/index",
+    "pages/recruitDetail/index",
+    "pages/recruit/index",
+    "pages/myRecruit/index",
+    "pages/order/index", 
+    "pages/vipProduct/index",
+    "pages/login/index",
+    "pages/loginmobile/index",
+    "pages/loginaccount/index",
+    "pages/authentication/index",
+    "pages/programme/index",
+    "pages/addProgramme/index",
+    "pages/icon/index",
+    "pages/addCard/index",
+    "pages/mymessagedetail/index",
+    "pages/mymessage/index",
+    "pages/card/index", 
+    "pages/echarts/index",
+    "pages/caseList/index",
+    "pages/productList/index",
+    "pages/editUserInfo/index",
+    "pages/help/index",
+    "pages/submitMsg/index",
+    "pages/addWebsite/index",
+    "pages/addProduct/index",
+    "pages/imagesDetail/index",
+    "pages/addCase/index", 
+    "pages/images/index",
+    "pages/website/index",
+    "pages/websiteList/index",
+    "pages/detail/index",
+    "pages/addImages/index",
+    "pages/my/index",
+    "pages/cardholder/index",
+    "pages/connections/index"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#39b54a",
+    "navigationBarTitleText": "",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#000",
+    "selectedColor": "#303133",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text":"首页",
+        "iconPath":"./images/tabbar/home.png",
+        "selectedIconPath":"./images/tabbar/home_cur.png" 
+      },
+      {
+        "pagePath": "pages/connections/index",
+        "text":"人脉",
+        "iconPath":"./images/tabbar/renmai.png",
+        "selectedIconPath":"./images/tabbar/renmai_cur.png"
+      }, 
+      {
+        "pagePath": "pages/recruit/index",
+        "text":"招聘",
+        "iconPath":"./images/tabbar/zhaopin.png",
+        "selectedIconPath":"./images/tabbar/zhaopin_cur.png"
+      }, 
+      {
+        "pagePath": "pages/my/index",
+        "text":"我的",
+        "iconPath":"./images/tabbar/my.png",
+        "selectedIconPath":"./images/tabbar/my_cur.png"
+      }
+    ]
+  },
+  "usingComponents": { 
+    "cu-custom": "/colorui/components/cu-custom",
+    "copyright": "/components/copyright/index",
+    "Privacy": "/components/privacy/index"
+  },
+  "sitemapLocation": "sitemap21.json",
+  "__usePrivacyCheck__": true
+}

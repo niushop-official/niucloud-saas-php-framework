@@ -1,0 +1,13 @@
+{
+	"task": "任务奖励",
+	"fenxiaoNotOpen": "分销活动未开启",
+	"taskDesc": "系统任务奖励",
+	"cashOut": "提现",
+	"billingInformation":"账单信息",
+	"commissionGet": "累计佣金",
+	"sale": "销售奖励",
+	"saleDesc": "销售额排行奖励",
+	"commission": "可提现",
+	"commissionCashOuting": "提现中"
+}
+

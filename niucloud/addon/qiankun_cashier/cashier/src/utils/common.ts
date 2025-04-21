@@ -1,0 +1,327 @@
+import type { App } from 'vue'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import { useTitle } from '@vueuse/core'
+import storage from './storage'
+
+/**
+ * 全局注册element-icon
+ * @param app
+ */
+export function useElementIcon(app: App): void {
+    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+        app.component(key, component)
+    }
+}
+
+/**
+ * 获取当前访问应用类型
+ */
+export function getAppType() {
+    const path = location.pathname.split('/').filter((val) => {
+        return val
+    })
+
+    if (!path.length) {
+        return 'admin'
+    } else {
+        return path[0]
+    }
+}
+
+/**
+ * 设置网站 title
+ * @param value
+ */
+export function setWindowTitle(value: string = ''): void {
+    const title = useTitle()
+    title.value = value ? value : import.meta.env.VITE_DETAULT_TITLE
+}
+
+/**
+ * 获取token
+ * @returns
+ */
+export function getToken(): null | string {
+    return storage.get('token')
+}
+
+/**
+ * 设置token
+ * @param token
+ * @returns
+ */
+export function setToken(token: string): void {
+    storage.set({ key: 'token', data: token })
+}
+
+/**
+ * 移除token
+ * @returns
+ */
+export function removeToken(): void {
+    storage.remove('token')
+}
+
+/**
+ * 判断是否是url
+ * @param str
+ * @returns
+ */
+export function isUrl(str: string): boolean {
+    return str.indexOf('http://') != -1 || str.indexOf('https://') != -1
+}
+
+/**
+ * 图片输出
+ * @param path
+ * @returns
+ */
+export function img(path: string): string {
+    return isUrl(path) ? path : `${ import.meta.env.VITE_IMG_DOMAIN || location.origin }/${ path }`
+}
+
+/**
+ * 输出asset img
+ * @param path
+ * @returns
+ */
+export function assetImg(path: string) {
+    return new URL('@/', import.meta.url) + path
+}
+
+/**
+ * 获取字符串字节长度
+ * @param str
+ * @returns
+ */
+export function strByteLength(str: string = ''): number {
+    let len = 0;
+    for (let i = 0; i < str.length; i++) {
+        if (str.charCodeAt(i) > 127 || str.charCodeAt(i) == 94) {
+            len += 2;
+        } else {
+            len++;
+        }
+    }
+    return len;
+}
+
+/**
+ * url 转 route
+ * @param url
+ */
+export function urlToRouteRaw(url: string) {
+    const query: any = {}
+    const [path, param] = url.split('?')
+
+    param && param.split('&').forEach((str: string) => {
+        let [name, value] = str.split('=')
+        query[name] = value
+    })
+
+    return { path, query }
+}
+
+
+/**
+ * 生成唯一字符
+ * @param {Number} len
+ * @param {Boolean} firstU
+ * @param {Number} radix
+ */
+export function guid(len = 10, firstU = true, radix: any = null) {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+    const uuid = []
+    radix = radix || chars.length
+
+    if (len) {
+        // 如果指定uuid长度,只是取随机的字符,0|x为位运算,能去掉x的小数位,返回整数位
+        for (let i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix]
+    } else {
+        let r
+        // rfc4122标准要求返回的uuid中,某些位为固定的字符
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-'
+        uuid[14] = '4'
+
+        for (let i = 0; i < 36; i++) {
+            if (!uuid[i]) {
+                r = 0 | Math.random() * 16
+                uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r]
+            }
+        }
+    }
+    // 移除第一个字符,并用u替代,因为第一个字符为数值时,该guuid不能用作id或者class
+    if (firstU) {
+        uuid.shift()
+        return `u${ uuid.join('') }`
+    }
+    return uuid.join('')
+}
+
+/**
+ * 金额格式化
+ */
+export function moneyFormat(money: string): string {
+    return isNaN(parseFloat(money)) ? money : parseFloat(money).toFixed(2)
+}
+
+
+/**
+ * 时间戳转日期格式
+ */
+export function timeStampTurnTime(timeStamp: any, type = "") {
+    if (timeStamp != undefined && timeStamp != "" && timeStamp > 0) {
+        var date = new Date();
+        date.setTime(timeStamp * 1000);
+        var y: any = date.getFullYear();
+        var m: any = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d: any = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h: any = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute: any = date.getMinutes();
+        var second: any = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        if (type) {
+            if (type == 'yearMonthDay') {
+                return y + '年' + m + '月' + d + '日';
+            }
+            return y + '-' + m + '-' + d;
+        } else {
+            return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+        }
+
+    } else {
+        return "";
+    }
+}
+
+/**
+ * 过滤小数点(保留两位)
+ * @param event
+ */
+export function filterDigit(event: any) {
+    event.target.value = event.target.value.replace(/[^\d\.]/g, '');
+    event.target.value = event.target.value.replace(/^\./g, '');
+    event.target.value = event.target.value.replace(/\.{2,}/g, '.');
+    // 限制最多两位小数
+    const decimalParts = event.target.value.split('.');
+    if (decimalParts.length > 1 && decimalParts[1].length > 2) {
+        // 如果有小数部分且超过两位，则截取前两位
+        event.target.value = `${ decimalParts[0] }.${ decimalParts[1].slice(0, 2) }`;
+    }
+}
+
+/**
+ * 过滤整数
+ * @param event
+ */
+export function filterNumber(event: any) {
+    event.target.value = event.target.value.replace(/[^\d]/g, '');
+}
+
+/**
+ * 过滤特殊字符
+ * @param event
+ */
+export function filterSpecial(event: any) {
+    event.target.value = event.target.value.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '')
+    event.target.value = event.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g, '')
+}
+
+/**
+ * 过滤空格
+ * @param event
+ */
+export function filterBlank(event: any) {
+    event.target.value = event.target.value.replace(/\s/g, '');
+}
+export function importIconFontCss() {
+    // const modulesFiles = {}; // import.meta.glob('@/styles/icon/official-iconfont.css', { eager: true })
+    // const modulesFiles = import.meta.glob('@/addon/**/assets/icon/*.css', { eager: true })
+    // // console.log('modulesFiles',modulesFiles)
+    //
+    // const modules:any = {}
+    // for (const [key, value] of Object.entries(modulesFiles)) {
+    //     const moduleName:any = key.split('/').pop()
+    //     const name = moduleName.split('.')[0]
+    //     modules[name] = value.default
+    // }
+    //
+    // // console.log('modules',modules)
+    //
+    // for(let key in modules) {
+    //     // console.log('modules[key]',modules[key])
+    //     import(modules[key]).then((module) => {
+    //         // console.log('module', module.default);
+    //     }).catch((e) => {
+    //         // console.log('caca', e)
+    //     });
+    // }
+}
+
+export function getIcon() {
+    // const modulesFiles = import.meta.glob('@/styles/icon/*.json', { eager: true })
+    // const addonModulesFiles = import.meta.glob('@/addon/**/assets/icon/*.json', { eager: true })
+    // addonModulesFiles && Object.assign(modulesFiles, addonModulesFiles)
+    //
+    // // const modulesFiles = {}; // import.meta.glob('@/styles/icon/official-iconfont.css', { eager: true })
+    // // const modulesFiles = import.meta.glob('@/styles/icon/*.json', { eager: true })
+    // console.log('modulesFiles', modulesFiles)
+    //
+    // const modules = {}
+    // for (const [key, value] of Object.entries(modulesFiles)) {
+    //     const moduleName = key.split('/').pop()
+    //     console.log('moduleName',moduleName)
+    //     const name = moduleName.split('.')[0]
+    //     modules[name] = value.default
+    // }
+    // console.log('modules', modules)
+    // // const addonModulesFiles = import.meta.glob('@/addon/**/assets/icon/*.json', { eager: true })
+}
+
+/**
+ * 设置表格分页数据的本地存储
+ * @param page
+ * @param limit
+ * @param where
+ */
+export function setTablePageStorage(page: any = 1, limit: any = 10, where: any = {}) {
+    var data = storage.get('tablePageStorage');
+    if (!data) {
+        data = {};
+    }
+
+    var key = location.pathname + JSON.stringify(where);
+    data[key] = {
+        page,
+        limit
+    };
+
+    var MAX_COUNT = 5; // 最多存储 5 个页面的分页缓存，超出则删除最开始的第一个页面
+    if (Object.keys(data).length > MAX_COUNT) {
+        delete data[Object.keys(data)[0]];
+    }
+
+    storage.set({ key: 'tablePageStorage', data });
+}
+
+/**
+ * 获取表格分页数据的本地存储
+ * @param where
+ */
+export function getTablePageStorage(where: any = {}) {
+    var data = storage.get('tablePageStorage');
+    var key = location.pathname + JSON.stringify(where);
+    if (!data || !data[key]) {
+        data = {
+            page: 1,
+            limit: 10
+        };
+    } else {
+        data = data[key];
+    }
+    return data;
+}

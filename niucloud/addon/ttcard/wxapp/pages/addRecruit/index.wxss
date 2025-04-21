@@ -1,0 +1,53 @@
+/* pages/addRecruit/index.wxss */
+page{
+	background: #ffffff; 
+}
+.cu-form-group .title {
+  min-width: calc(4em + 85rpx);
+}
+::placeholder{
+  font-size: 32rpx!important;
+}
+.cu-custom .cu-bar { 
+  z-index: 999999;
+}
+.delBox{
+  width:40rpx;
+  height:100%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.title,textarea{
+  font-size: 32rpx!important;
+  color: #000000;
+}
+.cu-form-group input { 
+  font-size: 32rpx;
+  color: #000000;
+  padding-right: 0;
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+input{
+  color:#000000
+}
+
+.m-t{
+  margin-top:7rpx;
+}
+switch{
+  padding: 26rpx 0; 
+}
+.cu-form-group picker .picker {
+  line-height:unset; 
+}
+.cu-form-group picker::after { 
+  line-height: unset; 
+}
+
+.cu-form-group picker .picker { 
+  font-size: 32rpx; 
+  text-align: left;
+}

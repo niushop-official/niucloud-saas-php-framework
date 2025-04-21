@@ -1,0 +1,6 @@
+/* pages/programme/index.wxss */
+
+.fnItem{
+  width: 100%;
+  height:350rpx;
+} 

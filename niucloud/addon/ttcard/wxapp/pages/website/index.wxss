@@ -1,0 +1,93 @@
+page{
+	background-color: --var(orange);
+}
+.topBg{
+  background:#fff9eb;
+}
+.acBtn{
+  min-width: 180rpx; 
+} 
+.btnBox{
+  width:60rpx;
+  height:60rpx; 
+}
+.footerIcon{
+  width:60rpx;
+  height:60rpx;
+}
+.cu-btn{
+  width:120rpx
+}
+.codeBox{
+  width:350rpx;
+  height: 350rpx;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .04);
+}
+.mobileIcon{
+  width:40rpx;
+  height:40rpx;  
+  filter: grayscale(100%) brightness(200%);
+}
+.cu-avatar {
+  width: 180rpx;
+    height: 180rpx;
+    min-width: 180rpx;
+}
+.tongshiItem:first-child{
+  margin-left:0!important
+}
+.tongshiBox{
+  width:196.666666666rpx;
+}
+.cu-avatar.xl {
+  min-width: 128rpx; 
+}
+.cu-tag+.cu-tag {
+  margin-left: 0;
+}
+.tongshiBoxImage{
+  width:196.666666666rpx;
+  height:196.666666666rpx;
+  overflow: hidden;
+  border-radius: 12rpx;
+}
+
+.caseBox{
+  width:305rpx; 
+}
+.caseBoxImage{
+  /* width:305rpx; */
+  height:305rpx;
+  overflow: hidden;
+  border-radius: 12rpx;
+}
+.footerTab{
+  position: fixed;z-index:999999;bottom:-200px;
+  transition: .3s;
+}
+.showFooterTab{
+  bottom:0; 
+}
+.screen-swiper {
+  height:750rpx;
+}
+
+.topBar{
+  top:-200px;
+  transition: .3s;
+}
+.showTopBar{
+  top:0;
+}
+
+.fnItem{
+  width: 100%;
+  height:340rpx;
+} 
+.bg-gray {
+  background:rgba(0,0,0,.02); 
+}

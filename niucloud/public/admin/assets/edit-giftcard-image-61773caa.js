@@ -1,0 +1,1 @@
+import{u as t}from"./poster-7b321333.js";import{d as r,h as n,c as s,b as _}from"./index-31c6606f.js";const a={class:"content-wrap"},c=r({__name:"edit-giftcard-image",setup(l,{expose:e}){return t(),e({}),(o,i)=>(n(),s("div",a,[_(o.$slots,"common")]))}}),d=Object.freeze(Object.defineProperty({__proto__:null,default:c},Symbol.toStringTag,{value:"Module"}));export{d as _};

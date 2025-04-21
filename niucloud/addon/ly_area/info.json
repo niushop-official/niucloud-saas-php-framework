@@ -1,0 +1,11 @@
+{
+  "title": "区域分红",
+  "desc": "区域订单分红",
+  "key": "ly_area",
+  "version": "1.0.2",
+  "author": "链上优品",
+  "type": "addon",
+  "support_app": "shop",
+  "support_version": "1.0.0",
+  "compile":[]
+}

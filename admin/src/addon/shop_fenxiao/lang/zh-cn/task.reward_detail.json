@@ -1,0 +1,22 @@
+{
+    "detailTask": "任务奖励详情",
+    
+    "taskNam": "任务名称",
+    "taskTime": "活动时间",
+    "recipient": "任务接受人",
+    "totalMoney": "奖励总金额",
+    "status": "任务状态",
+    "statusRelease": "奖励发放状态",
+    "schedule": "任务进度",
+    "timeRelease": "奖励发放时间",
+    "baseInfo": "基础信息",
+    "rewardDetail": "奖励明细",
+    "awardExplain": "奖励说明",
+    "awardMoney": "奖励金额",
+    "awardTimeRelease": "发放时间",
+    "awardStatus": "发放状态",
+    "issued": "已发放",
+    "unissued": "未发放",
+    "stepAward": "阶奖励"
+  }
+  

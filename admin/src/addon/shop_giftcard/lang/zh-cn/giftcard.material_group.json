@@ -1,0 +1,12 @@
+{
+  "list":"列表",
+  "group":"分组",
+  "groupName": "分组名称",
+  "groupNamePlaceholder": "请输入分组名称",
+  "sort": "排序号",
+  "sortPlaceholder": "请输入排序号",
+  "addMaterialGroup": "添加分组",
+  "updateMaterialGroup": "编辑分组",
+  "materialGroupDeleteTips": "确定要删除该数据吗？",
+  "createTime": "创建时间"
+}

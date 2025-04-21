@@ -1,0 +1,21 @@
+{
+    "orderNo": "订单号",
+    "refundNo": "退款单号",
+    "refundStatus": "退款状态",
+    "startDate": "开始时间",
+    "endDate": "结束时间",
+    "refundNoPlaceholder": "请输入退款单号",
+    "applyMoney":"申请金额",
+    "realityMoney":"实际退款金额",
+    "orderMoney": "退款金额",
+    "memberInfo": "下单会员",
+    "toOrder": "查看订单",
+    "confirmRefund": "确认退款",
+    "refuseRefund": "驳回申请",
+    "refuseReason": "拒绝原因",
+    "refuseReasonTips": "请输入拒绝原因",
+    "confirmRefundTips": "确定要进行退款吗？",
+    "refundMoneyPlaceholder": "请输入退款金额",
+    "orderPayMoney": "订单实付金额",
+    "refundMoneyErrorMessage": "退款金额格式错误"
+}

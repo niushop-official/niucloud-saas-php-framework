@@ -1,0 +1,16 @@
+{   
+    "levelName":"股东等级",
+    "levelNamePlaceholder":"请选择股东等级",
+    "selectFenxiao": "选择股东",
+    "fenxiaoSelectPricePopupTitle":"选择股东",
+    "fenxiao": "上级股东",
+    "fenxiaoDefault":"顶级股东",
+    "selectFenxiaoPlaceholder": "请选择一个股东",
+    "memberDefault":"暂无关联会员",
+    "shareholderMemberName":"关联会员",
+    "selectMemberName":"选择会员",
+    "refreshSuccess":"刷新成功",
+    "selectMemberNamePlaceholder":"请选择会员",
+    "memberSelectPricePopupTitle":"选择会员"
+    
+}

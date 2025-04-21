@@ -1,0 +1,16 @@
+{
+      "id":"ID",
+      "title":"标题",
+      "titlePlaceholder":"请输入标题",
+      "content":"内容",
+      "contentPlaceholder":"请输入内容",
+      "createTime":"创建时间",
+      "createTimePlaceholder":"请输入创建时间",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "addHelp":"添加",
+      "updateHelp":"编辑",
+      "helpDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

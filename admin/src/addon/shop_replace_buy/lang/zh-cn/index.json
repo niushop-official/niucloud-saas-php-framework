@@ -1,0 +1,27 @@
+{
+    "memberInfoTitle":"请选择会员",
+    "memberInfoPlaceholder":"请输入会员编码/昵称/手机号搜索",
+    "memberInfo":"会员信息",
+    "mobile":"手机号",
+    "point":"积分",
+    "balance":"余额",
+    "selectMember":"选择下单会员",
+    "reselectMember":"重新选择",
+    "allGoods":"全部商品",
+    "goodsName":"商品名称",
+    "goodsNamePlaceholder":"请输入商品名称",
+    "goodsCategory":"商品分类",
+    "goodsCategoryPlaceholder":"请选择商品分类",
+    "goodsInfo":"商品信息",
+    "price":"价格",
+    "stock":"库存",
+    "buy":"购买",
+    "select":"选择",
+    "selected":"已选择",
+    "goodsSelectTitle":"选择规格",
+    "num":"数量",
+    "selectMemberPlaceholder":"请选择下单会员",
+    "cancel":"取消",
+    "confirm":"确定"
+    
+}

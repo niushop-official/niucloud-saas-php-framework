@@ -1,0 +1,1 @@
+import{ak as t}from"./index-8fe4bece.js";function r(r){return t.get("turntable/info",r)}function n(r){return t.post("turntable/lottery",r)}function e(r){return t.get("turntable/gameDrawRecord",r)}function a(r){return t.post("turntable/saveAddress",r)}export{e as a,r as g,n as l,a as s};

@@ -1,0 +1,23 @@
+{
+    "levelId":"等级ID",
+    "levelIdPlaceholder":"请输入主键Id",
+    "levelName":"等级名称",
+    "levelNamePlaceholder":"请输入等级名称",
+    "levelNum":"等级权重",
+    "levelArea":"代理级别",
+    "upgradeConditions":"升级条件",
+    "levelAreaPlaceholder":"请输入代理区域",
+    "levelRate":"分红比例",
+    "upType":"升级方式",
+    "orderGoodsId":"购买指定商品之一",
+    "orderMoney":"自购订单金额",
+    "status":"状态",
+    "statusPlaceholder":"请输入状态（0关闭 1启用）",
+    "createTime":"创建时间",
+    "createTimePlaceholder":"请输入创建时间",
+    "addLevel":"添加区域代理等级",
+    "updateLevel":"编辑区域代理等级",
+    "levelDeleteTips":"确定要删除该数据吗？",
+    "startDate":"请选择开始时间",
+    "endDate":"请选择结束时间"
+}

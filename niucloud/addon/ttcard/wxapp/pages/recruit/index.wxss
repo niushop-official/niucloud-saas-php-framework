@@ -1,0 +1,16 @@
+/* pages/recruit/index.wxss */
+
+.tagBox {
+  font-size: 24rpx;
+  vertical-align: middle;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0rpx 16rpx;
+  height: 48rpx;
+  margin-right:10rpx;
+  border-radius:4rpx
+}
+

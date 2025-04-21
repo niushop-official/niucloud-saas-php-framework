@@ -1,0 +1,11 @@
+{
+  "title": "代客下单",
+  "desc": "帮助客户快捷下单，提升交易效率",
+  "key": "shop_replace_buy",
+  "version": "1.0.2",
+  "author": "niucloud",
+  "type": "addon",
+  "support_app": "shop",
+  "compile":[],
+  "support_version": "1.0.2"
+}

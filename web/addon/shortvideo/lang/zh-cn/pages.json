@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "shortvideo": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

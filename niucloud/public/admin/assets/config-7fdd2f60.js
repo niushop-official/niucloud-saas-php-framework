@@ -1,0 +1,1 @@
+import{P as r}from"./index-31c6606f.js";function o(e=0){return r.get("qiankun_recharge/config")}function s(e){return r.post("qiankun_recharge/config",e,{showErrorMessage:!0,showSuccessMessage:!0})}export{s as a,o as g};

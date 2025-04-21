@@ -1,0 +1,23 @@
+<cu-custom bgColor="" isBack="{{true}}">
+  <view slot="content" class="text-lg text-bold text-black"></view>
+</cu-custom>  
+<view class="fixed  top-0 left-0 w--100 h--100 flex align-center">
+  <view class="margin-lr-lg flex-1 ">
+    <view class="column justify-center flex" style="margin-top:-280rpx;margin-bottom:200rpx"> 
+      <view class="text-xxl flex justify-center text-bold margin-top-sm">登录 / 注册</view>
+      <view class="margin-top-xs flex justify-center text-xxl text-orange opacity-06">——</view>
+      <view class="text-gray flex justify-center margin-top-xs">~ 欢迎使用名片生成系统 ~</view>
+    </view>
+    <view class="padding-tb margin-top-xl breathing-element text-xl text-bold text-center bg-gradual-orange round lg shadow-orange align-center relative " bind:tap="goLogin">
+      授权登录 
+    </view> 
+
+  </view>
+</view>
+
+ 
+<view class="vipBox_1 a1"></view>
+<view class="vipBox_1 a2"></view>
+<view class="vipBox_1 a3"></view>
+
+<Privacy />

@@ -1,0 +1,11 @@
+{
+  "title": "会员资产转赠互转",
+  "desc": "会员资产转赠互转",
+  "key": "transfer",
+  "version": "1.1.4",
+  "author": "haha9089",
+  "type": "addon",
+  "support_app": "",
+  "compile":[],
+  "support_version": "1.0.*"
+}

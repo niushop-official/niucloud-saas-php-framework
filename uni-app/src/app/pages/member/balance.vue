@@ -24,8 +24,13 @@
                         <text class="text-[36rpx] font-500 price-font">{{ moneyFormat(memberStore.info?.money).split('.')[1] }}</text>
                     </view>
                 </view>
-                <view class="mt-[60rpx] flex justify-around" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || cashOutConfigObj.is_open == 1 || rechargeConfigObj.is_use == 1)">
-                    <template v-if="systemStore.siteAddons.includes('recharge')">
+                <view class="mt-[60rpx] flex justify-around" v-if="Object.keys(cashOutConfigObj).length && (systemStore.siteAddons.includes('recharge') || systemStore.siteAddons.includes('qiankun_recharge') || cashOutConfigObj.is_open == 1 || rechargeConfigObj.is_use == 1)">
+                    <!-- qiankun_recharge_backup_code --><template v-if="systemStore.siteAddons.includes('qiankun_recharge') && rechargeConfigObj.open == 1">
+                <button class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border" hover-class="none" shape="circle" @click="redirect({url: '/addon/qiankun_recharge/pages/recharge/recharge'})">立即充值</button>
+              </template>
+              <template v-else-if="systemStore.siteAddons.includes('recharge')">
+              <!-- qiankun_recharge_backup_code_end -->
+              <!-- qiankun_recharge_backup <block v-if="systemStore.siteAddons.includes('recharge')"> -->
                         <button v-if="rechargeConfigObj.is_use == 1"
                                 class="w-[250rpx] h-[70rpx] rounded-[40rpx] text-[26rpx] font-500 !bg-[#fff] !text-[var(--primary-color)] flex-center !m-0 border-[2rpx] border-[var(--primary-color)] border-solid box-border"
                                 hover-class="none" shape="circle"
@@ -78,6 +83,8 @@
 </template>
 
 <script setup lang="ts">
+  import request from "@/utils/request";
+  
 import { ref, reactive, computed, watch } from 'vue'
 import { t } from '@/locale'
 import { moneyFormat, redirect, img, pxToRpx } from '@/utils/common';
@@ -109,7 +116,13 @@ watch(
     (newAddons, oldAddons) => {
         if (newAddons !== oldAddons) {
             systemStore.siteAddons = newAddons
-            if (systemStore.siteAddons.includes('recharge')) {
+            /** qiankun_recharge_backup_code */if (systemStore.siteAddons.includes('qiankun_recharge')) {
+          request.get(`qiankun_recharge/config`).then((res: any) => {
+            for (let key in res.data) {
+              rechargeConfigObj[key] = res.data[key];
+            }
+          })
+        } else if (systemStore.siteAddons.includes('recharge')) { /** qiankun_recharge_backup_code_end */
                 rechargeConfig().then((res: any) => {
                     for (let key in res.data) {
                         rechargeConfigObj[key] = res.data[key];
@@ -127,7 +140,13 @@ onShow(() => {
         }
 
     })
-    if (systemStore.siteAddons.includes('recharge')) {
+    /** qiankun_recharge_backup_code */if (systemStore.siteAddons.includes('qiankun_recharge')) {
+          request.get(`qiankun_recharge/config`).then((res: any) => {
+            for (let key in res.data) {
+              rechargeConfigObj[key] = res.data[key];
+            }
+          })
+        } else if (systemStore.siteAddons.includes('recharge')) { /** qiankun_recharge_backup_code_end */
         rechargeConfig().then((res: any) => {
             for (let key in res.data) {
                 rechargeConfigObj[key] = res.data[key];

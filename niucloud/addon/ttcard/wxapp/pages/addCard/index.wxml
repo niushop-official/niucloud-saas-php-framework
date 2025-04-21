@@ -1,0 +1,232 @@
+<view wx:if="{{loginStatus}}">
+<view style="padding-bottom:80rpx"> 
+
+  <cu-custom bgColor="bg-white" isBack='{{sub.from_website_id?false :true}}' isCustom="{{sub.from_website_id?true :false}}" ><view slot="content" class="text-bold text-black text-lgbg-white">{{sourceType == 'edit' ? '编辑名片' : '创建名片'}}</view></cu-custom>
+ 
+  <view class="flex margin-lr shadow-gray-light column margin-top-lg radius-30 bg-white hidden  bg-gradual-orange">
+    <view class="cardBox flex column flex-1 padding padding-tb-xl" style="background-image:url({{cardBackgroundUrl}});background-position:center;background-size:cover;background-repeat:no-repeat;">
+      <view class="flex align-center">
+        <view class="solids avatarBox round" bind:tap="updateLoadImg"  data-imgs='1' data-type='avatar' wx:if="{{!avatar}}">
+          <text class="cuIcon-my text-white"></text>
+      </view> 
+      <view class="cu-avatar xl round solids"  wx:if="{{avatar}}" style="background-image:url({{avatar}});" bind:tap="updateLoadImg"  data-imgs='1' data-type='avatar'  ></view>
+        <view class="flex column text-white margin-left">
+          <view class='text-xxl flex align-center  text-bold'>
+          {{sub.name || '姓名'}}  
+          </view>
+          <view class="flex text-white margin-top-xs text-df align-center">
+            <view wx:if="{{sub.gender == 1 || sub.gender == 0}}">
+              <view class='' wx:if="{{sub.gender == 1}}">女</view>
+              <view class='' wx:if="{{sub.gender == 0}}">男</view> 
+            </view>
+            <view wx:else>性别</view>
+           
+            <text class='margin-lr-sm opacity-03' >|</text>
+            <text class='' >{{sub.position || '岗位'}}</text>
+            <text class='margin-lr-sm opacity-03' >|</text>
+            <view class=''>{{industry[industryIndex] || '行业'}}</view>
+          </view>
+          <view class="action margin-top-xs" wx:if="{{tags_arr.length>0}}"> 
+            <view class="cu-tag round text-white margin-bottom-xs tagbox " wx:for="{{tags_arr}}" wx:key="index">{{item}}</view> 
+
+          </view>
+        </view>
+      </view>
+      <view class='text-white margin-top-lg lineOpa line-white padding-tb-lg'><text class=" text-cut-1 text-sm letter-spacing-2 text-cut-1" style="display: block;height:40rpx">{{sub.short_description || '我是一名销售，我的口才很棒，能够舌战群妇。'}}</text></view>
+      <view class='text-white margin-top-lg line-white'>
+        <view class="flex justify-between">
+          <view class='flex align-center hidden'><text class='cuIcon-dianhua margin-right-xs'></text><text class='text-cut-1'>{{sub.phone || '测试电话号码'}}</text></view> 
+        </view>
+        <view class="flex justify-between margin-top">
+          <view class='flex align-center hidden'><text class='cuIcon-weixin margin-right-xs'></text><text class='text-cut-1'>{{sub.wechat_num || '微信号'}}</text></view> 
+        </view>
+        <view class="flex justify-between margin-top">
+          <view class='flex align-center hidden'><text class='cuIcon-mail margin-right-xs'></text><text class='text-cut-1'>{{sub.email || '邮箱'}}</text></view> 
+        </view>
+        <view class="flex justify-between margin-top">
+          <view class='flex align-center hidden'><text class='cuIcon-locationfill margin-right-xs'></text><text class='text-cut'>{{sub.address || '详细地址'}}</text></view> 
+        </view>
+      </view>
+    </view> 
+  </view>
+
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-tb-lg margin-lr " wx:if="{{cardBackground.length>0}}">
+    <view class="flex justify-between align-center">
+      <view class="text-bold text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>名片背景图</view> 
+    </view>
+    <view class="page-section-spacing margin-top">
+      <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
+        <view  class="scroll-view-item_H demo-text-1 margin-right-sm relative text-xxl" wx:for="{{cardBackground}}" wx:key="index" bind:tap="backgroundChange" data-index='{{index}}' data-id='{{item.id}}'><view class="cu-avatar xl radius-12" style="background-image:url({{item.image}});"></view><text class="cuIcon-roundcheckfill absolute margin-auto top-0 bottom-0 flex align-center justify-center text-white" wx:if="{{backgroundChangeIndex == index}}"></text></view> 
+      </scroll-view>
+    </view>
+  </view>
+
+ 
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden"> 
+    <view class="cu-bar bg-white margin-lr" style="min-height: 120rpx;">
+      <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+        自定义名片背景图
+      </view>
+      <view class="action text-gray">
+        {{card_bg.length}}/1
+      </view>
+    </view>
+    <view class="cu-form-group margin-lr" style="padding:0 0 20rpx 0">
+      <view class="grid col-4 grid-square flex-sub">
+        <view class="bg-img" wx:for="{{card_bg}}" wx:key="index" data-url="{{card_bg[index]}}">
+          <image src='{{item}}' mode='aspectFill'></image>
+          <view class="cu-tag bg-red" catchtap="DelImg" data-type='card_bg'  data-index="{{index}}">
+            <text class="cuIcon-close"></text>
+          </view>
+        </view>
+        <view class="solids" bind:tap="updateLoadImg" data-type='card_bg' data-imgs='1' wx:if="{{card_bg.length<1}}">
+          <text class="cuIcon-cameraadd"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden padding-top padding-bottom-sm">
+    <view class="flex justify-between align-center margin-top padding-lr">
+      <view class="flex column">
+        <view class="flex text-black text-lg">头像<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-sm text-gray margin-top-xs">建议使用真实头像，使名片更具真实性</view>
+      </view>
+      <view class="solids avatarBox text-grey round" bind:tap="updateLoadImg"  data-imgs='1' data-type='avatar' wx:if="{{!avatar}}">
+          <text class="cuIcon-cameraadd"></text>
+      </view> 
+      <view class="cu-avatar xl round solids hidden"  wx:if="{{avatar}}" style="background-image:url({{avatar}});" bind:tap="updateLoadImg"  data-imgs='1' data-type='avatar'  >
+        <view wx:if="{{avatar}}" class="bg-gray text-gray text-xs padding-bottom-xs absolute bottom-0 w--100  opacity-08">更换</view>
+      </view>
+    </view> 
+    <view class="cu-form-group margin-top padding-top margin-lr text-lg solid-top">
+      <view class="title flex text-black">姓名<text class="text-red margin-left-xs m-t">*</text></view>
+      <input  placeholder="请输入姓名" value='{{sub.name}}' bindinput='nameInput' class="text-black"></input>
+    </view>
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">性别<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="genderChange" class="text-left" value="{{genderIndex}}" range="{{gender}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{genderIndex}}">{{gender[genderIndex]}}</text>
+          <text wx:else>请选择性别</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">手机号<text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入手机号" value='{{sub.phone}}' bindinput='phoneInput' class="text-black"></input>
+    </view>
+
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">行业分类<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="industryChange" class="text-left" value="{{industryIndex}}" range="{{industry}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{industryIndex || industryIndex == 0}}">{{industry[industryIndex]}}</text>
+          <text wx:else>请选择行业分类</text> 
+        </view>
+      </picker> 
+    </view>
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">职位<text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入职位" bindinput='positionInput'  value='{{sub.position}}'  class="text-black"></input>
+    </view>  
+    <view class="cu-form-group relative margin-lr text-lg">
+      <view class="title flex text-black">个人技能<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+      <input placeholder='请输入个人技能' bindinput='tagsInput'  value='{{sub.tags}}'   class="text-black"></input>
+      <view class='cuIcon-questionfill tipsBox text-gray' bind:tap="showTagsTips"></view>
+    </view>
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">地址</view>
+      <input placeholder="请输入地址" bindinput='addressInput' value='{{sub.address}}'   class="text-black"></input>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">邮箱</view>
+      <input placeholder="请输入邮箱" bindinput='emailInput'  value='{{sub.email}}'  class="text-black"></input>
+    </view> 
+  </view>
+
+  
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group align-center margin-left">
+      <view class="title flex flex-1 justify-between text-black">
+        <view>个人简介<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-gray">{{textLength}}/2000</view>
+      </view>
+    </view>
+    <view class="margin-lr padding-bottom"> 
+      <view class="container" style="height:{{editorHeight}}px;">
+        <editor id="editor" class="ql-container" placeholder="{{placeholder}}" bindinput="editorContentChange" bindready="onEditorReady">
+        </editor>
+      </view> 
+    </view>
+  </view>
+
+
+  <view class="flex margin-lr  padding-tb-sm shadow-gray-light column margin-top radius-30 bg-white hidden relative"> 
+      <view class="cu-bar bg-white margin-lr">
+        <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+          视频介绍
+        </view>
+      </view>
+      <view class="cu-form-group margin-lr relative" style="padding:0 0 10rpx 0">
+        <view class="relative radius-12 hidden" wx:if="{{sub.video}}">
+          <video src="{{sub.video}}" binderror="videoErrorCallback" show-center-play-btn='{{false}}' show-play-btn="{{true}}" controls></video>
+          <view class="absolute padding-xs right-0 top-0 z-9999">
+            <text class="cuIcon-close text-white" bindtap="delVideo"></text>
+          </view>
+        </view>
+        <view class="bg-gray flex align-center justify-center videoBox opacity-06" bindtap="updateLoadImg" data-type='video' wx:if="{{!sub.video}}">
+          <text class="cuIcon-cameraadd text-grey"></text>
+        </view>
+      </view>
+    </view>
+
+
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden padding-tb-sm">
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">微信号</view>
+      <input placeholder="请输入微信号" bindinput='wechat_numInput' value='{{sub.wechat_num}}' class="text-black"></input>
+    </view>
+    <view class="cu-bar bg-white solid-top margin-lr" style="min-height: 120rpx;">
+      <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+        微信二维码
+      </view>
+      <view class="action text-gray">
+        {{weixinCode.length}}/1
+      </view>
+    </view>
+    <view class="cu-form-group margin-lr" style="padding:0 0 20rpx 0">
+      <view class="grid col-4 grid-square flex-sub">
+        <view class="bg-img" wx:for="{{weixinCode}}" wx:key="index" bindtap="ViewImage" data-url="{{weixinCode[index]}}">
+          <image src='{{weixinCode[index]}}' mode='aspectFill'></image>
+          <view class="cu-tag bg-red" catchtap="DelImg" data-type='weixin'   data-index="{{index}}">
+            <text class="cuIcon-close"></text>
+          </view>
+        </view>
+        <view class="solids" bind:tap="updateLoadImg"  data-imgs='1' data-type='weixin'   wx:if="{{weixinCode.length<1}}">
+          <text class="cuIcon-cameraadd"></text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group margin-lr text-lg" >
+      <view class="title flex text-black">推送到人脉</view>
+      <switch class="cyan" checked="{{sub.connections_status == '1'}}"  bindchange='switchChange'></switch>
+    </view>
+    </view>
+    <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group margin-lr text-lg" >
+      <view class="title flex text-black">首页展示<view class='cuIcon-questionfill tipsBox text-gray' bind:tap="showTagsTips" data-type='setdefault'></view></view>
+      <switch class="cyan" checked="{{sub.default_status == '1'}}"  bindchange='defaultChange'></switch>
+    </view>
+  </view> 
+
+  <view class="padding-tb text-lg text-bold text-center bg-gradual-orange round lg margin-top-xl shadow-gray padding-lr margin-lr" bind:tap="checkUserExpirationTime"   style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);">{{sourceType == 'edit' ? '提交修改' : '创建名片'}} 
+  </view> 
+
+
+</view>
+</view>

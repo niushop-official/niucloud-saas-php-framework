@@ -1,0 +1,41 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:120px">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">解决方案</view>
+  </cu-custom>
+
+
+  <view class="flex margin-top flex-wrap padding-lr">
+    <view class="{{index != 0 || index != 1? 'margin-top-sm' :''}}  w--50" wx:for="{{list}}" wx:key="index">
+      <view class="  {{index%2==0?'padding-right-xs':'padding-left-xs'}}  "> 
+        <view class='solid radius-30 fnItem flex column padding-lr' style="box-sizing: border-box;">
+          <text class=' text-center margin-top-lg cuIcon-{{item.select_icon}} text-{{item.icon_color}} {{item.color_status == "deep" ? "opacity-1" : "opacity-06" }}' style="font-size:100rpx;"></text>
+          <text class="text-lg text-bold text-black text-center margin-top">{{item.title}}</text>
+          <text class="text-sm text-cut-2 text-gray margin-top-xs text-center">{{item.description}}</text>
+        </view>
+      </view>
+      <view class="flex margin-top-sm text-gray margin-lr-xs">
+        <view class="flex-1 padding-tb-xs solid round text-center margin-lr-xs" hover-class="none" bind:tap="goEditProgramme" data-programmeindex='{{index}}' data-programmeid='{{item.id}}' >编辑</view>
+        <view class="flex-1 padding-tb-xs solid round text-center margin-lr-xs" over-class="none" bind:tap="goDeleteProgramme" data-programmeid='{{item.id}}' data-programmeindex='{{index}}'>删除</view>
+      </view>
+    </view>
+
+  </view>
+
+ 
+
+
+
+
+
+    <view class="emptyBox" wx:if="{{list.length == 0}}">
+      <image src="../../images/empty.png" />
+      <view class="text text-gray">~ 暂无相关内容 ~</view>
+    </view>
+
+    <view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{sourceUrl == 'my'}}">
+      <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddProgramme"><text class="cuIcon-roundaddfill"></text> 添加解决方案</view>
+    </view>
+
+</view>
+</scroll-view>

@@ -1,0 +1,88 @@
+<scroll-view scroll-y  class="scrollPage" 	scroll-with-animation>
+<view >
+  <view class="fixed bg-white top-0 w--100 " style="height:{{CustomBar}}px;z-index: 999999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="relative align-center flex flex-1">
+        
+        <view class="left-0 z-index-9 absolute flex align-center padding-lr-sm">
+          <view class="text-xl flex align-center margin-right-sm " bind:tap="goBack"><text class="cuIcon-back"></text></view> 
+        </view>
+        <view class="text-lg align-center flex-1 flex justify-center text-bold text-black" >
+          <view class="relative margin-lr justify-center {{tabIndex == 1 ? 'text-xl text-orange title-bg' :'text-black'}}" bind:tap="tabChange" data-index='1'>
+            <text class="text-ABC vipTitle">vip会员</text> 
+          </view>
+          <view class="justify-center margin-lr relative  {{tabIndex == 2 ? 'text-xl text-orange title-bg' :'text-black'}}"bind:tap="tabChange" data-index='2'>
+            <text class="text-ABC vipTitle">svip会员</text> 
+          </view> 
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="flex flex-wrap margin-top-lg margin-lr"  style="margin-top:{{CustomBar+20}}px;" wx:if="{{wechat_auditing == 0}}">
+
+    <view class="w--50  margin-bottom-sm relative {{userInfo.ordertype_id >= item.id?'hui opacity-06 ':''}}" wx:for="{{vipProduct}}" wx:key="index" wx:if="{{item.id != 3}}">
+      <view class="v-item bgimg radius-30 shadow-gray-light flex column justify-center align-center  padding padding-tb-xl vipBox_1 ">
+        <view class="text-bold flex align-center c613C14 relative vipTitle text-ABC"> 
+        <text class="text-xl">{{item.name}}</text>
+        </view>  
+        <!-- <text class="text-df w--100 margin-top-xs c613C14 opacity-06 text-cut text-center">{{item.tips}}</text> -->
+        <text class="margin-top text-red text-sl text-price">{{item.price}}</text>
+        <text class="text-delete c613C14 opacity-06  text-df text-price" wx:if="{{item.originalprice}}">{{item.originalprice}}</text>
+        <view class="tagItem padding-lr-sm  padding-tb-sm  round margin-top-xl flex w--100 align-center justify-center orange-shadow vipBox c613C14" bind:tap="{{userInfo.ordertype_id >= item.id?'':'addProductOrder'}}" data-id='{{item.id}}' data-index='{{index}}'>
+          <text class="text-bold vipTitle">{{userInfo.ordertype_id == item.id?'已购买':'立即购买'}}</text>
+        </view>
+      </view>
+    </view> 
+ 
+  </view>
+
+  <view class="flex-1 padding-bottom-lg">
+      <view class="cu-bar flex flex-1 margin-top-lg justify-center">
+        <view class="action sub-title w--100">
+          <text class="text-xxl text-bold text-ABC vipTitle text-orange">{{tabIndex == 1?'vip':'svip'}}会员权益</text>
+          <text class="text-ABC text-orange">Equity</text>
+        </view>
+      </view> 
+
+      <view class=" margin-top-lg margin-lr shadow-gray-light vipBox_1 hidden padding-bottom bgimg radius-30 ">
+        <view class="padding ">
+        <view class="margin-top  {{index != 0 ? 'padding-top dashed-top line-orange' :''}}" wx:for="{{vipProduct}}" wx:key="index">
+          <text class="text-lg text-bold vipTitle"><text class="cuIcon-title"></text> {{item.name}}</text>
+          <view class="margin-top-xs vipTitle padding-left-lg text-justify"><rich-text  nodes="{{item.tips}}"></rich-text></view>
+        </view> 
+        </view>
+      </view> 
+    </view>
+ 
+  <view class="emptyBox" wx:if="{{vipProduct.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+
+
+
+<view class="cu-modal  {{modalName=='Modal'?'show':''}}">
+  <view class="bg-white  cu-dialog padding-bottom-lg">
+    <view class="action absolute right-0 top-0 margin-top-sm margin-right-xs" bindtap="hideModal">
+        <text class="cuIcon-close c613C14 vipBox_1 closeBox"></text>
+      </view>
+    <view class="cu-bar flex align-center margin-top-xl  justify-center">
+      <text class="cuIcon-title text-orange opacity-03"></text>
+      <text class="cuIcon-title text-orange opacity-06"></text>
+      <text class="cuIcon-title text-orange"></text>
+      <text class=" text-bold flex margin-lr-sm justify-center text-black text-xxl vipTitle text-ABC">{{vipProduct[index].name}}</text> 
+      <text class="cuIcon-title text-orange"></text>
+      <text class="cuIcon-title text-orange opacity-06"></text>
+      <text class="cuIcon-title text-orange opacity-03"></text>
+    </view>
+    <view class="text-lg margin-top-lg text-red text-sl text-price text-red">{{vipProduct[index].price}}</view>
+    <view class="padding-lr text-price text-delete margin-top padding-bottom-lg text-lg c613C14">{{vipProduct[index].originalprice}}</view> 
+    <view class="padding-tb text-lg text-bold text-center  margin-xl round lg orange-shadow vipBox c613C14 padding-lr "bind:tap="gopay">立即支付</view> 
+  </view>
+</view>
+
+</view>
+</scroll-view>

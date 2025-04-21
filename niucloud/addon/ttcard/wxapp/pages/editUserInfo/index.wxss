@@ -1,0 +1,16 @@
+page{
+	background: #ffffff; 
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+} 
+button{
+  padding:0!important;
+  margin-right:0
+}
+.m-t{
+  margin-top:8rpx;
+}
+button::after{
+  border:none
+}

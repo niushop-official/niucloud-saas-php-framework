@@ -1,0 +1,17 @@
+{
+  "recharge": "充值",
+  "cashOut": "提现",
+  "balanceDetail": "余额明细",
+  "accountBalance": "账户余额（元）",
+  "balance": "余额（元）",
+  "money": "可提现余额（元）",
+  "availableBalance": "可用余额",
+  "rechargeAmountError": "充值金额不能低于",
+  "confirm": "确认",
+  "customRechargeAmount": "请输入充值金额",
+  "minWithdrawal": "最低充值金额为",
+  "yuan": "元",
+  "rechargeRecord": "充值记录",
+  "RechargeMethod": "充值方式",
+  "rechargeInstructions": "充值说明"
+}

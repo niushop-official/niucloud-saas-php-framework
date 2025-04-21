@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "qiankun_cashier": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

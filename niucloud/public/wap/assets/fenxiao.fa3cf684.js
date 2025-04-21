@@ -1,0 +1,1 @@
+import{ao as o}from"./index-84ca9378.js";function r(r){return o.post("huodong/fenxiao/apply",r,{showErrorMessage:!0})}function s(r){return o.post("huodong/fenxiao/getmyfxuser",r,{showErrorMessage:!0})}function e(r){return o.post("huodong/fenxiao/teamlist",r,{showErrorMessage:!0})}export{r as a,e as b,s as g};

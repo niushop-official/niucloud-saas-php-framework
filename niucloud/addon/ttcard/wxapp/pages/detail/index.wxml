@@ -1,0 +1,137 @@
+<scroll-view scroll-y class="scrollPage" 	bindscroll='scroll'  wx:if="{{show}}">
+<view style="padding-bottom:200rpx">
+  <view class="fixed top-0 w--100 bg-white topBar {{scrolltop > CustomBar ? 'showTopBar' : ''}}" style="height:{{CustomBar}}px;z-index: 99999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="relative align-center justify-center flex flex-1"> 
+        <view class="text-bold w--50 text-lg text-black text-cut-1 text-center">{{detail.title}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="fixed top-0 w--100 " style="z-index: 9999999;">
+    <view class="flex align-center " style="height:{{CustomBar-StatusBar}}px;margin-top:{{StatusBar}}px;">
+      <view class="left-0 z-index-9 absolute flex align-center padding-lr-sm">
+        <view class="text-xl flex align-center margin-right-sm " bind:tap="goBack"><text class=" cuIcon-back {{scrolltop > CustomBar || detail.images.length==0? 'text-black' : 'text-white text-shadow'}}"></text></view> 
+      </view>
+    </view>
+  </view>
+
+  <view class="flex column radius-30 margin-top-lg bg-white shadow-gray-light padding-lr padding-tb-xl margin-lr " style="margin-top:{{sourceUrl != 'product' ? CustomBar+18 : ''}}px" wx:if="{{sourceUrl != 'product'}}">
+    <view class="text-bold text-xl  text-black">
+      {{detail.title}}
+    </view>
+    <view class="text-gray  margin-top-xs"> 
+      <view class="text-gray text-sm flex align-center margin-top-xs" wx:if="{{sourceUrl == 'case'}}"><text class='cuIcon-time margin-right-xs'></text> {{detail.createtime}}</view>
+    </view>
+ 
+  <block wx:if="{{detail.video}}"> 
+    <view class="text-bold text-lg margin-top-xl text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>视频介绍</view>
+    <view class="margin-top text-justify">
+      <video src="{{detail.video}}" class="radius-30 w--100"/>
+    </view>
+  </block>
+
+  <block wx:if="{{detail.content}}">  
+    <view class="text-gray text-sm margin-top-xs">发布时间：{{detail.createtime}}</view>
+    <view class="margin-top-lg text-justify">
+      <rich-text style='word-wrap: break-word' nodes="{{detail.content}}"/>
+    </view>
+  </block>
+  <block wx:if="{{detail.description}}"> 
+    <view class="text-bold text-lg text-black margin-top-xl"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>描述</view>
+    <view class="margin-top text-justify">
+      <rich-text style='word-wrap: break-word' nodes="{{detail.description}}"/>
+    </view>
+  </block>
+
+  <block wx:if="{{detail.images.length>0}}"> 
+    <view class="text-bold text-lg text-black margin-top-xl"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>图片介绍</view>
+    <view class="margin-top-lg text-justify">
+      <image  show-menu-by-longpress="{{true}}" bindtap="ViewImage" data-url="{{item}}" class="flex imgList w--100" src="{{item}}" mode="widthFix" wx:for="{{detail.images}}" wx:key="index"></image> 
+    </view>
+  </block> 
+</view>
+
+
+
+
+<view class="flex column radius-30 bg-white"wx:if="{{sourceUrl == 'product'}}">
+  <view class="hidden" wx:if="{{detail.images.length>0}}">
+    <swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" style="height:750rpx">
+      <swiper-item wx:for="{{detail.images}}" wx:key='index' wx:if="{{index <3}}" bindtap="ViewImage" data-url="{{item}}">
+        <image src="{{item}}" mode="aspectFill"></image> 
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <view class="padding-tb-lg">
+    <view class="margin-lr text-bold text-xl  text-black">
+      {{detail.title}}
+    </view>
+    <view class="text-gray margin-lr margin-top-sm" wx:if="{{(detail.price && detail.price != 0)}}"> 
+      <view class="flex justify-between align-center"  > 
+        <view class="flex align-center ">
+          <text class="text-price text-red  text-xxl">{{detail.price}}</text>
+          <text class="text-delete margin-left-sm text-gray text-price " >{{detail.originalprice}}</text> 
+        </view>
+      </view>  
+    </view>
+  </view>
+
+
+    <view class="">
+    <block wx:if="{{detail.video}}"> 
+      <view class="text-bold border-top-20 padding-lr text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>视频介绍</view>
+      <view class="margin-top-lg margin-lr  text-justify">
+        <video src="{{detail.video}}" class="radius-30 w--100"/>
+      </view>
+    </block>
+    <block wx:if="{{detail.description}}"> 
+      <view class="text-bold border-top-20 padding-lr padding-top-lg text-lg text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>描述</view>
+      <view class="margin-top-lg padding-lr text-justify">
+        <rich-text style='word-wrap: break-word' nodes="{{detail.description}}"/>
+      </view>
+    </block>
+ 
+    <block wx:if="{{detail.images.length>0}}"> 
+      <view class="text-bold border-top-20 padding-lr padding-top-lg text-lg margin-top-xl text-black"><text class="cuIcon-titles lg text-orange kk-p margin-right-xs"></text>图片介绍</view>
+      <view class="margin-top-lg padding-lr text-justify">
+        <image  show-menu-by-longpress="{{true}}" class="flex imgList w--100" src="{{item}}" bindtap="ViewImage" data-url="{{item}}" mode="widthFix" wx:for="{{detail.images}}" wx:key="index"></image> 
+      </view>
+    </block>  
+  </view>
+
+  <view class="cu-bar tabbar bg-white shadow foot" wx:if="{{ac != 'my'}}">
+    <view class="flex justify-between flex-1 bg-white solid-top">
+      <view class="flex-1 padding-tb-sm flex column text-xxl align-center" bind:tap="phone" > 
+        <text class="cuIcon-mobile text-orange" style="font-size: 48rpx;"></text>
+        <text class="text-sm" style="margin-top:5rpx">电话咨询</text>
+      </view>
+      <view class="flex-1 padding-top-sm padding-bottom"  bind:tap="copyText" data-type='wechat_num'>
+        <view class="solid-left flex column text-xxl align-center">
+          <text class="cuIcon-weixin text-cyan" style="font-size: 48rpx;"></text>
+          <text class="text-sm" style="margin-top:5rpx">加微信</text>
+        </view>
+      </view> 
+    </view>
+  </view> 
+
+  
+  
+
+
+
+ 
+
+
+
+</view>
+ 
+
+
+
+
+
+
+
+</view>
+</scroll-view>

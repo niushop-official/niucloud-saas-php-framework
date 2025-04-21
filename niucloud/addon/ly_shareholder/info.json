@@ -1,0 +1,11 @@
+{
+  "title": "股东合伙人",
+  "desc": "成为股东合伙人可享受商城平台销售额的百分比分红",
+  "key": "ly_shareholder",
+  "version": "1.0.5",
+  "author": "链上优品",
+  "type": "addon",
+  "support_app": "shop",
+  "support_version": "1.0.1",
+  "compile":[]
+}

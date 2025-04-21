@@ -1,0 +1,9 @@
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_cate`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_comment`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_comment_like`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_comment_reply`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_config`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_follow`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_label`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_like`;
+DROP TABLE  IF EXISTS `{{prefix}}shortvideo_video`;

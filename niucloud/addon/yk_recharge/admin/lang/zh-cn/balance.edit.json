@@ -1,0 +1,16 @@
+{
+	"amount":"充值金额",
+	"money":"赠送金额",
+	"jifen":"赠送积分",
+	"level":"赠送会员等级",
+	"addBalance":"添加余额",
+	"amountPlaceholder": "请输入充值金额",
+	"moneyPlaceholder": "请输入赠送金额",
+	"jifenPlaceholder": "请输入赠送积分",
+	"memberLevelUpdate": "请选择会员等级",
+    "memberLevelUpdateTips": "该操作只会赠送会员等级不会发放等级礼包,不支持退款操作",
+	"amountNumber": "充值金额必须是数字",
+	"moneyNumber": "赠送金额必须是数字",
+	"jifenNumber": "赠送积分必须是数字",
+	"updateBalance": "编辑余额"
+} 

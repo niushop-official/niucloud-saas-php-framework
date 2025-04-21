@@ -1,0 +1,15 @@
+{
+      "siteId":"站点ID",
+      "siteIdPlaceholder":"请输入站点ID",
+      "open":"是否启用",
+      "openPlaceholder":"请输入是否启用",
+      "minRecharge":"最小充值",
+      "minRechargePlaceholder":"请输入最小充值",
+      "rechargeDesc":"充值描述",
+      "rechargeDescPlaceholder":"请输入充值描述",
+      "addConfig":"添加充值设置",
+      "updateConfig":"编辑充值设置",
+      "configDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

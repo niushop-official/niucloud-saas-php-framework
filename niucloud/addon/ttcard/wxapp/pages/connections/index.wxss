@@ -1,0 +1,43 @@
+/* pages/connections/index.wxss */
+
+page{
+	background: #ffffff; 
+}
+.cu-tag {
+  margin-left: 0!important;
+  margin-right: 10rpx!important;
+}
+.flagBox{
+  width:200rpx;
+  height:50rpx;
+  transform: rotate(45deg);
+  right: -76rpx;
+  top: 0;
+}
+.flagText{
+  margin-top:6rpx
+}
+.cu-bar {
+  height: 100rpx;
+  min-height: 100rpx; 
+}
+.cu-avatar.xl {
+  min-width: 148rpx; 
+  height: 148rpx
+}
+
+
+
+
+ 
+
+.cu-dialog { 
+  background-color: #ffffff; 
+}
+.cu-modal.drawer-modal .cu-dialog { 
+  min-width: 100%; 
+}
+
+.cu-modal.drawer-modal.justify-start .cu-dialog {
+  transform: translatey(-100%);
+}

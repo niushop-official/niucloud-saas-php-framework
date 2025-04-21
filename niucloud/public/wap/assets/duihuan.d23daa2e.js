@@ -1,0 +1,1 @@
+import{ak as n}from"./index-8fe4bece.js";function a(a){return n.get("transfer/duihuan/point_balance",a)}function t(a){return n.get("transfer/duihuan/balance_point",a)}function r(a){return n.get("transfer/duihuan/commission_balance",a)}export{r as a,t as b,a as d};

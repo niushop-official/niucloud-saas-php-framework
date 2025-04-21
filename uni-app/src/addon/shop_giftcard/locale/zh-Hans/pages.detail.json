@@ -1,0 +1,16 @@
+{
+	"purchaseQuantity":"购买数量",
+	"selectDenomination":"选择面值",
+	"convertibleGoods":"可兑换商品",
+	"goodsTitleOne":"该兑换卡可在以下商品中任选",
+	"goodsTitleOneAnd":"件兑换",
+	"goodsTitleTwo":"该兑换卡可兑换以下商品",
+	"instruction":"使用须知",
+	"cardDesc":"礼品卡详情",
+	"price":"售价",
+	"buyNow":"立即购买",
+	"EventEnds":"该卡活动已结束",
+	"removed":"该卡已下架",
+	"lackCardId":"缺少礼品卡id",
+	"unableToFindGiftCard":"找不到该礼品卡"
+}

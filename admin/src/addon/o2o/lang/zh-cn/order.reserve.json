@@ -1,0 +1,13 @@
+{
+   "orderStatus":"订单状态",
+   "detail":"详情",
+   "dispatch":"派单",
+   "orderName":"订单内容",
+   "orderNamePlaceholder":"请输入订单内容",
+   "search":"搜索",
+   "reset":"重置",
+   "memberSearchText":"下单会员",
+	"memberSearchTextPlaceholder":"请输入昵称/手机号/会员编码",
+	"technicianSearchText":"服务技师",
+	"technicianSearchTextPlaceholder":"请输入技师姓名/手机号"
+}

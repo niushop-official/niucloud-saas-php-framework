@@ -1,0 +1,119 @@
+page{
+	background: #ffffff; 
+}
+.tagbox{ 
+  overflow: hidden;
+  background: rgba(0, 0, 0, .05)!important;
+}
+.cu-form-group .title {
+  min-width: calc(4em + 55rpx);
+}
+::placeholder{
+  font-size: 32rpx!important;
+}
+.title,textarea{
+  font-size: 32rpx!important;
+  color: #000000;
+}
+.cu-form-group input { 
+  font-size: 32rpx;
+  color: #000000;
+  padding-right: 0;
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+input{
+  color:#000000
+}
+.m-t{
+  margin-top:7rpx;
+}
+switch{
+  padding: 26rpx 0; 
+}
+.acBtn{
+  min-width: 180rpx; 
+}
+.lineOpa::before{
+  display: block;
+  content:'';
+  position: absolute;
+  width: 100%;
+  bottom:0;
+  height:2rpx;
+  background: linear-gradient(to right, transparent,rgb(255 255 255 / 30%),rgb(255 255 255 / 30%), transparent);
+}
+.lineOpa::after{
+  display: block;
+  content:'';
+  position: absolute;
+  width: 100%;
+  top:0;
+  height:2rpx;
+  background: linear-gradient(to right, transparent,rgb(255 255 255 / 50%),rgb(255 255 255 / 50%), transparent);
+}
+.lineOpa{
+  position: relative;
+  background: linear-gradient(to right, transparent,rgb(255 255 255 / 17%),rgb(255 255 255 / 17%), transparent);
+} 
+
+@keyframes breathe {  
+  0% {  
+    transform: scale(1);  
+  }  
+  50% {  
+    transform: scale(1.1);  
+  }  
+  100% {  
+    transform: scale(1);  
+  }  
+}  
+.cu-avatar.xl {
+  min-width: 148rpx; 
+  height: 148rpx
+}
+.margin-auto{
+  left:0;
+  right:0
+}
+.avatarBox {
+  width: 140rpx!important;
+  height: 140rpx!important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 52rpx;
+}
+.avatarList .cu-avatar-group .cu-avatar {
+  margin-left: -45rpx; 
+}
+.breathing-element {  
+  animation: breathe 2s infinite;  
+}
+.scroll{
+  display: inline-block;
+}
+ .opacity--5{
+   opacity: .3;
+ }
+.scroll-view_H{
+  white-space: nowrap;
+} 
+.scroll-view-item_H{
+  display: inline-block; 
+}
+.scroll-view-item_H:last-child{
+  margin-right:0
+}
+
+.cu-form-group picker .picker { 
+  font-size: 32rpx; 
+  text-align: left;
+}
+.cu-form-group picker .picker {
+  line-height:unset; 
+}
+.cu-form-group picker::after { 
+  line-height: unset; 
+}

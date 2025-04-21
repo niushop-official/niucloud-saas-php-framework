@@ -1,0 +1,14 @@
+{
+      "id":"ID",
+      "name":"分类名称",
+      "namePlaceholder":"请输入分类名称",
+      "status":"状态",
+      "statusPlaceholder":"请输入状态",
+      "adddate":"添加时间",
+      "adddatePlaceholder":"请输入添加时间",
+      "addCate":"添加活动分类",
+      "updateCate":"编辑活动分类",
+      "cateDeleteTips":"确定要删除该数据吗？",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

@@ -1,0 +1,45 @@
+<scroll-view scroll-y class="scrollPage">
+<view style="padding-bottom:80rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">{{sub.subtype == 'editImages' ? '编辑相册' : '相册'}}</view>
+  </cu-custom>
+
+  <view class="flex margin-lr shadow-gray-light column margin-top-lg radius-30 bg-white hidden padding-tb-sm" style="margin-top:{{CustomBar+20}}px;"> 
+      <view class="cu-form-group margin-right text-lg relative">
+        <view class="flex align-center" bind:tap='goCardholder' >
+          <view class="title flex text-black">绑定名片</view>
+          <input placeholder="请绑定名片" disabled value='{{cardName}}' class="text-black"></input>
+        </view> 
+        <view class='cuIcon-questionfill tipsBox margin-left text-gray' bind:tap="showTips" data-type="mp"></view>
+      </view>    
+    </view>
+<view class="flex margin-lr  padding-tb-sm shadow-gray-light column margin-top radius-30 bg-white hidden">
+<view class="cu-bar bg-white margin-lr">
+      <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+        相册<text class="text-red margin-left-xs margin-top-xs">*</text>
+      </view>
+      <view class="action text-gray" style="margin-right:0">
+        {{imgList.length}}/40
+      </view>
+    </view>
+    <view class="cu-form-group margin-lr" style="padding:0 0 10rpx 0">
+      <view class="grid col-4 grid-square flex-sub">
+        <view class="bg-img" wx:for="{{imgList}}" wx:key="index" bindtap="ViewImage" data-url="{{imgList[index]}}">
+          <image src='{{imgList[index]}}' mode='aspectFill'></image>
+          <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+            <text class="cuIcon-close"></text>
+          </view>
+        </view>
+        <view class="solids" bindtap="updateLoadImg" data-type='images' wx:if="{{imgList.length<40}}">
+          <text class="cuIcon-cameraadd"></text>
+        </view>
+      </view>
+    </view> 
+    </view> 
+
+
+
+    <view class="breathing-element padding-tb text-lg text-bold text-center bg-gradual-orange  round lg margin-top-xl shadow-gray padding-lr margin-lr" style="box-shadow: 0 10px 30px 0 rgba(255,134,53,.47);"bind:tap="checkUserExpirationTime" >{{sub.subtype == 'editImages' ? '提交修改' : '添加'}}</view>
+
+</view>
+</scroll-view>

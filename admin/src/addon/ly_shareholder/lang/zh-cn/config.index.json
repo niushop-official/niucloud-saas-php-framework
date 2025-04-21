@@ -1,0 +1,38 @@
+{
+    "titleOne": "股东分红设置",
+    "titleTwo": "奖励设置",
+    "isOpen": "是否开启",
+    "isMax": "封顶功能",
+    "is_o2o_tips": "开启后，o2o订单将计入股东分红，提成将按照订单实付金额进行计算",
+    "1": "开启",
+    "0": "关闭",
+    "isCommission": "开启分红条件",
+    "minOrder": "最低消费单数",
+    "minOrderAmount": "最低消费满金额",
+    "settleType": "结算方式",
+    "settleType0": "按营业额",
+    "settleType1": "按利润",
+    "settleType_tips": "营业额为上一个周期的营业额，利润为上一个周期的利润额",
+    "takeType": "提成方式",
+    "takeType0": "余额",
+    "takeType1": "佣金",
+    "takeType2": "积分",
+    "takeType3": "数字积分",
+    "takeType_tips": "",
+    "settleTime": "结算周期",
+    "settleTime0": "按天",
+    "settleTime1": "按周",
+    "settleTime2": "按月",
+    "settleTime_tips": "按天是前一天的营业，按周为上周一至周日的营业额，按月为上月1号至30/31日的营业额",
+    "settleDay": "结算时间",
+    "gradeRatio": "等级比例",
+    "settleCondition": "结算条件",
+    "settleCondition_tips": "订单支付后：订单完成支付后即计入。订单完成后：订单完成收货后计入分红数据",
+    "settleCondition0": "订单支付后",
+    "settleCondition1": "订单完成后",
+    "min_order_tips": "上月周期最低消费的单数，不计金额",
+    "min_order_amount_tips": "上月周期最低消费的金额"
+    
+
+
+}

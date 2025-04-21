@@ -1,0 +1,13 @@
+{
+    "addTask": "添加任务奖励",
+    "detail": "详情",
+    "statusPlaceholder": "请选择状态",
+    "all": "全部",
+    "memberInfo":"会员信息",
+    "memberInfoPlaceholder": "请输入昵称/手机号",
+    "taskInfo": "任务接受人",
+    "totalMoney": "奖励总金额",
+    "schedule": "任务进度",
+    "status": "任务状态",
+    "accomplishStatus": "完成状态"
+}

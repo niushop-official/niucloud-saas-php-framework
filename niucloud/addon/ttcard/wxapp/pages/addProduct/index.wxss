@@ -1,0 +1,36 @@
+page{
+	background: #ffffff; 
+}
+.cu-form-group .title {
+  min-width:210rpx;
+}
+::placeholder{
+  font-size: 32rpx!important;
+}
+.cu-form-group picker .picker {
+  text-align: left;
+}
+.cu-form-group picker .picker {
+  line-height:unset; 
+}
+.cu-form-group picker::after { 
+  line-height: unset; 
+}
+.title,textarea{
+  font-size: 32rpx!important;
+  color: #000000;
+}
+.cu-form-group input { 
+  font-size: 32rpx;
+  color: #000000;
+  padding-right: 0;
+}
+.cu-form-group { 
+  padding: 30rpx 0; 
+}
+input{
+  color:#000000
+}
+.m-t{
+  margin-top:7rpx;
+}

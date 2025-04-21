@@ -1,0 +1,24 @@
+{   
+    "levelName":"分销商等级",
+    "levelNamePlaceholder":"请选择分销商等级",
+    "selectFenxiao": "选择分销商",
+    "fenxiaoSelectPricePopupTitle":"选择分销商",
+    "fenxiao": "上级分销商",
+    "fenxiaoDefault":"顶级分销商",
+    "selectFenxiaoPlaceholder": "请选择一个分销商",
+    "memberDefault":"暂无关联会员",
+    "fenxiaoMemberName":"关联会员",
+    "selectMemberName":"选择会员",
+    "refreshSuccess":"刷新成功",
+    "selectMemberNamePlaceholder":"请选择会员",
+    "memberSelectPricePopupTitle":"选择会员",
+    "fenxiaoName":"分销商信息",
+    "fenxiaoNamePlaceholder":"请输入会员编码/昵称/手机号搜索",
+    "fenxiaoLevel":"分销等级",
+    "currentState":"当前状态",
+    "select":"选择",
+    "memberInfo":"会员信息",
+    "memberNamePlaceholder":"请输入会员编码/昵称/手机号搜索",
+    "mobile":"手机号"
+    
+}

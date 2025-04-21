@@ -1,0 +1,16 @@
+{
+    "selectTechnician": "选择技师",
+    "pleaseChoose": "请选择",
+    "reserveTime": "预约时间",
+    "remark": "买家留言",
+    "fillRemark": "请填写留言信息",
+    "buy": "立即购买",
+    "reserve": "立即预约",
+    "index": "首页",
+    "mobile": "手机号",
+    "mobilePlaceholder": "请输入手机号",
+    "correctMobilePlaceholder": "请输入正确的手机号",
+    "service": "客服",
+    "collect": "收藏",
+    "nothingMore":"没有更多内容啦~"
+}

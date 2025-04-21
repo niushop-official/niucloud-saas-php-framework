@@ -1,0 +1,14 @@
+<scroll-view scroll-y class="scrollPage" 	bindscroll='scroll'>
+<view style="padding-bottom:200rpx"> 
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">个人相册</view>
+  </cu-custom>
+
+  <block wx:if="{{detail.images.length>0}}">  
+      <view class="margin-top-lg padding-lr text-justify">
+        <image  show-menu-by-longpress="{{true}}" class="flex imgList w--100" src="{{item}}" bindtap="ViewImage" data-url="{{item}}" mode="widthFix" wx:for="{{detail.images}}" wx:key="index"></image> 
+      </view>
+    </block>
+
+</view>
+</scroll-view>

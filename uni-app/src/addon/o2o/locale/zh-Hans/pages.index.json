@@ -1,0 +1,10 @@
+{
+    "searchNamePlaceholder": "请输入搜索关键词",
+	"reserveBtn": "抢购",
+    "nothingMore":"没有更多内容啦~",
+    "noHomeAddress":"没有更多内容啦~",
+    "soldOut": "已售",
+    "orderNo": "订单号",
+    "actualPayment": "实付款",
+    "orderDetail": "详情"
+}

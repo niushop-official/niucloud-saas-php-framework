@@ -1,0 +1,1 @@
+import{ao as n}from"./index-84ca9378.js";function o(o){return n.get("o2o/technician",o)}function t(o){return n.get(`o2o/technician/goods/${o}`)}function c(o){return n.get(`o2o/technician/${o}`)}function e(){return n.get("o2o/checktechnician")}export{c as a,t as b,e as c,o as g};

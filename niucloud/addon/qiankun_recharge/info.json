@@ -1,0 +1,11 @@
+{
+  "title": "充值赠送",
+  "desc": "充值赠送金额、积分、优惠券",
+  "key": "qiankun_recharge",
+  "version": "1.0.1",
+  "author": "乾坤科技",
+  "type": "addon",
+  "support_app": "shop",
+  "compile":[],
+  "support_version": "1.0.0"
+}

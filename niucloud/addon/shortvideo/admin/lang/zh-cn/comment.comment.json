@@ -1,0 +1,18 @@
+{
+      "id":"ID",
+      "updateCommentReply":"修改评论",
+      "addComment":"发布评论",
+      "updateComment":"修改评论",
+      "namePlaceholder":"请输入评价名称",
+      "status":"审核状态",
+      "statusPlaceholder":"请输入状态",
+      "show":"显示",
+      "hidden":"隐藏",
+      "adddate":"添加时间",
+      "adddatePlaceholder":"请输入添加时间",
+      "commentDeleteTips":"确定要删除该数据吗？",
+      "memberId":"用户信息",
+      "memberIdPlaceholder":"请选择用户信息",
+      "startDate":"请选择开始时间",
+      "endDate":"请选择结束时间"
+}

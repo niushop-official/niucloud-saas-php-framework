@@ -1,0 +1,1 @@
+import{ao as o}from"./index-84ca9378.js";function n(n){return o.get("shop/newcomer/goods",n)}function e(){return o.get("shop/newcomer/config")}function r(n){return o.get("shop/newcomer/goods/components",n)}export{e as a,n as b,r as g};

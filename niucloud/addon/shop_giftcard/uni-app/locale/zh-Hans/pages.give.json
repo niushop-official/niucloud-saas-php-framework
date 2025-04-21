@@ -1,0 +1,20 @@
+{
+	"yuan":"元",
+	"blessing":"送上您的祝福",
+	"customBlessing":"自定义祝福语",
+	"blessingPlaceholder":"请填写您的祝福语",
+	"giftToFriendsSave":"确定赠送好友",
+	"giveSetUp":"赠送设置",
+	"notCard":"礼品卡不存在",
+	"shareTitle":"嘿！朋友送你一张礼品卡，快来领取吧~",
+	"giveNum":"赠送数量",
+	"giveNumPlaceholder":"本次赠送数量",
+	"giveNumPlaceholderOne":"请输入本次赠送数量",
+	"limitNum":"限领数量",
+	"limitNumPlaceholder":"每人最多可领数量",
+	"limitNumPlaceholderOne":"请输入每人最多可领数量",
+	"tipsAnd":"共有",
+	"unit":"张",
+	"tipsEnd":"张卡片",
+	"giveSave":"确定"
+}

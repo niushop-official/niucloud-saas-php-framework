@@ -1,0 +1,38 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:240rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">成功案例</view>
+  </cu-custom>
+ 
+
+  <view class="margin-top-lg">
+      <view class="column flex">
+        <view class="p-item flex column  shadow-gray-light margin-lr margin-top radius-30 hidden"  wx:for="{{list}}" wx:key="index">
+          <view  bind:tap="goDetail" data-id='{{item.id}}' >
+            <view class="Image bg-img" style="background-image:url({{item.images[0]}});"></view>
+            <view class="padding">
+              <view class="hidden  text-cut-1"><text class=" w--100">{{item.title}}</text></view>  
+            </view>
+          </view>
+
+          <view class="flex solid-top padding-tb-sm justify-between align-center text-gray" wx:if="{{tabIndex == 1}}">
+            <view  hover-class="none" bind:tap="goEditCase" data-casetid='{{item.id}}'  class="flex-1 text-center"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+            <view class="solid-left text-center flex-1"  bind:tap="goDeleteCase" data-caseid='{{item.id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view> 
+          </view>
+        </view>
+        
+        
+      </view> 
+    </view>
+
+    <view class="emptyBox" wx:if="{{list.length == 0}}">
+      <image src="../../images/empty.png" />
+      <view class="text text-gray">~ 暂无相关内容 ~</view>
+    </view>
+
+    <view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{sourceUrl == 'my'}}">
+      <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddcase"><text class="cuIcon-roundaddfill"></text> 添加案例</view>
+    </view>
+
+</view>
+</scroll-view>

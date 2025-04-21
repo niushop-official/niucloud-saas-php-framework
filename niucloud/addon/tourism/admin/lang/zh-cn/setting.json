@@ -1,0 +1,13 @@
+{
+	"hotelSetting": "酒店订单",
+	"scenicSetting": "景点订单",
+	"waySetting": "线路订单",
+	"orderClose": "订单关闭时间",
+	"orderClosePlaceholder": "请设置订单关闭时间",
+	"isRefund": "是否允许退款",
+	"refundRatio": "退款手续费比率",
+	"refundRatioPlaceholder": "请设置退款手续费比率",
+	"yes": "是",
+	"no": "否",
+	"second": "分"
+}

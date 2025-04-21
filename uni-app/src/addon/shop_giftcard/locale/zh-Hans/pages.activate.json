@@ -1,0 +1,13 @@
+{
+	"cardNumberPlaceholder":"请输入卡片编号",
+	"passwordPlaceholder":"请输入卡片密码",
+	"redeemNow":"立即兑换",
+	"cardNo":"卡片编号",
+	"cardKey":"卡片密码",
+	"reminder":"温馨提示",
+	"activateCard":"激活卡片",
+	"cardEncryptionActivation":"卡密激活",
+	"popupTipsOne":"恭喜您 激活成功！",
+	"popupTipsTwo":"您已成功激活了1张礼品卡~",
+	"gouToSee":"去看看"
+}

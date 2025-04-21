@@ -1,0 +1,225 @@
+.contain {
+		@apply p-3;
+		background: linear-gradient(-180deg, #d6ebf8 2%, #ffffff 100%);
+	}
+	.containbg {
+		@apply p-3;
+		background: linear-gradient(-180deg, #def8f3 2%, #ffffff 100%);
+	}
+.remove-border{
+	&::after{
+		border: none;
+	}
+}
+//css共用样式文件
+.fl{
+	display: flex;
+}
+.fb{
+	display: flex;
+	justify-content: space-between;
+}
+.font-price{
+	color: #19d444;
+	font-size: 38rpx;
+	font-weight: bold;
+}
+.tk-p{
+	color: #19d444;
+	font-size: 18rpx;
+}
+.tk{
+	background: linear-gradient(-90deg, #67c6d0 0%, #19d444 100%);
+	color: #ffffff;
+	padding: 0rpx 38rpx;
+	border-radius: 8rpx;
+	margin-right: 48rpx;
+	line-height:54rpx;
+}
+.tk-btgo{
+	background: linear-gradient(-90deg, #67c6d0 0%, #19d444 100%);
+	color: #ffffff;
+	border-radius: 8rpx;
+	margin-right: 48rpx;
+	text-align: center;
+	line-height: 80rpx;
+}
+.tk-desc{
+	color: #4b4b4b;
+	font-size: 24rpx;
+}
+.tktype-tag{
+	padding: 4rpx 8rpx;
+	background: linear-gradient(-90deg, #2b2b00 0%, #353528 100%);
+	color: aliceblue;
+	border-radius: 8rpx;
+	font-size: 22rpx;
+}
+.tk-tag{
+	padding: 4rpx 8rpx;
+	background: linear-gradient(-90deg, #ff7274 90%,#ff7274 100%);
+	color: #ffffff;
+	border-radius: 8rpx;
+	font-size: 22rpx;
+}
+.tk-dsale{
+	font-size:24rpx;
+	color: #8f8f8f;
+}
+.tk-dtext{
+	font-size:32rpx;
+	font-weight: bold;
+	 //    width: 640rpx; //设置宽度
+	 //    // max-width:200px; //也可以设置最大宽度
+		// overflow : hidden;  // 溢出隐藏
+		// display: -webkit-box;    //  自适应布局 弹性伸缩盒子
+		// -webkit-box-orient: vertical; //垂直排列子元素 伸缩盒子的子元素排列
+		// -webkit-line-clamp: 1;   //最多显示几行 多出部分。。。显示
+		// text-overflow: ellipsis; // 显示省略号
+}
+.tk-sltext{
+	    // max-width:200px; //也可以设置最大宽度
+		overflow : hidden;  // 溢出隐藏
+		display: -webkit-box;    //  自适应布局 弹性伸缩盒子
+		-webkit-box-orient: vertical; //垂直排列子元素 伸缩盒子的子元素排列
+		-webkit-line-clamp: 1;   //最多显示几行 多出部分。。。显示
+		text-overflow: ellipsis; // 显示省略号
+}
+.tk-text{
+	    width: 420rpx; //设置宽度
+	    // max-width:200px; //也可以设置最大宽度
+		overflow : hidden;  // 溢出隐藏
+		display: -webkit-box;    //  自适应布局 弹性伸缩盒子
+		-webkit-box-orient: vertical; //垂直排列子元素 伸缩盒子的子元素排列
+		-webkit-line-clamp: 1;   //最多显示几行 多出部分。。。显示
+		text-overflow: ellipsis; // 显示省略号
+}
+.tk-card{
+	background-color: rgba(255, 255, 255, 0.9);
+	margin: 12rpx;
+	border-radius: 12rpx;
+	padding: 12rpx;
+	box-shadow: 0 1px 1px 0 rgba(234, 234, 234, 0.2), 0 2px 2px 0 rgba(231, 231, 231, 0.2);
+	}
+.tk-bottom{
+	    position: fixed;
+	    width: 100%;
+	    bottom:0px;
+	    z-index:9999;
+		padding: 0rpx 0rpx 24rpx 24rpx;
+		padding-bottom: 0;
+		padding-bottom: constant(safe-area-inset-bottom);  
+		padding-bottom: env(safe-area-inset-bottom);  
+		background-color: rgba(250, 250, 250, 0.96);
+		border-top-left-radius:24rpx;
+		border-top-right-radius:24rpx;	
+}
+.tk-top{
+	height: 110rpx;
+	background-color: rgba(250, 250, 250, 0.0);
+}
+.tk-yc{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.tk-title{
+	font-size: 32rpx;
+	font-weight: bold;
+	text-align: center;
+}
+.tk-b-bottom{
+	padding-bottom: 18rpx;
+	border-bottom-style: solid;
+	border-bottom-width: 1rpx;
+	border-bottom-color: rgba(165, 165, 165, 0.2);
+}
+.tk-bbut{
+		background: linear-gradient(-90deg, #4d84dc 0%, #3b46e8 100%);
+		text-align: center;
+		width: 680rpx;
+		border-radius: 12rpx;
+		color: #ffffff;
+		font-size: 32rpx;
+		padding: 16rpx;
+		margin-top: 8rpx;
+		margin-bottom: 8rpx;
+		margin-left: 12rpx;
+}
+.tk-column{
+	display: flex;flex-direction: column;justify-content: space-between;
+}
+.tk-end{
+	justify-content: flex-end;
+}
+.tk-orderbtn{
+	padding: 4rpx 8rpx;
+	background: linear-gradient(-90deg, rgba(33, 120, 86, 0.6) 0%, rgba(27, 88, 53, 0.6) 100%);
+	color: aliceblue;
+	border-radius: 8rpx;
+	font-size: 22rpx;
+}
+.tagsmall {
+		background: linear-gradient(-90deg, rgba(33, 120, 86, 0.6) 0%, rgba(27, 88, 53, 0.6) 100%);
+		color: #ffffff;
+		padding: 4rpx 8rpx;
+		border-radius: 4rpx;
+	}
+	.tk-left{
+		padding-left: 24rpx;
+		padding-top: 24rpx;
+		padding-right: 24rpx;
+	}
+	.font-weight{
+		font-weight: bold;
+	}
+	.tk-bluecolor{
+		color: #1723cb;
+	}
+	.tk-balackcolor{
+		color: #878787;
+	}
+	.text-center{
+		text-align: center;
+	}
+	.common-button {
+		background: linear-gradient(-90deg, #67c6d0 0%, #19d444 100%);
+		text-align: center;
+		border-radius: 24rpx;
+		color: #ffffff;
+		font-size: 28rpx;
+		padding: 16rpx;
+		margin: 24rpx;
+		margin-top: 48rpx;
+	}
+	.tk-butto {
+		background: linear-gradient(-90deg, #4d84dc 0%, #3b46e8 100%);
+		text-align: center;
+		width: 690rpx;
+		border-radius: 12rpx;
+		color: #ffffff;
+		font-size: 32rpx;
+		padding: 16rpx;
+		margin-top: 48rpx;
+		margin-bottom: 16rpx;
+		margin-left: 12rpx;
+	}
+	.line-box {
+		background-color: #EEEEEE;
+		height: 2rpx;
+		width: 100%;
+	}
+	.fixed-bottom {
+	  position: fixed;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+	  padding-bottom: constant(safe-area-inset-bottom);
+	  padding-bottom: env(safe-area-inset-bottom);
+	}
+	.b-tabbar-back {
+		background: rgba(245, 250, 245, 0.9);
+		bbox-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.5);
+		border-radius: 12rpx;
+		padding: 20rpx 60rpx;
+	}

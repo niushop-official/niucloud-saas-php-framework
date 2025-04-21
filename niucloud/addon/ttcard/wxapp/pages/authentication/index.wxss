@@ -1,0 +1,15 @@
+/* pages/authentication/index.wxss */
+.border-b-l-radius-30{
+  border-bottom-left-radius: 30rpx;
+ }
+ .renzBox{ 
+   background: linear-gradient(90deg, #ffd694, #fdba48);
+ }
+
+ .qiye{
+  box-shadow: 0 0 30px 0 rgba(141,153,169,.46);
+} 
+.iconBox{ 
+  width:168rpx;
+  height:168rpx
+}

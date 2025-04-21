@@ -1,0 +1,16 @@
+{
+	"emptyAddress":"暂无收货地址，请先创建地址",
+	"addAddress":"新增收货地址",
+	"selectAddress":"选择地址",
+	"evaluate": "评价",
+	"money":"元",
+	"pendingPayment":"待支付",
+	"pendingPaymentTips":"剩余时间",
+	"service":"含物流运输服务",
+	"selectedEvaluate": "查看评价",
+	"orderClose": "关闭订单",
+	"orderFinish": "确认收货",
+	"topay": "支付",
+	"deliveryType":"配送方式",
+	"createTime":"下单时间"
+}

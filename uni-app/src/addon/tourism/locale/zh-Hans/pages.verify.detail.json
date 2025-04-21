@@ -1,0 +1,20 @@
+{
+    "used": "已核销",
+    "waitUse": "待核销",
+    "verifyOther": "核销其他",
+    "orderNo": "订单编号",
+    "createTime": "创建时间",
+    "payTime": "支付时间",
+    "verifyTime": "核销时间",
+    "wayInfo": "线路信息",
+    "reserveTime": "预订时间",
+    "touristNum": "游客人数",
+    "scenicInfo": "景点信息",
+    "ticketInfo": "门票信息",
+    "hotelInfo": "酒店信息",
+    "roomInfo": "房型信息",
+    "hotelStartTime": "入住日期",
+    "hotelEndTime": "离店日期",
+    "hoteltNum": "房间数",
+    "verifyDetailEmpty": "未获取到核销记录"
+}

@@ -1,0 +1,11 @@
+{
+  "title": "上门服务",
+  "desc": "预约上门，家电维修，家政服务",
+  "key": "o2o",
+  "version": "1.1.5",
+  "author": "niucloud",
+  "url": "https://www.niucloud.com",
+  "type": "app",
+  "support_app": "",
+  "support_version": "1.0.2"
+}

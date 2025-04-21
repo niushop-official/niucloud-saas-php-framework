@@ -1,0 +1,10 @@
+{
+  "attrName": "参数模板名称",
+  "attrNamePlaceholder": "请输入参数模板名称",
+  "sortPlaceholder": "请输入排序号",
+  "addShopGoodsAttr": "添加参数模板",
+  "updateShopGoodsAttr": "编辑参数模板",
+  "goodsAttrDeleteTips": "确定要删除该数据吗？",
+  "sortTips": "排序号格式输入错误",
+  "manage": "管理"
+}

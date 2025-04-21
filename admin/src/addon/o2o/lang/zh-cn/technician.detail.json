@@ -1,0 +1,23 @@
+{
+	"technicianInfo": "技师信息",
+	"name": "技师名称",
+	"headimg": "技师头像",
+	"mobile": "手机号",
+	"seniority": "工龄",
+	"number": "工号",
+	"position": "职位",
+	"startDate": "开始时间",
+	"endDate": "结束时间",
+	"createTime": "创建时间",
+	"addTechnician": "添加技师",
+	"updateTechnician": "编辑技师",
+	"namePlaceholder": "请添加技师名称",
+	"mobilePlaceholder": "请添加手机号",
+	"seniorityPlaceholder": "请添加工龄",
+	"numberPlaceholder": "请添加工号",
+	"positionPlaceholder": "请添加职位",
+	"disable": "离职",
+	"normal": "在职",
+	"restore": "恢复",
+	"disabled": "已离职"
+}

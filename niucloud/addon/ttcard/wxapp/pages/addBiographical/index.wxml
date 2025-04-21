@@ -1,0 +1,187 @@
+<view>
+<view style="padding-bottom:200rpx">  
+  
+  <cu-custom isBack='{{true}}' bgColor="bg-white"><view slot="content" class="text-bold text-black text-lgbg-white">{{subtype == 'edit' ? '编辑简历' : '创建简历'}}</view></cu-custom>
+
+  <block wx:if="{{wechat_auditing == 0}}">
+  <view class="flex margin-lr shadow-gray-light column margin-top-lg radius-30 bg-white hidden padding-top-sm padding-bottom-sm" >
+    <view class="flex justify-between align-center margin-top padding-lr">
+      <view class="flex column">
+        <view class="flex text-black text-lg">头像<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-sm text-gray margin-top-xs">建议使用真人头像</view>
+      </view>
+      <view class="solids avatarBox text-grey round" bind:tap="updateLoadImg"  data-imgs='1' data-type='avatar' wx:if="{{!sub.avatar}}">
+          <text class="cuIcon-cameraadd"></text>
+      </view> 
+      <view class="cu-avatar xl round solids hidden"  wx:if="{{sub.avatar}}" style="background-image:url({{sub.avatar}});" bind:tap="updateLoadImg"  data-imgs='1' data-type='avatar'  >
+        <view wx:if="{{sub.avatar}}" class="bg-gray text-gray text-xs absolute bottom-0 w--100  opacity-06">更换</view>
+      </view>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">姓名 <text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入姓名" bindinput='nameInput' maxlength="30" value='{{sub.name}}'  class="text-black"></input>
+    </view>   
+     <view class="cu-form-group margin-lr text-lg">
+       <view class="title flex text-black">年龄<text class="text-red margin-left-xs m-t">*</text></view>
+       <input placeholder="请输入年龄"maxlength="30" value='{{sub.age}}' bindinput='ageChange' type='number' class="text-black"></input>
+     </view> 
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">性别<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="gender_statusChange" class="text-left" value="{{gender_statusIndex}}" range="{{gender_status}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{gender_statusIndex}}">{{gender_status[gender_statusIndex]}}</text>
+          <text wx:else>请选择性别</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">手机号<text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入手机号" value='{{sub.phone}}' bindinput='phoneInput' type='number' maxlength="11" class="text-black"></input>
+    </view>
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">邮箱</view>
+      <input placeholder="请输入邮箱" bindinput='emailInput'  value='{{sub.email}}'  class="text-black"></input>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">微信号</view>
+      <input placeholder="请输入微信号" bindinput='wechat_numInput' value='{{sub.wechat_num}}' class="text-black"></input>
+    </view>
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">工作经验<text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="如：4年" bindinput='workingInput' value='{{sub.working}}' class="text-black"></input>
+    </view>
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">应聘岗位 <text class="text-red margin-left-xs m-t">*</text></view>
+      <input placeholder="请输入应聘岗位" bindinput='positionInput' maxlength="30" value='{{sub.position}}'  class="text-black"></input>
+    </view>   
+ 
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">应聘类型<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="type_statusChange" class="text-left" value="{{type_statusIndex}}" range="{{type_status}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{type_statusIndex || type_statusIndex == 0}}">{{type_status[type_statusIndex]}}</text>
+          <text wx:else>请选择应聘类型</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">期望月薪</view>
+      <input placeholder="如：8k" value='{{sub.expected}}'maxlength="30" bindinput='expectedInput' class="text-black"></input>
+    </view> 
+     
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">学历<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="educationChange" class="text-left" value="{{educationIndex}}" range="{{education}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{educationIndex || educationIndex==0}}">{{education[educationIndex]}}</text>
+          <text wx:else>请选择学历</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group margin-lr text-lg">
+      <view class="title flex text-black">期望工作城市</view>
+      <picker mode="region" bindchange="RegionChange" value="{{region}}">
+			<view class="picker ">
+        <view class="text-left f-32" wx:if="{{!region[0] || !region[1] || !region[2]}}">
+        请选择省市区
+        </view>
+				<view class="text-left f-32 text-black" wx:else>{{region[0]}} {{region[1]}} {{region[2]}}</view>
+			</view>
+		</picker>
+    </view>    
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">是否待业<text class="text-red margin-left-xs m-t">*</text></view>
+      <picker bindchange="unemployed_statusChange" class="text-left" value="{{unemployed_statusIndex}}" range="{{unemployed_status}}">
+        <view class="picker ">
+          <text class="text-black" wx:if="{{unemployed_statusIndex || unemployed_statusIndex ==0}}">{{unemployed_status[unemployed_statusIndex]}}</text>
+          <text wx:else>请选择是否待业</text> 
+        </view>
+      </picker>
+    </view> 
+    <view class="cu-form-group padding-top margin-lr text-lg ">
+      <view class="title flex text-black">最快到岗时间</view>
+      <picker mode="date" value="{{sub.reporttime}}" bindchange="DateChange">
+        <view class="picker text-black">
+          {{sub.reporttime}}
+        </view>
+      </picker>
+    </view> 
+  </view>
+  <view class="flex margin-lr  padding-tb-sm shadow-gray-light column margin-top radius-30 bg-white hidden">
+<view class="cu-bar bg-white margin-lr">
+      <view class="action text-black flex" style="margin-left:0;font-size:32rpx">
+        资质证书
+      </view>
+      <view class="action text-gray">
+        {{imgList.length}}/9
+      </view>
+    </view>
+    <view class="cu-form-group margin-lr" style="padding:0 0 10rpx 0">
+      <view class="grid col-4 grid-square flex-sub">
+        <view class="bg-img" wx:for="{{imgList}}" wx:key="index" bindtap="ViewImage" data-url="{{imgList[index]}}">
+          <image src='{{imgList[index]}}' mode='aspectFill'></image>
+          <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+            <text class="cuIcon-close"></text>
+          </view>
+        </view>
+        <view class="solids" bindtap="updateLoadImg" data-type='images' wx:if="{{imgList.length<9}}">
+          <text class="cuIcon-cameraadd"></text>
+        </view>
+      </view>
+    </view> 
+    </view> 
+
+  </block>
+
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group align-center margin-left">
+      <view class="title flex flex-1 justify-between text-black">
+        <view>个人优势<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-gray">{{advantage_contentLength || 0}}/1000</view>
+      </view>
+    </view>
+    <view class="margin-lr padding-bottom"> 
+      <view class="container" style="height:{{editorHeight}}px;">
+        <editor id="advantage" class="ql-container" placeholder="{{placeholder}}" bindinput="editorContentChange"  data-type='advantage' bindready="onEditorReady">
+        </editor>
+      </view>  
+    </view>
+  </view>
+ 
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group align-center margin-left">
+      <view class="title flex flex-1 justify-between text-black">
+        <view>工作经历<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-gray">{{experience_contentLength || 0}}/1000</view>
+      </view>
+    </view>
+    <view class="margin-lr padding-bottom"> 
+      <view class="container" style="height:{{editorHeight}}px;">
+        <editor id="experience" class="ql-container" placeholder="{{placeholder}}" bindinput="editorContentChange" data-type='experience' bindready="onEditorReady">
+        </editor>
+      </view>  
+    </view>
+  </view>
+
+  <view class="flex margin-lr shadow-gray-light column margin-top radius-30 bg-white hidden">
+    <view class="cu-form-group align-center margin-left">
+      <view class="title flex flex-1 justify-between text-black">
+        <view>教育经历<text class="text-red margin-left-xs margin-top-xs">*</text></view>
+        <view class="text-gray">{{learning_contentLength}}/1000</view>
+      </view>
+    </view>
+    <view class="margin-lr padding-bottom"> 
+      <view class="container" style="height:{{editorHeight}}px;">
+        <editor id="learning" class="ql-container" placeholder="{{placeholder}}" bindinput="editorContentChange" data-type='learning' bindready="onEditorReady">
+        </editor>
+      </view>  
+    </view>
+  </view>
+ 
+<view class="fixed bottom-0 z-9999 padding-tb w--100 bg-white flex">
+  <view class="padding-tb flex-1 text-lg text-bold text-center bg-gradual-orange round lg shadow-gray padding-lr margin-lr orange-shadow" bind:tap="add"   ><text class="cuIcon-roundaddfill margin-right-xs"></text>{{subtype == 'edit' ? '提交修改' : '创建'}} 
+  </view> 
+</view> 
+
+</view>
+</view>

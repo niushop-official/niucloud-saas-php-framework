@@ -1,0 +1,11 @@
+{
+  "title": "智享小票打印",
+  "desc": "使用该插件需配合niucloud_shop商城，可将客户提交的订单信息打印出来",
+  "key": "zxprint",
+  "version": "1.5.0",
+  "author": "王超",
+  "type": "addon",
+  "support_app": "shop",
+  "support_version": "1.0.0",
+  "compile":[]
+}

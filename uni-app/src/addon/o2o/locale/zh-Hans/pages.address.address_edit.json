@@ -1,0 +1,13 @@
+{
+    "name": "联系人",
+    "namePlaceholder": "请输入联系人姓名",
+    "mobile": "手机号码",
+    "mobilePlaceholder": "请输入手机号码",
+    "mobileError":"请输入正确的手机号",
+    "selectArea":"选择地区",
+    "selectAreaPlaceholder":"请选择地区",
+    "address": "详细地址",
+    "addressPlaceholder": "请填写详细地址",
+    "defaultAddress": "设为默认地址",
+    "nothingMore":"没有更多内容啦~"
+}

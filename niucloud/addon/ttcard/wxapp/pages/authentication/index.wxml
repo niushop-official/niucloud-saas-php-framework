@@ -1,0 +1,59 @@
+<scroll-view scroll-y class="scrollPage">
+  <view style="padding-bottom:80rpx">
+    <cu-custom bgColor="bg-white" isBack="{{true}}">
+      <view slot="content" class="text-lg text-bold text-black">身份认证</view>
+    </cu-custom>
+
+    <view class="margin-lr margin-top-lg"> 
+      <view class="padding-lg relative flex column  shadow-gray-light radius-30 flex-1 lg justify-center  relative hidden justify-between"> 
+        <view class="flex flex-1 jstify-between"   bind:tap="goAddauthentication" data-type='geren' data-id='{{geren.authenticationDetail.id}}' data-examinestatus='{{geren.authenticationDetail.examine_status}}'>
+          <view class="flex flex-1"> 
+            <view class="flex flex-1 align-center justify-between"> 
+              <view >
+              <view class="text-bold margin-bottom-sm">{{geren.name}}</view> 
+                <block wx:if="{{geren.authenticationDetail && geren.authenticationDetail.examine_status == 1}}">
+                <text class="text-cyan">已认证 </text>
+                </block>
+                <block wx:elif="{{geren.authenticationDetail && geren.authenticationDetail.examine_status == 2}}">
+                  <text class="text-gray">审核失败 </text> 
+                </block>
+                <block wx:elif="{{geren.authenticationDetail && geren.authenticationDetail.examine_status == 3}}">
+                  <text class="text-orange">审核中 </text> 
+                </block>  
+                <block wx:elif="{{geren.authenticationDetail && geren.authenticationDetail.examine_status == 4}}">
+                  <text class="text-red">待支付 </text> 
+                </block>  
+                <block wx:elif="{{geren.authenticationDetail && geren.authenticationDetail.examine_status == 5}}">
+                  <text class="text-gray">已撤回 </text> 
+                </block> 
+                <block wx:else>
+                  <text class="text-gray">未认证 </text> 
+                </block> 
+              </view> 
+              <view class="flex align-center">
+                <view class="bg-gradual-orange orange-shadow round padding-tb-xs padding-lr margin-right" hover-class="none" bind:tap="goAddauthentication" data-type='geren'  wx:if="{{ geren.authenticationDetail.examine_status==2 || geren.authenticationDetail.examine_status ==5}}">再次认证</view>
+                <text class="cuIcon-right text-gray"></text>
+              </view>
+            </view>
+          </view> 
+        </view>
+        </view>
+      <view class="margin-top padding-lg relative flex column  shadow-gray-light radius-30 flex-1 lg justify-center relative hidden justify-between"> 
+        <view class="flex justify-between align-center"   bind:tap="goWebsiteList"  data-type='qiye' data-id='{{qiye.authenticationDetail.id}}'  data-examinestatus='{{qiye.authenticationDetail.examine_status}}'>
+          <view class="flex flex-1 align-center justify-between">
+              <view>
+              <view class="text-bold margin-bottom-sm">{{qiye.name}}</view>  
+              <text class="text-gray" wx:if="{{!qiye.authenticationDetail || qiye.authenticationDetail.qiye_authentication_num == 0}}">未认证</text>  
+              <text class="text-cyan" wx:if="{{qiye.authenticationDetail.qiye_authentication_num >0 }}">已认证 {{qiye.authenticationDetail.qiye_authentication_num}} 个微官网</text> 
+              </view> 
+                <text class="cuIcon-right text-gray"></text>
+            </view>
+        </view>
+      </view> 
+ 
+    </view>
+
+  </view>
+
+  
+</scroll-view>

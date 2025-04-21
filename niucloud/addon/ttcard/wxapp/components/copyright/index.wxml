@@ -1,0 +1,4 @@
+<view style="color:#a1a1a1;font-size:24rpx;text-align:center;padding-top:100rpx;opacity: .5;" wx:if="{{data.miniappCopy}}">
+  <view class="">{{data.miniappV}}</view>
+  <view class="">{{data.miniappCopy}}</view>
+</view>

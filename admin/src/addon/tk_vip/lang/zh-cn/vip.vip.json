@@ -1,0 +1,15 @@
+{
+      "siteId": "站点ID",
+      "siteIdPlaceholder": "请输入站点ID",
+      "memberId": "会员",
+      "memberIdPlaceholder": "全部",
+      "levelId": "等级",
+      "levelIdPlaceholder": "全部",
+      "overTime": "到期时间",
+      "overTimePlaceholder": "请输入到期时间",
+      "addVip": "VIP管理",
+      "updateVip": "VIP管理",
+      "vipDeleteTips": "确定要删除该数据吗？",
+      "startDate": "请选择开始时间",
+      "endDate": "请选择结束时间"
+}

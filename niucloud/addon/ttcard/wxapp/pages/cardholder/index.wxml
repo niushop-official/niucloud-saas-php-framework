@@ -1,0 +1,79 @@
+<scroll-view scroll-y class="scrollPage"	bindscrolltolower='isonReachBottom'>
+<view style="padding-bottom:200rpx">
+  <cu-custom bgColor="bg-white" isBack="{{true}}">
+    <view slot="content" class="text-lg text-bold text-black">{{title}}</view>
+  </cu-custom>
+   
+<radio-group bindchange="radioChange" class="flex column">
+  <view class="flex column radius-30 margin-top bg-white shadow-gray-light padding-lr padding-top-lg padding-bottom margin-lr " wx:for="{{list}}" wx:key="index" >  
+      <view class="align-center flex"> 
+        <view class="cu-avatar margin-lr-xs xl round" style="background-image:url({{item.avatar}});"bind:tap="goCard" data-cardid='{{item.id}}'></view> 
+        <view class="flex column  margin-left hidden"bind:tap="goCard" data-cardid='{{item.id}}'>
+          <view class="flex align-center">
+            <view class='text-lg text-black text-bold' >{{item.name}}</view> 
+
+            <view class="flex margin-left-sm " wx:if="{{config.authenticationSwitch ==1 && item.authentication_info.geren_authentication == 1}}">  
+              <text class="cu-tag sm round bg-gradual-orange"  ><text class="cuIcon-choicenessfill"></text> 个人认证</text> 
+            </view> 
+          </view> 
+          <view class="flex text-df margin-top-xs align-center">
+            <view class='' wx:if="{{item.gender == 1}}">女</view>
+            <view class='' wx:if="{{item.gender == 0}}">男</view> 
+            <text class='margin-lr-sm opacity-03' >|</text>
+            <text class='' >{{item.position}}</text>
+            <text class='margin-lr-sm opacity-03' >|</text>
+            <view class='text-df' wx:if="{{item.industry_name}}">{{item.industry_name}}</view>  
+          </view> 
+          <view class="flex justify-between  margin-top-xs text-sm" wx:if="{{item.from_website_name}}">
+            <view class='flex '><text class=''>已加入 {{item.from_website_name}} 的团队</text></view> 
+          </view>
+          <view class="flex justify-between text-gray  margin-top-xs text-sm" style="height:40rpx">
+            <view class='flex hidden'><text class='text-cut-1'>{{item.description}}</text></view> 
+          </view>
+
+          <view class="action margin-top-sm">
+            <view class="cu-tag round {{'item_'+index}} margin-bottom-xs" wx:for="{{item.tags}}" wx:key="index">{{item}}</view> 
+          </view>
+
+        </view>
+        <view class="margin-left-lg" wx:if="{{sourceType == 'select'}}"><radio class="orange" value="{{index}}" ></radio></view>
+      </view>
+      <view class="flex solid-top padding-top justify-between align-center margin-top-lg text-gray" wx:if="{{tabIndex == 1 && sourceType != 'select'}}">
+        <view class="flex-1" wx:if="{{config.addCard_switch == 1}}">
+          <view class="text-orange flex-1" wx:if="{{item.auditing_status == 0}}">审核中</view> 
+          <view class="text-cyan" wx:if="{{item.auditing_status == 1}}">审核通过</view>
+          <view class="text-gray" wx:if="{{item.auditing_status == 2}}">审核失败</view>
+        </view>
+        <view class="flex flex-1">
+          <view  hover-class="none" bind:tap="goEditCard" data-cardid='{{item.id}}'  class="flex-1 text-center"><text class="cuIcon-edit margin-right-xs"></text>编辑</view>
+          <view class="solid-left text-center flex-1"  bind:tap="goDeleteCard" data-cardid='{{item.id}}' data-index='{{index}}'><text class="cuIcon-delete margin-right-xs"></text>删除</view> 
+        </view>
+      </view>
+      <view class="flex solid-top padding-top justify-end align-center  margin-top-lg text-gray" bind:tap="godeleteCollect" data-index='{{index}}' data-carid='{{item.id}}' wx:if="{{tabIndex == 2 && sourceType != 'select'}}" >  
+        <text class="cuIcon-delete margin-right-xs"></text>删除
+      </view>
+ 
+
+
+
+</view>
+</radio-group>
+
+
+ 
+
+  <view class="emptyBox" wx:if="{{list.length == 0}}">
+    <image src="../../images/empty.png" />
+    <view class="text text-gray">~ 暂无相关内容 ~</view>
+  </view>
+
+  <view class="fixed bottom-0 padding-tb w--100 bg-white " wx:if="{{tabIndex != 2 && sourceType != 'select'}}">
+    <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goAddcard"><text class="cuIcon-roundaddfill"></text> 创建名片</view>
+  </view>
+  <view class="fixed bottom-0 padding-tb w--100 bg-white z-9999" wx:if="{{sourceType == 'select'}}">
+    <view class="padding-tb breathing-element text-xl flex-1 margin-lr text-bold text-center bg-gradual-orange round lg shadow-orange align-center" bind:tap="goback">确定</view>
+  </view>
+
+
+</view> 
+</scroll-view>

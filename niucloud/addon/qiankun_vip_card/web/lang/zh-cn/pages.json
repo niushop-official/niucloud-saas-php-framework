@@ -1,0 +1,9 @@
+{
+    "pages": {
+        "qiankun_vip_card": {
+            "hello_world": {
+                "index": "hello_world"
+            }
+        }
+    }
+}

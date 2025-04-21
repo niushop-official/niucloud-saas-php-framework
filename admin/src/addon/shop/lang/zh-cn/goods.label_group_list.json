@@ -1,0 +1,12 @@
+{
+  "tabGoodsLabel": "商品标签",
+  "tabGoodsLabelGroup": "标签分组",
+  "groupName": "分组名称",
+  "groupNamePlaceholder": "请输入分组名称",
+  "sort": "排序",
+  "sortPlaceholder": "请输入排序",
+  "addLabelGroup": "添加标签分组",
+  "updateLabelGroup": "编辑标签分组",
+  "sortTips": "排序号格式输入错误",
+  "labelGroupDeleteTips": "确定要删除该数据吗？"
+}

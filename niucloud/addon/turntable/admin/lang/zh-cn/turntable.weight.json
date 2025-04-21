@@ -1,0 +1,10 @@
+{
+   "weightDistributionProbabilist": "权重分布概率器",
+   "weightValue": "权重数值",
+   "addWeight": "新增权重值",
+   "simulationsNumber": "模拟次数",
+   "calculate": "计算",
+   "percentProportion": "百分比占比",
+   "numberProportion": "选中次数占比",
+   "weightValuePlaceholder": "请填写权重值必须为数字"
+}

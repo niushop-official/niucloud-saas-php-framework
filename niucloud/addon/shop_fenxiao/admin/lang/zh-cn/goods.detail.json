@@ -1,0 +1,20 @@
+{
+    "titleOne":"商品信息",
+    "titleTwo":"佣金设置",
+    "goodsImage":"商品图片",
+    "goodsName":"商品名称",
+    "type":"佣金规则",
+    "countPrice":"分销计算价格",
+    "skuPrice":"销售价",
+    "costPrice":"成本价",
+    "calculatePrice":"分销计算价",
+    "calculatePriceTip":"未设置分销计算价以该商品实付金额来计算佣金，设置后以该价格来计算佣金。",
+    "typeLabelOne":"默认规则",
+    "typeLabelTwo":"单独设置",
+    "levelname":"默认规则",
+    "oneRate":"一级佣金比例",
+    "twoRate":"二级佣金比例",
+    "skuName":"商品规格",
+    "price":"金额",
+    "rateName":"分销商等级名称"
+}

@@ -1,0 +1,1 @@
+import{ak as e}from"./index-8fe4bece.js";function r(r){return e.get("shop_giftcard/member_records/give",r)}function t(r){return e.get(`shop_giftcard/member_records/give/${r}`)}function o(r){return e.get("shop_giftcard/member_records/receive",r)}export{r as a,t as b,o as g};

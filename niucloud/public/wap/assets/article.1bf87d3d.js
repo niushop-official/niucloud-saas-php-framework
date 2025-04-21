@@ -1,0 +1,1 @@
+import{ak as t}from"./index-8fe4bece.js";function r(r){return t.get("cms/article",r)}function c(r){return t.get("cms/article/all",r)}function e(r){return t.get(`cms/article/${r}`)}function n(){return t.get("cms/category")}function a(r){return t.put(`cms/article/visit/${r}`)}export{n as a,r as b,e as c,c as g,a as v};

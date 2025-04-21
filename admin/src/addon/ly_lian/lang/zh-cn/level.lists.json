@@ -1,0 +1,22 @@
+{
+    "levelName":"等级名称",
+    "levelNamePlaceholder":"请输入等级名称",
+    "levelNum":"等级权重",
+    "levelNumPlaceholder":"请输入等级权重",
+    "levelCondition":"等级条件",
+    "levelConditionPlaceholder":"请输入等级条件",
+    "rewardSet":"奖励设置",
+    "rewardSetPlaceholder":"请输入奖励设置",
+    "createTime":"创建时间",
+    "createTimePlaceholder":"请输入创建时间",
+    "addLevel":"添加链动等级",
+    "updateLevel":"编辑链动等级",
+    "levelDeleteTips":"确定要删除该数据吗？",
+    "startDate":"请选择开始时间",
+    "endDate":"请选择结束时间",
+    "Rate":"直推奖",
+    "seeRate": "见点奖",
+    "cultivateRate": "培育奖",
+    "upgradeConditions": "升级条件",
+    "frozenRate": "冻结比例"
+}

@@ -1,0 +1,1 @@
+const o="通用设置",t="是否关联商城",s="是",i="否",n="必须授权了官方NiuCloud商城才可开启此开关。",u={commonSetting:o,isPayNiuCloudShop:t,are:s,no:i,isPayNiuCloudShopTips:n};export{s as are,o as commonSetting,u as default,t as isPayNiuCloudShop,n as isPayNiuCloudShopTips,i as no};

@@ -1,0 +1,12 @@
+{
+   "addHomeAddress":"添加上门地址",
+   "selectiveTechnician":"选择技师",
+   "addHomeTime":"上门时间",
+   "selectAddTimePlaceholder":"请选择上门时间",
+   "buysMessage":"买家留言",
+   "messagePlaceholder":"请填写留言信息",
+   "goodsMoney":"商品金额",
+   "total":"合计：",
+   "submit":"提交订单",
+   "nothingMore":"没有更多内容啦~"
+}

@@ -1,0 +1,21 @@
+{
+  "tabESTemplate": "电子面单模板",
+  "tabESConfig": "设置",
+  "apiSet": "接口设置",
+  "interfaceType": "接口类型",
+  "prompt": "提示",
+  "promptTips1-1": "请到快递鸟官网申请",
+  "kdn": "快递鸟",
+  "kdnEBusinessIDLabel": "用户ID",
+  "kdnEBusinessIDPlaceholder": "请输入快递鸟用户ID",
+  "kdnEBusinessIDTips": "快递鸟用户ID，EBusinessID",
+  "kdnAppKeyPlaceholder": "请输入快递鸟API key",
+  "kdnAppKeyTips": "快递鸟分配的API key",
+  "printerSet": "打印机设置",
+  "serverPort1": "服务器端口1",
+  "serverPort1Placeholder": "请输入服务器端口1",
+  "serverPort2": "服务器端口2",
+  "serverPort2Placeholder": "请输入服务器端口2",
+  "httpsPort": "HTTPS端口",
+  "httpsPortPlaceholder": "请输入HTTPS端口"
+}

@@ -1,0 +1,11 @@
+{
+  "title": "活动报名",
+  "desc": "活动报名系统, 支持付费/免费, 核销报名",
+  "key": "huodong",
+  "version": "3.2.4",
+  "author": "优云通科技",
+  "type": "app",
+  "support_app": "",
+  "compile":[],
+  "support_version": "1.0.*"
+}

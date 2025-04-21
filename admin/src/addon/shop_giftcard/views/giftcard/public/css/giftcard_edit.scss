@@ -1,0 +1,185 @@
+.giftcard-type-wrap {
+  width: 120px;
+  height: 60px;
+  background: #fff;
+  border-radius: 3px;
+  float: left;
+  text-align: center;
+  padding-top: 8px;
+  position: relative;
+  cursor: pointer;
+  line-height: 23px;
+  border: 1px solid #e7e7e7;
+
+  .type-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .85);
+  }
+
+  .type-desc {
+    font-size: 12px;
+    font-weight: 400;
+    color: #999;
+  }
+
+  .triangle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 26px solid var(--el-color-primary);
+    border-left: 26px solid transparent;
+  }
+
+  .selected {
+    position: absolute;
+    bottom: -2px;
+    right: 2px;
+    color: #fff;
+  }
+
+  &.selected {
+    border: 1px solid var(--el-color-primary);
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    .type-name {
+      color: #999;
+    }
+  }
+
+  &:nth-child(2n) {
+    margin: 0 12px;
+  }
+
+}
+
+.card-blessing-wrap {
+  flex: 1;
+
+  .blessing-item-wrap {
+    background: #f7f7f7;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 6px;
+
+    ul {
+
+      display: flex;
+      flex-wrap: wrap;
+      flex: 1;
+      align-items: baseline;
+
+      li {
+        margin: 0 10px 10px 0;
+        position: relative;
+
+        .input-width {
+          width: 350px;
+        }
+
+        .icon {
+          width: 32px;
+          padding: 0;
+          display: none;
+          position: absolute;
+          top: -12px;
+          right: -20px;
+          cursor: pointer;
+        }
+
+        &:hover {
+          .icon {
+            display: block;
+          }
+        }
+      }
+
+    }
+
+    .add-value {
+      cursor: pointer;
+      user-select: none;
+    }
+
+  }
+}
+
+.card-right-balance-wrap {
+  flex: 1;
+
+  .balance-item-wrap {
+    background: #f7f7f7;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 6px;
+
+    ul {
+
+      display: flex;
+      flex-wrap: wrap;
+      flex: 1;
+      align-items: baseline;
+
+      li {
+        margin: 0 10px 10px 0;
+        position: relative;
+
+        .input-width {
+          width: 200px;
+        }
+
+        .icon {
+          width: 32px;
+          padding: 0;
+          display: none;
+          position: absolute;
+          top: -12px;
+          right: -20px;
+          cursor: pointer;
+        }
+
+        &:hover {
+          .icon {
+            display: block;
+          }
+        }
+      }
+
+    }
+
+    .add-balance-value {
+      cursor: pointer;
+      user-select: none;
+    }
+
+  }
+}
+
+.el-input__suffix {
+  cursor: pointer;
+}
+
+.el-table__row:focus {
+  outline: none !important;
+}
+
+.editor-width {
+  width: 990px;
+}
+
+.fixed-footer {
+  z-index: 4;
+}
+.input-width-mid{
+  width: 200px;
+}
+.input-width-short{
+  width: 100px;
+}
