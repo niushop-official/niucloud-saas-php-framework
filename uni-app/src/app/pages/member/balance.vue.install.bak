@@ -78,6 +78,7 @@
 </template>
 
 <script setup lang="ts">
+  
 import { ref, reactive, computed, watch } from 'vue'
 import { t } from '@/locale'
 import { moneyFormat, redirect, img, pxToRpx } from '@/utils/common';
@@ -109,7 +110,7 @@ watch(
     (newAddons, oldAddons) => {
         if (newAddons !== oldAddons) {
             systemStore.siteAddons = newAddons
-            if (systemStore.siteAddons.includes('recharge')) {
+            if(systemStore.siteAddons.includes('recharge')) {
                 rechargeConfig().then((res: any) => {
                     for (let key in res.data) {
                         rechargeConfigObj[key] = res.data[key];
@@ -127,7 +128,7 @@ onShow(() => {
         }
 
     })
-    if (systemStore.siteAddons.includes('recharge')) {
+    if(systemStore.siteAddons.includes('recharge')) {
         rechargeConfig().then((res: any) => {
             for (let key in res.data) {
                 rechargeConfigObj[key] = res.data[key];

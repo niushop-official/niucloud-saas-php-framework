@@ -1,1 +1,0 @@
-import{P as e}from"./index-1befb66e.js";function s(){return e.get("ly_Shareholder/config")}function t(r){return e.put("ly_Shareholder/config",r,{showErrorMessage:!0,showSuccessMessage:!0})}export{s as g,t as s};

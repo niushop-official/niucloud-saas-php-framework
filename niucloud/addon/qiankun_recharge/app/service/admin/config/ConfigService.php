@@ -54,7 +54,7 @@ class ConfigService extends BaseAdminService
         $field = 'id,site_id,open,min_recharge,recharge_desc';
 
         $info = $this->model->field($field)->where([['site_id', "=", $this->site_id]])->findOrEmpty()->toArray();
-        $info['open'] = intval($info['open']);
+        $info['open'] = intval($info['open'] ?? 0);
         return $info;
     }
 
@@ -72,7 +72,6 @@ class ConfigService extends BaseAdminService
             $res = $this->model->create($data);
         }
         return $res->id;
-
     }
 
     /**
@@ -99,5 +98,4 @@ class ConfigService extends BaseAdminService
         $res = $model->delete();
         return $res;
     }
-
 }

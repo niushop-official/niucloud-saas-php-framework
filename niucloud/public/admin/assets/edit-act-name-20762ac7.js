@@ -1,1 +1,0 @@
-import{u as t}from"./poster-aa11c59c.js";import{d as s,h as n,c as r,b as a}from"./index-1befb66e.js";const c={class:"content-wrap"},i=s({__name:"edit-act-name",setup(m,{expose:e}){return t(),e({}),(o,p)=>(n(),r("div",c,[a(o.$slots,"common")]))}});export{i as default};

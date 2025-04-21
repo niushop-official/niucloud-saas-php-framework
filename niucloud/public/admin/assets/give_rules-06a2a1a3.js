@@ -1,0 +1,1 @@
+import{_ as e}from"./_plugin-vue_export-helper-c27b6911.js";import{h as r,c as o}from"./index-31c6606f.js";const s={name:"give_rules"};function t(c,n,_,a,i,l){return r(),o("view",null,"give_rules modify")}const m=e(s,[["render",t]]);export{m as default};

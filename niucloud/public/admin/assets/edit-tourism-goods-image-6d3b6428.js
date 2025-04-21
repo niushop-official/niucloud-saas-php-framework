@@ -1,0 +1,1 @@
+import{u as t}from"./poster-7b321333.js";import{d as r,h as s,c as n,b as _}from"./index-31c6606f.js";const a={class:"content-wrap"},c=r({__name:"edit-tourism-goods-image",setup(l,{expose:e}){return t(),e({}),(o,m)=>(s(),n("div",a,[_(o.$slots,"common")]))}}),d=Object.freeze(Object.defineProperty({__proto__:null,default:c},Symbol.toStringTag,{value:"Module"}));export{d as _};
