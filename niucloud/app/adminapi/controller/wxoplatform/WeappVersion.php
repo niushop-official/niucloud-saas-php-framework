@@ -30,6 +30,15 @@ class WeappVersion extends BaseAdminController
         return success();
     }
 
+    /**
+     * 平台撤销审核
+     * @param $id
+     * @return Response
+     */
+    public function weappCommitUndocodeaudit($id){
+        $res = (new WeappVersionService())->undocodeaudit($id);
+        return success($res);
+    }
 
     public function getSiteGroupCommitRecord() {
         return success(data:(new WeappVersionService())->getSiteGroupCommitRecord());
