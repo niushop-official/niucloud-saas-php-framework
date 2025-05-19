@@ -2,28 +2,16 @@
 branches: {
   }
 fileChange:
-  /admin:
-    newFile: !uuid 'e09616d60e16b1a5ad118a6552d46112d1b2ce37'
-    oldFile: !uuid '27fa09216881bcc77600cde09b1a4556e9490c03'
-  /admin/src:
-    newFile: !uuid '4a3891c0aec4a8ee233fa44484e251da2621865d'
-    oldFile: !uuid '31100297eab9fb8293a138932072e33b20e30ccc'
-  /admin/src/app:
-    newFile: !uuid '57f3744f0a29b31d4e28e25f57dfaa46a07a2b79'
-    oldFile: !uuid '83eede82dff33d82c7f1a13ae4d6c0a54aceae52'
-  /admin/src/app/assets:
-    newFile: !uuid '0e1ab8cd21c350862bb6ea097e9d6093d22658cf'
-    oldFile: !uuid '32c8841dbcd74448bbf779f6c82746b80934b36b'
-  /admin/src/app/assets/images:
-    newFile: !uuid '2daf290cfe133b418092be7308549ca53b2eb8a2'
-    oldFile: !uuid '5f156c809d3501bfcc0bd34e101c273544a925de'
-  /admin/src/app/assets/images/tools:
-    newFile: !uuid '78a1b6f8a86a182a090c7e785f96ec289d8fb594'
-    oldFile: !uuid '93729b9678c92917c06ce4a0f060764c46caed71'
-  /admin/src/app/assets/images/tools/tools_update_cache.png:
-    newFile: !uuid '925c58ddfaa721373302363c1e2094279add0bc5'
-    oldFile: null
-gitCommitId: !uuid '7e010a3074e00a15bb4178c3e84e2ef90003bef9'
+  /niucloud:
+    newFile: !uuid 'f4e22319c3333cf8776b8c6d6ca3f9b29063d995'
+    oldFile: !uuid '41b07f3d61892a45321fe79d68da13b899ea3d4c'
+  /niucloud/config:
+    newFile: !uuid 'ef8f512a1e35480145c7aea89b2f5709a84fa49a'
+    oldFile: !uuid 'ce1a64753a88a76de7bd3200d33c29ef1fbc8c2a'
+  /niucloud/config/version.php:
+    newFile: !uuid '9faf7328a4dba4da11033de4fb8fe58a99911784'
+    oldFile: !uuid '08a84dbb2a513f97c0d25f1f4977577e3d750042'
+gitCommitId: !uuid '3e2649339dbdf1cb5901f35b852f43b1d4ce3b4e'
 renames: {
   }
-revisionId: 289
+revisionId: 290
