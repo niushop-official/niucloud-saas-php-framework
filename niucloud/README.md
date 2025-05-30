@@ -35,7 +35,7 @@ composer update
 
 ## 文档
 
-[完全开发手册](https://www.kancloud.cn/manual/thinkphp6_0/content)
+[完全开发手册](https://www.kancloud.cn/manual/thinkphp8_0/content)
 
 ## 参与开发
 
