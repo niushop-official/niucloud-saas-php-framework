@@ -25,7 +25,7 @@
             </el-menu>
         </div>
 
-        <div class="flex items-center justify-end mr-[20px] ml-auto whitespace-pre">
+        <div class="flex items-center justify-end mr-[20px] ml-auto whitespace-pre-wrap">
             <div v-if="info">
                 <NuxtLink to="/member/center">
                     <span class="cursor-pointer">{{ info.nickname }}</span>
