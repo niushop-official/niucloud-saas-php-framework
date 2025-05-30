@@ -39,6 +39,7 @@
                             <el-tooltip :content="previewContent" raw-content effect="light">
                                 <el-button type="primary" link>{{ t('preview') }}</el-button>
                             </el-tooltip>
+                            <el-button type="primary" link @click="undocodeaudit(row.id)">{{ t('undocodeaudit') }}</el-button>
                         </template>
                         <el-button type="primary" link v-if="row.status == -1 || row.status == -2" @click="handleFailReason(row)">
                             {{ t('failReason') }}</el-button>
@@ -105,7 +106,7 @@ import { getAppType } from '@/utils/common'
 import { ElMessageBox } from 'element-plus'
 import { AnyObject } from '@/types/global'
 import Storage from '@/utils/storage'
-import {siteWeappCommit} from "@/app/api/wxoplatform";
+import {siteWeappCommit, siteWeappUndocodeaudit} from "@/app/api/wxoplatform";
 
 const route = useRoute()
 const router = useRouter()
@@ -308,6 +309,28 @@ const againUpload = () => {
     }).catch(() => {
         uploading.value = false
     })
+}
+
+const undocodeaudit = (id: Number) => {
+  if (uploading.value) return
+  uploading.value = true
+  ElMessageBox.confirm(
+      t('undocodeauditTips'),
+      t('warning'),
+      {
+        confirmButtonText: t('confirm'),
+        cancelButtonText: t('cancel')
+      }
+  ).then(() => {
+    siteWeappUndocodeaudit(id).then(() => {
+      getWeappVersionListFn()
+      uploading.value = false
+    }).catch(() => {
+      uploading.value = false
+    })
+  }).catch(() => {
+    uploading.value = false
+  })
 }
 </script>
 

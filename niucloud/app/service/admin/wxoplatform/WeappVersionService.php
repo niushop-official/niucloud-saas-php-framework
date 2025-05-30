@@ -274,6 +274,26 @@ class WeappVersionService extends BaseAdminService
         return true;
     }
 
+    public function undocodeaudit($id)
+    {
+        $res = CoreOplatformService::undocodeaudit($this->site_id);
+        $undoAudit = $res['undoAudit'];
+        if ($undoAudit['errcode'] == 87012) throw new CommonException('该版本不能回退，可能的原因：1:无上一个线上版用于回退 2:此版本为已回退版本，不能回退 3:此版本为回退功能上线之前的版本，不能回退');
+        if ($undoAudit['errcode'] == 87013) throw new CommonException('撤回次数达到上限（每天5次，每个月 10 次）');
+        if ($undoAudit['errcode']) throw new CommonException($res['errmsg']);
+
+        // 设置版本为未提交
+        (new WeappVersion())
+            ->where(['site_id' => $this->site_id, 'id' => $id])
+            ->update([
+                'status' => -2,
+                'fail_reason' => "已手动撤回\n撤回时间：" . date('Y-m-d H:i:s'),
+                'update_time' => time(),
+            ]);
+
+        return $res;
+    }
+
     /**
      * 提交审核
      * @param $site_id
