@@ -76,18 +76,11 @@ class CoreFileService extends BaseCoreService
     /**
      * 实例化上传引擎
      * @param int $site_id
-     * @param string $storage_type
+     * @param string $storage_type `非空则是强制使用某种存储方式 为空则是走后台设置`
      * @return UploadLoader
      * @throws Exception
      */
     public function driver(int $site_id, string $storage_type = ''){
-
-        //是租户且设置的为默认 则按照超级管理员的默认来使用
-        $tenant_is_default = ($site_id != 0 && $storage_type  == StorageDict::LOCAL);
-        if ($tenant_is_default){
-            $site_id = 0;
-            $storage_type = '';
-        }
         if(empty($storage_type)){
             $core_storage_service = new CoreStorageService();
             $storage_config = $core_storage_service->getDefaultStorage($site_id);

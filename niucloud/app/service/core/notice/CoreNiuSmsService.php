@@ -50,7 +50,7 @@ class CoreNiuSmsService extends BaseAdminService
     public function __construct()
     {
         parent::__construct();
-        $niushop_url_prefix = env('NIU_SHOP_PREFIX', 'https://www.niushop.com/openapi');
+        $niushop_url_prefix = env('NIU_SHOP_PREFIX', 'https://api.niucloud.com/openapi');
         if (empty($niushop_url_prefix)) {
             throw new \Exception('URL_NOT_FOUND');
         } else {
