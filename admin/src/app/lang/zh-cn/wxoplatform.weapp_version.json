@@ -1,8 +1,8 @@
 {
   "groupName": "站点套餐",
   "lastTime": "上次同步时间",
-  "weappVersionUpdate": "小程序同步",
-  "weappVersionUpdateRecord": "小程序同步记录",
+  "weappVersionUpdate": "同步模板库",
+  "weappVersionUpdateRecord": "模板库同步记录",
   "createTime": "提交时间",
   "userVersion": "版本号",
   "failReason": "失败原因",
@@ -11,5 +11,7 @@
   "commitRecord": "同步记录",
   "oneClickSync": "一键同步",
   "syncTemplateError": "未能同步到模板库",
-  "templateID": "模板ID"
+  "templateID": "模板ID",
+  "siteWeappSync": "站点小程序同步",
+  "syncSiteWeappTips": "是否要给该套餐下已授权小程序的站点提交代码？"
 }

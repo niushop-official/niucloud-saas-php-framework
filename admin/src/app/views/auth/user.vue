@@ -6,84 +6,89 @@
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
+            <el-tabs v-model="activeName" class="mt-[20px]">
+                <el-tab-pane :label="t('管理员')" name="userList">
+                    <div class="flex justify-between items-center mt-[20px]">
+                        <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
+                            <el-form-item :label="t('accountNumber')" prop="search">
+                                <el-input v-model.trim="userTableData.searchParam.search" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="loadUserList()">{{ t('search') }}</el-button>
+                                <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <el-button type="primary" class="w-[100px] self-start" @click="addEvent">{{ t('addUser') }}</el-button>
+                    </div>
 
-            <div class="flex justify-between items-center mt-[20px]">
-                <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
-                    <el-form-item :label="t('accountNumber')" prop="search">
-                        <el-input v-model.trim="userTableData.searchParam.search" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="loadUserList()">{{ t('search') }}</el-button>
-                        <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
-                    </el-form-item>
-                </el-form>
-                <el-button type="primary" class="w-[100px] self-start" @click="addEvent">{{ t('addUser') }}</el-button>
-            </div>
+                    <div>
+                        <el-table :data="userTableData.data" size="large" v-loading="userTableData.loading">
+                            <template #empty>
+                                <span>{{ !userTableData.loading ? t('emptyData') : '' }}</span>
+                            </template>
 
-            <div>
-                <el-table :data="userTableData.data" size="large" v-loading="userTableData.loading">
-                    <template #empty>
-                        <span>{{ !userTableData.loading ? t('emptyData') : '' }}</span>
-                    </template>
+                            <el-table-column :label="t('headImg')" width="100" align="left">
+                                <template #default="{ row }">
+                                    <div class="w-[35px] h-[35px] flex items-center justify-center">
+                                        <img v-if="row.head_img" :src="img(row.head_img)" class="w-[35px] rounded-full" />
+                                        <img v-else src="@/app/assets/images/member_head.png" class="w-[35px] rounded-full" />
+                                    </div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="username" :label="t('accountNumber')" min-width="120" show-overflow-tooltip />
+                            <el-table-column prop="real_name" :label="t('userRealName')" min-width="120" show-overflow-tooltip>
+                                <template #default="{ row }">
+                                    <span>{{ row.real_name ? row.real_name :'--' }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="t('userRoleName')" min-width="120" show-overflow-tooltip>
+                                <template #default="{ row }">
+                                    <span v-if="row.is_admin">{{ t('administrator') }}</span>
+                                    <span v-else-if="row.role_array.length">{{ row.role_array.join(' | ') }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="t('status')" min-width="90" align="center">
+                                <template #default="{ row }">
+                                    <el-tag class="ml-2" type="success" v-if="row.status == 1">{{ t('statusUnlock') }}</el-tag>
+                                    <el-tag class="ml-2" type="error" v-if="row.status == 0">{{ t('statusLock') }}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="last_time" :label="t('lastLoginTime')" min-width="180" align="center">
+                                <template #default="{ row }">
+                                    {{ row.last_time || '' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="t('lastLoginIP')" min-width="180" align="center">
+                                <template #default="{ row }">
+                                    {{ row.last_ip || '' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="t('operation')" align="right" fixed="right" width="160">
+                                <template #default="{ row }">
+                                    <div v-if="row.is_admin != 1">
+                                        <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
+                                        <el-button type="primary" link @click="lockEvent(row.uid)" v-if="row.status">{{ t('lock') }}</el-button>
+                                        <el-button type="primary" link @click="unlockEvent(row.uid)" v-else>{{ t('unlock') }}</el-button>
+                                        <el-button type="primary" link @click="deleteEvent(row.uid)">{{ t('delete') }}</el-button>
+                                    </div>
+                                    <div v-else>
+                                        <el-button link disabled>{{ t('adminDisabled') }}</el-button>
+                                    </div>
+                                </template>
+                            </el-table-column>
+                        </el-table>
 
-                    <el-table-column :label="t('headImg')" width="100" align="left">
-                        <template #default="{ row }">
-                            <div class="w-[35px] h-[35px] flex items-center justify-center">
-                                <img v-if="row.head_img" :src="img(row.head_img)" class="w-[35px] rounded-full" />
-                                <img v-else src="@/app/assets/images/member_head.png" class="w-[35px] rounded-full" />
-                            </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="username" :label="t('accountNumber')" min-width="120" show-overflow-tooltip />
-                    <el-table-column prop="real_name" :label="t('userRealName')" min-width="120" show-overflow-tooltip>
-                        <template #default="{ row }">
-                            <span>{{ row.real_name ? row.real_name :'--' }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('userRoleName')" min-width="120" show-overflow-tooltip>
-                        <template #default="{ row }">
-                            <span v-if="row.is_admin">{{ t('administrator') }}</span>
-                            <span v-else-if="row.role_array.length">{{ row.role_array.join(' | ') }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('status')" min-width="90" align="center">
-                        <template #default="{ row }">
-                            <el-tag class="ml-2" type="success" v-if="row.status == 1">{{ t('statusUnlock') }}</el-tag>
-                            <el-tag class="ml-2" type="error" v-if="row.status == 0">{{ t('statusLock') }}</el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="last_time" :label="t('lastLoginTime')" min-width="180" align="center">
-                        <template #default="{ row }">
-                            {{ row.last_time || '' }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('lastLoginIP')" min-width="180" align="center">
-                        <template #default="{ row }">
-                            {{ row.last_ip || '' }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="160">
-                        <template #default="{ row }">
-                            <div v-if="row.is_admin != 1">
-                                <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                                <el-button type="primary" link @click="lockEvent(row.uid)" v-if="row.status">{{ t('lock') }}</el-button>
-                                <el-button type="primary" link @click="unlockEvent(row.uid)" v-else>{{ t('unlock') }}</el-button>
-                                <el-button type="primary" link @click="deleteEvent(row.uid)">{{ t('delete') }}</el-button>
-                            </div>
-                            <div v-else>
-                                <el-button link disabled>{{ t('adminDisabled') }}</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="userTableData.page" v-model:page-size="userTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="userTableData.total"
-                        @size-change="loadUserList()" @current-change="loadUserList" />
-                </div>
-            </div>
-
+                        <div class="mt-[16px] flex justify-end">
+                            <el-pagination v-model:current-page="userTableData.page" v-model:page-size="userTableData.limit"
+                                layout="total, sizes, prev, pager, next, jumper" :total="userTableData.total"
+                                @size-change="loadUserList()" @current-change="loadUserList" />
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane :label="t('管理员角色')" name="userRole">
+                    <userRole></userRole>
+                </el-tab-pane>
+            </el-tabs>
             <edit-user ref="editUserDialog" @complete="loadUserList()" />
         </el-card>
     </div>
@@ -94,6 +99,7 @@ import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { getUserList, lockUser, unlockUser, deleteUser } from '@/app/api/site'
 import EditUser from '@/app/views/auth/components/edit-user.vue'
+import userRole from '@/app/views/auth/role.vue'
 import { img } from '@/utils/common'
 import { ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
@@ -112,7 +118,7 @@ const userTableData = reactive({
         user_type: ''
     }
 })
-
+const activeName = ref('userList')
 const searchFormRef = ref<FormInstance>()
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -216,4 +222,6 @@ const deleteEvent = (uid: number) => {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

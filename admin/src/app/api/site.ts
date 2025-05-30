@@ -212,6 +212,15 @@ export function getLogInfo(id: number) {
     return request.get(`site/log/${ id }`)
 }
 
+/**
+ * 清空操作日志列表
+ * @param params
+ * @returns
+ */
+export function logDestroy() {
+    return request.delete(`site/log/destroy`)
+}
+
 /***************************************************** 账单列表 **************************************************/
 
 /**

@@ -1,8 +1,8 @@
 <template>
     <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+        <el-card class="box-card !border-none p-[20px]" shadow="never">
             <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
+                <!-- <span class="text-page-title">{{ pageName }}</span> -->
                 <el-button type="primary" class="w-[100px]" @click="commit()">
                     {{ t('oneClickSync') }}
                 </el-button>
@@ -36,13 +36,11 @@
                         <template #default="{ row }">
                             <div v-if="row.commit_record.user_version">
                                 {{ row.commit_record.status_name }}
-                                <div v-if="row.commit_record.template_id == '0'" class="text-error">
+                                <div v-if="row.commit_record.status == 1 && row.commit_record.template_id == '0'" class="text-error">
                                     {{ t('syncTemplateError') }}
                                 </div>
                             </div>
-                            <div>
-                                --
-                            </div>
+                            <div>--</div>
                         </template>
                     </el-table-column>
 
@@ -54,8 +52,11 @@
 
                     <el-table-column :label="t('operation')" align="right" fixed="right" width="330">
                         <template #default="{ row }">
-                            <el-button type="primary" link @click="showCommitRecordDialog(row.group_id)">{{ t('commitRecord') }}</el-button>
-                            <el-button type="primary" link @click="commit(row.group_id)">{{ t('weappVersionUpdate') }}</el-button>
+                            <div class="flex flex-col items-end">
+                                <el-button type="primary" link @click="commit(row.group_id)">{{ t('weappVersionUpdate') }}</el-button>
+                                <el-button type="primary" link @click="showCommitRecordDialog(row.group_id)">{{ t('weappVersionUpdateRecord') }}</el-button>
+                                <el-button type="primary" link @click="syncSiteWeappFn(row.group_id)">{{ t('siteWeappSync') }}</el-button>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -101,8 +102,9 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord, getSiteGroupCommitRecord } from '@/app/api/wxoplatform'
+import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord, getSiteGroupCommitRecord, syncSiteWeapp } from '@/app/api/wxoplatform'
 import { t } from '@/lang'
+import { ElMessageBox } from "element-plus";
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -192,10 +194,25 @@ const showCommitRecordDialog = (siteGroupId: number) => {
     loadCommitRecordList()
     commitRecordDialogShow.value = true
 }
+
+const syncSiteWeappFn = (siteGroupId: number) => {
+    ElMessageBox.confirm(t('syncSiteWeappTips'), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        syncSiteWeapp({ site_group_id: siteGroupId })
+    })
+}
 </script>
 
 <style lang="scss" scoped>
 :deep(.el-alert__title) {
     white-space: pre;
 }
+// :deep(.setting-card .el-card__body){
+//     padding: 0 !important;
+// }
 </style>

@@ -38,4 +38,8 @@ const appStore = useAppStore()
 const tabbarStore = useTabbarStore()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.bg-page {
+    background-color: #F7F7FA;
+}
+</style>

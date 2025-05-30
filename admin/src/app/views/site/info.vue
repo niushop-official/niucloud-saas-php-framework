@@ -1,6 +1,6 @@
 <template>
     <!--站点详情-->
-    <div class="main-container" v-loading="loading">
+    <div class="main-container">
 
         <el-card class="card !border-none" shadow="never">
             <el-page-header :icon="ArrowLeft" @back="back()">
@@ -13,7 +13,7 @@
             </el-page-header>
         </el-card>
 
-        <el-form class="page-form mt-[15px]" :model="formData" label-width="90px" ref="formRef">
+        <el-form class="page-form mt-[15px]" :model="formData" label-width="90px" ref="formRef"  v-loading="loading">
             <el-card class="box-card !border-none relative" shadow="never">
                 <el-form-item :label="t('siteName')">
                     <div class="input-width">{{ formData.site_name }}</div>
@@ -21,7 +21,7 @@
 
                 <el-form-item :label="t('siteLogo')">
                     <el-image v-if="formData.logo" class="w-20 h-20" :src="img(formData.logo)" fit="contain"></el-image>
-                    <img class="w-20 h-20" v-else src="@/app/assets/images/site_logo.png" alt="" >
+                    <img class="w-20 h-20 rounded-[4px]" v-else src="@/app/assets/images/site_default.png" alt="">
                 </el-form-item>
 
                 <el-form-item :label="t('siteDomain')">
@@ -188,7 +188,7 @@ const onSave = async (formEl: FormInstance | undefined) => {
 
 const back = () => {
     tabbarStore.removeTab(route.path)
-    router.push({ path: '/admin/site/list' })
+    router.push({ path: '/admin/site/manage' })
 }
 </script>
 

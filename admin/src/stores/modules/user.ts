@@ -40,7 +40,7 @@ const userStore = defineStore('user', {
         },
         login(form: object, app_type: any) {
             return new Promise((resolve, reject) => {
-                login(form, app_type).then(async(res) => {
+                login(form, app_type).then(async (res) => {
                     if (app_type == 'admin' && Test.empty(res.data.userrole)) {
                         storage.setPrefix('site')
                     }

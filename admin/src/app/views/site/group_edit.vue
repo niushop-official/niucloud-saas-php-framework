@@ -1,13 +1,13 @@
 <template>
     <!--站点套餐编辑-->
-    <div class="main-container" v-loading="loading">
+    <div class="main-container" >
 
-        <el-card class="card !border-none" shadow="never">
+        <el-card class="box-card !border-none" shadow="never">
             <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
         <el-card class="box-card mt-[15px] !border-none" shadow="never">
-            <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form">
+            <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
                 <el-form-item :label="t('groupName')" prop="group_name">
                     <el-input v-model.trim="formData.group_name" :placeholder="t('groupNamePlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="20" :show-word-limit="true" />
                 </el-form-item>
@@ -82,14 +82,13 @@
                     </el-checkbox-group>
                 </el-form-item>
             </el-form>
-
-            <div class="fixed-footer-wrap">
-                <div class="fixed-footer">
-                    <el-button type="primary" @click="confirm(formRef)">{{ t('save') }}</el-button>
-                    <el-button @click="back()">{{ t('cancel') }}</el-button>
-                </div>
-            </div>
         </el-card>
+        <div class="fixed-footer-wrap">
+            <div class="fixed-footer">
+                <el-button type="primary" @click="confirm(formRef)">{{ t('save') }}</el-button>
+                <el-button @click="back()">{{ t('cancel') }}</el-button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -162,7 +161,10 @@ if (route.query.id) {
 }
 
 const back = () => {
-    router.push('/admin/site/group')
+    router.push({
+        path: '/admin/site/manage',
+        query: { type: 'group' }
+    })
 }
 
 const formRef = ref<FormInstance>()

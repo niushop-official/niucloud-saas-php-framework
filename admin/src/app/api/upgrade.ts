@@ -20,8 +20,8 @@ export function getUpgradeTask() {
  * 升级
  * @param addon
  */
-export function upgradeAddon(addon: string = '') {
-    return request.post(addon ? `upgrade/${ addon }` : 'upgrade')
+export function upgradeAddon(addon: string = '', params: Record<string, any> = {}) {
+    return request.post(addon ? `upgrade/${ addon }` : 'upgrade', params)
 }
 
 /**
@@ -60,6 +60,14 @@ export function upgradeUserOperate(operate: string) {
  */
 export function getUpgradeRecords(params: Record<string, any>) {
     return request.get(`upgrade/records`, { params })
+}
+
+/**
+ * 删除升级记录
+ * @param params
+ */
+export function delUpgradeRecords(params: Record<string, any>) {
+    return request.delete(`upgrade/records`, { params })
 }
 
 /**

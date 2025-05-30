@@ -29,5 +29,14 @@
     "managerPlaceholder": "请选择用户",
     "managerTips": "选择或者新增用户作为管理员",
     "newAddManager": "新增用户",
-    "userDeleteTips": "是否要删除该管理员？"
+    "userDeleteTips": "是否要删除该管理员？",
+    "addRole": "新增角色",
+    "updateRole": "编辑角色",
+    "roleName": "角色名称",
+    "roleDeleteTips": "确定要删除该角色吗？",
+    "roleNamePlaceholder": "请输入角色名称",
+    "rulesPlaceholder": "请选择权限",
+    "checkStrictly": "父子级不关联",
+    "permission": "权限",
+    "foldText":"展开/折叠"
 }

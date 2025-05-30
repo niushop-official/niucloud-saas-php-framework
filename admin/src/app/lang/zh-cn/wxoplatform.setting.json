@@ -29,5 +29,7 @@
 	"uploadIpTips": "",
 	"developAppid": "开发小程序APPID",
 	"developAppidPlaceholder": "请输入开发小程序APPID",
-	"uploadIpTips": "如果小程序代码上传开启了ip白名单设置，在ip白名单中添加ip："
+	"uploadIpTips": "如果小程序代码上传开启了ip白名单设置，在ip白名单中添加ip：",
+	"siteWeappSync": "站点小程序同步",
+	"syncSiteWeappTips": "是否要给该套餐下已授权小程序的站点提交代码？"
 }

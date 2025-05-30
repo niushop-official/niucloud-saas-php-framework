@@ -6,15 +6,13 @@
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <div>
-                    <el-button type="primary" class="w-[100px]" @click="userEditRef.setFormData()">
-                        {{ t('addUser') }}
-                    </el-button>
+                    <el-button type="primary" class="w-[100px]" @click="userEditRef.setFormData()">{{ t('addUser') }}</el-button>
                 </div>
             </div>
 
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
-                <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
-                    <el-form-item :label="t('userName')" prop="username">
+                <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef" class="search-form">
+                    <el-form-item prop="username">
                         <el-input v-model.trim="userTableData.searchParam.username" :placeholder="t('userNamePlaceholder')" />
                     </el-form-item>
                     <!-- <el-form-item :label="t('createTime')" prop="create_time">
@@ -22,7 +20,7 @@
                             value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('startDate')"
                             :end-placeholder="t('endDate')" />
                     </el-form-item> -->
-                    <el-form-item :label="t('loginTime')" prop="last_time">
+                    <el-form-item prop="last_time">
                         <el-date-picker v-model="userTableData.searchParam.last_time" type="datetimerange"
                             value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('startDate')"
                             :end-placeholder="t('endDate')" />
@@ -41,9 +39,9 @@
                     </template>
                     <el-table-column :label="t('headImg')" width="100" align="left">
                         <template #default="{ row }">
-                            <div class="w-[35px] h-[35px] flex items-center justify-center">
-                                <img v-if="row.head_img" :src="img(row.head_img)" class="w-[35px] rounded-full" />
-                                <img v-else src="@/app/assets/images/member_head.png" class="w-[35px] rounded-full" />
+                            <div class="w-[54px] h-[54px] flex items-center justify-center">
+                                <img v-if="row.head_img" :src="img(row.head_img)" class="w-[54px] rounded-full" />
+                                <img v-else src="@/app/assets/images/member_head.png" class="w-[54px] rounded-full" />
                             </div>
                         </template>
                     </el-table-column>
@@ -73,6 +71,13 @@
                                 <el-button type="primary" link @click="detailEvent(row.uid, 'userCreateSiteLimit')" >{{ t('userCreateSiteLimit') }}</el-button>
                                 <el-button type="primary" link @click="deleteEvent(row.uid)" >{{ t('delete') }}</el-button>
                             </template>
+                            <!-- <div class="manage-option text-right ">
+                                <template v-if="!row.is_super_admin">
+                                    <el-button type="primary" link @click="editEvent(row.uid)" >{{ t('edit') }}</el-button>
+                                    <el-button type="primary" link @click="detailEvent(row.uid, 'userCreateSiteLimit')" >{{ t('userCreateSiteLimit') }}</el-button>
+                                    <el-button type="primary" link @click="deleteEvent(row.uid)" >{{ t('delete') }}</el-button>
+                                </template>
+                            </div> -->
                         </template>
                     </el-table-column>
                 </el-table>
@@ -184,4 +189,99 @@ const deleteEvent = (uid: number) => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.el-table tr td) {
+    height: 100px !important;
+}
+:deep(.el-input__wrapper){
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    border: 1px solid #D1D5DB !important;
+    height: 32px !important;
+}
+:deep(.el-select__wrapper){
+    box-shadow: none !important;
+    border-radius: 4px !important;
+    border: 1px solid #D1D5DB !important;
+    height: 32px !important;
+}
+:deep(.el-button){
+    border-radius: 4px !important;
+}
+/* 设置 el-select 的 placeholder 颜色 */
+:deep(.search-form .el-select__placeholder.is-transparent) {
+    color: #C4C7DA;
+    font-size: 12px;
+}
+
+/* 设置 el-select 选中后的颜色 */
+:deep(.search-form .el-select__placeholder) {
+    color: #4F516D;
+    font-size: 12px;
+
+}
+/* 设置 el-input 的 placeholder 颜色 */
+:deep(.search-form .el-input__inner::placeholder) {
+    color: #C4C7DA;
+    font-size: 12px;
+
+}
+/* 设置 el-input 输入内容后的颜色 */
+:deep(.search-form .el-input__inner) {
+    color: #4F516D;
+    font-size: 12px;
+
+}
+/* 设置 el-date-picker 的 placeholder 颜色 */
+:deep(.search-form .el-date-editor .el-range-input::placeholder) {
+  color: #C4C7DA;
+  font-size: 12px;
+}
+
+/* 设置 el-date-picker 的输入内容颜色 */
+:deep(.search-form .el-date-editor .el-range-input) {
+  color: #4F516D;
+  font-size: 12px;
+}
+
+.manage-option {
+    line-height: 50px;
+    padding: 0 30px;
+    position: absolute;
+    right: 0;
+    width: 100vw;
+    bottom: 0;
+    background-color: #f4f6f9;
+    transition: all .3s;
+    box-shadow: 0 4px 4px rgba(220, 220, 220, .3);
+    opacity: 0;
+    z-index: 999;
+    white-space: nowrap;
+}
+
+/* 当行被 hover 时 */
+:deep(.el-table__row:hover) {
+    position: relative;
+    z-index: 10;
+}
+
+/* 当行被 hover 时，其下的单元格允许溢出 */
+:deep(.el-table__row:hover .el-table__cell) {
+    overflow: visible;
+}
+
+/* 当行被 hover 时，显示 manage-option 并调整其位置 */
+:deep(.el-table__row:hover .manage-option) {
+    opacity: 1;
+    bottom: -51px;
+}
+
+:deep(.el-table__fixed-body-wrapper:hover), 
+:deep(.el-table__fixed-body-wrapper .el-table__row:hover) { 
+    z-index: 10;
+}
+
+:deep(.el-table__fixed-body-wrapper .el-table__row:hover .el-table__cell) {
+    overflow: visible;
+}
+</style>

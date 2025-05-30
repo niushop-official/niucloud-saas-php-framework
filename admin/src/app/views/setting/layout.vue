@@ -61,11 +61,11 @@
                         <img :src="img(addonLayout.cover)" class="w-full h-full" />
                     </div>
                 </div>
-                <h3 class="panel-title !text-sm">{{ t('themeColor') }}</h3>
+                <!-- <h3 class="panel-title !text-sm">{{ t('themeColor') }}</h3>
                 <div>
                     <el-color-picker v-model="themeColor[currAddon]" size="large" />
                     <div class="form-tip text-[#999] mt-2">设置的色调会在前端站点列表体现[home/index]，用于区分不同的应用</div>
-                </div>
+                </div> -->
             </el-scrollbar>
         </div>
         <template #footer>
@@ -149,7 +149,6 @@ const confirm = () => {
     })
     showDialog.value = false
 }
-
 
 // 跳转自定义布局
 const toDiyLayout = () => {

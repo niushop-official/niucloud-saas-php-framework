@@ -1,11 +1,11 @@
 <template>
     <!--角色管理-->
     <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+        <el-card class="box-card !border-none setting-card" shadow="never">
 
-            <div class="flex justify-between items-center">
+            <!-- <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
-            </div>
+            </div> -->
 
             <div class="flex justify-between items-center mt-[20px]">
                 <el-form :inline="true" :model="roleTableData.searchParam" ref="searchFormRef">
@@ -138,4 +138,8 @@ const deleteEvent = (id: number) => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.setting-card .el-card__body){
+    padding: 0 !important;
+}
+</style>

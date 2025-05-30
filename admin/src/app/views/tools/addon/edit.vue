@@ -99,7 +99,7 @@ const router = useRouter()
 const pageName = route.meta.title
 
 const back = () => {
-    router.push('/tools/addon')
+    router.push('/tools/addon/list')
 }
 const form = ref({
     title: '',

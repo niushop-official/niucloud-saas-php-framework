@@ -15,7 +15,7 @@
   "searchValueEmptyTips": "请输入搜索内容",
   "verify": "核销",
   "buyInfo": "预订信息",
-  "orderRefunding": "该订单正在维权中不能进行核销",
+  "orderRefunding": "该订单正在售后中不能进行核销",
   "verifyTips": "是否要核销该订单？",
   "toOrder": "查看订单",
   "verifyType": "核销类型",

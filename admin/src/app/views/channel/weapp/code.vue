@@ -40,10 +40,9 @@
                                 <el-button type="primary" link>{{ t('preview') }}</el-button>
                             </el-tooltip>
                         </template>
-                        <el-button type="primary" link v-if="row.status == -1 || row.status == -2" @click="handleFailReason(row)">
-                            {{ t('failReason') }}</el-button>
-                        <el-button type="primary" link v-if="row.status == -2" @click="againUpload(row)" :loading="uploading">
-                            {{ t('againUpload') }}</el-button>
+                        <el-button type="primary" link v-if="row.status == -1 || row.status == -2" @click="handleFailReason(row)">{{ t('failReason') }}</el-button>
+                        <el-button type="primary" link v-if="row.status == -2" @click="againUpload(row)" :loading="uploading">{{ t('againUpload') }}</el-button>
+                        <el-button type="primary" link v-if="row.status == 2" @click="undoAuditFn(row)">{{ t('undoAudit') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -105,7 +104,7 @@ import { getAppType } from '@/utils/common'
 import { ElMessageBox } from 'element-plus'
 import { AnyObject } from '@/types/global'
 import Storage from '@/utils/storage'
-import {siteWeappCommit} from "@/app/api/wxoplatform";
+import { siteWeappCommit, undoAudit } from "@/app/api/wxoplatform";
 
 const route = useRoute()
 const router = useRouter()
@@ -282,6 +281,25 @@ const configElMessageBox = () => {
         }
     ).then(() => {
         router.push({ path: '/channel/weapp/config' })
+    })
+}
+
+/**
+ * 撤回代码审核
+ * @param data
+ */
+const undoAuditFn = (data: any) => {
+    ElMessageBox.confirm(
+        t('undoAuditTips'),
+        t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel')
+        }
+    ).then(() => {
+        undoAudit({ id: data.id }).then(() => {
+            getWeappVersionListFn()
+        })
     })
 }
 

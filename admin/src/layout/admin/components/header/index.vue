@@ -1,17 +1,30 @@
 <template>
-    <el-container class="h-[64px] w-full layout-admin flex items-center justify-between px-[15px]" >
+    <el-container class="h-[64px] w-full layout-admin flex items-center justify-between pr-[15px] border-b-[1px] border-solid border-[var(--el-color-info-light-8)]" >
         <!-- :class="['h-full px-[10px]',{'layout-header border-b border-color': !dark}]"  -->
         <div class="flex items-center">
-            <div class="max-w-[120px] flex justify-center items-center flex-shrink-0">
-                <div class="max-w-[120px] h-[40px] overflow-hidden">
-                    <el-image style="width: 100%; height: 100%" :src="img(logoUrl)" fit="contain">
+            <!-- <div class="navbar-item flex items-center h-full cursor-pointer" @click="toggleMenuCollapse">
+                <icon name="element Expand" v-if="systemStore.menuIsCollapse" />
+                <icon name="element Fold" v-else />
+            </div> -->
+            <div class="flex justify-center items-center flex-shrink-0" :class="{'w-[185px]': systemStore.menuIsCollapse,'w-[78px]': !systemStore.menuIsCollapse}">
+                <div class="w-full h-[40px] overflow-hidden">
+                    <el-image style="width: 100%; height: 100%" :src="img(logoUrl)" fit="contain" v-if="!systemStore.menuIsCollapse">
                         <template #error>
-                            <div class="flex justify-center items-center w-full h-full"><img class="max-w-[120px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
+                            <div class="flex justify-center items-center w-full h-full"><img class="max-w-[70px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
+                        </template>
+                    </el-image>
+                    <el-image style="width: 100%; height: 100%" :src="img(longLogoUrl)" fit="contain" v-else>
+                        <template #error>
+                            <div class="flex justify-center items-center w-full h-full"><img class="max-w-[180px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
                         </template>
                     </el-image>
                 </div>
             </div>
             <div class="left-panel flex items-center text-[14px] leading-[1]">
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="toggleMenuCollapse">
+                    <icon name="element Fold" v-if="systemStore.menuIsCollapse" />
+                    <icon name="element Expand" v-else />
+                </div>
                 <!-- 刷新当前页 -->
                 <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
                     <icon name="element Refresh" />
@@ -24,9 +37,19 @@
                 </div>
             </div>
         </div>
-       
+        <!-- <div>
+            <el-input placeholder="搜索站点或应用"  v-model.trim="keywords" />
+        </div> -->
+
         <div>
             <div class="right-panel h-full flex items-center justify-end">
+                <div class="border-primary border-[1px] h-[30px] px-[15px] flex items-center rounded-[6px] mr-[10px] cursor-pointer" @click="toHome()">
+                    <span class="iconfont iconguanliduan !text-primary mr-1"></span>
+                    <span class="text-[14px] text-primary">客户端</span>
+                </div>
+                <div class="navbar-item flex items-center h-full cursor-pointer">
+                    <message />
+                </div>
                 <div class="navbar-item flex items-center h-full cursor-pointer">
                     <layout-setting />
                 </div>
@@ -36,9 +59,9 @@
                 </div>
             </div>
         </div>
-        
-        <input type="hidden" v-model="comparisonToken">
-        <input type="hidden" v-model="comparisonSiteId">
+
+        <input type="hidden" v-model="comparisonToken" />
+        <input type="hidden" v-model="comparisonSiteId" />
 
         <el-dialog v-model="detectionLoginDialog" :title="t('layout.detectionLoginTip')" width="30%" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
             <span>{{ t('layout.detectionLoginContent') }}</span>
@@ -76,19 +99,24 @@ import { ref, computed } from 'vue'
 import useUserStore from '@/stores/modules/user'
 import useAppStore from '@/stores/modules/app'
 import useSystemStore from '@/stores/modules/system'
-import { useRoute } from 'vue-router'
-import { img, isUrl } from '@/utils/common'
-
+import { useRoute,useRouter } from 'vue-router'
+import { img, getToken } from '@/utils/common'
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 import userInfo from './user-info.vue'
 import layoutSetting from './layout-setting.vue'
+import message from './message.vue'
+
 const systemStore = useSystemStore()
 const route = useRoute()
+const router = useRouter()
 const appStore = useAppStore()
 const userStore = useUserStore()
 const logoUrl = computed(() => {
     return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
+})
+const longLogoUrl = computed(() => {
+    return userStore.siteInfo.logo ? userStore.siteInfo.logo : systemStore.website.logo
 })
 // 检测登录 start
 const detectionLoginDialog = ref(false)
@@ -126,6 +154,21 @@ const breadcrumb = computed(() => {
     return matched
 })
 storage.set({ key: 'currHeadMenuName', data: "" })
+systemStore.toggleMenuCollapse(storage.get('menuiscollapse') || false)
+const toggleMenuCollapse = () => {
+    systemStore.toggleMenuCollapse(!systemStore.menuIsCollapse)
+}
+
+const toHome = () => {
+    if (!window.localStorage.getItem('site.token')) {
+        window.localStorage.setItem('site.token', getToken())
+        window.localStorage.setItem('site.comparisonTokenStorage', getToken())
+    }
+    if (!window.localStorage.getItem('site.userinfo')) {
+        window.localStorage.setItem('site.userinfo', JSON.stringify(useUserStore().userInfo)) 
+    }
+    router.push({ path: '/home/index'})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -145,4 +188,12 @@ storage.set({ key: 'currHeadMenuName', data: "" })
         background-color: var(--el-color-primary);
     }
 }
+// :deep(.el-input__wrapper) {
+//     box-shadow: none !important;
+//     border-radius: 4px !important;
+//     background: #F7F7FA !important;
+//     min-width: 638px;
+//     height: 40px;
+//     border-radius: 4px !important;
+// }
 </style>

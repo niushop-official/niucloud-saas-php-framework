@@ -1,5 +1,8 @@
 <template>
     <div class="bg-[#F7F9FA] min-h-screen">
+        <!-- <div class="flex justify-between items-center">
+            <layoutHeader></layoutHeader>
+        </div> -->
         <div class="flex justify-between items-center py-[24px] pl-[62px] pr-[64px] home-head">
             <div class="flex items-center" v-if="webConfig">
                 <img class="w-[32x] h-[32px] rounded-full" v-if="webConfig.icon" :src="img(webConfig.icon)" alt="">
@@ -7,69 +10,166 @@
                 <span class="ml-[10px] text-[16px] font-bold">{{webConfig.site_name}}</span>
             </div>
             <div class="flex items-center">
+                <div v-if="userStore.userInfo.is_super_admin" class="border-primary border-[1px] h-[30px] px-[15px] flex items-center rounded-[6px] mr-[10px] cursor-pointer" @click="toHome">
+                    <span class="iconfont iconguanliduan !text-primary mr-1"></span>
+                    <span class="text-[14px] text-primary">控制台</span>
+                </div>
                 <span class="mr-[12px] text-[14px]">{{userStore.userInfo.username}}</span>
                 <span @click="logoutFn()" class="text-[14px] cursor-pointer text-[var(--el-color-primary)]">退出</span>
             </div>
         </div>
 
-        <div class="w-[1400px] m-auto mt-[62px]">
-            <div class="flex justify-between items-center">
+        <div class="w-full m-auto " :style="{height:'calc(100vh - 80px)'}">
+            <!-- <div class="flex justify-between items-center">
                 <span class="text-[24px] font-bold">站点列表</span>
                 <el-button type="primary" class="w-[90px] !h-[34px]" :disabled="siteGroupLoading" @click="handleChick">创建站点</el-button>
-            </div>
-            <div class="flex justify-between items-center mt-[18px]">
-                <div class="w-[800px] text-[14px] whitespace-nowrap">
+            </div> -->
+            <div class="flex justify-between h-full">
+                <div class="text-[14px] whitespace-nowrap w-[220px] bg-white h-full border-r-[1px] border-[var(--el-border-color-light)]">
                     <el-scrollbar :always="true">
-                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'class-select text-[var(--el-color-primary)]': params.app == ''}]" @click="cutAppFn('')">所有应用</span>
-                        <span :class="['px-[10px] cursor-pointer h-[35px] leading-[35px] inline-block', {'class-select text-[var(--el-color-primary)]': params.app == item.key}]" @click="cutAppFn(item.key)" v-for="(item,index) in addonList" :key="index">{{item.title}}</span>
-                    </el-scrollbar>
-                </div>
-                <el-input v-model.trim="params.keywords" class="!w-[300px] !h-[34px]" placeholder="请输入要搜索的站点名称/编号" @keyup.enter.native="getHomeSiteFn()">
-                    <template #suffix>
-                        <el-icon @click.stop="getHomeSiteFn()" class="cursor-pointer">
-                            <Search />
-                        </el-icon>
-                    </template>
-                </el-input>
-            </div>
-
-            <div class="min-h-[580px]">
-                <div class="flex flex-wrap mt-[30px]" v-loading="loading">
-                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)" :class="['home-item w-[327px] box-border mb-[30px] cursor-pointer',{'mr-[30px]': index ==0 || (index+1)%4 != 0}]">
-                        <div class="flex items-center px-[24px] pt-[22px] pb-[10px] home-item-head relative">
-                            <div class="absolute h-[4px] w-full z-1 left-0 top-0" :style="{'background-color': item.theme_color}" v-if="item.theme_color"></div>
-                            <img v-if="item.icon" class="w-[46px] h-[46px] mr-[15px] img-shadow rounded-[6px] overflow-hidden" :src="img(item.icon)" />
-                            <img v-else class="w-[46px] h-[46px] mr-[15px] rounded-[6px] img-shadow overflow-hidden" src="@/app/assets/images/site_default.png" />
-                            <div class="flex flex-col flex-1 justify-center">
-                                <div class="flex items-center flex-wrap">
-                                    <span class="text-[16px] text-[#000] max-w-[160px] font-bold truncate mr-[10px]">{{item.site_name}}</span>
-                                    <div class="flex items-center justify-center min-w-[42px] h-[18px] bg-[#FF5500] rounded-tl-md rounded-br-md items-tab" v-if="item.app_name">
-                                        <span class="text-[12px] text-[#000]">{{item.app_name}}</span>
-                                    </div>
+                        <div class="px-[20px] mt-[20px]">
+                            <div class="mt-3 text-[#9699B6] mb-1">应用</div>
+                            <div class="">
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px]', {'bg-[#EAEBF0] rounded-[4px]': params.app == ''}]" @click="cutAppFn('')">
+                                    <span class="iconfont iconsuoyouyingyongc !text-[17px] mr-[10px] "></span>
+                                    <span>所有应用</span>
                                 </div>
-                                <span class="text-[12px] mt-[3px] text-[#666]">{{item.create_time ? item.create_time.split(" ")[0] : '--'}} 到 {{item.expire_time ? item.expire_time.split(" ")[0] : '--'}}</span>
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': params.app == item.key}]" @click="cutAppFn(item.key)"   v-for="(item, index) in (showMore ? addonList : addonList.slice(0, 4))" :key="index">
+                                    <img v-if="item.icon" :src="item.icon" class="w-[17px] h-[17px] mr-[10px] rounded-full" />
+                                    <span class="iconfont iconsuoyouyingyongc !text-[17px] mr-[10px] " v-else></span>
+                                    <span>{{item.title}}</span>
+                                </div>
+                            </div>
+                            <div v-if="addonList.length > 4" class="text-[#9699B6] text-[14px] cursor-pointer flex items-center mt-1" @click="showMore = !showMore">
+                                <span class="iconfont iconjiantouxia ml-[4px] !text-[14px] mr-[10px] transition-transform duration-300" :class="{ 'rotate-180': showMore }"></span>
+                                <span>{{ showMore ? '收起' : '更多' }}</span>
                             </div>
                         </div>
-                        <div class="px-[24px] py-[20px] text-[#666]">
-                            <p class="text-[14px]">站点编号：{{item.site_id}}</p>
-                            <p class="text-[14px] mt-[2px]">站点套餐：{{item.group_name || '--'}}</p>
+
+                        <div class="px-[20px] mt-[20px]">
+                            <div class="text-[#9699B6] mb-1">平台分类</div>
+                            <div class="">
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': typeName == 'h5'}]" @click="cutAppTypeFn('h5')">
+                                    <span class="iconfont iconH5c !text-[17px] mr-[10px] "></span>
+                                    <span>H5</span>
+                                </div>
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': typeName == 'wx'}]" @click="cutAppTypeFn('wx')">
+                                    <span class="iconfont iconxiaochengxutongbuc !text-[17px] mr-[10px] "></span>
+                                    <span>微信小程序</span>
+                                </div>
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': typeName == 'pc'}]" @click="cutAppTypeFn('pc')">
+                                    <span class="iconfont iconPCc !text-[17px] mr-[10px] "></span>
+                                    <span>PC</span>
+                                </div>
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': typeName == 'app'}]" @click="cutAppTypeFn('app')">
+                                    <span class="iconfont iconAPPc !text-[17px] mr-[10px] "></span>
+                                    <span>APP</span>
+                                </div>
+                                <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': typeName == 'zfb'}]" @click="cutAppTypeFn('zfb')">
+                                    <span class="iconfont iconzhifubaoxiaochengxuc !text-[17px] mr-[10px] "></span>
+                                    <span>支付宝小程序</span>
+                                </div>
+                            </div>
+                        </div>
+                    </el-scrollbar>
+                </div>
+                <div class="flex-1 h-full p-[20px] flex flex-col">
+                    <div class="flex-1 min-h-0">
+                        <el-scrollbar>
+                            <div class="flex justify-between items-center input-box">
+                                <el-input v-model.trim="params.keywords" class="!w-[350px] !h-[40px]" placeholder="请输入要搜索的站点名称/编号" @keyup.enter.native="getHomeSiteFn()">
+                                    <template #suffix>
+                                        <el-icon @click.stop="getHomeSiteFn()" class="cursor-pointer">
+                                            <Search />
+                                        </el-icon>
+                                    </template>
+                                </el-input>
+                                <div class="flex items-center text-[14px] cursor-pointer pr-[10px] h-[40px]">
+                                    <div class="text-[#9699B6]">排序：</div>
+                                    <div>
+                                        <!-- <span>创建时间</span>
+                                        <span class="ml-[10px]">站点名称</span>
+                                        <span class="ml-[10px]">站点类型</span> -->
+                                        <el-select v-model="params.sort" placeholder="请选择" class="!w-[200px] !h-[40px] !border-none" @change="getHomeSiteFn()">
+                                            <el-option v-for="item in sortList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                        </el-select>
+                                    </div>
+                                    <el-button type="primary" class="w-[90px] !h-[34px] ml-[20px]" :disabled="siteGroupLoading" @click="handleChick">创建站点</el-button>
+                                </div>
+                            </div>
+
+                            <div class="ml-[-20px]">
+                                <div class="flex flex-wrap mt-[30px]" v-loading="loading">
+                                    <div v-for="(item, index) in tableData" :key="index" @click="selectSite(item)" :class="['home-item w-[313px] ml-[20px] box-border mb-[20px] border-[1px] border-[#E8E9EB] rounded-[6px] cursor-pointer']">
+                                        <div class="flex items-center px-[24px] pt-[22px] pb-[10px] home-item-head relative">
+                                            <!-- <div class="absolute h-[4px] w-full z-1 left-0 top-0" :style="{'background-color': item.theme_color}" v-if="item.theme_color"></div> -->
+                                            <img v-if="item.icon" class="w-[46px] h-[46px] mr-[15px] img-shadow rounded-[6px] overflow-hidden" :src="img(item.icon)" />
+                                            <img v-else class="w-[46px] h-[46px] mr-[15px] rounded-[6px] img-shadow overflow-hidden" src="@/app/assets/images/site_default.png" />
+                                            <div class="flex flex-col flex-1 justify-center">
+                                                <div class="flex items-center flex-wrap">
+                                                    <span class="text-[16px] text-[#000] max-w-[160px] truncate mr-[10px]">{{item.site_name}}</span>
+                                                    <div class="flex items-center justify-center min-w-[42px] h-[18px] bg-[#FF5500] rounded-tl-md rounded-br-md items-tab" v-if="item.app_name">
+                                                        <span class="text-[12px] text-[#000]">{{item.app_name}}</span>
+                                                    </div>
+                                                </div>
+                                                <!-- <span class="text-[12px] mt-[3px] text-[#666]">{{item.create_time ? item.create_time.split(" ")[0] : '--'}} 到 {{item.expire_time ? item.expire_time.split(" ")[0] : '--'}}</span> -->
+                                                <span class="text-[12px] mt-[3px] text-[#666]">NO：{{item.site_id}}</span>
+                                            </div>
+                                            <!-- <div class="absolute right-[12px] top-[10px] isshow">
+                                                <span class="iconfont icona-gengduoV6xx-28"></span>
+                                            </div> -->
+                                        </div>
+                                        <div class="px-[24px] py-[20px] text-[#666]">
+                                            <!-- <p class="text-[14px]">站点编号：{{item.site_id}}</p> -->
+
+                                            <p class="text-[14px] mt-[2px] text-[var(--el-color-primary)]">
+                                                <span class="iconfont icona-Frame427322133 !text-[14px]"></span>
+                                                <span>{{item.group_name || '--'}}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div v-if="!tableData.length && !loading" class="m-auto mt-[100px]">
+                                        <img src="@/app/assets/images/site_empty.png" class="w-[220px] h-[165px]"/>
+                                        <p class="text-center text-gray-400 text-[14px] mt-[20px]">暂无站点</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-[16px] flex justify-center pr-[10px]">
+                                <el-pagination v-model:current-page="site.params.page" v-model:page-size="site.params.limit"
+                                    layout="total, sizes, prev, pager, next, jumper" :total="site.total"
+                                    @size-change="getHomeSiteFn()" @current-change="getHomeSiteFn" :hide-on-single-page="true"/>
+                            </div>
+                        </el-scrollbar>
+                    </div>
+                    <div class="flex justify-between text-[12px] mt-[20px] text-[#666]" v-if="copyright">
+                        <div>
+                            <a :href="copyright.copyright_link" target="_blank">
+                                <span class="mr-3" v-if="copyright.company_name">{{ copyright.company_name }}</span>
+                            </a>
+                            <a href="https://beian.miit.gov.cn/" v-if="copyright.icp" target="_blank">
+                                <span class="mr-3">{{ copyright.icp }}</span>
+                            </a>
+                        </div>
+                        <div class="flex items-center  cursor-pointer">
+                            <span class="mx-1" @click="getInfoFn">版权信息</span> | <span
+                            class="mx-1">开发者联盟与隐私的声明</span> | <span class="mx-1">隐私政策</span> | <span
+                            class="mx-1">联系我们</span> | <span class="mx-1">Cookies</span>
                         </div>
                     </div>
-                    <div v-if="!tableData.length && !loading" class="m-auto mt-[100px]">
-                        <img src="@/app/assets/images/site_empty.png" class="w-[220px] h-[165px]"/>
-                        <p class="text-center text-gray-400 text-[14px] mt-[20px]">暂无站点</p>
-                    </div>
+                    
                 </div>
             </div>
 
-            <div class="mt-[16px] flex justify-end">
-                <el-pagination v-model:current-page="site.params.page" v-model:page-size="site.params.limit"
-                    layout="total, sizes, prev, pager, next, jumper" :total="site.total"
-                    @size-change="getHomeSiteFn()" @current-change="getHomeSiteFn" :hide-on-single-page="true"/>
-            </div>
         </div>
     </div>
-
+    <el-dialog v-model="dialogVisible" title="版权信息" width="500">
+        <span>{{ copyright.copyright_desc }}</span>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+            </div>
+        </template>
+    </el-dialog>
     <el-dialog v-model="createSiteDialog" width="54vw" :destroy-on-close="true" style="border-radius: 25px;">
         <template #title>
             <div class="text-[#333333] text-[22px] ml-[15px] leading-[1] mt-[10px]">创建站点</div>
@@ -97,12 +197,12 @@
                             <div class="w-[140px] h-[40px] px-[15px] truncate text-white text-[16px] text-center leading-[40px] creatBg relative -left-[1px] -top-[2px]">
                                 {{ item.site_group.group_name }}
                             </div>
-                            <el-scrollbar class="flex pb-[20px] pt-[4px] box-border !h-[260px]">
-                                <div class="flex mx-[30px] mt-[14px] leading-[1] items-center" v-for="app in item.site_group.app_name">
+                            <el-scrollbar class="flex pb-[20px] pt-[4px] box-border !h-[260px] w-[100%] scrollbarBox">
+                                <div class="flex mx-[30px] mt-[14px] leading-[1] items-center w-full" v-for="app in item.site_group.app_name">
                                     <div class="nc-iconfont nc-icon-duiV6mm text-[#466CEA]"></div>
                                     <div class="text-[14px] text-[#666666] ml-[3px] truncate">{{ app }}</div>
                                 </div>
-                                <div class="flex mx-[30px] mt-[14px] leading-[1] text-center" v-for="addon in item.site_group.addon_name">
+                                <div class="flex mx-[30px] mt-[14px] leading-[1] text-center w-full" v-for="addon in item.site_group.addon_name">
                                     <div class="nc-iconfont nc-icon-duiV6mm text-[#466CEA]"></div>
                                     <div class="text-[14px] text-[#666666] ml-[3px] truncate">{{ addon }}</div>
                                 </div>
@@ -124,24 +224,34 @@
 import {reactive, ref, toRefs, computed, watch} from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import { getHomeSite, getSiteGroup, createSite } from '@/app/api/home'
-import { img } from '@/utils/common'
 import useUserStore from '@/stores/modules/user'
 import useSystemStore from '@/stores/modules/system'
-import storage from '@/utils/storage'
+import { getWebCopyright } from '@/app/api/sys'
 import { getInstalledAddonList } from '@/app/api/addon'
 import { ElMessage } from 'element-plus'
 import { AnyObject } from '@/types/global'
 import Test from '@/utils/test'
+import { img,getToken } from '@/utils/common'
 
 const userStore:AnyObject = useUserStore()
-
+const showMore = ref(false)
+const copyright = ref(null)
+getWebCopyright().then(({ data }) => {
+    copyright.value = data
+})
+const dialogVisible = ref(false)
+const getInfoFn = () => {
+    if (copyright.value.copyright_desc) {
+        dialogVisible.value = true
+    }
+}
 interface Site{
     params: {
         keywords: string,
         page: number,
         limit: number,
         app: string,
-        sort: boolean
+        sort: string
     },
     loading: boolean,
     tableData: {
@@ -156,13 +266,55 @@ interface Site{
     total: 0
 }
 
+const sortList = ref([
+    // {
+    //     label: '全部',
+    //     value: 'all'
+    // },
+    {
+        label: '创建时间',
+        value: 'create_time'
+    },
+    {
+        label: '站点编号',
+        value: 'site_id'
+    },
+    // {
+    //     label: '站点类型',
+    //     value: 'app_name'
+    // }
+])
+
+const appList = ref([
+    {
+        title: 'H5',
+        key: 'H5'
+    },
+    {
+        title: '微信小程序',
+        key: 'weapp'
+    },
+    {
+        title: 'PC',
+        key: 'pc'
+    },
+    {
+        title: 'APP',
+        key: 'app'
+    },
+    {
+        title: '支付宝小程序',
+        key: 'aliapp'
+    }
+])
+
 const site:Site = reactive({
     params: {
         keywords: '',
         page: 1,
-        limit: 12,
+        limit: 20,
         app: '',
-        sort: false
+        sort: 'create_time'
     },
     loading: false,
     tableData: [],
@@ -188,16 +340,34 @@ const cutAppFn = (app:any) => {
     site.params.app = app
     getHomeSiteFn()
 }
+const typeName = ref('')
+const cutAppTypeFn = (app:any) => {
+    // site.params.app = app
+    typeName.value = app
+    getHomeSiteFn()
+}
 
 // 网络设置
 const webConfig = computed(() => useSystemStore().website)
 
 const selectSite = (site: any) => {
-    storage.set({ key: 'siteId', data: site.site_id })
-    storage.set({ key: 'siteInfo', data: site })
-    storage.set({ key: 'comparisonSiteIdStorage', data: site.site_id })
-    location.href = `${location.origin}/site/`
+    window.localStorage.setItem('site.siteId', site.site_id)
+    window.localStorage.setItem('site.siteInfo', site)
+    window.localStorage.setItem('site.comparisonSiteIdStorage', site.site_id)
+    window.open(`${ location.origin }/site/`);
 }
+
+const toHome = () => {
+    if (!window.localStorage.getItem('admin.token')) {
+        window.localStorage.setItem('admin.token', getToken())
+        window.localStorage.setItem('admin.comparisonTokenStorage', getToken())
+    }
+    if (!window.localStorage.getItem('admin.userinfo')) {
+        window.localStorage.setItem('admin.userinfo', JSON.stringify(useUserStore().userInfo))
+    }
+    location.replace(location.origin + '/admin')
+}
+
 const logoutFn = () => {
     userStore.logout()
 }
@@ -313,11 +483,17 @@ watch(() => createSiteDialog.value, () => {
         transform: scale(0.9);
     }
 }
+.isshow{
+    display: none;
+}
 .home-item:hover {
     box-shadow: 0px 0px 18px rgba(0,0,0, 0.07);
     // border-color: var(--el-color-primary);
     .title {
         color: var(--el-color-primary);
+    }
+    .isshow{
+        display: block;
     }
     .home-item-head{
         // background-color: #A1A7B7;
@@ -339,6 +515,21 @@ watch(() => createSiteDialog.value, () => {
 }
 .create-site-item{
     box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+}
+:deep(.el-button){
+    border-radius: 4px !important;
+}
+:deep(.input-box .el-input__wrapper) {
+    box-shadow: none !important;
+    border-radius: 4px !important;
+}
+:deep(.input-box .el-select__wrapper) {
+    height: 40px !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+}
+:deep(.scrollbarBox .el-scrollbar__wrap ){
+    width: 100% !important;
 }
 </style>
 <style lang="scss">

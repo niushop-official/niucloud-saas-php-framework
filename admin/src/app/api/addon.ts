@@ -91,3 +91,11 @@ export function getInstalledAddonList() {
     return request.get('addon/list/install')
 }
 
+export function getAddonInit() {
+    return request.get('addon/init')
+}
+
+export function getAppIndex() {
+    return request.get('app/index')
+}
+

@@ -4,5 +4,9 @@
   "prevVersion": "前一版本",
   "currentVersion": "版本",
   "upgradeNamePlaceholder": "请输入内容",
-  "completeTime": "升级时间"
+  "completeTime": "升级时间",
+  "status": "状态",
+  "failReason": "失败原因",
+  "batchDelete": "批量删除",
+  "deleteTips": "确定要删除吗？"
 }

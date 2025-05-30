@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="dialogVisible" :title="t('gxx')" width="850">
+    <el-dialog v-model="dialogVisible" :title="t('gxx')" width="850" :destroy-on-close="true">
         <el-card class="box-card !border-none" shadow="never" >
             <div v-loading="loading">
                 <div class="text-page-title mb-[20px]">历史版本</div>
@@ -60,6 +60,12 @@ const getAppVersionListFn = () => {
         })
 
         frameworkVersionList.value = data
+        if(frameworkVersionList.value.length == 0){
+            ElMessage.warning('暂无版本更新信息')
+            return
+        }else{
+            dialogVisible.value = true
+        }
     })
 }
 const getFrameworkVersionListFn = () => {
@@ -73,6 +79,7 @@ const getFrameworkVersionListFn = () => {
             }
         })
         frameworkVersionList.value = data
+        dialogVisible.value = true
     })
 }
 
@@ -83,13 +90,13 @@ const loading = ref(true)
 const dialogVisible = ref(false)
 const open = async () => {
     nextTick(() => {
+        activeName.value = 0 // 重置
 
         if (props.upgradeKey) {
             getAppVersionListFn()
         } else {
             getFrameworkVersionListFn()
         }
-        dialogVisible.value = true
     })
 
 }

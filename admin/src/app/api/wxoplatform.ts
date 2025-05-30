@@ -75,3 +75,23 @@ export function getSiteGroupCommitRecord(params: Record<string, any>) {
     return request.get('wxoplatform/sitegroup/commit', { params })
 }
 
+/**
+ * 撤回代码审核
+ * @param params
+ */
+export function undoAudit(params: Record<string, any>) {
+    return request.put('wxoplatform/undo/weappaudit', params, { showSuccessMessage: true })
+}
+
+
+export function syncSiteWeapp(params: Record<string, any>) {
+    return request.post('wxoplatform/async/siteweapp', params, { showSuccessMessage: true })
+}
+
+/**
+ * 获取授权记录
+ * @param params
+ */
+export function getAuthRecord(params: Record<string, any>) {
+    return request.get('wxoplatform/authorization/record', { params })
+}

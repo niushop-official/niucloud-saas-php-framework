@@ -43,5 +43,7 @@
 	"knownToKnow": "我已知晓，不需要再次提示",
 	"siteAuthTips": "上传代码需先绑定授权码，请联系平台管理员进行绑定",
 	"againUpload": "重新上传",
-	"uploadWeapp": "上传小程序"
+	"uploadWeapp": "上传小程序",
+	"undoAudit" : "撤回审核",
+	"undoAuditTips" : "撤回代码审核，单个账号每天审核撤回次数最多不超过 5 次（每天的额度从0点开始生效），一个月不超过 10 次。是否要继续撤回？"
 }

@@ -7,7 +7,7 @@
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
 
-            <el-tabs v-model="activeName" class="mt-[20px]">
+            <!-- <el-tabs v-model="activeName" class="mt-[20px]">
                 <el-tab-pane :label="t('codeGeneration')" name="codeGeneration">
                     <el-steps :active="5" direction="vertical">
                         <el-step>
@@ -134,7 +134,71 @@
                         </div>
                     </div>
                 </el-tab-pane>
-            </el-tabs>
+            </el-tabs> -->
+
+            <el-steps :active="5" direction="vertical" class="mt-[20px]">
+                <el-step>
+                    <template #title>
+                        <p class="text-[14px] font-[700]">
+                            {{ t("step1") }}
+                        </p>
+                    </template>
+                    <template #description>
+                        <span class="text-[#999]">{{ t("describe1") }}</span>
+                        <div class="mt-[20px] mb-[40px] h-[32px]">
+                            <el-button type="primary" class="w-[100px]" @click="addEvent">{{ t('btn1') }}</el-button>
+                        </div>
+                    </template>
+                </el-step>
+
+                <el-step>
+                    <template #title>
+                        <p class="text-[14px] font-[700]">
+                            {{ t("step2") }}
+                        </p>
+                    </template>
+                    <template #description>
+                        <span class="text-[#999]">{{ t("describe2") }}</span>
+                        <div class="mt-[20px] mb-[40px] h-[32px]"></div>
+                    </template>
+                </el-step>
+
+                <el-step>
+                    <template #title>
+                        <p class="text-[14px] font-[700]">
+                            {{ t("step3") }}
+                        </p>
+                    </template>
+                    <template #description>
+                        <span class="text-[#999]">{{ t("describe3") }}</span>
+                        <div class="mt-[20px] mb-[40px] h-[32px]"></div>
+                    </template>
+                </el-step>
+
+                <el-step>
+                    <template #title>
+                        <p class="text-[14px] font-[700]">
+                            {{ t("step4") }}
+                        </p>
+                    </template>
+                    <template #description>
+                        <span class="text-[#999]">{{ t("describe4") }}</span>
+                        <div class="mt-[20px] mb-[40px] h-[32px]"></div>
+                    </template>
+                </el-step>
+
+                <el-step>
+                    <template #title>
+                        <p class="text-[14px] font-[700]">
+                            {{ t("step5") }}
+                        </p>
+                    </template>
+                    <template #description>
+                        <span class="text-[#999]">{{ t("describe5") }}</span>
+                        <div class="mt-[20px] mb-[40px] h-[32px]"></div>
+                    </template>
+                </el-step>
+            </el-steps>
 
             <add-table ref="addCodeDialog" />
 
