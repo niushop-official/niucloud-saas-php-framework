@@ -3,33 +3,12 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '87f61e8313aa538dd21ebac289bcdd61caf2f6d2'
-    oldFile: !uuid '8205ef0a159f2eb519587e71d84829498b409733'
-  /niucloud/public:
-    newFile: !uuid 'b7e968b145a3e9feb48cde0f0248d210f8adb139'
-    oldFile: !uuid '9e770607935696d0b43985b52c497fa822b4c887'
-  /niucloud/public/static:
-    newFile: !uuid 'f609ea4691371f7bd2bc08f8458387d83371ff2e'
-    oldFile: !uuid '624ab3569ab477db332c62f5fef3a43118a25a7c'
-  /niucloud/public/static/resource:
-    newFile: !uuid 'fa2cba97cd2f1be3fd68f6d2c7b8918498f601d3'
-    oldFile: !uuid 'fb583a13657bd749254793fd45ad537bb214b195'
-  /niucloud/public/static/resource/images:
-    newFile: !uuid 'a5b7264e27286647e45c98d29a0d49be76508628'
-    oldFile: !uuid '82e55b88a95b37cff65311554ab4b749106c7b8c'
-  /niucloud/public/static/resource/images/banner_1.png:
-    newFile: !uuid 'd7e46c48d5d057124f95e9cf34e5c4e4be9b95ce'
-    oldFile: null
-  /niucloud/public/static/resource/images/banner_2.png:
-    newFile: !uuid '7eff18933b35fc8ef600b4752a8e6c6735e6db36'
-    oldFile: null
-  /niucloud/public/static/tpl:
-    newFile: !uuid '79c283603e5d34090537f5d6ccdabe12a8997e8a'
-    oldFile: null
-  /niucloud/public/static/tpl/tabbar.tpl:
-    newFile: !uuid '4b6be025e6b1a2163ff1fb6e751779613465932f'
-    oldFile: null
-gitCommitId: !uuid '1440a81fea9ad4081007b326f357e7e0c37d13df'
+    newFile: !uuid '2dcaa9f6bccd59c94eae6de7225d35826449edc6'
+    oldFile: !uuid '87f61e8313aa538dd21ebac289bcdd61caf2f6d2'
+  /niucloud/README.md:
+    newFile: !uuid 'cf2f9e6b5710025c495549d7df25e05391b37491'
+    oldFile: !uuid 'e836c5cf9a38ca7bc5b84ea7e3a70026f5a89f31'
+gitCommitId: !uuid '1ae60052fee279706ccc7df351cd19772910bb08'
 renames: {
   }
-revisionId: 297
+revisionId: 298
