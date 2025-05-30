@@ -2,31 +2,19 @@
 branches: {
   }
 fileChange:
-  /web:
-    newFile: !uuid '419eeeca915f9b0626a50ca963f0a03106c04ef1'
-    oldFile: !uuid 'd8dcf7701a96650cd90c0217079b00e8361b6ee0'
-  /web/layouts:
-    newFile: !uuid 'debcf14caf05b92aca53c0720e5b6fd8ac7f3b52'
-    oldFile: !uuid '09905444effedb75cc3c018436c09be25d3c3767'
-  /web/layouts/default:
-    newFile: !uuid 'e49046ec3e9d29d1d0747044ee8feb885a787b4b'
-    oldFile: !uuid '529930a2ed1963819831869a34329a01d2c0afdb'
-  /web/layouts/default/components:
-    newFile: !uuid 'd060f9ee90aa2c85f63b5e70047151f31796e3d0'
-    oldFile: !uuid '3994a26716f098ed0a55e0b2bdaff757d85b3071'
-  /web/layouts/default/components/header:
-    newFile: !uuid '657fc5c0f3a945ae7bdc56b42adfef82df3fe6da'
-    oldFile: !uuid '5eb20b87e44d23941eae8d5daf0443d6cdb6ea9b'
-  /web/layouts/default/components/header/index.vue:
-    newFile: !uuid '887ef9342ba075034dab8b3dfa492c699875f8be'
-    oldFile: !uuid '100f387d11efc2884fab3a121ed642a61945bdf4'
-  /web/package-lock.json:
-    newFile: !uuid 'e5899a62aefa7289c5df543dc5c9991d40aa49f1'
-    oldFile: !uuid '4dd7ab607ca7b6ab69ba64a74ad32801c542be56'
-  /web/package.json:
-    newFile: !uuid '8ceeb5d747663e92a618a1bd1bdc7d3b76c491e7'
-    oldFile: !uuid '8c626053bff793a1f3b2e703e96c496c9f907dcc'
-gitCommitId: !uuid 'ce11b02971a1999f7543dabaecbac357d8ec6eec'
+  /uni-app:
+    newFile: !uuid '1e49e86d13e415743c28509cde94b95c67227beb'
+    oldFile: !uuid '504187acd8033823d81410d9e555b5ba7c2032c0'
+  /uni-app/src:
+    newFile: !uuid '7886c32c434dd182882149f1a8a749784c1c592d'
+    oldFile: !uuid '2a9847644a14927a5258dbd58573b2df80967ada'
+  /uni-app/src/stores:
+    newFile: !uuid '51b19967f58daf0eac374a2830c2e20439724ece'
+    oldFile: !uuid 'f7cfa3fa40ce12c58805fb50639e9e6d2391d571'
+  /uni-app/src/stores/system.ts:
+    newFile: !uuid '3a7984e037e1328e3dd60644d1515eb39f0148a9'
+    oldFile: !uuid '49945219d9979eb6e421efa2fee6b11fb3410c17'
+gitCommitId: !uuid 'd4a5a0538a9e8a4a573c0256c9849f87f4c78e19'
 renames: {
   }
-revisionId: 301
+revisionId: 302
