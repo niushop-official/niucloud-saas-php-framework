@@ -137,7 +137,7 @@
                                 </view>
                                 <view class="flex-1 mx-[20rpx]">
                                     <view class="font-400 text-[28rpx] text-[#303133] leading-[38rpx] mb-[10rpx]">连续签到{{ item.continue_sign }}天</view>
-                                    <view class="flex flex-wrap" v-if="item.gift">
+                                    <view class="flex flex-wrap" v-if="item.gift && item.gift.total">
                                         <view class="flex">
                                             <image :src="img(item.gift.total.icon)" class="w-[30rpx] h-[30rpx] flex-shrink-0"/>
                                             <view class="text-[24rpx] ml-[8rpx] text-[#FF9000] leading-[34rpx] max-w-[330rpx]">{{ item.gift.total.text }}</view>

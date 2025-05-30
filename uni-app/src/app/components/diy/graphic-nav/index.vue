@@ -254,7 +254,7 @@ const refresh = () => {
         handleData()
         const query = uni.createSelectorQuery().in(instance);
         query.select('.diy-graphic-nav').boundingClientRect((data: any) => {
-            height.value = data.height;
+            if(data) height.value = data.height;
         }).exec();
     })
 }
