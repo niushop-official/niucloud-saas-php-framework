@@ -3,24 +3,30 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'baf54db5138c219dad0d68bf6519bd94f909f0a0'
-    oldFile: !uuid '848c9bce4874feb7cb2cb928a09f7cda820893a8'
+    newFile: !uuid 'ae8ca04869a31e396e0368412ef953333eb2e273'
+    oldFile: !uuid 'baf54db5138c219dad0d68bf6519bd94f909f0a0'
   /niucloud/app:
-    newFile: !uuid 'c76cc50678ee412d03f85ee5abda28e985f11665'
-    oldFile: !uuid '60aa7581878193fc4a5e7e03a2d0dbe959f25841'
+    newFile: !uuid 'b25992de5048858473265499391225c405046646'
+    oldFile: !uuid 'c76cc50678ee412d03f85ee5abda28e985f11665'
   /niucloud/app/service:
-    newFile: !uuid '02412f73d0ab6b9270018b9a48fa81a8a71edd5b'
-    oldFile: !uuid '0d104b23115e6727494b559b681af7ba9e9dcdff'
-  /niucloud/app/service/admin:
-    newFile: !uuid 'ea8b2415b5206516cbabc7b166a328e98f92406d'
-    oldFile: !uuid '08e084477d4693d24ffa4a20f68cd5abfc71e1e7'
-  /niucloud/app/service/admin/upgrade:
-    newFile: !uuid '41ee75e137b4701c128eb50512b7870eb2be1acf'
-    oldFile: !uuid '9bd2cc1e1afc45a7084fad27b5d8d00e361f99de'
-  /niucloud/app/service/admin/upgrade/UpgradeService.php:
-    newFile: !uuid '1ba742caf5d8b669e1553c49ce77c6fe62b19644'
-    oldFile: !uuid 'cd63b19478be859ddf481c1dc26a123d4946a62f'
-gitCommitId: !uuid 'a4fdcce61a1edf44a72eed7f1b2c55c7c14c2d7a'
+    newFile: !uuid 'e0701da829a6848b125456d3043c90a111194206'
+    oldFile: !uuid '02412f73d0ab6b9270018b9a48fa81a8a71edd5b'
+  /niucloud/app/service/core:
+    newFile: !uuid 'c314a4992eae8e98c00cf54b6979b7e1b77d9129'
+    oldFile: !uuid 'b540f396ddd4807d026372d0154669e73d235ddf'
+  /niucloud/app/service/core/notice:
+    newFile: !uuid '2d9473cd6c39507e26db625d3de30d94ac02ba7e'
+    oldFile: !uuid 'c828e6751faaae552e2afd164f45724aab00cf3d'
+  /niucloud/app/service/core/notice/CoreNiuSmsService.php:
+    newFile: !uuid 'f530f5ecee47a394e435c12f6c8d0b4932b6c2a2'
+    oldFile: !uuid 'c9172d5bdb1367ef5d91375cdf689cd9df77231d'
+  /niucloud/app/service/core/upload:
+    newFile: !uuid '62ed7f09856e60ec5b1625e02581a58c98be749c'
+    oldFile: !uuid 'bbe4f1d38094edb622e7b00b76f1ff1cf55a8d46'
+  /niucloud/app/service/core/upload/CoreFileService.php:
+    newFile: !uuid '6df25c73984f423520503c9c477e1727d5c57eb4'
+    oldFile: !uuid 'eeaa3a2894059dfd076e7ed71f29773e2c137e8d'
+gitCommitId: !uuid 'f3a0db8a5603b7807dfbcdaf9d83f770e999e411'
 renames: {
   }
-revisionId: 304
+revisionId: 305
