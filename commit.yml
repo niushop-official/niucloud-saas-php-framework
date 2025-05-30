@@ -2,13 +2,13 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid '2dcaa9f6bccd59c94eae6de7225d35826449edc6'
-    oldFile: !uuid '87f61e8313aa538dd21ebac289bcdd61caf2f6d2'
-  /niucloud/README.md:
-    newFile: !uuid 'cf2f9e6b5710025c495549d7df25e05391b37491'
-    oldFile: !uuid 'e836c5cf9a38ca7bc5b84ea7e3a70026f5a89f31'
-gitCommitId: !uuid '1ae60052fee279706ccc7df351cd19772910bb08'
+  /uni-app:
+    newFile: !uuid 'f8e0764c7ae751a5a1b2749d29180c7ae8d1d720'
+    oldFile: !uuid 'cacb4ba1bcd39631917bda15788cd8a36d8c7910'
+  /uni-app/publish.cjs:
+    newFile: !uuid '1d918b6784ba4be6992230492ab5eeeada1819da'
+    oldFile: !uuid '2c3ef2590b86264e4b16b5a1d2071246c9f154d9'
+gitCommitId: !uuid '568269b6a74b5c71667d5b2a2c13446d32b5db94'
 renames: {
   }
-revisionId: 298
+revisionId: 299
