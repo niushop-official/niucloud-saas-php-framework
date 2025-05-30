@@ -20,6 +20,11 @@ use think\Response;
 
 class Addon extends BaseAdminController
 {
+
+    public function init()
+    {
+        return success((new CoreAddonService())->getInitList());
+    }
     /**
      * 获取已下载插架
      */
@@ -183,4 +188,25 @@ class Addon extends BaseAdminController
     public function upgrade($addon = ''){
         return success('DOWNLOAD_SUCCESS', (new AddonService())->upgrade($addon));
     }
+
+    /**
+     * 获取首页应用标签
+     */
+    public function getIndexAddonLabelList()
+    {
+        return success((new CoreAddonService())->getIndexAddonLabelList());
+    }
+
+    /**
+     * 获取首页应用
+     * @return Response
+     */
+    public function getIndexAddonList()
+    {
+        $data = $this->request->params([
+            ['label_id', ''],
+        ]);
+        return success((new CoreAddonService())->getIndexAddonList($data['label_id']));
+    }
+
 }

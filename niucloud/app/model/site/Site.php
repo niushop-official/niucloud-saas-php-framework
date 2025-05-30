@@ -100,7 +100,7 @@ class Site extends BaseModel
     public function searchAppAttr($query, $value, $data)
     {
         if ($value != '') {
-            $query->where('app', 'like', '%"' . $value . '"%');
+            $query->where('app', 'like', '%"' . $value . '"%')->whereOr('initalled_addon', 'like', '%"' . $value . '"%');
         }
     }
 

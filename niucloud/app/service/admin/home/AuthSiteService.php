@@ -69,8 +69,19 @@ class AuthSiteService extends BaseAdminService
         $condition = [
             ['site_id', '<>', request()->defaultSiteId()],
         ];
+        $order = 'create_time desc';
+        if (!empty($where['sort'])){
+            if($where['sort'] == 'site_id'){
+                $order = "{$where['sort']} asc";
+            }else{
+                $order = "{$where['sort']} desc";
+            }
+        }
         if (!AuthService::isSuperAdmin()) $condition[] = ['site_id', 'in', $this->getSiteIds()];
-        $search_model = $this->model->where($condition)->withSearch([ 'create_time', 'expire_time', 'keywords', 'status', 'group_id', 'app' ], $where)->with(['groupName'])->field($field)->append([ 'status_name' ])->order('create_time desc');
+        $search_model = $this->model->where($condition)
+            ->withSearch([ 'create_time', 'expire_time', 'keywords', 'status', 'group_id', 'app' ], $where)
+            ->with(['groupName'])->field($field)->append([ 'status_name' ])
+            ->order($order);
 
         $theme_color = (new ConfigService())->getThemeColor();
 

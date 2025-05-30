@@ -13,6 +13,7 @@ namespace app\service\core\weapp;
 
 use app\dict\addon\AddonDict;
 use app\model\addon\Addon;
+use app\service\api\diy\DiyConfigService;
 use app\service\core\addon\CoreAddonDevelopDownloadService;
 use app\service\core\addon\WapTrait;
 use app\service\core\niucloud\CoreCloudBaseService;
@@ -84,7 +85,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
 
         // 如果不存在编译版小程序
         if ($compile_addon->isEmpty()) {
-            dir_copy($this->root_path . 'uni-app', $uni_dir, exclude_dirs:[ 'node_modules', 'unpackage', 'dist' ]);
+            dir_copy($this->root_path . 'uni-app', $uni_dir, exclude_dirs: [ 'node_modules', 'unpackage', 'dist' ]);
             $this->handleUniapp($uni_dir);
             // 替换env文件
             $this->weappEnvReplace($uni_dir . DIRECTORY_SEPARATOR . '.env.production');
@@ -139,11 +140,13 @@ class CoreWeappCloudService extends CoreCloudBaseService
         $local_addon = ( new Addon() )->where([ [ 'status', '=', AddonDict::ON ] ])->column('key');
 
         // 移除uniapp中该站点没有的插件
-        $diff_addon = array_filter(array_map(function($key) use ($site_addon) {
+        $diff_addon = array_filter(array_map(function ($key) use ($site_addon) {
             if (!in_array($key, $site_addon)) return $key;
         }, $local_addon));
 
         $this->handlePageCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
+
+        $this->handleTabbar($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
 
         if (!empty($diff_addon)) {
             foreach ($diff_addon as $addon) {
@@ -178,7 +181,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
             $page_end = strtoupper($addon) . '_PAGE_END';
 
             // 对0.2.0之前的版本做处理
-            $uniapp_pages[ 'pages' ] = preg_replace_callback('/(.*)(\\r\\n.*\/\/ PAGE_END.*)/s', function($match) {
+            $uniapp_pages[ 'pages' ] = preg_replace_callback('/(.*)(\\r\\n.*\/\/ PAGE_END.*)/s', function ($match) {
                 return $match[ 1 ] . ( substr($match[ 1 ], -1) == ',' ? '' : ',' ) . $match[ 2 ];
             }, $uniapp_pages[ 'pages' ]);
 
@@ -190,12 +193,60 @@ class CoreWeappCloudService extends CoreCloudBaseService
         }
 
         $content = @file_get_contents($compile_path . "pages.json");
-        $content = preg_replace_callback('/(.*\/\/ \{\{ PAGE_BEGAIN \}\})(.*)(\/\/ \{\{ PAGE_END \}\}.*)/s', function($match) use ($pages) {
+        $content = preg_replace_callback('/(.*\/\/ \{\{ PAGE_BEGAIN \}\})(.*)(\/\/ \{\{ PAGE_END \}\}.*)/s', function ($match) use ($pages) {
             return $match[ 1 ] . PHP_EOL . implode(PHP_EOL, $pages) . PHP_EOL . $match[ 3 ];
         }, $content);
 
         // 找到页面路由文件 pages.json，写入内容
         return file_put_contents($compile_path . "pages.json", $content);
+    }
+
+    /**
+     * 处理底部导航
+     * @param $compile_path
+     * @param $addon_arr
+     * @return void
+     */
+    public function handleTabbar($compile_path, $addon_arr = [])
+    {
+        $bottomList = array_column(( new DiyConfigService() )->getBottomList(), null, 'key');
+        $tabbarList = [];
+        if (empty($addon_arr)) {
+            foreach ($bottomList as $app_item) {
+                array_push($tabbarList, ...$app_item[ 'value' ][ 'list' ]);
+            }
+        } else {
+            foreach ($addon_arr as $addon) {
+                if (isset($bottomList[ $addon ])) {
+                    array_push($tabbarList, ...$bottomList[ $addon ][ 'value' ][ 'list' ]);
+                }
+            }
+        }
+
+        $tabbarList = array_map(function ($item) {
+            if (strpos($item[ 'link' ][ 'url' ], '?') !== false) {
+                $item[ 'link' ][ 'url' ] = explode('?', $item[ 'link' ][ 'url' ])[0];
+            }
+            $link = array_filter(explode('/', $item[ 'link' ][ 'url' ]));
+            $item[ 'link' ] = $item[ 'link' ][ 'url' ];
+            $item[ 'component' ] = implode('-', $link);
+            $item[ 'name' ] = lcfirst(implode('', array_map(function ($str) {
+                return ucfirst($str);
+            }, $link)));
+            return $item;
+        }, $tabbarList);
+        $tabbarList = array_column($tabbarList, null, 'name');
+
+        if (isset($tabbarList[ 'appPagesIndexIndex' ])) unset($tabbarList[ 'appPagesIndexIndex' ]);
+        if (isset($tabbarList[ 'appPagesMemberIndex' ])) unset($tabbarList[ 'appPagesMemberIndex' ]);
+
+        // 处理vue文件
+        $tpl = str_replace('/', DIRECTORY_SEPARATOR, public_path() . 'static/tpl/tabbar.tpl');
+        $content = view($tpl, [ 'tabbarList' => $tabbarList ])->getContent();
+        file_put_contents(str_replace('/', DIRECTORY_SEPARATOR, $compile_path . 'app/pages/index/tabbar.vue'), $content);
+
+        // 处理tabbar.json
+        file_put_contents($compile_path . 'tabbar.json', json_encode(array_column($tabbarList, 'link'), JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     }
 
     /**

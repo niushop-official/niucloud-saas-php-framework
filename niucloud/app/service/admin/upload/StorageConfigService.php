@@ -45,7 +45,7 @@ class StorageConfigService extends BaseAdminService
             $data = [];
             $data['storage_type'] = $k;
             $data['is_use'] = $k == $config_type['default'] ? StorageDict::ON : StorageDict::OFF;
-            $data['name'] = $v['name'];
+            $data['name'] = ($this->site_id != 0 && $k == StorageDict::LOCAL) ? ($v['site_name'] ?? $v['name']) : $v['name'];
             $data['component'] = $v['component'];
             foreach ($v['params'] as $k_param => $v_param) {
                 $value = $config_type[$k][$k_param] ?? '';

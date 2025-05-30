@@ -117,4 +117,14 @@ class SysUpgradeRecords extends BaseModel
     {
         return $this->hasOne(SysBackupRecords::class, 'backup_key', 'upgrade_key');
     }
+
+    public function getContentAttr($value) {
+        if (!empty($value)) {
+            try {
+                return json_decode($value, true);
+            } catch (\Exception $e) {
+            }
+        }
+        return $value;
+    }
 }

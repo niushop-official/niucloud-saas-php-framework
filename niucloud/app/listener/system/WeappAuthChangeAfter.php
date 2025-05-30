@@ -27,12 +27,8 @@ class WeappAuthChangeAfter
             request()->siteId($data['site_id']);
 
             $service = new WeappVersionService();
-            // 设置隐私协议
-            $service->setPrivacySetting();
             // 设置服务器域名
             $service->setDomain();
-            // 提交小程序代码
-            $service->siteWeappCommit();
         } else if ($data['event'] == 'unauthorized') {
         // 授权取消
 

@@ -25,12 +25,15 @@ class UpgradeDict
 
     const STATUS_FAIL = 'fail'; // 失败
 
+    const STATUS_CANCEL = 'cancel';
+
     public static function getStatus($status)
     {
         $status_list = [
             self::STATUS_READY => get_lang('dict_upgrade.ready'),
             self::STATUS_COMPLETE => get_lang('dict_upgrade.complete'),
             self::STATUS_FAIL => get_lang('dict_upgrade.fail'),
+            self::STATUS_CANCEL => get_lang('dict_upgrade.cancel'),
         ];
         return $status_list[ $status ] ?? '';
     }

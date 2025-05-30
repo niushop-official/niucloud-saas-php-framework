@@ -13,6 +13,7 @@ namespace app\adminapi\controller\notice;
 
 use app\dict\sys\SmsDict;
 use app\service\admin\notice\NoticeService;
+use app\service\admin\notice\NiuSmsService;
 use app\service\admin\notice\SmsService;
 use core\base\BaseAdminController;
 use core\exception\AdminException;
@@ -111,5 +112,4 @@ class Notice extends BaseAdminController
         (new NoticeService())->edit($data['key'], $data['type'], $data);
         return success();
     }
-
 }

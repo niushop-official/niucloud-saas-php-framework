@@ -11,6 +11,7 @@
 
 namespace app\service\core\upload;
 
+use app\dict\sys\StorageDict;
 use core\base\BaseCoreService;
 use core\exception\UploadFileException;
 use core\upload\FileDriver;
@@ -80,15 +81,27 @@ class CoreFileService extends BaseCoreService
      * @throws Exception
      */
     public function driver(int $site_id, string $storage_type = ''){
-        if(!empty($storage_type)){
-            self::$storage_type = $storage_type;
-            $core_storage_service = new CoreStorageService();
-            $storage_config = $core_storage_service->getStorageByType($site_id, $storage_type);
-        }else{
+
+        //是租户且设置的为默认 则按照超级管理员的默认来使用
+        $tenant_is_default = ($site_id != 0 && $storage_type  == StorageDict::LOCAL);
+        if ($tenant_is_default){
+            $site_id = 0;
+            $storage_type = '';
+        }
+        if(empty($storage_type)){
             $core_storage_service = new CoreStorageService();
             $storage_config = $core_storage_service->getDefaultStorage($site_id);
             if(empty($storage_config)) throw new UploadFileException('UPLOAD_STORAGE_TYPE_ALL_CLOSE');
+            //若获取到的存储类型为`默认` 则获取超级管理的配置
+            if ($storage_config['storage_type'] == StorageDict::LOCAL){
+                $storage_config = $core_storage_service->getDefaultStorage(0);
+                if(empty($storage_config)) throw new UploadFileException('SUPER_UPLOAD_STORAGE_TYPE_ALL_CLOSE');
+            }
             self::$storage_type = $storage_config['storage_type'];
+        }else{
+            self::$storage_type = $storage_type;
+            $core_storage_service = new CoreStorageService();
+            $storage_config = $core_storage_service->getStorageByType($site_id, $storage_type);
         }
         $storage_config = $storage_config ?? [];
         $storage_config['storage_type'] = self::$storage_type;

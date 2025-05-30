@@ -114,7 +114,9 @@ class CoreNoticeService extends BaseCoreService
                             'weapp_template_id' => '',
                             'sms_id' => '',
                             'wechat_first' => '',
-                            'wechat_remark' => ''
+                            'wechat_remark' => '',
+                            'audit_status'=>'wait',
+                            'sign'=>'',
                         ]);
                     }
                     $item['notice'][] = $notice_item;

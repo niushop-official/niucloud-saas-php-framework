@@ -27,6 +27,7 @@ class Site extends BaseAdminController
             ['keywords', ''],
             ['status', ''],
             ['app', ''],
+            ['sort', ''],
         ]);
         return success((new AuthSiteService())->getSitePage($data));
     }

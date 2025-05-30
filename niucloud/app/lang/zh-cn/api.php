@@ -63,6 +63,8 @@ return [
     'UPGRADE_RECORD_NOT_EXIST' => '升级记录不存在',
     'UPGRADE_BACKUP_CODE_NOT_FOUND' => '未找到备份的源码文件',
     'UPGRADE_BACKUP_SQL_NOT_FOUND' => '未找到备份的数据库文件',
+    'NOT_EXIST_UPGRADE_CONTENT' => '没有获取到可以升级的内容',
+    'CLOUD_BUILD_AUTH_CODE_NOT_FOUND' => '请先填写授权码',
     //登录注册重置账号....
 
     'LOGIN_SUCCESS' => '登录成功',
@@ -71,7 +73,6 @@ return [
     'LOGIN_STATE_ERROR' => '登录状态有误,请重新登录',
     'USER_LOCK' => '账号被锁定',
     'USER_ERROR' => '账号或密码错误',
-    'USER_NOT_EXIST' => '账号不存在',
     'NO_SITE_PERMISSION' => '您没有当前站点的访问权限',
     'SITE_NOT_EXIST' => '站点不存在',
     'LOGOUT' => '登陆退出',
@@ -120,7 +121,8 @@ return [
     'BASE_IMAGE_FILE_NOT_EXIST' => 'base图片资源不能为空',
     'UPLOAD_TYPE_NOT_SUPPORT' => '不支持的上传类型',
     'FILE_ERROR' => '无效的资源',
-    'UPLOAD_STORAGE_TYPE_ALL_CLOSE' => '至少要有一个启用的存储方式',
+    'UPLOAD_STORAGE_TYPE_ALL_CLOSE' => '【站点端】至少要有一个启用的存储方式',
+    'SUPER_UPLOAD_STORAGE_TYPE_ALL_CLOSE' => '【管理端】至少要有一个启用的存储方式',
     'STORAGE_NOT_HAS_HTTP_OR_HTTPS' => '空间域名请补全http://或https://',
 
 
@@ -312,7 +314,7 @@ return [
     'VERIFY_TYPE_ERROR' => '核销类型错误',
     'VERIFY_CODE_EXPIRED' => '当前核销码已核销或已失效',
     'VERIFIER_NOT_EXIST' => '核销员不存在',
-    'VERIFIER_EXIST'=>'核销员已存在',
+    'VERIFIER_EXIST' => '核销员已存在',
     'VERIFIER_NOT_AUTH' => '该核销员没有权限',
 
     //签到相关
@@ -343,6 +345,18 @@ return [
     'WECHAT_EXIST' => '该公众号已经授权给其他站点',
     'PLEASE_ADD_FIRST_SITE_GROUP' => '请先添加站点套餐',
     'NOT_YET_PRESENT_TEMPLATE_LIBRARY' => '平台尚未上传小程序到模板库',
+    'WEAPP_VERSION_NOT_EXIST' => '未获取到小程序版本提交记录',
+    'NOT_ALLOWED_CANCEL_AUDIT' => '只有审核中的才可以撤回',
 
-    'PRINTER_NOT_EXIST' => '打印机不存在'
+    'PRINTER_NOT_EXIST' => '打印机不存在',
+    /*******************************************牛云短信 start ********************************************************/
+    'NIU_SMS_ENABLE_FAILED' => '需登录账号并配置签名后才能启用牛云短信',
+    'ACCOUNT_ERROR_RELOGIN' => '牛云短信账号异常,请重新登录账号',
+    'ACCOUNT_BIND_MOBILE_ERROR' => '手机号错误',
+    'TEMPLATE_NOT_SMS_CONTENT' => '当前模版未配置短信内容',
+    'TEMPLATE_ERROR' => '短信模版ID错误或审核未通过',
+    'TEMPLATE_NOT_REPORT' => '短信模版暂未报备',
+    'URL_NOT_FOUND' => '未配置远程服务地址，请在ENV中配置{NIU_SHOP_PREFIX}',
+    'SYSTEM_IS_ERROR' => '远程服务器异常，请联系售后人员',
+    /*******************************************牛云短信 end ********************************************************/
 ];

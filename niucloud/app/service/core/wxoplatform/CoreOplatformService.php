@@ -242,7 +242,7 @@ class CoreOplatformService extends BaseCoreService
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/cgi-bin/component/getprivacysetting', [
             'json' => [
-                'privacy_ver' => 1
+                'privacy_ver' => 2
             ]
         ])->toArray();
     }
@@ -263,7 +263,7 @@ class CoreOplatformService extends BaseCoreService
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/cgi-bin/component/setprivacysetting', [
             'json' => [
-                'privacy_ver' => $data['privacy_ver'] ?? 2,
+                'privacy_ver' => 2,
                 'setting_list' => $data['setting_list'],
                 'owner_setting' => $data['owner_setting'],
                 'sdk_privacy_info_list' => $data['sdk_privacy_info_list'] ?? []
@@ -319,5 +319,13 @@ class CoreOplatformService extends BaseCoreService
                 'tcpdomain' => $data['tcpdomain'] ?? [],
             ]
         ])->toArray();
+    }
+
+    /**
+     * 撤回代码审核
+     */
+    public static function undocodeAudit($site_id) {
+        $app = CoreWeappService::app($site_id);
+        return $app->getClient()->get('/wxa/undocodeaudit')->toArray();
     }
 }

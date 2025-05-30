@@ -74,6 +74,7 @@ Route::group('site', function () {
     Route::get('log', 'site.UserLog/lists');
     //操作日志详情
     Route::get('log/:id', 'site.UserLog/info');
+    Route::delete('log/destroy', 'site.UserLog/destroy');
     /***************************************************** 站点菜单 **************************************************/
     Route::get('site/menu', 'site.Site/menu');
     /***************************************************** 站点账单 *************************************************/

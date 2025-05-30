@@ -30,6 +30,8 @@ Route::group('wxoplatform', function () {
     Route::get('authorizationUrl', 'wxoplatform.Oplatform/getAuthorizationUrl');
     // 确认授权
     Route::get('authorization', 'wxoplatform.Oplatform/authorization');
+    // 授权记录
+    Route::get('authorization/record', 'wxoplatform.Oplatform/getAuthRecord');
     // 平台提交小程序版本
     Route::post('weapp/version/commit', 'wxoplatform.WeappVersion/weappCommit');
     // 获取最后一次提交记录
@@ -40,6 +42,10 @@ Route::group('wxoplatform', function () {
     Route::post('site/weapp/commit', 'wxoplatform.WeappVersion/siteWeappCommit');
     // 按站点套餐获取提交记录
     Route::get('sitegroup/commit', 'wxoplatform.WeappVersion/getSiteGroupCommitRecord');
+    // 撤销审核
+    Route::put('undo/weappaudit', 'wxoplatform.WeappVersion/undoAudit');
+    // 同步套餐下站点小程序
+    Route::post('async/siteweapp', 'wxoplatform.WeappVersion/syncSiteWeapp');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

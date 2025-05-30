@@ -54,7 +54,9 @@ return [
         'name' => '定时清理升级/备份记录表',
         'desc' => '',
         'time' => [
-            'type' => 'min',
+            'type' => 'day',
+            'day' => 1,
+            'hour' => 1,
             'min' => 1
         ],
         'class' => 'app\job\upgrade\AutoClearUpgradeRecords',

@@ -56,6 +56,17 @@ class SiteGroup extends BaseModel
         return (new Addon())->where([['key', 'in', $data['app']]])->column('title');
     }
 
+    public function getAppListAttr($value, $data)
+    {
+        if (empty($data['app']))
+            return [];
+        $list = (new Addon())->where([['key', 'in', $data['app']]])->column('title,icon');
+        foreach ($list as &$item) {
+            $item['icon'] = is_file($item['icon']) ? image_to_base64($item['icon']) : '';
+        }
+        return $list;
+    }
+
     /**
      * 关联插件
      * @param $value
@@ -67,6 +78,23 @@ class SiteGroup extends BaseModel
         if (empty($data['addon']))
             return [];
         return (new Addon())->where([['key', 'in', $data['addon']]])->column('title');
+    }
+    /**
+     * 关联插件
+     * @param $value
+     * @param $data
+     * @return array
+     */
+    public function getAddonListAttr($value, $data)
+    {
+        if (empty($data['addon']))
+            return [];
+
+        $list = (new Addon())->where([['key', 'in', $data['addon']]])->column('title,icon');
+        foreach ($list as &$item) {
+            $item['icon'] = is_file($item['icon']) ? image_to_base64($item['icon']) : '';
+        }
+        return $list;
     }
 
     /**

@@ -12,8 +12,12 @@
 namespace app\service\admin\upgrade;
 
 use app\dict\addon\AddonDict;
+use app\dict\sys\AppTypeDict;
+use app\dict\sys\BackupDict;
 use app\dict\sys\UpgradeDict;
 use app\model\addon\Addon;
+use app\model\site\Site;
+use app\model\sys\SysBackupRecords;
 use app\service\admin\install\InstallSystemService;
 use app\service\admin\sys\ConfigService;
 use app\service\core\addon\CoreAddonCloudService;
@@ -29,6 +33,7 @@ use app\service\core\schedule\CoreScheduleInstallService;
 use core\base\BaseAdminService;
 use core\exception\CloudBuildException;
 use core\exception\CommonException;
+use core\util\DbBackup;
 use core\util\niucloud\BaseNiucloudClient;
 use think\facade\Cache;
 use think\facade\Db;
@@ -55,9 +60,9 @@ class UpgradeService extends BaseAdminService
 
     private $steps = [
         'requestUpgrade' => [ 'step' => 'requestUpgrade', 'title' => '请求升级' ],
-        'downloadFile' => [ 'step' => 'downloadFile', 'title' => '下载更新文件' ],
+        'downloadFile' => [ 'step' => 'downloadFile', 'title' => '' ],
         'backupCode' => [ 'step' => 'backupCode', 'title' => '备份源码' ],
-        'backupSql' => [ 'step' => 'backupSql', 'title' => '备份数据库' ],
+        'backupSql' => [ 'step' => 'backupSql', 'title' => '' ],
         'coverCode' => [ 'step' => 'coverCode', 'title' => '合并更新文件' ],
         'handleUniapp' => [ 'step' => 'handleUniapp', 'title' => '处理uniapp' ],
         'refreshMenu' => [ 'step' => 'refreshMenu', 'title' => '刷新菜单' ],
@@ -74,6 +79,10 @@ class UpgradeService extends BaseAdminService
         $this->root_path = dirname(root_path()) . DIRECTORY_SEPARATOR;
         $this->upgrade_dir = $this->root_path . 'upgrade' . DIRECTORY_SEPARATOR;
         $this->upgrade_task = Cache::get($this->cache_key);
+
+        if (!empty($this->upgrade_task) && !isset($this->upgrade_task[ 'upgrade_apps' ])) {
+            $this->upgrade_task[ 'upgrade_apps' ] = [ AddonDict::FRAMEWORK_KEY ];
+        }
     }
 
     /**
@@ -134,7 +143,8 @@ class UpgradeService extends BaseAdminService
             'public' . DIRECTORY_SEPARATOR . 'upload',
             'public' . DIRECTORY_SEPARATOR . 'file',
             'runtime',
-            'vendor'
+            'vendor',
+            '.user.ini'
         ];
         $check_res = array_merge2($check_res, checkDirPermissions(project_path() . 'niucloud', [], $exclude_niucloud_dir));
 
@@ -165,31 +175,37 @@ class UpgradeService extends BaseAdminService
      * @param $addon
      * @return array
      */
-    public function upgrade(string $addon = '')
+    public function upgrade(string $addon = '', $data = [])
     {
         if ($this->upgrade_task) throw new CommonException('UPGRADE_TASK_EXIST');
 
         $upgrade_content = $this->getUpgradeContent($addon);
+        if (empty($upgrade_content['content'])) throw new CommonException("NOT_EXIST_UPGRADE_CONTENT");
+
         $upgrade_title = '框架';
 
         $upgrade = [
             'product_key' => BaseNiucloudClient::PRODUCT,
             'framework_version' => config('version.version')
         ];
-        if (!$addon) {
-            $upgrade[ 'app_key' ] = AddonDict::FRAMEWORK_KEY;
-            $upgrade[ 'version' ] = config('version.version');
-        } else {
-            $upgrade[ 'app_key' ] = $addon;
-            $upgrade[ 'version' ] = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('version');
-            $upgrade_title = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('title');
 
-            // 判断框架版本是否低于插件支持版本
-            $last_version = $upgrade_content[ 'version_list' ][ count($upgrade_content[ 'version_list' ]) - 1 ];
-            if (str_replace('.', '', config('version.version')) < str_replace('.', '', $last_version[ 'niucloud_version' ][ 'version_no' ])) {
-                throw new CommonException('BEFORE_UPGRADING_NEED_UPGRADE_FRAMEWORK');
-            }
-        }
+        $upgrade[ 'app_key' ] = $upgrade_content['content'][0]['app']['app_key'];
+        $upgrade[ 'version' ] = $upgrade_content['content'][0]['version'];
+
+//        if (!$addon) {
+//            $upgrade[ 'app_key' ] = AddonDict::FRAMEWORK_KEY;
+//            $upgrade[ 'version' ] = config('version.version');
+//        } else {
+//            $upgrade[ 'app_key' ] = $addon;
+//            $upgrade[ 'version' ] = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('version');
+//            $upgrade_title = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('title');
+//
+//            // 判断框架版本是否低于插件支持版本
+//            $last_version = $upgrade_content[ 'version_list' ][ count($upgrade_content[ 'version_list' ]) - 1 ];
+//            if (str_replace('.', '', config('version.version')) < str_replace('.', '', $last_version[ 'niucloud_version' ][ 'version_no' ])) {
+//                throw new CommonException('BEFORE_UPGRADING_NEED_UPGRADE_FRAMEWORK');
+//            }
+//        }
 
         $response = ( new CoreAddonCloudService() )->upgradeAddon($upgrade);
         if (isset($response[ 'code' ]) && $response[ 'code' ] == 0) throw new CommonException($response[ 'msg' ]);
@@ -202,6 +218,20 @@ class UpgradeService extends BaseAdminService
                 dir_mkdir($upgrade_dir);
             }
 
+            // 是否需要备份
+            $is_need_backup = $data['is_need_backup'] ?? true;
+            if (!$is_need_backup) {
+                unset($this->steps['backupCode']);
+                unset($this->steps['backupSql']);
+            }
+
+            // 是否需要云编译
+            $is_need_cloudbuild = $data['is_need_cloudbuild'] ?? true;
+            if (!$is_need_cloudbuild) {
+                unset($this->steps['cloudBuild']);
+                unset($this->steps['gteCloudBuildLog']);
+            }
+
             $upgrade_task = [
                 'key' => $key,
                 'upgrade' => $upgrade,
@@ -209,19 +239,26 @@ class UpgradeService extends BaseAdminService
                 'step' => 'requestUpgrade',
                 'executed' => [ 'requestUpgrade' ],
                 'log' => [ $this->steps[ 'requestUpgrade' ][ 'title' ] ],
-                'params' => [ 'token' => $response[ 'token' ] ],
-                'upgrade_content' => $upgrade_content
+                'params' => [ 'app_key' => $upgrade[ 'app_key' ], 'token' => $response[ 'token' ] ],
+                'upgrade_content' => $upgrade_content,
+                'upgrade_apps' => $upgrade_content['upgrade_apps'],
+                'is_need_backup' => $is_need_backup,
             ];
+
+            foreach ($upgrade_content[ 'content' ] as $k => $v) {
+                unset($upgrade_content[ 'content' ][ $k ][ 'version_list' ]);
+            }
 
             // 记录升级日志
             ( new UpgradeRecordsService() )->add([
                 'upgrade_key' => $upgrade_task[ 'key' ],
                 'app_key' => $upgrade[ 'app_key' ],
                 'name' => $upgrade_title,
-                'content' => "{$upgrade_title} 升级 v{$upgrade_content['version']} 到 v{$upgrade_content['upgrade_version']}版本",
-                'prev_version' => "v{$upgrade_content['version']}",
-                'current_version' => "v{$upgrade_content['upgrade_version']}",
-                'status' => UpgradeDict::STATUS_READY
+                'content' => json_encode($upgrade_content),
+                'prev_version' => "",
+                'current_version' => "",
+                'status' => UpgradeDict::STATUS_READY,
+                'is_need_backup' => $is_need_backup
             ]);
 
             Cache::set($this->cache_key, $upgrade_task);
@@ -303,13 +340,35 @@ class UpgradeService extends BaseAdminService
      * @param $step
      * @return true|null
      */
-    public function downloadFile(string $token, string $dir = '', int $index = -1, $step = 0, $length = 0)
+    public function downloadFile(string $app_key, string $token, string $dir = '', int $index = -1, $step = 0, $length = 0)
     {
         if (!$dir) {
-            $dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR;
+            $dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . $app_key . DIRECTORY_SEPARATOR;
             dir_mkdir($dir);
         }
-        $res = ( new CoreAddonCloudService() )->downloadUpgradeFile($token, $dir, $index, $step, $length);
+        $res = ( new CoreAddonCloudService() )->downloadUpgradeFile($app_key, $token, $dir, $index, $step, $length);
+
+        if ($res === true) {
+            $index = array_search($app_key, $this->upgrade_task['upgrade_apps']);
+            if ($app_key == AddonDict::FRAMEWORK_KEY) {
+                $this->upgrade_task['log'][] = "下载更新文件";
+            } else {
+                $this->upgrade_task['log'][] = "下载". $this->upgrade_task['upgrade_content']['content'][$index]['app']['app_name'] ."更新文件";
+            }
+            $index++;
+            if (isset($this->upgrade_task['upgrade_apps'][$index])) {
+                $upgrade = [
+                    'product_key' => BaseNiucloudClient::PRODUCT,
+                    'framework_version' => config('version.version'),
+                    'app_key' => $this->upgrade_task['upgrade_content']['content'][$index]['app']['app_key'],
+                    'version' => $this->upgrade_task['upgrade_content']['content'][$index]['version']
+                ];
+                $response = ( new CoreAddonCloudService() )->upgradeAddon($upgrade);
+                if (isset($response[ 'code' ]) && $response[ 'code' ] == 0) throw new CommonException($response[ 'msg' ]);
+
+                return ['app_key' => $upgrade[ 'app_key' ], 'token' => $response[ 'token' ]];
+            }
+        }
         return $res;
     }
 
@@ -327,23 +386,49 @@ class UpgradeService extends BaseAdminService
      * 备份数据库
      * @return true
      */
-    public function backupSql()
+    public function backupSql($index = 0)
     {
-        ( new BackupService() )->backupSql();
-        return true;
+        $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+        // 创建目录
+        dir_mkdir($backup_dir);
+
+        $db = new DbBackup($backup_dir, 1024 * 1024 * 2, key: $this->upgrade_task[ 'key' ]);
+
+        $prefix = config('database.connections.' . config('database.default'))[ 'prefix' ];
+
+        // 不需要备份的表
+        $not_need_backup = [
+            "{$prefix}sys_schedule_log",
+            "{$prefix}sys_user_log",
+            "{$prefix}jobs",
+            "{$prefix}jobs_failed",
+            "{$prefix}sys_upgrade_records",
+            "{$prefix}sys_backup_records"
+        ];
+
+        $result = $db->setExcludeTables($not_need_backup)->backupDatabaseSegment();
+        if ($db->getBackupProgress() == 100) {
+            $this->upgrade_task[ 'log' ][] = "数据库备份完成";
+        } else {
+            $this->upgrade_task[ 'log' ][] = $db->getBackupProgress() == 0 ? '数据库开始备份' : '数据库备份已备份'. $db->getBackupProgress() . '%';
+        }
+        if ($result === true) return true;
+        return ['index' => $result];
     }
 
     /**
      * 覆盖更新升级的代码
      * @return void
      */
-    public function coverCode($index = 0)
+    public function coverCode($index = 0, $addon = "")
     {
         $this->upgrade_task[ 'is_cover' ] = 1;
-        $addon = $this->upgrade_task[ 'upgrade' ][ 'app_key' ];
+        if (empty($addon)) $addon = $this->upgrade_task['upgrade_apps'][0];
 
-        $version_list = array_reverse($this->upgrade_task[ 'upgrade_content' ][ 'version_list' ]);
-        $code_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+        $app_index = array_search($addon, $this->upgrade_task['upgrade_apps']);
+
+        $version_list = array_reverse($this->upgrade_task[ 'upgrade_content' ]['content'][$app_index][ 'version_list' ]);
+        $code_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . $addon . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
 
         $version_item = $version_list[ $index ];
         $version_no = $version_item[ 'version_no' ];
@@ -394,8 +479,12 @@ class UpgradeService extends BaseAdminService
 
         $index++;
         if ($index < count($version_list)) {
-            return compact('index');
+            return compact('index', 'addon');
         } else {
+            $app_index++;
+            if (isset($this->upgrade_task['upgrade_apps'][$app_index])) {
+                return ['index' => 0, 'addon' => $this->upgrade_task['upgrade_apps'][$app_index]];
+            }
             return true;
         }
     }
@@ -466,7 +555,9 @@ class UpgradeService extends BaseAdminService
      */
     public function handleUniapp()
     {
-        $code_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+        $key = end($this->upgrade_task['upgrade_apps']);
+
+        $code_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'download' . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         $exclude_files = [ '.env.development', '.env.production', 'manifest.json' ];
         dir_copy($code_dir . 'uni-app', $this->root_path . 'uni-app', exclude_files: $exclude_files);
 
@@ -537,12 +628,20 @@ class UpgradeService extends BaseAdminService
      * 刷新菜单
      * @return void
      */
-    public function refreshMenu()
+    public function refreshMenu($addon = "")
     {
-        if ($this->upgrade_task[ 'upgrade' ][ 'app_key' ] == AddonDict::FRAMEWORK_KEY) {
+        if (empty($addon)) $addon = $this->upgrade_task['upgrade_apps'][0];
+        $app_index = array_search($addon, $this->upgrade_task['upgrade_apps']);
+
+        if ($addon == AddonDict::FRAMEWORK_KEY) {
             ( new InstallSystemService() )->installMenu();
         } else {
-            ( new CoreMenuService() )->refreshAddonMenu($this->upgrade_task[ 'upgrade' ][ 'app_key' ]);
+            ( new CoreMenuService() )->refreshAddonMenu($addon);
+        }
+
+        $app_index++;
+        if (isset($this->upgrade_task['upgrade_apps'][$app_index])) {
+            return ['addon' => $this->upgrade_task['upgrade_apps'][$app_index]];
         }
         return true;
     }
@@ -551,12 +650,20 @@ class UpgradeService extends BaseAdminService
      * 安装计划任务
      * @return true
      */
-    public function installSchedule()
+    public function installSchedule($addon = "")
     {
-        if ($this->upgrade_task[ 'upgrade' ][ 'app_key' ] == AddonDict::FRAMEWORK_KEY) {
+        if (empty($addon)) $addon = $this->upgrade_task['upgrade_apps'][0];
+        $app_index = array_search($addon, $this->upgrade_task['upgrade_apps']);
+
+        if ($addon == AddonDict::FRAMEWORK_KEY) {
             ( new CoreScheduleInstallService() )->installSystemSchedule();
         } else {
-            ( new CoreScheduleInstallService() )->installAddonSchedule($this->upgrade_task[ 'upgrade' ][ 'app_key' ]);
+            ( new CoreScheduleInstallService() )->installAddonSchedule($addon);
+        }
+
+        $app_index++;
+        if (isset($this->upgrade_task['upgrade_apps'][$app_index])) {
+            return ['addon' => $this->upgrade_task['upgrade_apps'][$app_index]];
         }
         return true;
     }
@@ -614,12 +721,13 @@ class UpgradeService extends BaseAdminService
      */
     public function upgradeComplete()
     {
-        $addon = $this->upgrade_task[ 'upgrade' ][ 'app_key' ];
-        if ($addon != AddonDict::FRAMEWORK_KEY) {
-            $core_addon_service = new CoreAddonService();
-            $install_data = $core_addon_service->getAddonConfig($addon);
-            $install_data[ 'icon' ] = 'addon/' . $addon . '/icon.png';
-            $core_addon_service->set($install_data);
+        foreach ($this->upgrade_task['upgrade_apps'] as $addon) {
+            if ($addon != AddonDict::FRAMEWORK_KEY) {
+                $core_addon_service = new CoreAddonService();
+                $install_data = $core_addon_service->getAddonConfig($addon);
+                $install_data[ 'icon' ] = 'addon/' . $addon . '/icon.png';
+                $core_addon_service->set($install_data);
+            }
         }
         // 执行完成，更新升级记录状态，备份记录状态
         ( new UpgradeRecordsService() )->complete($this->upgrade_task[ 'key' ]);
@@ -642,12 +750,10 @@ class UpgradeService extends BaseAdminService
         }
         $steps[ 'restoreComplete' ] = [ 'step' => 'restoreComplete', 'title' => '备份恢复完成' ];
         $this->upgrade_task[ 'steps' ] = $steps;
+        $this->upgrade_task[ 'params' ] = [];
         Cache::set($this->cache_key, $this->upgrade_task);
 
         Log::write('升级出错之后的处理：'.json_encode($fail_reason));
-
-        // 执行失败，更新升级记录状态，备份记录状态
-        ( new UpgradeRecordsService() )->failed($this->upgrade_task[ 'key' ]);
     }
 
     /**
@@ -656,11 +762,17 @@ class UpgradeService extends BaseAdminService
      */
     public function restoreCode()
     {
+        if ($this->upgrade_task['is_need_backup']) {
+            $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+        } else {
+            $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+        }
         try {
-            ( new RestoreService() )->restoreCode();
+            if (is_dir($backup_dir)) {
+                dir_copy($backup_dir, rtrim($this->root_path, DIRECTORY_SEPARATOR));
+            }
             return true;
         } catch (\Exception $e) {
-            $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
             $this->upgrade_task[ 'error' ][] = '源码备份恢复失败稍后请手动恢复，源码备份文件路径：' . $backup_dir . '，失败原因：' . $e->getMessage() . $e->getFile() . $e->getLine();
             Cache::set($this->cache_key, $this->upgrade_task);
             return true;
@@ -671,13 +783,34 @@ class UpgradeService extends BaseAdminService
      * 恢复数据库
      * @return void
      */
-    public function restoreSql()
+    public function restoreSql($index = 0)
     {
+        if ($this->upgrade_task['is_need_backup']) {
+            $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+        } else {
+            $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+        }
         try {
-            ( new RestoreService() )->restoreSql();
+            if (is_dir($backup_dir)) {
+                $db = new DbBackup($backup_dir, key: $this->upgrade_task[ 'key' ]);
+                $result = $db->restoreDatabase();
+                if ($result !== true) return ['index' => $result];
+
+                $restore_progress = $db->getRestoreProgress();
+                if ($restore_progress % 5 == 0) {
+                    $this->upgrade_task[ 'log' ][] = $restore_progress == 0 ? '数据库开始恢复' : '数据库恢复中已恢复'. $restore_progress . '%';
+                }
+            }
+
+            // 处理admin站点不为0的问题
+            $site_model = new Site();
+            $site_model->where([
+                [ 'site_id', '<>', 0 ],
+                [ 'app_type', '=', AppTypeDict::ADMIN ]
+            ])->update([ 'site_id' => 0 ]);
+
             return true;
         } catch (\Exception $e) {
-            $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
             $this->upgrade_task[ 'error' ][] = '数据库备份恢复失败稍后请手动恢复，数据库备份文件路径：' . $backup_dir . '，失败原因：' . $e->getMessage() . $e->getFile() . $e->getLine();
             Cache::set($this->cache_key, $this->upgrade_task);
             return true;
@@ -686,6 +819,7 @@ class UpgradeService extends BaseAdminService
 
     public function restoreComplete()
     {
+        ( new UpgradeRecordsService() )->failed($this->upgrade_task[ 'key' ], $this->upgrade_task['error']);
         $this->clearUpgradeTask(2);
         return true;
     }
@@ -698,18 +832,46 @@ class UpgradeService extends BaseAdminService
      */
     public function getUpgradeContent(string $addon = '')
     {
+        $content = [
+            'content' => [],
+            'upgrade_apps' => []
+        ];
+
         $upgrade = [
             'product_key' => BaseNiucloudClient::PRODUCT
         ];
+        $apps = [];
         if (!$addon) {
             $upgrade[ 'app_key' ] = AddonDict::FRAMEWORK_KEY;
             $upgrade[ 'version' ] = config('version.version');
+            array_push($apps, $upgrade);
         } else {
-            $upgrade[ 'app_key' ] = $addon;
-            $upgrade[ 'version' ] = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('version');
+            $addons = array_filter(explode(',', $addon));
+            foreach ($addons as $key) {
+                $info = ( new Addon() )->where([ [ 'key', '=', $key ] ])->field('version,type')->find();
+                $upgrade[ 'app_key' ] = $key;
+                $upgrade[ 'version' ] = $info['version'];
+                if ($info['type'] == 'app') {
+                    array_unshift($apps, $upgrade);
+                } else {
+                    array_push($apps, $upgrade);
+                }
+            }
         }
 
-        return ( new CoreModuleService() )->getUpgradeContent($upgrade)[ 'data' ] ?? [];
+        foreach ($apps as $item) {
+            $upgrade_content = ( new CoreModuleService() )->getUpgradeContent($item)[ 'data' ] ?? [];
+            if (!empty($upgrade_content)) {
+                $content['content'][] = $upgrade_content;
+                $content['upgrade_apps'][] = $upgrade_content['app']['app_key'];
+            }
+        }
+
+        if (!empty($content['content'])) {
+            $content['last_backup'] = (new SysBackupRecords())->where([ ['status', '=', BackupDict::STATUS_COMPLETE ] ])->order('complete_time desc')->find();
+        }
+
+        return $content;
     }
 
     /**
@@ -725,13 +887,20 @@ class UpgradeService extends BaseAdminService
      * 清除升级任务
      * @return true
      */
-    public function clearUpgradeTask(int $delayed = 0)
+    public function clearUpgradeTask(int $delayed = 0, int $is_active = 0)
     {
+        // 主动取消升级
+        if ($is_active && $this->upgrade_task && !empty($this->upgrade_task[ 'key' ])) {
+            ( new UpgradeRecordsService() )->edit([ [ 'upgrade_key', '=', $this->upgrade_task[ 'key' ] ], ['status', '=', UpgradeDict::STATUS_READY ] ], ['status' => UpgradeDict::STATUS_CANCEL]);
+        }
+
         if ($delayed) {
             Cache::set($this->cache_key, $this->upgrade_task, $delayed);
         } else {
             Cache::set($this->cache_key, null);
         }
+        // 清除云编译的任务缓存
+        ( new CoreCloudBuildService() )->clearTask();
         return true;
     }
 

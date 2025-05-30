@@ -294,7 +294,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
      * @param string $token
      * @return void
      */
-    public function downloadUpgradeFile(string $token, string $dir = '', int $index = -1, $step = 0, $length = 0) {
+    public function downloadUpgradeFile(string $app_key, string $token, string $dir = '', int $index = -1, $step = 0, $length = 0) {
         $query = [
             'authorize_code' => $this->auth_code,
             'token' => $token
@@ -310,7 +310,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
             $step = (int)ceil($length / $chunk_size);
 
             $index++;
-            return compact('token', 'dir', 'index', 'step', 'length');
+            return compact('app_key', 'token', 'dir', 'index', 'step', 'length');
         } else {
             $zip_file = $dir . 'upgrade.zip';
             $zip_resource = fopen($zip_file, 'a');
@@ -327,7 +327,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
                 fclose($zip_resource);
 
                 $index++;
-                return compact('token', 'dir', 'index', 'step', 'length');
+                return compact('app_key', 'token', 'dir', 'index', 'step', 'length');
             } else {
                 $zip = new \ZipArchive();
                 if ($zip->open($zip_file) === true) {

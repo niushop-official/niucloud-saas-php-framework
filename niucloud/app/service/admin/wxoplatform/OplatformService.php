@@ -64,13 +64,16 @@ class OplatformService extends BaseAdminService
             $this->weappCheck($authorizer_info, $authorization_info);
 
             $service = new CoreWeappConfigService();
-            $service->setWeappConfig($this->site_id, [
+            $config_data = [
                 'weapp_name' => $authorizer_info['nick_name'],
                 'weapp_original' => $authorizer_info['user_name'],
                 'app_id'            => $authorization_info['authorizer_appid'],
                 'qr_code' => (new CoreFetchService())->image($authorizer_info['qrcode_url'], $this->site_id, $qrcode_dir)['url'],
                 'is_authorization'  => 1
-            ]);
+            ];
+            $service->setWeappConfig($this->site_id, $config_data);
+
+            $result['authorizer_info']['qrcode_url'] = $config_data['qr_code'];
             $service->setWeappAuthorizationInfo($this->site_id, $result);
 
             // 授权成功之后调用
@@ -79,13 +82,15 @@ class OplatformService extends BaseAdminService
             $this->wechatCheck($authorizer_info, $authorization_info);
 
             $service = new CoreWechatConfigService();
-            $service->setWechatConfig($this->site_id, [
+            $config_data = [
                 'wechat_name' => $authorizer_info['nick_name'],
                 'wechat_original' => $authorizer_info['user_name'],
                 'app_id'            => $authorization_info['authorizer_appid'],
                 'qr_code' => (new CoreFetchService())->image($authorizer_info['qrcode_url'], $this->site_id, $qrcode_dir)['url'],
                 'is_authorization'  => 1
-            ]);
+            ];
+            $service->setWechatConfig($this->site_id, $config_data);
+            $result['authorizer_info']['qrcode_url'] = $config_data['qr_code'];
             $service->setWechatAuthorizationInfo($this->site_id, $result);
 
             // 授权成功之后调用
@@ -152,5 +157,15 @@ class OplatformService extends BaseAdminService
         foreach (WxOplatform::WECHAT_MUST_AUTHORITY as $k => $v) {
             if (!in_array($k, $authority)) throw new CommonException("请将{$v}的权限授权给我们");
         }
+    }
+
+    public function getAuthRecord($data) {
+        $condition = [
+            ['config_key', 'in', [ ConfigKeyDict::WECHAT_AUTHORIZATION_INFO, ConfigKeyDict::WEAPP_AUTHORIZATION_INFO ] ]
+        ];
+        $search_model = (new SysConfig())->field('*')->where($condition)->with(['site' => function($query){
+            $query->field('site_id,site_name');
+        }])->order('update_time desc');
+        return $this->pageQuery($search_model);
     }
 }

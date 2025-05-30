@@ -47,32 +47,4 @@ class BackupService extends UpgradeService
 
         return true;
     }
-
-    /**
-     * 备份数据库
-     * @return void
-     */
-    public function backupSql()
-    {
-        $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
-        // 创建目录
-        dir_mkdir($backup_dir);
-
-        $db = new DbBackup($backup_dir, 1024 * 1024 * 2);
-
-        $prefix = config('database.connections.' . config('database.default'))[ 'prefix' ];
-
-        // 不需要备份的表
-        $not_need_backup = [
-            "{$prefix}sys_schedule_log",
-            "{$prefix}sys_user_log",
-            "{$prefix}jobs",
-            "{$prefix}jobs_failed",
-            "{$prefix}sys_upgrade_records",
-            "{$prefix}sys_backup_records"
-        ];
-        $db->setExcludeTables($not_need_backup)->backupDatabaseSegment();
-
-        return true;
-    }
 }

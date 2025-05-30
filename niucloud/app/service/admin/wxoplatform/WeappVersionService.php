@@ -86,6 +86,7 @@ class WeappVersionService extends BaseAdminService
             'version_no' => $version_no,
             'create_time' => time(),
             'task_key' => $upload_res['key'],
+            'template_id' => ''
         ]);
 
         // 获取小程序版本提交结果
@@ -179,8 +180,6 @@ class WeappVersionService extends BaseAdminService
                             if ($template_item['user_version'] == $version['user_version']) {
                                 (new WxOplatfromWeappVersion())->update(['template_id' => $template_item['template_id'] ], ['task_key' => $task_key]);
 
-                                (new self())->getSiteGroupAuthWeapp($version['site_group_id']);
-
                                 // 删除之前的模板
                                 $prev = (new WxOplatfromWeappVersion())->where([ [ 'site_group_id', '=', $version['site_group_id'] ], ['id', '<', $version['id'] ] ])->order('id desc')->findOrEmpty();
                                 if (!$prev->isEmpty() && !empty($prev['template_id'])) {
@@ -201,11 +200,14 @@ class WeappVersionService extends BaseAdminService
     }
 
     /**
-     * 查询站点下是否存在已授权的小程序
+     * 同步站点套餐中已授权的小程序
      * @param $site_group_id
      * @return void
      */
-    private function getSiteGroupAuthWeapp($site_group_id) {
+    public function syncSiteGroupAuthWeapp($site_group_id) {
+        $version = (new WxOplatfromWeappVersion())->where([ ['site_group_id', '=', $site_group_id], ['template_id', '<>', ''] ])->order('id desc')->findOrEmpty();
+        if ($version->isEmpty()) throw new CommonException('NOT_YET_PRESENT_TEMPLATE_LIBRARY');
+
         $site_ids = (new Site())->where([ ['group_id', '=', $site_group_id] ])->column('site_id');
         if (!empty($site_ids)) {
             $auth_site_ids = (new SysConfig())->where([ ['site_id', 'in', $site_ids ], ['config_key', '=', 'weapp_authorization_info'] ])->column('site_id');
@@ -360,4 +362,26 @@ class WeappVersionService extends BaseAdminService
         ]);
         return true;
     }
+
+    /**
+     * 撤销审核
+     * @return void
+     */
+    public function undoAudit($id) {
+        $model = new WeappVersion();
+        $version = $model->where([ ['site_id', '=', $this->site_id], ['id', '=', $id] ])->findOrEmpty();
+        if ($version->isEmpty()) throw new CommonException('WEAPP_VERSION_NOT_EXIST');
+        if ($version->status != CloudDict::APPLET_AUDITING) throw new CommonException('NOT_ALLOWED_CANCEL_AUDIT');
+
+        $result = CoreOplatformService::undocodeAudit($this->site_id);
+        if (isset($result['errcode']) && $result['errcode'] != 0) throw new CommonException($result['errmsg']);
+
+        $update_data = [
+            'status' => CloudDict::APPLET_AUDIT_UNDO,
+            'update_time' => time()
+        ];
+        (new WeappVersion())->update($update_data, [ 'id' => $id ]);
+        return true;
+    }
+
 }

@@ -58,4 +58,24 @@ class WeappVersion extends BaseAdminController
         (new WeappVersionService())->siteWeappCommit();
         return success();
     }
+
+    public function undoAudit() {
+        $data = $this->request->params([
+            ['id', ""]
+        ]);
+        (new WeappVersionService())->undoAudit($data['id']);
+        return success();
+    }
+
+    /**
+     * 同步套餐下站点小程序
+     * @return Response
+     */
+    public function syncSiteWeapp() {
+        $data = $this->request->params([
+            ['site_group_id', 0]
+        ]);
+        (new WeappVersionService())->syncSiteGroupAuthWeapp($data['site_group_id']);
+        return success();
+    }
 }

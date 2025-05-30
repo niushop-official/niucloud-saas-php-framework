@@ -11,6 +11,7 @@
 
 namespace app\model\sys;
 
+use app\model\site\Site;
 use core\base\BaseModel;
 
 /**
@@ -42,4 +43,7 @@ class SysConfig extends BaseModel
     // 设置JSON数据返回数组
     protected $jsonAssoc = true;
 
+    public function site() {
+        return $this->hasOne(Site::class, 'site_id', 'site_id');
+    }
 }

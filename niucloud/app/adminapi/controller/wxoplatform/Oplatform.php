@@ -37,4 +37,11 @@ class Oplatform extends BaseAdminController
         ]);
         return success((new OplatformService())->authorization($data));
     }
+
+    public function getAuthRecord() {
+        $data = $this->request->params([
+            ['name', ''],
+        ]);
+        return success((new OplatformService())->getAuthRecord($data));
+    }
 }

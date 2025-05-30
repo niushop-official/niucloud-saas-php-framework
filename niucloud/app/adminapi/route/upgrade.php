@@ -30,18 +30,21 @@ Route::group('', function () {
     Route::post('upgrade/clear', 'addon.Upgrade/clearUpgradeTask');
 
     // 升级环境检测
-    Route::get('upgrade/check/[:addon]', 'addon.Upgrade/upgradePreCheck');
+    Route::get('upgrade/check/[:addon]', 'addon.Upgrade/upgradePreCheck')->pattern(['addon' => '[\w|\,]+']);
 
     // 升级
-    Route::post('upgrade/[:addon]', 'addon.Upgrade/upgrade');
+    Route::post('upgrade/[:addon]', 'addon.Upgrade/upgrade')->pattern(['addon' => '[\w|\,]+']);
 
     // 获取升级内容
-    Route::get('upgrade/[:addon]', 'addon.Upgrade/getUpgradeContent');
+    Route::get('upgrade/[:addon]', 'addon.Upgrade/getUpgradeContent')->pattern(['addon' => '[\w|\,]+']);
 
     Route::post('upgrade/operate/:operate', 'addon.Upgrade/operate');
 
     // 升级记录分页列表
     Route::get('upgrade/records', 'addon.Upgrade/getRecords');
+
+    // 删除升级记录
+    Route::delete('upgrade/records', 'addon.Upgrade/delRecords');
 
     // 备份记录分页列表
     Route::get('backup/records', 'addon.Backup/getRecords');

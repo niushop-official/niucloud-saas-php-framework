@@ -25,7 +25,11 @@ class Upgrade extends BaseAdminController
      */
     public function upgrade($addon = '')
     {
-        return success(data: ( new UpgradeService() )->upgrade($addon));
+        $data = $this->request->params([
+            ['is_need_backup', true],
+            ['is_need_cloudbuild', true],
+        ]);
+        return success(data: ( new UpgradeService() )->upgrade($addon, $data));
     }
 
     /**
@@ -73,7 +77,7 @@ class Upgrade extends BaseAdminController
      */
     public function clearUpgradeTask()
     {
-        return success(data: ( new UpgradeService() )->clearUpgradeTask());
+        return success(data: ( new UpgradeService() )->clearUpgradeTask(0, 1));
     }
 
     public function operate($operate) {
@@ -92,4 +96,11 @@ class Upgrade extends BaseAdminController
         return success(( new UpgradeRecordsService() )->getPage($data));
     }
 
+    public function delRecords() {
+        $data = $this->request->params([
+            [ 'ids', '' ],
+        ]);
+        ( new UpgradeRecordsService() )->del($data['ids']);
+        return success('DELETE_SUCCESS');
+    }
 }

@@ -284,7 +284,7 @@ class BackupRecordsService extends BaseAdminService
 
         $res = [ 'code' => 1, 'data' => [], 'msg' => '' ];
         $cache_data = Cache::get($this->cache_restore_key);
-        if (!empty($cache_data)) {
+        if (!empty($cache_data) && !empty($cache_data[ 'key' ])) {
             $key = $cache_data[ 'key' ];
         } else {
             $key = uniqid();
@@ -330,19 +330,26 @@ class BackupRecordsService extends BaseAdminService
                 $this->backupCode($key);
 
             } elseif ($data[ 'task' ] == 'backupSql') {
-
-                //备份数据库
-                $res[ 'data' ] = [
-                    'content' => '备份数据库',
-                    'task' => 'restoreCode'
-                ];
+                $backup_result = $this->backupSql($key);
+                if ($backup_result === true) {
+                    //备份数据库
+                    $res[ 'data' ] = [
+                        'content' => '数据库备份完成',
+                        'task' => 'restoreCode'
+                    ];
+                } else {
+                    $res[ 'data' ] = [
+                        'content' => '',
+                        'task' => 'backupSql'
+                    ];
+                    if ($backup_result % 5 == 0) {
+                        $res[ 'data' ][ 'content' ] = $backup_result == 0 ? '数据库开始备份' : '数据库备份中已备份'. $backup_result . '%';
+                    }
+                }
 
                 $temp = Cache::get($this->cache_restore_key);
                 $temp[ 'data' ][] = $res[ 'data' ];
                 Cache::set($this->cache_restore_key, $temp);
-
-                $this->backupSql($key);
-
             } elseif ($data[ 'task' ] == 'restoreCode') {
 
                 $res[ 'data' ] = [
@@ -359,19 +366,29 @@ class BackupRecordsService extends BaseAdminService
                 dir_copy($info[ 'backup_code_dir' ], rtrim($root_path, DIRECTORY_SEPARATOR));
 
             } elseif ($data[ 'task' ] == 'restoreSql') {
+                // 恢复数据库备份
+                $db = new DbBackup($info[ 'backup_sql_dir' ]);
+                $restore_result = $db->restoreDatabase();
 
-                $res[ 'data' ] = [
-                    'content' => '恢复数据库备份',
-                    'task' => 'restoreData'
-                ];
+                if ($restore_result === true) {
+                    $res[ 'data' ] = [
+                        'content' => '数据库恢复完成',
+                        'task' => 'restoreData'
+                    ];
+                } else {
+                    $res[ 'data' ] = [
+                        'content' => '',
+                        'task' => 'restoreSql'
+                    ];
+                    $restore_progress = $db->getRestoreProgress();
+                    if ($restore_progress % 5 == 0) {
+                        $res[ 'data' ]['content'] = $restore_progress == 0 ? '数据库开始恢复' : '数据库恢复中已恢复'. $restore_progress . '%';
+                    }
+                }
 
                 $temp = Cache::get($this->cache_restore_key);
                 $temp[ 'data' ][] = $res[ 'data' ];
                 Cache::set($this->cache_restore_key, $temp);
-
-                // 恢复数据库备份
-                $db = new DbBackup($info[ 'backup_sql_dir' ]);
-                $db->restoreDatabase();
             } elseif ($data[ 'task' ] == 'restoreData') {
 
                 $res[ 'data' ] = [
@@ -489,18 +506,23 @@ class BackupRecordsService extends BaseAdminService
                 $this->backupCode($key);
 
             } elseif ($data[ 'task' ] == 'backupSql') {
+                $backup_result = $this->backupSql($key);
+                if ($backup_result === true || $backup_result == 100) {
+                    //备份数据库
+                    $res[ 'data' ] = [
+                        'content' => '数据库备份完成',
+                        'task' => 'backComplete'
+                    ];
+                } else {
+                    $res[ 'data' ] = [
+                        'content' => $backup_result == 0 ? '数据库开始备份' : '数据库备份已备份'. $backup_result . '%',
+                        'task' => 'backupSql'
+                    ];
+                }
 
-                //备份数据库
-                $res[ 'data' ] = [
-                    'content' => '备份数据库',
-                    'task' => 'backComplete'
-                ];
-                $temp = Cache::get($this->cache_key);
+                $temp = Cache::get($this->cache_restore_key);
                 $temp[ 'data' ][] = $res[ 'data' ];
-                Cache::set($this->cache_key, $temp);
-
-                $this->backupSql($key);
-
+                Cache::set($this->cache_restore_key, $temp);
             } elseif ($data[ 'task' ] == 'backComplete') {
 
                 $res[ 'data' ] = [
@@ -629,8 +651,6 @@ class BackupRecordsService extends BaseAdminService
         // 创建目录
         dir_mkdir($backup_dir);
 
-        $db = new DbBackup($backup_dir, 1024 * 1024 * 2);
-
         $prefix = config('database.connections.' . config('database.default'))[ 'prefix' ];
 
         // 不需要备份的表
@@ -642,9 +662,13 @@ class BackupRecordsService extends BaseAdminService
             "{$prefix}sys_upgrade_records",
             "{$prefix}sys_backup_records"
         ];
-        $db->setExcludeTables($not_need_backup)->backupDatabaseSegment();
 
-        return true;
+        $db = new DbBackup($backup_dir, 1024 * 1024 * 2, $not_need_backup, key: $backup_key);
+
+        $result = $db->backupDatabaseSegment();
+        if ($result === true) return true;
+
+        return $db->getBackupProgress();
     }
 
 }

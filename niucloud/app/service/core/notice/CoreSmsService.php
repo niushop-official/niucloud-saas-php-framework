@@ -11,6 +11,7 @@
 
 namespace app\service\core\notice;
 
+use app\dict\sys\ConfigKeyDict;
 use app\dict\sys\SmsDict;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseCoreService;
@@ -91,7 +92,7 @@ class CoreSmsService extends BaseCoreService
      */
     public function getDefaultSmsConfig(int $site_id)
     {
-        $info = (new CoreConfigService())->getConfig($site_id, 'SMS')['value'] ?? [];
+        $info = (new CoreConfigService())->getConfig($site_id, ConfigKeyDict::SMS)['value'] ?? [];
         if (empty($info))
             throw new NoticeException('NOTICE_SMS_NOT_OPEN');
 

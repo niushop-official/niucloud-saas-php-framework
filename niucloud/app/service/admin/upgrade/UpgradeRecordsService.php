@@ -37,12 +37,16 @@ class UpgradeRecordsService extends BaseAdminService
     {
         $data[ 'create_time' ] = time();
         $res = $this->model->create($data);
+
         // 关联备份记录
-        ( new BackupRecordsService() )->add([
-            'version' => $data[ 'current_version' ],
-            'backup_key' => $data[ 'upgrade_key' ],
-            'content' => '自动备份'
-        ]);
+        $is_need_backup = $data['is_need_backup'] ?? true;
+        if ($is_need_backup) {
+            ( new BackupRecordsService() )->add([
+                'version' => $data[ 'current_version' ],
+                'backup_key' => $data[ 'upgrade_key' ],
+                'content' => '自动备份'
+            ]);
+        }
         return $res->id;
     }
 
@@ -80,9 +84,9 @@ class UpgradeRecordsService extends BaseAdminService
      * @param $fail_reason
      * @return void
      */
-    public function failed($upgrade_key)
+    public function failed($upgrade_key, $fail_reason = [])
     {
-        $this->model->where([ [ 'upgrade_key', '=', $upgrade_key ] ])->delete();
+        $this->model->where([ [ 'upgrade_key', '=', $upgrade_key ] ])->update(['status' => UpgradeDict::STATUS_FAIL, 'fail_reason' => $fail_reason ]);
         ( new BackupRecordsService() )->failed($upgrade_key);
     }
 
@@ -104,13 +108,21 @@ class UpgradeRecordsService extends BaseAdminService
      */
     public function getPage(array $where = [])
     {
-        $field = 'id, upgrade_key, app_key, name, content, prev_version, current_version, complete_time';
+        $field = 'id, upgrade_key, app_key, name, content, prev_version, current_version, complete_time, create_time, status, fail_reason';
         $order = "id desc";
         $search_model = $this->model->where([
-            [ 'status', '=', UpgradeDict::STATUS_COMPLETE ],
+//            [ 'status', '=', UpgradeDict::STATUS_COMPLETE ],
             [ 'name|content|current_version', 'like', '%' . $where[ 'name' ] . '%' ]
-        ])->field($field)->order($order);
+        ])->field($field)->order($order)->append(['status_name']);
         return $this->pageQuery($search_model);
     }
 
+    /**
+     * 刪除升级记录
+     * @param $ids
+     * @return void
+     */
+    public function del($ids) {
+        $this->model->where([['id', 'in', $ids]])->delete();
+    }
 }
