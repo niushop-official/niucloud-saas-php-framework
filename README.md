@@ -21,7 +21,6 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 - 手机端设计开发了自定义装修，同时提供了基础的开发组件，方便开发者设计开发手机自定义页面装修的开发需求
 ```
 ### NIUCLOUD 框架截图
-![输入图片说明](https://niucloud.com/_nuxt/indexpt.89aeebbc.png)
 ![输入图片说明](https://media.niucloud.com/17491216845a59059cf9130b19922e1114917a7185_aliyun.png)
 ![输入图片说明](https://media.niucloud.com/17040665085ed007bd6daf220cc1ecd4e301c6008f_aliyun.png)
 ![输入图片说明](https://media.niucloud.com/1704066609bad8bba9c5bfe5a243f5ebcec54866af_aliyun.png)
