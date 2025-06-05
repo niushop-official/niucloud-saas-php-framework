@@ -26,7 +26,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 ![输入图片说明](https://media.niucloud.com/17040665085ed007bd6daf220cc1ecd4e301c6008f_aliyun.png)
 ![输入图片说明](https://media.niucloud.com/1704066609bad8bba9c5bfe5a243f5ebcec54866af_aliyun.png)
 ![输入图片说明](https://media.niucloud.com/17491211152c6161fb1b82362b07b3d68351934804_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1704067302721c5360c622b4934fae659ee1eb0987_aliyun.png)
+![输入图片说明](https://media.niucloud.com/17491214337ad4a1b02c673c1e7a223da2835213f2_aliyun.png)
 
 ### 商城插件  :point_right:   SHOP
 ![输入图片说明](https://media.niucloud.com/1704067355ecae8e7b09c482e8c3a5ebc1a4cd0fcc_aliyun.png)
