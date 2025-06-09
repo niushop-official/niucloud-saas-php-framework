@@ -2,7 +2,7 @@
 ### NIUCLOUD-ADMIN 是什么？
 niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能架构全部精心设计！代码干净整洁！低耦合，高质量！！！前后端API接口完全分离 :raised_hands: ！！！前端采用最新技术 **Vite+TypeScript+Vue3+ElementPlus** ，后台采用PHP8、MYSQL8、THINKPHP8 全部最新技术栈，内置Workman高性能消息队列，计划任务处理，完全兼容容器路由运行技术。 采用多租户多站点多应用多插件任意组合使用的SAAS架构设计，内置代码生成器，插件生成器，一键云编译、一键云部署，集成用户权限、表单设计、云存储、短信发送、素材中心、微信及公众号、Api模块一系列开箱即用功能，是一款快速搭建开发企业级应用的软件系统。源码100%开源无加密！框架采用MIT协议，终身免费，商用免费！
 
-插件市场有第三方开发者开发各种插件 http://www.niucloud.com/app  :clap:  :clap:  :clap: 
+目前已经有 NIUCLOUD  **SHOP商城** + **分销** + **VIPCard** + **上门服务** 插件。 更多应用插件正在陆续上线中... :clap:  :clap:  :clap: 
 
 请到官方网站了解更多 http://www.niucloud.com
 
@@ -21,12 +21,12 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 - 手机端设计开发了自定义装修，同时提供了基础的开发组件，方便开发者设计开发手机自定义页面装修的开发需求
 ```
 ### NIUCLOUD 框架截图
-![输入图片说明](https://media.niucloud.com/17491216845a59059cf9130b19922e1114917a7185_aliyun.png)
+![输入图片说明](https://media.niucloud.com/1704066345d7742c4c0a1a941e836e8d633f209396_aliyun.jpg)
+![输入图片说明](https://media.niucloud.com/17040664219c6ce47b234eac495c3c4aa6e83920b6_aliyun.png)
 ![输入图片说明](https://media.niucloud.com/17040665085ed007bd6daf220cc1ecd4e301c6008f_aliyun.png)
 ![输入图片说明](https://media.niucloud.com/1704066609bad8bba9c5bfe5a243f5ebcec54866af_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1749121794d658746d3e50fd1192d2b87479c105fb_aliyun.png)
-![输入图片说明](https://media.niucloud.com/17491211152c6161fb1b82362b07b3d68351934804_aliyun.png)
-![输入图片说明](https://media.niucloud.com/17491214337ad4a1b02c673c1e7a223da2835213f2_aliyun.png)
+![输入图片说明](https://media.niucloud.com/170406669739221755c392e165470c486d0025ad17_aliyun.png)
+![输入图片说明](https://media.niucloud.com/1704067302721c5360c622b4934fae659ee1eb0987_aliyun.png)
 
 ### 商城插件  :point_right:   SHOP
 ![输入图片说明](https://media.niucloud.com/1704067355ecae8e7b09c482e8c3a5ebc1a4cd0fcc_aliyun.png)
@@ -119,5 +119,4 @@ All rights reserved。
 
 杭州数字云动科技有限公司 
 杭州牛之云科技有限公司 
-
 提供技术支持
