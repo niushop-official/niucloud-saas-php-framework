@@ -4,7 +4,7 @@
     </div>
 
     <el-dialog v-model="captchaDialog" :title="t('captchaTitle')" width="350px" :append-to-body="true" :align-center="true">
-        <el-form :model="formData" ref="formRef" :rules="formRules">
+        <el-form :model="formData" ref="formRef" :rules="formRules"  @submit.native.prevent>
             <el-form-item prop="captcha_code" style="margin-bottom: 0;">
                 <el-input v-model="formData.captcha_code" :placeholder="t('captchaPlaceholder')">
                     <template #suffix>
