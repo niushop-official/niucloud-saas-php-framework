@@ -11,19 +11,21 @@
 
 namespace app\adminapi\controller\notice;
 
-use app\dict\sys\SmsDict;
-use app\service\admin\notice\NoticeService;
 use app\service\admin\notice\NiuSmsService;
-use app\service\admin\notice\SmsService;
-use app\service\core\notice\CoreNiuSmsService;
 use core\base\BaseAdminController;
-use core\exception\AdminException;
 use think\Response;
 
+/**
+ * 牛云短信管理
+ * Class NiuSms
+ * @description 牛云短信管理
+ * @package app\adminapi\controller\notice
+ */
 class NiuSms extends BaseAdminController
 {
     /**
      * 启用牛云短信
+     * @description 启用牛云短信
      * @return Response
      */
     public function enable()
@@ -35,9 +37,9 @@ class NiuSms extends BaseAdminController
         return success("SUCCESS");
     }
 
-
     /**
      * 获取基础信息
+     * @description 获取基础信息
      * @return Response
      */
     public function getConfig()
@@ -45,6 +47,11 @@ class NiuSms extends BaseAdminController
         return success((new NiuSmsService())->getConfig());
     }
 
+    /**
+     * 获取短信套餐列表
+     * @description 获取短信套餐列表
+     * @return Response
+     */
     public function getSmsPackageList()
     {
         $params = $this->request->params([
@@ -61,7 +68,11 @@ class NiuSms extends BaseAdminController
         return success($list);
     }
 
-    /*******牛云*******/
+    /**
+     * 发送短信验证码
+     * @description 发送短信验证码
+     * @return Response
+     */
     public function sendMobileCode()
     {
         $params = $this->request->params([
@@ -75,6 +86,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 获取图形验证码
+     * @description 获取图形验证码
      * @return Response
      */
     public function captcha()
@@ -85,6 +97,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 注册牛云短信子账号
+     * @description 注册牛云短信子账号
      * @return Response
      */
     public function registerAccount()
@@ -97,6 +110,19 @@ class NiuSms extends BaseAdminController
             ['remark', ""],
             ['key', ""],
             ['code', ""],
+            ['signature', ""],
+
+            /*以下为实名信息*/
+            ['contentExample', ""],
+            ['companyName', ""],
+            ['creditCode', ""],
+            ['legalPerson', ""],
+            ['principalName', ""],
+            ['principalIdCard', ""],
+            ['principalMobile', ""],
+            ['signSource', ""],
+            ['signType', ""],
+            ['imgUrl', ""],
         ]);
         $res = (new NiuSmsService())->registerAccount($data);
         return success($res);
@@ -104,6 +130,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 登录牛云短信子账号
+     * @description 登录牛云短信子账号
      * @return Response
      */
     public function loginAccount()
@@ -118,22 +145,24 @@ class NiuSms extends BaseAdminController
 
     /**
      * 获取短信发送列表
+     * @description 获取短信发送列表
      * @param $username
      * @return Response
      */
     public function accountSendList($username)
     {
         $params = $this->request->params([
-            ['content',''],
-            ['mobile',''],
-            ['smsStatus','']
+            ['content', ''],
+            ['mobile', ''],
+            ['smsStatus', '']
         ]);
-        $data = (new NiuSmsService())->accountSendList($username,$params);
+        $data = (new NiuSmsService())->accountSendList($username, $params);
         return success($data);
     }
 
     /**
      * 获取子账户信息
+     * @description 获取子账户信息
      * @param $username
      * @return Response
      */
@@ -145,6 +174,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 修改子账户信息
+     * @description 修改子账户信息
      * @param $username
      * @return Response
      */
@@ -163,6 +193,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 重置密码
+     * @description 重置密码
      * @param $username
      * @return Response
      */
@@ -179,6 +210,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 忘记密码
+     * @description 忘记密码
      * @param $username
      * @return Response
      */
@@ -195,6 +227,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 签名列表
+     * @description 签名列表
      * @param $username
      * @return Response
      */
@@ -206,6 +239,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 签名信息
+     * @description 签名信息
      * @param $username
      * @return Response
      */
@@ -216,6 +250,11 @@ class NiuSms extends BaseAdminController
         return success($data);
     }
 
+    /**
+     * 签名创建、报备需要的配置
+     * @description 签名创建、报备需要的配置
+     * @return Response
+     */
     public function signCreateConfig()
     {
         return success((new NiuSmsService())->signCreateConfig());
@@ -223,6 +262,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 签名创建、报备
+     * @description 签名创建、报备
      * @param $username
      * @return Response
      */
@@ -236,6 +276,7 @@ class NiuSms extends BaseAdminController
             ['legalPerson', ""],
             ['principalName', ""],
             ['principalIdCard', ""],
+            ['principalMobile', ""],
             ['signSource', ""],
             ['signType', ""],
             ['imgUrl', ""],
@@ -245,6 +286,12 @@ class NiuSms extends BaseAdminController
         return success("SUCCESS");
     }
 
+    /**
+     * 签名删除
+     * @description 签名删除
+     * @param $username
+     * @return Response
+     */
     public function signDelete($username)
     {
         $params = $this->request->params([
@@ -256,6 +303,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 同步模版状态
+     * @description 同步模版状态
      * @param $sms_type
      * @param $username
      * @return Response
@@ -268,6 +316,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 模版列表
+     * @description 模版列表
      * @param $sms_type
      * @param $username
      * @return Response
@@ -280,6 +329,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 模版信息
+     * @description 模版信息
      * @param $sms_type
      * @param $username
      * @return Response
@@ -293,6 +343,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 创建模版需要的配置
+     * @description 创建模版需要的配置
      * @return Response
      */
     public function templateCreateConfig()
@@ -302,6 +353,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 创建模版
+     * @description 创建模版
      * @param $sms_type
      * @param $username
      * @return Response
@@ -319,7 +371,21 @@ class NiuSms extends BaseAdminController
     }
 
     /**
+     * 清除模版
+     * @description 清除模版
+     * @param $username
+     * @param $template_id
+     * @return Response
+     */
+    public function templateDelete($username, $template_id)
+    {
+        (new NiuSmsService())->templateDelete($username, $template_id);
+        return success('DELETE_SUCCESS');
+    }
+
+    /**
      * 创建订单
+     * @description 创建订单
      * @param $username
      * @return Response
      */
@@ -335,6 +401,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 订单计算
+     * @description 订单计算
      * @param $username
      * @return Response
      */
@@ -345,11 +412,11 @@ class NiuSms extends BaseAdminController
         ]);
         $data = (new NiuSmsService())->calculate($username, $params['package_id']);
         return success($data);
-
     }
 
     /**
      * 获取支付信息
+     * @description 获取支付信息
      * @param $username
      * @return Response
      */
@@ -363,7 +430,8 @@ class NiuSms extends BaseAdminController
     }
 
     /**
-     * 充值、订单列表
+     * 充值订单列表
+     * @description 充值订单列表
      * @param $username
      * @return Response
      */
@@ -375,12 +443,13 @@ class NiuSms extends BaseAdminController
             ['create_time_start', ''],
             ['create_time_end', ''],
         ]);
-        $data = (new NiuSmsService())->orderList($username,$params);
+        $data = (new NiuSmsService())->orderList($username, $params);
         return success($data);
     }
 
     /**
      * 订单详情
+     * @description 订单详情
      * @param $username
      * @return Response
      */
@@ -395,6 +464,7 @@ class NiuSms extends BaseAdminController
 
     /**
      * 订单状态
+     * @description 订单状态
      * @param $username
      * @return Response
      */

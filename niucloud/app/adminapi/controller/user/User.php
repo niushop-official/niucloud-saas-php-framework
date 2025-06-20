@@ -16,8 +16,19 @@ use app\service\admin\user\UserService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 用户管理
+ * Class User
+ * @description 用户管理
+ * @package app\adminapi\controller\user
+ */
 class User extends BaseAdminController
 {
+    /**
+     * 用户列表
+     * @description 用户列表
+     * @return Response
+     */
     public function lists()
     {
         $data = $this->request->params([
@@ -32,6 +43,7 @@ class User extends BaseAdminController
 
     /**
      * 用户详情
+     * @description 用户详情
      * @param $uid
      * @return Response
      */
@@ -40,6 +52,11 @@ class User extends BaseAdminController
         return success((new UserService())->getInfo($uid));
     }
 
+    /**
+     * 获取用户列表
+     * @description 获取用户列表
+     * @return Response
+     */
     public function getUserAll()
     {
         $data = $this->request->params([
@@ -51,6 +68,11 @@ class User extends BaseAdminController
         return success($list);
     }
 
+    /**
+     * 获取用户下拉框
+     * @description 获取用户下拉框
+     * @return Response
+     */
     public function getUserSelect()
     {
         $data = $this->request->params([
@@ -60,6 +82,12 @@ class User extends BaseAdminController
         return success($list);
     }
 
+    /**
+     * 检查用户是否存在
+     * @description 检查用户是否存在
+     * @return Response
+     * @throws \think\db\exception\DbException
+     */
     public function checkUserIsExist() {
         $data = $this->request->params([
             ['username', ''],
@@ -70,6 +98,7 @@ class User extends BaseAdminController
 
     /**
      * 添加用户
+     * @description 添加用户
      * @return Response
      * @throws \Exception
      */
@@ -88,6 +117,7 @@ class User extends BaseAdminController
 
     /**
      * 编辑用户
+     * @description 编辑用户
      * @return Response
      * @throws \Exception
      */
@@ -103,6 +133,7 @@ class User extends BaseAdminController
 
     /**
      * 删除用户
+     * @description 删除用户
      * @param $uid
      * @return Response
      */
@@ -113,6 +144,7 @@ class User extends BaseAdminController
 
     /**
      * 获取用户站点创建限制
+     * @description 获取用户站点创建限制
      * @param $uid
      * @return Response
      */
@@ -122,7 +154,8 @@ class User extends BaseAdminController
 
     /**
      * 获取用户站点创建限制
-     * @param $uid
+     * @description 获取用户站点创建限制
+     * @param $id
      * @return Response
      */
     public function getUserCreateSiteLimitInfo($id){
@@ -131,6 +164,7 @@ class User extends BaseAdminController
 
     /**
      * 添加用户站点创建限制
+     * @description 添加用户站点创建限制
      * @param $uid
      * @return Response
      */
@@ -147,7 +181,8 @@ class User extends BaseAdminController
 
     /**
      * 编辑用户站点创建限制
-     * @param $uid
+     * @description 编辑用户站点创建限制
+     * @param $id
      * @return Response
      */
     public function editUserCreateSiteLimit($id){
@@ -161,7 +196,8 @@ class User extends BaseAdminController
 
     /**
      * 删除用户站点创建限制
-     * @param $uid
+     * @description 删除用户站点创建限制
+     * @param $id
      * @return Response
      */
     public function delUserCreateSiteLimit($id){

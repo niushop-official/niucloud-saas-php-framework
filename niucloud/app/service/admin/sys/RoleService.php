@@ -136,6 +136,19 @@ class RoleService extends BaseAdminService
     }
 
     /**
+     * 修改状态
+     * @param $data
+     * @return Label
+     */
+    public function modifyStatus($data)
+    {
+        return $this->model->where([
+            [ 'role_id', '=', $data[ 'role_id' ] ],
+            [ 'site_id', '=', $this->site_id ]
+        ])->update([ 'status' => $data[ 'status' ] ]);
+    }
+
+    /**
      * 获取模型对象
      * @param int $site_id
      * @param int $role_id

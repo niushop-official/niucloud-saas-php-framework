@@ -9,22 +9,20 @@
 // | Author: Niucloud Team
 // +----------------------------------------------------------------------
 
-namespace app\dict\sys;
-
 use core\dict\DictLoader;
 
-/**
- * 获取图标
- * Class IconDict
- * @package app\dict\sys
- */
-class IconDict
-{
+$system = [
+    //默认驱动
+    'default' => 'dada',
+    'drivers' => [
+        //达达
+        'dada' => [
+            'driver' => 'addon\shop\app\service\core\delivery\third_delivery\Dada',  //反射类的名字
+            'app_key' => '',
+            'secret_key' => '',
+            'sign' => '',
+        ],
+    ]
+];
 
-    public static function getIcon($params = [])
-    {
-        $system_pages = [];
-        return (new DictLoader("Icon"))->load($system_pages);
-    }
-
-}
+return (new DictLoader("Config"))->load(['data' => $system, 'name' => 'third_delivery']);

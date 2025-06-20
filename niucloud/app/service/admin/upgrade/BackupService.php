@@ -11,8 +11,6 @@
 
 namespace app\service\admin\upgrade;
 
-use core\util\DbBackup;
-use think\facade\Db;
 
 /**
  * 框架及插件升级备份

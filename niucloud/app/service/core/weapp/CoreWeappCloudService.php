@@ -146,7 +146,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
 
         $this->handlePageCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
 
-        $this->handleTabbar($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
+//        $this->handleTabbar($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
 
         if (!empty($diff_addon)) {
             foreach ($diff_addon as $addon) {
@@ -202,7 +202,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
     }
 
     /**
-     * 处理底部导航
+     * 处理底部导航【暂时停止调用，存在小程序兼容性问题】
      * @param $compile_path
      * @param $addon_arr
      * @return void

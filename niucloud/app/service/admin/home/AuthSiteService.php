@@ -12,8 +12,10 @@
 namespace app\service\admin\home;
 
 
+use app\dict\addon\AddonDict;
 use app\dict\sys\AppTypeDict;
 use app\dict\sys\MenuTypeDict;
+use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
 use app\model\sys\SysMenu;
@@ -161,6 +163,38 @@ class AuthSiteService extends BaseAdminService
             }])->select()->toArray();
         }
     }
+
+    /**
+     * 获取可选择的店铺应用列表
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public function getSiteGroupAppList() {
+        if (AuthService::isSuperAdmin()) {
+            $site_group = (new SiteGroup())->field('app')->select()->toArray();
+        } else {
+            $user_create_limit = (new UserCreateSiteLimit())->where([ ['uid', '=', $this->uid] ])->with(['site_group' => function($query) {
+                $query->field('group_id,app');
+            }])->select()->toArray();
+            $site_group = [];
+            foreach ($user_create_limit as $value){
+                $site_group[] = $value[ 'site_group' ];
+            }
+        }
+        $site_group_app_list = array_unique(array_merge(...array_column($site_group,'app')));
+
+        $addon_list = (new Addon())->where([ ['status', '=', AddonDict::ON], ['type', '=', AddonDict::APP], ['key', 'in', $site_group_app_list] ])->append(['status_name'])->column('title, icon, key, desc, status, type, support_app', 'key');
+        if (!empty($addon_list)) {
+            foreach ($addon_list as &$data) {
+                $data[ 'icon' ] = is_file($data[ 'icon' ]) ? image_to_base64($data[ 'icon' ]) : '';
+            }
+        }
+        return $addon_list;
+    }
+
+
 
     /**
      * 创建站点

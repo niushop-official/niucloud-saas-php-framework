@@ -19,6 +19,7 @@ class Server extends BaseAdminController
 {
     /**
      * 微信开放平台授权事件接收
+     * @description 微信开放平台授权事件接收
      * @return Response
      */
     public function server()
@@ -32,6 +33,7 @@ class Server extends BaseAdminController
 
     /**
      * 微信开放平台消息与事件接收
+     * @description 微信开放平台消息与事件接收
      * @param string $appid
      * @return Response
      */

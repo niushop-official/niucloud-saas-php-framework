@@ -19,11 +19,18 @@ use app\service\admin\sys\MenuService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 菜单管理
+ * Class Menu
+ * @description 菜单管理
+ * @package app\adminapi\controller\sys
+ */
 class Menu extends BaseAdminController
 {
 
     /**
      * 菜单列表(todo  限制只有平台端可以访问)
+     * @description 菜单列表
      * @return Response
      */
     public function lists($app_type)
@@ -33,6 +40,7 @@ class Menu extends BaseAdminController
 
     /**
      * 菜单信息
+     * @description 菜单信息
      * @param $menu_key
      * @return Response
      */
@@ -43,6 +51,7 @@ class Menu extends BaseAdminController
 
     /**
      * 新增菜单接口
+     * @description 新增菜单
      * @return Response
      */
     public function add()
@@ -71,6 +80,7 @@ class Menu extends BaseAdminController
 
     /**
      * 菜单或接口更新
+     * @description 菜单或接口更新
      */
     public function edit($app_type, $menu_key)
     {
@@ -94,9 +104,9 @@ class Menu extends BaseAdminController
         return success('EDIT_SUCCESS');
     }
 
-
     /**
      * 获取菜单类型静态资源
+     * @description 获取菜单类型静态资源
      * @return Response
      */
     public function getMenuType()
@@ -106,6 +116,7 @@ class Menu extends BaseAdminController
 
     /**
      * 获取请求方式
+     * @description 获取请求方式
      * @return Response
      */
     public function getMethodType()
@@ -115,6 +126,7 @@ class Menu extends BaseAdminController
 
     /**
      * 删除菜单
+     * @description 删除菜单
      * @param $menu_key
      * @return Response
      */
@@ -124,6 +136,11 @@ class Menu extends BaseAdminController
         return success('DELETE_SUCCESS');
     }
 
+    /**
+     * 刷新菜单
+     * @description 刷新菜单
+     * @return Response
+     */
     public function refreshMenu()
     {
         ( new InstallSystemService() )->install();
@@ -132,6 +149,7 @@ class Menu extends BaseAdminController
 
     /**
      * 查询菜单信息
+     * @description 查询菜单信息
      */
     public function getSystem()
     {
@@ -140,6 +158,7 @@ class Menu extends BaseAdminController
 
     /**
      * 查询应用权限信息
+     * @description 查询应用权限信息
      */
     public function getAddonMenu($app_key)
     {
@@ -148,6 +167,7 @@ class Menu extends BaseAdminController
 
     /**
      * 查询菜单类型为目录的菜单
+     * @description 查询菜单类型为目录的菜单
      * @param $addon
      * @return Response
      */

@@ -15,7 +15,6 @@ use app\dict\sys\UserDict;
 use app\model\sys\SysRole;
 use app\model\sys\SysUser;
 use app\model\sys\SysUserRole;
-use app\model\sys\UserCreateSiteLimit;
 use app\service\admin\auth\LoginService;
 use app\service\admin\user\UserRoleService;
 use app\service\admin\user\UserService;
@@ -53,10 +52,10 @@ class SiteUserService extends BaseAdminService
                 $condition = [];
                 if (isset($where['username']) && $where['username'] !== '') $condition[] = ['username', 'like', "%{$this->model->handelSpecialCharacter($where['username'])}%"];
                 $query->where($condition);
-            })->where([ ['SysUserRole.site_id', '=', $this->site_id ]]);
-        return $this->pageQuery($search_model, function ($item){
+            })->where([['SysUserRole.site_id', '=', $this->site_id]]);
+        return $this->pageQuery($search_model, function ($item) {
             if (!empty($item['role_ids'])) {
-                $item['role_array'] = (new SysRole())->where([ ['role_id', 'in', $item['role_ids'] ] ])->column('role_name');
+                $item['role_array'] = (new SysRole())->where([['role_id', 'in', $item['role_ids']]])->column('role_name');
             } else {
                 $item['role_array'] = [];
             }
@@ -70,7 +69,7 @@ class SiteUserService extends BaseAdminService
      */
     public function getInfo(int $uid)
     {
-        $info = (new SysUserRole())->where([ ['uid', '=', $uid], ['site_id', '=', $this->site_id] ])
+        $info = (new SysUserRole())->where([['uid', '=', $uid], ['site_id', '=', $this->site_id]])
             ->with('userinfo')->append(['status_name'])
             ->findOrEmpty()->toArray();
         return $info;
@@ -104,7 +103,7 @@ class SiteUserService extends BaseAdminService
 
             Db::commit();
             return true;
-        } catch ( Exception $e) {
+        } catch (Exception $e) {
             Db::rollback();
             throw new AdminException($e->getMessage());
         }
@@ -152,9 +151,13 @@ class SiteUserService extends BaseAdminService
      * @param int $uid
      * @return bool|true
      */
-    public function lock(int $uid){
-        (new SysUserRole())->where([ ['uid', '=', $uid], ['site_id', '=', $this->site_id] ])->update(['status' => UserDict::OFF]);
+    public function lock(int $uid)
+    {
+        (new SysUser())->where([['uid', '=', $uid]])->update(['status' => UserDict::OFF]);
+        (new SysUserRole())->where([['uid', '=', $uid], ['site_id', '=', $this->site_id]])->update(['status' => UserDict::OFF]);
         Cache::delete('user_role_list_' . $uid);
+        $site_id = $this->request->defaultSiteId();
+        Cache::delete('user_role_'.$uid.'_'.$site_id);
         LoginService::clearToken($uid);
         return true;
     }
@@ -164,9 +167,13 @@ class SiteUserService extends BaseAdminService
      * @param int $uid
      * @return bool|true
      */
-    public function unlock(int $uid){
-        (new SysUserRole())->where([ ['uid', '=', $uid], ['site_id', '=', $this->site_id] ])->update(['status' => UserDict::ON]);
+    public function unlock(int $uid)
+    {
+        (new SysUser())->where([['uid', '=', $uid]])->update(['status' => UserDict::ON]);
+        (new SysUserRole())->where([['uid', '=', $uid], ['site_id', '=', $this->site_id]])->update(['status' => UserDict::ON]);
         Cache::delete('user_role_list_' . $uid);
+        $site_id = $this->request->defaultSiteId();
+        Cache::delete('user_role_'.$uid.'_'.$site_id);
         LoginService::clearToken($uid);
         return true;
     }

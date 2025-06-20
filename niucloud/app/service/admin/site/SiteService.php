@@ -71,7 +71,7 @@ class SiteService extends BaseAdminService
             $item[ 'admin' ] = ( new SysUserRole() )->where([ [ 'site_id', '=', $item[ 'site_id' ] ], [ 'is_admin', '=', 1 ] ])
                 ->field('uid')
                 ->with([ 'userinfo' ])
-                ->find()->toArray();
+                ->findOrempty()->toArray();
         });
     }
 
@@ -108,6 +108,7 @@ class SiteService extends BaseAdminService
         $data[ 'app_type' ] = 'site';
         //添加站点
         $data_site = [
+            'site_domain' => $data[ 'site_domain' ] ?? '',
             'site_name' => $data[ 'site_name' ],
             'app_type' => $data[ 'app_type' ],
             'group_id' => $data[ 'group_id' ],
@@ -324,12 +325,18 @@ class SiteService extends BaseAdminService
         }
 
         if ($is_admin) {
-            return ( new MenuService() )->getAllMenuList($app_type, $status, $is_tree, $is_button);
+            //获取全部菜单列表
+            $all_menu_list = ( new MenuService() )->getAllMenuList($app_type, $status, $is_tree, $is_button);
+            //根据parent_select_key字段重新整理上下级关系 并返回
+            return ( new MenuService() )->moveChildrenToParent($all_menu_list);
         } else {
             $user_role_ids = $user_role_info[ 'role_ids' ];
             $role_service = new RoleService();
             $menu_keys = $role_service->getMenuIdsByRoleIds($this->site_id, $user_role_ids);
-            return ( new MenuService() )->getMenuListByMenuKeys($this->site_id, $menu_keys, $this->app_type, 1, is_button:$is_button);
+            //获取全部菜单列表
+            $all_menu_list = ( new MenuService() )->getMenuListByMenuKeys($this->site_id, $menu_keys, $this->app_type, 1, is_button:$is_button);
+            //根据parent_select_key字段重新整理上下级关系 并返回
+            return ( new MenuService() )->moveChildrenToParent($all_menu_list);
         }
     }
 
@@ -463,4 +470,58 @@ class SiteService extends BaseAdminService
 
         return $list;
     }
+
+    /**
+     * 查询营销列表
+     * @return array
+     */
+    public function getShowMarketingTools()
+    {
+        $list = [
+            'marketing' => [
+                'title' => '营销活动',
+                'list' => []
+            ]
+        ];
+
+        $apps = event('ShowMarketing');
+
+
+        $keys = [];
+        foreach ($apps as $v) {
+            foreach ($v as $ck => $cv) {
+                if (!empty($cv)) {
+                    foreach ($cv as $addon_k => $addon_v) {
+                        if (in_array($addon_v[ 'key' ], $keys)) {
+                            continue;
+                        }
+                        $list[ $ck ][ 'list' ][] = $addon_v;
+                        $keys[] = $addon_v[ 'key' ];
+                    }
+                }
+
+            }
+        }
+
+        return $list;
+    }
+
+    /**
+     * 站点初始化
+     * @return bool
+     */
+    public function siteInit($data)
+    {
+        $site_id = $data[ 'site_id' ];
+        if (empty($site_id)) throw new AdminException('SITE_NOT_EXIST');
+
+        $site = $this->model->where([ [ 'site_id', '=', $site_id ] ])->with([ 'site_group' ])->findOrEmpty()->toArray();
+        if (empty($site)) throw new AdminException('SITE_NOT_EXIST');
+
+        event('SiteInit', [ 'site_id' => $site_id, 'main_app' => $site[ 'site_group' ][ 'app' ], 'site_addons' => $site[ 'site_group' ][ 'addon' ] ]);
+        Cache::clear();
+        return true;
+    }
+
+
 }

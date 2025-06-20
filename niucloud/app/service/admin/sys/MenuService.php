@@ -238,6 +238,80 @@ class MenuService extends BaseAdminService
         return $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
     }
 
+    /**
+     * 根据parent_select_key字段重新整理上下级关系
+     * @param array $menus
+     * @return mixed
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public function moveChildrenToParent(array &$menus) {
+        $menuKeyMap = [];
+        //处理整个菜单结构，建立menu_key映射
+        $flattenMenus = function (&$list) use (&$flattenMenus, &$menuKeyMap) {
+            foreach ($list as &$item) {
+                if (!empty($item[ 'menu_key' ])) {
+                    $menuKeyMap[$item[ 'menu_key' ]] = &$item;
+                }
+                if (isset($item[ 'children' ]) && is_array($item[ 'children' ])) {
+                    $flattenMenus($item[ 'children' ]);
+                }
+            }
+        };
+        $flattenMenus($menus);
+
+        //重新分配parent_select_key子项
+        $moveList = [];
+        $collectMoves = function (&$list, $parentList = null) use (&$collectMoves, &$moveList) {
+            foreach ($list as $i => &$item) {
+                if (!empty($item[ 'parent_select_key' ])) {
+                    $moveList[] = [
+                        'item' => &$item,
+                        'parent_list' => &$list,
+                        'index' => $i,
+                        'target_key' => $item['parent_select_key'],
+                    ];
+                }
+                if (isset($item[ 'children' ]) && is_array($item[ 'children' ])) {
+                    $collectMoves($item[ 'children' ], $item);
+                }
+            }
+        };
+        $collectMoves($menus);
+
+        //迁移
+        foreach ($moveList as $move) {
+            $item = $move[ 'item' ];
+            $targetKey = $move[ 'target_key' ];
+            $index = $move[ 'index' ];
+            $parentList = &$move[ 'parent_list' ];
+            // 从当前children列表中移除
+            unset($parentList[ $index ]);
+
+            // 将其添加到目标key的children
+            if (isset($menuKeyMap[ $targetKey ])) {
+                if (!isset($menuKeyMap[ $targetKey ][ 'children' ]) || !is_array($menuKeyMap[ $targetKey ][ 'children' ])) {
+                    $menuKeyMap[ $targetKey ][ 'children' ] = [];
+                }
+                $menuKeyMap[ $targetKey ][ 'children' ][] = $item;
+            }
+        }
+
+        //清理index，避免因unset导致的乱序
+        $reIndex = function (&$list) use (&$reIndex) {
+            $list = array_values($list);
+            foreach ($list as $key=> &$item) {
+                if (isset($item[ 'children' ]) && is_array($item[ 'children' ])) {
+                    $reIndex($item[ 'children' ]);
+                }
+            }
+
+        };
+        $reIndex($menus);
+        return $menus;
+    }
+
 
     /**
      * 通过菜单menu_key组获取接口数组
@@ -585,7 +659,8 @@ class MenuService extends BaseAdminService
                 $v[ 'menu_name' ] = $lang_menu_name;
             }
         }
-        return $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
+        $all_menu_list = $is_tree ? $this->menuToTree($menu_list, 'menu_key', 'parent_key', 'children', 'auth', '', $is_button) : $menu_list;
+        return $this->moveChildrenToParent($all_menu_list);
     }
 
     public function getAddonMenu($app_key, $status = 'all', $is_tree = 0, $is_button = 0)

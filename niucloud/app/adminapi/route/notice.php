@@ -85,6 +85,7 @@ Route::group('notice', function () {
             Route::get('info/:sms_type/:username', 'notice.NiuSms/templateInfo');
             Route::get('report/config', 'notice.NiuSms/templateCreateConfig');
             Route::post('report/:sms_type/:username', 'notice.NiuSms/templateCreate');
+            Route::delete(':username/:template_id', 'notice.NiuSms/templateDelete');
         });
     });
 

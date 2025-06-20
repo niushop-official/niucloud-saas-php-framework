@@ -33,6 +33,8 @@ Route::group('sys', function() {
     Route::get('role/:role_id', 'sys.Role/info');
     //用户组新增
     Route::post('role', 'sys.Role/add');
+    //修改角色状态
+    Route::put('role/status', 'sys.Role/modifyStatus');
     //编辑用户组
     Route::put('role/:role_id', 'sys.Role/edit');
     //删除用户组
@@ -135,10 +137,6 @@ Route::group('sys', function() {
     Route::put('upload/config', 'upload.Upload/setUploadConfig');
     //获取上传设置
     Route::get('upload/config', 'upload.Upload/getUploadConfig');
-    // 获取图标库列表
-    Route::get('attachment/icon_category', 'sys.Attachment/getIconCategoryList');
-    // 获取图标库列表
-    Route::get('attachment/icon', 'sys.Attachment/getIconList');
     /***************************************************** 协议管理 ****************************************************/
     //消息列表
     Route::get('agreement', 'sys.Agreement/lists');

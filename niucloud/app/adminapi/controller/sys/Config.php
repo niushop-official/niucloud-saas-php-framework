@@ -15,10 +15,17 @@ use app\service\admin\sys\ConfigService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 配置管理
+ * Class Config
+ * @description 配置管理
+ * @package app\adminapi\controller\sys
+ */
 class Config extends BaseAdminController
 {
     /**
      * 获取网站设置
+     * @description 获取网站设置
      * @return Response
      */
     public function getWebsite()
@@ -28,6 +35,7 @@ class Config extends BaseAdminController
 
     /**
      * 网站设置
+     * @description 网站设置
      * @return Response
      */
     public function setWebsite()
@@ -68,6 +76,7 @@ class Config extends BaseAdminController
 
     /**
      * 获取版权信息
+     * @description 获取版权信息
      * @return Response
      */
     public function getCopyright()
@@ -75,7 +84,9 @@ class Config extends BaseAdminController
         return success(( new ConfigService() )->getCopyright());
     }
 
-    /**设置版权信息
+    /**
+     * 设置版权信息
+     * @description 设置版权信息
      * @return Response
      */
     public function setCopyright()
@@ -96,6 +107,7 @@ class Config extends BaseAdminController
 
     /**
      * 场景域名
+     * @description 场景域名
      * @return Response
      */
     public function getSceneDomain()
@@ -105,6 +117,7 @@ class Config extends BaseAdminController
 
     /**
      * 获取服务信息
+     * @description 获取服务信息
      * @return Response
      */
     public function getServiceInfo()
@@ -112,7 +125,9 @@ class Config extends BaseAdminController
         return success(( new ConfigService() )->getService());
     }
 
-    /**设置版权信息
+    /**
+     * 设置地图信息
+     * @description 设置地图信息
      * @return Response
      */
     public function setMap()
@@ -128,6 +143,7 @@ class Config extends BaseAdminController
 
     /**
      * 获取地图设置
+     * @description 获取地图设置
      * @return Response
      */
     public function getMap()
@@ -137,6 +153,7 @@ class Config extends BaseAdminController
 
     /**
      * 获取开发者key
+     * @description 获取开发者key
      * @return Response
      */
     public function getDeveloperToken()
@@ -146,6 +163,7 @@ class Config extends BaseAdminController
 
     /**
      * 设置开发者key
+     * @description 设置开发者key
      * @return Response
      */
     public function setDeveloperToken()
@@ -159,6 +177,7 @@ class Config extends BaseAdminController
 
     /**
      * 设置布局设置
+     * @description 设置布局设置
      * @return Response
      */
     public function setLayout()
@@ -173,6 +192,7 @@ class Config extends BaseAdminController
 
     /**
      * 获取布局设置
+     * @description 获取布局设置
      * @return Response
      */
     public function getLayout()
@@ -181,7 +201,8 @@ class Config extends BaseAdminController
     }
 
     /**
-     * 设置布局设置
+     * 设置色调设置
+     * @description 设置色调设置
      * @return Response
      */
     public function setThemeColor()
@@ -195,7 +216,8 @@ class Config extends BaseAdminController
     }
 
     /**
-     * 获取布局设置
+     * 获取色调设置
+     * @description 获取色调设置
      * @return Response
      */
     public function getThemeColor()

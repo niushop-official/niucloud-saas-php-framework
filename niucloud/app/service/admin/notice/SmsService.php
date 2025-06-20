@@ -134,7 +134,7 @@ class SmsService extends BaseAdminService
             $config[$sms_type][$k_param] = $value;
         }
 
-        return (new CoreConfigService())->setConfig($this->site_id, 'SMS', $config);
+        return (new CoreConfigService())->setConfig($this->site_id,ConfigKeyDict::SMS, $config);
     }
 
 

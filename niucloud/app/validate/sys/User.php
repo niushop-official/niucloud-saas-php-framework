@@ -22,7 +22,7 @@ class User extends Validate
 
     //用户名或密码的规范可能是从数据库中获取的
     protected $rule = [
-        'username' => 'require|unique:sys_user',
+        'username' => 'require',
         'real_name' => 'requireWithout:field|requireIf:field,real_name',
         'password' => 'require',
     ];

@@ -186,6 +186,17 @@ class UpgradeService extends BaseAdminService
         $upgrade_content = $this->getUpgradeContent($addon);
         if (empty($upgrade_content['content'])) throw new CommonException("NOT_EXIST_UPGRADE_CONTENT");
 
+        // 过滤掉没有更新版本的插件
+        $upgrade_content['content'] = array_values(array_filter(array_map(function ($item){
+            if (!empty($item['version_list'])) return $item;
+        }, $upgrade_content['content'])));
+        if (empty($upgrade_content['content'])) throw new CommonException("NOT_EXIST_UPGRADE_CONTENT");
+
+        $upgrade_content['upgrade_apps'] = [];
+        foreach ($upgrade_content['content'] as $item) {
+            $upgrade_content['upgrade_apps'][] = $item['app']['app_key'];
+        }
+
         $upgrade_title = '框架';
 
         $upgrade = [
@@ -766,7 +777,7 @@ class UpgradeService extends BaseAdminService
      */
     public function restoreCode()
     {
-        if ($this->upgrade_task['is_need_backup']) {
+        if (!isset($this->upgrade_task['is_need_backup']) || $this->upgrade_task['is_need_backup']) {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         } else {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
@@ -789,7 +800,7 @@ class UpgradeService extends BaseAdminService
      */
     public function restoreSql($index = 0)
     {
-        if ($this->upgrade_task['is_need_backup']) {
+        if (!isset($this->upgrade_task['is_need_backup']) || $this->upgrade_task['is_need_backup']) {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         } else {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;

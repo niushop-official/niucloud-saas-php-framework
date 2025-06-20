@@ -17,10 +17,17 @@ use app\service\admin\site\SiteService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 站点管理
+ * Class Site
+ * @description 站点管理
+ * @package app\adminapi\controller\site
+ */
 class Site extends BaseAdminController
 {
     /**
      * 站点列表
+     * @description 站点列表
      * @return Response
      */
     public function lists()
@@ -39,6 +46,7 @@ class Site extends BaseAdminController
 
     /**
      * 站点详情
+     * @description 站点详情
      * @param int $id
      * @return Response
      */
@@ -49,6 +57,7 @@ class Site extends BaseAdminController
 
     /**
      * 添加站点
+     * @description 添加站点
      * ['site_name' => '', 'username' => '', 'head_img' => '', 'real_name' => '', 'password' => '', 'expire_time' => 0]
      * @return Response
      */
@@ -72,6 +81,7 @@ class Site extends BaseAdminController
 
     /**
      * 站点状态
+     * @description 站点状态
      * @return Response
      */
     public function getStatuList()
@@ -81,6 +91,7 @@ class Site extends BaseAdminController
 
     /**
      * 站点菜单
+     * @description 站点菜单
      * @return Response
      */
     public function menu()
@@ -90,6 +101,7 @@ class Site extends BaseAdminController
 
     /**
      * 关闭站点
+     * @description 关闭站点
      */
     public function closeSite($id)
     {
@@ -102,6 +114,7 @@ class Site extends BaseAdminController
 
     /**
      * 菜单或接口更新
+     * @description 菜单或接口更新
      */
     public function edit($id)
     {
@@ -122,6 +135,7 @@ class Site extends BaseAdminController
 
     /**
      * 删除站点
+     * @description 删除站点
      * @param $id
      * @return Response
      */
@@ -133,6 +147,7 @@ class Site extends BaseAdminController
 
     /**
      * 开启站点
+     * @description 开启站点
      */
     public function openSite($id)
     {
@@ -150,6 +165,7 @@ class Site extends BaseAdminController
 
     /**
      * 获取站点拥有的应用
+     * @description 获取站点拥有的应用
      * @return Response
      */
     public function addons()
@@ -164,6 +180,24 @@ class Site extends BaseAdminController
     public function showApp()
     {
         return success(( new SiteService() )->getShowAppTools());
+    }
+
+    public function showMarketing()
+    {
+        return success(( new SiteService() )->getShowMarketingTools());
+    }
+
+    /**
+     * 站点初始化
+     * @description 站点初始化
+     * @return Response
+     */
+    public function siteInit()
+    {
+        $data = $this->request->params([
+            [ 'site_id', '' ],
+        ]);
+        return success('SUCCESS', ( new SiteService() )->siteInit($data));
     }
 
 

@@ -17,12 +17,14 @@ use app\dict\sys\AppTypeDict;
 use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
+use app\model\sys\SysUserRole;
 use core\base\BaseCoreService;
 use core\exception\CommonException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\facade\Cache;
+use think\facade\Db;
 use think\Model;
 
 /**
@@ -165,4 +167,54 @@ class CoreSiteService extends BaseCoreService
             self::$cache_tag_name . $site_id
         );
     }
+
+    /**
+     * 根据站点初始化数据
+     * @param string $domain
+     * @return mixed|string
+     */
+    public function siteInitBySiteId($site_id,$tables)
+    {
+        $prefix = config('database.connections.mysql.prefix');
+        if (!empty($prefix)){
+            foreach ($tables as &$value){
+                $value = $prefix.$value;
+            }
+        }
+        $user_ids = [];
+        Db::startTrans();
+        try {
+            foreach ($tables as $table) {
+                // 判断表是否存在
+                if (!Db::query("SHOW TABLES LIKE '{$table}'")) {
+                    continue;
+                }
+
+                $where = [
+                    [ 'site_id', '=', $site_id ]
+                ];
+
+                if ($table == $prefix.'sys_user_role'){
+                    $where[] = [ 'is_admin', '=', 0 ];
+                    $user_ids = (new SysUserRole())->where([ [ 'site_id', '=', $site_id ], [ 'is_admin', '=', 0 ] ])->column('uid');
+                }
+
+                if ($table == $prefix.'sys_user'){
+                    if (empty($user_ids)){
+                        continue;
+                    }
+                    $where = [ [ 'uid', 'in', $user_ids ] ];
+                }
+
+                // 删除对应站点的数据
+                Db::table($table)->where($where)->delete();
+            }
+            Db::commit();
+            return true;
+        } catch (\Exception $e) {
+            Db::rollback();
+            throw new CommonException($e->getMessage());
+        }
+    }
+
 }

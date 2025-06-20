@@ -18,12 +18,14 @@ use think\Response;
 /**
  * 统计数据
  * Class Stat
+ * @description 统计数据
  * @package app\adminapi\controller\stat
  */
 class SiteStat extends BaseAdminController
 {
     /**
      * 首页数据
+     * @description 首页数据
      * @return Response
      */
     public function index()

@@ -14,10 +14,17 @@ namespace app\adminapi\controller\niucloud;
 use app\service\core\niucloud\CoreCloudBuildService;
 use core\base\BaseAdminController;
 
+/**
+ * 云编译
+ * Class Cloud
+ * @description 云编译
+ * @package app\adminapi\controller\niucloud
+ */
 class Cloud extends BaseAdminController
 {
     /**
      * 云编译
+     * @description 云编译
      * @return \think\Response
      */
     public function build() {
@@ -26,6 +33,7 @@ class Cloud extends BaseAdminController
 
     /**
      * 获取云编译日志
+     * @description 获取云编译日志
      * @return \think\Response
      */
     public function getBuildLog() {
@@ -34,6 +42,7 @@ class Cloud extends BaseAdminController
 
     /**
      * 获取云编译任务
+     * @description 获取云编译任务
      * @return \think\Response
      */
     public function getBuildTask() {
@@ -42,6 +51,7 @@ class Cloud extends BaseAdminController
 
     /**
      * 清除云编译任务
+     * @description 清除云编译任务
      * @return \think\Response
      */
     public function clearBuildTask() {
@@ -50,6 +60,7 @@ class Cloud extends BaseAdminController
 
     /**
      * 编译前环境检测
+     * @description 编译前环境检测
      * @return \think\Response
      */
     public function buildPreCheck() {

@@ -99,6 +99,7 @@ class NoticeDict
             $keys = array_keys($item);
             if ($key && !in_array($key, $keys)) {
                 unset($notice_template_list[$addon]);
+                continue;
             }
             foreach ($item as $template_key => $value) {
                 if ($key && $template_key != $key) {

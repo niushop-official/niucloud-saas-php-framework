@@ -65,6 +65,7 @@ return [
     'UPGRADE_BACKUP_SQL_NOT_FOUND' => '未找到备份的数据库文件',
     'NOT_EXIST_UPGRADE_CONTENT' => '没有获取到可以升级的内容',
     'CLOUD_BUILD_AUTH_CODE_NOT_FOUND' => '请先填写授权码',
+    'TASK_CYCLE_ERROR' => '任务周期填写错误',
     //登录注册重置账号....
 
     'LOGIN_SUCCESS' => '登录成功',
@@ -354,9 +355,12 @@ return [
     'ACCOUNT_ERROR_RELOGIN' => '牛云短信账号异常,请重新登录账号',
     'ACCOUNT_BIND_MOBILE_ERROR' => '手机号错误',
     'TEMPLATE_NOT_SMS_CONTENT' => '当前模版未配置短信内容',
-    'TEMPLATE_ERROR' => '短信模版ID错误或审核未通过',
+    'TEMPLATE_IS_PASS' => '审核通过的模版不允许修改',
     'TEMPLATE_NOT_REPORT' => '短信模版暂未报备',
     'URL_NOT_FOUND' => '未配置远程服务地址，请在ENV中配置{NIU_SHOP_PREFIX}',
     'SYSTEM_IS_ERROR' => '远程服务器异常，请联系售后人员',
+
+    'TEMPLATE_ERROR' => '短信模版ID错误或审核未通过',
+    'TEMPLATE_USE_ERROR' => '短信模版参数不一致需修改/重新报备',
     /*******************************************牛云短信 end ********************************************************/
 ];

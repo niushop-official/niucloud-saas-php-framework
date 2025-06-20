@@ -15,10 +15,17 @@ use app\service\admin\home\AuthSiteService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 站点管理
+ * Class Site
+ * @description 站点管理
+ * @package app\adminapi\controller\home
+ */
 class Site extends BaseAdminController
 {
     /**
      * 站点列表
+     * @description 站点列表
      * @return Response
      */
     public function lists()
@@ -34,6 +41,7 @@ class Site extends BaseAdminController
 
     /**
      * 站点详情
+     * @description 站点详情
      * @param int $id
      * @return Response
      */
@@ -44,6 +52,7 @@ class Site extends BaseAdminController
 
     /**
      * 站点更新
+     * @description 站点更新
      */
     public function edit($id)
     {
@@ -74,12 +83,33 @@ class Site extends BaseAdminController
         return success('MODIFY_SUCCESS');
     }
 
+    /**
+     * 获取站点分组列表
+     * @description 站点分组列表
+     * @return Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
     public function getSiteGroup() {
         return success((new AuthSiteService())->getSiteGroup());
     }
 
     /**
+     * 获取站点分组应用列表
+     * @description 站点分组应用列表
+     * @return Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getSiteGroupAppList() {
+        return success((new AuthSiteService())->getSiteGroupAppList());
+    }
+
+    /**
      * 创建站点
+     * @description 创建站点
      * @return Response
      */
     public function create() {

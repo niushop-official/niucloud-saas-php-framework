@@ -16,10 +16,17 @@ use app\service\admin\site\SiteAccountLogService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 站点账户
+ * Class SiteAccount
+ * @description 站点账户
+ * @package app\adminapi\controller\site
+ */
 class SiteAccount extends BaseAdminController
 {
     /**
      * 账单列表
+     * @description 账单列表
      * @return Response
      */
     public function lists()
@@ -34,6 +41,7 @@ class SiteAccount extends BaseAdminController
 
     /**
      * 账单详情
+     * @description 账单详情
      * @param int $id
      * @return Response
      */
@@ -44,12 +52,18 @@ class SiteAccount extends BaseAdminController
 
     /**
      * 累计账单
+     * @description 累计账单
      */
     public function stat()
     {
         return success((new SiteAccountLogService())->stat());
     }
 
+    /**
+     * 账单类型
+     * @description 账单类型
+     * @return Response
+     */
     public function accountType()
     {
         return success(SiteAccountLogDict::getType());

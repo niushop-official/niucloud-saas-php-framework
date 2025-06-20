@@ -37,6 +37,8 @@ Route::group('site', function () {
     Route::put('opensite/:id', 'site.Site/openSite');
     //站点状态
     Route::get('statuslist', 'site.Site/getStatuList');
+    //站点初始化
+    Route::post('init', 'site.Site/siteInit');
     /***************************************************** 站点分组 *************************************************/
     //站点分组
     Route::get('group', 'site.SiteGroup/lists');
@@ -90,6 +92,8 @@ Route::group('site', function () {
     Route::get('addons', 'site.Site/addons');
     // 获取应用列表
     Route::get('showapp', 'site.Site/showApp');
+    // 获取营销列表
+    Route::get('showMarketing', 'site.Site/showMarketing');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

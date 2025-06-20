@@ -19,6 +19,7 @@ class WeappVersion extends BaseAdminController
 {
     /**
      * 平台提交小程序版本
+     * @description 平台提交小程序版本
      * @return Response
      */
     public function weappCommit() {
@@ -30,13 +31,13 @@ class WeappVersion extends BaseAdminController
         return success();
     }
 
-
     public function getSiteGroupCommitRecord() {
         return success(data:(new WeappVersionService())->getSiteGroupCommitRecord());
     }
 
     /**
      * 获取最后一次提交记录
+     * @description 获取最后一次提交记录
      * @return Response
      */
     public function lastCommitRecord() {
@@ -52,6 +53,7 @@ class WeappVersion extends BaseAdminController
 
     /**
      * 站点小程序提交
+     * @description 站点小程序提交
      * @return Response
      */
     public function siteWeappCommit() {
@@ -59,6 +61,11 @@ class WeappVersion extends BaseAdminController
         return success();
     }
 
+    /**
+     * 撤销审核
+     * @description 撤销审核
+     * @return Response
+     */
     public function undoAudit() {
         $data = $this->request->params([
             ['id', ""]
@@ -69,6 +76,7 @@ class WeappVersion extends BaseAdminController
 
     /**
      * 同步套餐下站点小程序
+     * @description 同步套餐下站点小程序
      * @return Response
      */
     public function syncSiteWeapp() {

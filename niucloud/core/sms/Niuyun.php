@@ -26,14 +26,13 @@ class Niuyun extends BaseSms
 //    private const SEND_URL = "https://api-ogw.zthysms.com/partner/v1/sms/sub-accounts/message/%s/template";
     private const SEND_URL = "https://api-shss.zthysms.com/v2/sendSmsTp";
 
-
     /**
      * @param array $config
      * @return void
      */
     protected function initialize(array $config = [])
     {
-        Log::write("send niu sms init ".json_encode($config,256));
+        Log::write("SEND_NY_SMS init " . json_encode($config, 256));
         parent::initialize($config);
         $this->username = $config['username'] ?? '';
         $this->password = $config['password'] ?? '';
@@ -50,22 +49,23 @@ class Niuyun extends BaseSms
      */
     public function send(string $mobile, string $template_id, array $data = [])
     {
-        Log::write("send niu sms pre ".json_encode($data,256));
+        Log::write("SEND_NY_SMS pre " . json_encode($data, 256));
         if (empty($this->signature)) {
             throw new CommonException('签名未配置');
         }
         $template_info = (new NiuSmsTemplate())->where('template_id', $template_id)->findOrEmpty();
-        Log::write("send niu sms pre signature".json_encode($template_info->toArray(),256));
-
+        Log::write("SEND_NY_SMS pre signature" . json_encode($template_info->toArray(), 256));
+//        get_wap_domain($site_id)
         if ($template_info->isEmpty()) {
             throw new CommonException('模版未报备');
         }
         if ($template_info->audit_status != NoticeTypeDict::API_AUDIT_RESULT_PASS) {
             throw new CommonException('模版审核未通过');
         }
-        $url = sprintf(self::SEND_URL, $this->username);
+        $url = self::SEND_URL;
         $template_info = $template_info->toArray();
         $data = $this->formatParams($data, $template_info);
+
         $params['records'] = [
             [
                 'mobile' => $mobile,
@@ -78,12 +78,12 @@ class Niuyun extends BaseSms
         $params['tKey'] = $tKey;
         $params['password'] = md5(md5($this->password) . $tKey);
         $params['signature'] = $this->signature;
-        Log::write("send niu sms params ".json_encode($params,256));
+        Log::write("SEND_NY_SMS params " . json_encode($params, 256));
         try {
             $res = (new HttpHelper())->httpRequest('POST', $url, $params);
-            Log::write("send niu sms res ".json_encode($res,256));
+            Log::write("SEND_NY_SMS res " . json_encode($res, 256));
             if ($res['code'] != 200) {
-                throw new CommonException($res['msg']);
+                throw new CommonException('ZT-' . $res['code'] . ":" . $res['msg']);
             }
             return $res;
         } catch (\Exception $e) {
@@ -100,22 +100,21 @@ class Niuyun extends BaseSms
         foreach ($params_json as $param => $validate) {
             $value = $data[$param];
             $pattern = $type_arr[$validate]['rule'] ?? '';
-            if (empty($pattern)) {
-                $return[$param] = $value;
-            }else{
-                if (preg_match($type_arr[$validate]['rule'], $value)) {
-                    $return[$param] = $value;
-                } else {
-                    if ($validate == NoticeTypeDict::PARAMS_TYPE_CHINESE) {
-                        $value = str_sub($value, 32);
-                        $return[$param] = $value;
-                    }
-                    if ($validate == NoticeTypeDict::PARAMS_TYPE_OTHERS) {
-                        $value = str_sub($value, 35);
-                        $return[$param] = $value;
-                    }
-                }
+            $max = $type_arr[$validate]['max'] ?? 1;
+            $min = $type_arr[$validate]['max'] ?? mb_strlen($value);
+            if (!empty($pattern) && in_array($validate, [NoticeTypeDict::PARAMS_TYPE_CHINESE, NoticeTypeDict::PARAMS_TYPE_OTHERS])) {
+                $value = str_replace(' ', '', $value);
+                $value = str_replace('.', '', $value);
+                $filtered = preg_replace($pattern, '', $value);
+                $value = (mb_strlen($filtered, 'UTF-8') >= $min && mb_strlen($filtered, 'UTF-8') <= 35)
+                    ? $filtered  // 长度合法，保留过滤后的字符串
+                    : mb_substr($filtered, 0, $max);        // 长度非法，返回空字符串
             }
+            if (empty($value)) {
+                Log::write("SEND_NY_SMS 参数异常，无法发送 param:" . $param);
+                throw new \Exception('NY:参数异常，无法发送');
+            }
+            $return[$param] = $value;
         }
         return $return;
     }

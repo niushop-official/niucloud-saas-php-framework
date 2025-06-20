@@ -20,6 +20,8 @@ class NoticeTypeDict
     //微信小程序
     public const WEAPP = 'weapp';
 
+    public const TEMPLATE_AUDIT_STATUS_NEED_AGAIN_REPORT = -3;
+    public const TEMPLATE_AUDIT_STATUS_NEED_EDIT = -2;
     public const TEMPLATE_AUDIT_STATUS_NOT_REPORT = -1;
     public const TEMPLATE_AUDIT_STATUS_WAIT = 1;
     public const TEMPLATE_AUDIT_STATUS_PASS = 2;
@@ -71,6 +73,8 @@ class NoticeTypeDict
     public static function getTemplateAuditStatus($type = '')
     {
         $data = [
+            self::TEMPLATE_AUDIT_STATUS_NEED_AGAIN_REPORT => get_lang('dict_sms_api.template_status_again_report'),
+            self::TEMPLATE_AUDIT_STATUS_NEED_EDIT => get_lang('dict_sms_api.template_status_need_edit'),
             self::TEMPLATE_AUDIT_STATUS_NOT_REPORT => get_lang('dict_sms_api.template_status_not_report'),
             self::TEMPLATE_AUDIT_STATUS_WAIT => get_lang('dict_sms_api.template_status_wait'),
             self::TEMPLATE_AUDIT_STATUS_PASS => get_lang('dict_sms_api.template_status_pass'),
@@ -148,19 +152,25 @@ class NoticeTypeDict
                 'name' => '验证码',
                 'type' => self::PARAMS_TYPE_VALID_CODE,
                 'desc' => '4-6位纯数字',
-                'rule' => '/^\d{4,6}$/',
+                'rule' => '/^\d$/',
+                'min'=>4,
+                'max'=>6
             ],
             [
                 'name' => '手机号',
                 'type' => self::PARAMS_TYPE_MOBILE_NUMBER,
                 'desc' => '1-15位纯数字',
-                'rule' => '/^\d{1,15}$/',
+                'rule' => '/^\d$/',
+                'min'=>1,
+                'max'=>15
             ],
             [
                 'name' => '其他号码',
                 'type' => self::PARAMS_TYPE_OTHER_NUMBER,
                 'desc' => '1-32位字母+数字组合',
-                'rule'=>'/^[a-zA-Z0-9]{1,32}$/'
+                'rule'=>'/^[a-zA-Z0-9]$/',
+                'min'=>1,
+                'max'=>32
             ],
             [
                 'name' => '金额',
@@ -178,13 +188,17 @@ class NoticeTypeDict
                 'name' => '中文',
                 'type' => self::PARAMS_TYPE_CHINESE,
                 'desc' => '1-32中文，支持中文园括号()',
-                'rule' => '/^[\p{Han}()（）]{1,32}$/u'
+                'rule' => '/^[\p{Han}()（）]$/u',
+                'min'=>1,
+                'max'=>32
             ],
             [
                 'name' => '其他',
                 'type' => self::PARAMS_TYPE_OTHERS,
                 'desc' => ' 1-35个中文数字字母组合，支持中文符号和空格',
-                'rule' => '/^[\p{Han}\p{N}\p{L}\p{P}\p{S}\s]{1,35}$/u',
+                'rule' => '/^[\p{Han}\p{N}\p{L}\p{P}\p{S}\s]$/u',
+                'min'=>1,
+                'max'=>35
             ],
         ];
     }

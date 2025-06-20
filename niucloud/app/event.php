@@ -12,6 +12,8 @@ $system_event = [
          * 系统事件
          */
         'AppInit' => [ 'app\listener\system\AppInitListener' ],
+        //站点初始化
+        'SiteInit' => [ 'app\listener\system\SiteInitListener' ],
         // 站点创建之后
         'AddSiteAfter' => [
             'app\listener\system\AddSiteAfterListener'
@@ -123,6 +125,9 @@ $system_event = [
         'WeappAuthChangeAfter' => [ 'app\listener\system\WeappAuthChangeAfter' ],
         'ShowApp' => [
             'app\listener\system\ShowAppListener'
+        ],
+        'ShowMarketing' => [
+            'app\listener\system\ShowMarketingListener'
         ],
         //获取微信转账场景配置
         'GetWechatTransferTradeScene' => [

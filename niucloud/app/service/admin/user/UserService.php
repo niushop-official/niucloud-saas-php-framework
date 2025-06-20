@@ -12,9 +12,7 @@
 namespace app\service\admin\user;
 
 
-use app\dict\sys\AppTypeDict;
 use app\dict\sys\UserDict;
-use app\model\sys\SysRole;
 use app\model\sys\SysUser;
 use app\model\sys\SysUserRole;
 use app\model\sys\UserCreateSiteLimit;

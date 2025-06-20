@@ -19,12 +19,14 @@ use think\Response;
 /**
  * 站点分组
  * Class SiteGroup
+ * @description 站点分组
  * @package app\adminapi\controller\site
  */
 class SiteGroup extends BaseAdminController
 {
     /**
-     * 站点列表
+     * 站点分组列表
+     * @description 站点分组列表
      * @return Response
      */
     public function lists()
@@ -37,6 +39,7 @@ class SiteGroup extends BaseAdminController
 
     /**
      * 分组详情
+     * @description 分组详情
      * @param int $group_id
      * @return Response
      */
@@ -47,6 +50,7 @@ class SiteGroup extends BaseAdminController
 
     /**
      * 添加分组
+     * @description 添加分组
      * @return Response
      * @throws Exception
      */
@@ -65,6 +69,7 @@ class SiteGroup extends BaseAdminController
 
     /**
      * 编辑分组
+     * @description 编辑分组
      * @param $group_id
      * @return Response
      */
@@ -82,6 +87,7 @@ class SiteGroup extends BaseAdminController
 
     /**
      * 删除分组
+     * @description 删除分组
      * @param $group_id
      * @return Response
      */
@@ -93,6 +99,7 @@ class SiteGroup extends BaseAdminController
 
     /**
      * 所有分组
+     * @description 所有分组
      * @return Response
      */
     public function all()
@@ -105,6 +112,7 @@ class SiteGroup extends BaseAdminController
 
     /**
      * 所有分组
+     * @description 所有分组
      * @return Response
      */
     public function getUserSiteGroupAll()

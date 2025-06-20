@@ -30,6 +30,8 @@ Route::group('home', function () {
     Route::put('site/:id', 'home.Site/edit');
     // 获取可选择的店铺套餐
     Route::get('site/group', 'home.Site/getSiteGroup');
+    // 获取可选择的店铺应用列表
+    Route::get('site/group/app_list', 'home.Site/getSiteGroupAppList');
     // 获取可选择的店铺套餐
     Route::post('site/create', 'home.Site/create');
 })->middleware(AdminCheckToken::class, true)

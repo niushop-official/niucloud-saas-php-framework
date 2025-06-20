@@ -237,7 +237,7 @@ class CoreNiuSmsService extends BaseAdminService
     }
 
     /**
-     * 报备签名
+     * 报备签名-删除
      * @param $data
      * @return mixed
      */
@@ -299,6 +299,25 @@ class CoreNiuSmsService extends BaseAdminService
         $url = $this->niushop_url_prefix . sprintf(self::TEMPLATE_ADD_URL, $username);
         $res = (new HttpHelper())->post($url, $params);
         return $res;
+    }
+
+    /**
+     * 删除模版
+     * @param $data
+     * @return mixed
+     */
+    public function templateDelete($username, $params)
+    {
+        $time = time();
+        $request['tKey'] = $time;
+        $request['password'] = md5(md5($params['password']) . $time);
+        $request['username'] = $username;
+        $request['temId'] = $params['template_id'] ?? '';
+        $url = "https://api-shss.zthysms.com/sms/v2/template/delete";
+        $res = (new HttpHelper())->httpRequest('POST', $url, $request);
+        if ($res['code'] != 200) {
+            throw new \Exception('ZT'.$res['code'].":".$res['msg']);
+        }
     }
 
 

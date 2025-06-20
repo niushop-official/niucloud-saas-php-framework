@@ -151,7 +151,8 @@ class CoreMenuService extends BaseCoreService
                     'methods' => $value[ 'methods' ] ?? '',
                     'sort' => $value[ 'sort' ] ?? '',
                     'status' => 1,
-                    'is_show' => $value[ 'is_show' ] ?? 1
+                    'is_show' => $value[ 'is_show' ] ?? 1,
+                    'parent_select_key' => $value['parent_select_key'] ?? ''
                 ];
                 $refer = $value;
                 if (isset($refer[ 'children' ])) {

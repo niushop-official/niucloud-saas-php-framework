@@ -15,10 +15,17 @@ use app\service\admin\site\UserLogService;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 用户操作日志
+ * Class UserLog
+ * @description 用户操作日志
+ * @package app\adminapi\controller\site
+ */
 class UserLog extends BaseAdminController
 {
     /**
      * 操作日志列表
+     * @description 操作日志列表
      * @return Response
      */
     public function lists()
@@ -39,6 +46,7 @@ class UserLog extends BaseAdminController
 
     /**
      * 操作日志详情
+     * @description 操作日志详情
      * @param $id
      * @return Response
      */
@@ -49,6 +57,7 @@ class UserLog extends BaseAdminController
 
     /**
      * 清空日志
+     * @description 清空日志
      * @return Response
      */
     public function destroy()
@@ -56,6 +65,5 @@ class UserLog extends BaseAdminController
         (new UserLogService())->destroy();
         return success("SUCCESS");
     }
-
 
 }

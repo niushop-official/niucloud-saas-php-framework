@@ -13,17 +13,23 @@ namespace app\adminapi\controller\notice;
 
 use app\dict\sys\SmsDict;
 use app\service\admin\notice\NoticeService;
-use app\service\admin\notice\NiuSmsService;
 use app\service\admin\notice\SmsService;
 use core\base\BaseAdminController;
 use core\exception\AdminException;
 use think\Response;
 
+/**
+ * 消息管理
+ * Class Notice
+ * @description 消息管理
+ * @package app\adminapi\controller\notice
+ */
 class Notice extends BaseAdminController
 {
 
     /**
      * 消息列表
+     * @description 消息列表
      * @return Response
      */
     public function lists()
@@ -32,6 +38,12 @@ class Notice extends BaseAdminController
         return success($res);
     }
 
+    /**
+     * 消息详情
+     * @description 消息详情
+     * @param $key
+     * @return Response
+     */
     public function info($key)
     {
         $res = (new NoticeService())->getInfo($key);
@@ -40,6 +52,7 @@ class Notice extends BaseAdminController
 
     /**
      * 消息启动与关闭
+     * @description 消息启动与关闭
      * @return Response
      */
     public function editStatus()
@@ -55,6 +68,8 @@ class Notice extends BaseAdminController
 
     /**
      * 短信配置列表
+     * @description 短信配置列表
+     * @return Response
      */
     public function smsList()
     {
@@ -64,6 +79,7 @@ class Notice extends BaseAdminController
 
     /**
      * 短信配置详情
+     * @description 短信配置详情
      * @param $sms_type
      * @return Response
      */
@@ -75,6 +91,7 @@ class Notice extends BaseAdminController
 
     /**
      * 短信配置修改
+     * @description 短信配置修改
      * @return Response
      */
     public function editSms($sms_type)
@@ -97,6 +114,7 @@ class Notice extends BaseAdminController
 
     /**
      * 消息修改
+     * @description 消息修改
      * @return Response
      */
     public function edit()

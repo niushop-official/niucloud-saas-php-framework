@@ -16,6 +16,7 @@ use app\model\member\Member;
 use app\model\site\Site;
 use core\base\BaseCoreService;
 use core\dict\DictLoader;
+use core\exception\AdminException;
 use core\exception\CommonException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
@@ -36,6 +37,7 @@ class CoreMemberService extends BaseCoreService
         parent::__construct();
         $this->model = new Member();
     }
+
     /**
      * 修改
      * @param int $site_id
@@ -50,6 +52,7 @@ class CoreMemberService extends BaseCoreService
             'nickname' => 'nickname',
             'mobile' => 'mobile',
             'id_card' => 'id_card',
+            'remark' => 'remark',
             'headimg' => 'headimg',
             'member_label' => 'member_label',
             'member_level' => 'member_level',
@@ -64,12 +67,40 @@ class CoreMemberService extends BaseCoreService
     }
 
     /**
+     * 批量修改字段
+     * @param $site_id
+     * @param $data
+     * @return Member
+     */
+    public function batchModify($site_id, $data)
+    {
+        $field = $data['field'];
+        $member_ids = $data['member_ids'];
+        $is_all = $data['is_all'];
+        $field_name = match ($field) {
+            'member_label' => 'member_label',
+            'member_level' => 'member_level',
+            default => throw new AdminException("不支持的字段: $field"),
+        };
+        $where = [
+            ['site_id', '=', $site_id],
+        ];
+        if (!$is_all) {
+            $where[] = ['member_id', 'in', $member_ids];
+        }else{
+            $where[] = ['member_id', 'not in', $member_ids];
+        }
+        return $this->model->where($where)->withSearch(['keyword','register_type', 'create_time', 'is_del', 'member_label', 'register_channel','member_level'],$data['where'])->update([$field_name => $data['value']]);
+    }
+
+    /**
      * 通过会员查询openid
      * @param int $site_id
      * @param int $member_id
      * @return array
      */
-    public function getInfoByMemberId(int $site_id, int $member_id, string $field = '*'){
+    public function getInfoByMemberId(int $site_id, int $member_id, string $field = '*')
+    {
         $where = array(
             ['site_id', '=', $site_id],
             ['member_id', '=', $member_id]
@@ -83,7 +114,8 @@ class CoreMemberService extends BaseCoreService
      * @param int $member_id
      * @return Member|array|mixed|Model
      */
-    public function find(int $site_id, int $member_id){
+    public function find(int $site_id, int $member_id)
+    {
         $where = array(
             ['site_id', '=', $site_id],
             ['member_id', '=', $member_id]
@@ -96,18 +128,19 @@ class CoreMemberService extends BaseCoreService
      * @return int
      * @throws DbException
      */
-    public function getCount(array $where = []){
+    public function getCount(array $where = [])
+    {
         $condition = array();
-        if(!empty($where['site_id'])){
+        if (!empty($where['site_id'])) {
             $condition[] = ['site_id', '=', $where['site_id']];
         }
-        if(!empty($where['create_time'])){
+        if (!empty($where['create_time'])) {
             $condition[] = ['create_time', 'between', $where['create_time']];
         }
-        if(!empty($where['sex'])){
+        if (!empty($where['sex'])) {
             $condition[] = ['sex', '=', $where['sex']];
         }
-        if(!empty($where['last_visit_time'])){
+        if (!empty($where['last_visit_time'])) {
             $condition[] = ['last_visit_time', 'between', $where['last_visit_time']];
         }
         return $this->model->where($condition)->count();
@@ -121,20 +154,21 @@ class CoreMemberService extends BaseCoreService
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function createMemberNo(int $site_id) {
-        $site = (new Site())->where([ ['site_id', '=', $site_id] ])->lock(true)->find();
+    public static function createMemberNo(int $site_id)
+    {
+        $site = (new Site())->where([['site_id', '=', $site_id]])->lock(true)->find();
         $config = (new CoreMemberConfigService())->getMemberConfig($site_id);
 
         $no = $site->member_no + 1;
-        $member_no = $config['prefix'] . ( strlen($config['prefix']) > $config['length'] ? $no : str_pad($no, ($config['length'] - strlen($config['prefix'])), "0", STR_PAD_LEFT) );
+        $member_no = $config['prefix'] . (strlen($config['prefix']) > $config['length'] ? $no : str_pad($no, ($config['length'] - strlen($config['prefix'])), "0", STR_PAD_LEFT));
 
-        $member = (new Member())->where([ ['site_id', '=', $site_id], ['member_no', '=', $member_no] ])->findOrEmpty();
+        $member = (new Member())->where([['site_id', '=', $site_id], ['member_no', '=', $member_no]])->findOrEmpty();
 
         if ($member->isEmpty()) {
             return $member_no;
         } else {
             // 变更站点最大会员码值
-            $site->save(['member_no' => $no ]);
+            $site->save(['member_no' => $no]);
             return self::createMemberNo($site_id);
         }
     }
@@ -148,20 +182,21 @@ class CoreMemberService extends BaseCoreService
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    public static function setMemberNo(int $site_id, int $member_id) {
-        $site = (new Site())->where([ ['site_id', '=', $site_id] ])->lock(true)->find();
+    public static function setMemberNo(int $site_id, int $member_id)
+    {
+        $site = (new Site())->where([['site_id', '=', $site_id]])->lock(true)->find();
         $config = (new CoreMemberConfigService())->getMemberConfig($site_id);
 
         $no = $site->member_no + 1;
-        $member_no = $config['prefix'] . ( strlen($config['prefix']) > $config['length'] ? $no : str_pad($no, ($config['length'] - strlen($config['prefix'])), "0", STR_PAD_LEFT) );
+        $member_no = $config['prefix'] . (strlen($config['prefix']) > $config['length'] ? $no : str_pad($no, ($config['length'] - strlen($config['prefix'])), "0", STR_PAD_LEFT));
 
-        $member = (new Member())->where([ ['site_id', '=', $site_id], ['member_no', '=', $member_no] ])->findOrEmpty();
+        $member = (new Member())->where([['site_id', '=', $site_id], ['member_no', '=', $member_no]])->findOrEmpty();
 
         // 变更站点最大会员码值
-        $site->save(['member_no' => $no ]);
+        $site->save(['member_no' => $no]);
 
         if ($member->isEmpty()) {
-            (new Member())->update([ 'member_no' => $member_no ], [ ['site_id', '=', $site_id], ['member_id', '=', $member_id] ]);
+            (new Member())->update(['member_no' => $member_no], [['site_id', '=', $site_id], ['member_id', '=', $member_id]]);
         } else {
             self::setMemberNo($site_id, $member_id);
         }
@@ -175,7 +210,8 @@ class CoreMemberService extends BaseCoreService
      * @param array $param
      * @return void
      */
-    public static function sendGrowth(int $site_id, int $member_id, string $key, array $param = []) {
+    public static function sendGrowth(int $site_id, int $member_id, string $key, array $param = [])
+    {
         $config = (new CoreMemberConfigService())->getGrowthRuleConfig($site_id);
         if (!isset($config[$key]) || empty($config[$key]) || empty($config[$key]['is_use'])) return true;
 
@@ -209,7 +245,8 @@ class CoreMemberService extends BaseCoreService
      * @param array $param
      * @return true
      */
-    public static function sendPoint(int $site_id, int $member_id, string $key, array $param = []) {
+    public static function sendPoint(int $site_id, int $member_id, string $key, array $param = [])
+    {
         $config = (new CoreMemberConfigService())->getPointRuleConfig($site_id)['grant'] ?? [];
         if (!isset($config[$key]) || empty($config[$key]) || empty($config[$key]['is_use'])) return true;
 
@@ -242,7 +279,8 @@ class CoreMemberService extends BaseCoreService
      * @param $gifts
      * @return void
      */
-    public function memberGiftGrant($site_id, $member_id, $gifts = [], $param = []) {
+    public function memberGiftGrant($site_id, $member_id, $gifts = [], $param = [])
+    {
         try {
             $dict = (new DictLoader("MemberGift"))->load();
 
@@ -256,18 +294,18 @@ class CoreMemberService extends BaseCoreService
                         (new $grant())->handle($site_id, $member_id, $item, $param);
                     }
                 } catch (CommonException $e) {
-                    Log::write('会员礼包'.$key.'发放失败，错误原因：'. $e->getMessage().$e->getFile().$e->getLine());
+                    Log::write('会员礼包' . $key . '发放失败，错误原因：' . $e->getMessage() . $e->getFile() . $e->getLine());
                 }
             }
             return true;
         } catch (CommonException $e) {
-            Log::write('会员礼包发放失败，错误原因：'. $e->getMessage().$e->getFile().$e->getLine());
-            Log::write('参数：'. json_encode([
-                'site_id' => $site_id,
-                'member_id' => $member_id,
-                'gifts' => $gifts,
-                'param' => $param
-            ]));
+            Log::write('会员礼包发放失败，错误原因：' . $e->getMessage() . $e->getFile() . $e->getLine());
+            Log::write('参数：' . json_encode([
+                    'site_id' => $site_id,
+                    'member_id' => $member_id,
+                    'gifts' => $gifts,
+                    'param' => $param
+                ]));
         }
     }
 
@@ -277,7 +315,8 @@ class CoreMemberService extends BaseCoreService
      * @param $gifts
      * @return void
      */
-    public static function getGiftContent($site_id, array $gifts, $scene = 'admin') {
+    public static function getGiftContent($site_id, array $gifts, $scene = 'admin')
+    {
         $dict = (new DictLoader("MemberGift"))->load();
 
         foreach ($gifts as $k => $item) {
@@ -302,7 +341,8 @@ class CoreMemberService extends BaseCoreService
      * @param $gifts
      * @return void
      */
-    public static function getBenefitsContent($site_id, array $benefits, $scene = 'admin') {
+    public static function getBenefitsContent($site_id, array $benefits, $scene = 'admin')
+    {
         $dict = (new DictLoader("MemberBenefits"))->load();
 
         foreach ($benefits as $k => $item) {
@@ -327,7 +367,8 @@ class CoreMemberService extends BaseCoreService
      * @param $gifts
      * @return void
      */
-    public static function getGrowthRuleContent($site_id, array $config, $scene = 'admin') {
+    public static function getGrowthRuleContent($site_id, array $config, $scene = 'admin')
+    {
         $dict = (new DictLoader("GrowthRule"))->load();
 
         foreach ($config as $k => $item) {
@@ -352,7 +393,8 @@ class CoreMemberService extends BaseCoreService
      * @param $gifts
      * @return void
      */
-    public static function getPointGrantRuleContent($site_id, array $config, $scene = 'admin') {
+    public static function getPointGrantRuleContent($site_id, array $config, $scene = 'admin')
+    {
         $dict = (new DictLoader("PointRule"))->load()['grant'];
 
         foreach ($config as $k => $item) {
@@ -377,7 +419,8 @@ class CoreMemberService extends BaseCoreService
      * @param $gifts
      * @return void
      */
-    public static function getPointConsumeRuleContent($site_id, array $config, $scene = 'admin') {
+    public static function getPointConsumeRuleContent($site_id, array $config, $scene = 'admin')
+    {
         $dict = (new DictLoader("PointRule"))->load()['consume'];
 
         foreach ($config as $k => $item) {

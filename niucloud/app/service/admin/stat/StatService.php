@@ -129,7 +129,10 @@ class StatService extends BaseAdminService
             }
         }
         $app_count = ( new CoreAddonService() )->getLocalAddonCount();
-        $app_installed_count = ( new CoreAddonService() )->getCount();
+        $app_list = ( new CoreAddonService() )->getLocalAddonList()['list']??[];
+        $app_keys = array_keys($app_list);
+        $app_installed_count = ( new CoreAddonService() )->getCount([['key','in',$app_keys]]);
+
         $app = [
             'app_count' => $app_count,
             'app_no_installed_count' => $app_count - $app_installed_count,

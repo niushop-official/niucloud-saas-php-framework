@@ -102,13 +102,7 @@ class NoticeService extends BaseAdminService
                 break;
         }
         if ($type == NoticeTypeDict::SMS && $data['status'] == 1) {
-            $info = (new CoreConfigService())->getConfigValue($this->site_id, ConfigKeyDict::SMS);
-            if ($info['default'] == SmsDict::NIUSMS) {
-                $res = (new NiuSmsService())->checkTemplateAudit($data['key'], $data['sms_id']);
-                if (!$res) {
-                    throw new AdminException('TEMPLATE_ERROR');
-                }
-            }
+            (new NiuSmsService())->checkTemplateAudit($data['key'], $data['sms_id']);
         }
         return (new CoreNoticeService())->edit($this->site_id, $key, $save_data);
     }

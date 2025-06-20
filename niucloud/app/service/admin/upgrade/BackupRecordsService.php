@@ -178,6 +178,7 @@ class BackupRecordsService extends BaseAdminService
     public function checkPermission()
     {
         $niucloud_dir = $this->root_path . 'niucloud' . DIRECTORY_SEPARATOR;
+        $upgrade_dir = $this->root_path . 'upgrade' . DIRECTORY_SEPARATOR;
         $admin_dir = $this->root_path . 'admin' . DIRECTORY_SEPARATOR;
         $web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR;
         $wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR;
@@ -197,11 +198,13 @@ class BackupRecordsService extends BaseAdminService
         ];
 
         $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $niucloud_dir), 'status' => is_readable($niucloud_dir) ];
+        $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $upgrade_dir), 'status' => is_readable($upgrade_dir) ];
         $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $admin_dir), 'status' => is_readable($admin_dir) ];
         $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $web_dir), 'status' => is_readable($web_dir) ];
         $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $wap_dir), 'status' => is_readable($wap_dir) ];
 
         $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $niucloud_dir), 'status' => is_write($niucloud_dir) ];
+        $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $upgrade_dir), 'status' => is_write($upgrade_dir) ];
         $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $admin_dir), 'status' => is_write($admin_dir) ];
         $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $web_dir), 'status' => is_write($web_dir) ];
         $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $wap_dir), 'status' => is_write($wap_dir) ];
@@ -343,7 +346,7 @@ class BackupRecordsService extends BaseAdminService
                         'task' => 'backupSql'
                     ];
                     if ($backup_result % 5 == 0) {
-                        $res[ 'data' ][ 'content' ] = $backup_result == 0 ? '数据库开始备份' : '数据库备份中已备份'. $backup_result . '%';
+                        $res[ 'data' ][ 'content' ] = $backup_result == 0 ? '数据库开始备份' : '数据库备份中已备份' . $backup_result . '%';
                     }
                 }
 
@@ -382,7 +385,7 @@ class BackupRecordsService extends BaseAdminService
                     ];
                     $restore_progress = $db->getRestoreProgress();
                     if ($restore_progress % 5 == 0) {
-                        $res[ 'data' ]['content'] = $restore_progress == 0 ? '数据库开始恢复' : '数据库恢复中已恢复'. $restore_progress . '%';
+                        $res[ 'data' ][ 'content' ] = $restore_progress == 0 ? '数据库开始恢复' : '数据库恢复中已恢复' . $restore_progress . '%';
                     }
                 }
 
@@ -515,7 +518,7 @@ class BackupRecordsService extends BaseAdminService
                     ];
                 } else {
                     $res[ 'data' ] = [
-                        'content' => $backup_result == 0 ? '数据库开始备份' : '数据库备份已备份'. $backup_result . '%',
+                        'content' => $backup_result == 0 ? '数据库开始备份' : '数据库备份已备份' . $backup_result . '%',
                         'task' => 'backupSql'
                     ];
                 }

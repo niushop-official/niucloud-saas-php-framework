@@ -19,6 +19,7 @@ class Config extends BaseAdminController
 {
     /**
      * 获取微信开放平台开放平台配置信息
+     * @description 获取微信开放平台开放平台配置信息
      * @return Response
      */
     public function get()
@@ -28,6 +29,7 @@ class Config extends BaseAdminController
 
     /**
      * 设置微信开放平台配置信息
+     * @description 设置微信开放平台配置信息
      * @return Response
      */
     public function set()
@@ -46,6 +48,7 @@ class Config extends BaseAdminController
 
     /**
      * 获取微信开放平台静态资源
+     * @description 获取微信开放平台静态资源
      * @return Response
      */
     public function static()

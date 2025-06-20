@@ -193,7 +193,7 @@ CREATE TABLE `diy_page`  (
   `title` varchar(255) NOT NULL DEFAULT '' COMMENT '页面标题（用于前台展示）',
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '页面标识',
   `type` varchar(255) NOT NULL DEFAULT '' COMMENT '页面模板',
-  `template` varchar(255) NOT NULL DEFAULT '' COMMENT '模板名称',
+  `template` varchar(255) NOT NULL DEFAULT '' COMMENT '页面模板名称',
   `mode` varchar(255) NOT NULL DEFAULT 'diy' COMMENT '页面展示模式，diy：自定义，fixed：固定',
   `value` longtext COMMENT '页面数据，json格式',
   `is_default` int(11) NOT NULL DEFAULT 0 COMMENT '是否默认页面，1：是，0：否',
@@ -343,6 +343,7 @@ CREATE TABLE `member`  (
   `sex` tinyint(4) NOT NULL DEFAULT 0 COMMENT '性别 0保密 1男 2女',
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '用户状态  用户状态默认为1',
   `birthday` varchar(20) NOT NULL DEFAULT '' COMMENT '出生日期',
+  `id_card` varchar(30) NOT NULL DEFAULT '' COMMENT '身份证号',
   `point` int(11) NOT NULL DEFAULT 0 COMMENT '可用积分',
   `point_get` int(11) NOT NULL DEFAULT 0 COMMENT '累计获取积分',
   `balance` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '可用余额',
@@ -363,8 +364,7 @@ CREATE TABLE `member`  (
   `district_id` int(11) NOT NULL DEFAULT 0 COMMENT '区县id',
   `address` varchar(255) NOT NULL DEFAULT '' COMMENT '详细地址',
   `location` varchar(255) NOT NULL DEFAULT '' COMMENT '定位地址',
-  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
---   `id_card` varchar(50) NOT NULL DEFAULT '' COMMENT '身份证号',
+  `remark` varchar(300) NOT NULL DEFAULT '' COMMENT '备注',
   `delete_time` int(11) NOT NULL DEFAULT 0 COMMENT '删除时间',
   `update_time` int(11) NOT NULL DEFAULT 0 COMMENT '修改时间',
   PRIMARY KEY (`member_id`) USING BTREE
@@ -524,7 +524,6 @@ CREATE TABLE `niu_sms_template` (
   `update_time` INT(11) NOT NULL DEFAULT 0 COMMENT '修改时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci COMMENT='牛云短信模板表';
-
 
 DROP TABLE IF EXISTS `pay`;
 CREATE TABLE `pay`  (
@@ -929,6 +928,7 @@ CREATE TABLE `sys_menu`  (
   `addon` varchar(255) NOT NULL DEFAULT '' COMMENT '所属插件',
   `source` varchar(255) NOT NULL DEFAULT 'system' COMMENT '菜单来源   system 系统文件  create 新建菜单  generator 代码生成器',
   `menu_attr` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单属性 common 公共 system 系统',
+  `parent_select_key` VARCHAR(255) NOT NULL DEFAULT '' COMMENT '上级key',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '菜单表' ROW_FORMAT = Dynamic;
 
@@ -1137,7 +1137,8 @@ CREATE TABLE `sys_user_log`  (
   `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
   `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员id',
   `username` varchar(64) NOT NULL DEFAULT '' COMMENT '管理员姓名',
-  `url` varchar(128) NOT NULL DEFAULT '' COMMENT '链接',
+  `operation` varchar(100) NOT NULL DEFAULT '' COMMENT '操作描述',
+  `url` varchar(300) NOT NULL DEFAULT '' COMMENT '链接',
   `params` longtext DEFAULT NULL COMMENT '参数',
   `type` varchar(32) NOT NULL DEFAULT '' COMMENT '请求方式',
   `create_time` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '操作时间',

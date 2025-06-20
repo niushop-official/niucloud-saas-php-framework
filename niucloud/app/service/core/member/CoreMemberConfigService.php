@@ -13,6 +13,7 @@ namespace app\service\core\member;
 
 use app\dict\pay\TransferDict;
 use app\dict\sys\ConfigKeyDict;
+use app\model\diy_form\DiyForm;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseCoreService;
 use core\exception\CommonException;
@@ -74,9 +75,23 @@ class CoreMemberConfigService extends BaseCoreService
     public function getMemberConfig(int $site_id)
     {
         $info = ( new CoreConfigService() )->getConfig($site_id, 'MEMBER')[ 'value' ] ?? [];
+
+        $info[ 'form_id' ] = $info[ 'form_id' ] ?? '';
+        if(!empty($info[ 'form_id' ])) {
+            $diy_form_model = new DiyForm();
+            $diy_form_count = $diy_form_model->where([
+                [ 'site_id', '=', $site_id ],
+                [ 'form_id', '=', $info[ 'form_id' ] ]
+            ])->count();
+            if ($diy_form_count == 0) {
+                $info[ 'form_id' ] = '';
+            }
+        }
+
         return [
             'prefix' => $info[ 'prefix' ] ?? '',// 会员编码前缀
             'length' => $info[ 'length' ] ?? 4, // 会员编码长度
+            'form_id' => $info[ 'form_id' ], // 会员编码长度
         ];
     }
 
@@ -91,6 +106,7 @@ class CoreMemberConfigService extends BaseCoreService
         $config = [
             'prefix' => $data[ 'prefix' ] ?? '',// 会员编码前缀
             'length' => $data[ 'length' ] ?? 4,// 会员编码长度
+            'form_id' => $data[ 'form_id' ] ?? '',// 万能表单id
         ];
         ( new CoreConfigService() )->setConfig($site_id, 'MEMBER', $config);
         return true;

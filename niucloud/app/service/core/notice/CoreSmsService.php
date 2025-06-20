@@ -30,7 +30,7 @@ class CoreSmsService extends BaseCoreService
         parent::__construct();
     }
 
-    public function send($site_id, $mobile, $params, $key, $template_id, $content)
+    public function send($site_id, $mobile, $params, $key, $template_id, $content,$url_params=[])
     {
         //查询配置
         $config = $this->getDefaultSmsConfig($site_id);
@@ -47,9 +47,9 @@ class CoreSmsService extends BaseCoreService
             'params' => $params,
             'status' => SmsDict::SENDING
         ]);
-
         $sms_driver  = new SmsLoader($sms_type, $config);
         $params = $this->makeUp($params, $content, $sms_type);
+        $params['url_params'] = $url_params;
         $result = $sms_driver->send($mobile, $template_id, $params);
 
         if (!$result) {

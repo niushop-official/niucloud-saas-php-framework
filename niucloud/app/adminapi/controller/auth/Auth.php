@@ -20,11 +20,18 @@ use think\db\exception\ModelNotFoundException;
 use think\Response;
 
 
+/**
+ * 用户管理
+ * Class Auth
+ * @description 用户管理
+ * @package app\adminapi\controller\auth
+ */
 class Auth extends BaseAdminController
 {
 
     /**
      * 登录用户菜单列表的接口
+     * @description 登录用户菜单列表
      */
     public function authMenuList()
     {
@@ -36,6 +43,7 @@ class Auth extends BaseAdminController
 
     /**
      * 获取当前站点支持的应用
+     * @description 获取当前站点支持的应用
      * @return Response
      * @throws DataNotFoundException
      * @throws DbException
@@ -48,6 +56,7 @@ class Auth extends BaseAdminController
 
     /**
      * 获取登录用户信息
+     * @description 获取登录用户信息
      * @return Response
      */
     public function get()
@@ -57,6 +66,7 @@ class Auth extends BaseAdminController
 
     /**
      * 修改登录用户信息
+     * @description 修改登录用户信息
      * @param $field
      * @return Response
      */
@@ -73,6 +83,7 @@ class Auth extends BaseAdminController
 
     /**
      * 更新用户
+     * @description 更新用户
      */
     public function edit()
     {
@@ -88,6 +99,7 @@ class Auth extends BaseAdminController
 
     /**
      * 获取当前登录站点信息
+     * @description 获取当前登录站点信息
      * @return Response
      */
     public function site()
@@ -97,6 +109,7 @@ class Auth extends BaseAdminController
 
     /**
      * 选择可以选择的页面
+     * @description 选择可以选择的页面
      * @return Response
      * @throws DataNotFoundException
      * @throws DbException

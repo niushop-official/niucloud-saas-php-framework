@@ -19,6 +19,7 @@ class Oplatform extends BaseAdminController
 {
     /**
      * 获取授权链接
+     * @description 获取授权链接
      * @return Response
      */
     public function getAuthorizationUrl()
@@ -28,6 +29,7 @@ class Oplatform extends BaseAdminController
 
     /**
      * 授权
+     * @description 授权
      * @return Response
      */
     public function authorization() {

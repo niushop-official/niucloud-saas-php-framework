@@ -17,12 +17,19 @@ use app\service\core\addon\WapTrait;
 use core\base\BaseAdminController;
 use think\Response;
 
+/**
+ * 登录
+ * Class Login
+ * @description 登录
+ * @package app\adminapi\controller\login
+ */
 class Login extends BaseAdminController
 {
     use WapTrait;
 
     /**
      * 登录
+     * @description 登录
      * @return Response
      */
     public function login($app_type)
@@ -44,7 +51,8 @@ class Login extends BaseAdminController
     }
 
     /**
-     * 登出
+     * 退出登录
+     * @description 退出登录
      * @return Response
      */
     public function logout()
@@ -55,6 +63,7 @@ class Login extends BaseAdminController
 
     /**
      * 获取登录设置
+     * @description 获取登录设置
      * @return Response
      */
     public function getConfig()

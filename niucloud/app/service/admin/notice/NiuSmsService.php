@@ -100,6 +100,7 @@ class NiuSmsService extends BaseAdminService
      */
     public function registerAccount($data)
     {
+        $data['imgUrl'] = !empty($data['imgUrl']) ? request()->domain() . $data['imgUrl'] : "";
         $res = $this->niu_service->registerAccount($data);
         return $res;
     }
@@ -245,6 +246,7 @@ class NiuSmsService extends BaseAdminService
      */
     public function signCreate($username, $params)
     {
+        $params['imgUrl'] = !empty($params['imgUrl']) ? request()->domain() . $params['imgUrl'] : "";
         $res = $this->niu_service->signCreate($username, $params);
         if (!empty($res['failList'])) {
             throw new AdminException($res['failList'][0]['msg']);
@@ -292,7 +294,7 @@ class NiuSmsService extends BaseAdminService
                 }
             }
             return ['repeat_list' => $repeat_name_arr];
-        }else{
+        } else {
             $repeat_name_arr = [];
         }
         $this->execsync($sms_type, $username, $template_list);
@@ -371,7 +373,7 @@ class NiuSmsService extends BaseAdminService
         if (empty($config) || $config['username'] != $username) {
             throw new AdminException('ACCOUNT_ERROR_RELOGIN');
         }
-        $list = NoticeDict::getNoticeWithAddon($template_key,SmsDict::NIUSMS);
+        $list = NoticeDict::getNoticeWithAddon($template_key, SmsDict::NIUSMS);
         $list = $this->formatTemplateList($list);
 
 
@@ -383,20 +385,35 @@ class NiuSmsService extends BaseAdminService
             ['site_id', '=', $this->site_id]
         ])->select()->toArray();
         $report_list = array_column($report_list, null, 'template_key');
+
         foreach ($list as &$item) {
             $template_key = $item['key'];
             $report_info = $report_list[$template_key] ?? [];
+
             $item['template_id'] = $report_info['template_id'] ?? 0;
             $item['template_type_name'] = !empty($report_info['template_type']) ? NoticeTypeDict::getTemplateType($report_info['template_type']) : "";
             $item['sms_type'] = $report_info['sms_type'] ?? $sms_type;
             $item['site_id'] = $report_info['site_id'] ?? $this->site_id;
             $item['username'] = $report_info['username'] ?? $username;
 
+            $params_json = array_keys($report_info['param_json'] ?? []);
+            sort($params_json);
+            $variable = array_keys($item['variable'] ?? []);
+            sort($variable);
+
             $audit_status = $report_info['audit_status'] ?? NoticeTypeDict::TEMPLATE_AUDIT_STATUS_NOT_REPORT;
+            if (!empty($report_info) && $variable != $params_json) {
+                $error_status = $audit_status == NoticeTypeDict::TEMPLATE_AUDIT_STATUS_PASS
+                    ? NoticeTypeDict::TEMPLATE_AUDIT_STATUS_NEED_AGAIN_REPORT
+                    : NoticeTypeDict::TEMPLATE_AUDIT_STATUS_NEED_EDIT;
+            }
+
             $item['audit_info'] = [
                 'audit_msg' => $report_info['audit_msg'] ?? '',
                 'audit_status' => $audit_status,
                 'audit_status_name' => NoticeTypeDict::getTemplateAuditStatus($audit_status),
+                'error_status' => $error_status ?? '',
+                'error_status_name' => !empty($error_status) ? NoticeTypeDict::getTemplateAuditStatus($error_status) : ""
             ];
         }
         return $list;
@@ -404,18 +421,35 @@ class NiuSmsService extends BaseAdminService
 
     public function checkTemplateAudit($template_key, $template_id)
     {
-        $config = $this->niu_service->getNiuLoginConfig();
+        $config = $this->niu_service->getNiuLoginConfig(true);
+        //当前使用短信功能提供商非牛云短信无需校验模版ID是否正常
+        if (isset($config['default']) && $config['default'] != SmsDict::NIUSMS) {
+            return true;
+        }
+        $config = $config[SmsDict::NIUSMS];
         if (empty($config)) {
-            return false;
+            throw new AdminException('TEMPLATE_ERROR');
         }
         $template_info = $this->template_model->where([
             ['sms_type', '=', SmsDict::NIUSMS],
             ['template_id', '=', $template_id],
             ['username', '=', $config['username']],
             ['template_key', '=', $template_key],
-        ])->findOrEmpty();
+        ])->findOrEmpty()->toArray();
+        $params_json = array_keys($template_info['param_json'] ?? []);
+        sort($params_json);
+
+        $template_config = $this->getTemplateList(SmsDict::NIUSMS, $config['username'], $template_key)[0];
+
+        $variable = array_keys($template_config['variable'] ?? []);
+        sort($variable);
+
+        if (!empty($template_info) && $variable != $params_json) {
+            throw new AdminException('TEMPLATE_USE_ERROR');
+        }
+
         if (empty($template_info) || $template_info['audit_status'] != NoticeTypeDict::TEMPLATE_AUDIT_STATUS_PASS) {
-            return false;
+            throw new AdminException('TEMPLATE_ERROR');
         }
         return $template_info;
     }
@@ -437,7 +471,7 @@ class NiuSmsService extends BaseAdminService
 //                $temp['addon'] = $addon;
                 $temp['addon'] = $addon_list[$addon] ?? '系统';
                 $str = $temp['sms']['content'] ?? "";
-                if (empty($str)){
+                if (empty($str)) {
                     continue;
                 }
                 preg_match_all('/\{(.*?)\}/', $str, $matches);
@@ -505,21 +539,22 @@ class NiuSmsService extends BaseAdminService
         if (empty($template_info['sms']['content'])) {
             throw new AdminException('TEMPLATE_NOT_SMS_CONTENT');
         }
+        $model_info = $this->template_model->where('template_key', $template_key)->findOrEmpty();
+        if (!$model_info->isEmpty() && $model_info->audit_status == NoticeTypeDict::TEMPLATE_AUDIT_STATUS_PASS) {
+            throw new AdminException('TEMPLATE_IS_PASS');
+        }
         $config = $this->niu_service->getNiuLoginConfig();
         $data = [
             'temName' => $template_info['name'],
             'temType' => $params['template_type'],
             'temContent' => $template_info['sms']['content'],
             'paramJson' => $params['params_json'],
-            'extend' => json_encode(['template_key' => $template_key]),
+            'extend' => ['template_key' => $template_key],
             'signature' => $config['signature'],
+            'temId' => $params['template_id'],
         ];
-        if ($params['template_id']) {
-            $data['temId'] = $params['template_id'];
-        }
         $res = $this->niu_service->templateCreate($username, $data);
         $tem_id = $res['temId'] ?? 0;
-        $model_info = $this->template_model->where('template_key', $template_key)->findOrEmpty();
         if ($model_info->isEmpty()) {
             $this->template_model->create([
                 'site_id' => $this->site_id,
@@ -540,6 +575,22 @@ class NiuSmsService extends BaseAdminService
             $model_info->save();
         }
         return $res ?? [];
+    }
+
+    /**
+     * 清除模版报备信息
+     * @param $username
+     * @param $template_id
+     * @return void
+     * @throws \Exception
+     */
+    public function templateDelete($username, $template_id)
+    {
+        $config = $this->niu_service->getNiuLoginConfig();
+        $params['password'] = $config['password'];
+        $params['template_id'] = $template_id;
+        $this->niu_service->templateDelete($username, $params);
+        $this->template_model->where('template_id', $template_id)->delete();
     }
 
     /**
