@@ -1,0 +1,1 @@
+.menu-wrap{padding:0!important}.menu-wrap .el-menu{border-right:0!important}.menu-wrap .el-menu .el-menu-item,.menu-wrap .el-menu .el-sub-menu__title{--el-menu-item-height: 40px}.menu-wrap .el-menu .el-sub-menu .el-menu-item{--el-menu-sub-item-height: 40px}.menu-wrap .el-menu .el-menu-item.is-active{background-color:var(--el-color-primary)}

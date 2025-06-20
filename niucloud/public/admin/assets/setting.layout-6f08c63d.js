@@ -1,0 +1,1 @@
+const t="应用",o="设置",a="选择布局",e="还没有安装应用",s="多应用",n="布局",p="色调",c={app:t,setting:o,selectLayout:a,emptyData:e,manyApp:s,layout:n,themeColor:p};export{t as app,c as default,e as emptyData,n as layout,s as manyApp,a as selectLayout,o as setting,p as themeColor};
