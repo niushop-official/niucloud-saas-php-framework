@@ -2,6 +2,7 @@
     <view class="diy-group" id="componentList">
         <top-tabbar v-if="data.global && Object.keys(data.global).length && data.global.topStatusBar && data.global.topStatusBar.isShow"
             :scrollBool="diyGroup.componentsScrollBool.TopTabbar" ref="topTabbarRef" :data="data.global" />
+        <pop-ads v-if="data.global && Object.keys(data.global).length && data.global.popWindow && data.global.popWindow.show" ref="popAbsRef" :data="data.global" />
         <view v-for="(component, index) in data.value" :key="component.id"
               @click="diyStore.changeCurrentIndex(index, component)"
               :class="diyGroup.getComponentClass(index,component)" :style="component.pageStyle">
@@ -117,6 +118,7 @@
                 <template v-if="component.componentName == 'FormFile'">
                     <diy-form-file ref="diyFormFileRef" :component="component" :global="data.global" :index="index" />
                 </template>
+
             </view>
         </view>
         <template v-if="diyStore.mode == '' && data.global && data.global.bottomTabBarSwitch">
@@ -127,13 +129,13 @@
 </template>
 <script lang="ts" setup>
 import topTabbar from '@/components/top-tabbar/top-tabbar.vue'
+import popAds from '@/components/pop-ads/pop-ads.vue'
 
 import { useDiyGroup } from './useDiyGroup'
 import useDiyStore from '@/app/stores/diy';
 import { ref, getCurrentInstance } from 'vue';
 
 const props = defineProps(['data']);
-
 const instance: any = getCurrentInstance();
 const getFormRef = () => {
     return {

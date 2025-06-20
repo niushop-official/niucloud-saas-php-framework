@@ -48,7 +48,7 @@ import diyGroup from '@/addon/components/diy/group/index.vue'
 const { setShare } = useShare()
 
 const diy = useDiyForm({
-    needLogin: true // 检测登录
+    needLogin: false // 检测登录
 })
 
 const diyGroupRef = ref(null)

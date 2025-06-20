@@ -15,11 +15,12 @@ interface System {
     menuButtonInfo: any, // 如果是小程序，获取右上角胶囊的尺寸信息
     shareCallback: any, // 分享回调
     defaultPositionAddress: any,
-    diyAddressInfo: any  // 定位信息
+    diyAddressInfo: any,  // 定位信息
     currTabbar: {
         path: string,
         query: object
-    }
+    },
+    isAddCartRecommend: boolean // 是否添加购物车推荐
 }
 
 const useSystemStore = defineStore('system', {
@@ -46,7 +47,8 @@ const useSystemStore = defineStore('system', {
             currTabbar: {
                 path: '',
                 query: {}
-            }
+            },
+            isAddCartRecommend: false
         }
     },
     actions: {

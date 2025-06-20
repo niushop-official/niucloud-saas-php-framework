@@ -33,8 +33,8 @@
     import tabbarJson from '@/tabbar.json'
     import zh from '@/locale/zh-Hans.json'
     import en from '@/locale/en.json'
-    import {onPageScroll} from "@dcloudio/uni-app";
     import TopTabbar from "@/components/top-tabbar/top-tabbar.vue";
+
     import { language } from '@/locale'
 
     uni.hideTabBar()

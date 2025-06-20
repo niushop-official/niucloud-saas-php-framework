@@ -50,6 +50,7 @@
 	import { ref, computed, watch, onMounted } from 'vue';
 	import useDiyStore from '@/app/stores/diy';
 	import { img, timeStampTurnTime, timeTurnTimeStamp } from '@/utils/common';
+
 	const props = defineProps(['component', 'index', 'global']);
 	const diyStore = useDiyStore();
 	const formData: any = ref({
