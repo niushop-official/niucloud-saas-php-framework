@@ -59,7 +59,7 @@
                             </div>
                             <div class="bg-[#EDEEF4] p-[20px] rounded-[6px] cursor-pointer flex flex-col items-start quick-action-card relative" @click="toHref('/app_manage/app_store','uninstalled')">
                                 <div class="title flex items-center">
-                                    <span class="iconfont iconanzhuangyigechajianc !text-[20px] mr-[10px]"></span>
+                                    <span class="iconfont iconanzhuangyigechajian1 !text-[20px] mr-[10px]"></span>
                                     <span class="text-[14px] text-[#1D1F3A]">安装一个插件</span>
                                 </div>
                                 <div class="absolute bottom-3 left-5 right-4 desc">
@@ -248,7 +248,7 @@
 import { ref, watch ,onMounted} from 'vue'
 import { t } from '@/lang'
 import { getStatInfo } from '@/app/api/stat'
-import { getAppIndex} from '@/app/api/addon'
+import { getAppIndex } from '@/app/api/addon'
 import * as echarts from 'echarts'
 import { getFrameworkNewVersion } from '@/app/api/module'
 import { getWebCopyright } from '@/app/api/sys'

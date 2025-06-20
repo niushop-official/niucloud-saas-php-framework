@@ -5,7 +5,7 @@
             <div class="flex justify-between items-center p-[20px]">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
-            <el-tabs v-model="activeName" class="">
+            <el-tabs v-model="activeName">
                 <el-tab-pane :label="t('小程序同步')" name="xcx">
                     <weappVersion></weappVersion>
                 </el-tab-pane>
@@ -70,7 +70,7 @@
                         </el-table>
 
                         <div class="mt-[16px] flex justify-end">
-                            <el-pagination v-model:current-page="authRecordTableData.page" v-model:page-size="authRecordTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="authRecordTableData.total" @size-change="loadCommitRecordList()" @current-change="loadCommitRecordList" />
+                            <el-pagination v-model:current-page="authRecordTableData.page" v-model:page-size="authRecordTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="authRecordTableData.total" @size-change="loadAuthRecordList()" @current-change="loadAuthRecordList" />
                         </div>
                     </el-card>
                 </el-tab-pane>

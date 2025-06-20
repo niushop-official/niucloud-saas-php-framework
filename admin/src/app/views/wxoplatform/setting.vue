@@ -17,16 +17,14 @@
                     <el-form-item :label="t('empowerReceiveUrl')">
                         <el-input v-model.trim="staticInfo.auth_serve_url" placeholder="Please input" class="!w-[500px]" :readonly="true">
                             <template #append>
-                                <div class="cursor-pointer" @click="copyEvent(staticInfo.auth_serve_url)">{{ t('copy') }}
-                                </div>
+                                <div class="cursor-pointer" @click="copyEvent(staticInfo.auth_serve_url)">{{ t('copy') }}</div>
                             </template>
                         </el-input>
                     </el-form-item>
                     <el-form-item :label="t('messageReceiveUrl')">
                         <el-input v-model.trim="staticInfo.message_serve_url" placeholder="Please input" class="!w-[500px]" :readonly="true">
                             <template #append>
-                                <div class="cursor-pointer" @click="copyEvent(staticInfo.message_serve_url)">{{ t('copy') }}
-                                </div>
+                                <div class="cursor-pointer" @click="copyEvent(staticInfo.message_serve_url)">{{ t('copy') }}</div>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -75,9 +73,7 @@
                         <div class="form-tip">{{ t('uploadIpTips') }}{{ staticInfo.upload_ip }}</div>
                     </el-form-item>
                 </div>
-                
             </el-card>
-
         </el-form>
 
         <div class="fixed-footer-wrap">

@@ -287,3 +287,11 @@ export function templateSync(sms_type: string, username: string) {
 export function resetPassword(username: string,params: Record<string, any>) {
     return request.post(`notice/niusms/account/reset/password/${username}`,params,{ showSuccessMessage: true})
 }
+
+/**
+ * 清除模版报备
+ * @param params
+ */
+export function clearTemplate(username: string,template_id: string) {
+    return request.delete(`notice/niusms/template/${username}/${template_id}`)
+}

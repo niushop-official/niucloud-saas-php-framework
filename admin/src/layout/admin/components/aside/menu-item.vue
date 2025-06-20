@@ -5,7 +5,7 @@
                 <div v-if="meta.icon && props.level != 2" class="w-[13px] h-[13px] mr-[10rpx] relative flex justify-center items-center">
                     <icon v-if="meta.icon && props.level != 2" :name="meta.icon" color="#1D1F3A" class="absolute !w-auto" />
                 </div>
-                <span :class="['ml-[10px]', {'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}]">{{ meta.title }}</span>
+                <span class="using-hidden" :class="['ml-[10px]', {'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}]">{{ meta.title }}</span>
             </template>
             <menu-item v-for="(route, index) in routes.children" :routes="route" :level="props.level + 1"  :key="index" :isNewVersion="props.isNewVersion" />
         </el-sub-menu>
@@ -14,7 +14,7 @@
                 <div v-if="meta.icon && props.level != 2" class="w-[13px] h-[13px] mr-[10rpx] relative flex justify-center items-center">
                     <icon v-if="meta.icon && props.level != 2"  color="#1D1F3A" :name="meta.icon" class="absolute !w-auto" />
                 </div>
-                <span :class="[{'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}, {'ml-[10px]': routes.meta.class == 2, 'ml-[15px]': routes.meta.class == 3}]">{{ meta.title }}
+                <span class="using-hidden" :class="[{'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}, {'ml-[10px]': routes.meta.class == 2, 'ml-[15px]': routes.meta.class == 3}]">{{ meta.title }}
                     <div v-if="meta.view=='app/upgrade'&& props.isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[10px] right-[65px]"></div>
                 </span>
             </template>
@@ -64,5 +64,17 @@ const meta = computed(() => props.routes.meta)
 		color: #fff;
         background-color: var(--el-color-primary);
     }
+}
+
+</style>
+<style scoped>
+.using-hidden {
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: nowrap;
 }
 </style>

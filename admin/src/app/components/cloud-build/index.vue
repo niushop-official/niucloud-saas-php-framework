@@ -65,28 +65,32 @@
                     </div>
                 <!-- </el-scrollbar> -->
             </div>
-            <div class="h-[45vh]" v-show="cloudBuildTask && !errorLog">
+            <div class="h-[45vh]" v-show="cloudBuildTask">
                 <terminal ref="terminalRef" context="" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd"/>
             </div>
-            <div class="flex justify-end mt-[20px]" v-show="cloudBuildTask && !errorLog">
+            <div class="flex justify-end mt-[20px]" v-show="cloudBuildTask">
                 <el-button @click="dialogCancel()" class="!w-[90px]">取消</el-button>
                 <el-button type="primary" :loading="timeloading" class="!w-[140px]">已用时 {{ formattedDuration }}</el-button>
             </div>
-            <div class="h-[50vh] flex flex-col" v-show="errorLog">
-                <div class="flex-1 h-0">
-                    <el-result icon="error" :title="t('编译失败')"  :sub-title="errorInfo">
+        </div>
+        <div v-show="active == 'error'">
+            <div class="h-[50vh] flex flex-col">
+                <div class="flex-1 h-0 flex justify-center items-center flex-col">
+                    <el-result icon="error" :title="t('编译失败')">
                         <template #icon>
                             <img src="@/app/assets/images/error_icon.png" alt="">
                         </template>
                         <template #extra>
-                            <el-button @click="errorLog=false" class="!w-[90px]">错误信息</el-button>
+                            <el-scrollbar class="max-h-[150px] overflow-auto text-[15px] text-[#4F516D] mb-[15px] mt-[-15px]">
+                                {{errorInfo}}
+                            </el-scrollbar>
+                            <el-button @click="handleReturn" class="!w-[90px]">错误信息</el-button>
                             <el-button @click="showDialog=false" type="primary" class="!w-[90px]">完成</el-button>
                         </template>
                     </el-result>
                 </div>
             </div>
         </div>
-
         <div v-show="active == 'complete'">
             <div class="h-[50vh] flex flex-col">
                 <div class="flex-1 h-0 flex justify-center items-center flex-col">
@@ -150,7 +154,6 @@ const getCloudBuildTaskFn = () => {
     }).catch()
 }
 getCloudBuildTaskFn()
-const errorLog = ref(false)
 const errorInfo = ref('')
 const timeloading = ref(false)
 const getCloudBuildLogFn = () => {
@@ -205,7 +208,9 @@ const getCloudBuildLogFn = () => {
                         error = item.msg
                         terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
                         timeloading.value = false
-                        errorLog.value = true
+                        active.value = 'error'
+                        terminalRef.value.execute('clear')
+                        clearCloudBuildTask()
                         errorInfo.value = item.msg
                         // 停止计时器
                         if (buildTimer) {
@@ -235,7 +240,6 @@ const getCloudBuildLogFn = () => {
 const closeType = ref('normal')
 const handleReturn = () => {
     active.value = 'build'
-    errorLog.value = false
     closeType.value = 'success'
 }
 
@@ -428,6 +432,6 @@ defineExpose({
 	-webkit-box-orient: vertical;
 }
 :deep(.el-result){
-    margin-top: -100px !important;
+    margin-top: -80px !important;
 }
 </style>

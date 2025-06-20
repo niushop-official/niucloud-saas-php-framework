@@ -107,6 +107,7 @@ import userInfo from './user-info.vue'
 import layoutSetting from './layout-setting.vue'
 import message from './message.vue'
 
+const showDialog = ref<boolean>(false)
 const systemStore = useSystemStore()
 const route = useRoute()
 const router = useRouter()
@@ -165,7 +166,7 @@ const toHome = () => {
         window.localStorage.setItem('site.comparisonTokenStorage', getToken())
     }
     if (!window.localStorage.getItem('site.userinfo')) {
-        window.localStorage.setItem('site.userinfo', JSON.stringify(useUserStore().userInfo)) 
+        window.localStorage.setItem('site.userinfo', JSON.stringify(useUserStore().userInfo))
     }
     router.push({ path: '/home/index'})
 }

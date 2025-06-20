@@ -215,11 +215,11 @@ const loginFn = (data = {}) => {
     }
 
 }
-.form-two .el-input__wrapper{
-        // border: none !important;
-        box-shadow: none !important;
-        border-bottom: 1px solid #DCDEE0 !important;
-        padding:10px 0  !important;
+.form-two .el-input__wrapper {
+    // border: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #DCDEE0 !important;
+    padding: 10px 0 !important;
 }
 
 @media only screen and (max-width: 750px) {

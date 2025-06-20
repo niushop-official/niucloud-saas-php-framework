@@ -54,9 +54,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed ,onMounted,watchEffect} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
+import { getShowApp,getShowMarketing } from '@/app/api/site'
 import useUserStore from '@/stores/modules/user'
 import { img, isUrl } from '@/utils/common'
 import { findFirstValidRoute } from '@/router/routers'
@@ -89,7 +90,7 @@ routers.forEach(item => {
             }
             oneMenuData.value.push(item)
         }
-    } else if (item.meta.addon != '' && siteInfo?.apps.length <= 1 && siteInfo?.apps[0].key == item.meta.addon) {
+    } else if (item.meta.addon != '' && siteInfo?.apps.length <= 1 && siteInfo?.apps[0].key == item.meta.addon && item.meta.show) {
         if (item.children) {
             item.children.forEach((citem: Record<string, any>) => {
                 citem.original_name = citem.name
@@ -104,8 +105,19 @@ routers.forEach(item => {
     } else {
         addonRouters[item.meta.addon] = item
     }
+    // 排序, 功能正确，改了排序后需要把菜单排序的默认值重新调整一下【多应用一级菜单，单应用二级菜单】
+    // oneMenuData.value.sort((a, b) => {
+    //     if (a.meta.sort && b.meta.sort) {
+    //         return b.meta.sort - a.meta.sort
+    //     } else if (a.meta.sort) {
+    //         return -1
+    //     } else if (b.meta.sort) {
+    //         return 1
+    //     } else {
+    //         return 0
+    //     }
+    // })
 })
-
 // 多应用时将应用插入菜单
 if (siteInfo?.apps.length > 1) {
     const routers:Record<string, any>[] = []
@@ -116,37 +128,106 @@ if (siteInfo?.apps.length > 1) {
         }
     })
     oneMenuData.value.unshift(...routers)
+    // 排序, 功能正确，改了排序后需要把菜单排序的默认值重新调整一下【多应用一级菜单，单应用二级菜单】
+    // oneMenuData.value.sort((a, b) => {
+    //     if (a.meta.sort && b.meta.sort) {
+    //         return b.meta.sort - a.meta.sort
+    //     } else if (a.meta.sort) {
+    //         return -1
+    //     } else if (b.meta.sort) {
+    //         return 1
+    //     } else {
+    //         return 0
+    //     }
+    // })
 }
-
+const appList = ref(null);
+const marketingList = ref(null);
+// const loading = ref(true);
 const oneMenuActive = ref(route.matched[1].name)
+const getAppList = async () => {
+    const res = await getShowApp();
+    appList.value = res.data;
+    // loading.value = false;
+};
+const getMarketingList = async () => {
+    const res = await getShowMarketing();
+    marketingList.value = res.data
+}
+onMounted(async () => {
+    await getAppList(); // 确保数据先加载
+    await getMarketingList()
+});
 
-watch(route, () => {
-    if (route.meta.attr != '') {
-        oneMenuActive.value = route.matched[2].name
-        twoMenuData.value = route.matched[1].children ?? []
+watchEffect(() => {
+    // if (!appList.value || loading.value) return; // 确保数据加载完毕
+    const addonKeys = appList.value?.addon?.list?.map(item => item.key) ?? [];
+    const toolKeys = appList.value?.tool?.list?.map(item => item.key) ?? [];
+    const allKeys = [...addonKeys, ...toolKeys];
+    const marketingKeys = marketingList.value?.marketing?.list?.map(item => item.key) ?? [];
+    const matchedName = route.matched[1]?.name;
+    if (allKeys.includes(matchedName)) {
+        oneMenuActive.value = "addon";
+        twoMenuData.value = route.matched[1]?.children ?? [];
+    }else if(marketingKeys.includes(matchedName)){
+        oneMenuActive.value = "active";
+        twoMenuData.value = route.matched[1]?.children ?? [];
+    } else if (route.meta.attr !== "") {
+        oneMenuActive.value = route.matched[2]?.name;
+        twoMenuData.value = route.matched[1]?.children ?? [];
     } else {
         // 多应用
         if (siteInfo?.apps.length > 1) {
-            twoMenuData.value = route.matched[1].children
-            oneMenuActive.value = route.matched[1].name
+            twoMenuData.value = route.matched[1]?.children;
+            oneMenuActive.value = route.matched[1]?.name;
         } else {
             // 单应用
-            const oneMenu = route.matched[1]
-            if (oneMenu.meta.addon == '') {
-                oneMenuActive.value = route.matched[1].name
-                twoMenuData.value = route.matched[1].children ?? []
+            const oneMenu = route.matched[1];
+            if (oneMenu.meta.addon === "") {
+                oneMenuActive.value = route.matched[1]?.name;
+                twoMenuData.value = route.matched[1]?.children ?? [];
             } else {
-                if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
-                    oneMenuActive.value = route.matched[2].name
-                    twoMenuData.value = route.matched[2].children ?? []
+                if (oneMenu.meta.addon === siteInfo?.apps[0]?.key) {
+                    oneMenuActive.value = route.matched[2]?.name;
+                    twoMenuData.value = route.matched[2]?.children ?? [];
                 } else {
-                    oneMenuActive.value = route.matched[1].name
-                    twoMenuData.value = route.matched[1].children ?? []
+                    oneMenuActive.value = route.matched[1]?.name;
+                    twoMenuData.value = route.matched[1]?.children ?? [];
                 }
             }
         }
     }
-}, { immediate: true })
+});
+
+// watch(route, () => {
+//     console.log(route.matched);
+    
+//     if (route.meta.attr != '') {
+//         oneMenuActive.value = route.matched[2].name
+//         twoMenuData.value = route.matched[1].children ?? []
+//     } else {
+//         // 多应用
+//         if (siteInfo?.apps.length > 1) {
+//             twoMenuData.value = route.matched[1].children
+//             oneMenuActive.value = route.matched[1].name
+//         } else {
+//             // 单应用
+//             const oneMenu = route.matched[1]
+//             if (oneMenu.meta.addon == '') {
+//                 oneMenuActive.value = route.matched[1].name
+//                 twoMenuData.value = route.matched[1].children ?? []
+//             } else {
+//                 if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
+//                     oneMenuActive.value = route.matched[2].name
+//                     twoMenuData.value = route.matched[2].children ?? []
+//                 } else {
+//                     oneMenuActive.value = route.matched[1].name
+//                     twoMenuData.value = route.matched[1].children ?? []
+//                 }
+//             }
+//         }
+//     }
+// }, { immediate: true })
 
 // 让二级菜单默认展开
 const menuOption = ref([])

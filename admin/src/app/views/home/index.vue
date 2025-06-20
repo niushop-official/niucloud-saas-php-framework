@@ -156,7 +156,7 @@
                             class="mx-1">联系我们</span> | <span class="mx-1">Cookies</span>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -178,7 +178,7 @@
             <div class="flex items-center">
                 <div class="text-[18px] text-[#333333]">站点名称</div>
                 <div class="w-[350px] h-[34px] ml-[10px]">
-                    <el-form :model="createSiteData.formData" ref="formRef" :rules="formRules">
+                    <el-form :model="createSiteData.formData" ref="formRef">
                         <el-form-item prop="username">
                             <el-input class="create-site-name" v-model.trim="createSiteData.formData.site_name" maxlength="20" placeholder="请输入站点名称" autocomplete="off"></el-input>
                         </el-form-item>
@@ -227,7 +227,7 @@ import { getHomeSite, getSiteGroup, createSite } from '@/app/api/home'
 import useUserStore from '@/stores/modules/user'
 import useSystemStore from '@/stores/modules/system'
 import { getWebCopyright } from '@/app/api/sys'
-import { getInstalledAddonList } from '@/app/api/addon'
+import { getGroupAppList } from '@/app/api/addon'
 import { ElMessage } from 'element-plus'
 import { AnyObject } from '@/types/global'
 import Test from '@/utils/test'
@@ -379,7 +379,7 @@ const addonList = ref<{
     key: string,
     title: string
 }[]>([])
-getInstalledAddonList().then(({ data }) => {
+getGroupAppList().then(({ data }) => {
     const apps:any = []
     Object.keys(data).forEach(key => {
         const addon = data[key]

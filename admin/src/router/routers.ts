@@ -143,7 +143,8 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
             view: route.view_path,
             addon: route.addon,
             attr: route.menu_attr,
-            parent_route: parentRoute ? parentRoute.meta : parentRoute
+            parent_route: parentRoute ? parentRoute.meta : parentRoute,
+            sort: route.sort
         }
     }
     if (route.menu_type == 0) {

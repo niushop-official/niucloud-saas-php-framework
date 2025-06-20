@@ -3,7 +3,6 @@
         <el-scrollbar>
             <side class="hidden-xs-only slide" />
         </el-scrollbar>
-        
     </el-aside>
 </template>
 

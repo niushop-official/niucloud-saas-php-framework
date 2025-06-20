@@ -55,6 +55,15 @@ export function closeSite(params: Record<string, any>) {
 }
 
 /**
+ * 初始化站点
+ * @param params
+ */
+export function initSite(params: Record<string, any>) {
+    return request.post(`site/init`, params, { showSuccessMessage: true })
+}
+
+
+/**
  * 打开站点
  * @param params
  */
@@ -214,7 +223,6 @@ export function getLogInfo(id: number) {
 
 /**
  * 清空操作日志列表
- * @param params
  * @returns
  */
 export function logDestroy() {
@@ -270,4 +278,12 @@ export function getSiteAddons() {
  */
 export function getShowApp() {
     return request.get('site/showApp')
+}
+
+/**
+ * 获取营销列表
+ * @returns
+ */
+export function getShowMarketing() {
+    return request.get('site/showMarketing')
 }

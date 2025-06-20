@@ -86,6 +86,7 @@
                 <el-form-item :label="t('短信签名')" prop="signature">
                     <el-input v-model="formData.signature" placeholder="请输入短信签名" class="input-width" maxlength="20"  show-word-limit clearable />
                 </el-form-item>
+                <div class="ml-[150px] text-[12px] text-[#999] leading-[20px]">必须由【】包裹，例如：【test】</div>
                 <div class="my-[5px] ml-[150px] text-[12px] text-[#999] leading-[20px]">字数要求在2-20个字符，不能使用空格和特殊符号“ - + = * & % # @ ~等;</div>
                 <el-form-item :label="t('短信示例内容')" prop="contentExample">
                     <el-input v-model="formData.contentExample" placeholder="请输入短信示例内容" clearable  maxlength="50"  show-word-limit class="input-width" />
@@ -102,22 +103,27 @@
                 <el-form-item :label="t('经办人姓名')" prop="principalName">
                     <el-input v-model="formData.principalName" placeholder="请输入经办人姓名" clearable  maxlength="20"  show-word-limit class="input-width" />
                 </el-form-item>
+                <el-form-item :label="t('经办人手机号')" prop="principalMobile">
+                    <el-input v-model="formData.principalMobile" placeholder="请输入经办人手机号" clearable  maxlength="20"  show-word-limit class="input-width" />
+                </el-form-item>
                 <el-form-item :label="t('经办人身份证')" prop="principalIdCard">
                     <el-input v-model="formData.principalIdCard" placeholder="请输入经办人身份证" clearable  maxlength="18"  show-word-limit class="input-width" />
                 </el-form-item>
                 <el-form-item :label="t('签名来源')">
                     <el-radio-group v-model="formData.signSource" >
-                        <el-radio v-for="item in signCofig.signsourceList" :key="item.type" :label="item.type" >{{item.name}}</el-radio>
+                        <el-radio v-for="item in signConfig.signSourceList" :key="item.type" :label="item.type" >{{item.name}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item :label="t('签名类型')">
                     <el-radio-group v-model="formData.signType">
-                        <el-radio v-for="item in signCofig.signTypeList" :key="item.type" :label="item.type" >{{item.name}}</el-radio>
+                        <el-radio v-for="item in signConfig.signTypeList" :key="item.type" :label="item.type" >{{item.name}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item :label="t('上传图片')" prop="imgUrl">
                     <upload-image v-model="formData.imgUrl" :limit="1" />
                 </el-form-item>
+                <div class="ml-[150px] text-[12px] text-[#999] leading-[20px]">当签名来源为商标、APP、小程序、事业单位简称或企业名称简称时，需必填此字段</div>
+                <div class="my-[5px] ml-[150px] text-[12px] text-[#999] leading-[20px]">当签名来源为事业单位全称或企业名称全称时，选填此字段。</div>
                 <el-form-item :label="t('是否默认')">
                     <el-radio-group v-model="formData.defaultSign" >
                         <el-radio :label="1">是</el-radio>
@@ -155,6 +161,7 @@ const initialFormData = {
     signSource: '',
     principalIdCard: '',
     principalName: '',
+    principalMobile: '',
     legalPerson: '',
     creditCode: '',
     companyName: '',
@@ -162,15 +169,14 @@ const initialFormData = {
 }
 const formData = reactive({ ...initialFormData })
 
-
-const signCofig = reactive({
+const signConfig = reactive({
     signTypeList: [],
-    signsourceList:[]
+    signSourceList:[]
 })
 const getSmsSignConfigFn = ()=> {
     getSmsSignConfig().then(res => {
-        signCofig.signTypeList = res.data.sign_type_list
-        signCofig.signsourceList = res.data.sign_source_list
+        signConfig.signTypeList = res.data.sign_type_list
+        signConfig.signSourceList = res.data.sign_source_list
         formData.signSource = res.data.sign_source_list[0].type
         formData.signType = res.data.sign_type_list[0].type
     })
@@ -185,21 +191,32 @@ const formRules = computed(() => {
             { required: true, message: '请输入短信签名', trigger: 'blur' },
             {
                 validator: (rule, value, callback) => {
-                    const lengthValid = value.length >= 2 && value.length <= 20;
-                    const invalidChars = /[\s\-+=*&%#@~;]/;
-
-                    if (!lengthValid) {
-                        callback(new Error('短信签名字数需在 2-20 个字符之间'));
-                    } else if (invalidChars.test(value)) {
-                        callback(new Error('短信签名不能包含空格或特殊字符 - + = * & % # @ ~ ;'));
-                    } else {
-                        callback();
+                    const singleBracketValid = /^【[^【】]*】$/.test(value);
+                    if (!singleBracketValid) {
+                        return callback(new Error('短信签名必须被【】包裹'));
                     }
+
+                    const content = value.slice(1, -1);
+
+                    const lengthValid = content.length >= 2 && content.length <= 20;
+                    if (!lengthValid) {
+                        return callback(new Error('短信签名内容需在 2-20 个字符之间'));
+                    }
+
+                    const invalidChars = /[\s\-+=*&%#@~;]/;
+                    if (invalidChars.test(content)) {
+                        return callback(new Error('短信签名不能包含空格或特殊字符 - + = * & % # @ ~ ;'));
+                    }
+
+                    callback();
                 },
                 trigger: 'blur'
             }
         ],
-
+        principalMobile: [
+            { required: true, message: '请输入经办人手机号', trigger: 'blur' },
+            { validator: phoneVerify, trigger: 'blur' }
+        ],
         companyName: [
             { required: true, message: '请输入企业名称', trigger: 'blur' },
         ],
@@ -243,6 +260,14 @@ const formRules = computed(() => {
 const idCardVerify = (rule: any, value: any, callback: any) => {
     if (value && !/^[1-9]\d{5}(19|20)\d{2}((0\d)|(1[0-2]))(([0-2]\d)|3[0-1])\d{3}([0-9Xx])$/.test(value)) {
         callback(new Error(t('请输入正确的身份证号码')))
+    } else {
+        callback()
+    }
+}
+
+const phoneVerify = (rule: any, value: any, callback: any) => {
+    if (value && !/^1[3-9]\d{9}$/.test(value)) {
+        callback(new Error(t('请输入正确的手机号码')))
     } else {
         callback()
     }
@@ -294,8 +319,8 @@ const loadSignList = () => {
 
 const addEvent = () => {
     Object.assign(formData, initialFormData)
-    formData.signSource = signCofig.signsourceList[0].type
-    formData.signType = signCofig.signTypeList[0].type
+    formData.signSource = signConfig.signSourceList[0].type
+    formData.signType = signConfig.signTypeList[0].type
     visibleAdd.value = true
 }
 
@@ -371,14 +396,13 @@ const batchDeleteEvent = () => {
             signatures.push(item.sign)
         })
 
-        deleteSign(props.username,{
-            signatures: signatures
+        deleteSign(props.username, {
+            signatures
         }).then(() => {
             tableData.loading = true;
             setTimeout(() => {
                 loadSignList()
-            },1000)
-            // loadSignList()
+            }, 1000)
         }).catch(() => {
         })
     })

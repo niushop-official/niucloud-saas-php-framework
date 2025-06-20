@@ -65,10 +65,9 @@ const getUserInfoFn = () => {
         saveInfo.password = data.password
         saveInfo.password_copy = data.password
         saveInfo.username = data.username
+    }).catch(() => {
+        loading.value = false
     })
-        .catch(() => {
-            loading.value = false
-        })
 }
 getUserInfoFn()
 

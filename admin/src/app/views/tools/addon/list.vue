@@ -69,7 +69,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { getToken, img } from '@/utils/common'
+import { img } from '@/utils/common'
 import { t } from '@/lang'
 import { getAddonDevelop, deleteAddonDevelop, addonDevelopBuild, addonDevelopDownload } from '@/app/api/tools'
 import { ElMessageBox, FormInstance } from 'element-plus'

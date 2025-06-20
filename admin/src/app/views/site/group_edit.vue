@@ -205,6 +205,7 @@ const confirm = async(formEl: FormInstance | undefined) => {
 }
 const menuRefreshFn = () => {
     menuRefresh({}).then(res => {
+
     }).catch(() => {
     })
 }

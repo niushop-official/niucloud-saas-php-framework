@@ -18,7 +18,6 @@ const permission = {
     }
 }
 
-
 /**
  * 注册自定义指令
  */

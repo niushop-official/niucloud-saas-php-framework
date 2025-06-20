@@ -1,10 +1,10 @@
 <template>
-    <el-card class="box-card !border-none p-[10px]" shadow="never">
+    <el-card class="box-card !border-none p-[10px]" shadow="never" v-loading="loadingPackage">
         <div class="panel-title">选择套餐</div>
         <div class="flex flex-wrap mb-[30px]">
             <div v-for="(item,index) in smsPackages" :key="index" :span="4">
-                <div class="package-card mr-[10px]" :class="{ active: selectedPackage?.id === item.id }" @click="selectPackage(item)">
-                    <div class="text-[14px] mb-1">{{ item.package_name }}</div>
+                <div class="package-card mr-[10px] mb-[10px]" :class="{ active: selectedPackage?.id === item.id }" @click="selectPackage(item)">
+                    <div class="text-[14px] mb-1 using-hidden">{{ item.package_name }}</div>
                     <div class="text-[24px] text-primary ">{{ item.sms_num }}条</div>
                     <div class="flex mt-2 text-[14px] justify-center items-center ">
                         <div>￥{{ item.price }}</div>
@@ -32,28 +32,37 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref ,watch} from 'vue'
 import { getSmsPackagesList, smsOrderCreate, getOrderPayInfo, getOrderPayStatus, calculateOrderPay } from '@/app/api/notice'
 
 const props = defineProps({
     username: {
         type: String,
         default: ''
+    },
+    isRecharge: {
+        type: Boolean,
+        default: false
     }
 })
+
 const emit = defineEmits(['back', 'complete'])
 
 const smsPackages = ref<any[]>([])
 const selectedPackage = ref<any | null>(null)
 const payMethod = ref('alipay')
-
+const loadingPackage = ref(false)
 const totalAmount = ref(0)
 const getSmsPackagesListFn = () => {
+    loadingPackage.value = true
     getSmsPackagesList().then(res => {
         smsPackages.value = res.data.data
+        loadingPackage.value = false
         if (smsPackages.value.length > 0 && props.username) {
             selectPackage(smsPackages.value[0])
         }
+    }).catch(() => {
+        loadingPackage.value = false
     })
 }
 
@@ -106,7 +115,13 @@ const goBack = () => {
     emit('back')
 }
 
-getSmsPackagesListFn()
+const showRecharge = ref(false);
+watch(() => props.isRecharge, (newVal) => {
+    showRecharge.value = newVal;
+    if (newVal) {
+        getSmsPackagesListFn();
+    }
+});
 
 </script>
 

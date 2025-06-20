@@ -135,7 +135,6 @@ const loading = ref(true)
 const groupList = ref([])
 const siteUser = ref([])
 const siteType = ref([])
-const domain = location.hostname
 getUserListSelect({}).then(({ data }) => {
     siteUser.value = data
 })

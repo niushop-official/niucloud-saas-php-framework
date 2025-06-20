@@ -62,6 +62,14 @@ export function deleteRole(roleId: number) {
 }
 
 /**
+ * 修改角色状态
+ * @param params
+ */
+export function modifyRoleStatus(params: Record<string, any>) {
+    return request.put(`sys/role/status`, params, { showSuccessMessage: true })
+}
+
+/**
  * 全部分组
  * @returns
  */
@@ -275,24 +283,6 @@ export function moveAttachment(params: Record<string, any>) {
  */
 export function getAuthMenu() {
     return request.get(`auth/site/showmenu`)
-}
-
-/**
- * 获取图标库分类列表
- * @param params
- * @returns
- */
-export function getIconCategoryList(params: Record<string, any>) {
-    return request.get(`sys/attachment/icon_category`, { params })
-}
-
-/**
- * 获取图标库列表
- * @param params
- * @returns
- */
-export function getIconList(params: Record<string, any>) {
-    return request.get(`sys/attachment/icon`, { params })
 }
 
 /**

@@ -77,7 +77,7 @@
                                 </el-form-item>
                             </el-col>
                         </el-row>
-                        <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+                        <el-tabs v-model="activeName" class="demo-tabs">
                             <el-tab-pane label="短信模版" name="template">
                                 <smsTemplate :username="username" :signature="formData.signature"></smsTemplate>
                             </el-tab-pane>
@@ -92,7 +92,7 @@
                 </el-form>
             </div>
             <smsNiuLogin v-show="!isLogin" :info="formData" :isLogin="isLoginStatus" @complete="getAccountIsLoginFn"></smsNiuLogin>
-            <smsRecharge v-show="isRecharge" @back="isRecharge = false" @complete="backRecharge" :username="username"></smsRecharge>
+            <smsRecharge v-show="isRecharge" @back="isRecharge = false" @complete="backRecharge" :username="username" :isRecharge="isRecharge"></smsRecharge>
             <smsSignature ref="signatureDialogRef" :username="username" @select="handleSelectTemplate" ></smsSignature>
             <el-dialog v-model="visibleMobile" :title="t('更换手机号')" width="600px" destroy-on-close >
                 <el-form label-width="120px" :model="changeFormData" ref="changeFormRef" :rules="changeFormRules"  class="page-form ml-[20px]">
@@ -137,6 +137,7 @@
 <script lang="ts" setup>
 import { reactive, ref ,computed, onMounted} from 'vue'
 import { t } from '@/lang'
+import { ArrowLeft } from "@element-plus/icons-vue"
 import { getAccountIsLogin,getAccountInfo,editAccount ,editSms,getSmsCaptcha,getSmsSend,enableNiusms} from '@/app/api/notice'
 import { useRoute, useRouter} from 'vue-router'
 import smsNiuLogin from '@/app/views/setting/components/sms_niu_login.vue'

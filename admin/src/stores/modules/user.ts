@@ -68,7 +68,7 @@ const userStore = defineStore('user', {
             this.userInfo = {}
             this.siteInfo = {}
             removeToken()
-            storage.remove(['userinfo', 'siteInfo'])
+            storage.remove(['userinfo', 'siteInfo', 'darksideMarketingKeys', 'defaultMarketingKeys'])
             this.routers = []
             this.rules = []
             logout()

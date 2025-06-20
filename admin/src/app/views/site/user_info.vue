@@ -54,7 +54,7 @@
         </el-card>
 
         <el-card class="box-card mt-[15px] !border-none" shadow="never">
-            <el-tabs v-model="currTab" @tab-click="handleClick">
+            <el-tabs v-model="currTab">
                 <el-tab-pane :label="t('siteInfo')" name="siteInfo">
                     <el-table :data="detail.roles" size="large">
                         <el-table-column prop="site_id" :label="t('siteId')" width="100px" />

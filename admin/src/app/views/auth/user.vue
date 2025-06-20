@@ -223,5 +223,4 @@ const deleteEvent = (uid: number) => {
 </script>
 
 <style lang="scss" scoped>
-
 </style>

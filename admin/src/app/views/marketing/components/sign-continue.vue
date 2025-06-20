@@ -4,7 +4,7 @@
             <el-input class="input-width" v-model.trim="formData.continue_sign" @keyup="filterNumber($event)" :maxlength="3" clearable />
             <span class="ml-[10px]">{{ t('day') }}</span>
         </el-form-item>
-        <el-form-item :label="t('continueSignAward')" >
+        <el-form-item :label="t('continueSignAward')">
             <div class="flex-1">
                 <div v-for="(item,index) in gifts" :key="index" class="mb-[15px]">
                     <component :is="item.component" v-model="formData[item.key]" ref="giftRefs" v-if="item.component" />
@@ -92,15 +92,15 @@ const regExp = {
 const formRules = reactive<FormRules>({
     continue_sign: [
         { required: true, message: t('continueSignPlaceholder'), trigger: 'blur' },
-        {            
+        {
             validator: (rule: any, value: any, callback: any) => {
-               if (isNaN(value) || !regExp.number.test(value)) {
+                if (isNaN(value) || !regExp.number.test(value)) {
                     callback(t('continueSignFormatError'))
                 } else if (value < 2 || value > 365) {
                     callback(t('continueSignBerweenDays'))
-                } else if (Number(value) > Number(props.sign_period)) { 
+                } else if (Number(value) > Number(props.sign_period)) {
                     callback(t('continueSignMustLessThanSignPeriod')) // 添加这个校验
-                } else{
+                } else {
                     callback();
                 }
             },

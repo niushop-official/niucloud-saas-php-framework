@@ -110,7 +110,6 @@ import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-
 const searchFormRef = ref<FormInstance>()
 
 const siteGroupTableData = reactive({

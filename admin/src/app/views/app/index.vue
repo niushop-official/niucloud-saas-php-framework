@@ -6,11 +6,11 @@
             <template v-if="Object.keys(appList).length">
 
                 <template v-for="(item, index) in appList" :key="index + 'b'">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center" v-if="item.list.length">
                         <span class="text-page-title">{{ item.title }}</span>
                     </div>
 
-                    <div class="flex flex-wrap plug-list pb-10 plug-large">
+                    <div class="flex flex-wrap plug-list pb-10 plug-large" v-if="item.list.length">
                         <div class="cursor-pointer mt-[20px] mr-4 bg-[#f7f7f7]" v-for="(childItem,childIndex) in item.list" :key="childIndex" @click="toLink(childItem)">
                             <div class="w-[264px] flex py-[20px] px-[17px] app-item relative">
                                 <el-image class="w-[40px] h-[40px] mr-[10px]" :src="img(childItem.icon)" fit="contain">

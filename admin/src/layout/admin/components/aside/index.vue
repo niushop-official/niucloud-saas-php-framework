@@ -6,20 +6,20 @@
                 <!-- <div class="flex items-center justify-center bg-primary text-white h-[40px] text-[16px] rounded-[4px] mb-[10px]"><span  class="text-[20px]">+</span><span v-if="systemStore.menuIsCollapse" class="ml-[10px]">应用市场</span></div> -->
                 <div class="flex flex-col items-center">
                     <template v-for="(item, index) in oneMenuData">
-                        <div v-if="item.meta.show" class="menu-item my-[2px] p-2 flex w-full box-border cursor-pointer relative" :class="{'is-active':oneMenuActive===item.original_name,'hover-left': systemStore.menuIsCollapse, 'vertical': !systemStore.menuIsCollapse , 'horizontal': systemStore.menuIsCollapse }" :style="{ height: (systemStore.menuIsCollapse ) ? '40px' : '55px' }" @click="router.push({ name: item.name })">
+                        <div v-if="item.meta.show" :title="systemStore.menuIsCollapse ? item.meta.title : item.meta.short_title" class="menu-item my-[2px] p-2 flex w-full box-border cursor-pointer relative" :class="{'is-active':oneMenuActive===item.original_name,'hover-left': systemStore.menuIsCollapse, 'vertical': !systemStore.menuIsCollapse , 'horizontal': systemStore.menuIsCollapse }" :style="{ height: (systemStore.menuIsCollapse ) ? '40px' : '55px' }" @click="router.push({ name: item.name })">
                             <div class="w-[20px] h-[20px] flex items-center justify-center menu-icon" :class="{'is-active':oneMenuActive===item.original_name}">
                                 <template v-if="item.meta.icon">
                                     <el-image class="w-[20px] h-[20px] overflow-hidden" :src="item.meta.icon" fit="fill" v-if="isUrl(item.meta.icon)"/>
-                                    <icon  :name="item.meta.icon" size="20px" color="#1D1F3A" v-else />
+                                    <icon :name="item.meta.icon" size="20px" color="#1D1F3A" v-else />
                                 </template>
                                 <icon v-else :name="'iconfont iconshezhi1'" color="#1D1F3A" />
                             </div>
                             
-                            <div v-if="systemStore.menuIsCollapse" class="text-center text-[14px] mt-[3px] ml-[10px]">{{ item.meta.title || item.meta.short_title }}</div> 
-                            <div v-else class="text-center text-[12px] mt-1">{{ item.meta.short_title || item.meta.title }}</div> 
-                            <div v-if="systemStore.menuIsCollapse && item.name=='app_store' && recentlyUpdated.length>0" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] ml-auto">更新</div>
+                            <div v-if="systemStore.menuIsCollapse" class="text-left text-[14px] mt-[3px] w-[75px] using-hidden ml-[10px]">{{ item.meta.title || item.meta.short_title }}</div> 
+                            <div v-else class="text-center text-[12px] using-hidden mt-1">{{ item.meta.short_title || item.meta.title }}</div> 
+                            <div v-if="systemStore.menuIsCollapse && item.name=='app_store' && recentlyUpdated.length>0" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
                             <div v-if="!systemStore.menuIsCollapse && item.name=='app_store' && recentlyUpdated.length>0" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
-                            <div v-if="systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] ml-auto">更新</div>
+                            <div v-if="systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
                             <div v-if="!systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
                         
                         </div>
@@ -47,11 +47,11 @@ import { useRoute, useRouter } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import { ADMIN_ROUTE,findFirstValidRoute } from "@/router/routers"
-import { img, isUrl } from '@/utils/common'
+import { isUrl } from '@/utils/common'
 import menuItem from './menu-item.vue'
 import { getAddonLocal} from '@/app/api/addon'
 import { getVersions } from "@/app/api/auth"
-import { getAuthInfo, getFrameworkVersionList } from "@/app/api/module"
+import { getFrameworkVersionList } from "@/app/api/module"
 
 const route = useRoute()
 const userStore = useUserStore()
@@ -75,7 +75,6 @@ routers.forEach(item => {
         item.name = findFirstValidRoute(item.children)
     }
     oneMenuData.value.push(item)
-    
 })
 
 const oneMenuActive = ref(oneMenuData.value[0].name)
@@ -83,7 +82,6 @@ watch(route, () => {
     twoMenuData.value = route.matched[1].children ?? []
     oneMenuActive.value = route.matched[1].name == ADMIN_ROUTE.children[0].name ? route.matched[2].name : route.matched[1].name
     defaultOpeneds.value = twoMenuData.value.map(item => item.name)
-  
 }, { immediate: true })
 
 const recentlyUpdated = ref([])
@@ -107,7 +105,7 @@ const isNewVersion = computed(() => {
     if (!newVersion.value || newVersion.value.version_no === version.value) {
         return false;
     }
-    
+
     // 将版本号转为字符串再处理
     const currentVersionStr = String(version.value);
     const latestVersionStr = String(newVersion.value.version_no);
@@ -115,7 +113,8 @@ const isNewVersion = computed(() => {
     const currentVersionNum = parseInt(currentVersionStr.replace(/\./g, ''), 10);
     const latestVersionNum = parseInt(latestVersionStr.replace(/\./g, ''), 10);
     return latestVersionNum > currentVersionNum;
-});
+})
+
 const getFrameworkVersionListFn = () => {
     getFrameworkVersionList().then(({ data }) => {
         frameworkVersionList.value = data
@@ -194,7 +193,7 @@ getVersionsInfo()
     }
     .menu-item.hover-left {
         justify-content: flex-start;
-        padding-left: 5px; 
+        padding-left: 5px;
     }
     &.expanded .menu-item .text-center {
         opacity: 1;
@@ -205,7 +204,6 @@ getVersionsInfo()
     .el-scrollbar{
         height: calc(100vh - 65px);
     }
-  
 }
 .two-menu{
     .aside-menu:not(.el-menu--collapse) {
@@ -224,7 +222,7 @@ getVersionsInfo()
             &.is-active{
                 background-color: #EAEBF0 !important;
                 border-radius: 6px;
-                color: inherit; 
+                color: inherit;
                 // background-color: var(--el-color-primary-light-9) !important;
             }
             &:hover{

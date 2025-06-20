@@ -32,10 +32,10 @@
 <script lang="ts" setup>
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, watch } from 'vue'
-import { img } from '@/utils/common'
 import menuItem from './menu-item.vue'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
+
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()

@@ -11,7 +11,7 @@
                 <el-form-item :label="t('状态')" prop="status">
                     <el-select v-model="tableData.searchParam.status" :placeholder="t('请选择状态')">
                         <el-option :label="t('全部')" :value="''"></el-option>
-                        <el-option  v-for="(statusText, statusValue) in template_status_list"  :key="statusValue"  :label="statusText"  :value="statusValue"></el-option>
+                        <el-option  v-for="(statusText, statusValue) in template_status_list" :key="statusValue"  :label="statusText"  :value="statusValue"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -39,12 +39,13 @@
             </el-table-column>
             <el-table-column prop="audit_info" :label="t('审核状态')" min-width="130" >
                 <template #default="{ row }">
-                    <div>{{ row.audit_info?.audit_status_name }}</div>
+                    <div>{{ row.audit_info?.audit_status_name }} <span v-if="row.audit_info?.error_status_name" class="text-red-600">（{{row.audit_info?.error_status_name}}）</span> </div>
                 </template>
             </el-table-column>
             <el-table-column :label="t('operation')" fixed="right" align="right" min-width="120">
                 <template #default="{ row }">
-                    <el-button type="primary" link @click="reportEvent(row)">{{ row.audit_info.audit_status!=1 && row.audit_info.audit_status!=2? t("报备") : t("修改") }}</el-button>
+                    <el-button type="primary" v-if="row.audit_info.audit_status!=2" link @click="reportEvent(row)">{{ row.audit_info.audit_status!=1 && row.audit_info.audit_status!=2? t("报备") : t("修改") }}</el-button>
+                    <el-button type="primary" v-if="row.audit_info.audit_status==2" link @click="clearEvent(row)">{{ t('清除报备信息') }}</el-button>
                     <el-button type="primary" link @click="editEvent(row)">{{ t("详情") }}</el-button>
                 </template>
             </el-table-column>
@@ -98,8 +99,8 @@
                     <div v-for="(label, key) in detail.variable" :key="key" class="mb-2 flex items-center">
                         <div class="flex flex-1 items-center">
                             <div class="w-32 mr-1 ">{{ label }}</div>
-                            <el-select v-model="reportData.params_json[key]" placeholder="请选择类型" class="flex-1" filterable clearable>
-                                <el-option v-for="item in template_params_type_list" :key="item.type" :label="item.name + '（' + item.desc + '）'" :value="item.type"/>
+                            <el-select v-model="reportData.params_json[key]" placeholder="请选择类型" class="flex-1" filterable clearable :disabled="isMarketingWithVariable">
+                                <el-option v-for="item in filteredParamTypes" :key="item.type" :label="item.name + '（' + item.desc + '）'" :value="item.type"/>
                             </el-select>
                         </div>
                     </div>
@@ -109,7 +110,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="visibleReport = false">{{ t("cancel") }}</el-button>
-                    <el-button type="primary" @click="reportTemplateFn()">{{ t("confirm") }}</el-button>
+                    <el-button type="primary" @click="reportTemplateFn()" :disabled="isMarketingWithVariable">{{ t("confirm") }}</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -143,7 +144,7 @@
 
 <script lang="ts" setup>
 import { ref ,computed,reactive,onMounted,watch} from 'vue'
-import { getTemplateList,getTemplateReportConfig,reportTemplate,templateSync ,getreportTemplateInfo} from '@/app/api/notice'
+import { getTemplateList,getTemplateReportConfig,reportTemplate,templateSync ,getreportTemplateInfo,clearTemplate} from '@/app/api/notice'
 import { t } from "@/lang";
 
 const props = defineProps({
@@ -171,19 +172,18 @@ const tableData = reactive({
     }
 });
 const filterData = () => {
-  const { template_id, name, status } = tableData.searchParam;
-  return tableData.allData.filter(item => {
-    const matchId = !template_id || String(item.template_id || '').includes(template_id);
-    const matchName = !name || String(item.name || '').includes(name);
-    const matchStatus = !status || item.audit_info.audit_status == status;
-    return matchId && matchName && matchStatus;
-  });
-};
+    const { template_id, name, status } = tableData.searchParam;
+    return tableData.allData.filter(item => {
+        const matchId = !template_id || String(item.template_id || '').includes(template_id);
+        const matchName = !name || String(item.name || '').includes(name);
+        const matchStatus = !status || item.audit_info.audit_status == status;
+        return matchId && matchName && matchStatus;
+    });
+}
 
 watch(() => [tableData.limit, tableData.page], () => {
     pagedDataChange()
 })
-
 
 // 获取列表
 const loadSmsTemplateList = () => {
@@ -250,6 +250,19 @@ const editEvent = (row:any) => {
     detail.value = row
 }
 
+// 清除报备
+const clearEvent = (row:any) => {
+    ElMessageBox.confirm(t('确定要清除报备信息吗'), t('提示'), {
+        confirmButtonText: t('确定'),
+        cancelButtonText: t('取消'),
+        type: 'warning',
+    }).then(() => {
+        clearTemplate(props.username, row.template_id).then(() => {
+            loadSmsTemplateList()
+        })
+    }).catch(() => {
+    })
+}
 // 报备
 const template_params_type_list = ref({})
 const template_type_list = ref({})
@@ -269,15 +282,33 @@ const getTemplateReportConfigFn = () => {
 }
 
 getTemplateReportConfigFn()
+
+const filteredParamTypes = computed(() => {
+    if (reportData.value.template_type === 1) {
+        return template_params_type_list.value.filter(item => item.type === 'valid_code')
+    } else {
+        return template_params_type_list.value
+    }
+})
+const isMarketingWithVariable = computed(() => {
+    return reportData.value.template_type === 3 && detail.value.variable && Object.keys(detail.value.variable).length > 0
+})
+
+watch(isMarketingWithVariable, (val) => {
+    if (val) {
+        ElMessage.error('营销推广类型不支持变量');
+    }
+});
+
 const reportLoading = ref(false)
 const reportEvent = (row:any) => {
     reportLoading.value = true
     let signature = props.signature
-    if(!signature){
+    if (!signature) {
         ElMessage.error('请先配置签名')
         return
-    }else{
-        if(row.template_id){
+    } else {
+        if (row.template_id) {
             visibleReport.value = true;
             detail.value = row;
             getreportTemplateInfo('niuyun', props.username, { template_key: row.key }).then((res) => {
@@ -292,7 +323,7 @@ const reportEvent = (row:any) => {
                 }
                 reportLoading.value = false;
             });
-        }else{
+        } else {
             visibleReport.value = true
             reportLoading.value = false
             detail.value = row
@@ -300,9 +331,10 @@ const reportEvent = (row:any) => {
             reportData.value.template_key = detail.value.key
             reportData.value.params_json = {}
         }
-       
+
     }
 }
+
 const reportTemplateFn = () => {
     if (!detail.value.sms) {
         ElMessage.error('请先配置模版内容')

@@ -91,6 +91,10 @@ export function getInstalledAddonList() {
     return request.get('addon/list/install')
 }
 
+export function getGroupAppList() {
+    return request.get('home/site/group/app_list')
+}
+
 export function getAddonInit() {
     return request.get('addon/init')
 }

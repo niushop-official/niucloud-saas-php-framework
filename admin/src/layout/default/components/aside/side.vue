@@ -24,13 +24,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
 import { img } from '@/utils/common'
 import { findFirstValidRoute } from '@/router/routers'
+import { getShowMarketing } from '@/app/api/site'
+import storage from '@/utils/storage'
 
 const systemStore = useSystemStore()
 const userStore = useUserStore()
@@ -44,16 +46,32 @@ const logoUrl = computed(() => {
     return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
 })
 
+const getMarketingList = async () => {
+    const res = await getShowMarketing()
+    const marketingList = res.data
+    const marketingKeys = marketingList?.marketing?.list?.map(item => item.key) ?? []
+    // menuData.value.forEach((item, index, arr) => {
+    //     if (marketingKeys.includes(item.name)) {
+    //         arr.splice(index, 1)
+    //     }
+    // })
+    storage.set({ key: 'defaultMarketingKeys', data: marketingKeys })
+}
+
+onMounted(() => {
+    getMarketingList()
+})
+
 routers.forEach(item => {
     item.original_name = item.name
     if (item.meta.addon == '') {
-        if (item.meta.attr == '') {
+        if (item.meta.attr == '' && item.name != 'sign' && item.name != 'verify') {
             if (item.children && item.children.length) {
                 item.name = findFirstValidRoute(item.children)
             }
             menuData.value.push(item)
         }
-    } else if (item.meta.addon != '' && siteInfo?.apps.length == 1 && siteInfo?.apps[0].key == item.meta.addon) {
+    } else if (item.meta.addon != '' && siteInfo?.apps.length == 1 && siteInfo?.apps[0].key == item.meta.addon && item.meta.show) {
         if (item.children) {
             item.children.forEach((citem: Record<string, any>) => {
                 citem.original_name = citem.name
@@ -68,6 +86,19 @@ routers.forEach(item => {
     } else {
         addonRouters[item.meta.addon] = item
     }
+
+    // 排序, 功能正确，改了排序后需要把菜单排序的默认值重新调整一下【多应用一级菜单，单应用二级菜单】
+    // menuData.value.sort((a, b) => {
+    //     if (a.meta.sort && b.meta.sort) {
+    //         return b.meta.sort - a.meta.sort
+    //     } else if (a.meta.sort) {
+    //         return -1
+    //     } else if (b.meta.sort) {
+    //         return 1
+    //     } else {
+    //         return 0
+    //     }
+    // })
 })
 
 // 多应用时将应用插入菜单
@@ -80,6 +111,19 @@ if (siteInfo?.apps.length > 1) {
         }
     })
     menuData.value.unshift(...routers)
+
+    // 排序, 功能正确，改了排序后需要把菜单排序的默认值重新调整一下【多应用一级菜单，单应用二级菜单】
+    // menuData.value.sort((a, b) => {
+    //     if (a.meta.sort && b.meta.sort) {
+    //         return b.meta.sort - a.meta.sort
+    //     } else if (a.meta.sort) {
+    //         return -1
+    //     } else if (b.meta.sort) {
+    //         return 1
+    //     } else {
+    //         return 0
+    //     }
+    // })
 }
 </script>
 
