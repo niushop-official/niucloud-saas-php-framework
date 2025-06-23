@@ -81,10 +81,10 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 <a href='https://demo-saas.site.niucloud.com/site/shop/index' target="_blank">http://demo-saas.site.niucloud.com/site/    商城系统账号：admin  密码：123456<br/>
 
 - 旅游后台演示网址：[<a href='https://demo-saas.site.niucloud.com/site/tourism/index' target="_blank"> 查看 </a>]       
-<a href='https://demo-saas.site.niucloud.com/site/tourism/index' target="_blank">http://demo-saas.site.niucloud.com/site/    旅游系统账号：admin  密码：123456<br/>
+<a href='https://demo-saas.site.niucloud.com/site/tourism/index' target="_blank">https://demo-saas.site.niucloud.com/site/tourism/index    旅游系统账号：admin  密码：123456<br/>
 
 - 会员卡后台演示网址：[<a href='https://demo-saas.site.niucloud.com/site/vipcard/index' target="_blank"> 查看 </a>]       
-<a href='https://demo-saas.site.niucloud.com/site/vipcard/index' target="_blank">http://demo-saas.site.niucloud.com/site/    会员卡系统账号：admin  密码：123456<br/>
+<a href='https://demo-saas.site.niucloud.com/site/vipcard/index' target="_blank">https://demo-saas.site.niucloud.com/site/vipcard/index    会员卡系统账号：admin  密码：123456<br/>
 
 
 
