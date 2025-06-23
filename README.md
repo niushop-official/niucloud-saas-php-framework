@@ -29,10 +29,10 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 ### 商城插件  :point_right:   SHOP
 ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_shop1.png)
-|![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop3.jpg)| ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop4.jpg) |
+|![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop3.jpg)| ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop9.jpg) |
 | :---: | :---: |
 | ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop7.jpg) | ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop6.jpg) |
-| ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop8.jpg) | ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop9.jpg) |
+| ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop8.jpg) | ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas_shop4.jpg) |
 
 
 
