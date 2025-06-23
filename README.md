@@ -21,33 +21,34 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 - 手机端设计开发了自定义装修，同时提供了基础的开发组件，方便开发者设计开发手机自定义页面装修的开发需求
 ```
 ### NIUCLOUD 框架截图
-![输入图片说明](https://media.niucloud.com/1704066345d7742c4c0a1a941e836e8d633f209396_aliyun.jpg)
-![输入图片说明](https://media.niucloud.com/17040664219c6ce47b234eac495c3c4aa6e83920b6_aliyun.png)
-![输入图片说明](https://media.niucloud.com/17040665085ed007bd6daf220cc1ecd4e301c6008f_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1704066609bad8bba9c5bfe5a243f5ebcec54866af_aliyun.png)
-![输入图片说明](https://media.niucloud.com/170406669739221755c392e165470c486d0025ad17_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1704067302721c5360c622b4934fae659ee1eb0987_aliyun.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj1.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj2.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj3.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj4.png)
+
 
 ### 商城插件  :point_right:   SHOP
-![输入图片说明](https://media.niucloud.com/1704067355ecae8e7b09c482e8c3a5ebc1a4cd0fcc_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1711597084402f1f74c47080b20c7feb4166b2ab2a_aliyun.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_shop1.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_shop2.jpg)
 
 ### 分销插件  :point_right:   FENXIAO
-![输入图片说明](https://media.niucloud.com/1705744442d046875f3a6356e20b4201683c2f08fe_aliyun.png)
-![输入图片说明](https://media.niucloud.com/17057444230b1a32898072457faa8888b77d9621ff_aliyun.png)
-![输入图片说明](https://media.niucloud.com/17057444220f55b9430e07e635968a843bcc3e2845_aliyun.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_fx1.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_fx2.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_fx3.png)
+
 
 ### 上门服务插件  :point_right: O2O
-![输入图片说明](https://media.niucloud.com/1705739434bf20bb824783fcee9eea6361f3cfb7aa_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1705739434483707b8617e0e1489d7d2f51cda111c_aliyun.png)
-![输入图片说明](https://media.niucloud.com/17057394343bdd84db9c1fa966c7cb0c03c5618ad9_aliyun.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_o2o1.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_o2o2.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_o2o3.png)
+
+
 
 ### 会员卡插件 :point_right: VIPCard
-![输入图片说明](https://media.niucloud.com/1704067355ecae8e7b09c482e8c3a5ebc1a4cd0fcc_aliyun.png)
-
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_vipcard1.png)
 ### 旅游管理插件 :point_right:  TOURS
-![输入图片说明](https://media.niucloud.com/17057440675004b59c88adaebcb492a31d3a909944_aliyun.png)
-![输入图片说明](https://media.niucloud.com/1705744067bad60e348b4dd479d223aa5de963a1bf_aliyun.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_tourism1.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_tourism2.png)
 
 
 ### 操作指南
