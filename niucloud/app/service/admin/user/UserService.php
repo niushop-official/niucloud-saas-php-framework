@@ -297,7 +297,7 @@ class UserService extends BaseAdminService
                 $query->where([['is_admin', '=', 1]])->whereOr([['site_id', '=', 0]]);
             })->withSearch(['username', 'realname', 'create_time'], $where)
             ->field($field)
-            ->order('SysUser.uid desc')
+            ->order('uid desc')
             ->select()
             ->toArray();
         $uids = array_diff($all_uid, $all_role_uid);
