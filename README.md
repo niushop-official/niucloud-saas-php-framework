@@ -38,7 +38,6 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 
 
-
 ### 分销插件  :point_right:   FENXIAO
 ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_fx1.png)
 ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_fx2.png)
