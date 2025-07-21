@@ -93,8 +93,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref,h } from 'vue'
-import { getMenus, deleteMenu,menuRefresh } from '@/app/api/sys'
+import { reactive, ref, h } from 'vue'
+import { getMenus, deleteMenu, menuRefresh } from '@/app/api/sys'
 import { t } from '@/lang'
 import { ElMessageBox } from 'element-plus'
 import EditMenu from '@/app/views/auth/components/edit-menu.vue'
@@ -132,14 +132,14 @@ getMenuList()
 // 重置菜单
 const refreshMenu = () => {
     ElMessageBox.confirm(h('div', null, [
-            h('p', null, t('initializeMenuTipsOne')),
-            h('p', null, t('initializeMenuTipsTwo')),
-        ]), t('warning'),
-        {
-            confirmButtonText: t('confirm'),
-            cancelButtonText: t('cancel'),
-            // type: 'warning'
-        }
+        h('p', null, t('initializeMenuTipsOne')),
+        h('p', null, t('initializeMenuTipsTwo'))
+    ]), t('warning'),
+    {
+        confirmButtonText: t('confirm'),
+        cancelButtonText: t('cancel')
+        // type: 'warning'
+    }
     ).then(() => {
         menuRefresh({}).then(res => {
             location.reload()

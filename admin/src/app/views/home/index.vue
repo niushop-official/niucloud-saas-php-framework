@@ -29,7 +29,7 @@
                     <el-scrollbar :always="true">
                         <div class="px-[20px] mt-[20px]">
                             <div class="mt-3 text-[#9699B6] mb-1">应用</div>
-                            <div class="">
+                            <div>
                                 <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px]', {'bg-[#EAEBF0] rounded-[4px]': params.app == ''}]" @click="cutAppFn('')">
                                     <span class="iconfont iconsuoyouyingyongc !text-[17px] mr-[10px] "></span>
                                     <span>所有应用</span>
@@ -48,7 +48,7 @@
 
                         <div class="px-[20px] mt-[20px]">
                             <div class="text-[#9699B6] mb-1">平台分类</div>
-                            <div class="">
+                            <div>
                                 <div :class="['px-[25px] cursor-pointer h-[40px] leading-[40px] flex items-center', {'bg-[#EAEBF0] rounded-[4px]': typeName == 'h5'}]" @click="cutAppTypeFn('h5')">
                                     <span class="iconfont iconH5c !text-[17px] mr-[10px] "></span>
                                     <span>H5</span>
@@ -487,7 +487,7 @@ watch(() => createSiteDialog.value, () => {
     display: none;
 }
 .home-item:hover {
-    box-shadow: 0px 0px 18px rgba(0,0,0, 0.07);
+    box-shadow: 0 0 18px rgba(0,0,0, 0.07);
     // border-color: var(--el-color-primary);
     .title {
         color: var(--el-color-primary);
@@ -507,14 +507,13 @@ watch(() => createSiteDialog.value, () => {
     box-shadow: 0 4px 8px 0 rgba(28,31,55,0.04);
 }
 .img-shadow{
-    box-shadow: 0px 0px 4px rgba(0,0,0, 0.07);
+    box-shadow: 0 0 4px rgba(0,0,0, 0.07);
 }
 .creatBg{
-    background: url('@/app/assets/images/creatBg.png');
-    background-repeat: no-repeat;
+    background: url('@/app/assets/images/creatBg.png') no-repeat;
 }
 .create-site-item{
-    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+    box-shadow: 0 0 9px 0 rgba(0,0,0,0.1);
 }
 :deep(.el-button){
     border-radius: 4px !important;

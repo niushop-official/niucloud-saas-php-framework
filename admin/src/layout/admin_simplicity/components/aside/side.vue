@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed ,onMounted} from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
@@ -120,7 +120,7 @@ defaultOpeneds.value = menuData.value.map(item => item.name)
             justify-content: center;
             align-items: center;
         }
-        
+
         &.el-menu--collapse {
             .el-menu-item, .el-sub-menu__title {
                 --el-menu-item-height: 60px;
@@ -128,7 +128,6 @@ defaultOpeneds.value = menuData.value.map(item => item.name)
             }
         }
     }
-
 
 }
 </style>

@@ -128,7 +128,7 @@ const onShowGetWeappConfig = async () => {
 }
 
 onMounted(async () => {
-    onShowGetWeappConfig()
+    await onShowGetWeappConfig()
 
     await getWxoplatform().then(({ data }) => {
         oplatformConfig.value = data

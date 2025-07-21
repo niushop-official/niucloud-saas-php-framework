@@ -151,7 +151,6 @@ export function setWeappPrivacySetting(params: Record<string, any>) {
 
 /**
  * 获取小程序隐私协议
- * @param params
  */
 export function getWeappPrivacySetting() {
     return request.get('weapp/privacysetting')

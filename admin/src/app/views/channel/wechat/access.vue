@@ -109,14 +109,14 @@ const wechatConfig = ref({})
 const oplatformConfig = ref({})
 
 const onShowGetWechatConfig = async () => {
-    await getWechatConfig().then(({data}) => {
+    await getWechatConfig().then(({ data }) => {
         wechatConfig.value = data
         qrcode.value = data.qr_code
     })
 }
 
 onMounted(async () => {
-    onShowGetWechatConfig()
+    await onShowGetWechatConfig()
 
     await getWxoplatform().then(({ data }) => {
         oplatformConfig.value = data

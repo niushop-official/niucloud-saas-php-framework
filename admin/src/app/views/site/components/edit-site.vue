@@ -280,8 +280,8 @@ const confirm = async (formEl: FormInstance | undefined) => {
 
 // 禁止点击input输入框时浏览器显示默认的账号信息
 window.onload = function() {
-    var inputs = document.getElementsByTagName('input');
-    for(var i=0; i<inputs.length; i++) {
+    const inputs = document.getElementsByTagName('input');
+    for(let i=0; i<inputs.length; i++) {
         inputs[i].setAttribute('autocomplete', 'off');
     }
 };

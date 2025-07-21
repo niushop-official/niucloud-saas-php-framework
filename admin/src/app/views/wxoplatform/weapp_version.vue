@@ -104,7 +104,7 @@ import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord, getSiteGroupCommitRecord, syncSiteWeapp } from '@/app/api/wxoplatform'
 import { t } from '@/lang'
-import { ElMessageBox } from "element-plus";
+import { ElMessageBox } from 'element-plus'
 
 const route = useRoute()
 const pageName = route.meta.title

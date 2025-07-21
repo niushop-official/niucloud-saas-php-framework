@@ -68,6 +68,12 @@ const userStore = defineStore('user', {
             this.userInfo = {}
             this.siteInfo = {}
             removeToken()
+            window.localStorage.removeItem('admin.token')
+            window.localStorage.removeItem('admin.userinfo')
+            window.localStorage.removeItem('admin.siteInfo')
+            window.localStorage.removeItem('site.token')
+            window.localStorage.removeItem('site.userinfo')
+            window.localStorage.removeItem('site.siteInfo')
             storage.remove(['userinfo', 'siteInfo', 'darksideMarketingKeys', 'defaultMarketingKeys'])
             this.routers = []
             this.rules = []
@@ -75,7 +81,8 @@ const userStore = defineStore('user', {
             // 清除tabbar
             useTabbarStore().clearTab()
             const login = getAppType() == 'admin' ? '/admin/login' : '/site/login'
-            router.push(login)
+            // router.push(login)
+            location.href = `${location.origin}${login}`
         },
         getAuthMenusFn() {
             return new Promise((resolve, reject) => {

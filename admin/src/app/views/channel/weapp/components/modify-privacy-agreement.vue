@@ -147,7 +147,7 @@ const initialFormData = {
     store_expire_timestamp: ''
 }
 
-const formData: Record<string, any> = reactive({...initialFormData})
+const formData: Record<string, any> = reactive({ ...initialFormData })
 
 const formRef = ref<FormInstance>()
 

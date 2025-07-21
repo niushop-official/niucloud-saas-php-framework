@@ -4,7 +4,7 @@
         <el-card class="box-card !border-none setting-card" shadow="never">
             <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
                 <div class="flex justify-between items-start">
-                    <el-form :inline="true" :model="siteTableData.searchParam" ref="searchFormRef" class="search-form w-[80%]">
+                    <el-form :inline="true" :model="siteTableData.searchParam" ref="searchFormRef" class="search-form">
                         <el-form-item prop="keywords">
                             <el-input v-model.trim="siteTableData.searchParam.keywords" :placeholder="t('siteNamePlaceholder')" />
                         </el-form-item>
@@ -52,8 +52,20 @@
                             <el-button type="primary" link @click="isShow = !isShow">{{ isShow ? t('收起') : t('更多') }} <span class="iconfont iconjiantouxia ml-[4px] !text-[10px] mr-[10px] transition-transform duration-300" :class="{ 'rotate-180': isShow }"></span></el-button>
                         </el-form-item>
                     </el-form>
-                    <div class="flex justify-end items-center w-[20%]">
-                        <div>
+                    <div class="flex justify-end items-center flex-1">
+                        <div class="right-btn-group "> 
+                            <tempalte  class="flex items-center">
+                                 <el-tooltip
+                                    class="box-item"
+                                    effect="dark"
+                                    content="前台用户登录某站点后，是否允许切换至站点管理列表或进入其他站点"
+                                    placement="top-start"
+                                >
+                                    <span class="text-[14px] mr-[10px] flex items-center" >允许切换站点 <el-icon><QuestionFilled /></el-icon> </span>
+                                </el-tooltip>
+                                <el-switch v-model="allowChange"  @change="handleSwitchChange" lazy class="mr-[25px]"  :active-value="1" :inactive-value="0" />
+
+                            </tempalte>
                             <el-button type="primary" class="w-[100px]" @click="addEvent">
                                 {{ t('addSite') }}
                             </el-button>
@@ -63,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </el-card>
 
             <div class="mt-[20px]">
@@ -161,14 +173,94 @@
 
         </el-card>
         <edit-site ref="addSiteDialog" @complete="loadSiteList()" />
+        <el-dialog v-model="delshowDialog" :title="t('warning')" width="500px" :destroy-on-close="true">
+            <div>
+                {{t('siteDeleteTips')}}
+            </div>
+            <el-form :model="captchaForm" ref="captchaFormRef" class="mt-4">
+                <el-form-item label="验证码" prop="captcha_code" :rules="[{ required: true, message: '请输入验证码', trigger: 'blur' }]">
+                    <div class="flex items-center">
+                        <el-input placeholder="请输入验证码" class="w-[200px]" maxlength="4" show-word-limit v-model="captchaForm.captcha_code" />
+                        <img v-if="captchaForm.captcha_img" :src="captchaForm.captcha_img" alt="验证码" class="w-[100px] h-[32px] cursor-pointer ml-[10px]" @click="getCaptchaImage" />
+                    </div>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="delshowDialog = false">{{ t('cancel') }}</el-button>
+                    <el-button type="primary" @click="confirmDelete" :disabled="!canClick" :loading="loading">{{ t('confirm') + (countdown > 0 ? ` (${countdown}s)` : '') }}</el-button>
+                </span>
+            </template>
+        </el-dialog>
+        <el-dialog v-model="initshowDialog" :title="t('warning')" width="500px" :destroy-on-close="true">
+            <div>
+                {{t('siteInitTips')}}
+            </div>
+            <el-form :model="initCaptchaForm" ref="initCaptchaFormRef" class="mt-4">
+                <el-form-item label="验证码" prop="captcha_code" :rules="[{ required: true, message: '请输入验证码', trigger: 'blur' }]">
+                    <div class="flex items-center">
+                        <el-input placeholder="请输入验证码" class="w-[200px]" maxlength="4" show-word-limit v-model="initCaptchaForm.captcha_code"  />
+                        <img v-if="initCaptchaForm.captcha_img" :src="initCaptchaForm.captcha_img" alt="验证码" class="w-[100px] h-[32px] cursor-pointer ml-[10px]" @click="getInitCaptchaImage" />
+                    </div>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="initshowDialog = false">{{ t('cancel') }}</el-button>
+                    <el-button type="primary" @click="confirmInit" :disabled="!initCanClick" :loading="loading">{{ t('confirm') + (initCountdown > 0 ? ` (${initCountdown}s)` : '') }}</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { getToken, img } from '@/utils/common'
+
+const countdown = ref(5)
+const canClick = ref(false)
+let timer: any = null
+
+// 站点初始化倒计时相关变量
+const initCountdown = ref(5)
+const initCanClick = ref(false)
+let initTimer: any = null
+
+// 加载状态
+const loading = ref(false)
+
+const startCountdown = () => {
+    countdown.value = 5
+    canClick.value = false
+    if (timer) clearInterval(timer)
+    timer = setInterval(() => {
+        if (countdown.value > 0) {
+            countdown.value--
+        } else {
+            canClick.value = true
+            clearInterval(timer)
+        }
+    }, 1000)
+}
+
+const startInitCountdown = () => {
+    initCountdown.value = 5
+    initCanClick.value = false
+    if (initTimer) clearInterval(initTimer)
+    initTimer = setInterval(() => {
+        if (initCountdown.value > 0) {
+            initCountdown.value--
+        } else {
+            initCanClick.value = true
+            clearInterval(initTimer)
+        }
+    }, 1000)
+}
+
 import { t } from '@/lang'
-import { getSiteList, getSiteGroupAll, getStatusList, closeSite, openSite, deleteSite ,initSite} from '@/app/api/site'
+import { getSiteList, getSiteGroupAll, getStatusList, closeSite, openSite, deleteSite, initSite ,getSiteAllowChange,putSiteAllowChange} from '@/app/api/site'
+import { getsiteCaptcha } from '@/app/api/notice'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter } from 'vue-router'
 import EditSite from '@/app/views/site/components/edit-site.vue'
@@ -221,9 +313,30 @@ const setGroupList = async () => {
 }
 setGroupList()
 
+const allowChange = ref(0)
+const getSiteAllowChangeFn = ()=>{
+    getSiteAllowChange().then(({data})=>{
+        allowChange.value = data.is_allow
+        let isAllowChange = allowChange.value ? true : false
+        localStorage.setItem('isAllowChange',isAllowChange.toString())
+    })
+    
+}
+getSiteAllowChangeFn()
+
+// 开关切换时调用put接口
+const handleSwitchChange = (value) => {
+    let isAllow = value ? 1 : 0
+    putSiteAllowChange({ is_allow:isAllow }).then(() => {
+        getSiteAllowChangeFn()
+    })
+};
+
 const setStatusList = async () => {
     statusList.value = await (await getStatusList()).data
 }
+
+
 
 setStatusList()
 
@@ -291,21 +404,7 @@ const infoEvent = (data: any) => {
     router.push({ path: '/admin/site/info', query: { id: data.site_id } })
 }
 
-// 站点初始化
-const initSiteEvent = (data: any) => {
-    ElMessageBox.confirm(t('siteInitTips'), t('warning'),
-        {
-            confirmButtonText: t('confirm'),
-            cancelButtonText: t('cancel'),
-            type: 'warning'
-        }
-    ).then(() => {
-        initSite({ site_id: data.site_id }).then(res => {
-            loadSiteList()
-        })
-    })
-   
-}
+
 
 /**
  * 编辑站点详情
@@ -343,7 +442,6 @@ const toSiteLink = (siteId:number = 0) => {
         // window.open(`${location.origin}/home/index`)
         router.push({ path: '/home/index' })
     }
-
 }
 
 const openClose = (i, site_id) => {
@@ -366,24 +464,142 @@ const openClose = (i, site_id) => {
         })
     }
 }
+const delshowDialog = ref(false)
+const delshowDialogdata = ref({})
+const initshowDialog = ref(false)
+const initshowDialogdata = ref({})
 
+// 验证码表单
+const captchaFormRef = ref()
+const captchaForm = ref({
+    captcha_code: '',
+    captcha_key: '',
+    captcha_img: ''
+})
+
+const initCaptchaFormRef = ref()
+const initCaptchaForm = ref({
+    captcha_code: '',
+    captcha_key: '',
+    captcha_img: ''
+})
+
+// 监听删除对话框显示状态，启动倒计时
+watch(delshowDialog, (newVal) => {
+    if (newVal) {
+        startCountdown()
+        getCaptchaImage()
+    }
+})
+
+// 监听站点初始化对话框显示状态，启动倒计时
+watch(initshowDialog, (newVal) => {
+    if (newVal) {
+        startInitCountdown()
+        getInitCaptchaImage()
+    }
+})
+
+// 获取验证码图片
+const getCaptchaImage = () => {
+    getsiteCaptcha().then(res => {
+        captchaForm.value.captcha_key = res.data.captcha_key
+        captchaForm.value.captcha_img = res.data.img
+        captchaForm.value.captcha_code = ''
+    }).catch(() => {
+    })
+}
+
+const getInitCaptchaImage = () => {
+    getsiteCaptcha().then(res => {
+        initCaptchaForm.value.captcha_key = res.data.captcha_key
+        initCaptchaForm.value.captcha_img = res.data.img
+        initCaptchaForm.value.captcha_code = ''
+    }).catch(() => {
+    })
+}
 const deleteEvent = (data: any) => {
-    ElMessageBox.confirm(t('siteDeleteTips'), t('warning'),
-        {
-            confirmButtonText: t('confirm'),
-            cancelButtonText: t('cancel'),
-            type: 'warning'
+    delshowDialog.value = true
+    delshowDialogdata.value = data
+    // ElMessageBox.confirm(t('siteDeleteTips'), t('warning'),
+    //     {
+    //         confirmButtonText: t('confirm'),
+    //         cancelButtonText: t('cancel'),
+    //         type: 'warning'
+    //     }
+    // ).then(() => {
+    //     deleteSite(data.site_id).then(res => {
+    //         loadSiteList()
+    //     }).catch(() => {
+    //     })
+    // })
+}
+// 站点初始化
+const initSiteEvent = (data: any) => {
+    initshowDialog.value = true
+    initshowDialogdata.value = data
+    // ElMessageBox.confirm(t('siteInitTips'), t('warning'),
+    //     {
+    //         confirmButtonText: t('confirm'),
+    //         cancelButtonText: t('cancel'),
+    //         type: 'warning'
+    //     }
+    // ).then(() => {
+    //     initSite({ site_id: data.site_id }).then(res => {
+    //         loadSiteList()
+    //     })
+    // })
+}
+
+const confirmDelete = () => {
+    captchaFormRef.value.validate((valid) => {
+        if (!valid) return
+        loading.value = true
+        const params = {
+            site_id: delshowDialogdata.value.site_id,
+            captcha_code: captchaForm.value.captcha_code,
+            captcha_key: captchaForm.value.captcha_key
         }
-    ).then(() => {
-        deleteSite(data.site_id).then(res => {
+        deleteSite(params).then(res => {
             loadSiteList()
+            delshowDialog.value = false
         }).catch(() => {
+            getCaptchaImage() // 验证失败重新获取验证码
+        }).finally(() => {
+            loading.value = false
+        })
+    })
+}
+
+const confirmInit = () => {
+    initCaptchaFormRef.value.validate((valid) => {
+        if (!valid) return
+        loading.value = true
+        const params = {
+            site_id: initshowDialogdata.value.site_id,
+            captcha_code: initCaptchaForm.value.captcha_code,
+            captcha_key: initCaptchaForm.value.captcha_key
+        }
+        initSite(params).then(res => {
+            loadSiteList()
+            initshowDialog.value = false
+        }).catch(() => {
+            getInitCaptchaImage() // 验证失败重新获取验证码
+        }).finally(() => {
+            loading.value = false
         })
     })
 }
 </script>
 
 <style lang="scss" scoped>
+.right-btn-group {
+  display: flex;
+  align-items: center;
+  white-space: nowrap; // 禁止内部元素换行
+  flex-shrink: 0; // 防止容器被挤压
+  min-width: 0; // 兼容部分浏览器的最小宽度限制
+}
 :deep(.el-table tr td) {
     height: 100px !important;
 }

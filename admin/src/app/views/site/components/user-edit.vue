@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, ref} from 'vue'
+import { computed, ref } from 'vue'
 import { t } from '@/lang'
 import { FormInstance } from 'element-plus'
 import { getSiteGroupAll } from '@/app/api/site'
@@ -197,7 +197,7 @@ const setFormData = (uid: number = 0) => {
 const emits = defineEmits(['complete'])
 
 const groupSelect = (groupIds: number[]) => {
-    let list:any = []
+    const list:any = []
     groupIds.forEach(item => {
         list.push({
             group_id: item,
@@ -245,7 +245,6 @@ const confirmPasswordType = ref('password')
 const toggleConfirmPasswordVisibility = () => {
     confirmPasswordType.value = confirmPasswordType.value === 'password' ? 'text' : 'password'
 }
-
 
 defineExpose({
     showDialog,

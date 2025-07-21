@@ -2,7 +2,6 @@
     <!--站点套餐-->
     <div class="main-container">
         <el-card class="box-card !border-none setting-card" shadow="never">
-            
             <el-card class="box-card !border-none my-[10px]  table-search-wrap" shadow="never">
                 <div class="flex justify-between items-center">
                     <el-form :inline="true" :model="siteGroupTableData.searchParam" ref="searchFormRef" @submit.native.prevent class="search-form">

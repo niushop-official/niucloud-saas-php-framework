@@ -42,8 +42,8 @@ export function editSite(params: Record<string, any>) {
  * 删除站点
  * @param siteId
  */
-export function deleteSite(siteId: number) {
-    return request.delete(`site/site/${ siteId }`)
+export function deleteSite(params: Record<string, any>) {
+    return request.delete(`site/site/${ params.site_id }?captcha_code=${ params.captcha_code }&captcha_key=${ params.captcha_key }`)
 }
 
 /**
@@ -76,6 +76,20 @@ export function openSite(params: Record<string, any>) {
  */
 export function getStatusList() {
     return request.get(`site/statuslist`)
+}
+
+/**
+ * 获取是否显示切换站点
+ */
+export function getSiteAllowChange() {
+    return request.get(`site/allow_change`)
+}
+
+/**
+ * 修改是否显示切换站点
+ */
+export function putSiteAllowChange(params: Record<string, any>) {
+    return request.put(`site/allow_change`,params, { showSuccessMessage: true })
 }
 
 /***************************************************** 站点分组管理 ****************************************************/

@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup async>
-import { ref, reactive, computed, watch, toRaw } from 'vue'
+import { ref, reactive, computed, watch, toRaw, nextTick } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
 import { addRole, editRole, getRoleInfo, getSiteMenus } from '@/app/api/sys'
@@ -60,11 +60,13 @@ const selectAll = ref(false)
 const checkStrictly = ref(false)
 const treeRef: Record<string, any> | null = ref(null)
 watch(selectAll, () => {
-    if (selectAll.value) {
-        treeRef.value.setCheckedNodes(toRaw(menus.value))
-    } else {
-        treeRef.value.setCheckedNodes([])
-    }
+    nextTick(() => {
+        if (selectAll.value) {
+            treeRef.value.setCheckedNodes(toRaw(menus.value))
+        } else {
+            treeRef.value.setCheckedNodes([])
+        }
+    })
 })
 
 const handleCheckChange = debounce((e) => {

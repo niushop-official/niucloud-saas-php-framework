@@ -147,7 +147,7 @@ const getVerifyDetailFn = async () => {
 
 const setFormData = async (row: any = null) => {
     code = row.code;
-    getVerifyDetailFn();
+    await getVerifyDetailFn();
 }
 
 defineExpose({

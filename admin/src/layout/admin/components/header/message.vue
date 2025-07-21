@@ -37,6 +37,7 @@ let pollTimer: ReturnType<typeof setInterval> | null = null
 
 const startPolling = () => {
     if (pollTimer) return
+    cloudBuildRef.value?.getCloudBuildTaskFn()
 
     pollTimer = setInterval(() => {
         const startTime = localStorage.getItem('cloud_build_task')

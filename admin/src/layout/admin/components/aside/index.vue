@@ -138,15 +138,13 @@ getVersionsInfo()
 
 <style lang="scss">
 .one-menu{
-    padding: 10px;
-    padding-top: 20px;
+    padding: 20px 10px 10px;
     width: 78px;
     overflow-y: auto;
     // transition: width 0.1s ease-out;
     &.expanded {
         width: 185px;
-        padding: 15px;
-        padding-top: 18px;
+        padding: 18px 15px 15px;
     }
         .menu-item{
             border-radius: 2px;
@@ -234,10 +232,10 @@ getVersionsInfo()
         }
         .el-sub-menu{
             width: 185px;
-            margin: 4px 0px;
+            margin: 4px 0;
             // margin-bottom: 8px;
             .el-sub-menu__title{
-                margin: 0px 15px;
+                margin: 0 15px;
                 height: 40px;
                 padding-left: 8px;
                 border-radius: 2px;

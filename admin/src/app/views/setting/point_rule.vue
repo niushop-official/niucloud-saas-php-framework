@@ -84,7 +84,10 @@ getPointRuleDict().then(({ data }) => {
 
 const ruleConfigFn = () => {
     getPointRuleConfig().then(({ data }) => {
-        !Test.empty(data) && (formData.value = data)
+        if (!Test.empty(data)) {
+            Object.assign(formData.value.grant, data.grant || {})
+            Object.assign(formData.value.consume, data.consume || {})
+        }
         loading.value = false
     }).catch(() => {
         loading.value = false

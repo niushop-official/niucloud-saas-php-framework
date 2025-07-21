@@ -66,7 +66,7 @@ const removeTab = (content: any) => {
 
 /**
  * 关闭左侧
- * @param path
+ * @param name
  */
 const closeLeft = (name: string) => {
     const tabs = Object.keys(tabbarStore.tabs)
@@ -78,7 +78,7 @@ const closeLeft = (name: string) => {
 
 /**
  * 关闭右侧
- * @param path
+ * @param name
  */
 const closeRight = (name: string) => {
     const tabs = Object.keys(tabbarStore.tabs)
@@ -90,7 +90,7 @@ const closeRight = (name: string) => {
 
 /**
  * 关闭其他
- * @param path
+ * @param name
  */
 const closeOther = (name: string) => {
     const tabs = Object.keys(tabbarStore.tabs)

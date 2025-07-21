@@ -45,7 +45,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getSiteAddons,getShowApp } from '@/app/api/site'
+import { getSiteAddons, getShowApp } from '@/app/api/site'
 import { img } from '@/utils/common'
 import useUserStore from '@/stores/modules/user'
 import { useRouter } from 'vue-router'
@@ -61,7 +61,7 @@ const getAppList = async () => {
     // appList.value = res.data
     // loading.value = false
 
-    const res = await getShowApp();
+    const res = await getShowApp()
     appList.value = res.data
     loading.value = false
 }
@@ -87,6 +87,6 @@ const toLink = (item: any) => {
     }
     .app-item:hover{
         transition: 0.5s;
-        box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
     }
 </style>

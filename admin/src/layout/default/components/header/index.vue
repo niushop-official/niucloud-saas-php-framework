@@ -15,7 +15,7 @@
                     <!-- 面包屑导航 -->
                     <div class="flex items-center h-full pl-[10px]">
                         <el-breadcrumb separator="/">
-                            <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
+                            <el-breadcrumb-item v-for="(route, index) in breadcrumb" :to="route.path" class="inter" :key="index">{{route.meta.title }}</el-breadcrumb-item>
                         </el-breadcrumb>
                     </div>
                 </div>
@@ -43,6 +43,22 @@
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
+                    </div>
+                    <div class="flex items-center flex-shrink-0 hidden-xs-only">
+                        <el-popover placement="bottom" :width="330" trigger="click" v-model:visible="isMenuSearch" >
+                            <template #reference>
+                                <i class="iconfont icona-sousuoV6xx-36 cursor-pointer px-[8px] !text-[14px]"></i>
+                            </template>
+                            <template #default>
+                                <div class="flex items-center">
+                                    <el-select v-model="selectedRoute"  filterable class="!w-[250px] mr-[20px] menu-select" :teleported="false" clearable  @change="handleRouteSelect">
+                                        <el-option v-for="item in flatRoutes" :key="item.name" :label="item.full_title" :value="item.name" >
+                                        </el-option>
+                                    </el-select>
+                                    <el-button type="primary" link @click="isMenuSearch = false">{{t('取消')}}</el-button>
+                                </div>
+                            </template>
+                        </el-popover>
                     </div>
                     <!-- 预览 只有站点时展示-->
                     <i class="iconfont iconicon_huojian1 cursor-pointer px-[8px]" :title="t('visitWap')" @click="toPreview"></i>
@@ -109,6 +125,55 @@ const siteInfo:any = computed(() => {
 const dark = computed(() => {
     return systemStore.dark
 })
+const isMenuSearch = ref(false)
+const routers = userStore.routers
+const getParentTitleChain=(meta:any) =>{
+    let titles = []
+    let current = meta?.parent_route
+
+    while (current) {
+        if (current.short_title) {
+        titles.unshift(current.short_title)
+        }
+        current = current.parent_route
+    }
+
+    return titles.join(' - ')
+}
+const flattenRoutes = (routes:any, parent = null)=> {
+    let flat = [];
+    routes.forEach(route => {
+        const { path, name, meta = {}, short_title, children } = route
+        const isLeaf = meta.type ==1 && meta.show==1
+        if(isLeaf){
+            const title = meta.title || short_title || ''
+            const parentTitleChain = getParentTitleChain(meta)
+            const fullTitle = parentTitleChain ? `${parentTitleChain} - ${title}` : title
+            const item = {
+                path,
+                name,
+                title,
+                parent_title: parentTitleChain,
+                full_title: fullTitle
+            };
+
+            flat.push(item);
+        }
+        if (children && children.length > 0) {
+            flat = flat.concat(flattenRoutes(children, route))
+        }
+    });
+
+    return flat;
+}
+const flatRoutes = flattenRoutes(routers)
+const selectedRoute = ref('')
+const handleRouteSelect = (name:any) => {
+    if (name) {
+        router.push({ name })
+        isMenuSearch.value = false
+    }
+}
 
 // 检测登录 start
 const detectionLoginDialog = ref(false)
@@ -193,7 +258,7 @@ const toPreview = () => {
 .layout-header{
     position: relative;
     z-index: 5;
-    box-shadow: 0px 0px 4px 0px rgba(0,145,255,0.1);
+    box-shadow: 0 0 4px 0 rgba(0,145,255,0.1);
 }
 .navbar-item {
     padding: 0 8px;
@@ -214,5 +279,9 @@ const toPreview = () => {
 		background-color: transparent !important;
 		color: #333 !important;
 	}
+}
+:deep(.inter .el-breadcrumb__inner){
+    font-weight: inherit !important;
+    color: var(--el-text-color-regular) !important;
 }
 </style>

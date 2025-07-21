@@ -85,6 +85,7 @@ class Request {
     /**
      * 发送get请求
      * @param url
+     * @param data
      * @param config
      * @returns
      */
@@ -95,6 +96,7 @@ class Request {
     /**
      * 发送get请求
      * @param url
+     * @param data
      * @param config
      * @returns
      */

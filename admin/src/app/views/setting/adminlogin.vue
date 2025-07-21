@@ -13,7 +13,7 @@
                     <div class="form-tip">{{t('adminBgImgTip')}}</div>
                 </el-form-item>
 
-                <div class="box-card mt-[20px] !border-none" shadow="never">
+                <div class="box-card mt-[20px] !border-none">
                     <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('site') }}</h3>
 
                     <el-form-item :label="t('isCaptcha')">

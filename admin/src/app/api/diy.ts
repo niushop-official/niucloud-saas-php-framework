@@ -237,7 +237,7 @@ export function editTheme(params: Record<string, any>) {
 
 /**
  * 删除配色
- * @param params
+ * @param id
  */
 export function deleteTheme(id: number) {
     return request.delete(`diy/theme/delete/${ id }`, { showSuccessMessage: true })

@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, reactive, ref} from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
 import { setWeappDomain } from '@/app/api/weapp'
@@ -128,7 +128,6 @@ const confirm = async (formEl: FormInstance | undefined) => {
 
     await formEl.validate(async (valid) => {
         if (valid) {
-
             if (loading.value) return
             loading.value = true
 

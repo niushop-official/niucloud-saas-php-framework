@@ -53,6 +53,16 @@
                     <el-form-item :label="t('icon')">
                         <upload-image v-model="formData.front_end_icon" />
                     </el-form-item>
+
+                    <el-form-item :label="t('metaTitle')">
+                        <el-input v-model.trim="formData.meta_title" :placeholder="t('MetaPlaceholder')" class="input-width" clearable maxlength="40" show-word-limit />
+                    </el-form-item>
+                    <el-form-item :label="t('metaDescription')">
+                        <el-input v-model.trim="formData.meta_desc" :placeholder="t('metaDescriptionPlaceholder')" class="input-width" clearable maxlength="200" show-word-limit />
+                    </el-form-item>
+                    <el-form-item :label="t('metaKeywords')">
+                        <el-input v-model.trim="formData.meta_keyword" :placeholder="t('metaKeywordsPlaceholder')" class="input-width" clearable maxlength="200" show-word-limit />
+                    </el-form-item>
                 </div>
 
                 <div class="mt-[20px]" v-if="appType == 'admin'">
@@ -114,7 +124,10 @@ const formData: any = reactive<Record<string, string>>({
     enterprise_wechat: '',
     tel: '',
     site_login_logo: '',
-    site_login_bg_img: ''
+    site_login_bg_img: '',
+    meta_title:"",
+    meta_desc:"",
+    meta_keyword:"",
 })
 
 const setFormData = async () => {

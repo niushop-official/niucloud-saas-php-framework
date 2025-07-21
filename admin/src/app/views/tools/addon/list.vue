@@ -51,9 +51,10 @@
                         </el-table-column>
                         <el-table-column :label="t('operation')" fixed="right" align="right" width="180" :show-overflow-tooltip="true">
                             <template #default="{ row }">
-                                <el-button type="primary" link @click="editEvent(row.key)">{{ t('edit') }}</el-button>
+                                
                                 <el-button v-if="Object.keys(row.install_info).length" type="primary" link @click="addonDevelopBuildFn(row)">{{ t('step4') }}</el-button>
                                 <el-button v-if="!Object.keys(row.install_info).length" type="primary" link @click="deleteEvent(row.key)">{{ t('delete') }}</el-button>
+                                <el-button type="primary" link @click="editEvent(row.key)">{{ t('edit') }}</el-button>
                             </template>
                         </el-table-column>
                 </el-table>

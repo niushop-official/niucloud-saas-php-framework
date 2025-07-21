@@ -44,13 +44,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed ,onMounted,watchEffect} from 'vue'
+import { ref, watch, computed, onMounted, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
-import { getShowApp,getShowMarketing } from '@/app/api/site'
-import { img  } from '@/utils/common'
+import { getShowApp, getShowMarketing } from '@/app/api/site'
+import { img } from '@/utils/common'
 import { findFirstValidRoute } from '@/router/routers'
 
 const systemStore = useSystemStore()
@@ -133,57 +133,57 @@ if (siteInfo?.apps.length > 1) {
 
 const oneMenuActive = ref(route.matched[1].name)
 
-const appList = ref(null);
-const marketingList = ref(null);
+const appList = ref(null)
+const marketingList = ref(null)
 // const loading = ref(true);
 const getAppList = async () => {
-    const res = await getShowApp();
-    appList.value = res.data;
+    const res = await getShowApp()
+    appList.value = res.data
     // loading.value = false;
-};
+}
 const getMarketingList = async () => {
-    const res = await getShowMarketing();
+    const res = await getShowMarketing()
     marketingList.value = res.data
 }
 onMounted(async () => {
-    await getAppList(); // 确保数据先加载
+    await getAppList() // 确保数据先加载
     await getMarketingList()
-});
+})
 
 watchEffect(() => {
     // if (!appList.value || loading.value) return; // 确保数据加载完毕
-    const addonKeys = appList.value?.addon?.list?.map(item => item.key) ?? [];
-    const toolKeys = appList.value?.tool?.list?.map(item => item.key) ?? [];
-    const allKeys = [...addonKeys, ...toolKeys];
-    const marketingKeys = marketingList.value?.marketing?.list?.map(item => item.key) ?? [];
-    const matchedName = route.matched[1]?.name;
+    const addonKeys = appList.value?.addon?.list?.map(item => item.key) ?? []
+    const toolKeys = appList.value?.tool?.list?.map(item => item.key) ?? []
+    const allKeys = [...addonKeys, ...toolKeys]
+    const marketingKeys = marketingList.value?.marketing?.list?.map(item => item.key) ?? []
+    const matchedName = route.matched[1]?.name
     if (allKeys.includes(matchedName)) {
-        oneMenuActive.value = "addon";
-        twoMenuData.value = route.matched[1]?.children ?? [];
+        oneMenuActive.value = 'addon'
+        twoMenuData.value = route.matched[1]?.children ?? []
     } else if (marketingKeys.includes(matchedName)) {
-        oneMenuActive.value = "active";
-        twoMenuData.value = route.matched[1]?.children ?? [];
-    } else if (route.meta.attr !== "") {
-        oneMenuActive.value = route.matched[2]?.name;
-        twoMenuData.value = route.matched[1]?.children ?? [];
+        oneMenuActive.value = 'active'
+        twoMenuData.value = route.matched[1]?.children ?? []
+    } else if (route.meta.attr !== '') {
+        oneMenuActive.value = route.matched[2]?.name
+        twoMenuData.value = route.matched[1]?.children ?? []
     } else {
         // 多应用
         if (siteInfo?.apps.length > 1) {
-            twoMenuData.value = route.matched[1]?.children;
-            oneMenuActive.value = route.matched[1]?.name;
+            twoMenuData.value = route.matched[1]?.children
+            oneMenuActive.value = route.matched[1]?.name
         } else {
             // 单应用
-            const oneMenu = route.matched[1];
-            if (oneMenu.meta.addon === "") {
-                oneMenuActive.value = route.matched[1]?.name;
-                twoMenuData.value = route.matched[1]?.children ?? [];
+            const oneMenu = route.matched[1]
+            if (oneMenu.meta.addon === '') {
+                oneMenuActive.value = route.matched[1]?.name
+                twoMenuData.value = route.matched[1]?.children ?? []
             } else {
                 if (oneMenu.meta.addon === siteInfo?.apps[0]?.key) {
-                    oneMenuActive.value = route.matched[2]?.name;
-                    twoMenuData.value = route.matched[2]?.children ?? [];
+                    oneMenuActive.value = route.matched[2]?.name
+                    twoMenuData.value = route.matched[2]?.children ?? []
                 } else {
-                    oneMenuActive.value = route.matched[1]?.name;
-                    twoMenuData.value = route.matched[1]?.children ?? [];
+                    oneMenuActive.value = route.matched[1]?.name
+                    twoMenuData.value = route.matched[1]?.children ?? []
                 }
             }
         }
@@ -242,8 +242,7 @@ watchEffect(() => {
                 }
                 span{
                     display: block;
-                    margin: 0;
-                    margin-top: 5px;
+                    margin: 5px 0 0;
                 }
             }
             &:hover{

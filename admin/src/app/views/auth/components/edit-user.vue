@@ -15,7 +15,7 @@
             </el-form-item> -->
 
             <el-form-item :label="t('accountNumber')" prop="username" >
-                <el-input v-model.trim="formData.username" :placeholder="t('accountNumberPlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="10" show-word-limit />
+                <el-input v-model.trim="formData.username" :placeholder="t('accountNumberPlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="20" show-word-limit />
             </el-form-item>
 
             <div v-if="needAddUserInfo">

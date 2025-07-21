@@ -26,7 +26,6 @@
 	"developerAppid": "开发小程序appid",
 	"uploadKey": "代码上传密钥",
 	"uploadKeyTips": "",
-	"uploadIpTips": "",
 	"developAppid": "开发小程序APPID",
 	"developAppidPlaceholder": "请输入开发小程序APPID",
 	"uploadIpTips": "如果小程序代码上传开启了ip白名单设置，在ip白名单中添加ip：",

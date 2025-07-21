@@ -11,7 +11,7 @@
                 <el-form-item label="APPSECRET" prop="app_secret">
                     <el-input v-model.trim="formData.app_secret" :placeholder="t('appSecretPlaceholder')" class="input-width" clearable />
                 </el-form-item>
-                <div class="box-card mt-[20px] !border-none" shadow="never">
+                <div class="box-card mt-[20px] !border-none">
                     <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('messagesReceiving') }}</h3>
 
                     <el-form-item :label="t('empowerReceiveUrl')">
@@ -41,7 +41,7 @@
                     </el-form-item>
                 </div>
 
-                <div class="box-card mt-[20px] !border-none" shadow="never">
+                <div class="box-card mt-[20px] !border-none">
                     <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('domainSetting') }}</h3>
 
                     <el-form-item :label="t('empowerStartDomain')">
@@ -60,7 +60,7 @@
                     </el-form-item>
                 </div>
 
-                <div class="box-card mt-[20px] !border-none" shadow="never">
+                <div class="box-card mt-[20px] !border-none">
                     <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('developerWeappUpload') }}</h3>
 
                     <el-form-item :label="t('developAppid')" prop="develop_app_id">

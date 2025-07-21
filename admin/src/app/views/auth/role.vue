@@ -1,7 +1,7 @@
 <template>
     <!--角色管理-->
     <div class="main-container">
-        <el-card class="box-card !border-none setting-card" shadow="never">
+        <el-card class="box-card !border-none" shadow="never">
 
             <!-- <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
@@ -54,7 +54,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { t } from '@/lang'
-import { getRoleList, deleteRole, modifyRoleStatus} from '@/app/api/sys'
+import { getRoleList, deleteRole, modifyRoleStatus } from '@/app/api/sys'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import EditRole from '@/app/views/auth/components/edit-role.vue'
 import { useRoute } from 'vue-router'
@@ -150,12 +150,11 @@ const modifyRoleStatusEvent = (role_id: any, status: any) => {
     }).then((res) => {
         loadRoleList()
         isRepeat.value = false
+    }).catch(() => {
+        isRepeat.value = false
     })
 }
 </script>
 
 <style lang="scss" scoped>
-:deep(.setting-card .el-card__body){
-    padding: 0 !important;
-}
 </style>

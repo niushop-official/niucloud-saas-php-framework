@@ -20,7 +20,7 @@ const data = computed(() => {
 })
 
 const componentStyle = computed(() => {
-    var style = '';
+    let style = '';
     style += `font-size: ${ prop.value.fontSize }px;color: ${ prop.value.fontColor };line-height: ${ prop.value.lineHeight + prop.value.fontSize }px;`;
     if (prop.value.x == 'left' || prop.value.x == 'center' || prop.value.x == 'right') {
         style += `text-align: ${ prop.value.x };`;

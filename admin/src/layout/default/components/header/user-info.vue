@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <el-dropdown-menu>
-                        <el-dropdown-item @click="toLink('/home/index')">
+                        <el-dropdown-item @click="toLink('/home/index')" v-if="isAllowChange">
                             <div class="flex items-center leading-[1] py-[5px]">
                                 <span class="iconfont iconqiehuan ml-[4px] !text-[14px] mr-[10px]"></span>
                                 <span class="text-[14px]">切换站点</span>
@@ -81,8 +81,9 @@ import useUserStore from '@/stores/modules/user'
 import { setUserInfo } from '@/app/api/personal'
 import { t } from '@/lang'
 import userInfoEdit from '@/app/components/user-info-edit/index.vue'
-import { img } from "@/utils/common";
+import { img } from '@/utils/common'
 
+const isAllowChange = localStorage.getItem('isAllowChange') === 'true';
 const userStore = useUserStore()
 const router = useRouter()
 const clickEvent = (command: string) => {
@@ -94,34 +95,34 @@ const clickEvent = (command: string) => {
 }
 
 const logout = () => {
-    userStore.logout();
+    userStore.logout()
 }
 const toLink = (link) => {
     router.push(link)
 }
 const userInfoEditRef = ref(null)
-const getUserInfoFn = ()=>{
+const getUserInfoFn = () => {
     userInfoEditRef.value?.open()
 }
 // 修改密码 --- start
 const changePasswordDialog = ref(false)
-const formRef = ref<FormInstance>();
+const formRef = ref<FormInstance>()
 // 提交信息
 const saveInfo = reactive({
     original_password: '',
     password: '',
     password_copy: ''
-});
+})
 // 表单验证规则
 const formRules = reactive<FormRules>({
     original_password: [
-        { required: true, message: t("originalPasswordPlaceholder"), trigger: "blur" },
+        { required: true, message: t('originalPasswordPlaceholder'), trigger: 'blur' }
     ],
     password: [
-        { required: true, message: t("passwordPlaceholder"), trigger: "blur" },
+        { required: true, message: t('passwordPlaceholder'), trigger: 'blur' }
     ],
     password_copy: [
-        { required: true, message: t("passwordPlaceholder"), trigger: "blur" },
+        { required: true, message: t('passwordPlaceholder'), trigger: 'blur' }
     ]
 })
 
@@ -129,25 +130,25 @@ const submitForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return
     formEl.validate((valid) => {
         if (valid) {
-            let msg = "";
-            if (saveInfo.password && !saveInfo.original_password) msg = t('originalPasswordHint');
-            if (saveInfo.password && saveInfo.original_password && !saveInfo.password_copy) msg = t('newPasswordHint');
-            if (saveInfo.password && saveInfo.original_password && saveInfo.password_copy && saveInfo.password != saveInfo.password_copy) msg = t('doubleCipherHint');
+            let msg = ''
+            if (saveInfo.password && !saveInfo.original_password) msg = t('originalPasswordHint')
+            if (saveInfo.password && saveInfo.original_password && !saveInfo.password_copy) msg = t('newPasswordHint')
+            if (saveInfo.password && saveInfo.original_password && saveInfo.password_copy && saveInfo.password != saveInfo.password_copy) msg = t('doubleCipherHint')
             if (msg) {
                 ElNotification({
                     type: 'error',
-                    message: msg,
+                    message: msg
                 })
-                return;
+                return
             }
 
             setUserInfo(saveInfo).then((res: any) => {
-                changePasswordDialog.value = false;
+                changePasswordDialog.value = false
             })
         } else {
             return false
         }
-    });
+    })
 }
 </script>
 

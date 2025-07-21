@@ -238,7 +238,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { t } from '@/lang'
 import { getGenerateTableList, deleteGenerateTable, generateCreate, generatePreview, generatorCheckFile, getAddonDevelop } from '@/app/api/tools'
-import { img,setTablePageStorage,getTablePageStorage } from '@/utils/common'
+import { img, setTablePageStorage, getTablePageStorage } from '@/utils/common'
 import { ElMessageBox, ElMessage } from 'element-plus'
 import AddTable from '@/app/views/tools/code/components/add-table.vue'
 import type { FormInstance } from 'element-plus'
@@ -292,7 +292,7 @@ const loadGenerateTableList = (page: number = 1) => {
         codeTableData.loading = false
         codeTableData.data = res.data.data
         codeTableData.total = res.data.total
-        setTablePageStorage(codeTableData.page, codeTableData.limit, codeTableData.searchParam);
+        setTablePageStorage(codeTableData.page, codeTableData.limit, codeTableData.searchParam)
     }).catch(() => {
         codeTableData.loading = false
     })
@@ -345,16 +345,16 @@ const editEvent = (data: any) => {
 /**
  * 同步校验
  */
-const generatorCheckFileFn = ((id: any) => {
+const generatorCheckFileFn = (id: any) => {
     generatorCheckFile({ id }).then((res: any) => {
         codeTableData.loading = false
         ElMessageBox.confirm(
-                res.msg != '2' ? t('saveAndSyncText') : t('saveAndSyncText1'),
-                t('warning'),
-                {
-                    confirmButtonText: t('confirm'),
-                    cancelButtonText: t('cancel')
-                }
+            res.msg != '2' ? t('saveAndSyncText') : t('saveAndSyncText1'),
+            t('warning'),
+            {
+                confirmButtonText: t('confirm'),
+                cancelButtonText: t('cancel')
+            }
         ).then(() => {
             generateCreateFn(id, 3)
         }).catch(() => {
@@ -362,7 +362,7 @@ const generatorCheckFileFn = ((id: any) => {
     }).catch(() => {
         codeTableData.loading = false
     })
-})
+}
 
 /**
  * 同步or下载
@@ -432,7 +432,7 @@ const listToTree = (arr:any) => {
                     }
                 }
                 if (!obj) {
-                    obj = { name: name, path: name.indexOf('.') < 0 ? '' : arr[i], key: 'k' + i + j + k }
+                    obj = { name, path: name.indexOf('.') < 0 ? '' : arr[i], key: 'k' + i + j + k }
                     if (name.indexOf('.') < 0) obj.children = []
                     if (obj.path === arr[0]) treeKey.value = obj.key
                     _ret.push(obj)

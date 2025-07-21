@@ -72,7 +72,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { img ,setTablePageStorage } from '@/utils/common'
+import { img, setTablePageStorage } from '@/utils/common'
 import { t } from '@/lang'
 import { getGenerateTableList, deleteGenerateTable, generateCreate, generatePreview, generatorCheckFile, getAddonDevelop } from '@/app/api/tools'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
@@ -106,7 +106,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 /**
  * 获取代码生成列表
  */
- const loadGenerateTableList = (page: number = 1) => {
+const loadGenerateTableList = (page: number = 1) => {
     codeTableData.loading = true
     codeTableData.page = page
 
@@ -118,7 +118,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
         codeTableData.loading = false
         codeTableData.data = res.data.data
         codeTableData.total = res.data.total
-        setTablePageStorage(codeTableData.page, codeTableData.limit, codeTableData.searchParam);
+        setTablePageStorage(codeTableData.page, codeTableData.limit, codeTableData.searchParam)
     }).catch(() => {
         codeTableData.loading = false
     })
@@ -153,7 +153,7 @@ const editEvent = (data: any) => {
 /**
  * 同步校验
  */
-const generatorCheckFileFn = ((id: any) => {
+const generatorCheckFileFn = (id: any) => {
     generatorCheckFile({ id }).then((res: any) => {
         codeTableData.loading = false
         ElMessageBox.confirm(
@@ -170,7 +170,7 @@ const generatorCheckFileFn = ((id: any) => {
     }).catch(() => {
         codeTableData.loading = false
     })
-})
+}
 
 /**
  * 同步or下载
@@ -240,7 +240,7 @@ const listToTree = (arr:any) => {
                     }
                 }
                 if (!obj) {
-                    obj = { name: name, path: name.indexOf('.') < 0 ? '' : arr[i], key: 'k' + i + j + k }
+                    obj = { name, path: name.indexOf('.') < 0 ? '' : arr[i], key: 'k' + i + j + k }
                     if (name.indexOf('.') < 0) obj.children = []
                     if (obj.path === arr[0]) treeKey.value = obj.key
                     _ret.push(obj)

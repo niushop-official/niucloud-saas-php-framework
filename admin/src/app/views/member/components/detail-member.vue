@@ -397,7 +397,7 @@ const getMemberInfoFn = async (bool=false) => {
 const setFormData = async (row: any = null) => {
     id = row.id;
     Object.assign(formData, initialFormData)
-    getMemberInfoFn(true);
+    await getMemberInfoFn(true);
 }
 
 defineExpose({

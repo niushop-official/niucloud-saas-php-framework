@@ -41,7 +41,7 @@ export function deleteUser(uid: number) {
 
 /**
  * 修改用户
- * @param uid
+ * @param params
  */
 export function editUser(params: Record<string, any>) {
     return request.put(`user/user/${ params.uid }`, params, { showSuccessMessage: true })

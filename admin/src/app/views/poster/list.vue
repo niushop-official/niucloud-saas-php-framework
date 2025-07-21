@@ -103,8 +103,8 @@ import { reactive, ref, computed } from 'vue'
 import { t } from '@/lang'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
-import { getPosterPageList,getPosterType,modifyPosterStatus,modifyPosterDefault,deletePoster,getPreviewPoster } from '@/app/api/poster'
-import { img,setTablePageStorage,getTablePageStorage } from '@/utils/common'
+import { getPosterPageList, getPosterType, modifyPosterStatus, modifyPosterDefault, deletePoster, getPreviewPoster } from '@/app/api/poster'
+import { img, setTablePageStorage, getTablePageStorage } from '@/utils/common'
 
 const router = useRouter()
 const route = useRoute()
@@ -151,10 +151,10 @@ const addEvent = async (formEl: FormInstance | undefined) => {
 }
 
 // 获取自定义海报类型
-const loadPosterType = ()=> {
-    getPosterType({}).then((res:any)=>{
-        for (let key in posterType) {
-            delete posterType[key];
+const loadPosterType = () => {
+    getPosterType({}).then((res:any) => {
+        for (const key in posterType) {
+            delete posterType[key]
         }
 
         for (const key in res.data) {
@@ -163,7 +163,7 @@ const loadPosterType = ()=> {
     })
 }
 
-loadPosterType();
+loadPosterType()
 
 const posterTableData: any = reactive({
     page: 1,
@@ -192,13 +192,13 @@ const loadPosterPageList = (page: number = 1) => {
         posterTableData.loading = false
         posterTableData.data = res.data.data
         posterTableData.total = res.data.total
-        setTablePageStorage(posterTableData.page, posterTableData.limit, posterTableData.searchParam);
+        setTablePageStorage(posterTableData.page, posterTableData.limit, posterTableData.searchParam)
     }).catch(() => {
         posterTableData.loading = false
     })
 }
 
-loadPosterPageList(getTablePageStorage(posterTableData.searchParam).page);
+loadPosterPageList(getTablePageStorage(posterTableData.searchParam).page)
 
 // 编辑自定义海报
 const editEvent = (data: any) => {
@@ -212,7 +212,7 @@ const editEvent = (data: any) => {
 const isRepeat = ref(false)
 
 // 修改海报启用状态
-const modifyPosterStatusFn = (id:any,status:any)=> {
+const modifyPosterStatusFn = (id:any, status:any) => {
     if (isRepeat.value) return
     isRepeat.value = true
 
@@ -225,7 +225,7 @@ const modifyPosterStatusFn = (id:any,status:any)=> {
 }
 
 // 将自定义海报修改为默认海报
-const modifyPosterDefaultFn = (id:any)=> {
+const modifyPosterDefaultFn = (id:any) => {
     if (isRepeat.value) return
     isRepeat.value = true
     modifyPosterDefault({
@@ -265,16 +265,15 @@ const previewPoster = (data: any) => {
     isRepeat.value = true
 
     getPreviewPoster({
-        id:data.id,
-        type:data.type
-    }).then(((res:any)=>{
-        if(res.data) {
-            previewPosterUrl.value = res.data;
-            previewDialogVisible.value = true;
+        id: data.id,
+        type: data.type
+    }).then((res:any) => {
+        if (res.data) {
+            previewPosterUrl.value = res.data
+            previewDialogVisible.value = true
         }
         isRepeat.value = false
-    }))
-
+    })
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {

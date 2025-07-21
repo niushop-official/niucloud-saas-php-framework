@@ -27,8 +27,8 @@ const siteInfo = userStore.siteInfo
 
 const menuActive = computed(() => String(route.name))
 
-userStore.routers = userStore.routers.filter((item,index) =>{
-    if(item.name == 'setting_manage'){
+userStore.routers = userStore.routers.filter((item, index) => {
+    if (item.name == 'setting_manage') {
         // item.meta.class = 1
         if (item.children) {
             item.children.forEach((subItem, subIndex) => {
@@ -40,7 +40,7 @@ userStore.routers = userStore.routers.filter((item,index) =>{
                 }
             })
         }
-        return item.children;
+        return item.children
     }
 })
 

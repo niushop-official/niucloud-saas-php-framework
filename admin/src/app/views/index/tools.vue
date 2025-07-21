@@ -153,7 +153,7 @@ const goRouter = () => {
 
 <style lang="scss" scoped>
     .tools-item-shadow {
-        box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
     }
 
     img {

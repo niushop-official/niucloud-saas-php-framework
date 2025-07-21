@@ -127,8 +127,8 @@
                                         </div>
                                         <div class="flex items-center">
                                             <div class="mr-[10px]">
-                                                <span class="iconfont iconshoucang11 !text-[12px] mr-[8px] !text-[#4F516D]"></span>
-                                                <span class="text-[#4F516D] text-[12px]">{{ item.collect_num}}</span>
+                                                <span class="iconfont iconchakan !text-[12px] mr-[8px] !text-[#4F516D]"></span>
+                                                <span class="text-[#4F516D] text-[12px]">{{ item.visit_num}}</span>
                                             </div>
                                             <div>
                                                 <span class="iconfont iconxiaoliang !text-[12px] mr-[8px] !text-[#4F516D]"></span>
