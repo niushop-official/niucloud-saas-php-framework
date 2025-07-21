@@ -18,7 +18,6 @@ use app\service\core\pay\CorePayService;
 use app\service\core\pay\CoreRefundService;
 use core\base\BaseCoreService;
 use core\exception\CommonException;
-use think\facade\Db;
 use think\Model;
 
 /**
@@ -31,7 +30,7 @@ class CoreOfflineService extends BaseCoreService
     /**
      * 支付
      * @param $params
-     * @return void
+     * @return array
      */
     public function pay($params){
         $out_trade_no = $params['out_trade_no'];//交易流水号
@@ -55,7 +54,7 @@ class CoreOfflineService extends BaseCoreService
     /**
      * 退款
      * @param array $params
-     * @return void
+     * @return array
      */
     public function refund(array $params){
         $refund_no = $params['refund_no'];//交易流水号
@@ -97,7 +96,7 @@ class CoreOfflineService extends BaseCoreService
      * 通过审核
      * @param int $site_id
      * @param string $out_trade_no
-     * @return void
+     * @return bool
      */
     public function pass(int $site_id, string $out_trade_no) {
         $pay = (new CorePayService())->findPayInfoByOutTradeNo($site_id, $out_trade_no);
@@ -118,6 +117,7 @@ class CoreOfflineService extends BaseCoreService
      * @param int $site_id
      * @param string $out_trade_no
      * @param string $reason
+     * @return bool
      */
     public function refuse(int $site_id, string $out_trade_no, string $reason = '') {
         $pay = (new CorePayService())->findPayInfoByOutTradeNo($site_id, $out_trade_no);

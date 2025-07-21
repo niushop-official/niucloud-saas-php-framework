@@ -13,6 +13,7 @@ namespace core\util;
 
 use Exception;
 use think\facade\Log;
+use Throwable;
 
 /**
  * Class Queue
@@ -139,6 +140,7 @@ class Queue
         $queue_waiting = $pre_queue.'{redis-queue}-waiting'; //1.0.5版本之前为redis-queue-waiting
         $queue_delay = $pre_queue.'{redis-queue}-delayed';//1.0.5版本之前为redis-queue-delayed
         $now = time();
+        Log::write('Queue 检测是否开启 redis扩展');
         if (extension_loaded('redis')) {
             try {
                 $redis = new \Redis();
@@ -174,9 +176,11 @@ class Queue
                 }
                 return true;
             } catch ( Throwable $e ) {
+                Log::warning('Queue检测 已开启redis扩展 send Error'.$e->getMessage());
                 return false;
             }
         }else{
+            Log::warning('Queue检测 未开启 redis扩展');
             return false;
         }
 

@@ -50,7 +50,12 @@ class AuthSiteService extends BaseAdminService
      * 通过站点id获取菜单列表
      * @param int $is_tree
      * @param int|string $status
+     * @param string $addon
+     * @param int $is_button
      * @return mixed
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getMenuList(int $is_tree, $status, $addon = 'all', int $is_button = 1)
     {

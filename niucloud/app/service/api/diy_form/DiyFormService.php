@@ -40,7 +40,7 @@ class DiyFormService extends BaseApiService
      * 获取万能表单信息
      * @param int $form_id
      * @param string $field
-     * @return mixed
+     * @return array
      */
     public function getInfo(int $form_id, $field = 'form_id, page_title, title, type, status, value, share, remark')
     {
@@ -329,7 +329,7 @@ class DiyFormService extends BaseApiService
     /**
      * 获取表单填写结果信息
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function getResult($params = [])
     {
@@ -341,7 +341,7 @@ class DiyFormService extends BaseApiService
     /**
      * 获取表单填写记录，循环diy-group，每个表单组件实现各自的渲染处理
      * @param array $params
-     * @return mixed
+     * @return array
      */
     public function getFormRecordInfo($params = [])
     {
@@ -360,8 +360,7 @@ class DiyFormService extends BaseApiService
 
     /**
      * 获取个人资料表单填写记录
-     * @param array $params
-     * @return mixed
+     * @return array
      */
     public function getMemberInfoFormRecordInfo()
     {

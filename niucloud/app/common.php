@@ -228,7 +228,7 @@ function get_start_and_end_time_by_day($day = '')
 
 /**
  * 获取本周的 开始、结束时间
- * @param data 日期
+ * @param data $date 日期
  */
 function get_weekinfo_by_time($date)
 {
@@ -357,7 +357,7 @@ function format_money($number)
  * 金额浮点数格式化
  * @param $number
  * @param $precision
- * @return float|int
+ * @return string
  */
 function format_float_money($number, $precision = 2)
 {
@@ -853,7 +853,7 @@ function version_to_string($ver)
 /**
  * 检测文件是否是本地图片
  * @param string $file_path
- * @return void
+ * @return bool
  */
 function check_file_is_remote(string $file_path)
 {
@@ -864,7 +864,7 @@ function check_file_is_remote(string $file_path)
  * 文件拷贝
  * @param string $source_file
  * @param string $to_file
- * @return void
+ * @return bool
  */
 function file_copy(string $source_file, string $to_file)
 {
@@ -889,11 +889,13 @@ function file_copy(string $source_file, string $to_file)
 /**
  * 创建并生成二维码
  * @param $url
+ * @param $page
+ * @param $data
  * @param $site_id
- * @param $dir
- * @param $file_path
- * @param $channel
- * @param $size
+ * @param string $dir
+ * @param string $channel
+ * @param true[] $style
+ * @param bool $outfile
  * @return string
  */
 function qrcode($url, $page, $data, $site_id, $dir = '', $channel = 'h5', $style = [ 'is_transparent' => true ], $outfile = true)
@@ -933,7 +935,7 @@ function qrcode($url, $page, $data, $site_id, $dir = '', $channel = 'h5', $style
  * @param array $param
  * @param string $channel
  * @param bool $is_throw_exception
- * @return string|void
+ * @return string|null
  */
 function poster(int $site_id, $id, $type, array $param = [], string $channel = '', bool $is_throw_exception = true)
 {
@@ -941,7 +943,22 @@ function poster(int $site_id, $id, $type, array $param = [], string $channel = '
 }
 
 /**
+ * 是否是url链接
+ * @param $string
+ * @return bool
+ */
+function is_url($string)
+{
+    if (strstr($string, 'http://') === false && strstr($string, 'https://') === false) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+/**
  * 获取站点插件
+ * @param int $site_id
  * @return array
  */
 function get_site_addons($site_id = 0) : array

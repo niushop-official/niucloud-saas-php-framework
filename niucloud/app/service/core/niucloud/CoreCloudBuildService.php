@@ -21,6 +21,7 @@ use core\exception\CloudBuildException;
 use core\exception\CommonException;
 use core\util\niucloud\BaseNiucloudClient;
 use core\util\niucloud\CloudService;
+use GuzzleHttp\Exception\GuzzleException;
 use think\facade\Cache;
 
 /**
@@ -43,7 +44,7 @@ class CoreCloudBuildService extends BaseCoreService
         parent::__construct();
         $this->root_path = project_path();
         $this->build_task = Cache::get($this->cache_key);
-        $this->auth_code = (new CoreNiucloudConfigService())->getNiucloudConfig()['auth_code'] ?? '';
+        $this->auth_code = ( new CoreNiucloudConfigService() )->getNiucloudConfig()[ 'auth_code' ] ?? '';
     }
 
     /**
@@ -78,42 +79,42 @@ class CoreCloudBuildService extends BaseCoreService
         clearstatcache();
 
         // 校验niucloud/public niucloud/vendor 目录是否可读可写
-        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', public_path()), 'status' => is_readable(public_path())];
-        $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $niucloud_dir . 'vendor'), 'status' => is_readable($niucloud_dir . 'vendor')];
+        $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', public_path()), 'status' => is_readable(public_path()) ];
+        $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $niucloud_dir . 'vendor'), 'status' => is_readable($niucloud_dir . 'vendor') ];
 
-        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', public_path()), 'status' => is_write(public_path())];
-        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $niucloud_dir . 'vendor'), 'status' => is_write($niucloud_dir . 'vendor')];
+        $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', public_path()), 'status' => is_write(public_path()) ];
+        $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $niucloud_dir . 'vendor'), 'status' => is_write($niucloud_dir . 'vendor') ];
 
         // 校验niucloud/public下 wap web admin 目录及文件是否可读可写
         $check_res = checkDirPermissions(public_path() . 'wap');
         $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'admin'));
         $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'web'));
 
-        if (!empty($check_res['unreadable'])) {
-            foreach ($check_res['unreadable'] as $item) {
-                $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $item), 'status' => false];
+        if (!empty($check_res[ 'unreadable' ])) {
+            foreach ($check_res[ 'unreadable' ] as $item) {
+                $data[ 'dir' ][ 'is_readable' ][] = [ 'dir' => str_replace(project_path(), '', $item), 'status' => false ];
             }
         }
-        if (!empty($check_res['not_writable'])) {
-            foreach ($check_res['not_writable'] as $item) {
-                $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $item), 'status' => false];
+        if (!empty($check_res[ 'not_writable' ])) {
+            foreach ($check_res[ 'not_writable' ] as $item) {
+                $data[ 'dir' ][ 'is_write' ][] = [ 'dir' => str_replace(project_path(), '', $item), 'status' => false ];
             }
         }
 
         $check_res = array_merge(
-            array_column($data['dir']['is_readable'], 'status'),
-            array_column($data['dir']['is_write'], 'status')
+            array_column($data[ 'dir' ][ 'is_readable' ], 'status'),
+            array_column($data[ 'dir' ][ 'is_write' ], 'status')
         );
 
         // 是否通过校验
-        $data['is_pass'] = !in_array(false, $check_res);
+        $data[ 'is_pass' ] = !in_array(false, $check_res);
         return $data;
     }
 
     /**
      * 云编译
-     * @param $addon
-     * @return void
+     * @return array
+     * @throws GuzzleException
      */
     public function cloudBuild()
     {
@@ -122,7 +123,7 @@ class CoreCloudBuildService extends BaseCoreService
         }
         if ($this->build_task) throw new CommonException('CLOUD_BUILD_TASK_EXIST');
 
-        $action_token = (new CoreModuleService())->getActionToken('cloudbuild', ['data' => ['product_key' => BaseNiucloudClient::PRODUCT]]);
+        $action_token = ( new CoreModuleService() )->getActionToken('cloudbuild', [ 'data' => [ 'product_key' => BaseNiucloudClient::PRODUCT ] ]);
 
         // 上传任务key
         $task_key = uniqid();
@@ -134,33 +135,33 @@ class CoreCloudBuildService extends BaseCoreService
         // 拷贝composer文件
         file_put_contents($package_dir . 'composer.json', file_get_contents(root_path() . 'composer.json'));
         // 拷贝手机端文件
-        $wap_is_compile = (new Addon())->where([['compile', 'like', '%wap%']])->field('id')->findOrEmpty();
+        $wap_is_compile = ( new Addon() )->where([ [ 'compile', 'like', '%wap%' ] ])->field('id')->findOrEmpty();
         if ($wap_is_compile->isEmpty()) {
-            dir_copy($this->root_path . 'uni-app', $package_dir . 'uni-app', exclude_dirs: ['node_modules', 'unpackage', 'dist']);
+            dir_copy($this->root_path . 'uni-app', $package_dir . 'uni-app', exclude_dirs: [ 'node_modules', 'unpackage', 'dist' ]);
             $this->handleUniapp($package_dir . 'uni-app');
         }
         // 拷贝admin端文件
-        $admin_is_compile = (new Addon())->where([['compile', 'like', '%admin%']])->field('id')->findOrEmpty();
+        $admin_is_compile = ( new Addon() )->where([ [ 'compile', 'like', '%admin%' ] ])->field('id')->findOrEmpty();
         if ($admin_is_compile->isEmpty()) {
-            dir_copy($this->root_path . 'admin', $package_dir . 'admin', exclude_dirs: ['node_modules', 'dist', '.vscode', '.idea']);
+            dir_copy($this->root_path . 'admin', $package_dir . 'admin', exclude_dirs: [ 'node_modules', 'dist', '.vscode', '.idea' ]);
         }
         // 拷贝web端文件
-        $web_is_compile = (new Addon())->where([['compile', 'like', '%web%']])->field('id')->findOrEmpty();
+        $web_is_compile = ( new Addon() )->where([ [ 'compile', 'like', '%web%' ] ])->field('id')->findOrEmpty();
         if ($web_is_compile->isEmpty()) {
-            dir_copy($this->root_path . 'web', $package_dir . 'web', exclude_dirs: ['node_modules', '.output', '.nuxt']);
+            dir_copy($this->root_path . 'web', $package_dir . 'web', exclude_dirs: [ 'node_modules', '.output', '.nuxt' ]);
         }
 
         $this->handleCustomPort($package_dir);
 
         $zip_file = $temp_dir . DIRECTORY_SEPARATOR . 'build.zip';
-        (new CoreAddonDevelopDownloadService(''))->compressToZip($package_dir, $zip_file);
+        ( new CoreAddonDevelopDownloadService('') )->compressToZip($package_dir, $zip_file);
 
         $query = [
             'authorize_code' => $this->auth_code,
             'timestamp' => time(),
-            'token' => $action_token['data']['token'] ?? ''
+            'token' => $action_token[ 'data' ][ 'token' ] ?? ''
         ];
-        $response = (new CloudService())->httpPost('cloud/build?' . http_build_query($query), [
+        $response = ( new CloudService(true) )->httpPost('cloud/build?' . http_build_query($query), [
             'multipart' => [
                 [
                     'name' => 'file',
@@ -170,11 +171,11 @@ class CoreCloudBuildService extends BaseCoreService
             ],
             'timeout' => 300.0
         ]);
-        if (isset($response['code']) && $response['code'] == 0) throw new CloudBuildException($response['msg']);
+        if (isset($response[ 'code' ]) && $response[ 'code' ] == 0) throw new CloudBuildException($response[ 'msg' ]);
 
         $this->build_task = [
             'task_key' => $task_key,
-            'timestamp' => $query['timestamp']
+            'timestamp' => $query[ 'timestamp' ]
         ];
         Cache::set($this->cache_key, $this->build_task);
 
@@ -183,7 +184,7 @@ class CoreCloudBuildService extends BaseCoreService
 
     private function handleUniapp(string $dir)
     {
-        $addon = (new Addon())->where([['status', '=', AddonDict::ON]])->value('key', '');
+        $addon = ( new Addon() )->where([ [ 'status', '=', AddonDict::ON ] ])->value('key', '');
         $this->compileDiyComponentsCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
     }
 
@@ -192,13 +193,13 @@ class CoreCloudBuildService extends BaseCoreService
         $addons = get_site_addons();
 
         foreach ($addons as $addon) {
-            $custom_port = (new CoreAddonBaseService())->getAddonConfig($addon)['port'] ?? [];
+            $custom_port = ( new CoreAddonBaseService() )->getAddonConfig($addon)[ 'port' ] ?? [];
             if (!empty($custom_port)) {
                 $addon_path = root_path() . 'addon' . DIRECTORY_SEPARATOR . $addon . DIRECTORY_SEPARATOR;
                 foreach ($custom_port as $port) {
-                    if (is_dir($addon_path . $port['name'])) {
-                        dir_copy($addon_path . $port['name'], $package_dir . $port['name']);
-                        $json_path = $package_dir . $port['name'] . DIRECTORY_SEPARATOR . 'info.json';
+                    if (is_dir($addon_path . $port[ 'name' ])) {
+                        dir_copy($addon_path . $port[ 'name' ], $package_dir . $port[ 'name' ]);
+                        $json_path = $package_dir . $port[ 'name' ] . DIRECTORY_SEPARATOR . 'info.json';
                         file_put_contents($json_path, json_encode($port));
                     }
                 }
@@ -225,14 +226,14 @@ class CoreCloudBuildService extends BaseCoreService
 
         $query = [
             'authorize_code' => $this->auth_code,
-            'timestamp' => $this->build_task['timestamp']
+            'timestamp' => $this->build_task[ 'timestamp' ]
         ];
-        $build_log = (new CloudService())->httpGet('cloud/get_build_logs?' . http_build_query($query));
+        $build_log = ( new CloudService(true) )->httpGet('cloud/get_build_logs?' . http_build_query($query));
 
-        if (isset($build_log['data']) && isset($build_log['data'][0]) && is_array($build_log['data'][0])) {
-            $last = end($build_log['data'][0]);
-            if ($last['percent'] == 100 && $last['code'] == 1) {
-                $build_log['data'][0] = $this->buildSuccess($build_log['data'][0]);
+        if (isset($build_log[ 'data' ]) && isset($build_log[ 'data' ][ 0 ]) && is_array($build_log[ 'data' ][ 0 ])) {
+            $last = end($build_log[ 'data' ][ 0 ]);
+            if ($last[ 'percent' ] == 100 && $last[ 'code' ] == 1) {
+                $build_log[ 'data' ][ 0 ] = $this->buildSuccess($build_log[ 'data' ][ 0 ]);
             }
         }
         return $build_log;
@@ -248,40 +249,40 @@ class CoreCloudBuildService extends BaseCoreService
         try {
             $query = [
                 'authorize_code' => $this->auth_code,
-                'timestamp' => $this->build_task['timestamp']
+                'timestamp' => $this->build_task[ 'timestamp' ]
             ];
             $chunk_size = 1 * 1024 * 1024;
-            $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $this->build_task['task_key'] . DIRECTORY_SEPARATOR;
+            $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $this->build_task[ 'task_key' ] . DIRECTORY_SEPARATOR;
 
-            if (!isset($this->build_task['index'])) {
-                $response = (new CloudService())->request('HEAD', 'cloud/build_download?' . http_build_query($query), [
-                    'headers' => ['Range' => 'bytes=0-']
+            if (!isset($this->build_task[ 'index' ])) {
+                $response = ( new CloudService(true) )->request('HEAD', 'cloud/build_download?' . http_build_query($query), [
+                    'headers' => [ 'Range' => 'bytes=0-' ]
                 ]);
                 $length = $response->getHeader('Content-range');
-                $length = (int)explode("/", $length[0])[1];
-                $step = (int)ceil($length / $chunk_size);
+                $length = (int) explode("/", $length[ 0 ])[ 1 ];
+                $step = (int) ceil($length / $chunk_size);
 
-                $this->build_task = array_merge($this->build_task, ['step' => $step, 'index' => 0, 'length' => $length]);
+                $this->build_task = array_merge($this->build_task, [ 'step' => $step, 'index' => 0, 'length' => $length ]);
                 Cache::set($this->cache_key, $this->build_task);
             } else {
                 $zip_file = $temp_dir . 'download.zip';
                 $zip_resource = fopen($zip_file, 'a');
 
-                if (($this->build_task['index'] + 1) <= $this->build_task['step']) {
-                    $start = $this->build_task['index'] * $chunk_size;
-                    $end = ($this->build_task['index'] + 1) * $chunk_size;
-                    $end = min($end, $this->build_task['length']);
+                if (( $this->build_task[ 'index' ] + 1 ) <= $this->build_task[ 'step' ]) {
+                    $start = $this->build_task[ 'index' ] * $chunk_size;
+                    $end = ( $this->build_task[ 'index' ] + 1 ) * $chunk_size;
+                    $end = min($end, $this->build_task[ 'length' ]);
 
-                    $response = (new CloudService())->request('GET', 'cloud/build_download?' . http_build_query($query), [
-                        'headers' => ['Range' => "bytes={$start}-{$end}"]
+                    $response = ( new CloudService(true) )->request('GET', 'cloud/build_download?' . http_build_query($query), [
+                        'headers' => [ 'Range' => "bytes={$start}-{$end}" ]
                     ]);
                     fwrite($zip_resource, $response->getBody());
                     fclose($zip_resource);
 
-                    $this->build_task['index'] += 1;
+                    $this->build_task[ 'index' ] += 1;
                     Cache::set($this->cache_key, $this->build_task);
 
-                    $log[] = ['code' => 1, 'action' => '编译包下载中,已下载' . round($this->build_task['index'] / $this->build_task['step'] * 100) . '%', 'percent' => '100'];
+                    $log[] = [ 'code' => 1, 'action' => '编译包下载中,已下载' . round($this->build_task[ 'index' ] / $this->build_task[ 'step' ] * 100) . '%', 'percent' => '100' ];
                 } else {
                     // 解压文件
                     $zip = new \ZipArchive();
@@ -305,12 +306,12 @@ class CoreCloudBuildService extends BaseCoreService
 
                         $this->clearTask();
                     } else {
-                        $log[] = ['code' => 0, 'msg' => '编译包解压失败', 'action' => '编译包解压', 'percent' => '100'];
+                        $log[] = [ 'code' => 0, 'msg' => '编译包解压失败', 'action' => '编译包解压', 'percent' => '100' ];
                     }
                 }
             }
         } catch (\Exception $e) {
-            $log[] = ['code' => 0, 'msg' => $e->getMessage(), 'action' => '', 'percent' => '100'];
+            $log[] = [ 'code' => 0, 'msg' => $e->getMessage(), 'action' => '', 'percent' => '100' ];
             $this->clearTask();
         }
         return $log;
@@ -323,7 +324,7 @@ class CoreCloudBuildService extends BaseCoreService
     public function clearTask()
     {
         if (!$this->build_task) return;
-        $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $this->build_task['task_key'] . DIRECTORY_SEPARATOR;;
+        $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $this->build_task[ 'task_key' ] . DIRECTORY_SEPARATOR;
         @del_target_dir($temp_dir, true);
         Cache::set($this->cache_key, null);
     }

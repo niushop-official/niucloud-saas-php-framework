@@ -21,6 +21,10 @@ use think\facade\Route;
 Route::group('site', function () {
 
     /***************************************************** 站点管理 ****************************************************/
+    //切换站点配置
+    Route::put('allow_change', 'site.Site/setIsAllowChangeSite');
+    Route::get('allow_change', 'site.Site/getIsAllowChangeSite');
+
     //站点列表
     Route::get('site', 'site.Site/lists');
     //站点信息
@@ -39,6 +43,8 @@ Route::group('site', function () {
     Route::get('statuslist', 'site.Site/getStatuList');
     //站点初始化
     Route::post('init', 'site.Site/siteInit');
+    //生成验证码
+    Route::get('captcha/create', 'site.Site/captcha');
     /***************************************************** 站点分组 *************************************************/
     //站点分组
     Route::get('group', 'site.SiteGroup/lists');

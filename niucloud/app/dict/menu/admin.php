@@ -993,7 +993,7 @@ return [
             [
                 'menu_name' => '云编译',
                 'menu_key' => 'cloud_build',
-                'menu_short_name' => '云编译按钮',
+                'menu_short_name' => '云编译',
                 'menu_type' => '2',
                 'icon' => '',
                 'api_url' => 'niucloud/build',

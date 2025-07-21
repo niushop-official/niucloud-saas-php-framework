@@ -80,7 +80,7 @@ class Addon extends BaseAdminController
      * 获取云安装日志
      * @description 获取云安装日志
      * @param $addon
-     * @return mixed
+     * @return Response
      */
     public function cloudInstallLog($addon) {
         return success(data:(new AddonService())->cloudInstallLog($addon));
@@ -101,7 +101,7 @@ class Addon extends BaseAdminController
      * 取消安装
      * @description 取消安装
      * @param $addon
-     * @return mixed
+     * @return Response
      */
     public function cancleInstall($addon)
     {

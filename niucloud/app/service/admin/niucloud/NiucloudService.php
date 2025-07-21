@@ -87,4 +87,34 @@ class NiucloudService extends BaseAdminService
     public function getAppVersionList($app_key) {
         return (new CoreModuleService())->getAppVersionList($app_key);
     }
+
+    /**
+     * 设置 本地服务器地址
+     * @param $data
+     * @return \app\model\sys\SysConfig|bool|\think\Model
+     */
+    public function setLocalCloudCompileConfig($data){
+
+        $data = [
+            'baseUri' => $data['url'],
+            'isOpen' => $data['is_open'],
+        ];
+        return $this->core_config_service->setConfig(0,'LOCAL_CLOUD_COMPILE_CONFIG', $data);
+    }
+
+    /**
+     * 获取 本地服务器地址
+     * @param $data
+     * @return \app\model\sys\SysConfig|bool|array|\think\Model
+     */
+    public function getLocalCloudCompileConfig(){
+        $config = $this->core_config_service->getConfig(0,'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
+        return [
+            'baseUri' => $config['baseUri'] ?? '',
+            'isOpen' => $config['isOpen'] ?? 0,
+        ];
+
+    }
+
+
 }

@@ -77,7 +77,7 @@ class WechatReplyService extends BaseAdminService
 
     /**
      * 获取默认回复
-     * @return void|null
+     * @return array
      */
     public function getDefault(){
         return $this->core_wechat_reply_service->getDefault($this->site_id);

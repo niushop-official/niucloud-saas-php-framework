@@ -29,7 +29,6 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\facade\Db;
-use think\facade\Log;
 
 /**
  * 自定义页面服务层
@@ -62,26 +61,43 @@ class DiyService extends BaseAdminService
     /**
      * 获取自定义页面分页列表，轮播搜索组件用
      * 查询微页面，数据排除存在轮播搜索组件的
-     * @param array $where
      * @return array
+     * @throws DbException
      */
     public function getPageByCarouselSearch()
     {
-        $field = 'id,site_id,title,page_title,name,template,type,mode,is_default,share,visit_count,create_time,update_time,value';
+        $field = 'id,title,page_title,name,type,create_time,value';
         $order = "update_time desc";
-        $search_model = $this->model->whereOr([
-            [
-                [ 'type', '=', 'DIY_PAGE' ],
-                [ 'site_id', '=', $this->site_id ],
-                [ 'value', 'not in', [ 'top_fixed', 'right_fixed', 'bottom_fixed', 'left_fixed', 'fixed' ] ]
-            ],
-            [
-                [ 'type', '<>', 'DIY_PAGE' ],
-                [ 'site_id', '=', $this->site_id ],
-                [ 'is_default', '=', 0 ],
-                [ 'value', 'not in', [ 'top_fixed', 'right_fixed', 'bottom_fixed', 'left_fixed', 'fixed' ] ]
-            ]
-        ])->field($field)->order($order)->append([ 'type_name', 'type_page', 'addon_name' ]);
+        $search_model = $this->model
+            ->whereOr([
+                [
+                    [ 'type', '=', 'DIY_PAGE' ],
+                    [ 'site_id', '=', $this->site_id ],
+                    [ 'value', 'not like',
+                        [
+                            '%"position":"top_fixed"%',
+                            '%"position":"right_fixed"%',
+                            '%"position":"bottom_fixed"%',
+                            '%"position":"left_fixed"%',
+                            '%"position":"fixed"%'
+                        ]
+                    ]
+                ],
+                [
+                    [ 'type', '<>', 'DIY_PAGE' ],
+                    [ 'site_id', '=', $this->site_id ],
+                    [ 'is_default', '=', 0 ],
+                    [ 'value', 'not like',
+                        [
+                            '%"position":"top_fixed"%',
+                            '%"position":"right_fixed"%',
+                            '%"position":"bottom_fixed"%',
+                            '%"position":"left_fixed"%',
+                            '%"position":"fixed"%'
+                        ]
+                    ]
+                ]
+            ])->field($field)->order($order)->append([ 'type_name', 'type_page', 'addon_name' ]);
         return $this->pageQuery($search_model);
     }
 
@@ -326,6 +342,17 @@ class DiyService extends BaseAdminService
         $data[ 'component' ] = $this->getComponentList($data[ 'type' ]);
         $data[ 'domain_url' ] = ( new SystemService() )->getUrl();
 
+        $diy_template = [];
+        if (!empty($data[ 'name' ])) {
+            $diy_template = TemplateDict::getTemplate([
+                'key' => [ $data[ 'name' ] ]
+            ]);
+            if (!empty($diy_template)) {
+                $diy_template = $diy_template[ $data[ 'name' ] ];
+            }
+        }
+        $data[ 'global' ] = $diy_template[ 'global' ] ?? [];
+
         return $data;
     }
 
@@ -337,11 +364,27 @@ class DiyService extends BaseAdminService
     public function getComponentList(string $name = '')
     {
         $data = ComponentDict::getComponent();
+
+        $diy_template = [];
+        if (!empty($name)) {
+            $diy_template = TemplateDict::getTemplate([
+                'key' => [ $name ]
+            ]);
+            if (!empty($diy_template)) {
+                $diy_template = $diy_template[ $name ];
+            }
+        }
         foreach ($data as $k => $v) {
             // 查询组件支持的页面
             $sort_arr = [];
             foreach ($v[ 'list' ] as $ck => $cv) {
                 $support_page = $cv[ 'support_page' ];
+                // 过滤忽略组件名单
+                if (!empty($name) && !empty($diy_template) && isset($diy_template[ 'ignoreComponents' ]) && in_array($ck, $diy_template[ 'ignoreComponents' ])) {
+                    unset($data[ $k ][ 'list' ][ $ck ]);
+                    continue;
+                }
+                // 过滤页面不支持的组件
                 if (!( count($support_page) == 0 || in_array($name, $support_page) )) {
                     unset($data[ $k ][ 'list' ][ $ck ]);
                     continue;
@@ -349,6 +392,10 @@ class DiyService extends BaseAdminService
 
                 $sort_arr [] = $cv[ 'sort' ];
                 unset($data[ $k ][ 'list' ][ $ck ][ 'sort' ], $data[ $k ][ 'list' ][ $ck ][ 'support_page' ]);
+            }
+            if (empty($data[ $k ][ 'list' ])) {
+                unset($data[ $k ]);
+                continue;
             }
             array_multisort($sort_arr, SORT_ASC, $data[ $k ][ 'list' ]); //排序，根据 sort 排序
         }

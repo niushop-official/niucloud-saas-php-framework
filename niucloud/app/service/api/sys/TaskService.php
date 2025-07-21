@@ -28,8 +28,7 @@ class TaskService extends BaseApiService
 
     /**
      * 获取成长值任务
-     * @param string $key
-     * @return mixed
+     * @return array
      */
     public function getGrowthTask()
     {
@@ -45,7 +44,6 @@ class TaskService extends BaseApiService
 
     /**
      * 获取积分任务
-     * @param string $key
      * @return mixed
      */
     public function getPointTask()

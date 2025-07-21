@@ -108,6 +108,8 @@ Route::group(function() {
 
     // 获取初始化数据信息
     Route::get('init', 'sys.Config/init');
+    // 获取公众号用户是否绑定手机
+    Route::get('member_mobile_exist', 'sys.Config/getMemberMobileExist');
 
     /***************************************************** 地区管理 ****************************************************/
     //通过pid获取列表
@@ -151,6 +153,8 @@ Route::group(function() {
 Route::group(function() {
     //公众号更新用户openid
     Route::put('wechat/update_openid', 'wechat.Wechat/updateOpenid');
+    //公众号更新用户openid
+    Route::put('wechat/update_openid_h5', 'wechat.Wechat/updateOpenidByH5');
     //小程序更新用户openid
     Route::put('weapp/update_openid', 'weapp.Weapp/updateOpenid');
 

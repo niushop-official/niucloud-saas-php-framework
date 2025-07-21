@@ -74,7 +74,7 @@ class Area extends BaseAdminController
     /**
      * 根据code获取地址信息
      * @description 根据code获取地址信息
-     * @return void
+     * @return Response
      */
     public function areaByAreaCode(string $code) {
         return success((new AreaService())->getAreaByAreaCode($code));

@@ -68,7 +68,7 @@ class CoreWechatMediaService extends BaseCoreService
     /**
      * 同步草稿箱
      * @param array $data
-     * @return void
+     * @return int[]
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */

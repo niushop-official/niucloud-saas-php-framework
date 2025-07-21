@@ -13,21 +13,15 @@ namespace app\service\admin\addon;
 
 
 use app\dict\addon\AddonDict;
-use app\dict\sys\AppTypeDict;
 use app\model\addon\Addon;
-use app\service\admin\site\SiteGroupService;
-use app\service\admin\site\SiteService;
 use app\service\core\addon\CoreAddonCloudService;
 use app\service\core\addon\CoreAddonDownloadService;
 use app\service\core\addon\CoreAddonInstallService;
 use app\service\core\addon\CoreAddonService;
-use app\service\core\niucloud\CoreModuleService;
 use app\service\core\site\CoreSiteService;
 use core\base\BaseAdminService;
 use core\exception\CommonException;
-use Exception;
 use think\db\exception\DbException;
-use think\Response;
 
 
 /**
@@ -36,14 +30,17 @@ use think\Response;
 class AddonService extends BaseAdminService
 {
     public static $cache_tag_name = 'addon_cache';
+
     public function __construct()
     {
         parent::__construct();
         $this->model = new Addon();
 
     }
-    public function getList(){
-        return (new CoreAddonService())->getLocalAddonList();
+
+    public function getList()
+    {
+        return ( new CoreAddonService() )->getLocalAddonList();
     }
 
     /**
@@ -52,7 +49,7 @@ class AddonService extends BaseAdminService
      */
     public function getLocalAddonList()
     {
-        return (new CoreAddonService())->getLocalAddonList();
+        return ( new CoreAddonService() )->getLocalAddonList();
     }
 
     /**
@@ -112,9 +109,10 @@ class AddonService extends BaseAdminService
 
     /**
      * @param string $addon
-     * @return void
+     * @return array|array[]|null
      */
-    public function uninstallCheck(string $addon) {
+    public function uninstallCheck(string $addon)
+    {
         return ( new CoreAddonInstallService($addon) )->uninstallCheck();
     }
 
@@ -135,7 +133,7 @@ class AddonService extends BaseAdminService
      */
     public function getPage(array $where = [])
     {
-        return (new CoreAddonService())->getPage($where);
+        return ( new CoreAddonService() )->getPage($where);
     }
 
     /**
@@ -145,7 +143,7 @@ class AddonService extends BaseAdminService
      */
     public function getInfo(int $id)
     {
-        return (new CoreAddonService())->getInfo($id);
+        return ( new CoreAddonService() )->getInfo($id);
     }
 
     /**
@@ -153,8 +151,9 @@ class AddonService extends BaseAdminService
      * @param int $id
      * @param int $status
      */
-    public function setStatus(int $id, int $status){
-        return (new CoreAddonService())->setStatus($id, $status);
+    public function setStatus(int $id, int $status)
+    {
+        return ( new CoreAddonService() )->setStatus($id, $status);
     }
 
     /**
@@ -162,9 +161,10 @@ class AddonService extends BaseAdminService
      * @param string $app_key
      * @return true
      */
-    public function download(string $app_key, string $version){
+    public function download(string $app_key, string $version)
+    {
         if (empty($version)) throw new CommonException('ADDON_DOWNLOAD_VERSION_EMPTY');
-        return (new CoreAddonDownloadService())->download($app_key, $version);
+        return ( new CoreAddonDownloadService() )->download($app_key, $version);
     }
 
 
@@ -172,8 +172,9 @@ class AddonService extends BaseAdminService
      * 查询已安装应用
      * @return array
      */
-    public function getInstallList(){
-        return (new CoreAddonService())->getInstallAddonList();
+    public function getInstallList()
+    {
+        return ( new CoreAddonService() )->getInstallAddonList();
     }
 
 
@@ -185,12 +186,14 @@ class AddonService extends BaseAdminService
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getAddonListBySiteId(int $site_id){
+    public function getAddonListBySiteId(int $site_id)
+    {
         $addon_keys = $this->getAddonKeysBySiteId($site_id);
         return $this->getAddonListByKeys($addon_keys);
 
 
     }
+
     /**
      * 应用key缓存
      * @param $keys
@@ -199,15 +202,16 @@ class AddonService extends BaseAdminService
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getAddonListByKeys($keys){
+    public function getAddonListByKeys($keys)
+    {
         sort($keys);
-        $cache_name = 'addon_list'.implode('_', $keys);
+        $cache_name = 'addon_list' . implode('_', $keys);
         return cache_remember(
             $cache_name,
             function () use ($keys) {
                 $where = [
-                    ['key', 'in', $keys],
-                    ['status', '=', AddonDict::ON]
+                    [ 'key', 'in', $keys ],
+                    [ 'status', '=', AddonDict::ON ]
                 ];
                 return $this->model->where($where)->field('title, icon, key, desc, status, cover')->select()->toArray();
 
@@ -221,13 +225,14 @@ class AddonService extends BaseAdminService
      * @param int $site_id
      * @return array
      */
-    public function getAddonKeysBySiteId(int $site_id){
-        return (new CoreSiteService())->getAddonKeysBySiteId($site_id);
+    public function getAddonKeysBySiteId(int $site_id)
+    {
+        return ( new CoreSiteService() )->getAddonKeysBySiteId($site_id);
     }
 
     /**
      * 获取插件信息
-     * @param int $id
+     * @param string $key
      * @return array
      */
     public function getInfoByKey(string $key)

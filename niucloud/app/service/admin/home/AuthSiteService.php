@@ -13,19 +13,15 @@ namespace app\service\admin\home;
 
 
 use app\dict\addon\AddonDict;
-use app\dict\sys\AppTypeDict;
-use app\dict\sys\MenuTypeDict;
 use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
-use app\model\sys\SysMenu;
 use app\model\sys\SysUserRole;
 use app\model\sys\UserCreateSiteLimit;
 use app\service\admin\auth\AuthService;
 use app\service\admin\site\SiteGroupService;
 use app\service\admin\site\SiteService;
 use app\service\admin\sys\ConfigService;
-use app\service\admin\sys\RoleService;
 use core\base\BaseAdminService;
 use core\exception\CommonException;
 use core\exception\HomeException;
@@ -98,8 +94,10 @@ class AuthSiteService extends BaseAdminService
 
     /**
      * 查询用户角色类表
-     * @param int $uid
      * @return mixed|string
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getSiteIds(){
         $cache_name = 'user_role_list_'.$this->uid;
@@ -117,6 +115,19 @@ class AuthSiteService extends BaseAdminService
             },
             [self::$role_cache_name]
         );
+    }
+
+    /**
+     * 检测站点用户是否存在
+     * @return Site|array|mixed|\think\Model
+     */
+    public function checkSiteUserAccount()
+    {
+        $where = [
+            ['uid', '=', $this->uid],
+            ['site_id', '<>', request()->defaultSiteId()]
+        ];
+        return (new SysUserRole())->where($where)->findOrEmpty();
     }
 
     /**
@@ -199,7 +210,7 @@ class AuthSiteService extends BaseAdminService
     /**
      * 创建站点
      * @param array $data
-     * @return void
+     * @return true
      */
     public function createSite(array $data) {
         if (!AuthService::isSuperAdmin()) {

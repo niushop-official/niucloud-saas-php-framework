@@ -43,7 +43,7 @@ class Verify extends BaseAdminController
     /**
      * 核销信息
      * @description 核销信息
-     * @param int $order_id
+     * @param string $verify_code
      * @return Response
      */
     public function detail(string $verify_code)

@@ -72,6 +72,7 @@ return [
     'MUST_LOGIN' => '请登录',
     'LOGIN_EXPIRE' => '登录过期,请重新登录',
     'LOGIN_STATE_ERROR' => '登录状态有误,请重新登录',
+    'SITE_USER_NOT_EXIST' => '站点用户不存在',
     'USER_LOCK' => '账号被锁定',
     'USER_ERROR' => '账号或密码错误',
     'NO_SITE_PERMISSION' => '您没有当前站点的访问权限',
@@ -310,6 +311,7 @@ return [
     'NEED_TO_AUTHORIZE_FIRST' => '使用云服务需先进行授权',
     'WEAPP_UPLOADING' => '小程序有正在上传的版本，请等待上一版本上传完毕后再进行操作',
     'CLOUD_BUILD_TASK_EXIST' => '已有正在执行中的编译任务',
+    'CONNECT_FAIL' => '连接失败',
 
     //核销相关
     'VERIFY_TYPE_ERROR' => '核销类型错误',

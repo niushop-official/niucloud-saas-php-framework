@@ -32,7 +32,9 @@ class UploadService extends BaseAdminService
      * 附件库上传图片
      * @param $file
      * @param int $cate_id
+     * @param bool $is_attachment
      * @return array
+     * @throws Exception
      */
     public function image($file, int $cate_id = 0, $is_attachment = true){
         $dir = $this->root_path.'/'.'image'.'/'.$this->site_id.'/'.date('Ym').'/'.date('d');

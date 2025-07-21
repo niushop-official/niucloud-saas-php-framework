@@ -26,7 +26,6 @@ class MemberLoginListener
     {
         // 新人专享活动
         event("MemberLoginAfter", ['site_id' => $member['site_id'], 'member_id' => $member['member_id']]);
-        return;
 
     }
 }

@@ -668,6 +668,9 @@ CREATE TABLE `site`  (
   `addons` text NOT NULL COMMENT '站点包含的插件',
   `initalled_addon` text DEFAULT NULL COMMENT '站点已执行初始化方法的插件',
   `site_domain` varchar(255) NOT NULL DEFAULT '' COMMENT '站点域名',
+  `meta_title` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Meta 标题',
+  `meta_desc` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Meta 描述',
+  `meta_keyword` VARCHAR(255) NOT NULL DEFAULT '' COMMENT 'Meta 关键字',
   PRIMARY KEY (`site_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '站点表' ROW_FORMAT = Dynamic;
 
@@ -803,7 +806,7 @@ CREATE TABLE `sys_backup_records`
     `id`            INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `version`       VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备份版本号',
     `backup_key`    VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备份标识',
-    `content`       VARCHAR(255) NOT NULL DEFAULT '' COMMENT '备份内容',
+    `content`       TEXT DEFAULT NULL COMMENT '备份内容',
     `status`        VARCHAR(255) NOT NULL DEFAULT '' COMMENT '状态',
     `fail_reason`   LONGTEXT              DEFAULT NULL COMMENT '失败原因',
     `remark`        VARCHAR(500) NOT NULL DEFAULT '' COMMENT '备注',
@@ -1136,8 +1139,8 @@ CREATE TABLE `sys_user_log`  (
   `ip` varchar(50) NOT NULL DEFAULT '' COMMENT '登录IP',
   `site_id` int(11) NOT NULL DEFAULT 0 COMMENT '站点id',
   `uid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管理员id',
-  `username` varchar(64) NOT NULL DEFAULT '' COMMENT '管理员姓名',
-  `operation` varchar(100) NOT NULL DEFAULT '' COMMENT '操作描述',
+  `username` varchar(255) NOT NULL DEFAULT '' COMMENT '管理员姓名',
+  `operation` varchar(255) NOT NULL DEFAULT '' COMMENT '操作描述',
   `url` varchar(300) NOT NULL DEFAULT '' COMMENT '链接',
   `params` longtext DEFAULT NULL COMMENT '参数',
   `type` varchar(32) NOT NULL DEFAULT '' COMMENT '请求方式',

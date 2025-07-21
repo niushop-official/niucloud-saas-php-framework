@@ -138,7 +138,7 @@ class RoleService extends BaseAdminService
     /**
      * 修改状态
      * @param $data
-     * @return Label
+     * @return SysRole
      */
     public function modifyStatus($data)
     {

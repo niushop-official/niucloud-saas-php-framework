@@ -15,6 +15,9 @@ use app\dict\member\MemberLevelDict;
 use app\model\member\MemberLevel;
 use app\service\core\member\CoreMemberService;
 use core\base\BaseApiService;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 会员等级服务层
@@ -29,8 +32,10 @@ class MemberLevelService extends BaseApiService
 
     /**
      * 会员等级
-     * @param array $data
-     * @return true
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getList(){
         $list = (new MemberLevel())->where([ ['site_id', '=', $this->site_id] ])->field('level_id,site_id,level_name,growth,remark,level_benefits,level_gifts')->order('growth asc')->select()->toArray();

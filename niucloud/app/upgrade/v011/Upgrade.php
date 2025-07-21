@@ -7,7 +7,6 @@ use app\dict\sys\MenuDict;
 use app\model\diy\Diy;
 use app\model\sys\SysMenu;
 use app\service\admin\sys\MenuService;
-use app\service\core\addon\CoreAddonBaseService;
 use app\service\core\addon\CoreAddonService;
 use app\service\core\sys\CoreSysConfigService;
 use think\facade\Cache;

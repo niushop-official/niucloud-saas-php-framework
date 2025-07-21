@@ -78,7 +78,7 @@ class Backup extends BaseAdminController
     /**
      * 恢复备份
      * @description 恢复备份
-     * @return Response
+     * @return array
      */
     public function restoreBackup()
     {
@@ -107,7 +107,7 @@ class Backup extends BaseAdminController
     /**
      * 手动备份
      * @description 手动备份
-     * @return Response
+     * @return array
      */
     public function manualBackup()
     {

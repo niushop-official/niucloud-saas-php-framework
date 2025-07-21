@@ -11,9 +11,7 @@
 
 namespace app\service\core\stat;
 
-use app\model\site\Site;
 use app\model\stat\StatHour;
-use Carbon\Carbon;
 use core\base\BaseCoreService;
 
 /**

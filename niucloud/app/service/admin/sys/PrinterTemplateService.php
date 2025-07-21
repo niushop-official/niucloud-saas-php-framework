@@ -121,7 +121,6 @@ class PrinterTemplateService extends BaseAdminService
                         foreach ($value_v as $trigger_k => $trigger_v) {
                             if ($trigger_v[ 'template_id' ] == $id) {
                                 throw new CommonException("该模板已被打印机 [{$v['printer_name']}] 使用，无法删除");
-                                break;
                             }
                         }
                     }

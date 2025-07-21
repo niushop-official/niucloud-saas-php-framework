@@ -15,7 +15,6 @@ use app\dict\pay\TransferDict;
 use app\model\pay\Transfer;
 use app\service\core\pay\CoreTransferService;
 use core\base\BaseJob;
-use think\facade\Log;
 
 /**
  * 定时校验转账是否完毕(每分钟一次)

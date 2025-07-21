@@ -60,6 +60,7 @@ class VerifierService extends BaseAdminService
     /**
      * 组合整理数据
      * @param $data
+     * @return mixed
      */
     public function makeUp($data){
         //核销类型
@@ -106,7 +107,7 @@ class VerifierService extends BaseAdminService
     /**
      * 编辑核销员
      * @param array $data
-     * @return mixed
+     * @return void
      */
     public function edit($id, $data)
     {

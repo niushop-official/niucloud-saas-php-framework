@@ -34,7 +34,7 @@ class WeappDeliveryService extends BaseApiService
 
     /**
      * 查询小程序是否已开通发货信息管理服务
-     * @return mixed
+     * @return bool
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
     public function getIsTradeManaged()

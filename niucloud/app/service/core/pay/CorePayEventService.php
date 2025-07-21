@@ -81,6 +81,7 @@ class CorePayEventService extends BaseCoreService
      * @param string $quit_url
      * @param string $buyer_id
      * @param string $openid
+     * @param string $voucher
      * @return mixed
      * @throws Exception
      */
@@ -156,7 +157,7 @@ class CorePayEventService extends BaseCoreService
      * 转账
      * @param float $money
      * @param string $transfer_no
-     * @param string $to_no
+     * @param string|array $to_no
      * @param string $to_name
      * @param string $remark
      * @param array $transfer_list
@@ -268,6 +269,7 @@ class CorePayEventService extends BaseCoreService
     /**
      * 查询转账订单
      * @param string $transfer_no
+     * @param string $batch_id
      * @return null
      * @throws Exception
      */

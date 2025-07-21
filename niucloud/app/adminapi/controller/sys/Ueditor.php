@@ -128,7 +128,6 @@ class Ueditor extends BaseAdminController
                     'title' => $upload_res['url'],
                     'original' => $upload_res['url'],
                 ], 'json', 200);
-                break;
             case 'video':
                 $upload_res = $upload_service->video($data['file']);
                 return Response::create([
@@ -137,7 +136,6 @@ class Ueditor extends BaseAdminController
                     'title' => $upload_res['url'],
                     'original' => $upload_res['url'],
                 ], 'json', 200);
-                break;
         }
     }
 }

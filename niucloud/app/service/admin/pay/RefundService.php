@@ -31,7 +31,7 @@ class RefundService extends BaseAdminService
     /**
      * 退款账户记录
      * @param array $where
-     * @return mixed
+     * @return array
      */
     public function getPage(array $where){
         $field = 'id,refund_no,out_trade_no,type,channel,money,reason,status,create_time,refund_time,close_time,fail_reason,voucher,trade_type,trade_id,refund_type,main_type,main_id';

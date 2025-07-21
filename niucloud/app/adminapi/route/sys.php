@@ -189,6 +189,8 @@ Route::group('sys', function() {
     Route::get('schedule/datetype', 'sys.Schedule/getDateType');
     //执行一次任务
     Route::put('schedule/do/:id', 'sys.Schedule/doSchedule');
+    //重置定时任务
+    Route::post('schedule/reset', 'sys.Schedule/resetSchedule');
 
     //任务执行记录列表
     Route::get('schedule/log/list', 'sys.ScheduleLog/lists');

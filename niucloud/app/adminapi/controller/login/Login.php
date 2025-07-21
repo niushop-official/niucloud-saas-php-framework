@@ -13,7 +13,6 @@ namespace app\adminapi\controller\login;
 
 use app\service\admin\auth\ConfigService;
 use app\service\admin\auth\LoginService;
-use app\service\core\addon\WapTrait;
 use core\base\BaseAdminController;
 use think\Response;
 
@@ -25,7 +24,6 @@ use think\Response;
  */
 class Login extends BaseAdminController
 {
-    use WapTrait;
 
     /**
      * 登录

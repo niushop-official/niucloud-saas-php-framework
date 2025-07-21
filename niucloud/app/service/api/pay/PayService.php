@@ -12,7 +12,6 @@
 namespace app\service\api\pay;
 
 use app\dict\common\ChannelDict;
-use app\dict\pay\PayDict;
 use app\dict\pay\PaySceneDict;
 use app\model\member\Member;
 use app\model\pay\Pay;
@@ -46,6 +45,8 @@ class PayService extends BaseApiService
      * @param string $return_url
      * @param string $quit_url
      * @param string $buyer_id
+     * @param string $voucher
+     * @param string $openid
      * @return mixed
      * @throws DataNotFoundException
      * @throws DbException

@@ -233,7 +233,7 @@ class WeappVersionService extends BaseAdminService
      * 小程序提交版本
      * @param $site_id
      * @param $site_group_id
-     * @return void
+     * @return true
      */
     public static function weappCommit($site_id, $site_group_id) {
         $version = (new WxOplatfromWeappVersion())->where([ ['site_group_id', '=', $site_group_id], ['template_id', '<>', '' ] ])->order('id desc')->findOrEmpty();
@@ -320,7 +320,7 @@ class WeappVersionService extends BaseAdminService
 
     /**
      * 设置小程序隐私协议
-     * @return void
+     * @return true
      * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
@@ -365,7 +365,7 @@ class WeappVersionService extends BaseAdminService
 
     /**
      * 撤销审核
-     * @return void
+     * @return true
      */
     public function undoAudit($id) {
         $model = new WeappVersion();

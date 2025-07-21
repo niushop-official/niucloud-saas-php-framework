@@ -32,6 +32,5 @@ class MemberAccountListener
         if ($account_log['account_type'] == MemberAccountTypeDict::GROWTH) {
             (new CoreMemberLevelService())->checkLevelUpgrade($account_log['site_id'], $account_log['member_id']);
         }
-        return;
     }
 }

@@ -11,13 +11,11 @@
 
 namespace app\service\api\member;
 
-use app\dict\member\MemberCashOutDict;
 use app\model\member\MemberCashOut;
 use app\service\core\member\CoreMemberCashOutService;
 use app\service\core\member\CoreMemberConfigService;
 use core\base\BaseApiService;
 use core\exception\ApiException;
-use core\exception\CommonException;
 
 /**
  * 会员提现服务层
@@ -105,7 +103,8 @@ class MemberCashOutService extends BaseApiService
     /**
      * 提现转账(主要用于微信商家转账)
      * @param int $id
-     * @return void
+     * @param array $data
+     * @return true
      */
     public function transfer(int $id, array $data){
         $data['channel'] = $this->channel;

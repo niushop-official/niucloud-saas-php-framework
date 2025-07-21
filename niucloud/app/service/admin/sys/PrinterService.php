@@ -135,7 +135,7 @@ class PrinterService extends BaseAdminService
     /**
      * 修改小票打印机状态
      * @param $data
-     * @return mixed
+     * @return SysPrinter
      */
     public function modifyStatus($data)
     {
@@ -241,6 +241,7 @@ class PrinterService extends BaseAdminService
     /**
      * 打印小票内容
      * @param $params
+     * @return array
      */
     public function printTicket($params)
     {

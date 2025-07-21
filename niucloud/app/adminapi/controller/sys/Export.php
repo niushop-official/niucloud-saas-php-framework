@@ -79,7 +79,7 @@ class Export extends BaseAdminController
     /**
      * 获取导出状态列表
      * @description 获取导出状态列表
-     * @param string $type
+     * @return Response
      */
     public function getExportStatus()
     {

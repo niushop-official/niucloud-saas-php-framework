@@ -44,7 +44,7 @@ class SiteGroup extends BaseModel
      * 关联应用
      * @param $value
      * @param $data
-     * @return Addon[]|array|\think\Collection
+     * @return Addon[]|array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

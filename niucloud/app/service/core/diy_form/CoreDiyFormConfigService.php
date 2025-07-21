@@ -31,6 +31,7 @@ class CoreDiyFormConfigService extends BaseCoreService
     /**
      * 添加表单填写配置
      * @param $data
+     * @return mixed
      */
     public function addWriteConfig($data)
     {
@@ -158,7 +159,7 @@ class CoreDiyFormConfigService extends BaseCoreService
     /**
      * 获取表单填写配置
      * @param $data
-     * @return mixed
+     * @return array
      */
     public function getWriteConfig($data)
     {
@@ -239,7 +240,7 @@ class CoreDiyFormConfigService extends BaseCoreService
     /**
      * 编辑表单提交成功页配置
      * @param $data
-     * @return mixed
+     * @return true
      */
     public function editSubmitConfig($data)
     {
@@ -293,7 +294,7 @@ class CoreDiyFormConfigService extends BaseCoreService
     /**
      * 获取表单提交成功页配置
      * @param $data
-     * @return mixed
+     * @return array
      */
     public function getSubmitConfig($data)
     {

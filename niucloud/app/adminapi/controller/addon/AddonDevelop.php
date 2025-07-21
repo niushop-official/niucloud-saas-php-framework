@@ -75,7 +75,7 @@ class AddonDevelop extends BaseAdminController
     /**
      * 开发插件更新
      * @description 开发插件更新
-     * @param string $id
+     * @param string $key
      * @return Response
      */
     public function edit(string $key)
@@ -101,7 +101,7 @@ class AddonDevelop extends BaseAdminController
     /**
      * 删除开发插件
      * @description 删除开发插件
-     * @param $key
+     * @param string $key
      * @return Response
      */
     public function del(string $key)
@@ -114,7 +114,7 @@ class AddonDevelop extends BaseAdminController
      * 校验key是否被占用
      * @description 校验key是否被占用
      * @param $key
-     * @return void
+     * @return Response
      */
     public function checkKey($key)
     {

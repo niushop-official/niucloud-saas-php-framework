@@ -11,8 +11,6 @@
 
 namespace app\job\notice;
 
-use app\dict\sys\ConfigKeyDict;
-use app\service\core\sys\CoreConfigService;
 use core\base\BaseJob;
 use core\exception\NoticeException;
 

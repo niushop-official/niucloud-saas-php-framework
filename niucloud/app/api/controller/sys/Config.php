@@ -91,10 +91,21 @@ class Config extends BaseApiController
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
         $res[ 'theme_list' ] = ( new DiyService() )->getDiyTheme();
 
-        // 查询是否已经存在该小程序用户, 如果存在则小程序端快捷登录时不再弹出授权弹框
+        $openid_field = match ( $this->request->getChannel() ) {
+            'wechat' => 'wx_openid',
+            'weapp' => 'weapp_openid',
+            default => ''
+        };
+        // 根据来源查询是否已经存在用户, 如果存在则快捷登录时不再弹出授权弹框
+        // 根据来源查询是否绑定手机号, 如果绑定并且开启强制绑定则快捷登录时不再弹出绑定手机弹窗
         $res[ 'member_exist' ] = 0;
+        $res[ 'member_mobile_exist' ] = 0;
         if (!empty($data[ 'openid' ])) {
-            $res[ 'member_exist' ] = ( new MemberService() )->getCount([ [ 'weapp_openid', '=', $data[ 'openid' ] ] ]) > 0 ? 1 : 0;
+            if (!empty($openid_field)){
+                $res[ 'member_exist' ] = ( new MemberService() )->getCount([ [ $openid_field, '=', $data[ 'openid' ] ] ]) > 0 ? 1 : 0;
+
+                $res[ 'member_mobile_exist' ] = ( new MemberService() )->getCount([ [ $openid_field, '=', $data[ 'openid' ] ], [ 'mobile', '<>', '' ] ]) > 0 ? 1 : 0;
+            }
         }
 
         ( new MemberService() )->initMemberData();
@@ -102,6 +113,33 @@ class Config extends BaseApiController
         if (isset($res[ 'site_info' ][ 'site_id' ]) && !empty($res[ 'site_info' ][ 'site_id' ])) {
             event('initWap', [ 'site_id' => $res[ 'site_info' ][ 'site_id' ] ]);
         }
+        return success($res);
+    }
+
+    /**
+     * 获取公众号用户是否绑定手机
+     * @return Response
+     */
+    public function getMemberMobileExist()
+    {
+        $data = $this->request->params([
+            [ 'openid', '' ]
+        ]);
+
+        $openid_field = match ( $this->request->getChannel() ) {
+            'wechat' => 'wx_openid',
+            'weapp' => 'weapp_openid',
+            default => ''
+        };
+
+        // 根据来源查询是否绑定手机号, 如果绑定并且开启强制绑定则快捷登录时不再弹出绑定手机弹窗
+        $res[ 'member_mobile_exist' ] = 0;
+        if (!empty($data[ 'openid' ])) {
+            if (!empty($openid_field)) {
+                $res['member_mobile_exist'] = (new MemberService())->getCount([ [ $openid_field, '=', $data['openid'] ], ['mobile', '<>', ''] ]) > 0 ? 1 : 0;
+            }
+        }
+
         return success($res);
     }
 }

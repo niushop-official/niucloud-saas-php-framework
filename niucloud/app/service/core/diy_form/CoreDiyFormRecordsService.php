@@ -241,7 +241,7 @@ class CoreDiyFormRecordsService extends BaseCoreService
     /**
      * 编辑填表记录
      * @param $data
-     * @return mixed
+     * @return true
      */
     public function edit($data)
     {

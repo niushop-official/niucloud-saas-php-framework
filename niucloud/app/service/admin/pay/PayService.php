@@ -41,7 +41,7 @@ class PayService extends BaseAdminService
     /**
      * 待审核支付记录
      * @param array $where
-     * @return mixed
+     * @return array
      */
     public function getAuditPage(array $where)
     {
@@ -53,7 +53,7 @@ class PayService extends BaseAdminService
     /**
      * 获取交易详情
      * @param int $id
-     * @return void
+     * @return array
      */
     public function getDetail(int $id)
     {
@@ -79,6 +79,7 @@ class PayService extends BaseAdminService
      * 支付审核未通过
      * @param string $out_trade_no
      * @param string $reason
+     * @return bool
      */
     public function refuse(string $out_trade_no, string $reason)
     {
@@ -104,6 +105,8 @@ class PayService extends BaseAdminService
      * @param string $return_url
      * @param string $quit_url
      * @param string $buyer_id
+     * @param string $voucher
+     * @param string $openid
      * @return mixed
      * @throws DataNotFoundException
      * @throws DbException
@@ -129,7 +132,11 @@ class PayService extends BaseAdminService
      * 获取找朋友帮忙付支付信息
      * @param string $trade_type
      * @param int $trade_id
+     * @param string $channel
      * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getFriendspayInfoByTrade(string $trade_type, int $trade_id, string $channel)
     {
@@ -163,6 +170,7 @@ class PayService extends BaseAdminService
      * 获取找朋友帮忙付二维码
      * @param string $trade_type
      * @param int $trade_id
+     * @param string $channel
      * @return array
      */
     public function getQrcode(string $trade_type, int $trade_id, string $channel)

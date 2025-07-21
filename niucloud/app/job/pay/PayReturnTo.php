@@ -23,7 +23,8 @@ class PayReturnTo extends BaseJob
 
     /**
      * 消费
-     * @param $data
+     * @param $site_id
+     * @param $out_trade_no
      * @return true
      */
     protected function doJob($site_id, $out_trade_no)

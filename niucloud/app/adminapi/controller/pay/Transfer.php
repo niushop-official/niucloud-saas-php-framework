@@ -35,7 +35,7 @@ class Transfer extends BaseAdminController
      * 设置场景id
      * @description 设置场景id
      * @param $scene
-     * @return void
+     * @return \think\Response
      */
     public function setSceneId($scene){
         $data = $this->request->params([

@@ -13,11 +13,8 @@ namespace app\service\admin\notice;
 
 use app\dict\notice\NoticeDict;
 use app\dict\notice\NoticeTypeDict;
-use app\dict\sys\ConfigKeyDict;
-use app\dict\sys\SmsDict;
 use app\model\sys\SysNotice;
 use app\service\core\notice\CoreNoticeService;
-use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
 use core\exception\AdminException;
 

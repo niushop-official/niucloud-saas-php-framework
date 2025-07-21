@@ -17,7 +17,6 @@ use app\service\core\notice\CoreNoticeService;
 use core\base\BaseAdminService;
 use core\exception\NoticeException;
 use core\template\TemplateLoader;
-use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;

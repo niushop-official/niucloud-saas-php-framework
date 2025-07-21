@@ -56,7 +56,7 @@ class CoreSiteService extends BaseCoreService
                 $where = [
                     [ 'site_id', '=', $site_id ],
                 ];
-                $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo,front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain')->append([ 'status_name' ])->findOrEmpty()->toArray();
+                $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo,front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain, meta_title, meta_desc, meta_keyword')->append([ 'status_name' ])->findOrEmpty()->toArray();
                 if (!empty($info)) {
                     $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId((int) $site_id);
                     $info[ 'apps' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::APP ] ])->field('key,title,desc,icon,type,support_app')->select()->toArray();
@@ -170,8 +170,9 @@ class CoreSiteService extends BaseCoreService
 
     /**
      * 根据站点初始化数据
-     * @param string $domain
-     * @return mixed|string
+     * @param $site_id
+     * @param $tables
+     * @return true
      */
     public function siteInitBySiteId($site_id,$tables)
     {

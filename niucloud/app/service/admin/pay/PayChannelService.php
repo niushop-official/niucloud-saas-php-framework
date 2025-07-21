@@ -248,7 +248,7 @@ class PayChannelService extends BaseAdminService
     /**
      * 查询信息
      * @param array $where
-     * @return mixed
+     * @return array
      */
     public function getInfo($where = [])
     {

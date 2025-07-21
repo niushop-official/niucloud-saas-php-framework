@@ -28,7 +28,7 @@ use core\exception\CommonException;
 class OplatformService extends BaseAdminService
 {
     /**
-     * @return array|null
+     * @return string
      */
     public function createPreAuthorizationUrl()
     {
@@ -39,7 +39,7 @@ class OplatformService extends BaseAdminService
     /**
      *
      * @param array $data
-     * @return void
+     * @return true
      * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
      * @throws \EasyWeChat\Kernel\Exceptions\HttpException
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
@@ -102,7 +102,7 @@ class OplatformService extends BaseAdminService
     /**
      * 清除授权
      * @param $app_id
-     * @return void
+     * @return true
      */
     public function clearAuthorization($app_id) {
         (new SysConfig())->where([ ['value', 'like', "%{$app_id}%"], ['config_key', 'in', [

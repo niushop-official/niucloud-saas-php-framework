@@ -41,7 +41,10 @@ class CoreRefundService extends BaseCoreService
      * @param string $out_trade_no
      * @param float $money
      * @param string $reason
+     * @param string $trade_type
+     * @param string $trade_id
      * @return string|null
+     * @throws \Exception
      */
     public function create(int $site_id, string $out_trade_no, float $money, string $reason = '', $trade_type = '', $trade_id = '')
     {
@@ -50,7 +53,7 @@ class CoreRefundService extends BaseCoreService
         if ($pay->isEmpty()) throw new PayException('ALIPAY_TRANSACTION_NO_NOT_EXIST');//单据不存在
 
         // 查询当前支付已存在的退款单据,所有的退款总额不能超过支付单据的支付金额
-        $total_refund_money = $this->model->where([ [ 'out_trade_no', '=', $out_trade_no ], [ 'status', '<>', RefundDict::FAIL ] ])->sum('money');
+        $total_refund_money = $this->model->where([ [ 'out_trade_no', '=', $out_trade_no ], [ 'status', 'not in', [RefundDict::FAIL, RefundDict::CANCEL] ] ])->sum('money');
 
         $comparison = bccomp(bcadd($total_refund_money, $money), $pay[ 'money' ]); // 浮点数直接进行比较会出现精度问题
         if ($comparison > 0) throw new PayException('退款金额不能超过支付总额'); // 退款金额不能超过支付总额
@@ -79,6 +82,9 @@ class CoreRefundService extends BaseCoreService
      * @param int $site_id
      * @param string $refund_no
      * @param string $voucher
+     * @param string $refund_type
+     * @param string $main_type
+     * @param int $main_id
      * @return true
      */
     public function refund(int $site_id, string $refund_no, $voucher = '', $refund_type = RefundDict::BACK, $main_type = '', $main_id = 0)
@@ -242,7 +248,7 @@ class CoreRefundService extends BaseCoreService
             'status' => RefundDict::SUCCESS
         ]);
         $pay = ( new CorePayService() )->findPayInfoByOutTradeNo($site_id, $out_trade_no);
-        $result = event('RefundSuccess', [ 'refund_no' => $refund_no, 'trade_type' => $pay->trade_type, 'site_id' => $site_id, 'trade_id' => $data[ 'trade_id' ] ]);
+        $result = event('RefundSuccess', [ 'refund_no' => $refund_no, 'trade_type' => $pay->trade_type, 'site_id' => $site_id, 'trade_id' => $data[ 'trade_id' ],'refund_trade_type'=>$data['trade_type'] ]);
         if (!check_event_result($result)) {
             return false;
         }
@@ -285,6 +291,15 @@ class CoreRefundService extends BaseCoreService
             'status' => RefundDict::DEALING
         ]);
         return true;
+    }
+
+    /**
+     * 获取详情
+     * @param array $condition
+     * @return array
+     */
+    public function getInfo(array $condition){
+        return $this->model->where($condition)->findOrEmpty()->toArray();
     }
 
 }

@@ -54,7 +54,7 @@ class PosterService extends BaseAdminService
      * 获取自定义海报列表
      * @param array $where
      * @param string $field
-     * @return mixed
+     * @return array
      */
     public function getList(array $where = [], $field = 'id, site_id, name, type, channel, value, status,is_default, create_time, update_time, addon')
     {
@@ -66,7 +66,7 @@ class PosterService extends BaseAdminService
      * 获取自定义海报信息
      * @param int $id
      * @param string $field
-     * @return mixed
+     * @return array
      */
     public function getInfo(int $id, $field = 'id, site_id, name, type, channel, value, status,is_default, create_time, update_time, addon')
     {
@@ -110,7 +110,7 @@ class PosterService extends BaseAdminService
     /**
      * 修改自定义海报启用状态
      * @param $data
-     * @return mixed
+     * @return Poster
      */
     public function modifyStatus($data)
     {
@@ -129,7 +129,7 @@ class PosterService extends BaseAdminService
     /**
      * 将自定义海报修改为默认海报
      * @param $data
-     * @return mixed
+     * @return bool
      */
     public function modifyDefault($data)
     {

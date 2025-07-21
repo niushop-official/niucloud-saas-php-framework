@@ -15,6 +15,7 @@ use app\model\verify\Verifier;
 use app\model\verify\Verify;
 use app\service\core\verify\CoreVerifyService;
 use core\base\BaseApiService;
+use think\db\exception\DbException;
 
 /**
  * 核销服务层
@@ -26,7 +27,7 @@ class VerifyService extends BaseApiService
      * 获取核销码(对应业务调用)
      * @param $type
      * @param $data = ['order_id' => , 'goods_id' => ]
-     * @return string
+     * @return array
      */
     public function getVerifyCode($type, array $data)
     {
@@ -44,7 +45,7 @@ class VerifyService extends BaseApiService
     /**
      * 获取核销信息
      * @param $code
-     * @return bool
+     * @return array
      */
     public function getInfoByCode($code)
     {
@@ -74,9 +75,9 @@ class VerifyService extends BaseApiService
 
     /**
      * 获取核销员核销记录
-     * @param $data
+     * @param array $data
      * @return array
-     * @throws \think\db\exception\DbException
+     * @throws DbException
      */
     public function getRecordsPageByVerifier(array $data)
     {
@@ -98,7 +99,7 @@ class VerifyService extends BaseApiService
 
     /**
      * 获取记录详情
-     * @param int $id
+     * @param $code
      * @return array
      */
     public function getRecordsDetailByVerifier($code)

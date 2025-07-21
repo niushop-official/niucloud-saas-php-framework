@@ -2,7 +2,6 @@
 
 namespace app\upgrade\v056;
 
-use app\model\diy\Diy;
 use app\model\site\Site;
 use app\model\sys\Poster;
 use app\service\core\poster\CorePosterService;

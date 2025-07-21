@@ -181,7 +181,6 @@ class CoreMemberCashOutService extends BaseCoreService
             Db::rollback();
             throw new CommonException($e->getMessage());
         }
-        return true;
     }
 
     /**
@@ -398,7 +397,7 @@ class CoreMemberCashOutService extends BaseCoreService
      * 取消提现
      * @param int $site_id
      * @param int $id
-     * @return void
+     * @return true
      */
     public function cancel(int $site_id, int $id){
         $cash_out = $this->find($site_id, $id);

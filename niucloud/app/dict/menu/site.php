@@ -207,20 +207,6 @@ return [
                     [
                         'menu_name' => '添加分组',
                         'menu_key' => 'add_attachment_category',
-                        'menu_short_name' => '删除素材',
-                        'menu_type' => '2',
-                        'icon' => '',
-                        'api_url' => 'sys/attachment/category',
-                        'router_path' => '',
-                        'view_path' => '',
-                        'methods' => 'delete',
-                        'sort' => '100',
-                        'status' => '1',
-                        'is_show' => '1',
-                    ],
-                    [
-                        'menu_name' => '添加分组',
-                        'menu_key' => 'add_attachment_category',
                         'menu_short_name' => '添加分组',
                         'menu_type' => '2',
                         'icon' => '',
@@ -245,21 +231,7 @@ return [
                         'sort' => '100',
                         'status' => '1',
                         'is_show' => '1',
-                    ],
-                    [
-                        'menu_name' => '编辑分组',
-                        'menu_key' => 'edit_attachment_category',
-                        'menu_short_name' => '编辑分组',
-                        'menu_type' => '2',
-                        'icon' => '',
-                        'api_url' => 'sys/attachment/category/<id>',
-                        'router_path' => '',
-                        'view_path' => '',
-                        'methods' => 'delete',
-                        'sort' => '100',
-                        'status' => '1',
-                        'is_show' => '1',
-                    ],
+                    ]
                 ]
             ],
             [
@@ -852,7 +824,7 @@ return [
                 'children' => [
                     [
                         'menu_name' => '转账',
-                        'menu_key' => 'cash_out_transfer',
+                        'menu_key' => 'member_refund_transfer',
                         'menu_short_name' => '转账',
                         'menu_type' => '2',
                         'icon' => '',
@@ -2669,7 +2641,7 @@ return [
             [
                 'menu_name' => '编辑打印机',
                 'menu_key' => 'printer_edit',
-                'menu_short_name' => '添加打印机',
+                'menu_short_name' => '编辑打印机',
                 'parent_select_key' => 'printer_management_list',
                 'menu_type' => '1',
                 'icon' => '',

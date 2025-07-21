@@ -14,6 +14,7 @@ namespace app\adminapi\controller\site;
 use app\dict\site\SiteDict;
 use app\service\admin\auth\AuthSiteService;
 use app\service\admin\site\SiteService;
+use app\service\api\captcha\CaptchaService;
 use core\base\BaseAdminController;
 use think\Response;
 
@@ -33,15 +34,15 @@ class Site extends BaseAdminController
     public function lists()
     {
         $data = $this->request->params([
-            [ 'keywords', '' ],
-            [ 'status', "" ],
-            [ 'group_id', 0 ],
-            [ 'create_time', [] ],
-            [ 'expire_time', [] ],
-            [ 'app', '' ],
-            [ 'site_domain', '' ]
+            ['keywords', ''],
+            ['status', ""],
+            ['group_id', 0],
+            ['create_time', []],
+            ['expire_time', []],
+            ['app', ''],
+            ['site_domain', '']
         ]);
-        return success(( new SiteService() )->getPage($data));
+        return success((new SiteService())->getPage($data));
     }
 
     /**
@@ -52,7 +53,7 @@ class Site extends BaseAdminController
      */
     public function info(int $id)
     {
-        return success(( new SiteService() )->getInfo($id));
+        return success((new SiteService())->getInfo($id));
     }
 
     /**
@@ -64,19 +65,19 @@ class Site extends BaseAdminController
     public function add()
     {
         $data = $this->request->params([
-            [ 'site_name', '' ],
-            [ 'uid', 0 ],
-            [ 'username', '' ],
-            [ 'real_name', '' ],
-            [ 'password', '' ],
-            [ 'group_id', 0 ],
-            [ 'expire_time', 0 ],
-            [ 'site_domain', '' ],
+            ['site_name', ''],
+            ['uid', 0],
+            ['username', ''],
+            ['real_name', ''],
+            ['password', ''],
+            ['group_id', 0],
+            ['expire_time', 0],
+            ['site_domain', ''],
         ]);
         $this->validate($data, 'app\validate\site\Site.add');
-        if (empty($data[ 'uid' ])) $this->validate($data, 'app\validate\sys\User.add');
-        $site_id = ( new SiteService() )->add($data);
-        return success('ADD_SUCCESS', [ 'site_id' => $site_id ]);
+        if (empty($data['uid'])) $this->validate($data, 'app\validate\sys\User.add');
+        $site_id = (new SiteService())->add($data);
+        return success('ADD_SUCCESS', ['site_id' => $site_id]);
     }
 
     /**
@@ -96,7 +97,7 @@ class Site extends BaseAdminController
      */
     public function menu()
     {
-        return success(( new AuthSiteService() )->getMenuList(1, 1, 'all', 0));
+        return success((new AuthSiteService())->getMenuList(1, 1, 'all', 0));
     }
 
     /**
@@ -106,9 +107,9 @@ class Site extends BaseAdminController
     public function closeSite($id)
     {
         $data = $this->request->params([
-            [ 'status', SiteDict::CLOSE ],
+            ['status', SiteDict::CLOSE],
         ]);
-        ( new SiteService() )->edit($id, $data);
+        (new SiteService())->edit($id, $data);
         return success();
     }
 
@@ -119,17 +120,17 @@ class Site extends BaseAdminController
     public function edit($id)
     {
         $data = $this->request->params([
-            [ 'site_name', '' ],
-            [ 'uid', 0 ],
-            [ 'username', '' ],
-            [ 'real_name', '' ],
-            [ 'password', '' ],
-            [ 'group_id', 0 ],
-            [ 'expire_time', 0 ],
-            [ 'site_domain', '' ],
+            ['site_name', ''],
+            ['uid', 0],
+            ['username', ''],
+            ['real_name', ''],
+            ['password', ''],
+            ['group_id', 0],
+            ['expire_time', 0],
+            ['site_domain', ''],
         ]);
-        $this->validate(array_merge($data, [ 'site_id' => $id ]), 'app\validate\site\Site.edit');
-        ( new SiteService() )->edit($id, $data);
+        $this->validate(array_merge($data, ['site_id' => $id]), 'app\validate\site\Site.edit');
+        (new SiteService())->edit($id, $data);
         return success('MODIFY_SUCCESS');
     }
 
@@ -141,7 +142,7 @@ class Site extends BaseAdminController
      */
     public function del($id)
     {
-        ( new SiteService() )->del($id);
+        (new SiteService())->del($id);
         return success('DELETE_SUCCESS');
     }
 
@@ -152,9 +153,9 @@ class Site extends BaseAdminController
     public function openSite($id)
     {
         $data = $this->request->params([
-            [ 'status', SiteDict::ON ],
+            ['status', SiteDict::ON],
         ]);
-        ( new SiteService() )->edit($id, $data);
+        (new SiteService())->edit($id, $data);
         return success();
     }
 
@@ -171,20 +172,20 @@ class Site extends BaseAdminController
     public function addons()
     {
         $data = $this->request->params([
-            [ 'title', '' ],
+            ['title', ''],
         ]);
-        $data = ( new SiteService() )->getSiteAddons($data);
-        return success(data:$data);
+        $data = (new SiteService())->getSiteAddons($data);
+        return success(data: $data);
     }
 
     public function showApp()
     {
-        return success(( new SiteService() )->getShowAppTools());
+        return success((new SiteService())->getShowAppTools());
     }
 
     public function showMarketing()
     {
-        return success(( new SiteService() )->getShowMarketingTools());
+        return success((new SiteService())->getShowMarketingTools());
     }
 
     /**
@@ -195,9 +196,40 @@ class Site extends BaseAdminController
     public function siteInit()
     {
         $data = $this->request->params([
-            [ 'site_id', '' ],
+            ['site_id', ''],
         ]);
-        return success('SUCCESS', ( new SiteService() )->siteInit($data));
+        return success('SUCCESS', (new SiteService())->siteInit($data));
+    }
+
+    /**
+     * @description 设置是否允许切换站点
+     * @return Response
+     */
+    public function setIsAllowChangeSite()
+    {
+        $data = $this->request->params([
+            ['is_allow', 1],
+        ]);
+        (new SiteService())->setIsAllowChangeSite($data['is_allow']);
+        return success('SUCCESS');
+    }
+
+    /**
+     * @description 获取是否允许切换站点
+     * @return Response
+     */
+    public function getIsAllowChangeSite()
+    {
+        return success('SUCCESS', (new SiteService())->getIsAllowChangeSite());
+    }
+
+    /**
+     * 创建验证码
+     * @return Response
+     */
+    public function captcha()
+    {
+        return success(( new CaptchaService() )->create());
     }
 
 

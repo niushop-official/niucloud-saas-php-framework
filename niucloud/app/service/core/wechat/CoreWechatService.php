@@ -70,7 +70,7 @@ class CoreWechatService extends BaseCoreService
     /**
      * 回复文本消息
      * @param string $content 文本内容
-     * @return
+     * @return string[]
      */
     public static function text($content)
     {
@@ -83,7 +83,7 @@ class CoreWechatService extends BaseCoreService
     /**
      * 回复图片消息
      * @param string $media_id 媒体资源 ID
-     * @return
+     * @return void
      */
     public static function image($media_id)
     {
@@ -98,11 +98,10 @@ class CoreWechatService extends BaseCoreService
 
     /**
      * 回复声音消息
-     * @return
+     * @return void
      */
     public static function music()
     {
-        return;
     }
 
     /**

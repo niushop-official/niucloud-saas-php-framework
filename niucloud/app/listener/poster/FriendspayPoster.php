@@ -58,7 +58,7 @@ class FriendspayPoster
                 [ 'site_id', '=', $site_id ],
                 [ 'trade_id', '=', $trade_id ],
                 [ 'trade_type', '=', $trade_type ],
-                [ 'status', '<>', PayDict::STATUS_CANCLE ],///不查询已取消的单据
+                [ 'status', '<>', PayDict::STATUS_CANCEL ],///不查询已取消的单据
             ])->findOrEmpty()->toArray();
 
             if (empty($pay_info)) return [];

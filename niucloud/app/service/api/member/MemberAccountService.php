@@ -76,8 +76,9 @@ class MemberAccountService extends BaseApiService
 
     /**
      * 会员余额流水列表
-     * @param array $where
+     * @param array $data
      * @return array
+     * @throws DbException
      */
     public function getBalancePage(array $data = [])
     {
@@ -142,9 +143,7 @@ class MemberAccountService extends BaseApiService
 
     /**
      * 会员积分统计数量
-     * @param array $where
-     * @return int
-     * @throws DbException
+     * @return int[]
      */
     public function getPointCount()
     {

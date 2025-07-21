@@ -435,7 +435,7 @@ class WebEditGenerator extends BaseGenerator
 
     /**
      * 获取文件生成到插件中
-     * @return void
+     * @return string
      */
     public function getAddonObjectOutDir() {
         $dir = $this->rootDir . DIRECTORY_SEPARATOR.'niucloud'.DIRECTORY_SEPARATOR.'addon'.DIRECTORY_SEPARATOR.$this->addonName.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR. $this->moduleName . DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR;
@@ -492,7 +492,7 @@ class WebEditGenerator extends BaseGenerator
 
     /**
      * 调用字典方法
-     * @return void
+     * @return string
      */
     public function getDictList()
     {
@@ -518,7 +518,7 @@ class WebEditGenerator extends BaseGenerator
 
     /**
      * 调用远程下拉方法
-     * @return void
+     * @return string
      */
     public function getModelData()
     {
@@ -542,7 +542,7 @@ class WebEditGenerator extends BaseGenerator
 
     /**
      * 编辑远程下拉方法
-     * @return void
+     * @return string
      */
     public function getEditWithApiPath()
     {
@@ -559,7 +559,7 @@ class WebEditGenerator extends BaseGenerator
 
     /**
      * 增加关联方法
-     * @return void
+     * @return string
      */
     public function getWithApiPath()
     {

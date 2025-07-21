@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------
-// | Niucloud-admin 企业快速开发的saas管理平台
+// | Niucloud-admin 企业快速开发的多应用管理平台
 // +----------------------------------------------------------------------
 // | 官方网址：https://www.niucloud.com
 // +----------------------------------------------------------------------
@@ -11,6 +11,7 @@
 
 namespace app\api\controller\wechat;
 
+use app\service\api\login\LoginService;
 use app\service\api\wechat\WechatAuthService;
 use core\base\BaseController;
 use think\db\exception\DataNotFoundException;
@@ -95,6 +96,10 @@ class Wechat extends BaseController
         $this->validate($data, [
             'mobile' => 'mobile'
         ]);
+
+        // 校验手机验证码（电脑端扫码）
+        ( new LoginService() )->checkMobileCode($data[ 'mobile' ]);
+
         $wechat_auth_service = new WechatAuthService();
         return success($wechat_auth_service->register($data[ 'openid' ], $data[ 'mobile' ], wx_unionid: $data[ 'unionid' ]));
     }
@@ -144,5 +149,16 @@ class Wechat extends BaseController
         $data = $this->request->params([ [ 'code', '' ] ]);
         $wechat_auth_service = new WechatAuthService();
         return success($wechat_auth_service->updateOpenid($data[ 'code' ]));
+    }
+
+    /**
+     * 更新openid
+     * @return Response
+     */
+    public function updateOpenidByH5()
+    {
+        $data = $this->request->params([ [ 'wx_openid', '' ] ]);
+        $wechat_auth_service = new WechatAuthService();
+        return success($wechat_auth_service->updateOpenidByH5($data[ 'wx_openid' ]));
     }
 }

@@ -55,6 +55,12 @@ Route::group('niucloud', function() {
     Route::post('build/clear', 'niucloud.Cloud/clearBuildTask');
     // 编译前环境检测
     Route::get('build/check', 'niucloud.Cloud/buildPreCheck');
+    //连通测试
+    Route::post('build/connect_test', 'niucloud.Cloud/connectTest');
+    //保存本地服务器地址
+    Route::post('build/set_local_url', 'niucloud.Cloud/setLocalCloudCompileConfig');
+    //获取本地服务器地址
+    Route::get('build/get_local_url', 'niucloud.Cloud/getLocalCloudCompileConfig');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

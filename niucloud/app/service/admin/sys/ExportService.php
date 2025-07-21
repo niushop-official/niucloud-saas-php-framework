@@ -15,7 +15,6 @@ use app\job\sys\ExportJob;
 use app\model\sys\SysExport;
 use app\service\core\sys\CoreExportService;
 use core\base\BaseAdminService;
-use think\facade\Log;
 
 /**
  * 导出服务层
@@ -45,7 +44,7 @@ class ExportService extends BaseAdminService
 
     /**
      * 获取导出数据类型列表
-     * @param string $type
+     * @return array
      */
     public function getExportDataType()
     {

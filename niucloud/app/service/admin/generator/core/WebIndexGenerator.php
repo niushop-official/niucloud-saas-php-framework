@@ -539,7 +539,7 @@ class WebIndexGenerator extends BaseGenerator
 
     /**
      * 增加关联方法
-     * @return void
+     * @return string
      */
     public function getWithApiPath()
     {
@@ -556,7 +556,7 @@ class WebIndexGenerator extends BaseGenerator
 
     /**
      * 调用远程下拉方法
-     * @return void
+     * @return string
      */
     public function getModelData()
     {

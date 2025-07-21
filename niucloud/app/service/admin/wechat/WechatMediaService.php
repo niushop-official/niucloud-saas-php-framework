@@ -84,7 +84,7 @@ class WechatMediaService extends BaseAdminService
     /**
      * 同步草稿箱
      * @param int $pages
-     * @return void
+     * @return true
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */

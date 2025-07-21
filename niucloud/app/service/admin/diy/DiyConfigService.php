@@ -28,7 +28,7 @@ class DiyConfigService extends BaseAdminService
     /**
      * 获取底部导航列表
      * @param array $params
-     * @return array|mixed
+     * @return array
      */
     public function getBottomList($params = [])
     {

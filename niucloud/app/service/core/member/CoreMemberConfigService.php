@@ -91,7 +91,7 @@ class CoreMemberConfigService extends BaseCoreService
         return [
             'prefix' => $info[ 'prefix' ] ?? '',// 会员编码前缀
             'length' => $info[ 'length' ] ?? 4, // 会员编码长度
-            'form_id' => $info[ 'form_id' ], // 会员编码长度
+            'form_id' => $info[ 'form_id' ], // 万能表单id
         ];
     }
 

@@ -236,7 +236,7 @@ class UserService extends BaseAdminService
      * 改变用户状态
      * @param $uid
      * @param $status
-     * @return true
+     * @return void
      */
     public function statusChange($uid, $status) {
 
@@ -309,7 +309,7 @@ class UserService extends BaseAdminService
     /**
      * 获取用户站点创建限制
      * @param int $uid
-     * @return void
+     * @return array
      */
     public function getUserCreateSiteLimit(int $uid) {
         return (new UserCreateSiteLimit())->where([ ['uid', '=', $uid] ])->select()->toArray();
@@ -317,8 +317,8 @@ class UserService extends BaseAdminService
 
     /**
      * 获取用户站点创建限制
-     * @param int $uid
-     * @return void
+     * @param int $id
+     * @return array
      */
     public function getUserCreateSiteLimitInfo(int $id) {
         return (new UserCreateSiteLimit())->where([ ['id', '=', $id] ])->findOrEmpty()->toArray();
@@ -327,7 +327,7 @@ class UserService extends BaseAdminService
     /**
      * 添加用户站点创建限制
      * @param array $data
-     * @return void
+     * @return true
      */
     public function addUserCreateSiteLimit(array $data) {
         (new UserCreateSiteLimit())->where(['uid' => $data['uid'], 'group_id' => $data['group_id']])->delete();

@@ -27,10 +27,11 @@ class CoreVerifyService extends BaseCoreService
 
     /**
      * 生成核销码(对应业务调用)
-     * @param $site_id
-     * @param $type
-     * @param $data = ['order_id' => , 'goods_id' => ]
-     * @return string
+     * @param int $site_id
+     * @param int $member_id
+     * @param string|int $type
+     * @param array $param
+     * @return array
      */
     public function create(int $site_id, int $member_id, string|int $type, array $param)
     {
@@ -72,6 +73,7 @@ class CoreVerifyService extends BaseCoreService
     /**
      * 获取核销码信息
      * @param $site_id
+     * @param string $member_id
      * @param string $verify_code
      * @return array
      */
@@ -99,7 +101,7 @@ class CoreVerifyService extends BaseCoreService
 
     /**
      * 核销(核销api调用)
-     * @return void
+     * @return true
      */
     public function verify($site_id, string $verify_code, int $verify_member_id)
     {
@@ -137,6 +139,7 @@ class CoreVerifyService extends BaseCoreService
      * 设置核销码数据缓存
      * @param $verify_code
      * @param $value
+     * @param null $expire_time
      * @return void
      */
     private function createCode($verify_code, $value, $expire_time = null)

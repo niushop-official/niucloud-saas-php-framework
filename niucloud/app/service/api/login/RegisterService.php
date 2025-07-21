@@ -108,7 +108,11 @@ class RegisterService extends BaseApiService
      * @param string $username
      * @param string $password
      * @param $mobile
+     * @param $wx_openid
      * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function account(string $username, string $password, $mobile, $wx_openid)
     {

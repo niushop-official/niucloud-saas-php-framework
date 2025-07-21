@@ -47,7 +47,7 @@ class CoreModuleService extends BaseNiucloudClient
         $params = [
             'code' => $this->code,
             'secret' => $this->secret,
-            'labels' => [$label_id],
+            'labels' => [ $label_id ],
             'product_key' => self::PRODUCT,
             'is_recommend' => 1,
             'order_field' => 'sale_num desc, visit_num desc',
@@ -57,7 +57,6 @@ class CoreModuleService extends BaseNiucloudClient
 
     /**
      * 授权信息
-     * @param $module_id
      * @return array|Collection|Response|object|ResponseInterface|string
      * @throws GuzzleException
      */
@@ -93,7 +92,6 @@ class CoreModuleService extends BaseNiucloudClient
 
     }
 
-
     /**
      * 操作token
      * @param $action
@@ -103,7 +101,7 @@ class CoreModuleService extends BaseNiucloudClient
      */
     public function getActionToken($action, $data)
     {
-        return $this->httpGet('member_app_action/'.$action, $data);
+        return $this->httpGet('member_app_action/' . $action, $data);
     }
 
     /**
@@ -112,7 +110,8 @@ class CoreModuleService extends BaseNiucloudClient
      * @return array|\core\util\niucloud\Response|object|ResponseInterface
      * @throws GuzzleException
      */
-    public function getUpgradeContent($data) {
+    public function getUpgradeContent($data)
+    {
         return $this->httpGet('member_app_upgrade/content', $data);
     }
 
@@ -124,7 +123,7 @@ class CoreModuleService extends BaseNiucloudClient
      */
     public function checkKey($key)
     {
-        return $this->httpGet('store/app_check/'.$key, ['product_key' => self::PRODUCT])['data'] ?? false;
+        return $this->httpGet('store/app_check/' . $key, [ 'product_key' => self::PRODUCT ])[ 'data' ] ?? false;
     }
 
     /**
@@ -132,8 +131,9 @@ class CoreModuleService extends BaseNiucloudClient
      * @return array|\core\util\niucloud\Response|object|ResponseInterface
      * @throws GuzzleException
      */
-    public function getFrameworkLastVersion() {
-        return $this->httpGet('store/framework/lastversion', ['product_key' => self::PRODUCT])['data'] ?? false;
+    public function getFrameworkLastVersion()
+    {
+        return $this->httpGet('store/framework/lastversion', [ 'product_key' => self::PRODUCT ])[ 'data' ] ?? false;
     }
 
     /**
@@ -141,8 +141,9 @@ class CoreModuleService extends BaseNiucloudClient
      * @return false|mixed
      * @throws GuzzleException
      */
-    public function getFrameworkVersionList() {
-        return $this->httpGet('store/framework/version', ['product_key' => self::PRODUCT])['data'] ?? false;
+    public function getFrameworkVersionList()
+    {
+        return $this->httpGet('store/framework/version', [ 'product_key' => self::PRODUCT ])[ 'data' ] ?? false;
     }
 
     /**

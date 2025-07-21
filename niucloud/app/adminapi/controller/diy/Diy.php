@@ -369,7 +369,7 @@ class Diy extends BaseAdminController
     /**
      * 删除自定义主题配色
      * @description 删除自定义主题配色
-     * @param $id
+     * @param int $id
      * @return Response
      */
     public function delDiyTheme(int $id)

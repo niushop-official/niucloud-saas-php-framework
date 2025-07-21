@@ -71,7 +71,7 @@ class CoreMemberLevelService extends BaseCoreService
      * 会员检测升级
      * @param $site_id
      * @param $member_id
-     * @return void
+     * @return true
      */
     public function checkLevelUpgrade($site_id, $member_id) {
         $member = (new Member())->where([ ['member_id', '=', $member_id ] ])->with('member_level_data')->field('member_id,growth,member_level')->findOrEmpty();

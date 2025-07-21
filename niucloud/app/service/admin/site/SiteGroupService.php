@@ -239,7 +239,7 @@ class SiteGroupService extends BaseAdminService
      * 查询用户某个站点套餐的站点数量
      * @param $uid
      * @param $group_id
-     * @return void
+     * @return int
      */
     public static function getUserSiteGroupSiteNum($uid, $group_id)
     {

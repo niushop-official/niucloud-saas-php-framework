@@ -125,7 +125,7 @@ class CorePrinterService extends BaseCoreService
      * 添加易联云打印机授权
      * @param $site_id
      * @param $params
-     * @return mixed
+     * @return array
      */
     public function addPrinterYly($site_id, $params)
     {
@@ -151,7 +151,7 @@ class CorePrinterService extends BaseCoreService
      * 删除易联云打印机授权
      * @param $site_id
      * @param $params
-     * @return mixed
+     * @return array
      */
     public function deletePrinterYly($site_id, $params)
     {
@@ -189,7 +189,7 @@ class CorePrinterService extends BaseCoreService
      * 测试打印
      * @param $site_id
      * @param $printer_id
-     * @return mixed
+     * @return void|null
      */
     public function testPrint($site_id, $printer_id)
     {

@@ -126,7 +126,7 @@ class MemberCashOutService extends BaseAdminService
     /**
      * 取消体现
      * @param int $id
-     * @return mixed
+     * @return true|null
      */
     public function cancel(int $id){
         $core_member_cash_out_service = new CoreMemberCashOutService();

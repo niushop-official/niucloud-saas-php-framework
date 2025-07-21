@@ -64,7 +64,7 @@ class Verify extends BaseApiController
 
     /**
      * 核销记录
-     * @return void
+     * @return Response
      */
     public function records()
     {
@@ -80,7 +80,7 @@ class Verify extends BaseApiController
 
     /**
      * 获取核销详情
-     * @param $code
+     * @param string|int $code
      * @return Response
      */
     public function detail(string|int $code)

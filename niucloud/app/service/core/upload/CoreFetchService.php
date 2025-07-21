@@ -32,6 +32,7 @@ class CoreFetchService extends CoreFileService
      * @param string $url
      * @param int $site_id
      * @param string $file_dir
+     * @param string $storage_type
      * @return array
      * @throws Exception
      */

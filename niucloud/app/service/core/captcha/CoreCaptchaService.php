@@ -11,7 +11,6 @@
 
 namespace app\service\core\captcha;
 
-use app\Request;
 use core\base\BaseCoreService;
 use core\exception\CaptchaException;
 use think\captcha\facade\Captcha;

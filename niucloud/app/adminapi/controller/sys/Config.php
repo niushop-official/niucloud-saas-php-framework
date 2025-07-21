@@ -57,7 +57,10 @@ class Config extends BaseAdminController
             [ "front_end_name", "" ],
             [ "front_end_logo", "" ],
             [ "front_end_icon", "" ],
-            [ "icon", "" ]
+            [ "icon", "" ],
+            [ "meta_title", "" ],
+            [ "meta_desc", "" ],
+            [ "meta_keyword", "" ],
         ]);
         $this->validate($data, 'app\validate\site\Site.edit');
         ( new ConfigService() )->setWebSite($data);

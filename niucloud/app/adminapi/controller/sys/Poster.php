@@ -191,7 +191,7 @@ class Poster extends BaseAdminController
     /**
      * 获取自定义海报预览
      * @description 获取自定义海报预览
-     * @return array|\think\Response
+     * @return \think\Response
      */
     public function preview()
     {

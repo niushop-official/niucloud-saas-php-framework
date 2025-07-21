@@ -11,11 +11,9 @@
 
 namespace app\service\admin\member;
 
-use app\model\sys\SysConfig;
 use app\service\core\member\CoreMemberConfigService;
 use app\service\core\member\CoreMemberService;
 use core\base\BaseAdminService;
-use think\Model;
 
 /**
  * 会员设置

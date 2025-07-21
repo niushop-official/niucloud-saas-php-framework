@@ -42,33 +42,25 @@ class CoreWechatMessageService extends BaseCoreService
             case WechatDict::MESSAGE_TYPE_EVENT:
                 return $this->event($site_id, $message);
 //                return '收到事件消息';
-                break;
             case WechatDict::MESSAGE_TYPE_TEXT:
                 //调用文本回复
                 return $this->text($site_id, $message);
 //                return '收到文字消息';
-                break;
             case WechatDict::MESSAGE_TYPE_IMAGE:
                 return '收到图片消息';
-                break;
             case WechatDict::MESSAGE_TYPE_VOICE:
                 return '收到语音消息';
-                break;
             case WechatDict::MESSAGE_TYPE_VIDEO:
                 return '收到视频消息';
-                break;
             case WechatDict::MESSAGE_TYPE_LOCATION:
                 return '收到坐标消息';
-                break;
             case WechatDict::MESSAGE_TYPE_LINK:
                 return '收到链接消息';
-                break;
             case WechatDict::MESSAGE_TYPE_FILE:
                 return '收到文件消息';
             // ... 其它消息
             default:
                 return '收到其它消息';
-                break;
         }
     }
 
@@ -81,10 +73,8 @@ class CoreWechatMessageService extends BaseCoreService
         switch ($message['Event'] ) {
             case WechatDict::EVENT_SUBSCRIBE:
                 return $this->subscribe($site_id, $message);
-                break;
             case WechatDict::EVENT_SCAN:
                 return $this->scan($site_id, $message);
-                break;
         }
 
     }
@@ -106,7 +96,7 @@ class CoreWechatMessageService extends BaseCoreService
      * 关注事件
      * @param int $site_id
      * @param $message
-     * @return News|Text|false
+     * @return false
      */
     public function subscribe(int $site_id, $message){
         //todo 新增粉丝或将原有的粉丝改为关注状态
@@ -139,7 +129,7 @@ class CoreWechatMessageService extends BaseCoreService
      * 文本回复事件
      * @param int $site_id
      * @param $message
-     * @return News|Text|false
+     * @return false
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException

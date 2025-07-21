@@ -47,7 +47,7 @@ class Verify extends BaseModel
 
     /**
      * 核销码搜索
-     * @param $query
+     * @param Query $query
      * @param $value
      * @param $data
      */
@@ -60,7 +60,7 @@ class Verify extends BaseModel
 
     /**
      * 关键词搜索
-     * @param $query
+     * @param Query $query
      * @param $value
      * @param $data
      */
@@ -134,6 +134,7 @@ class Verify extends BaseModel
     /**
      * 核销类型转换
      * @param $value
+     * @param $data
      * @return void
      */
     public function getTypeNameAttr($value, $data)

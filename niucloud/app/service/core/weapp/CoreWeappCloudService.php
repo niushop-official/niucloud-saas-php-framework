@@ -111,7 +111,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
             'timestamp' => time(),
             'token' => $action_token[ 'data' ][ 'token' ] ?? ''
         ];
-        $response = ( new CloudService() )->httpPost('cloud/weapp?' . http_build_query($query), [
+        $response = ( new CloudService(true) )->httpPost('cloud/weapp?' . http_build_query($query), [
             'multipart' => [
                 [
                     'name' => 'file',
@@ -293,7 +293,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
         $query = [
             'authorize_code' => $this->auth_code,
         ];
-        $preview_url = ( new CloudService() )->getUrl('cloud/get_weapp_preview?' . http_build_query($query));
+        $preview_url = ( new CloudService(true) )->getUrl('cloud/get_weapp_preview?' . http_build_query($query));
 
         try {
             $path = runtime_path() . uniqid() . '.jpg';
@@ -315,7 +315,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
             'authorize_code' => $this->auth_code,
             'timestamp' => $timestamp
         ];
-        return ( new CloudService() )->httpGet('cloud/get_weapp_logs?' . http_build_query($query));
+        return ( new CloudService(true) )->httpGet('cloud/get_weapp_logs?' . http_build_query($query));
     }
 
     /**

@@ -52,6 +52,7 @@ class CoreMenuService extends BaseCoreService
     /**
      * 删除插件菜单(强删除)
      * @param string $addon
+     * @param bool $is_all
      * @return true
      * @throws DbException
      */

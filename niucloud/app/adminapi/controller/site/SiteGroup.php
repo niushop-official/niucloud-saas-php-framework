@@ -107,7 +107,7 @@ class SiteGroup extends BaseAdminController
         $data = $this->request->params([
             ['app', ''],
         ]);
-        return success((new SiteGroupService())->getAll($data));
+        return success((new SiteGroupService())->getAll());
     }
 
     /**

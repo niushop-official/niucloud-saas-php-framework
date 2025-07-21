@@ -72,6 +72,7 @@ class UserRoleService extends BaseAdminService
      * @param int $site_id
      * @param int $uid
      * @param array $role_ids
+     * @param int $status
      * @return bool
      */
     public function edit(int $site_id, int $uid, array $role_ids, $status = UserDict::ON){

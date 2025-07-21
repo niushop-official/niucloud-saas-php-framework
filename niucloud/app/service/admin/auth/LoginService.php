@@ -15,14 +15,11 @@ use app\dict\sys\AppTypeDict;
 use app\model\sys\SysUser;
 use app\model\sys\SysUserRole;
 use app\service\admin\captcha\CaptchaService;
-use app\service\admin\site\SiteService;
 use app\service\admin\user\UserRoleService;
 use app\service\admin\user\UserService;
-use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
 use core\exception\AuthException;
 use core\util\TokenAuth;
-use Exception;
 use Throwable;
 use app\service\admin\home\AuthSiteService as HomeAuthSiteService;
 
@@ -90,20 +87,34 @@ class LoginService extends BaseAdminService
                 $app_type = AppTypeDict::SITE;
             }
         } else if($app_type == AppTypeDict::SITE){
+            $auth_site_service = new \app\service\admin\home\AuthSiteService();
+            $site_user = $auth_site_service->checkSiteUserAccount();
+
+            if ($site_user->isEmpty()) {
+                throw new AuthException('SITE_USER_NOT_EXIST');
+            }
+
             $site_ids = $auth_site_service->getSiteIds();
-            if(!empty($site_ids)){
+
+            if(empty($site_ids)){
+                throw new AuthException('USER_LOCK');
+            }else{
                 $default_site_id = in_array($this->site_id, $site_ids) || AuthService::isSuperAdmin() ? $this->site_id : $site_ids[0];
             }
-            if (!empty($default_site_id)) {
-                $userrole = $user_role_service->getUserRole($default_site_id, $userinfo->uid);
-                if (!empty($userrole)) {
-                    if (!$userrole['status']) throw new AuthException('USER_LOCK');
-                    if (!$userrole['is_admin']) {
-                        $rules = $user_role_service->getRoleByUserRoleIds($userrole['role_ids'], $default_site_id);
-                        if (empty($rules) || count($rules) == 0) throw new AuthException('USER_LOCK');
-                    }
-                }
-            }
+//            $site_ids = $auth_site_service->getSiteIds();
+//            if(!empty($site_ids)){
+//                $default_site_id = in_array($this->site_id, $site_ids) || AuthService::isSuperAdmin() ? $this->site_id : $site_ids[0];
+//            }
+//            if (!empty($default_site_id)) {
+//                $userrole = $user_role_service->getUserRole($default_site_id, $userinfo->uid);
+//                if (!empty($userrole)) {
+//                    if (!$userrole['status']) throw new AuthException('USER_LOCK');
+//                    if (!$userrole['is_admin']) {
+//                        $rules = $user_role_service->getRoleByUserRoleIds($userrole['role_ids'], $default_site_id);
+//                        if (empty($rules) || count($rules) == 0) throw new AuthException('USER_LOCK');
+//                    }
+//                }
+//            }
         } else {
             throw new AuthException('APP_TYPE_NOT_EXIST');
         }

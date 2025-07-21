@@ -507,8 +507,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
     /**
      * 插件卸载环境检测
-     * @param string $addon
-     * @return void
+     * @return array|array[]
      */
     public function uninstallCheck() {
         $data = [
@@ -785,7 +784,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
     /**
      * 处理编译之后的文件
-     * @return void
+     * @return true
      */
     public function handleBuildFile() {
         return true;

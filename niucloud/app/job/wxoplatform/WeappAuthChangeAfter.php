@@ -11,10 +11,7 @@
 
 namespace app\job\wxoplatform;
 
-use app\service\admin\wxoplatform\WeappVersionService;
-use app\service\core\pay\CorePayService;
 use core\base\BaseJob;
-use think\facade\Log;
 
 /**
  * 小程序授权变更之后
@@ -23,7 +20,8 @@ class WeappAuthChangeAfter extends BaseJob
 {
     /**
      * 消费
-     * @param $data
+     * @param $site_id
+     * @param $event
      * @return true
      */
     protected function doJob($site_id, $event)

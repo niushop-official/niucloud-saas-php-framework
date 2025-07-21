@@ -22,7 +22,8 @@ class VersionUploadSuccess extends BaseJob
 
     /**
      * 消费
-     * @param $data
+     * @param $task_key
+     * @param $is_all
      * @return true
      */
     protected function doJob($task_key, $is_all)

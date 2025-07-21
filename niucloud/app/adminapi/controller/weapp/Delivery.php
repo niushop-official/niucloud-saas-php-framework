@@ -24,7 +24,7 @@ class Delivery extends BaseAdminController
     /**
      * 查询小程序是否已开通发货信息管理服务
      * @description 查询小程序是否已开通发货信息管理服务
-     * @return bool
+     * @return \think\Response
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
     public function getIsTradeManaged()

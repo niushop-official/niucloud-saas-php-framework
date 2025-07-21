@@ -117,7 +117,7 @@ class WeappConfigService extends BaseAdminService
 
     /**
      * 设置隐私协议
-     * @return array
+     * @return void
      */
     public function setPrivacySetting($data){
         $data['privacy_ver'] = 1;

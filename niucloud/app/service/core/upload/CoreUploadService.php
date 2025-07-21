@@ -32,6 +32,7 @@ class CoreUploadService extends CoreFileService
      * @param int $site_id
      * @param string $file_dir
      * @param int $cate_id
+     * @param string $storage_type
      * @return array
      * @throws Exception
      */
@@ -93,6 +94,7 @@ class CoreUploadService extends CoreFileService
      * @param int $site_id
      * @param string $file_dir
      * @param int $cate_id
+     * @param string $storage_type
      * @return array
      * @throws Exception
      */

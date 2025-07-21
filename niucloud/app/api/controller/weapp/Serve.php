@@ -29,7 +29,7 @@ class Serve extends BaseController
     /**
      * 接收消息并推送
      * @param $site_id
-     * @return Response
+     * @return \think\Response
      * @throws BadRequestException
      * @throws InvalidArgumentException
      * @throws RuntimeException

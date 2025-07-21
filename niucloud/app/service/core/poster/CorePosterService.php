@@ -45,7 +45,7 @@ class CorePosterService extends BaseCoreService
     /**
      * 删除
      * @param $condition
-     * @return \think\Response
+     * @return true
      */
     public function del($condition)
     {
@@ -97,7 +97,7 @@ class CorePosterService extends BaseCoreService
      * @param array $param
      * @param string $channel
      * @param bool $is_throw_exception
-     * @return string|void
+     * @return string|null
      */
     public function get(int $site_id, $id, $type, array $param = [], $channel = '', $is_throw_exception = true)
     {

@@ -113,6 +113,7 @@ class CoreMemberAddressService extends BaseCoreService
     /**
      * 获取收货地址
      * @param int $id
+     * @param int $member_id
      * @return array
      */
     public function getMemberAddressById(int $id, int $member_id){

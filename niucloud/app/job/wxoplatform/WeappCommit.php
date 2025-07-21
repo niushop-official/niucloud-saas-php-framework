@@ -12,9 +12,7 @@
 namespace app\job\wxoplatform;
 
 use app\service\admin\wxoplatform\WeappVersionService;
-use app\service\core\pay\CorePayService;
 use core\base\BaseJob;
-use think\facade\Log;
 
 /**
  * 小程序代码上传

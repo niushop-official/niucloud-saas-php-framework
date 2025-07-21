@@ -58,7 +58,6 @@ Route::group('notice', function () {
             Route::post('login', 'notice.NiuSms/loginAccount');
             Route::post('edit/:username', 'notice.NiuSms/editAccount');
             Route::post('reset/password/:username', 'notice.NiuSms/resetPassword');
-            Route::post('forget/password/:username', 'notice.NiuSms/forgetPassword');
             Route::get('send_list/:username', 'notice.NiuSms/accountSendList');
             Route::get('info/:username', 'notice.NiuSms/accountInfo');
         });

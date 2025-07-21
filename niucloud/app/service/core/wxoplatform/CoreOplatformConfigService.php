@@ -43,7 +43,6 @@ class CoreOplatformConfigService extends BaseCoreService
 
     /**
      * 设置微信公众号配置
-     * @param int $site_id
      * @param array $data
      * @return SysConfig|bool|Model
      */

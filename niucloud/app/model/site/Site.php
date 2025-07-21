@@ -12,7 +12,6 @@
 namespace app\model\site;
 
 use app\dict\site\SiteDict;
-use app\model\addon\Addon;
 use core\base\BaseModel;
 use think\db\Query;
 use think\model\relation\HasOne;

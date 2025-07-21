@@ -14,8 +14,6 @@ namespace app\service\core\pay;
 use app\dict\pay\TransferDict;
 use app\model\pay\Pay;
 use app\model\pay\Transfer;
-use app\model\pay\TransferScene;
-use app\service\core\sys\CoreConfigService;
 use core\base\BaseCoreService;
 use core\exception\PayException;
 use Exception;
@@ -75,7 +73,7 @@ class CoreTransferService extends BaseCoreService
      * @param string $transfer_no
      * @param string $transfer_type
      * @param array $data
-     * @return true
+     * @return array
      */
     public function transfer(int $site_id, string $transfer_no, string $transfer_type, array $data)
     {
@@ -211,7 +209,6 @@ class CoreTransferService extends BaseCoreService
      * 转账完成
      * @param int $site_id
      * @param string $transfer_no
-     * @param string $transfer_type
      * @param array $params
      * @return bool
      */
@@ -255,7 +252,6 @@ class CoreTransferService extends BaseCoreService
      * 转账失败
      * @param int $site_id
      * @param string $transfer_no
-     * @param string $transfer_type
      * @param array $params
      * @return true
      */
@@ -308,7 +304,7 @@ class CoreTransferService extends BaseCoreService
      * 处理中
      * @param int $site_id
      * @param $transfer_no
-     * @param $type
+     * @param $status
      * @return true
      */
     public function dealing(int $site_id, $transfer_no, $status)
@@ -351,7 +347,7 @@ class CoreTransferService extends BaseCoreService
      * 撤销转账
      * @param int $site_id
      * @param string $transfer_no
-     * @return void
+     * @return true
      */
     public function cancel(int $site_id, string $transfer_no)
     {

@@ -73,7 +73,7 @@ class CoreWeappService extends BaseCoreService
     /**
      * 刷新token
      * @param int $site_id
-     * @return \EasyWeChat\Kernel\HttpClient\AccessTokenAwareClient
+     * @return void
      * @throws InvalidArgumentException
      */
     public static function refreshToken(int $site_id)
@@ -120,7 +120,7 @@ class CoreWeappService extends BaseCoreService
     /**
      * 获取小程序体验码
      * @param $site_id
-     * @return void
+     * @return string
      */
     public function getWeappPreviewImage($site_id)
     {

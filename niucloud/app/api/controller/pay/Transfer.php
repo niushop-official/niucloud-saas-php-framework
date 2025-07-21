@@ -13,10 +13,6 @@ namespace app\api\controller\pay;
 
 use app\service\api\pay\PayService;
 use core\base\BaseApiController;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\DbException;
-use think\db\exception\ModelNotFoundException;
-use think\Response;
 
 /**
  * 微信服务端通信以及网页授权
@@ -27,7 +23,7 @@ class Transfer extends BaseApiController
 
     /**
      *  确认收款
-     * @return Response
+     * @return void
      */
     public function confirm($transfer_no)
     {

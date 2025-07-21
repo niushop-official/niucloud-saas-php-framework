@@ -32,7 +32,6 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\facade\Db;
-use think\facade\Log;
 
 /**
  * 万能表单服务层
@@ -112,7 +111,7 @@ class DiyFormService extends BaseAdminService
      * 获取万能表单信息
      * @param int $form_id
      * @param string $field
-     * @return mixed
+     * @return array
      */
     public function getInfo(int $form_id, $field = 'form_id, page_title, title, type, status, value, addon, share, write_num,template')
     {
@@ -122,7 +121,7 @@ class DiyFormService extends BaseAdminService
     /**
      * 获取万能表单数量
      * @param array $where
-     * @return mixed
+     * @return int
      */
     public function getCount(array $where = [])
     {
@@ -551,7 +550,7 @@ class DiyFormService extends BaseAdminService
     /**
      * 修改状态
      * @param $data
-     * @return Bool
+     * @return DiyForm
      */
     public function modifyStatus($data)
     {
@@ -627,8 +626,10 @@ class DiyFormService extends BaseAdminService
      * 获取万能表单字段列表
      * @param array $where
      * @param string $field
-     * @param string $order
-     * @return mixed
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getFieldsList($where = [], $field = 'field_id, form_id, field_key, field_type, field_name, field_remark, write_num, field_required, field_hidden, field_unique, privacy_protection, create_time, update_time')
     {

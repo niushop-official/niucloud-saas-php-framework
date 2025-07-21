@@ -62,6 +62,7 @@ class MenuService extends BaseAdminService
 
     /**
      * 更新菜单
+     * @param string $app_type
      * @param string $menu_key
      * @param array $data
      * @return SysMenu
@@ -79,6 +80,7 @@ class MenuService extends BaseAdminService
 
     /**
      * 获取信息
+     * @param string $app_type
      * @param string $menu_key
      * @return array
      */
@@ -106,6 +108,7 @@ class MenuService extends BaseAdminService
 
     /**
      * 菜单删除
+     * @param string $app_type
      * @param string $menu_key
      * @return bool
      * @throws DbException
@@ -128,7 +131,8 @@ class MenuService extends BaseAdminService
      * @param array $menu_keys
      * @param string $app_type
      * @param int $is_tree
-     * @param  $addon 用于检测插件筛选
+     * @param string $addon 用于检测插件筛选
+     * @param int $is_button
      * @return mixed
      * @throws DataNotFoundException
      * @throws DbException
@@ -241,7 +245,7 @@ class MenuService extends BaseAdminService
     /**
      * 根据parent_select_key字段重新整理上下级关系
      * @param array $menus
-     * @return mixed
+     * @return array
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
@@ -530,7 +534,7 @@ class MenuService extends BaseAdminService
     /**
      * 获取系统菜单(站点权限api极限)
      * @param string $app_type
-     * @param string $addons
+     * @param array $addons
      * @return mixed|string
      */
     public function getApiListBySystem(string $app_type = '', array $addons = [])
@@ -562,6 +566,8 @@ class MenuService extends BaseAdminService
      * @param string $app_type
      * @param array $addons
      * @param int $is_tree
+     * @param int $is_button
+     * @param string $status
      * @return array|mixed|string
      * @throws DataNotFoundException
      * @throws DbException
@@ -683,6 +689,10 @@ class MenuService extends BaseAdminService
     /**
      * 查询菜单类型为目录的菜单
      * @param string $addon
+     * @return array
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function getMenuByTypeDir(string $addon = 'system')
     {
