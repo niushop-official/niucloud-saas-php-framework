@@ -25,6 +25,7 @@ if (process.client) {
 
 // 初始化设置语言
 const systemStore = useSystemStore()
+
 const locale = computed(() => (systemStore.lang === 'zh-cn' ? zhCn : en))
 
 // 初始化查询一些配置
@@ -56,12 +57,38 @@ watch(route, (nval, oval) => {
 		})
 	}, !oval ? 500 : 0)
 }, { immediate: true })
-
+watch(() => systemStore.site, () => {
+    const meta = systemStore.site
+    const siteTitle = systemStore.site.meta_title || systemStore.site.front_end_name || systemStore.site.site_name
+    useHead({
+        titleTemplate: (title) => {
+            if (title) {
+                if (siteTitle) {
+                    return `${ title } - ${ siteTitle }`;
+                } else {
+                    return title;
+                }
+            } else {
+                return siteTitle;
+            }
+        },
+        meta: [
+            {
+                name: 'description',
+                content: meta.meta_desc ? meta.meta_desc : ''
+            },
+            {
+                name: 'Keywords',
+                content: meta.meta_keyword ? meta.meta_keyword : ''
+            }
+        ]
+    })
+}, { deep: true, immediate: true })
 // 设置title模板
-useHead({
-	titleTemplate: (title) => {
-		const siteTitle = systemStore.site.front_end_name || systemStore.site.site_name
-		return title ? `${title} - ${siteTitle}` : siteTitle
-	}
-})
+// useHead({
+// 	titleTemplate: (title) => {
+// 		const siteTitle = systemStore.site.front_end_name || systemStore.site.site_name
+// 		return title ? `${title} - ${siteTitle}` : siteTitle
+// 	}
+// })
 </script>
