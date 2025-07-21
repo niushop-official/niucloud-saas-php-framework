@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getInitInfo, getSiteInfo } from '@/app/api/system'
+import { getInitInfo, getSiteInfo, getMemberMobileExist } from '@/app/api/system'
 import useConfigStore from '@/stores/config'
 import useMemberStore from '@/stores/member'
 import { isWeixinBrowser } from '@/utils/common'
@@ -20,7 +20,11 @@ interface System {
         path: string,
         query: object
     },
-    isAddCartRecommend: boolean // 是否添加购物车推荐
+    systemInfo: any, // 系统设备信息
+    topTabbarInfo: {
+        height: number
+        fullHeight: string
+    }
 }
 
 const useSystemStore = defineStore('system', {
@@ -36,10 +40,10 @@ const useSystemStore = defineStore('system', {
             },
             initStatus: 'wait',
             menuButtonInfo: {
-                height: '',
-                top: '',
-                right: '',
-                width: ''
+                height: 0,
+                top: 0,
+                right: 0,
+                width: 0
             },
             shareCallback: null,
             defaultPositionAddress: '定位中',
@@ -48,7 +52,11 @@ const useSystemStore = defineStore('system', {
                 path: '',
                 query: {}
             },
-            isAddCartRecommend: false
+            systemInfo: null,
+            topTabbarInfo: {
+                height: 0,
+                fullHeight: ''
+            }
         }
     },
     actions: {
@@ -58,7 +66,7 @@ const useSystemStore = defineStore('system', {
             let url = '';
             // #ifdef H5
             if (isWeixinBrowser()) {
-                url = uni.getSystemInfoSync().platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
+                url = this.systemInfo.platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
             }
             // #endif
 
@@ -68,7 +76,6 @@ const useSystemStore = defineStore('system', {
             }).then((res: any) => {
                 if (res.data) {
                     let data = res.data;
-
                     // 底部导航
                     const configStore = useConfigStore()
                     configStore.tabbarList = data.tabbar_list;
@@ -108,6 +115,7 @@ const useSystemStore = defineStore('system', {
                     // 如果会员已存在则小程序端快捷登录时不再弹出授权弹框
                     uni.setStorageSync('member_exist', data.member_exist)
 
+
                     this.initStatus = 'finish'; // 初始化完成
 
                     if (uni.getStorageSync('isBindMobile')) {
@@ -118,6 +126,14 @@ const useSystemStore = defineStore('system', {
             })
 
             this.getMenuButtonInfoFn();
+        },
+        // 如果已有手机号，就不弹出绑定手机号弹框
+        getMemberMobileExistFn() {
+            getMemberMobileExist({
+                openid: uni.getStorageSync('openid')
+            }).then((res: any) => {
+                uni.setStorageSync('member_mobile_exist', res.data.member_mobile_exist)
+            })
         },
         getMenuButtonInfoFn() {
             // 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
@@ -139,7 +155,7 @@ const useSystemStore = defineStore('system', {
         setAddressInfo(data: any = {}) {
             let addressInfo = cloneDeep(data);
             // 过期时间
-            var date = new Date();
+            const date = new Date();
             date.setSeconds(60 * this.mapConfig.valid_time);
             addressInfo.valid_time = date.getTime() / 1000; // 定位信息 5分钟内有效，过期后将重新获取定位信息
 
@@ -154,6 +170,11 @@ const useSystemStore = defineStore('system', {
             } else {
                 uni.removeStorageSync('location_address');
             }
+        },
+        setTopTabbar(data: any = {}) {
+            this.topTabbarInfo = Object.assign({}, this.topTabbarInfo, data);
+            this.topTabbarInfo.height = this.topTabbarInfo.height || 0
+            this.topTabbarInfo.fullHeight = this.topTabbarInfo.height ? this.topTabbarInfo.height+'px' : 0
         }
     }
 })

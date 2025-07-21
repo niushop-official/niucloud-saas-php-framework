@@ -38,12 +38,12 @@ export function useDiy(params: any = {}) {
     const isShowTopTabbar = ref(false);
 
     const pageStyle = () => {
-        var style = '';
+        let style = '';
         if (data.value.global.pageStartBgColor) {
             if (data.value.global.pageStartBgColor && data.value.global.pageEndBgColor) style += `background:linear-gradient(${ data.value.global.pageGradientAngle },${ data.value.global.pageStartBgColor },${ data.value.global.pageEndBgColor });`;
             else style += 'background-color:' + data.value.global.pageStartBgColor + ';';
         }
-        if (data.value.global.bottomTabBarSwitch) {
+        if (data.value.global.bottomTabBar && data.value.global.bottomTabBar.isShow) {
             style += 'min-height:calc(100vh - 50px);';
         } else {
             style += 'min-height:calc(100vh);';
@@ -123,6 +123,7 @@ export function useDiy(params: any = {}) {
                         diyData.value = sources.value;
                         diyData.value.forEach((item: any, index) => {
                             item.pageStyle = '';
+                            item.componentIsShow = true // 是否显示
                             if (item.pageStartBgColor) {
                                 if (item.pageStartBgColor && item.pageEndBgColor) item.pageStyle += `background:linear-gradient(${ item.pageGradientAngle },${ item.pageStartBgColor },${ item.pageEndBgColor });`;
                                 else item.pageStyle += 'background-color:' + item.pageStartBgColor + ';';
@@ -201,6 +202,7 @@ export function useDiy(params: any = {}) {
             if (e.scrollTop > 0) {
                 diyStore.scrollTop = e.scrollTop;
             }
+            uni.$emit('scroll')
         })
     }
 

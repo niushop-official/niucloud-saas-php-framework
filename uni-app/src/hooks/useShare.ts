@@ -8,8 +8,8 @@ import wechat from '@/utils/wechat'
 // #endif
 
 export const useShare = () => {
-    var wechatOptions: any = {};
-    var weappOptions: any = {};
+    let wechatOptions: any = {};
+    let weappOptions: any = {};
 
     const wechatInit = () => {
         if (!isWeixinBrowser()) return;
@@ -60,7 +60,6 @@ export const useShare = () => {
             query: queryStr.join('&'),
         }
         // #endif
-
         if (options && Object.keys(options).length) {
 
             if (options.wechat) {
@@ -88,8 +87,8 @@ export const useShare = () => {
 
             }
 
-        } else {
-            getShareInfo({
+        } 
+        getShareInfo({
                 route: '/' + currRoute(),
                 params: JSON.stringify(currShareRoute().params)
             }).then((res: any) => {
@@ -116,10 +115,11 @@ export const useShare = () => {
                     weappOptions.imageUrl = weapp.url ? img(weapp.url) : ''
                 }
                 // #endif
-
+                if(!weappOptions.title && !weappOptions.imageUrl){
+                        return;
+                }
                 uni.setStorageSync('weappOptions', weappOptions)
             })
-        }
     }
 
     // 小程序分享，分享给好友

@@ -22,6 +22,8 @@ onMounted(() => {
 
         props.data.formField.forEach((item: any) => {
             let comp = {
+                
+                componentIsShow: true, // 是否显示
                 id: item.field_key,
                 componentName: item.field_type,
                 pageStyle: '',

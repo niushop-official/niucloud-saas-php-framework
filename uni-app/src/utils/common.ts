@@ -26,14 +26,12 @@ export const redirect = (redirect: any) => {
         if (config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
             url = '/app/pages/auth/login'
             param = { type: 'username' }
-            mode = 'redirectTo'
             newLogin = true
         } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
             uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
             return;
         } else {
             url = '/app/pages/auth/index'
-            mode = 'redirectTo'
             newLogin = true
         }
         // #endif
@@ -44,14 +42,12 @@ export const redirect = (redirect: any) => {
             if (config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
                 url = '/app/pages/auth/login'
                 param = { type: 'username' }
-                mode = 'redirectTo'
                 newLogin = true
             } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
                 uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 return;
             } else {
                 url = '/app/pages/auth/index'
-                mode = 'redirectTo'
                 newLogin = true
             }
         } else {
@@ -59,14 +55,12 @@ export const redirect = (redirect: any) => {
             if (config.login.is_username && !config.login.is_mobile) {
                 url = '/app/pages/auth/login'
                 param = { type: 'username' }
-                mode = 'redirectTo'
                 newLogin = true
             } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile) {
                 uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 return;
             } else {
                 url = '/app/pages/auth/index'
-                mode = 'redirectTo'
                 newLogin = true
             }
         }
@@ -375,17 +369,17 @@ export function getSiteId(siteId: number | string) {
  */
 export function timeStampTurnTime(timeStamp: any, type = "") {
     if (timeStamp != undefined && timeStamp != "" && timeStamp > 0) {
-        var date = new Date();
+        const date = new Date();
         date.setTime(timeStamp * 1000);
-        var y = date.getFullYear();
-        var m: any = date.getMonth() + 1;
+        const y = date.getFullYear();
+        let m: any = date.getMonth() + 1;
         m = m < 10 ? ('0' + m) : m;
-        var d: any = date.getDate();
+        let d: any = date.getDate();
         d = d < 10 ? ('0' + d) : d;
-        var h: any = date.getHours();
+        let h: any = date.getHours();
         h = h < 10 ? ('0' + h) : h;
-        var minute: any = date.getMinutes();
-        var second: any = date.getSeconds();
+        let minute: any = date.getMinutes();
+        let second: any = date.getSeconds();
         minute = minute < 10 ? ('0' + minute) : minute;
         second = second < 10 ? ('0' + second) : second;
         if (type) {
@@ -404,7 +398,7 @@ export function timeStampTurnTime(timeStamp: any, type = "") {
 
 /**
  * 日期格式转时间戳
- * @param {Object} date
+ * @param dateStr
  */
 export function timeTurnTimeStamp(dateStr: string) {
     let timestamp;
@@ -461,7 +455,7 @@ export function timeTurnTimeStamp(dateStr: string) {
  */
 export function copy(value: any, callback: any) {
     // #ifdef H5
-    var oInput = document.createElement('input'); //创建一个隐藏input（重要！）
+    const oInput = document.createElement('input'); //创建一个隐藏input（重要！）
     oInput.value = value; //赋值
     oInput.setAttribute("readonly", "readonly");
     document.body.appendChild(oInput);
@@ -511,7 +505,7 @@ export function handleOnloadParams(option: any) {
 
     // 处理小程序扫码进入的场景值参数
     if (option.scene) {
-        var sceneParams = decodeURIComponent(option.scene).split('&');
+        const sceneParams = decodeURIComponent(option.scene).split('&');
         if (sceneParams.length) {
             sceneParams.forEach(item => {
                 let arr = item.split('-');
@@ -577,7 +571,8 @@ const isArray = (value: any) => {
 
 // px转rpx
 export function pxToRpx(px: any) {
-    const screenWidth = uni.getSystemInfoSync().screenWidth;
+    const systemStore = useSystemStore()
+    const screenWidth = systemStore.systemInfo.screenWidth;
     return (750 * Number.parseInt(px)) / screenWidth;
 }
 
@@ -623,7 +618,7 @@ export function getWinxinOpenId() {
 
 // 获取有效期
 export function getValidTime(minutes: any = 1) {
-    var date = new Date();
+    const date = new Date();
     date.setSeconds(60 * minutes);
     let validTime: any = parseInt(date.getTime() / 1000); // 定位信息 5分钟内有效，过期后将重新获取定位信息
     return validTime;

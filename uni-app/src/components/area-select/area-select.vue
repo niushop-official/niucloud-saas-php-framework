@@ -15,18 +15,20 @@
                     <view v-if="selected.district">{{ selected.district.name }}</view>
                     <view v-else>请选择</view>
                 </view>
+                <view class="flex-1 pr-[10rpx]" v-else></view>
             </view>
             <scroll-view scroll-y="true" class="h-[50vh]">
-                <view class="flex p-[30rpx] pt-0 text-sm">
-                    <view v-if="areaList.province.length" v-show="currSelect == 'province'">
+                <view class="flex p-[30rpx] pt-[0] text-sm font-500">
+                    <view v-if="areaList.province.length" class="flex-1 pr-[10rpx]" :style="{ opacity: currSelect == 'province' ? 1 : 0, pointerEvents: currSelect == 'province' ? 'auto' : 'none' }">
                         <view v-for="item in areaList.province" class="h-[80rpx] flex items-center" :class="{'text-[var(--primary-color)]': selected.province && selected.province.id == item.id }" @click="selected.province = item">{{ item.name }}</view>
                     </view>
-                    <view v-if="areaList.city.length" v-show="currSelect == 'city'">
+                    <view v-if="areaList.city.length" class="flex-1 pr-[10rpx]" :style="{ opacity: currSelect == 'city' ? 1 : 0, pointerEvents: currSelect == 'city' ? 'auto' : 'none' }">
                         <view v-for="item in areaList.city" class="h-[80rpx] flex items-center" :class="{'text-[var(--primary-color)]': selected.city && selected.city.id == item.id }" @click="selected.city = item">{{ item.name }}</view>
                     </view>
-                    <view v-if="areaList.district.length" v-show="currSelect == 'district'">
+                    <view v-if="areaList.district.length" class="flex-1 pr-[10rpx]" :style="{ opacity: currSelect == 'district' ? 1 : 0, pointerEvents: currSelect == 'district' ? 'auto' : 'none' }">
                         <view v-for="item in areaList.district" class="h-[80rpx] flex items-center " :class="{'text-[var(--primary-color)]': selected.district && selected.district.id == item.id }" @click="selected.district = item">{{ item.name }}</view>
                     </view>
+                    <view class="flex-1 pr-[10rpx]" v-else></view>
                 </view>
             </scroll-view>
         </view>
@@ -68,10 +70,6 @@ watch(() => prop.areaId, (nval, oval) => {
             data.province && (selected.province = data.province)
             data.city && (selected.city = data.city)
             data.district && (selected.district = data.district)
-			if (data.city == undefined && data.province && data.district) {
-			    selected.city = data.district
-				selected.district=null
-			}
         })
     }
 }, {
@@ -85,7 +83,7 @@ watch(() => selected.province, () => {
     getAreaListByPid(selected.province.id).then(({ data }) => {
         areaList.city = data
         currSelect.value = 'city'
-		
+
         if (selected.city) {
             let isExist = false
             for (let i = 0; i < data.length; i++) {
@@ -150,6 +148,9 @@ watch(() => selected.district, (nval) => {
 
 const open = () => {
     show.value = true
+    if(prop.areaId){
+        currSelect.value = 'district'
+    }
 }
 
 defineExpose({

@@ -4,7 +4,7 @@ import {
     updateWeappOpenid,
     updateWechatOpenid,
     wechatUser,
-    wechatUserLogin
+    wechatUserLogin, updateWechatOpenidByH5
 } from '@/app/api/auth'
 import { getWechatAuthCode } from '@/app/api/system'
 import useMemberStore from '@/stores/member'
@@ -37,11 +37,11 @@ export function useLogin() {
 
             // #ifdef MP-WEIXIN
             if (config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
-                redirect({ url: '/app/pages/auth/login', param: { type: 'username' }, mode: 'redirectTo' })
+                redirect({ url: '/app/pages/auth/login', param: { type: 'username' } })
             } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
                 uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
             } else {
-                redirect({ url: '/app/pages/auth/index', mode: 'redirectTo' })
+                redirect({ url: '/app/pages/auth/index' })
             }
             // #endif
 
@@ -49,20 +49,20 @@ export function useLogin() {
             if (isWeixinBrowser()) {
                 // 微信浏览器
                 if (config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
-                    redirect({ url: '/app/pages/auth/login', param: { type: 'username' }, mode: 'redirectTo' })
+                    redirect({ url: '/app/pages/auth/login', param: { type: 'username' } })
                 } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
                     uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 } else {
-                    redirect({ url: '/app/pages/auth/index', mode: 'redirectTo' })
+                    redirect({ url: '/app/pages/auth/index' })
                 }
             } else {
                 // 普通浏览器
                 if (config.login.is_username && !config.login.is_mobile) {
-                    redirect({ url: '/app/pages/auth/login', param: { type: 'username' }, mode: 'redirectTo' })
+                    redirect({ url: '/app/pages/auth/login', param: { type: 'username' } })
                 } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile) {
                     uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 } else {
-                    redirect({ url: '/app/pages/auth/index', mode: 'redirectTo' })
+                    redirect({ url: '/app/pages/auth/index' })
                 }
             }
             // #endif
@@ -192,8 +192,12 @@ export function useLogin() {
                         // 强制获取昵称和头像，先存储起来
                         uni.setStorageSync('openid', res.data.openid)
                         uni.setStorageSync('unionid', res.data.unionid)
-                        if (res.data.nickname) uni.setStorageSync('nickname', res.data.nickname)
-                        if (res.data.avatar) uni.setStorageSync('avatar', res.data.avatar)
+                        if(res.data.nickname){
+                            uni.setStorageSync('nickname', res.data.nickname)
+                        }
+                        if(res.data.avatar){
+                            uni.setStorageSync('avatar', res.data.avatar)
+                        }
 
                         // 开启绑定手机号标识
                         if (uni.getStorageSync('isBindMobile')) {
@@ -317,17 +321,29 @@ export function useLogin() {
             query.code && (delete query.code)
             Object.keys(query).length && (url += uni.$u.queryParams(query))
         }
-
+        // // 强制授权加强制绑定手机号定义URL
+        // if(uni.getStorageSync('mandatory_Mobile')){
+        //     url = `${ location.origin }${ location.pathname }`
+        // }
         getWechatAuthCode({
             url,
             scopes: params.scopes
         }).then((res: any) => {
             uni.setStorageSync('wechat_login_back', true) // 微信公众号手动授权登录回调标识
-			// location.replace(res.data.url);
+            // uni.setStorageSync('mandatory_Mobile', true) // 微信授权登录+强制绑定手机号标识 
+            // location.replace(res.data.url);
             location.href = res.data.url
         })
 
         // #endif
+    }
+
+    const updateWechatOpenidForH5 = (wx_openid: any) => {
+        if(!wx_openid) return;
+        updateWechatOpenidByH5({ wx_openid }).then(res => {
+            const memberInfo = useMemberStore().info
+            memberInfo && memberInfo.wx_openid && uni.setStorageSync('openid', memberInfo.wx_openid)
+        })
     }
 
     return {
@@ -335,6 +351,7 @@ export function useLogin() {
         handleLoginBack,
         authLogin,
         updateOpenid,
-        getAuthCode
+        getAuthCode,
+        updateWechatOpenidForH5
     }
 }

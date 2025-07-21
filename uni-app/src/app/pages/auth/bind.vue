@@ -7,7 +7,7 @@
         <!-- #endif -->
         <view class="mx-[60rpx]">
             <view class="pt-[140rpx] text-[50rpx] text-[#333]">{{ t('bindMobile') }}</view>
-            <view class="text-[26rpx] leading-[39rpx] text-[var(--text-color-light6)] mt-[16rpx] mb-[80rpx]">{{ t('bindMobileTip') }}</view>
+            <view class="text-[26rpx] leading-[39rpx] text-[var(--text-color-light6)] mt-[24rpx] mb-[90rpx]">{{ t('bindMobileTip') }}</view>
             <u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
                 <view
                     class="h-[90rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
@@ -28,7 +28,7 @@
             </u-form>
             <view class="mt-[100rpx]">
                 <view v-if="config.agreement_show" class="flex items-center mb-[20rpx] py-[10rpx]" @click.stop="agreeChange">
-                    <u-checkbox-group @change="agreeChange">
+                    <u-checkbox-group @change="agreeChange"> 
                         <u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }" />
                     </u-checkbox-group>
                     <view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
@@ -55,18 +55,15 @@ import { useLogin } from '@/hooks/useLogin'
 import { redirect, pxToRpx } from '@/utils/common'
 import { onLoad } from '@dcloudio/uni-app'
 import { topTabar } from '@/utils/topTabbar'
+import useSystemStore from "@/stores/system";
 
-let menuButtonInfo: any = {};
-// 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
-// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
-menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-// #endif
+const systemStore = useSystemStore()
 /********* 自定义头部 - start ***********/
 const topTabarObj = topTabar()
 let param = topTabarObj.setTopTabbarParam({ title: '', topStatusBar: { bgColor: '#fff', textColor: '#333' } })
 /********* 自定义头部 - end ***********/
 const headerHeight = computed(() => {
-    return Object.keys(menuButtonInfo).length ? pxToRpx(Number(menuButtonInfo.height)) + pxToRpx(menuButtonInfo.top) + pxToRpx(8) + 'rpx' : 'auto'
+    return Object.keys(systemStore.menuButtonInfo).length ? pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + pxToRpx(8) + 'rpx' : 'auto'
 })
 
 const memberStore = useMemberStore()

@@ -14,6 +14,7 @@ class Language {
     /**
      *
      * @param locale 设置语言
+     * @param path
      */
     public setI18nLanguage(locale: string, path: string = '') {
         if (this.i18n.global.locale == locale) return

@@ -3,6 +3,7 @@ import wx from 'weixin-js-sdk'
 // #endif
 import { getWechatSdkConfig } from '@/app/api/system'
 import { isWeixinBrowser } from '@/utils/common'
+import useSystemStore from "@/stores/system";
 
 class Wechat {
     constructor() {
@@ -12,8 +13,9 @@ class Wechat {
     }
 
     public init(callback: any = null) {
+        const systemStore = useSystemStore()
         getWechatSdkConfig({
-            url: uni.getSystemInfoSync().platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
+            url: systemStore.systemInfo.platform == 'ios' ? uni.getStorageSync('initUrl') : location.href
         }).then((res: any) => {
             const { data } = res
             wx.config({
@@ -83,6 +85,7 @@ class Wechat {
     /**
      * 商家转账接口
      * @param {Object} options 转账参数
+     * @param callback
      */
     public transfer(options: any, callback: any) {
         // #ifdef MP

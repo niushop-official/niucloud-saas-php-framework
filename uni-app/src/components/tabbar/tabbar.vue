@@ -128,6 +128,16 @@ if (!props.addon) {
     )
 }
 
+watch(
+    () => useConfigStore().tabbarList,
+    (newValue, oldValue) => {
+        if (newValue && newValue.length) {
+            setTabbar()
+        }
+    },
+    { deep: true }
+)
+
 const value = computed(() => {
     let query: any = currShareRoute().params;
     let str = [];

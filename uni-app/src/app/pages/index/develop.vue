@@ -34,7 +34,7 @@ const save = () => {
         return;
     }
 
-    var reg = /^[0-9]+$/;
+    const reg = /^[0-9]+$/;
     if (!reg.test(formData.siteId)) {
         uni.showToast({ title: t('pleaseEnterNumber'), icon: 'none' });
         return;

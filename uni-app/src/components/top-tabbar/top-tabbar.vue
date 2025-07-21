@@ -1,13 +1,13 @@
 <template>
     <view class="ns-navbar-wrap" v-if="diyStore.mode !='decorate' && topStatusBarData" :class="topStatusBarData.style">
-        <view class="u-navbar" :class="{'fixed': props.scrollBool != -1, 'absolute': props.scrollBool == -1}" :style="{ backgroundColor: bgColor}">
+        <view class="u-navbar z-100" :class="{'fixed': props.scrollBool != -1, 'absolute': props.scrollBool == -1}" :style="{ backgroundColor: bgColor}">
             <view class="navbar-inner" :style="{ width: '100%', height: placeholderHeight + 'px' }">
                 <view v-if="topStatusBarData.style == 'style-1'" class="content-wrap" :class="[topStatusBarData.textAlign]" :style="navbarInnerStyle">
-                    <view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :class="{'!text-transparent': !isBackShow}" :style="{ color: titleTextColor }" @tap="goBack"></view>
                     <view class="title-wrap" :style="styleOneFontSize">{{ data.title }}</view>
                 </view>
                 <view v-if="topStatusBarData.style == 'style-2'" class="content-wrap" :style="navbarInnerStyle" @click="diyStore.toRedirect(topStatusBarData.link)">
-                    <view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" :class="{'!text-transparent': !isBackShow}" @tap="goBack"></view>
                     <view class="title-wrap" :style="{ color: topStatusBarData.textColor }">
                         <view>
                             <image :src="img(topStatusBarData.imgUrl)" mode="heightFix"/>
@@ -17,7 +17,7 @@
                 </view>
 
                 <view v-if="topStatusBarData.style == 'style-3'" :style="navbarInnerStyle" class="content-wrap">
-                    <view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
                     <view class="title-wrap" @click="diyStore.toRedirect(topStatusBarData.link)">
                         <image :src="img(topStatusBarData.imgUrl)" mode="heightFix"/>
                     </view>
@@ -29,7 +29,7 @@
                 </view>
 
                 <view v-if="topStatusBarData.style == 'style-4'" :style="navbarInnerStyle" class="content-wrap">
-                    <view v-if="isBack" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack"></view>
+                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
                     <text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[28rpx]" :style="{ color: topStatusBarData.textColor }"></text>
                     <view class="title-wrap" @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-if="systemStore.diyAddressInfo">{{ systemStore.diyAddressInfo.community }}</view>
                     <view class="title-wrap" @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-else>{{ systemStore.defaultPositionAddress }}</view>
@@ -50,10 +50,8 @@ import useSystemStore from '@/stores/system';
 import useDiyStore from '@/app/stores/diy';
 import { useLocation } from '@/hooks/useLocation'
 
-// 获取系统状态栏的高度
-let systemInfo = uni.getSystemInfoSync();
-let platform = systemInfo.platform;
-const systemStore = useSystemStore();
+const systemStore = useSystemStore()
+let platform = systemStore.systemInfo.platform;
 
 const diyStore = useDiyStore();
 
@@ -90,7 +88,7 @@ const props = defineProps({
 // 控制-定位后是否对导航栏进行填充
 const isFill = computed(() => {
     let bool = true;
-    if (imageAdsSameScreen.value) {
+    if (diyStore.imageAdsSameScreen) {
         bool = false;
     } else {
         bool = props.isFill;
@@ -109,7 +107,6 @@ const topStatusBarData = computed(() => {
 // 导航栏内部盒子的样式
 const navbarInnerStyle = computed(() => {
     let style = '';
-
     if (props.isBack) {
         style += 'padding-left: 30rpx;';//30=>右边留边 44=>箭头宽度 10=>箭头的右maring
         if (topStatusBarData.value.style == 'style-1') //样式一需要居中需要有右边padding辅助
@@ -188,40 +185,23 @@ if (componentsScrollVal) {
 /******************************* 存储滚动值-end ***********************/
 
 /******************************* 返回按钮-start ***********************/
-// const isBackShow = ref(false);
 let pages = getCurrentPages();
+const isBackShow = computed(() => {
+    let bool = false;
+    if (props.isBack && pages.length > 1) {
+        bool = true; 
+    } 
+    return bool;
+})
 
 // 返回按钮的函数
 const goBack = () => {
-    // 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
-    if (pages.length === 1) {
-        if (pages[0].route === 'app/pages/auth/index') {
-            uni.getStorage({
-                key: 'loginBack',
-                success: (res: any) => {
-                    res ? redirect(
-                        {
-                            ...res.data,
-                            mode: 'redirectTo'
-                        }
-                    ) : redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
-                },
-                fail: (res) => {
-                    redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
-                }
-            });
-        } else if (typeof props.customBack === 'function') {
-            props.customBack();
-        } else {
-            redirect({ url: '/app/pages/index/index', mode: 'switchTab' });
-        }
+    if(!isBackShow.value) return;
+    // 如果自定义了点击返回按钮的函数，则执行，否则执行返回逻辑
+    if (typeof props.customBack === 'function') {
+        props.customBack();
     } else {
-        // 如果自定义了点击返回按钮的函数，则执行，否则执行返回逻辑
-        if (typeof props.customBack === 'function') {
-            props.customBack();
-        } else {
-            uni.navigateBack();
-        }
+        uni.navigateBack();
     }
 }
 /******************************* 返回按钮-end ***********************/
@@ -238,12 +218,14 @@ const instance = getCurrentInstance();
 // #ifdef MP
 let statusBarHeight = systemStore.menuButtonInfo.height + systemStore.menuButtonInfo.top + 8;
 placeholderHeight.value = statusBarHeight || 0;
+systemStore.setTopTabbar({ height: placeholderHeight.value })
 // #endif
 const navbarPlaceholderHeight = () => {
     nextTick(() => {
         const query = uni.createSelectorQuery().in(instance);
         query.select('.ns-navbar-wrap .u-navbar .content-wrap').boundingClientRect(data => {
             placeholderHeight.value = data ? data.height : 0;
+            systemStore.setTopTabbar({ height: placeholderHeight.value })
             diyStore.$patch((state) => {
                 state.topTabarHeight = placeholderHeight.value
             })
@@ -261,20 +243,10 @@ const locationVal = useLocation(isOpenLocation);
 locationVal.onLoad();
 locationVal.init();
 /************** 定位-end ****************/
-let imageAdsSameScreen = ref(false);
 onMounted(() => {
     navbarPlaceholderHeight();
-    // if (pages.length > 1) {
-    // 	isBackShow.value = true;
-    // 	// 兼容小程序，未登录状态下点击某个功能跳转到登录页，不登录无法返回的情况
-    // }else if(pages.length ==  1 && pages[0].route == 'app/pages/auth/index'){
-    // 	isBackShow.value = true;
-    // }
     // 刷新定位
     locationVal.refresh();
-
-    // 图文导航开启沉浸式且导航栏开启时，导航栏不占位
-    imageAdsSameScreen.value = uni.getStorageSync('imageAdsSameScreen') || false;
 });
 
 // 页面onShow调用时，也会触发改方法
@@ -387,8 +359,8 @@ defineExpose({
     &.style-3 {
         .content-wrap {
             .title-wrap {
-                height: 60rpx;
-                max-width: 170rpx;
+                height: 46rpx;
+                max-width: 300rpx;
                 flex: initial;
                 text-align: center;
                 margin-right: 10rpx;

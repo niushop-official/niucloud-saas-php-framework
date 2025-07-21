@@ -41,12 +41,12 @@ export function useDiyForm(params: any = {}) {
     const isShowTopTabbar = ref(false);
 
     const pageStyle = () => {
-        var style = '';
+        let style = '';
         if (data.value.global.pageStartBgColor) {
             if (data.value.global.pageStartBgColor && data.value.global.pageEndBgColor) style += `background:linear-gradient(${ data.value.global.pageGradientAngle },${ data.value.global.pageStartBgColor },${ data.value.global.pageEndBgColor });`;
             else style += 'background-color:' + data.value.global.pageStartBgColor + ';';
         }
-        if (data.value.global.bottomTabBarSwitch) {
+        if (data.value.global.bottomTabBar && data.value.global.bottomTabBar.isShow) {
             style += 'min-height:calc(100vh - 50px);';
         } else {
             style += 'min-height:calc(100vh);';
@@ -146,7 +146,7 @@ export function useDiyForm(params: any = {}) {
                     // 匹配缓存，赋值
                     let diyFormStorage = uni.getStorageSync('diyFormStorage_' + diyStore.id)
                     if (diyFormStorage) {
-                        var date = new Date();
+                        const date = new Date();
                         let currentTime: any = parseInt(date.getTime() / 1000); // 存储信息 5分钟内有效，过期后将重新获取定位信息
                         if (diyFormStorage.validTime > currentTime) {
                             if (diyFormStorage.components) {
@@ -176,6 +176,7 @@ export function useDiyForm(params: any = {}) {
                     diyData.global = sources.global;
                     diyData.value = sources.value;
                     diyData.value.forEach((item: any, index) => {
+                        item.componentIsShow = true // 是否显示
                         if (item.isHidden) {
                             // 隐藏组件
                             diyData.value.splice(index, 1)

@@ -184,7 +184,7 @@ export function useLocation(isOpenLocation: any) {
     const locationStorage = () => {
         let data = uni.getStorageSync('location_address');
         if (data) {
-            var date = new Date();
+            const date = new Date();
             if (systemStore.mapConfig.valid_time > 0) {
                 data.is_expired = (date.getTime() / 1000) > data.valid_time; // 是否过期
             } else {

@@ -57,6 +57,7 @@
 import { ref } from 'vue';
 import { img, copy } from '@/utils/common';
 import { getPoster } from '@/app/api/system'
+import useSystemStore from "@/stores/system";
 
 const props = defineProps({
     posterId: {
@@ -200,12 +201,10 @@ const savePoster = () => {
 
 const shareTop: any = ref(0)
 /************ 获取微信头部-start ****************/
-// 获取系统状态栏的高度
-let menuButtonInfo: any = {};
+const systemStore = useSystemStore()
 // 如果是小程序，获取右上角胶囊的尺寸信息，避免导航栏右侧内容与胶囊重叠(支付宝小程序非本API，尚未兼容)
 // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
-menuButtonInfo = uni.getMenuButtonBoundingClientRect();
-shareTop.value = menuButtonInfo.top + menuButtonInfo.height + 'px';
+shareTop.value = systemStore.menuButtonInfo.top + systemStore.menuButtonInfo.height + 'px';
 // #endif
 /************ 获取微信头部-end ****************/
 
