@@ -83,7 +83,7 @@ class Request {
     }
 
     /**
-     * 发送get请求
+     * 发送post请求
      * @param url
      * @param data
      * @param config
@@ -94,7 +94,7 @@ class Request {
     }
 
     /**
-     * 发送get请求
+     * 发送put请求
      * @param url
      * @param data
      * @param config
@@ -105,7 +105,7 @@ class Request {
     }
 
     /**
-     * 发送get请求
+     * 发送delete请求
      * @param url
      * @param config
      * @returns

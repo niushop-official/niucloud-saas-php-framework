@@ -4,7 +4,7 @@
             <div class="logo flex items-center m-auto h-[64px]" v-if="!systemStore.menuIsCollapse">
                 <el-image style="width: 40px; height: 40px" :src="img(logoUrl)" fit="contain">
                     <template #error>
-                        <div class="flex justify-center items-center w-full h-[40px]"><img class="max-w-[40px]" src="@/app/assets/images/icon-addon.png" alt=""  object-fit="contain"></div>
+                        <div class="flex justify-center items-center w-full h-[40px]"><img class="max-w-[40px]" src="@/app/assets/images/icon-addon-one.png" alt=""  object-fit="contain"></div>
                     </template>
                 </el-image>
             </div>

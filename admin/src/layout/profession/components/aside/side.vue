@@ -1,13 +1,13 @@
 <template>
     <el-container class="w-100 h-screen">
         <el-main class="flex p-0">
-            <div class="one-menu w-[124px] h-screen px-[8px] bg-[#282c34]">
+            <div class="one-menu w-[124px] h-screen px-[8px] bg-[#1c2233]">
                 <el-header class="logo-wrap">
                     <div class="logo flex items-center m-auto h-[64px]" v-if="!systemStore.menuIsCollapse">
                         <el-image style="width: 40px; height: 40px" :src="img(logoUrl)" fit="contain">
                             <template #error>
                                 <div class="flex justify-center items-center w-full h-[40px]">
-                                    <img class="max-w-[40px]" src="@/app/assets/images/icon-addon.png" alt=""  object-fit="contain">
+                                    <img class="max-w-[40px]" src="@/app/assets/images/icon-addon-one.png" alt=""  object-fit="contain">
                                 </div>
                             </template>
                         </el-image>
@@ -38,8 +38,8 @@
                 </el-scrollbar>
             </div>
 
-            <el-scrollbar v-if="twoMenuData.length" class="two-menu w-[140px]">
-                <div class="w-[140px] h-[64px] flex items-center justify-center text-[16px] border-b-[1px] border-solid border-[var(--el-border-color-lighter)]">
+            <el-scrollbar v-if="twoMenuData.length" class="two-menu w-[132px]">
+                <div class="w-[132px] h-[64px] flex items-center justify-center text-[16px] border-b-[1px] border-solid border-[var(--el-border-color-lighter)]">
                     {{ route.matched[1].meta.title }}
                 </div>
 
@@ -161,6 +161,18 @@ onMounted(async () => {
     await getMarketingList()
 })
 
+// 让二级菜单默认展开
+const menuOption = ref([])
+const secondMenuShowWayFn = () => {
+    menuOption.value = []
+    if (oneMenuActive.value !== 'active' && oneMenuActive.value !== 'addon' && twoMenuData.value && Object.values(twoMenuData.value).length) {
+        const data = cloneDeep(twoMenuData.value)
+        for (const key in data) {
+            menuOption.value.push(data[key].name)
+        }
+    }
+}
+
 watchEffect(() => {
     // if (!appList.value || loading.value) return; // 确保数据加载完毕
     const addonKeys = appList.value?.addon?.list?.map(item => item.key) ?? []
@@ -199,10 +211,10 @@ watchEffect(() => {
             }
         }
     }
+    secondMenuShowWayFn()
 })
 
 // watch(route, () => {
-//     console.log(route.matched);
 
 //     if (route.meta.attr != '') {
 //         oneMenuActive.value = route.matched[2].name
@@ -230,18 +242,6 @@ watchEffect(() => {
 //         }
 //     }
 // }, { immediate: true })
-
-// 让二级菜单默认展开
-const menuOption = ref([])
-watch(twoMenuData.value, () => {
-    menuOption.value = []
-    if (twoMenuData.value && Object.values(twoMenuData.value).length) {
-        const data = cloneDeep(twoMenuData.value)
-        for (const key in data) {
-            menuOption.value.push(data[key].name)
-        }
-    }
-}, { immediate: true })
 </script>
 
 <style lang="scss">
@@ -259,8 +259,8 @@ watch(twoMenuData.value, () => {
             border-radius: 2px;
 
             &:hover {
-                color: var(--el-color-primary);
-                background-color: transparent;
+                color: #ffffff;
+                background-color: var(--el-color-primary);
             }
 
             &.is-active {
@@ -287,14 +287,14 @@ watch(twoMenuData.value, () => {
 .two-menu {
 
     .aside-menu:not(.el-menu--collapse) {
-        width: 140px;
+        width: 132px;
         padding-top: 16px;
         border: 0;
 
         .el-menu-item {
             height: 36px;
-            margin: 0 8px 4px;
-            padding: 0 8px !important;
+            margin: 0 12px 4px;
+            padding: 0 !important;
             border-radius: 2px;
 
             span {
@@ -318,7 +318,7 @@ watch(twoMenuData.value, () => {
             .el-sub-menu__title {
                 height: 36px;
                 margin: 0 8px 4px;
-                padding-left: 8px;
+                padding-left: 0;
                 border-radius: 2px;
 
                 span {
@@ -339,6 +339,9 @@ watch(twoMenuData.value, () => {
 
             .el-menu-item {
                 padding-left: 20px !important;
+                span{
+                    margin-left: 0 !important;
+                }
             }
         }
     }

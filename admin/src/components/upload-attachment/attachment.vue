@@ -1,5 +1,5 @@
 <template>
-    <div class="flex border-t border-b main-wrap border-color w-full attachment-wrap" :class="scene == 'select' ? 'h-[40vh]' : 'h-full'">
+    <div class="flex border-t border-b main-wrap border-color w-full attachment-wrap" :class="scene == 'select' ? 'h-[546px]' : 'h-full'">
 
         <!-- 分组 -->
         <div class="group-wrap w-[180px] p-[15px] h-full border-r border-color flex flex-col">
@@ -82,7 +82,7 @@
                             <div class="flex items-center">
                                 <el-tooltip placement="top">
                                     <template #content>{{ item.real_name }}</template>
-                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{ item.real_name }}</div>
+                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center h-[20px] leading-[20px]">{{ item.real_name }}</div>
                                 </el-tooltip>
                                 <!-- 图片操作 -->
                                 <el-dropdown :hide-on-click="false" v-if="scene == 'attachment'" class="attachment-action hidden ">
@@ -232,12 +232,12 @@ const attachment: Record<string, any> = reactive({
     loading: true,
     page: 1,
     total: 0,
-    limit: prop.scene == 'select' ? 10 : 20,
+    limit: prop.scene == 'select' ? 18 : 20,
     data: []
 })
 
 if (prop.scene == 'select') {
-    attachment.limit = 10
+    attachment.limit = 18
     if (prop.type == 'icon') {
         attachment.limit = 20
     }

@@ -7,7 +7,7 @@
             <el-form label-width="80px" class="px-[10px]" @submit.prevent>
                 <el-form-item :label="t('selectStyle')" class="flex">
                     <span class="text-primary flex-1 cursor-pointer" @click="showTitleStyle">{{ diyStore.editComponent.titleStyle.title }}</span>
-                    <el-icon>
+                    <el-icon @click="showTitleStyle" class="cursor-pointer">
                         <ArrowRight />
                     </el-icon>
                 </el-form-item>
@@ -57,7 +57,7 @@
                 <el-form-item :label="t('selectStyle')" class="flex">
                     <span class="text-primary flex-1 cursor-pointer"
                           @click="showBlockStyle">{{ diyStore.editComponent.blockStyle.title }}</span>
-                    <el-icon>
+                    <el-icon @click="showBlockStyle" class="cursor-pointer">
                         <ArrowRight />
                     </el-icon>
                 </el-form-item>

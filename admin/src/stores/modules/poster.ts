@@ -67,7 +67,7 @@ const usePosterStore = defineStore('poster', {
                     height: 60,
                     minWidth: 120,
                     minHeight: 44,
-                    fontFamily: 'static/font/SourceHanSansCN-Regular.ttf',
+                    fontFamily: 'static/font/PingFang-Medium.ttf',
                     fontSize: 40,
                     weight: false,
                     lineHeight: 10,

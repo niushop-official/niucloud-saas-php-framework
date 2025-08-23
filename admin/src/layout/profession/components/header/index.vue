@@ -15,7 +15,8 @@
                     <!-- 面包屑导航 -->
                     <div class="flex items-center h-full pl-[10px] hidden-xs-only">
                         <el-breadcrumb separator="/">
-                            <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index" :to="route.path" class="inter">{{route.meta.title }}</el-breadcrumb-item>
+                            <!-- :to="route.path" class="inter" 这种修改方式导致部分跳转不对，需要重新调整菜单才可以 -->
+                            <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
                         </el-breadcrumb>
                     </div>
                 </div>
@@ -238,7 +239,7 @@ const refreshRouter = () => {
 
 // 面包屑导航
 const breadcrumb = computed(() => {
-    console.log(route.matched)
+    // console.log(route.matched)
     const matched = route.matched.filter(item => { return item.meta.title })
     if (matched[0] && matched[0].path == '/') matched.splice(0, 1)
     return matched

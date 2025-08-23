@@ -12,7 +12,7 @@
                     <div class="flex h-[156px]">
                         <div class="w-full h-full ">
                             <el-carousel :interval="3000" height="156px" class="rounded-[6px]">
-                                <el-carousel-item >
+                                <!-- <el-carousel-item >
                                     <div class="h-full index-carousel" @click="toApplication">
                                         <img :src="img('static/resource/images/banner_1.png')" alt="" class="w-full h-full cursor-pointer">
                                     </div>
@@ -21,7 +21,14 @@
                                     <div class="h-full index-carousel" @click="toApplication">
                                         <img :src="img('static/resource/images/banner_2.png')" alt="" class="w-full h-full cursor-pointer">
                                     </div>
+                                </el-carousel-item> -->
+                               
+                                <el-carousel-item  v-for="(item, index) in bannerlistr" :key="index">
+                                    <div class="h-full index-carousel" @click="toApplicationurl(item)">
+                                        <img :src="item.image" alt="" class="w-full h-full cursor-pointer">
+                                    </div>
                                 </el-carousel-item>
+                                
                             </el-carousel>
                         </div>
                     </div>
@@ -248,7 +255,7 @@
 import { ref, watch ,onMounted} from 'vue'
 import { t } from '@/lang'
 import { getStatInfo } from '@/app/api/stat'
-import { getAppIndex } from '@/app/api/addon'
+import { getAppIndex ,getAdvList} from '@/app/api/addon'
 import * as echarts from 'echarts'
 import { getFrameworkNewVersion } from '@/app/api/module'
 import { getWebCopyright } from '@/app/api/sys'
@@ -302,12 +309,20 @@ const appList = ref<any>([])
 const getAppIndexFn = () => {
     loading.value = true
     getAppIndex().then((res) => {
-        appList.value = res.data.data
+        console.log(res)
+        appList.value = res.data
         loading.value = false
     })
 }
 getAppIndexFn()
-
+const bannerlistr = ref<any>([])
+const getAdvListFn = () => {
+    getAdvList().then((res) => {
+        console.log(res.data)
+        bannerlistr.value = res.data
+    })
+}
+getAdvListFn()
 const getInfoFn = () => {
     if (copyright.value.copyright_desc) {
         dialogVisible.value = true
@@ -441,6 +456,9 @@ const toTypeLink = (url: any,type: any) => {
 }
 const toApplication = () => {
     window.open('https://www.niucloud.com/app')
+}
+const toApplicationurl = (item: any) => {
+    window.open(item.url)
 }
 const toApplicationDetail = (item: any) => {
     window.open(`https://www.niucloud.com/app/detail?id=${item.app_id}`)

@@ -13,6 +13,7 @@ import useAppStore from '@/stores/modules/app'
 import { useDark, useToggle } from '@vueuse/core'
 import { setThemeColor } from '@/utils/common'
 import { useRoute } from 'vue-router'
+import { getSiteAllowChange} from '@/app/api/site'
 
 const route = useRoute()
 
@@ -24,7 +25,14 @@ systemStore.getWebsiteInfo()
 systemStore.getWebsiteLayout()
 
 const toggleDark = useToggle(useDark())
-
+const getSiteAllowChangeFn = ()=>{
+    getSiteAllowChange().then(({data})=>{
+        let isAllowChange = data.is_allow ? true : false
+        localStorage.setItem('isAllowChange',isAllowChange.toString())
+    })
+    
+}
+getSiteAllowChangeFn()
 watch(route, () => {
     useAppStore().$patch(state => {
         state.route = route
@@ -39,3 +47,9 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped></style>
+<style>
+ .el-page-header__header .el-page-header__left .el-page-header__content{
+    font-size: 14px !important;
+    font-weight: 500 !important;
+ }
+</style>

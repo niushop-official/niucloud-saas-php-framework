@@ -67,16 +67,53 @@
                 </div>
             </div>
         </el-card>
+        
+        <el-dialog v-model="dialogVisible" class="dialog-visible" width="70%" title="代码预览">
+            <div class="flex h-[50vh]" v-loading="codeLoading">
+                <el-scrollbar class="h-[100%] w-[270px]">
+                    <div class="w-[600px]">
+                        <el-tree v-if="treeData.length && treeKey != ''" :data="treeData" :props="{ label: 'name', value: 'key' }"
+                            node-key="key" :current-node-key="treeKey" :expand-on-click-node="false" highlight-current
+                            default-expand-all ref="treeRef" @node-click="nodeClick">
+                            <template #default="{ node, data }">
+                                <div class="flex items-center">
+                                    <el-icon v-if="data.children">
+                                        <Folder v-if="!node.expanded" />
+                                        <FolderOpened v-else />
+                                    </el-icon>
+                                    <el-icon v-else>
+                                        <Document />
+                                    </el-icon>
+                                    <span class="pl-[5px]">{{ data.name }}</span>
+                                </div>
+                        
+                            </template>
+                        </el-tree>
+                    </div>
+                </el-scrollbar>
+                <div class="ml-[20px] relative" style="width: calc(100% - 285px);">
+                    <el-scrollbar class="h-[100%] w-[100%]">
+                        <highlightjs autodetect class="h-[100%]" :code="code" />
+                    </el-scrollbar>
+                    <div class="absolute top-0 right-[15px] z-5 cursor-pointer hover:text-primary" @click="copyCode">
+                        <el-tooltip content="点击复制" placement="top" >
+                            <icon name="iconfont icondingdanzhongxinPC-3"/>
+                        </el-tooltip>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { img, setTablePageStorage } from '@/utils/common'
 import { t } from '@/lang'
 import { getGenerateTableList, deleteGenerateTable, generateCreate, generatePreview, generatorCheckFile, getAddonDevelop } from '@/app/api/tools'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
+import { useClipboard } from '@vueuse/core'
 
 const router = useRouter()
 const route = useRoute()
@@ -251,6 +288,27 @@ const listToTree = (arr:any) => {
     }
     return ret
 }
+
+const { copy, isSupported, copied } = useClipboard()
+const copyCode = () => {
+    if (!isSupported.value) {
+        ElMessage({
+            message: t('notSupportCopy'),
+            type: 'warning'
+        })
+        return
+    }
+    copy(code.value)
+}
+
+watch(copied, () => {
+    if (copied.value) {
+        ElMessage({
+            message: t('copySuccess'),
+            type: 'success'
+        })
+    }
+})
 </script>
 
 <style lang="scss" scoped>

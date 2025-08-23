@@ -18,7 +18,7 @@
                                 <el-image class="w-[40px] h-[40px] rounded-md overflow-hidden" :src="row.icon" fit="contain">
                                     <template #error>
                                         <div class="flex items-center w-full h-full">
-                                            <img class="w-full h-full" src="@/app/assets/images/icon-addon.png" alt="">
+                                            <img class="w-full h-full" src="@/app/assets/images/icon-addon-one.png" alt="">
                                         </div>
                                     </template>
                                 </el-image>

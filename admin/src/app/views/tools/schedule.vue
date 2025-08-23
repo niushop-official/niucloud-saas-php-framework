@@ -26,13 +26,13 @@
                 <div class="flex justify-between">
                     <el-form :inline="true" :model="cronTableData.searchParam" ref="searchFormRef">
                         <el-form-item :label="t('title')" prop="key">
-                            <el-select v-model="cronTableData.searchParam.key" placeholder="全部" filterable remote clearable :remote-method="loadCronList(1)">
+                            <el-select v-model="cronTableData.searchParam.key" placeholder="全部" filterable remote clearable>
                                 <el-option label="全部" value="all" />
                                 <el-option v-for="item in templateList" :key="item.key" :label="item.name" :value="item.key" />
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="t('status')" prop="status">
-                            <el-select v-model="cronTableData.searchParam.status" placeholder="全部" filterable remote clearable :remote-method="loadCronList(1)">
+                            <el-select v-model="cronTableData.searchParam.status" placeholder="全部" clearable>
                                 <el-option label="全部" value="all" />
                                 <el-option label="启用" value="1" />
                                 <el-option label="关闭" value="0" />

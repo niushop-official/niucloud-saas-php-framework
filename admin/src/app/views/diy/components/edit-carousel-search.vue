@@ -29,7 +29,7 @@
             <el-form label-width="100px" class="px-[10px]" @submit.prevent>
                 <el-form-item :label="t('selectStyle')" class="flex">
                     <span class="text-primary flex-1 cursor-pointer" @click="showSearchStyle">{{ diyStore.editComponent.search.styleName }}</span>
-                    <el-icon>
+                    <el-icon @click="showSearchStyle" class="cursor-pointer">
                         <ArrowRight />
                     </el-icon>
                 </el-form-item>

@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Attachment: typeof import('./src/components/upload-attachment/attachment.vue')['default']
     DiyLink: typeof import('./src/components/diy-link/index.vue')['default']
+    DiyPage: typeof import('./src/components/diy-page/index.vue')['default']
     Editor: typeof import('./src/components/editor/index.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -91,6 +92,7 @@ declare module '@vue/runtime-core' {
     SelectIcon: typeof import('./src/components/select-icon/index.vue')['default']
     SpreadPopup: typeof import('./src/components/spread-popup/index.vue')['default']
     UploadAttachment: typeof import('./src/components/upload-attachment/index.vue')['default']
+    UploadAudio: typeof import('./src/components/upload-audio/index.vue')['default']
     UploadFile: typeof import('./src/components/upload-file/index.vue')['default']
     UploadImage: typeof import('./src/components/upload-image/index.vue')['default']
     UploadVideo: typeof import('./src/components/upload-video/index.vue')['default']

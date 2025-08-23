@@ -510,12 +510,12 @@ const spreadPopupRef = ref(null)
 
 const spreadEvent = (data: any) => {
     const pagePath = '/app/pages/index/diy_form'
-    const columnName = 'form_id'
-    const columnValue = data.form_id
+    const paramsArr = [
+        { name: 'form_id', value: data.form_id },
+    ];
     const title = '表单推广'
     const folder = 'diy_form'
-
-    spreadPopupRef.value?.show(pagePath, columnName, columnValue, title, folder)
+    spreadPopupRef.value?.show(pagePath, paramsArr, title, folder);
 }
 
 // 表单提交成功页弹出框

@@ -103,3 +103,6 @@ export function getAppIndex() {
     return request.get('app/index')
 }
 
+export function getAdvList() {
+    return request.get('index/adv_list')
+}

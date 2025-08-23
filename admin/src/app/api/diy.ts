@@ -199,6 +199,12 @@ export function copyDiy(params: Record<string, any>) {
     return request.post(`diy/copy`, params, { showSuccessMessage: true })
 }
 
+/**
+ * 获取自定义页面选择列表
+ */
+export function getPageLink(params: Record<string, any>) {
+    return request.get(`diy/page_link`, { params })
+}
 /***************************************************** 主题风格 ****************************************************/
 
 

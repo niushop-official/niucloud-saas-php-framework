@@ -56,7 +56,7 @@
                                 <el-image class="w-[54px] h-[54px]" :src="row.icon" fit="contain">
                                     <template #error>
                                         <div class="flex items-center w-full h-full">
-                                        <img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon.png" alt="" />
+                                        <img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
                                         </div>
                                     </template>
                                 </el-image>
