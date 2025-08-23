@@ -40,6 +40,7 @@ export const useShare = () => {
     }
 
     const setShare = (options: any = {}) => {
+        console.log('setShare options',options)
         if (currRoute() == '' || currRoute().indexOf('app/pages/index/close') != -1 || currRoute().indexOf('app/pages/index/nosite') != -1) return;
 
         let queryStr = getQuery();
@@ -60,10 +61,9 @@ export const useShare = () => {
             query: queryStr.join('&'),
         }
         // #endif
+        
         if (options && Object.keys(options).length) {
-
             if (options.wechat) {
-
                 // #ifdef H5
                 wechatOptions.title = options.wechat.title || ''
                 wechatOptions.link = options.wechat.link || h5Link
@@ -89,37 +89,38 @@ export const useShare = () => {
 
         } 
         getShareInfo({
-                route: '/' + currRoute(),
-                params: JSON.stringify(currShareRoute().params)
-            }).then((res: any) => {
+               route: '/' + currRoute(),
+               params: JSON.stringify(currShareRoute().params)
+           }).then((res: any) => {
+            let data = res.data;
 
-                let data = res.data;
+            // #ifdef H5
+            let wechat = data.wechat;
+            if (wechat) {
+                wechatOptions.title = wechat.title
+                wechatOptions.desc = wechat.desc
+                wechatOptions.imgUrl = wechat.url ? img(wechat.url) : ''
+            } else {
+                wechatOptions.title = document.title;
+                wechatOptions.desc = ''
+            }
+            wechatShare()
+            // #endif
 
-                // #ifdef H5
-                let wechat = data.wechat;
-                if (wechat) {
-                    wechatOptions.title = wechat.title
-                    wechatOptions.desc = wechat.desc
-                    wechatOptions.imgUrl = wechat.url ? img(wechat.url) : ''
-                } else {
-                    wechatOptions.title = document.title;
-                    wechatOptions.desc = ''
-                }
-                wechatShare()
-                // #endif
+            // #ifdef MP-WEIXIN
+            let weapp = data.weapp;
+            if (weapp) {
+                weappOptions.title = weapp.title
+                weappOptions.imageUrl = weapp.url ? img(weapp.url) : ''
+            }
+            // #endif
+            if(!weappOptions.title && !weappOptions.imageUrl){
+                    return;
+            }
+            uni.setStorageSync('weappOptions', weappOptions)
+        })
 
-                // #ifdef MP-WEIXIN
-                let weapp = data.weapp;
-                if (weapp) {
-                    weappOptions.title = weapp.title
-                    weappOptions.imageUrl = weapp.url ? img(weapp.url) : ''
-                }
-                // #endif
-                if(!weappOptions.title && !weappOptions.imageUrl){
-                        return;
-                }
-                uni.setStorageSync('weappOptions', weappOptions)
-            })
+
     }
 
     // 小程序分享，分享给好友
@@ -149,10 +150,41 @@ export const useShare = () => {
         })
     }
 
+    // 禁用当前页面的分享功能（同时支持小程序和公众号）
+    const disableShare = () => {
+        // 公众号（H5）禁用分享
+        // #ifdef H5
+        if (isWeixinBrowser()) {
+            // 确保SDK初始化后再禁用
+            wechat.init(() => {
+                wechat.disableShare();
+            });
+        }
+        // #endif
+
+        // 小程序禁用分享
+        // #ifdef MP-WEIXIN
+        // 隐藏分享菜单（转发给朋友、朋友圈）
+        uni.hideShareMenu({
+            menus: ['shareAppMessage', 'shareTimeline'],
+            success: () => {
+                console.log('小程序分享已禁用');
+            },
+            fail: (err) => {
+                console.error('小程序禁用分享失败：', err);
+            }
+        });
+        // 覆盖分享方法，返回空对象
+        onShareAppMessage(() => ({}));
+        onShareTimeline(() => ({}));
+        // #endif
+    };
+
     return {
         wechatInit: wechatInit,
         setShare: setShare,
         onShareAppMessage: shareApp,
         onShareTimeline: shareTime,
+        disableShare: disableShare,
     }
 }

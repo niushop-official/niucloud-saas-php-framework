@@ -202,7 +202,7 @@ export function useDiy(params: any = {}) {
             if (e.scrollTop > 0) {
                 diyStore.scrollTop = e.scrollTop;
             }
-            uni.$emit('scroll')
+            // uni.$emit('scroll')
         })
     }
 

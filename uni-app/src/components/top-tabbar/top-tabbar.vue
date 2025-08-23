@@ -17,7 +17,7 @@
                 </view>
 
                 <view v-if="topStatusBarData.style == 'style-3'" :style="navbarInnerStyle" class="content-wrap">
-                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
+                    <view v-if="isBackShow" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
                     <view class="title-wrap" @click="diyStore.toRedirect(topStatusBarData.link)">
                         <image :src="img(topStatusBarData.imgUrl)" mode="heightFix"/>
                     </view>

@@ -22,13 +22,14 @@ export function useLogin() {
             const systemStore = useSystemStore()
 
             // #ifdef MP-WEIXIN
-            if (!uni.getStorageSync('autoLoginLock') && uni.getStorageSync('openid') && config.login.is_bind_mobile) {
+
+            if (!uni.getStorageSync('autoLoginLock')  && config.login.is_bind_mobile) {
                 uni.setStorageSync('isBindMobile', true) // 强制绑定手机号标识
             }
             // #endif
 
             // #ifdef H5
-            if (!uni.getStorageSync('autoLoginLock') && isWeixinBrowser() && uni.getStorageSync('openid') && config.login.is_bind_mobile) {
+            if (!uni.getStorageSync('autoLoginLock') && isWeixinBrowser() && config.login.is_bind_mobile) {
                 uni.setStorageSync('isBindMobile', true) // 强制绑定手机号标识
             }
             // #endif
@@ -213,7 +214,7 @@ export function useLogin() {
                 })
             }
         }).catch((err) => {
-            if (err.msg == -1) {
+            if (err.code == -1) {
                 getAuthCode({ scopes: 'snsapi_userinfo' })
             } else {
                 uni.showToast({ title: err.msg, icon: 'none' })

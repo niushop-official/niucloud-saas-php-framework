@@ -140,6 +140,7 @@ export function useDiyForm(params: any = {}) {
                 if (requestData.value) {
                     diyData.pageMode = requestData.mode;
                     diyData.title = requestData.title;
+                    diyData.type = requestData.type;
 
                     diyStore.id = requestData.form_id;
                     let sources = requestData.value;

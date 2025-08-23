@@ -22,7 +22,7 @@
                         <u-form-item :label=" t('nickname')" prop="nickname" :border-bottom="true">
                             <input type="nickname" v-model="formData.nickname" :placeholder="t('nicknamePlaceholder')" placeholderClass="text-[28rpx]" class="text-[28rpx]" @blur="bindNickname" @click="checkAuth($event, 'nickname')"/>
                         </u-form-item>
-                        <u-form-item :label="t('mobile')" prop="mobile" :border-bottom="true" v-if="isBindMobile">
+                        <u-form-item :label="t('mobile')" prop="mobile" :border-bottom="true" v-if="isBindMobile || config.login.is_bind_mobile">
                             <input type="mobile" v-model="formData.mobile" :disabled="true" v-if="formData.mobile">
                             <template v-else>
                                 <u-button v-if="info" :customStyle="{border:'none',color: 'var(--primary-color)',width:'140rpx', textAlign:'left',margin:'0rpx'}" :text="t('getMobile')" open-type="getPhoneNumber" @getphonenumber="memberStore.bindMobile"></u-button>

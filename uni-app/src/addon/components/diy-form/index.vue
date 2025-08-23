@@ -4,7 +4,8 @@
         <view v-show="requestData.status == 1 && requestData.error && requestData.error.length === 0 && !diy.getLoading()" class="diy-template-wrap">
             <diy-group ref="diyGroupRef" :data="diyFormData"/>
         </view>
-        <view class="flex flex-col" v-if="requestData.error && requestData.error.length > 0">
+        <!-- 目前只有自定义表单才展示错误信息，其他类型暂时不控制 -->
+        <view class="flex flex-col" v-if="requestData.error && requestData.error.length > 0 && diy.data == 'DIY_FORM'">
             <view class="flex-1 flex flex-col items-center pt-[20rpx]" v-for="(item, index) in requestData.error.slice(0, 1)" :key="index">
                 <text class="nc-iconfont nc-icon-tanhaoV6mm text-[#ccc] mb-[30rpx] !text-[100rpx]"></text>
                 <view class="text-[38rpx] font-bold mt-3">{{ item.title }}</view>

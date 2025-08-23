@@ -10,13 +10,13 @@
             <view class="text-[26rpx] leading-[39rpx] text-[var(--text-color-light6)] mt-[24rpx] mb-[90rpx]">{{ t('bindMobileTip') }}</view>
             <u-form labelPosition="left" :model="formData" errorType='toast' :rules="rules" ref="formRef">
                 <view
-                    class="h-[90rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6]">
+                    class="h-[90rpx] flex w-full items-center px-[30rpx] rounded-[40rpx] box-border bg-[#F6F6F6]">
                     <u-form-item label="" prop="mobile" :border-bottom="false">
                         <u-input v-model="formData.mobile" type="number" maxlength="11" border="none" :placeholder="t('mobilePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]" />
                     </u-form-item>
                 </view>
                 <view
-                    class="h-[90rpx] flex w-full items-center px-[30rpx] rounded-[var(--goods-rounded-mid)] box-border bg-[#F6F6F6] mt-[40rpx]">
+                    class="h-[90rpx] flex w-full items-center px-[30rpx] rounded-[40rpx] box-border bg-[#F6F6F6] mt-[40rpx]">
                     <u-form-item label="" prop="mobile_code" :border-bottom="false">
                         <u-input v-model="formData.mobile_code" type="number" maxlength="4" border="none" :placeholder="t('codePlaceholder')" class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx" placeholderClass="!text-[var(--text-color-light9)]">
                             <template #suffix>
@@ -84,18 +84,11 @@ const formData: any = reactive({
 
 const real_name_input = ref(true);
 
-const wxPrivacyPopupRef: any = ref(null)
-
 onLoad(() => {
     // 防止浏览器自动填充
     setTimeout(() => {
         real_name_input.value = false;
     }, 800)
-    // #ifdef MP
-    nextTick(() => {
-        if (wxPrivacyPopupRef.value) wxPrivacyPopupRef.value.proactive();
-    })
-    // #endif
 
     uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
     uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))

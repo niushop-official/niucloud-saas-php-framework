@@ -24,7 +24,7 @@ class Wechat {
                 timestamp: data.timestamp, // 必填，生成签名的时间戳
                 nonceStr: data.nonceStr, // 必填，生成签名的随机串
                 signature: data.signature,// 必填，签名
-                jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode', 'getLocation'] // 必填，需要使用的JS接口列表
+                jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode', 'getLocation','hideMenuItems'] // 必填，需要使用的JS接口列表
             });
             if (callback) callback();
         })
@@ -136,6 +136,52 @@ class Wechat {
 
             });
         })
+        // #endif
+    }
+    /**
+     * 禁用分享（小程序和公众号）
+     */
+    public disableShare() {
+        // 公众号（H5）禁用分享
+       // #ifdef H5
+        if (isWeixinBrowser()) {
+            wx.ready(() => {
+                // 先检查是否有权限
+                wx.checkJsApi({
+                    jsApiList: ['hideMenuItems'],
+                    success: (res) => {
+                        // 若有权限，执行隐藏
+                        if (res.checkResult.hideMenuItems) {
+                            wx.hideMenuItems({
+                                menuList: [
+                                    "menuItem:share:appMessage",
+                                    "menuItem:share:timeline",
+                                    "menuItem:share:qq",
+                                    "menuItem:share:QZone",
+                                    "menuItem:share:weiboApp",
+                                    "menuItem:favorite"
+                                ],
+                                success: () => console.log("公众号分享已禁用"),
+                                fail: (err) => console.error("隐藏菜单失败：", err)
+                            });
+                        } else {
+                            console.warn("无hideMenuItems权限，无法禁用分享");
+                        }
+                    },
+                    fail: (err) => console.error("检查权限失败：", err)
+                });
+            });
+        }
+        // #endif
+
+
+        // 小程序禁用分享
+        // #ifdef MP-WEIXIN
+        wx.hideShareMenu({
+            menus: ['shareAppMessage', 'shareTimeline'], // 隐藏转发给朋友、朋友圈
+            success: () => console.log("小程序分享已禁用"),
+            fail: (err) => console.error("小程序禁用分享失败：", err)
+        });
         // #endif
     }
 }

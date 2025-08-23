@@ -97,6 +97,7 @@ const loadShare = () => {
     // 分享其它页面时，需要设置当前页面为白名单
     const shareWhiteList = [
         'addon/cms/pages/detail',
+        'addon/seckill/pages/goods/detail',
         'addon/shop/pages/goods/detail',
         'addon/shop/pages/point/detail',
         'addon/shop_fenxiao/pages/promote_code',

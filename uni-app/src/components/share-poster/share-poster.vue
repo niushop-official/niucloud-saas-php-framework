@@ -1,7 +1,7 @@
 <template>
     <!-- 分享弹窗 -->
     <view @touchmove.prevent.stop class="share-popup">
-        <u-popup :show="sharePopupShow" type="bottom" @close="sharePopupClose" overlayOpacity="0.8">
+        <u-popup :show="sharePopupShow" @close="sharePopupClose" overlayOpacity="0.8">
             <view @touchmove.prevent.stop>
                 <view class="poster-img-wrap" :style="{'top': shareTop}">
                     <image v-if="isPosterAnimation" class="poster-animation" :src="img('addon/shop/poster_animation.gif')" mode="aspectFit"/>
@@ -61,7 +61,7 @@ import useSystemStore from "@/stores/system";
 
 const props = defineProps({
     posterId: {
-        type: String || Number,
+        type: [String, Number],
         default: 0
     },
     posterType: {
@@ -79,6 +79,10 @@ const props = defineProps({
     copyUrlParam: {
         type: String,
         default: ''
+    },
+    isPreload: {
+        type: Boolean,
+        default: true
     }
 })
 
@@ -117,7 +121,7 @@ const isPosterImg = ref(false)
 // 获取分享海报
 const poster = ref('');
 const loadPoster = () => {
-    if (poster.value) {
+    if (poster.value && props.isPreload) {
         // 预加载
         isPosterAnimation.value = false;
         isPosterImg.value = true;
@@ -222,9 +226,10 @@ defineExpose({
 </script>
 <style lang="scss" scoped>
 .share-popup {
-    :deep(.u-transition), :deep(.u-popup__content) {
-        background-color: transparent;
-    }
+    //  苹果手机下要白色背景
+    // :deep(.u-transition), :deep(.u-popup__content) {
+    //     background-color: transparent;
+    // }
 
     .share-content {
         border-top-left-radius: 40rpx;
