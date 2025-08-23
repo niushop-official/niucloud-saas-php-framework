@@ -197,7 +197,7 @@ class SystemService extends BaseAdminService
                 'value' => $item[ 'column_value' ]
             ];
         }
-        $dir = 'upload/' . $this->site_id . '/' . $data[ 'folder' ] . '_qrcode';
+        $dir = 'upload/' . $this->site_id . '/' . $data[ 'folder' ] . ' ';
 
         try {
             // h5

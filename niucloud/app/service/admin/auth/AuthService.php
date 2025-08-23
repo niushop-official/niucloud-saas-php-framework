@@ -75,7 +75,6 @@ class AuthService extends BaseAdminService
 
         $menu_service = new MenuService();
         $all_menu_list = $menu_service->getAllApiList($this->app_type);
-
         //先判断当前访问的接口是否收到权限的限制
         $method_menu_list = $all_menu_list[ $method ] ?? [];
         if (!in_array($rule, $method_menu_list)) {

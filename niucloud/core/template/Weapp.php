@@ -17,6 +17,7 @@ use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Support\Collection;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use think\facade\Log;
 
 
 class Weapp extends BaseTemplate
@@ -45,12 +46,13 @@ class Weapp extends BaseTemplate
     public function send(array $data)
     {
         $api = CoreWeappService::appApiClient($this->site_id);
-        $api->postJson('cgi-bin/message/subscribe/send', [
+        $res = $api->postJson('cgi-bin/message/subscribe/send', [
             'template_id' => $data['template_id'], // 所需下发的订阅模板id
             'touser' => $data['openid'],     // 接收者（用户）的 openid
             'page' => $data['page'],       // 点击模板卡片后的跳转页面，仅限本小程序内的页面。支持带参数,（示例index?foo=bar）。该字段不填则模板无跳转。
             'data' => $data['data'],
         ]);
+        Log::write("发送小程序消息Response-" . json_encode($res->toArray(), 256));
     }
 
     /**
@@ -63,11 +65,13 @@ class Weapp extends BaseTemplate
     public function addTemplate(array $data)
     {
         $api = CoreWeappService::appApiClient($this->site_id);
-        return $api->postJson('wxaapi/newtmpl/addtemplate', [
+        $res = $api->postJson('wxaapi/newtmpl/addtemplate', [
             'tid' => $data['tid'],
             'kidList' => $data['kid_list'],
             'sceneDesc' => $data['scene_desc'],
         ]);
+        Log::write("添加小程序模版Response-" . json_encode($res->toArray(), 256));
+        return $res;
     }
 
     /**
@@ -80,9 +84,11 @@ class Weapp extends BaseTemplate
     public function delete(array $data)
     {
         $api = CoreWeappService::appApiClient($this->site_id);
-        return $api->postJson('wxaapi/newtmpl/deltemplate', [
+        $res = $api->postJson('wxaapi/newtmpl/deltemplate', [
             'priTmplId' => $data['template_id'],
         ]);
+        Log::write("删除小程序模版Response-" . json_encode($res->toArray(), 256));
+        return $res;
     }
 
     /**

@@ -198,6 +198,7 @@ class AttachmentService extends BaseAdminService
      */
     public function delCategory(int $id)
     {
+
         //查询是否有下级菜单或按钮
         $category = $this->findCategory($this->site_id, $id);
         if ($this->model->where([ [ 'cate_id', '=', $id ] ])->count() > 0)

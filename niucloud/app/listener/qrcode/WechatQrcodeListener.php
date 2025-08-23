@@ -33,7 +33,7 @@ class WechatQrcodeListener extends BaseNoticeTemplate
                 $url .= '?'.implode('&', $scene);
             }
             ob_start();//开启缓冲区
-            \core\util\QRcode::png($url, $path, QR_ECLEVEL_L, 4, 1);
+            \core\util\QRcode::png($url, $path, QR_ECLEVEL_L, 10, 1);
             if($outfile === false){
                 $img = ob_get_contents();//获取缓冲区内容
                 $path = 'data:image/png;base64,' . base64_encode($img);//转base64

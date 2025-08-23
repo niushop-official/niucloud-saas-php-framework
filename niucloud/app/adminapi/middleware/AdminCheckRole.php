@@ -27,6 +27,7 @@ class AdminCheckRole
     {
         $check_role_service = new AuthService();
         $check_role_service->checkRole($request);
+
         //处理用户的权限
         return $next($request);
     }

@@ -4920,3 +4920,28 @@ INSERT INTO `sys_area` VALUES
 (460400407, 460400, '国营八一农场', '国营八一农场', '109.364519', '19.413460', 3, 0, 1),
 (460400499, 460400, '洋浦经济开发区', '洋浦经济开发区', '109.202064', '19.736941', 3, 0, 1),
 (460400500, 460400, '华南热作学院', '华南热作学院', '109.494073', '19.505382', 3, 0, 1);
+
+
+ALTER TABLE `verify` CHANGE COLUMN `verifier_member_id` `verifier_member_id` INT NOT NULL DEFAULT 0 COMMENT '核销员的会员id';
+
+ALTER TABLE `verify`ADD COLUMN `is_admin` TINYINT(4) NOT NULL DEFAULT 0 COMMENT '是否后台核销0-否1-是';
+
+CREATE TABLE `activity_exchange_code`
+(
+    `id`             INT(11) NOT NULL AUTO_INCREMENT,
+    `site_id`        INT(11) NOT NULL DEFAULT 0,
+    `code`           VARCHAR(255) NOT NULL DEFAULT '' COMMENT '兑换码',
+    `status`         VARCHAR(20)  NOT NULL DEFAULT 'normal' COMMENT 'normal-正常  received-被领取',
+    `activity_type`  VARCHAR(20)  NOT NULL DEFAULT '' COMMENT 'seckill-秒杀活动',
+    `activity_id`    INT(11) NOT NULL DEFAULT 0 COMMENT '活动ID',
+    `type`           VARCHAR(20)  NOT NULL DEFAULT '' COMMENT '类型    例seckill_goods-秒杀商品',
+    `type_id`        INT(11) NOT NULL DEFAULT 0 COMMENT '类型对应id  秒杀商品id',
+    `expire_time`    INT(11) NOT NULL DEFAULT 0 COMMENT '过期时间 0-不过期',
+    `member_id`      INT(11) NOT NULL DEFAULT 0 COMMENT '领取会员',
+    `received_time`  INT(11) NOT NULL DEFAULT 0 COMMENT '领取时间',
+    `order_id`       INT(11) NOT NULL DEFAULT 0 COMMENT '对应订单id',
+    `admin_username` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '操作人名称（添加人）',
+    `admin_id`       INT(11) NOT NULL DEFAULT 0 COMMENT '操作人id',
+    `create_time`    INT(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='活动兑换码表';

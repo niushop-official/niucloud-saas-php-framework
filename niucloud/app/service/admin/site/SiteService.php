@@ -17,6 +17,7 @@ use app\dict\sys\AppTypeDict;
 use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
+use app\model\sys\SysMenu;
 use app\model\sys\SysUserRole;
 use app\service\admin\addon\AddonService;
 use app\service\admin\auth\AuthService;
@@ -118,7 +119,8 @@ class SiteService extends BaseAdminService
             'expire_time' => $data['expire_time'],
             'app' => $site_group['app'],
             'addons' => '',
-            'status' => strtotime($data['expire_time']) > time() ? SiteDict::ON : SiteDict::EXPIRE
+            'status' => strtotime($data['expire_time']) > time() ? SiteDict::ON : SiteDict::EXPIRE,
+            'icon' => 'static/resource/images/site/site_icon.jpg'
         ];
         Db::startTrans();
         try {
@@ -231,7 +233,7 @@ class SiteService extends BaseAdminService
      */
     public function del(int $site_id)
     {
-        ( new CaptchaService() )->check();
+        (new CaptchaService())->check();
 
         Db::startTrans();
         try {
@@ -426,10 +428,73 @@ class SiteService extends BaseAdminService
      */
     public function getShowAppTools()
     {
+
         $list = [
-            'addon' => [
-                'title' => '运营工具',
+            'tool' => $this->getAllAddonAndTool()['tool'],
+//            'promotion' => [
+//                'title' => '营销活动',
+//                'list' => []
+//            ]
+        ];
+
+        return $list;
+    }
+
+    /**
+     * 查询营销列表
+     * @return array
+     */
+    public function getShowMarketingTools()
+    {
+        $all = $this->getAllAddonAndTool();
+        $list = [
+            'marketing' => $all['marketing'],
+            'addon' => $all['addon'],
+        ];
+        return $list;
+    }
+
+
+    private function getMarketing()
+    {
+        $list = [
+            'marketing' => [
+                'title' => '营销活动',
                 'list' => []
+            ]
+        ];
+        $apps = event('ShowMarketing', ['site_id' => $this->site_id]);
+
+
+        $keys = [];
+        foreach ($apps as $v) {
+            foreach ($v as $ck => $cv) {
+                if (!empty($cv)) {
+                    foreach ($cv as $addon_k => $addon_v) {
+                        if (in_array($addon_v['key'], $keys)) {
+                            continue;
+                        }
+                        $list[$ck]['list'][] = $addon_v;
+                        $keys[] = $addon_v['key'];
+                    }
+                }
+
+            }
+        }
+        return $list;
+    }
+
+    private function getAllAddonAndTool()
+    {
+        $markting_list = $this->getMarketing() ?? [];
+        $markting = $markting_list['marketing'];
+        $marking_addon = $markting_list['tool']['list'] ?? [];
+
+        $list = [
+            'marketing' => $markting,
+            'addon' => [
+                'title' => '营销工具',
+                'list' => $marking_addon
             ],
             'tool' => [
                 'title' => '系统工具',
@@ -460,52 +525,36 @@ class SiteService extends BaseAdminService
 
         }
 
+        $menu_model = (new SysMenu());
         $site_addons = $this->getSiteAddons([]);
+
+        $addon_urls = $menu_model
+            ->where([['addon', 'in', array_column($site_addons, 'key')], ['is_show', '=', 1], ['menu_type', '=', 1]])
+            ->order('id asc')
+            ->group('addon')
+            ->column('router_path', 'addon');
+
         if (!empty($site_addons)) {
             foreach ($site_addons as $k => $v) {
-                if (!in_array($v['key'], $keys)) {
+                $continue = true;
+                if (!empty($markting['list'])) {
+                    foreach ($markting['list'] as $key => $val) {
+                        if ($v['key'] == $val['key']) {
+                            unset($site_addons[$k]);
+                            $continue = false;
+                        }
+                    }
+                }
+                if ($continue && !in_array($v['key'], $keys)) {
+                    $url = $addon_urls[$v['key']] ?? '';
                     $list['addon']['list'][] = [
                         'title' => $v['title'],
                         'desc' => $v['desc'],
                         'icon' => $v['icon'],
-                        'key' => $v['key']
+                        'key' => $v['key'],
+                        'url' => $url ? '/' . $url : ''
                     ];
                 }
-            }
-        }
-
-        return $list;
-    }
-
-    /**
-     * 查询营销列表
-     * @return array
-     */
-    public function getShowMarketingTools()
-    {
-        $list = [
-            'marketing' => [
-                'title' => '营销活动',
-                'list' => []
-            ]
-        ];
-
-        $apps = event('ShowMarketing');
-
-
-        $keys = [];
-        foreach ($apps as $v) {
-            foreach ($v as $ck => $cv) {
-                if (!empty($cv)) {
-                    foreach ($cv as $addon_k => $addon_v) {
-                        if (in_array($addon_v['key'], $keys)) {
-                            continue;
-                        }
-                        $list[$ck]['list'][] = $addon_v;
-                        $keys[] = $addon_v['key'];
-                    }
-                }
-
             }
         }
 
@@ -518,14 +567,15 @@ class SiteService extends BaseAdminService
      */
     public function siteInit($data)
     {
-        ( new CaptchaService() )->check();
+        (new CaptchaService())->check();
 
         $site_id = $data['site_id'];
         if (empty($site_id)) throw new AdminException('SITE_NOT_EXIST');
 
         $site = $this->model->where([['site_id', '=', $site_id]])->with(['site_group'])->findOrEmpty()->toArray();
         if (empty($site)) throw new AdminException('SITE_NOT_EXIST');
-
+        //todo 特殊处理  优先删除的数据
+        (new CoreSiteService())->siteInitBySiteId($site_id, ['diy_page', 'sys_poster']);
         event('SiteInit', ['site_id' => $site_id, 'main_app' => $site['site_group']['app'], 'site_addons' => $site['site_group']['addon']]);
 
         // 更新微页面数据

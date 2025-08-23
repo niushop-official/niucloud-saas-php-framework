@@ -63,14 +63,14 @@ class CoreNiuSmsService extends BaseAdminService
      * @param $params
      * @return \app\model\sys\SysConfig|bool|\think\Model
      */
-    public function setNiuLoginConfig($params)
+    public function setNiuLoginConfig($params, $is_login = false)
     {
         $config = $this->getNiuLoginConfig(true);
         $config['default'] = $params['default'] ?? ($config['default'] ?? "");
         $config[SmsDict::NIUSMS] = [
             'username' => $params['username'] ?? $config[SmsDict::NIUSMS]['username'] ?? "",
             'password' => $params['password'] ?? $config[SmsDict::NIUSMS]['password'] ?? "",
-            'signature' => $params['signature'] ?? $config[SmsDict::NIUSMS]['signature'] ?? "",
+            'signature' => $is_login ? "" : ($params['signature'] ?? $config[SmsDict::NIUSMS]['signature'] ?? ""),//登录清空默认签名重新选择
         ];
         return (new CoreConfigService())->setConfig($this->site_id, ConfigKeyDict::SMS, $config);
     }
@@ -325,7 +325,7 @@ class CoreNiuSmsService extends BaseAdminService
         $url = "https://api-shss.zthysms.com/sms/v2/template/delete";
         $res = (new HttpHelper())->httpRequest('POST', $url, $request);
         if ($res['code'] != 200) {
-            throw new \Exception('ZT'.$res['code'].":".$res['msg']);
+            throw new \Exception('ZT' . $res['code'] . ":" . $res['msg']);
         }
     }
 

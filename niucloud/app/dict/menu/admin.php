@@ -527,9 +527,9 @@ return [
                         'is_show' => '1',
                     ],
                     [
-                        'menu_name' => '编辑分组',
-                        'menu_key' => 'edit_attachment_category',
-                        'menu_short_name' => '编辑分组',
+                        'menu_name' => '删除分组',
+                        'menu_key' => 'del_attachment_category',
+                        'menu_short_name' => '删除分组',
                         'menu_type' => '2',
                         'icon' => '',
                         'api_url' => 'sys/attachment/category/<id>',

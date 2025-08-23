@@ -167,9 +167,9 @@ class DiyService extends BaseApiService
         ];
         $data = [];
         foreach ($addon_list as $key => $value) {
-            if (isset($value[ 'support_app' ]) && empty($value[ 'support_app' ]) && $value[ 'type' ] == 'addon') {
-                continue;
-            }
+//            if (isset($value[ 'support_app' ]) && empty($value[ 'support_app' ]) && $value[ 'type' ] == 'addon') {
+//                continue;
+//            }
             $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value[ 'key' ] ])))[ 0 ] ?? [];
             if (!empty($addon_theme) && !empty($addon_theme[ 'theme_color' ])) {
                 $data[ $value[ 'key' ] ][ 'title' ] = $theme_data[ $value[ 'key' ] ][ 'title' ] ?? $addon_theme[ 'theme_color' ][ 0 ][ 'title' ];

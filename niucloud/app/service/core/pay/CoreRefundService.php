@@ -108,7 +108,7 @@ class CoreRefundService extends BaseCoreService
             }
 
         } catch (Throwable $e) {
-            throw new PayException($e->getMessage());
+            throw new PayException($e->getMessage().$e->getFile().$e->getLine());
         }
         return true;
     }
@@ -183,7 +183,7 @@ class CoreRefundService extends BaseCoreService
         } catch (Throwable $e) {
             // 回滚事务
             Db::rollback();
-            throw new PayException($e->getMessage());
+            throw new PayException($e->getMessage().$e->getFile().$e->getLine());
         }
     }
 

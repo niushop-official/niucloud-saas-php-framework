@@ -19,13 +19,13 @@ use app\service\core\sys\CoreSysConfigService;
  * @param int $http_code
  * @return Response
  */
-function success($msg = 'SUCCESS', $data = [], int $code = 1, int $http_code = 200) : Response
+function success($msg = 'SUCCESS', $data = [], int $code = 1, int $http_code = 200): Response
 {
     if (is_array($msg)) {
         $data = $msg;
         $msg = 'SUCCESS';
     }
-    return Response::create([ 'data' => $data, 'msg' => get_lang($msg), 'code' => $code ], 'json', $http_code);
+    return Response::create(['data' => $data, 'msg' => get_lang($msg), 'code' => $code], 'json', $http_code);
 
 }
 
@@ -37,13 +37,13 @@ function success($msg = 'SUCCESS', $data = [], int $code = 1, int $http_code = 2
  * @param int $http_code
  * @return Response
  */
-function fail($msg = 'FAIL', ?array $data = [], int $code = 0, int $http_code = 200) : Response
+function fail($msg = 'FAIL', ?array $data = [], int $code = 0, int $http_code = 200): Response
 {
     if (is_array($msg)) {
         $data = $msg;
         $msg = 'FAIL';
     }
-    return Response::create([ 'data' => $data, 'msg' => get_lang($msg), 'code' => $code ], 'json', $http_code);
+    return Response::create(['data' => $data, 'msg' => get_lang($msg), 'code' => $code], 'json', $http_code);
 }
 
 /**
@@ -74,17 +74,17 @@ function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = 'child', $root =
         // 创建基于主键的数组引用
         $refer = array();
         foreach ($list as $key => $data) {
-            $refer[ $data[ $pk ] ] =& $list[ $key ];
+            $refer[$data[$pk]] =& $list[$key];
         }
         foreach ($list as $key => $data) {
             // 判断是否存在parent
-            $parent_id = $data[ $pid ];
+            $parent_id = $data[$pid];
             if ($root == $parent_id) {
-                $tree[] =& $list[ $key ];
+                $tree[] =& $list[$key];
             } else {
-                if (isset($refer[ $parent_id ])) {
-                    $parent =& $refer[ $parent_id ];
-                    $parent[ $child ][] =& $list[ $key ];
+                if (isset($refer[$parent_id])) {
+                    $parent =& $refer[$parent_id];
+                    $parent[$child][] =& $list[$key];
                 }
             }
         }
@@ -135,11 +135,11 @@ function array_keys_search($array, $keys, $index = '', $is_sort = true)
     $list = array();
 
     foreach ($keys as $key) {
-        if (isset($array[ $key ])) {
+        if (isset($array[$key])) {
             if ($is_sort) {
-                $list[] = $array[ $key ];
+                $list[] = $array[$key];
             } else {
-                $list[ $key ] = $array[ $key ];
+                $list[$key] = $array[$key];
             }
         }
 
@@ -164,7 +164,7 @@ function del_target_dir($path, $delDir)
     //打开目录句柄
     $handle = opendir($path);
     if ($handle) {
-        while (false !== ( $item = readdir($handle) )) {
+        while (false !== ($item = readdir($handle))) {
             if ($item != "." && $item != "..") {
                 if (is_dir("$path/$item")) {
                     del_target_dir("$path/$item", $delDir);
@@ -200,7 +200,7 @@ function system_name(?string $key = '')
         'channel_name' => env('system.channel_name', 'channel'),
     ];
     if (!empty($key)) {
-        return $params[ $key ];
+        return $params[$key];
     } else {
         return $params;
     }
@@ -219,11 +219,11 @@ function get_date_by_time(?int $time = null)
 
 function get_start_and_end_time_by_day($day = '')
 {
-    $date = $day ? : date('Y-m-d');
+    $date = $day ?: date('Y-m-d');
     $day_start_time = strtotime($date);
     //当天结束之间
     $day_end_time = $day_start_time + 86400;
-    return [ $day_start_time, $day_end_time ];
+    return [$day_start_time, $day_end_time];
 }
 
 /**
@@ -362,7 +362,7 @@ function format_money($number)
 function format_float_money($number, $precision = 2)
 {
     if ($precision > 0) {
-        return sprintf('%.' . $precision . 'f', floor($number * ( 10 ** $precision )) / ( 10 ** $precision ));
+        return sprintf('%.' . $precision . 'f', floor($number * (10 ** $precision)) / (10 ** $precision));
     } else {
         return sprintf('%.' . $precision . 'f', floor($number));
     }
@@ -492,19 +492,19 @@ function array_merge2(array $array1, array $array2)
         if (array_key_exists($array2_k, $array1)) {
             if (is_array($array2_v)) {
                 foreach ($array2_v as $array2_kk => $array2_vv) {
-                    if (array_key_exists($array2_kk, $array1[ $array2_k ])) {
+                    if (array_key_exists($array2_kk, $array1[$array2_k])) {
                         if (is_array($array2_vv)) {
-                            $array1[ $array2_k ][ $array2_kk ] = array_merge($array1[ $array2_k ][ $array2_kk ], $array2_vv);
+                            $array1[$array2_k][$array2_kk] = array_merge($array1[$array2_k][$array2_kk], $array2_vv);
                         }
                     } else {
-                        $array1[ $array2_k ][ $array2_kk ] = $array2_vv;
+                        $array1[$array2_k][$array2_kk] = $array2_vv;
                     }
                 }
             } else {
-                $array1[ $array2_k ] = $array2_v;
+                $array1[$array2_k] = $array2_v;
             }
         } else {
-            $array1[ $array2_k ] = $array2_v;
+            $array1[$array2_k] = $array2_v;
         }
     }
     return $array1;
@@ -551,8 +551,8 @@ function dir_copy(string $src = '', string $dst = '', &$files = [], $exclude_dir
     }
     $dir = opendir($src);
     dir_mkdir($dst);
-    while (false !== ( $file = readdir($dir) )) {
-        if (( $file != '.' ) && ( $file != '..' )) {
+    while (false !== ($file = readdir($dir))) {
+        if (($file != '.') && ($file != '..')) {
             if (is_dir($src . '/' . $file)) {
                 // 排除目录
                 if (count($exclude_dirs) && in_array($file, $exclude_dirs)) continue;
@@ -636,7 +636,7 @@ function parse_sql($content = '', $string = false, $replace = [])
         // 多行注释标记
         $comment = false;
         // 按行分割，兼容多个平台
-        $content = str_replace([ "\r\n", "\r" ], "\n", $content);
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
         $content = explode("\n", trim($content));
         // 循环处理每一行
         foreach ($content as $line) {
@@ -728,10 +728,10 @@ function getFileMap($path, $arr = [])
             if ($file_path != '.' && $file_path != '..') {
                 $temp_path = $path . '/' . $file_path;
                 if (is_dir($temp_path)) {
-                    $arr[ $temp_path ] = $file_path;
+                    $arr[$temp_path] = $file_path;
                     $arr = getFileMap($temp_path, $arr);
                 } else {
-                    $arr[ $temp_path ] = $file_path;
+                    $arr[$temp_path] = $file_path;
                 }
             }
         }
@@ -756,9 +756,9 @@ function cache_remember(string $name = null, $value = '', $tag = null, $options 
         $value = Container::getInstance()->invokeFunction($value);
     }
     if (is_null($tag)) {
-        Cache::set($name, $value, $options[ 'expire' ] ?? null);
+        Cache::set($name, $value, $options['expire'] ?? null);
     } else {
-        Cache::tag($tag)->set($name, $value, $options[ 'expire' ] ?? null);
+        Cache::tag($tag)->set($name, $value, $options['expire'] ?? null);
     }
     return $value;
 
@@ -783,7 +783,7 @@ function image_to_base64(string $path, $is_delete = false)
 {
     if (!file_exists($path)) return 'image not exist';
 
-    $mime = getimagesize($path)[ 'mime' ];
+    $mime = getimagesize($path)['mime'];
     $image_data = file_get_contents($path);
     // 将图片转换为 base64
     $base64_data = base64_encode($image_data);
@@ -805,7 +805,7 @@ function image_to_base64(string $path, $is_delete = false)
 function get_thumb_images($site_id, $image, $thumb_type = 'all', bool $is_throw_exception = false)
 {
 
-    return ( new CoreImageService() )->thumb($site_id, $image, $thumb_type, $is_throw_exception);
+    return (new CoreImageService())->thumb($site_id, $image, $thumb_type, $is_throw_exception);
 }
 
 /**
@@ -817,10 +817,10 @@ function version_to_int($version)
 {
     $version_array = explode(".", $version);
 
-    $v1 = sprintf('%03s', (int) $version_array[ 0 ] ?? 0);
-    $v2 = sprintf('%03s', (int) $version_array[ 1 ] ?? 0);
-    $v3 = sprintf('%03s', (int) $version_array[ 2 ] ?? 0);
-    return (int) "{$v1}{$v2}{$v3}";
+    $v1 = sprintf('%03s', (int)$version_array[0] ?? 0);
+    $v2 = sprintf('%03s', (int)$version_array[1] ?? 0);
+    $v3 = sprintf('%03s', (int)$version_array[2] ?? 0);
+    return (int)"{$v1}{$v2}{$v3}";
 }
 
 /**
@@ -833,13 +833,13 @@ function version_to_string($ver)
     if ($ver > 999) {
         if ($ver > 999999) {
             $ver .= "";
-            $v3 = (int) substr($ver, -3);
-            $v2 = (int) substr($ver, -6, 3);
-            $v1 = (int) substr($ver, 0, -6);
+            $v3 = (int)substr($ver, -3);
+            $v2 = (int)substr($ver, -6, 3);
+            $v1 = (int)substr($ver, 0, -6);
         } else {
             $ver .= "";
-            $v3 = (int) substr($ver, -3);
-            $v2 = (int) substr($ver, 0, -3);
+            $v3 = (int)substr($ver, -3);
+            $v2 = (int)substr($ver, 0, -3);
             $v1 = 0;
         }
     } else {
@@ -898,10 +898,10 @@ function file_copy(string $source_file, string $to_file)
  * @param bool $outfile
  * @return string
  */
-function qrcode($url, $page, $data, $site_id, $dir = '', $channel = 'h5', $style = [ 'is_transparent' => true ], $outfile = true)
+function qrcode($url, $page, $data, $site_id, $dir = '', $channel = 'h5', $style = ['is_transparent' => true], $outfile = true)
 {
     if ($outfile) {
-        $dir = $dir ? : 'upload' . '/' . 'qrcode' . '/' . $site_id;//二维码默认存储位置
+        $dir = $dir ?: 'upload' . '/' . 'qrcode' . '/' . $site_id;//二维码默认存储位置
         if (!is_dir($dir) && !mkdir($dir, 0777, true) && !is_dir($dir)) {
             throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
         }
@@ -921,8 +921,8 @@ function qrcode($url, $page, $data, $site_id, $dir = '', $channel = 'h5', $style
         'channel' => $channel,
         'outfile' => $outfile
     ])));
-    if (!empty($result[ 0 ])) {
-        $path = $result[ 0 ];
+    if (!empty($result[0])) {
+        $path = $result[0];
     }
     return $path;
 }
@@ -939,7 +939,7 @@ function qrcode($url, $page, $data, $site_id, $dir = '', $channel = 'h5', $style
  */
 function poster(int $site_id, $id, $type, array $param = [], string $channel = '', bool $is_throw_exception = true)
 {
-    return ( new \app\service\core\poster\CorePosterService() )->get($site_id, $id, $type, $param, $channel, $is_throw_exception);
+    return (new \app\service\core\poster\CorePosterService())->get($site_id, $id, $type, $param, $channel, $is_throw_exception);
 }
 
 /**
@@ -961,7 +961,7 @@ function is_url($string)
  * @param int $site_id
  * @return array
  */
-function get_site_addons($site_id = 0) : array
+function get_site_addons($site_id = 0): array
 {
     $addons = $site_id ? Cache::get("local_install_addons_{$site_id}") : Cache::get("local_install_addons");
     return is_null($addons) ? [] : $addons;
@@ -969,7 +969,7 @@ function get_site_addons($site_id = 0) : array
 
 function get_wap_domain($site_id)
 {
-    $wap_url = ( new CoreSysConfigService() )->getSceneDomain($site_id)[ 'wap_url' ];
+    $wap_url = (new CoreSysConfigService())->getSceneDomain($site_id)['wap_url'];
     return $wap_url;
 }
 
@@ -982,7 +982,23 @@ function get_wap_domain($site_id)
  */
 function str_sub($str, $length = 10, $is_need_apostrophe = true)
 {
-    return mb_substr($str, 0, $length, 'UTF-8') . ( $is_need_apostrophe ? '...' : '' );
+    return mb_substr($str, 0, $length, 'UTF-8') . ($is_need_apostrophe ? '...' : '');
+}
+
+/**
+ * $str为要进行截取的字符串，$length为截取长度（汉字算一个字，字母算半个字
+ * @param $str
+ * @param int $length
+ * @param bool $is_need_apostrophe
+ * @return string
+ */
+function str_sub2($str, $length = 10, $is_need_apostrophe=true)
+{
+    if (mb_strlen($str, 'UTF-8') > $length) {
+        return mb_substr($str, 0, $length, 'UTF-8') . ($is_need_apostrophe ? '...' : '');
+    } else {
+        return mb_substr($str, 0, $length, 'UTF-8');
+    }
 }
 
 /**
@@ -1022,10 +1038,10 @@ function get_last_time($time = null)
             $text = floor($t / 60) . '分钟前'; //一小时内
             break;
         case $t < 60 * 60 * 24:
-            $text = floor($t / ( 60 * 60 )) . '小时前'; // 一天内
+            $text = floor($t / (60 * 60)) . '小时前'; // 一天内
             break;
         case $t < 60 * 60 * 24 * 3:
-            $text = floor($time / ( 60 * 60 * 24 )) == 1 ? '昨天' . date('H:i', $time) : '前天' . date('H:i', $time); //昨天和前天
+            $text = floor($time / (60 * 60 * 24)) == 1 ? '昨天' . date('H:i', $time) : '前天' . date('H:i', $time); //昨天和前天
             break;
         case $t < 60 * 60 * 24 * 30:
             $text = date('m-d H:i', $time); //一个月内
@@ -1062,14 +1078,14 @@ function checkDirPermissions($dir, $data = [], $exclude_dir = [])
 
     try {
         if (!is_readable($dir)) {
-            $data[ 'unreadable' ][] = $dir;
+            $data['unreadable'][] = $dir;
         }
         if (!is_writable($dir)) {
-            $data[ 'not_writable' ][] = $dir;
+            $data['not_writable'][] = $dir;
         }
         if (is_readable($dir)) {
             $dh = opendir($dir);
-            while (( $file = readdir($dh) ) !== false) {
+            while (($file = readdir($dh)) !== false) {
                 if ($file === '.' || $file === '..') {
                     continue;
                 }
@@ -1091,16 +1107,16 @@ function checkDirPermissions($dir, $data = [], $exclude_dir = [])
                     $data = checkDirPermissions($fullPath, $data, $exclude_dir); // 递归调用自身来检查子目录
                 } else {
                     // 如果是文件，则检查其读写权限
-                    if (!is_readable($fullPath)) $data[ 'unreadable' ][] = $fullPath;
-                    if (!is_writable($fullPath)) $data[ 'not_writable' ][] = $fullPath;
+                    if (!is_readable($fullPath)) $data['unreadable'][] = $fullPath;
+                    if (!is_writable($fullPath)) $data['not_writable'][] = $fullPath;
                 }
             }
             closedir($dh);
         }
         return $data;
     } catch (Exception $e) {
-        $data[ 'unreadable' ][] = $dir;
-        $data[ 'not_writable' ][] = $dir;
+        $data['unreadable'][] = $dir;
+        $data['not_writable'][] = $dir;
         return $data;
     }
 }

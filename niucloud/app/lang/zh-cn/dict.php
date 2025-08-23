@@ -79,6 +79,7 @@ return [
     'dict_sms_api' => [
         'template_status_again_report' => '需重新报备',
         'template_status_need_edit' => '需修改报备参数',
+        'template_status_need_pull' => '需拉取同步状态',
         'template_status_not_report' => '未报备',
         'template_status_wait' => '待审核',
         'template_status_pass' => '审核通过',
@@ -103,6 +104,7 @@ return [
         //上传附件类型
         'type_image' => '图片',
         'type_video' => '视频',
+        'type_audio' => '音频',
         //存储方式
         'storage_type_local' => '本地存储',
         'storage_type_qiniu' => '七牛云',

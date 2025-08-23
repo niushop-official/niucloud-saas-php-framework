@@ -26,6 +26,22 @@ use Throwable;
  */
 class CorePosterService extends BaseCoreService
 {
+    /**
+     * 根据类型及插件获取默认海报
+     * @param $site_id
+     * @param $type
+     * @return int|mixed
+     */
+    public function getDefaultPosterIdByType($site_id, $type, $addon)
+    {
+        return (new Poster())->where([
+            'site_id' => $site_id,
+            'type' => $type,
+            'is_default' => 1,
+            'status' => 1,
+            'addon' => $addon,
+        ])->value('id') ?: 0;
+    }
 
     /**
      * 创建模板
@@ -36,11 +52,12 @@ class CorePosterService extends BaseCoreService
      */
     public function add($site_id, $addon, $data)
     {
-        $data[ 'addon' ] = $addon;
-        $data[ 'site_id' ] = $site_id;
-        ( new Poster() )->create($data);
+        $data['addon'] = $addon;
+        $data['site_id'] = $site_id;
+        (new Poster())->create($data);
         return true;
     }
+
 
     /**
      * 删除
@@ -49,7 +66,7 @@ class CorePosterService extends BaseCoreService
      */
     public function del($condition)
     {
-        ( new Poster() )->where($condition)->delete();
+        (new Poster())->where($condition)->delete();
         return true;
     }
 
@@ -102,18 +119,18 @@ class CorePosterService extends BaseCoreService
     public function get(int $site_id, $id, $type, array $param = [], $channel = '', $is_throw_exception = true)
     {
         $condition = [
-            [ 'site_id', '=', $site_id ],
-            [ 'type', '=', $type ],
-            [ 'status', '=', PosterDict::ON ],
+            ['site_id', '=', $site_id],
+            ['type', '=', $type],
+            ['status', '=', PosterDict::ON],
         ];
         if (!empty($id)) {
             // 查询指定海报
-            $condition[] = [ 'id', '=', $id ];
+            $condition[] = ['id', '=', $id];
         } else {
             // 查询默认海报
-            $condition[] = [ 'is_default', '=', 1 ];
+            $condition[] = ['is_default', '=', 1];
         }
-        $poster = ( new Poster() )->where($condition)->findOrEmpty();
+        $poster = (new Poster())->where($condition)->findOrEmpty();
 
         try {
 
@@ -121,11 +138,11 @@ class CorePosterService extends BaseCoreService
                 // 查询指定类型的海报模板
                 $template = $this->getTemplateList('', $type);
                 if (!empty($template)) {
-                    $poster = $template[ 0 ][ 'data' ];
+                    $poster = $template[0]['data'];
                 }
             } else {
                 $poster = $poster->toArray();
-                $poster = $poster[ 'value' ];
+                $poster = $poster['value'];
             }
 
             if (empty($poster)) throw new CommonException('海报模板不存在');
@@ -146,7 +163,7 @@ class CorePosterService extends BaseCoreService
             $dir = 'upload/poster/' . $site_id;
             $temp1 = md5(json_encode($poster));
             $temp2 = md5(json_encode($poster_data));
-            $file_path = 'poster' . $temp1 . '_' . $temp2 .'_'.$channel. '.png';
+            $file_path = 'poster' . $temp1 . '_' . $temp2 . '_' . $channel . '.png';
             $path = $dir . '/' . $file_path;
 
             //判断当前海报是否存在,存在直接返回地址,不存在的话则创建
@@ -180,35 +197,35 @@ class CorePosterService extends BaseCoreService
     {
         //将模版中的部分待填充值替换
         $core_upload_service = new CoreFetchService();
-        if ($poster[ 'global' ][ 'bgType' ] == 'url') {
-            if (!empty($poster[ 'global' ][ 'bgUrl' ]) && str_contains($poster[ 'global' ][ 'bgUrl' ], 'http://') || str_contains($poster[ 'global' ][ 'bgUrl' ], 'https://')) {
+        if ($poster['global']['bgType'] == 'url') {
+            if (!empty($poster['global']['bgUrl']) && str_contains($poster['global']['bgUrl'], 'http://') || str_contains($poster['global']['bgUrl'], 'https://')) {
                 //判断是否是是远程图片,远程图片需要本地化
                 $temp_dir = 'file/' . 'image' . '/' . $site_id . '/' . date('Ym') . '/' . date('d');
                 try {
-                    $poster[ 'global' ][ 'bgUrl' ] = $core_upload_service->image($poster[ 'global' ][ 'bgUrl' ], $site_id, $temp_dir, FileDict::LOCAL)[ 'url' ] ?? '';
+                    $poster['global']['bgUrl'] = $core_upload_service->image($poster['global']['bgUrl'], $site_id, $temp_dir, FileDict::LOCAL)['url'] ?? '';
                 } catch (\Exception $e) {
 
                 }
             }
         }
 
-        foreach ($poster[ 'value' ] as &$v) {
+        foreach ($poster['value'] as &$v) {
             foreach ($data as $data_k => $data_v) {
-                if ($data_k == $v[ 'relate' ]) {
-                    $v[ 'value' ] = $data_v; // 赋值
+                if ($data_k == $v['relate']) {
+                    $v['value'] = $data_v; // 赋值
                     // 如果类型是二维码的话就根据渠道生成对应的二维码
-                    if ($v[ 'type' ] == 'qrcode') {
-                        $v[ 'type' ] = 'image';
+                    if ($v['type'] == 'qrcode') {
+                        $v['type'] = 'image';
                         // 将二维码类型转化为图片类型,并且将二维码链接转化为图片路径
-                        $v[ 'value' ] = qrcode($data_v[ 'url' ], $data_v[ 'page' ], $data_v[ 'data' ], $site_id, '', $channel);
-                    } else if ($v[ 'type' ] == 'image') {//校验图片文件是否是远程文件
-                        if (str_contains($v[ 'value' ], 'http://') || str_contains($v[ 'value' ], 'https://')) {
+                        $v['value'] = qrcode($data_v['url'], $data_v['page'], $data_v['data'], $site_id, '', $channel);
+                    } else if ($v['type'] == 'image') {//校验图片文件是否是远程文件
+                        if (str_contains($v['value'], 'http://') || str_contains($v['value'], 'https://')) {
                             //判断是否是是远程图片,远程图片需要本地化
                             $temp_dir = 'file/' . 'image' . '/' . $site_id . '/' . date('Ym') . '/' . date('d');
                             try {
-                                $v[ 'value' ] = $core_upload_service->image($v[ 'value' ], $site_id, $temp_dir, FileDict::LOCAL)[ 'url' ] ?? '';
+                                $v['value'] = $core_upload_service->image($v['value'], $site_id, $temp_dir, FileDict::LOCAL)['url'] ?? '';
                             } catch (\Exception $e) {
-                                $v[ 'value' ] = '';
+                                $v['value'] = '';
                             }
                         }
 

@@ -154,8 +154,7 @@ class CoreNoticeService extends BaseCoreService
                 'wechat_first' => '',
                 'wechat_remark' => ''
             ];
-            $notice = array_merge(NoticeDict::getNotice($key), $data);
-
+            $notice = array_merge($data,NoticeDict::getNotice($key));
         }
         return $notice;
     }

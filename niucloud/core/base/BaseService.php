@@ -83,7 +83,7 @@ abstract class BaseService
 
     /**
      * 分页数据查询，传入model（查询后结果）
-     * @param $model BaseModel
+     * @param $model
      * @return array
      * @throws DbException
      */

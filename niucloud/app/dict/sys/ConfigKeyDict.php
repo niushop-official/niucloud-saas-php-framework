@@ -39,4 +39,5 @@ class ConfigKeyDict
     public const WECHAT_TRANSFER_SCENE_CONFIG = 'WECHAT_TRANSFER_SCENE_CONFIG';//微信转账场景配置
 
     public const SMS = 'SMS';//短信配置
+    public const PINTUAN_ORDER_CONFIG = 'PINTUAN_ORDER_CONFIG';//拼团订单配置
 }

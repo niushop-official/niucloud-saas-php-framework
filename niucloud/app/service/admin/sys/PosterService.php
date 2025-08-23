@@ -140,7 +140,7 @@ class PosterService extends BaseAdminService
             }
             Db::startTrans();
             $this->model->where([ [ 'site_id', '=', $this->site_id ], [ 'type', '=', $info[ 'type' ] ] ])->update([ 'is_default' => 0 ]);
-            $this->model->where([ [ 'site_id', '=', $this->site_id ], [ 'id', '=', $data[ 'id' ] ] ])->update([ 'is_default' => 1, 'update_time' => time() ]);
+            $this->model->where([ [ 'site_id', '=', $this->site_id ], [ 'id', '=', $data[ 'id' ] ] ])->update([ 'is_default' => 1, 'status' => 1, 'update_time' => time() ]);
             Db::commit();
             return true;
         } catch (Exception $e) {

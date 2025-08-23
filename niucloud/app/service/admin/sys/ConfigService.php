@@ -73,7 +73,6 @@ class ConfigService extends BaseAdminService
         $info['site_login_logo'] = $service_info[ 'site_login_logo' ];
         $info['site_login_bg_img'] = $service_info[ 'site_login_bg_img' ];
         return $info;
-
     }
 
     /**
@@ -106,7 +105,7 @@ class ConfigService extends BaseAdminService
             'enterprise_wechat' => $info[ 'enterprise_wechat' ] ?? '',
             'site_login_logo' => $info[ 'site_login_logo' ] ?? '',
             'site_login_bg_img' => $info[ 'site_login_bg_img' ] ?? 'static/resource/images/site/login_bg.jpg',
-            'tel' => $info[ 'tel' ] ?? ''
+            'tel' => $info[ 'tel' ] ?? '',
         ];
     }
 

@@ -347,8 +347,10 @@ class Index extends BaseInstall
             if (!$site->isEmpty()) {
                 $site->save([
                     'site_name' => $admin_name,
+                    'icon'=>'static/resource/images/site/icon.png'
                 ]);
             }
+
             //修改自增主键默认值
             Db::execute("alter table " . env('database.prefix', '') . "site auto_increment = 100000");
             //获取默认套餐

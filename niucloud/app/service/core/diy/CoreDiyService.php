@@ -45,7 +45,8 @@ class CoreDiyService extends BaseCoreService
                 'create_time' => time(),
             ];
         }
-        foreach ($site_addon[ 'apps' ] as $value) {
+        $site_addon_theme = array_merge($site_addon['apps'], $site_addon['site_addons']);
+        foreach ($site_addon_theme as $value) {
             $addon_theme = array_values(array_filter(event('ThemeColor', [ 'key' => $value[ 'key' ] ])))[ 0 ] ?? [];
             if (empty($addon_theme)) continue;
 

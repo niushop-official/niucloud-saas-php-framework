@@ -184,6 +184,12 @@ class Diy extends BaseAdminController
         return success($diy_service->getLink());
     }
 
+    public function pageLink()
+    {
+        $diy_service = new DiyService();
+        return success($diy_service->pageLink());
+    }
+
     /**
      * 获取页面模板
      * @description 获取页面模板

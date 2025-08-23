@@ -16,6 +16,8 @@ use app\Request;
 use app\service\admin\site\UserLogService;
 use Closure;
 use ReflectionClass;
+use think\facade\Log;
+use think\facade\Route;
 
 /**
  * admin用户操作日志
@@ -29,20 +31,28 @@ class AdminLog
         //写入日志
         if ($request->method() != 'GET') {
             $path = $request->rule()->getRoute();
-            if(strstr($path,'@')){
-                $arr = explode('@', $path);
-                $controller = $arr[0] ?? "";
-                $action = $arr[1] ?? "";
-            }else{
-                //暂时只有APP目录下使用这样的路由定义
-                list($controllerStr, $action) = explode('/', $path, 2);
-                list($module, $controller) = explode('.', $controllerStr, 2);
-                // 拼接完整类名（根据 TP 命名空间规则调整）
-                $controllerClass = "app\\adminapi\\controller\\{$module}\\{$controller}";
-                $controller = $controllerClass;
+            try {
+                if (strstr($path, '@')) {
+                    $arr = explode('@', $path);
+                    $controller = $arr[0] ?? "";
+                    $action = $arr[1] ?? "";
+                } else {
+                    //暂时只有APP目录下使用这样的路由定义
+                    list($controllerStr, $action) = explode('/', $path, 2);
+                    $parts = preg_split('/[\.\\\\]/', $controllerStr, 2);
+                    list($module, $controller) = $parts;
+                    if (count($parts) >= 2) {
+                        // 拼接完整类名（根据 TP 命名空间规则调整）
+                        $controllerClass = "app\\adminapi\\controller\\{$module}\\{$controller}";
+                        $controller = $controllerClass;
+                    }
+                }
+                $operation = $this->extractDescFromAnnotation($controller, $action);
+            } catch (\Exception $e) {
+                $operation = "";
+                Log::write('获取路由描述错误:path' . $path . ' error' . $e->getMessage());
             }
 
-            $operation = $this->extractDescFromAnnotation($controller, $action);
             $data = [
                 'uid' => $request->uid(),
                 'username' => $request->username(),
@@ -79,7 +89,7 @@ class AdminLog
             $docComment = $method->getDocComment();
 
             if (preg_match('/@description\s+(.+)/', $docComment, $matches)) {
-                return (empty($controller_desc) ? "" : $controller_desc.'-').$matches[1];
+                return (empty($controller_desc) ? "" : $controller_desc . '-') . $matches[1];
             }
 
             return '';

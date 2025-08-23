@@ -136,11 +136,14 @@ class WechatAuthService extends BaseApiService
                     return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
                 } else if ($is_force_access_user_info) {
                     // 开启强制获取会员信息时，必须获取到昵称和头像才能进行注册
-                    if (!empty($nickname) && !empty($avatar)) {
+//                    if (!empty($nickname) && !empty($avatar)) {
+                        if (empty($nickname)){
+                            $nickname = unique_random();
+                        }
                         return $this->register($openid, '', $nickname, $avatar, $unionid); // 获取到昵称和头像，然后进行注册
-                    } else {
-                        return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
-                    }
+//                    } else {
+//                        return [ 'avatar' => $avatar, 'nickname' => $nickname, 'openid' => $openid, 'unionid' => $unionid ];
+//                    }
                 } else if ($is_bind_mobile) {
                     // 开启强制绑定手机号，必须获取手机号才能进行注册，由于公众号无法主动获取，所以不能注册
                     return [ 'openid' => $openid, 'unionid' => $unionid ];

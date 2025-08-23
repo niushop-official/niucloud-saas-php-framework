@@ -29,9 +29,9 @@ Route::any('weapp/serve/:site_id', 'weapp.Serve/serve')
     ->middleware(ApiCheckToken::class)
     ->middleware(ApiLog::class);
 
-Route::group(function() {
-    Route::post('niucloud/notify', function() {
-        return ( new CoreNotifyService() )->notify();
+Route::group(function () {
+    Route::post('niucloud/notify', function () {
+        return (new CoreNotifyService())->notify();
     });
 
 });
@@ -39,7 +39,7 @@ Route::group(function() {
 /**
  * 路由
  */
-Route::group(function() {
+Route::group(function () {
     //获取授权地址
     Route::get('wechat/codeurl', 'wechat.Wechat/getCodeUrl');
     //获取授权信息
@@ -133,6 +133,8 @@ Route::group(function() {
     Route::get('check_verifier', 'sys.Verify/checkVerifier');
     //核销记录
     Route::get('verify_records', 'sys.Verify/records');
+    //会员核销记录
+    Route::get('member_verify_records', 'sys.Verify/memberRecordList');
     //核销详情
     Route::get('verify_detail/:code', 'sys.Verify/detail');
     //通过code码获取核销信息
@@ -150,7 +152,7 @@ Route::group(function() {
     ->middleware(ApiCheckToken::class)
     ->middleware(ApiLog::class);
 
-Route::group(function() {
+Route::group(function () {
     //公众号更新用户openid
     Route::put('wechat/update_openid', 'wechat.Wechat/updateOpenid');
     //公众号更新用户openid
@@ -162,4 +164,4 @@ Route::group(function() {
     ->middleware(ApiCheckToken::class, true)
     ->middleware(ApiLog::class);
 //加载插件路由
-( new DictLoader("Route") )->load([ 'app_type' => 'api' ]);
+(new DictLoader("Route"))->load(['app_type' => 'api']);

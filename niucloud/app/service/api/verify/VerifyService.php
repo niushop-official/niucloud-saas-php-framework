@@ -15,6 +15,7 @@ use app\model\verify\Verifier;
 use app\model\verify\Verify;
 use app\service\core\verify\CoreVerifyService;
 use core\base\BaseApiService;
+use core\util\Barcode;
 use think\db\exception\DbException;
 
 /**
@@ -29,17 +30,26 @@ class VerifyService extends BaseApiService
      * @param $data = ['order_id' => , 'goods_id' => ]
      * @return array
      */
-    public function getVerifyCode($type, array $data)
+    public function getVerifyCode($type, array $data, $is_need_barcode = 0)
     {
-        $list = ( new CoreVerifyService() )->create($this->site_id, $this->member_id, $type, $data);
-        $temp = [];
-        foreach ($list as $item) {
-            $temp[] = [
-                'code' => $item,
-                'qrcode' => qrcode($item, '', [], $this->site_id, outfile: false)
+        $list = (new CoreVerifyService())->create($this->site_id, $this->member_id, $type, $data);
+        $return = [];
+        foreach ($list as $code) {
+            $temp = [
+                'code' => $code,
+                'qrcode' => qrcode($code, '', [], $this->site_id, outfile: false)
             ];
+            if ($is_need_barcode == 1) {
+                $qrcode_dir = 'upload/temp';
+                if (!is_dir($qrcode_dir)) mkdir($qrcode_dir, intval('0755', 8), true);
+                // 生成核销码条形码
+                $barcode_path = (new Barcode(14, $code))->generateBarcode($qrcode_dir, 2);
+                $barcode = image_to_base64($barcode_path);
+                $temp['barcode'] = $barcode;
+            }
+            $return[] = $temp;
         }
-        return $temp;
+        return $return;
     }
 
     /**
@@ -49,7 +59,7 @@ class VerifyService extends BaseApiService
      */
     public function getInfoByCode($code)
     {
-        return ( new CoreVerifyService() )->getInfoByCode($this->site_id, $this->member_id,$code);
+        return (new CoreVerifyService())->getInfoByCode($this->site_id, $this->member_id, $code);
     }
 
     /**
@@ -59,7 +69,7 @@ class VerifyService extends BaseApiService
      */
     public function verify($code)
     {
-        return ( new CoreVerifyService() )->verify($this->site_id, $code, $this->member_id);
+        return (new CoreVerifyService())->verify($this->site_id, $code, $this->member_id);
     }
 
     /**
@@ -68,7 +78,7 @@ class VerifyService extends BaseApiService
      */
     public function checkVerifier()
     {
-        $verifier = ( new Verifier() )->where([ [ 'member_id', '=', $this->member_id ], [ 'site_id', '=', $this->site_id ] ])->findOrEmpty();
+        $verifier = (new Verifier())->where([['member_id', '=', $this->member_id], ['site_id', '=', $this->site_id]])->findOrEmpty();
         if (!$verifier->isEmpty()) return true;
         return false;
     }
@@ -82,18 +92,18 @@ class VerifyService extends BaseApiService
     public function getRecordsPageByVerifier(array $data)
     {
         $field = '*';
-        $search_model = ( new Verify() )->where([
-            [ 'site_id', '=', $this->site_id ],
-            [ 'verifier_member_id', '=', $this->member_id ]
-        ])->withSearch([ 'code', 'type', 'create_time', 'relate_tag', 'keyword' ], $data)
+        $search_model = (new Verify())->where([
+            ['site_id', '=', $this->site_id],
+            ['verifier_member_id', '=', $this->member_id]
+        ])->withSearch(['code', 'type', 'create_time', 'relate_tag', 'keyword'], $data)
             ->with([
-                'member' => function($query) {
+                'member' => function ($query) {
                     $query->field('member_id, nickname, mobile, headimg');
                 }
             ])
             ->field($field)
             ->order('create_time desc')
-            ->append([ 'type_name' ]);
+            ->append(['type_name']);
         return $this->pageQuery($search_model);
     }
 
@@ -105,15 +115,61 @@ class VerifyService extends BaseApiService
     public function getRecordsDetailByVerifier($code)
     {
         $field = '*';
-        return ( new Verify() )->where([
-            [ 'site_id', '=', $this->site_id ],
-            [ 'verifier_member_id', '=', $this->member_id ],
-            [ 'code', '=', $code ]
+        return (new Verify())->where([
+            ['site_id', '=', $this->site_id],
+            ['verifier_member_id', '=', $this->member_id],
+            ['code', '=', $code]
         ])->with([
-            'member' => function($query) {
+            'member' => function ($query) {
                 $query->field('member_id, nickname, mobile, headimg');
             }
-        ])->field($field)->append([ 'type_name' ])->findOrEmpty()->toArray();
+        ])->field($field)->append(['type_name'])->findOrEmpty()->toArray();
+    }
+
+
+    /**
+     * 获取核销记录列表
+     * @return array
+     * @throws DbException
+     */
+    public function getRecordsList($data)
+    {
+        $field = '*';
+        $search_model = (new Verify())->where([
+            ['site_id', '=', $this->site_id],
+        ])->withSearch(['code', 'type', 'create_time', 'relate_tag', 'keyword', 'order_id'], $data)
+            ->with([
+                'member' => function ($query) {
+                    $query->field('member_id, nickname, mobile, headimg');
+                }
+            ])
+            ->field($field)
+            ->order('create_time desc')
+            ->append(['type_name']);
+        return $this->pageQuery($search_model);
+    }
+
+    /**
+     * 获取核销记录列表
+     * @return array
+     * @throws DbException
+     */
+    public function getMemberRecordsList($data)
+    {
+        $data['member_id'] = $this->member_id;
+        $field = '*';
+        $search_model = (new Verify())->where([
+            ['site_id', '=', $this->site_id],
+        ])->withSearch(['code', 'type', 'create_time', 'relate_tag', 'keyword', 'order_id', 'member_id'], $data)
+            ->with([
+                'member' => function ($query) {
+                    $query->field('member_id, nickname, mobile, headimg');
+                }
+            ])
+            ->field($field)
+            ->order('create_time desc')
+            ->append(['type_name']);
+        return $this->pageQuery($search_model);
     }
 
 }

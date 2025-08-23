@@ -27,7 +27,7 @@ class SiteInitListener
         'diy_form_records_fields', //万能表单填写字段表
         'diy_form_submit_config', //万能表单提交页配置表
         'diy_form_write_config', //万能表单填写配置表
-        'diy_page', //自定义页面
+//        'diy_page', //自定义页面   todo有点问题先注释 事件顺序问题
         'diy_route', //自定义路由
         'diy_theme', //自定义主题配色表
         'member', //会员表
@@ -58,7 +58,7 @@ class SiteInitListener
         'sys_notice_sms_log', //短信发送表
         'sys_notice_sms_log', //短信发送表
         'sys_role', //角色表
-        'sys_poster', //海报表
+//        'sys_poster', //海报表  todo有点问题先注释 事件顺序问题
         'sys_printer', //小票打印机
         'sys_printer_template', //小票打印模板
         'sys_schedule', //系统任务
