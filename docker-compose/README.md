@@ -67,3 +67,4 @@ pwd:123456
 9. 安装时候，填写数据库信息，请填写192.168.10.11（如有修改，请按照修改后的填写，建议勿动！），创建出的两个默认用户信息在第6条mysql数据库信息处
 
 10. 如遇niucloud_mysql容器无法启动，请检查docker-compose/mysql/log文件夹的权限是否为777，如果不是，请使用chmod 777  /docker-compose/mysql/log
+
