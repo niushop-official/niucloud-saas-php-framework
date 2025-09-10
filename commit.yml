@@ -2,10 +2,10 @@
 branches: {
   }
 fileChange:
-  /LICENSE:
-    newFile: !uuid '9248be4bba8aef9a65c4e9e2dcd5f46a314224a5'
-    oldFile: !uuid 'd22e2c92ab3af85c980919abd6a8fc4be647f80e'
-gitCommitId: !uuid '46758e52b6345b851b37f18e6d118949e0423738'
+  /.gitignore:
+    newFile: !uuid 'ee3e1a4785d8f7a51a7b3da08e2edb1b8c774f62'
+    oldFile: !uuid 'ad4ad41b39884ca2e1c6c322eea995bd186408c9'
+gitCommitId: !uuid '31bdf530c3c7a6ead7799488134ae335d23ce727'
 renames: {
   }
-revisionId: 351
+revisionId: 352
