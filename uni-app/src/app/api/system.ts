@@ -158,3 +158,10 @@ export function getInitInfo(params: Record<string, any>) {
 export function getMemberMobileExist(params: Record<string, any>) {
     return request.get('member_mobile_exist', params)
 }
+
+/**
+ * 获取最新版本信息
+ */
+export function getNewVersion(params: Record<string, any>) {
+    return request.get('app/newversion', params)
+}

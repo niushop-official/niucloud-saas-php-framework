@@ -80,8 +80,10 @@ import { redirect } from '@/utils/common'
 import { t } from '@/locale'
 import { addAddress, editAddress, getAddressInfo } from '@/app/api/member'
 import manifestJson from '@/manifest.json'
-import { getAddressByLatlng } from '@/app/api/system'
+import { getAddressByLatlng,getAreatree } from '@/app/api/system'
+import useSystemStore from '@/stores/system';
 
+const systemStore = useSystemStore();
 const formData: any = ref({
     id: 0,
     name: '',
@@ -133,6 +135,7 @@ onLoad((data: any) => {
     if (selectAddress) {
         addressType.value = selectAddress.delivery == 'express' ? 'address' : 'locationAddress';
     }
+    getAreatreeFn()
     // #ifdef MP
     nextTick(() => {
         if (wxPrivacyPopupRef.value) wxPrivacyPopupRef.value.proactive();
@@ -256,8 +259,13 @@ const save = () => {
 
 // 选择地址
 const chooseLocation = () => {
-    // #ifdef MP
+    let latitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.latitude : '';
+    let longitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.longitude : '';
+    
+    // #ifndef H5
     uni.chooseLocation({
+        latitude,
+        longitude,
         success: (res) => {
             res.latitude && (formData.value.lat = res.latitude)
             res.longitude && (formData.value.lng = res.longitude)
@@ -286,7 +294,7 @@ const chooseLocation = () => {
     });
     // #endif
 
-    // #ifdef H5
+    // #ifndef H5
     const urlencode = formData.value;
     uni.setStorageSync('addressInfo', urlencode);
     let backurl = location.origin + location.pathname + '?source=' + source.value;
@@ -308,7 +316,6 @@ const getAddress = (latlng: any) => {
 
             formData.value.address_name = formData.value.full_address.replace(/-/g, '');
             formData.value.area = (res.data.province + res.data.city + res.data.district) || res.data.full_address;
-
             formData.value.province_id = res.data.province_id != undefined ? res.data.province_id : 0;
             formData.value.city_id = res.data.city_id != undefined ? res.data.city_id : 0;
             formData.value.district_id = res.data.district_id != undefined ? res.data.district_id : 0;
@@ -330,20 +337,46 @@ const getQueryVariable = (variable: any) => {
     }
     return false;
 }
+const areaTree = ref([]); // 存储地址树数据
+const getAreatreeFn = () => {
+    getAreatree(3).then(res => {
+         areaTree.value = res.data
+    }).catch()
+
+}
+// 递归函数：根据名称和父id，查找对应id
+const findIdByNameAndParentId = (list, name, parentId = 0) => {
+  for (const item of list) {
+    if (item.name === name && item.pid === parentId) {
+      return item.id;
+    }
+    if (item.child && item.child.length > 0) {
+      const childId = findIdByNameAndParentId(item.child, name, item.id);
+      if (childId) {
+        return childId;
+      }
+    }
+  }
+  return '';
+};
 const loadingchoosegAddress = ref(false)
 const choosegAddress = () =>{
     loadingchoosegAddress.value = true
      uni.chooseAddress({
             success(res) {
-                console.log(7744)
                 loadingchoosegAddress.value = false
                 // 将地址信息格式化为“名字-手机号-地址（详细地址）”
                 // const formattedAddress = `${res.userName}-${res.telNumber}-${res.provinceName}${res.cityName}${res.countyName}${res.detailInfoNew || res.detailInfo}`;
-                 console.log(res)
-                 formData.value.name = res.userName
-                 formData.value.mobile = res.telNumber
-                 formData.value.area = res.provinceName + res.cityName + res.countyName
-                 formData.value.address =  res.detailInfo
+                formData.value.name = res.userName
+                formData.value.mobile = res.telNumber
+                formData.value.area = res.provinceName + res.cityName + res.countyName
+                formData.value.address =  res.detailInfo
+                // 匹配省id
+                formData.value.province_id = findIdByNameAndParentId(areaTree.value, res.provinceName);
+                // 匹配市id（基于省id）
+                formData.value.city_id = findIdByNameAndParentId(areaTree.value, res.cityName, formData.value.province_id);
+                // 匹配区id（基于市id）
+                formData.value.district_id = findIdByNameAndParentId(areaTree.value, res.countyName, formData.value.cityId);
             },
             fail(err) {
                loadingchoosegAddress.value = false

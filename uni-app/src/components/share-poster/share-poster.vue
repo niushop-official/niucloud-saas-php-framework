@@ -8,7 +8,7 @@
                     <image v-if="isPosterImg" class="poster-img" :src="img(poster)" mode="aspectFit" :show-menu-by-longpress="true"/>
                 </view>
                 <view class="share-content">
-                    <!-- #ifdef MP || APP-PLUS  -->
+                    <!-- #ifdef MP -->
                     <view class="share-box">
                         <button class="share-btn" :plain="true" open-type="share">
                             <view class="text-[#07c160] iconfont iconweixin11"></view>
@@ -29,6 +29,29 @@
                         <button class="share-btn" :plain="true">
                             <view class="text-[#07c160] iconfont iconfuzhilianjie"></view>
                             <text>复制链接</text>
+                        </button>
+                    </view>
+                    <!-- #endif -->
+                    
+                    <!-- #ifdef APP-PLUS  -->
+                    <view class="share-box">
+                        <button class="share-btn" :plain="true" @click="shareSession">
+                            <view class="text-[#07c160] iconfont iconweixin11"></view>
+                            <text>分享给好友</text>
+                        </button>
+                    </view>
+                    
+                    <view class="share-box">
+                        <button class="share-btn" :plain="true" @click="shareWechatMoments">
+                            <image :src="img('static/resource/images/app/wechat_moments.png')"></image>
+                            <text>分享到朋友圈</text>
+                        </button>
+                    </view>
+                    
+                    <view class="share-box">
+                        <button class="share-btn" :plain="true" @click="savePoster()">
+                            <view class="text-[#07c160] iconfont iconpengyouquan"></view>
+                            <text>保存海报</text>
                         </button>
                     </view>
                     <!-- #endif -->
@@ -58,6 +81,7 @@ import { ref } from 'vue';
 import { img, copy } from '@/utils/common';
 import { getPoster } from '@/app/api/system'
 import useSystemStore from "@/stores/system";
+import { useShare } from '@/hooks/useShare'
 
 const props = defineProps({
     posterId: {
@@ -203,6 +227,16 @@ const savePoster = () => {
 }
 // #endif
 
+// #ifdef APP-PLUS
+const shareSession = () => {
+    useShare().onShareAppMessage();
+}
+
+const shareWechatMoments = () => {
+    useShare().onShareTimeline();
+}
+// #endif
+
 const shareTop: any = ref(0)
 /************ 获取微信头部-start ****************/
 const systemStore = useSystemStore()
@@ -263,6 +297,11 @@ defineExpose({
                     display: block;
                     color: #333;
                 }
+            }
+            
+            image {
+                width: 80rpx;
+                height: 80rpx;
             }
 
             .iconfont {

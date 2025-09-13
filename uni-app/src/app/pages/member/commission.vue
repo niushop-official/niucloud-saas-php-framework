@@ -2,7 +2,7 @@
     <view class="bg-[var(--page-bg-color)] min-h-[100vh] w-full" :style="themeColor()" v-if="memberStore.info">
         <view class="fixed w-full z-2 !bg-[var(--page-bg-color)]">
             <view class="pb-[272rpx]" :style="headerStyle">
-                <!-- #ifdef MP-WEIXIN -->
+                <!-- #ifdef MP-WEIXIN || APP-PLUS -->
                 <top-tabbar :data="param" class="top-header" />
                 <!-- #endif -->
             </view>

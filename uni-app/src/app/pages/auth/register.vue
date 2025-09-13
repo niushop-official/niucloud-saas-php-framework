@@ -1,6 +1,6 @@
 <template>
     <view class="w-screen h-screen flex flex-col" :style="themeColor()" v-if="type">
-        <!-- #ifdef MP-WEIXIN -->
+        <!-- #ifdef MP-WEIXIN || APP-PLUS -->
         <view :style="{'height':headerHeight}">
             <top-tabbar :data="param" :scrollBool="topTabarObj.getScrollBool()" class="top-header" />
         </view>

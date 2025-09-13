@@ -2,7 +2,7 @@
     <view class="min-h-[100vh] !bg-[var(--page-bg-color)]" :style="themeColor()" v-if="memberStore.info">
         <view class="fixed w-full z-2  !bg-[var(--page-bg-color)]">
             <view class="pb-[190rpx] text-[#fff] w-full" :style="headerStyle">
-                <!-- #ifdef MP-WEIXIN -->
+                <!-- #ifdef MP-WEIXIN || APP-PLUS -->
                 <top-tabbar :data="param" class="top-header" />
                 <!-- #endif -->
                 <view class="leading-[38rpx] text-[28rpx] pl-[60rpx] pt-[100rpx]">{{ t('accountBalance') }}</view>
@@ -153,6 +153,9 @@ const mescrollTop = computed(() => {
             return '718rpx'
         }
     } else {
+        // #ifdef APP-PLUS
+        return (pxToRpx(Number(systemStore.systemInfo.statusBarHeight)) + pxToRpx(8) + 632) + 'rpx'
+        // #endif
         if (Object.keys(systemStore.menuButtonInfo).length) {
             return (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + pxToRpx(8) + 632) + 'rpx'
         } else {

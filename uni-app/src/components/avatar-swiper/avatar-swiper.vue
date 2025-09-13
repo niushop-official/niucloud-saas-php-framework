@@ -3,12 +3,12 @@
         <view class="carousel-track" :style="trackStyle">
             <view
                 v-for="(item, index) in displayList"
-                :key="item.key" 
+                :key="item.key"
                 class="carousel-item"
                 :style="itemStyle(index)"
                 :class="{ 'scale-in': item.isNew }"
             >
-                <u--image width="30rpx" height="30rpx" radius="15rpx" :src="img(item.src)" mode="aspectFill">
+                <up-image width="30rpx" height="30rpx" radius="15rpx" :src="img(item.src)" mode="aspectFill">
                     <template #error>
                         <image
                             class="w-[30rpx] h-[30rpx] rounded-full"
@@ -16,7 +16,7 @@
                             mode="aspectFill"
                         />
                     </template>
-                </u--image>
+                </up-image>
             </view>
         </view>
     </view>
@@ -39,9 +39,9 @@ const EASING = 'cubic-bezier(0.25, 0.1, 0.25, 1)'; // 平滑曲线
 const slideDistance = ITEM_WIDTH - OVERLAP;
 
 // 状态管理
-const displayList = ref<{ 
-    src: string; 
-    isNew: boolean; 
+const displayList = ref<{
+    src: string;
+    isNew: boolean;
     key: string; // 唯一key，避免v-for复用导致的闪烁
 }[]>([]);
 let currentIndex = 0;
@@ -82,8 +82,8 @@ const itemStyle = (index: number) => ({
  */
 const trackStyle = computed(() => ({
     transform: `translateX(${trackOffset.value}rpx)`,
-    transition: isTransitioning.value 
-        ? `transform ${ANIMATION_DURATION}ms ${EASING}` 
+    transition: isTransitioning.value
+        ? `transform ${ANIMATION_DURATION}ms ${EASING}`
         : 'none',
     display: 'flex',
     // 硬件加速：减少重绘闪烁
@@ -179,7 +179,7 @@ onUnmounted(() => {
     position: relative;
     flex-shrink: 0;
     &:not(:first-child) {
-        margin-left: -10rpx; // 固定重叠，避免计算误差
+        margin-left: -15rpx; // 固定重叠，避免计算误差
     }
     transform: scale(0); // 初始隐藏
 }

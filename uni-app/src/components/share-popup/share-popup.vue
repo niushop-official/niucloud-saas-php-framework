@@ -4,7 +4,7 @@
         <u-popup :show="sharePopupShow" type="bottom" @close="sharePopupClose" overlayOpacity="0.8">
             <view @touchmove.prevent.stop>
                 <view class="share-content">
-                    <!-- #ifdef MP || APP-PLUS  -->
+                    <!-- #ifdef MP  -->
                     <view class="share-box">
                         <button class="share-btn" :plain="true" open-type="share">
                             <view class="text-[#07c160] iconfont iconweixin11"></view>
@@ -18,6 +18,22 @@
                         <button class="share-btn" :plain="true">
                             <view class="text-[#07c160] iconfont iconfuzhilianjie"></view>
                             <text>复制链接</text>
+                        </button>
+                    </view>
+                    <!-- #endif -->
+                    
+                    <!-- #ifdef APP-PLUS  -->
+                    <view class="share-box">
+                        <button class="share-btn" :plain="true" @click="shareSession">
+                            <view class="text-[#07c160] iconfont iconweixin11"></view>
+                            <text>分享给好友</text>
+                        </button>
+                    </view>
+                    
+                    <view class="share-box">
+                        <button class="share-btn" :plain="true" @click="shareWechatMoments">
+                            <image :src="img('static/resource/images/app/wechat_moments.png')"></image>
+                            <text>分享到朋友圈</text>
                         </button>
                     </view>
                     <!-- #endif -->
@@ -46,6 +62,7 @@
 import { ref } from 'vue';
 import { img, copy } from '@/utils/common';
 import useSystemStore from "@/stores/system";
+import { useShare } from '@/hooks/useShare'
 
 const props = defineProps({
     copyUrl: { // 例 "/wap/addon/shop_fenxiao/pages/goods"
@@ -105,6 +122,16 @@ const sharePopupClose = () => {
     sharePopupShow.value = false;
     emits('close');
 }
+
+// #ifdef APP-PLUS
+const shareSession = () => {
+    useShare().onShareAppMessage();
+}
+
+const shareWechatMoments = () => {
+    useShare().onShareTimeline();
+}
+// #endif
 
 defineExpose({
     openShare

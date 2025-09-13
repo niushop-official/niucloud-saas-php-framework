@@ -3,7 +3,7 @@
         <template v-if="!loading">
             <view class="w-full bg-[var(--page-bg-color)]">
                 <view class="pb-[210rpx] relative" :style="headerStyle">
-                    <!-- #ifdef MP-WEIXIN -->
+                    <!-- #ifdef MP-WEIXIN || APP-PLUS -->
                     <top-tabbar :data="param" :scrollBool="topTabarObj.getScrollBool()" class="top-header" />
                     <!-- #endif -->
                     <view class="text-[70rpx] leading-[90rpx] text-[#fff] pl-[60rpx] font-500 pt-[77rpx] price-font">{{ pointInfo.point || 0 }}</view>
@@ -124,7 +124,10 @@ const headerStyle = computed(() => {
     }
 })
 const topStyle = computed(() => {
-    let style = Object.keys(systemStore.menuButtonInfo).length ? (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + 50) + 'rpx;' : '50rpx'
+    let style = Object.keys(systemStore.menuButtonInfo).length ? (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + 50) + 'rpx' : '50rpx'
+    // #ifdef APP-PLUS
+    style = '120rpx'
+    // #endif
     return style
 })
 

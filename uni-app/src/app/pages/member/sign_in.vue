@@ -3,7 +3,7 @@
         <view class="min-h-screen overflow-hidden" v-if="Object.values(info).length" :class="{ 'bg-[#F6F6F6]' : info && info.is_use }">
             <view v-if="info.is_use">
                 <view class="sigin-header">
-                    <!-- #ifdef MP-WEIXIN -->
+                    <!-- #ifndef H5 -->
                     <view v-if="info.rule_explain" class="side-tab" :style="{top: topStyle}" @click="signPopup = true">
                         <text class="nc-iconfont nc-icon-a-meiriqiandaoV6xx-36  icon"></text>
                         <text class="desc">签到规则</text>
@@ -154,7 +154,7 @@
                 </view>
             </view>
             <view class="h-[100vh] w-[100vw] flex justify-center items-center" v-else>
-                <!-- #ifdef MP-WEIXIN -->
+                <!-- #ifdef MP-WEIXIN || APP-PLUS -->
                 <top-tabbar :data="topTabbarData" :scrollBool="topTabarObj.getScrollBool()" class="top-header" />
                 <!-- #endif -->
                 <u-empty text="签到未开启" width="347rpx" height="265rpx" :icon="img('static/resource/images/system/empty.png')" />
@@ -470,11 +470,22 @@ let topTabbarData = topTabarObj.setTopTabbarParam({ title: '我的签到' })
 /********* 自定义头部 - end ***********/
 
 const headStyle = computed(() => {
+    // #ifdef MP
     let style = pxToRpx(Number(systemStore.menuButtonInfo.height) + systemStore.menuButtonInfo.top + 8) + 382 + 'rpx;'
+    // #endif
+    // #ifdef APP-PLUS
+    let style = pxToRpx(systemStore.systemInfo.statusBarHeight + 8) + 382 + 'rpx'
+    // #endif
     return style
 })
 const topStyle = computed(() => {
+    // #ifdef MP
     let style = pxToRpx(Number(systemStore.menuButtonInfo.height) + systemStore.menuButtonInfo.top + 8) + 50 + 'rpx;'
+    // #endif
+    // #ifdef APP-PLUS
+    let style = pxToRpx(systemStore.systemInfo.statusBarHeight + 8) + 50 + 'rpx'
+    // #endif
+    console.log(style)
     return style
 })
 </script>

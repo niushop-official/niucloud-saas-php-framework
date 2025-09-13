@@ -14,7 +14,7 @@ export const redirectInterceptor = (route: { path: string, query: object }) => {
     setThemeColor(route.path)
 
     // 开发模式下，如果未配置站点ID，则跳转到开发环境配置页面
-    // #ifdef H5
+    // #ifndef MP
     if (process.env.NODE_ENV == 'development') {
         if ((getSiteId(import.meta.env.VITE_SITE_ID || uni.getStorageSync('wap_site_id')) === '') && route.path != '/app/pages/index/develop') {
             redirect({ url: '/app/pages/index/develop', mode: 'reLaunch' })
@@ -72,7 +72,7 @@ export const launchInterceptor = () => {
     // 加载语言包
     language.loadAllLocaleMessages('app', uni.getLocale())
 
-    // #ifdef H5
+    // #ifndef MP
     language.loadAllLocaleMessages('addon', uni.getLocale())
     // #endif
 

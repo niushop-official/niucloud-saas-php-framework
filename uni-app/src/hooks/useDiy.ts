@@ -115,6 +115,11 @@ export function useDiy(params: any = {}) {
                         let sources = JSON.parse(requestData.value); // todo diy的结构应该后台处理好，前端就不需要再转换了
 
                         diyData.global = sources.global;
+
+                        diyData.global.id = requestData.id;
+                        diyData.global.site_id = requestData.site_id;
+                        diyData.global.type = requestData.type;
+
                         // 用于区分微页面之间弹窗的id
                         if (diyData.global.popWindow && diyData.global.popWindow.show) {
                             diyData.global.popWindow.id = requestData.id;
@@ -147,7 +152,6 @@ export function useDiy(params: any = {}) {
                         uni.setNavigationBarTitle({
                             title: diyData.title
                         });
-
                     }
 
                     loading.value = false;
@@ -190,9 +194,9 @@ export function useDiy(params: any = {}) {
     }
 
     // 监听页面卸载
-    const onUnloadLifeCycle = () => {
+    const onUnloadLifeCycle = (callback: any = null) => {
         onUnload(() => {
-
+            if (callback) callback()
         })
     }
 

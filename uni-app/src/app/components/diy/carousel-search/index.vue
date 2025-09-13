@@ -65,7 +65,7 @@
                             <!-- <view class="line" :style="{'background-color': getTabColor(currTabIndex == -1)}" v-if="currTabIndex == -1"></view> -->
                         </view>
                         <view v-for="(item, index) in diyComponent.tab.list" class="scroll-item" :class="[{ active: index == currTabIndex }]" @click="changeData(item,index)" :id="'a' + index" :key="index">
-                            <view class="name" :style="{'color': getTabColor(index == currTabIndex)}">{{ item.text }}</view>
+                            <view class="name" :style="{'color': getTabColor(index == currTabIndex)}">{{ item ? item.text : '' }}</view>
                             <!-- <view class="line" :style="{'background-color': getTabColor(index == currTabIndex)}" v-if="index == currTabIndex"></view> -->
                         </view>
                     </scroll-view>
@@ -148,8 +148,8 @@
 
 <script setup lang="ts">
 // 轮播搜索
-import { ref, reactive, computed, watch, onMounted, nextTick, getCurrentInstance } from 'vue';
-import { img } from '@/utils/common';
+import { ref, reactive, computed, watch, onMounted, nextTick, getCurrentInstance, onUnmounted } from 'vue';
+import { img, getTopFixedStatusName } from '@/utils/common';
 import useDiyStore from '@/app/stores/diy';
 import diyGroup from '@/addon/components/diy/group/index.vue';
 import { getDiyInfo } from '@/app/api/diy';
@@ -164,6 +164,12 @@ const diyComponent = computed(() => {
     if (diyStore.mode == 'decorate') {
         return diyStore.value[props.index];
     } else {
+        // 解决在电脑端，切换微页面时，装修页与h5页面之间的相互影响
+        if(uni.getStorageSync(getTopFixedStatusName(props.global))){
+            diyStore.topFixedStatus = uni.getStorageSync(getTopFixedStatusName(props.global));
+        }else{
+            diyStore.topFixedStatus = 'home'
+        }
         return props.component;
     }
 })
@@ -376,8 +382,8 @@ const changeData = (item: any, index: any) => {
         // 查询微页面数据
         diyStore.topFixedStatus = 'diy'
         getDiyInfoFn(item.diy_id);
-
     }
+    uni.setStorageSync(getTopFixedStatusName(props.global), diyStore.topFixedStatus);
 }
 
 const tabAllPopup = ref(false);
@@ -389,6 +395,11 @@ const navbarInnerStyle = ref('')
 // 如果是各家小程序，导航栏内部的宽度需要减少右边胶囊的宽度
 navbarInnerStyle.value += 'padding-top:' + systemStore.menuButtonInfo.top + 'px;';
 // #endif
+
+// #ifdef APP-PLUS
+navbarInnerStyle.value += 'padding-top:' + systemStore.systemInfo.statusBarHeight + 'px;';
+// #endif
+
 onMounted(() => {
     refresh();
     // 装修模式下刷新
@@ -397,6 +408,7 @@ onMounted(() => {
             () => diyComponent.value,
             (newValue, oldValue) => {
                 if (newValue && newValue.componentName == 'CarouselSearch') {
+                    diyStore.topFixedStatus = 'home'; // 装修页的微页面始终展示home
                     refresh();
                 }
             }
@@ -427,11 +439,14 @@ onMounted(() => {
     // #endif
 });
 
+onUnmounted(() => {
+    uni.removeStorageSync(getTopFixedStatusName(props.global))
+})
+
 const refresh = () => {
     setModuleLocation();
     // 刷新定位
     locationVal.refresh();
-
     changeData({ source: 'home' }, -1)
     diyComponent.value.swiper.list.forEach((item: any) => {
         if (item.imageUrl == '') {
@@ -471,6 +486,7 @@ const getDiyInfoFn = (id: any) => {
             diyPageData.value = sources.value;
 
             diyPageData.value.forEach((item: any, index) => {
+                item.componentIsShow = true // 是否显示
                 item.pageStyle = '';
                 if (item.pageStartBgColor) {
                     if (item.pageStartBgColor && item.pageEndBgColor) item.pageStyle += `background:linear-gradient(${ item.pageGradientAngle },${ item.pageStartBgColor },${ item.pageEndBgColor });`;

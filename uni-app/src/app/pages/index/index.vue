@@ -19,7 +19,10 @@
         <!-- 小程序隐私协议 -->
         <wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
         <!-- #endif -->
-
+        <!-- 版本更新弹窗 -->
+        <!-- #ifdef APP -->
+        <update-version ref="updateVersionRef"></update-version>
+        <!-- #endif -->
     </view>
 </template>
 
@@ -29,6 +32,8 @@ import { useDiy } from '@/hooks/useDiy'
 import { redirect } from '@/utils/common';
 import { useShare } from '@/hooks/useShare'
 import diyGroup from '@/addon/components/diy/group/index.vue'
+import updateVersion from '@/components/update-version/update-version.vue'
+import useSystemStore from '@/stores/system';
 
 const { setShare } = useShare()
 
@@ -42,6 +47,11 @@ const diyGroupRef = ref(null)
 
 const wxPrivacyPopupRef: any = ref(null)
 const collectTipRef: any = ref(null)
+const updateVersionRef: any = ref(null)
+
+const systemStore = useSystemStore();
+const versionInfo = systemStore.versionInfo
+
 // 监听页面加载
 diy.onLoad();
 
@@ -52,8 +62,17 @@ diy.onShow((data: any) => {
         // 	title: diyData.title
         // })
     } else if (data.page) {
-        // 跳转到设置的启动页
-        redirect({ url: data.page, mode: 'reLaunch' })
+        // 是否需要强制更新 -- app
+        if(versionInfo && versionInfo.is_forced_upgrade){
+            nextTick(() => {
+                if(updateVersionRef.value){
+                    updateVersionRef.value.open()
+                }
+            })
+        }else{
+            // 跳转到设置的启动页
+            redirect({ url: data.page, mode: 'reLaunch' })
+        }
     }
     let share = data.share ? JSON.parse(data.share) : null;
     setShare(share);

@@ -45,6 +45,9 @@ onMounted(() => {
 
             try {
                 comp.field.value = JSON.parse(item.field_value)
+                if (comp.componentName=="FormNumber" || comp.componentName=="FormIdentity") {
+                    comp.field.value =String(item.field_value)
+                }
             } catch (error) {
                 comp.field.value = item.field_value
             }

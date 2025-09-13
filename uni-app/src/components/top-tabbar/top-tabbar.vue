@@ -107,10 +107,11 @@ const topStatusBarData = computed(() => {
 // 导航栏内部盒子的样式
 const navbarInnerStyle = computed(() => {
     let style = '';
-    if (props.isBack) {
+    if (isBackShow) {
         style += 'padding-left: 30rpx;';//30=>右边留边 44=>箭头宽度 10=>箭头的右maring
         if (topStatusBarData.value.style == 'style-1') //样式一需要居中需要有右边padding辅助
-            style += 'padding-right:' + (40 + 30 + 10) + 'rpx;'; //30=>左边留边 44=>箭头宽度 10=>箭头的右maring
+            // style += 'padding-right:' + (40 + 30 + 10) + 'rpx;'; //30=>左边留边 44=>箭头宽度 10=>箭头的右maring
+            style += 'padding-right:' + (40 + 30) + 'rpx;'; //30=>左边留边 44=>箭头宽度 10=>箭头的右maring
     } else {
         if (topStatusBarData.value.style == 'style-1') //样式一需要居中需要有右边padding辅助
             style += 'padding-right: 30rpx;'; //右边留边
@@ -121,6 +122,9 @@ const navbarInnerStyle = computed(() => {
     style += 'height:' + systemStore.menuButtonInfo.height + 'px;';
     style += 'padding-top:' + systemStore.menuButtonInfo.top + 'px;';
     style += 'padding-bottom: 8px;';
+    // #endif
+    // #ifdef APP-PLUS
+     style += 'padding-top:' + systemStore.systemInfo.statusBarHeight + 'px;';
     // #endif
     return style;
 })
@@ -208,7 +212,13 @@ const goBack = () => {
 
 // 微信胶囊宽度+right
 const capsuleWidth = computed(() => {
-    let width = `calc(100vw - ${ systemStore.menuButtonInfo.right }px + ${ systemStore.menuButtonInfo.width }px + 10px)`;
+    let width = '0px'
+    // #ifdef MP
+    width = `calc(100vw - ${ systemStore.menuButtonInfo.right }px + ${ systemStore.menuButtonInfo.width }px + 10px)`;
+    // #endif
+    // #ifdef APP-PLUS
+    width = '10px'
+    // #endif
     return width;
 })
 
@@ -358,6 +368,9 @@ defineExpose({
 
     &.style-3 {
         .content-wrap {
+            // #ifdef APP-PLUS
+            padding-bottom: 20rpx;
+            // #endif
             .title-wrap {
                 height: 46rpx;
                 max-width: 300rpx;

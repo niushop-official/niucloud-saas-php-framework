@@ -145,6 +145,18 @@ const confirmPay = () => {
                     location.href = res.data.url
                 }
                 // #endif
+                // #ifndef H5
+                uni.requestPayment({
+                    provider: 'alipay',
+                    ...res.data,
+                    success: (res: any) => {
+                        toPayResult()
+                    },
+                    fail: (res: any) => {
+                        loading.value = false
+                    }
+                })
+                // #endif
                 break;
             default:
                 if (res.data.url) {

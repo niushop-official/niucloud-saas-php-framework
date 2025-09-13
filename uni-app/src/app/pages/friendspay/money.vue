@@ -2,7 +2,7 @@
     <view :style="themeColor()">
         <view class="bg-[var(--page-bg-color)] min-h-screen overflow-hidden" v-if="Object.keys(friendsInfo).length && !loading">
             <view :style="{background: 'url(' + img('static/resource/images/app/friendpay_money.png') + ') left bottom / cover no-repeat'}" class="pb-[194rpx] overflow-hidden">
-                <!-- #ifdef MP-WEIXIN -->
+                <!-- #ifdef MP-WEIXIN || APP-PLUS -->
                 <view class="sticky top-0 left-0 right-0 z-100">
                     <top-tabbar :data="topTabbarData" :scrollBool="topTabarObj.getScrollBool()" />
                 </view>
@@ -37,8 +37,8 @@
 					    <text class="nc-iconfont nc-icon-jichuxinxiV6xx text-[26rpx] "></text>
 					</view>
 				</view>
-              
-				
+
+
             </view>
             <view class="card-template sidebar-margin mb-[var(--top-m)]" v-if="friendsInfo.config.pay_info_switch">
                 <template v-if="JSON.stringify(friendsInfo.trade_info) !== '[]' && friendsInfo.trade_info.item_list.length">
@@ -52,11 +52,11 @@
                     <view class="border-0 border-solid border-b-[1rpx] border-[#f6f6f6] mb-[20rpx]">
                         <view v-for="(item, index) in friendsInfo.trade_info.item_list" class="flex justify-between" :class="{' mb-[34rpx]': (index + 1) != friendsInfo.trade_info.length }">
                             <view class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden flex-shrink-0">
-                                <u--image class="overflow-hidden" radius="var(--goods-rounded-big)" width="170rpx" height="170rpx"  :src="img(item.item_image ? item.item_image : '')" model="aspectFill">
+                                <up-image class="overflow-hidden" radius="var(--goods-rounded-big)" width="170rpx" height="170rpx"  :src="img(item.item_image ? item.item_image : '')" model="aspectFill">
                                     <template #error>
                                         <image class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden" :src="img('static/resource/images/diy/shop_default.jpg')" mode="aspectFill" />
                                     </template>
-                                </u--image>
+                                </up-image>
                             </view>
                             <view class="ml-[20rpx] flex flex-1 flex-col justify-between">
                                 <view>

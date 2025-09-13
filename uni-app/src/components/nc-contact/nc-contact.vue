@@ -58,7 +58,7 @@ const siteInfo: any = computed(() => {
 const popupShow = ref(false);
 
 const contactService = () => {
-    // #ifdef H5
+    // #ifndef MP-WEIXIN
     popupShow.value = true;
     // #endif
 }

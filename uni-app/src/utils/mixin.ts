@@ -1,3 +1,4 @@
+import { watch } from 'vue'
 import { currRoute } from './common'
 import { redirectInterceptor } from './interceptor'
 import useConfigStore from "@/stores/config";
@@ -49,16 +50,32 @@ export default {
                 
             },
             onShareAppMessage() {
+                // #ifdef MP
                 return useShare().onShareAppMessage()
+                // #endif
             },
             onShareTimeline() {
+                // #ifdef MP
                 return useShare().onShareTimeline()
+                // #endif
             },
             methods: {
                 themeColor() {
                     const configStore = useConfigStore()
                     return configStore.getThemeColor();
                 }
+            },
+            onReady(){
+                const systemStore = useSystemStore()
+                // #ifdef APP-PLUS
+                watch(() => systemStore.versionInfo, () => {
+                    const newVersion = useSystemStore().versionInfo
+                    if (newVersion) {
+                        const lock = uni.getStorageSync('update_version_close_lock') || {}
+                        if (!lock[ newVersion.version_code ] || newVersion.is_forced_upgrade) useSystemStore().showUpdateVersion()
+                    }
+                }, { immediate: true })
+                // #endif
             }
         });
     },

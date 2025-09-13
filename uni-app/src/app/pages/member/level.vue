@@ -2,7 +2,7 @@
     <view :style="themeColor()" class="bg-[var(--page-bg-color)] min-h-[100vh] overflow-hidden">
         <loading-page :loading="loading && memberInfo"></loading-page>
         <view v-if="!loading && memberInfo && list && list.length" class="min-h-[100vh] overflow-hidden flex flex-col" :style="{backgroundColor: currLevelInfo.level_style.bg_color }">
-            <!-- #ifdef MP -->
+            <!-- #ifdef MP || APP-PLUS -->
             <top-tabbar :data="topTabbarData" :scrollBool="topTabarObj.getScrollBool()" />
             <!-- #endif -->
             <view>
@@ -111,7 +111,7 @@
             </view>
         </view>
 		<view v-if="!loading && (!list || !list.length)">
-			<!-- #ifdef MP -->
+			<!-- #ifdef MP || APP-PLUS -->
 			<top-tabbar :data="topTabbarDataEmpty" />
 			<!-- #endif -->
 			 <view class="empty-page" >
@@ -119,7 +119,7 @@
 				<text class="desc">暂无会员等级</text>
 			</view>
 		</view>
-       
+
     </view>
 </template>
 

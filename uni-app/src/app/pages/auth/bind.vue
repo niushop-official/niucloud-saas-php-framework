@@ -1,6 +1,6 @@
 <template>
     <view class="w-screen h-screen flex flex-col" :style="themeColor()">
-        <!-- #ifdef MP-WEIXIN -->
+        <!-- #ifdef MP-WEIXIN || APP-PLUS -->
         <view :style="{'height':headerHeight}">
             <top-tabbar :data="param" :scrollBool="topTabarObj.getScrollBool()" class="top-header" />
         </view>
@@ -28,7 +28,7 @@
             </u-form>
             <view class="mt-[100rpx]">
                 <view v-if="config.agreement_show" class="flex items-center mb-[20rpx] py-[10rpx]" @click.stop="agreeChange">
-                    <u-checkbox-group @change="agreeChange"> 
+                    <u-checkbox-group @change="agreeChange">
                         <u-checkbox activeColor="var(--primary-color)" :checked="isAgree" shape="circle" size="24rpx" :customStyle="{ 'marginTop': '4rpx' }" />
                     </u-checkbox-group>
                     <view class="text-[24rpx] text-[var(--text-color-light6)] flex items-center flex-wrap">
@@ -79,20 +79,24 @@ const isAgree = ref(false)
 const formData: any = reactive({
     mobile: '',
     mobile_code: '',
-    mobile_key: ''
+    mobile_key: '',
+    register_type: ''
 })
 
 const real_name_input = ref(true);
 
-onLoad(() => {
+onLoad((data) => {
     // 防止浏览器自动填充
     setTimeout(() => {
         real_name_input.value = false;
     }, 800)
 
+    data.register_type && (Object.assign(formData, { register_type: data.register_type }))
     uni.getStorageSync('openid') && (Object.assign(formData, { openid: uni.getStorageSync('openid') }))
     uni.getStorageSync('pid') && (Object.assign(formData, { pid: uni.getStorageSync('pid') }))
     uni.getStorageSync('unionid') && (Object.assign(formData, { unionid: uni.getStorageSync('unionid') }))
+    uni.getStorageSync('nickname') && (Object.assign(formData, { nickname: uni.getStorageSync('nickname') }))
+    uni.getStorageSync('avatar') && (Object.assign(formData, { avatar: uni.getStorageSync('avatar') }))
 });
 
 const rules = {

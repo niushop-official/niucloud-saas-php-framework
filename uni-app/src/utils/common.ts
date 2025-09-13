@@ -206,7 +206,7 @@ export const currShareRoute = () => {
     }
     let currentRoute = pages[pages.length - 1].route //获取当前页面路由
 
-    // #ifdef H5
+    // #ifndef MP
     let currentParam: any = pages[pages.length - 1].$page.options; //获取路由参数
     // #endif
 
@@ -294,6 +294,26 @@ export function img(path: string): string {
     if (typeof imgDomain == 'string' && imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)
 
     return isUrl(path) ? path : `${imgDomain}/${path}`
+}
+
+/**
+ * 路径输出
+ * @param path
+ * @returns
+ */
+export function getUrl(path: string): string {
+    // #ifdef H5
+    let urlDomain = import.meta.env.VITE_IMG_DOMAIN || location.origin
+    // #endif
+
+    // #ifndef H5
+    let urlDomain = import.meta.env.VITE_IMG_DOMAIN
+    // #endif
+
+    if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
+    if (typeof urlDomain == 'string' && urlDomain.endsWith('/')) urlDomain = urlDomain.slice(0, -1)
+
+    return isUrl(path) ? path : `${urlDomain}/${path}`
 }
 
 /**
@@ -407,7 +427,7 @@ export function timeTurnTimeStamp(dateStr: string) {
     }
 
     const trimmedDateStr = dateStr.trim();
-    
+
     // 定义支持的日期格式转换规则
     const formatRules = [
         // 'YYYY年M月D日' -> 'YYYY-MM-DD'
@@ -448,7 +468,7 @@ export function timeTurnTimeStamp(dateStr: string) {
 
     // 创建日期对象并验证
     const date = new Date(normalizedDateStr);
-    
+
     // 检查日期是否有效
     if (isNaN(date.getTime())) {
         return null;
@@ -787,4 +807,13 @@ export function rgbaToHex (r, g, b, a) {
 
     let hex = "#" + componentToHex(rBlend) + componentToHex(gBlend) + componentToHex(bBlend)
     return hex.toUpperCase()
+}
+
+// 获取 topFixedStatus 缓存名称
+export function getTopFixedStatusName(data: any = {}) {
+    let name = 'topFixedStatus'
+    if (data.id) name += '_' + data.id
+    if (data.site_id) name += '_' + data.site_id
+    if (data.type) name += '_' + data.type
+    return name
 }

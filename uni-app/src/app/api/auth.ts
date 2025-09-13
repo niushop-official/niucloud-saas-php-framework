@@ -131,3 +131,13 @@ export function bind(data: AnyObject) {
 export function memberLog(data: AnyObject) {
     return request.post('member/log', data, { showErrorMessage: false })
 }
+
+/**
+ * 微信app授权登录
+ */
+export function wxappLogin(data: AnyObject) {
+    if (uni.getStorageSync('pid')) {
+        data.pid = uni.getStorageSync('pid');
+    }
+    return request.post('wxapp/login', data, { showErrorMessage: false })
+}

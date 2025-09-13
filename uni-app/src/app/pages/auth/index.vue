@@ -1,7 +1,7 @@
 <template>
     <view class="w-screen h-screen" :style="themeColor()">
         <view class="w-screen h-screen" :style="warpStyle">
-            <!-- #ifdef MP-WEIXIN -->
+            <!-- #ifdef MP-WEIXIN || APP-PLUS -->
             <view :style="{'height':headerHeight}">
                 <top-tabbar :data="param" :scrollBool="topTabarObj.getScrollBool()" class="top-header" />
             </view>
@@ -16,7 +16,7 @@
                     </view>
                     <view v-else class="h-[90rpx] w-[300rpx]"></view>
                 </view>
-                <view class="text-[var(--text-color-light6)]] text-[28rpx] text-center leading-[34rpx] min-h-[34rpx] mt-[40rpx]">{{ loginConfig.desc }}</view> 
+                <view class="text-[var(--text-color-light6)]] text-[28rpx] text-center leading-[34rpx] min-h-[34rpx] mt-[40rpx]">{{ loginConfig.desc }}</view>
                 <view class="mt-[181rpx]">
                     <!-- #ifdef H5 -->
                     <!-- 微信公众号快捷登录，开启自动注册的情况下才能使用 -->
@@ -52,11 +52,11 @@
 
                     <!-- 手机号登录 -->
                     <view v-if="loginConfig.is_mobile" class="mb-[40rpx] w-full flex items-center justify-center">
-                        <!-- #ifdef H5 -->
+                        <!-- #ifndef MP -->
                         <button class="w-[630rpx] h-[88rpx] !mx-[0] !bg-[#fff] border-[var(--primary-color)] border-solid border-[2rpx] text-[26rpx] rounded-[44rpx] leading-[84rpx] !text-[var(--primary-color)]" @click="redirect({ url: '/app/pages/auth/login',param:{type:'mobile'}})">{{ t('mobileLogin') }}</button>
                         <!-- #endif -->
 
-                        <!-- #ifdef MP-WEIXIN -->
+                        <!-- #ifdef MP -->
                         <button v-if="authRegisterLogin && loginConfig.is_mobile"
                                 class="w-[630rpx] h-[88rpx] !mx-[0] !bg-[#fff] border-[var(--primary-color)] border-solid border-[2rpx] text-[26rpx] rounded-[44rpx] leading-[84rpx] !text-[var(--primary-color)]"
                                 @click="redirect({ url: '/app/pages/auth/login',param:{type:'mobile'}})">
@@ -272,7 +272,7 @@ const oneClickLogin = (callback: any = null, data: any = null) => {
 	    mask: true
 	});
     loginLoading.value = true
-	
+
     if (!callback) {
         callback = () => {
             loginLoading.value = false

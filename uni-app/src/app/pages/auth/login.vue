@@ -1,6 +1,6 @@
 <template>
     <view class="w-screen h-screen flex flex-col  " :style="themeColor()" v-if="type">
-        <!-- #ifdef MP-WEIXIN -->
+        <!-- #ifdef MP-WEIXIN || APP-PLUS -->
         <view :style="{'height':headerHeight}">
             <top-tabbar :data="param" :scrollBool="topTabarObj.getScrollBool()" class="top-header" />
         </view>
@@ -28,9 +28,12 @@
                                      class="!bg-transparent" :disabled="real_name_input" fontSize="26rpx"
                                      placeholderClass="!text-[var(--text-color-light9)] text-[26rpx]">
                                 <template #suffix>
+                                    <!-- #ifndef APP-PLUS -->
                                     <view @click="changePassword" v-if="formData.password">
-                                        <u-icon :name="isPassword?'eye-off':'eye-fill'" color="#b9b9b9" size="20"></u-icon>
+                                        <u-icon name="eye-off" color="#b9b9b9" size="20" v-if="isPassword"></u-icon>
+                                        <u-icon name="eye-fill" color="#b9b9b9" size="20" v-else></u-icon>
                                     </view>
+                                    <!-- #endif -->
                                 </template>
                             </u-input>
                         </u-form-item>
@@ -163,7 +166,7 @@ onLoad(async(option: any) => {
     // #ifdef MP-WEIXIN
     uni.getStorageSync('openid') && (Object.assign(formData, { weapp_openid: uni.getStorageSync('openid') }))
     // #endif
-	
+
     if (option.type) {
         if (option.type == 'mobile') {
             if (configStore.login.is_mobile) {
@@ -203,6 +206,12 @@ onLoad(async(option: any) => {
     } else {
         // 普通浏览器
         isShowQuickLogin.value = false;
+    }
+    // #endif
+
+    // #ifdef APP-PLUS
+    if (systemStore.appConfig.wechat_app_id) {
+        isShowQuickLogin.value = true;
     }
     // #endif
 })
@@ -300,6 +309,7 @@ const handleLogin = () => {
 }
 
 const toLink = () => {
+    // #ifndef APP-PLUS
     const pages = getCurrentPages(); // 获取页面栈
     if (pages.length > 1) {
         const currentPage = pages[pages.length - 2].route;
@@ -314,7 +324,17 @@ const toLink = () => {
     } else {
         redirect({ url: '/app/pages/auth/index', mode: 'redirectTo' })
     }
+    // #endif
 
+    // #ifdef APP-PLUS
+    useLogin().getAuthCode({
+        successCallback: () => {
+            if (!getToken()) {
+                redirect({ url: '/app/pages/auth/bind', param: { 'register_type': 'wechat' }, mode: 'redirectTo' })
+            }
+        }
+    })
+    // #endif
 }
 
 const toResetpwd = () =>{

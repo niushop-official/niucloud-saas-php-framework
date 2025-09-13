@@ -124,7 +124,7 @@ const checkIsVerifier = () => {
 }
 
 const scanCode = () => {
-    // #ifdef MP
+    // #ifndef H5
     uni.scanCode({
         onlyFromCamera: true,
         success: res => {
