@@ -45,16 +45,16 @@ export const useShare = () => {
         if (currRoute() == '' || currRoute().indexOf('app/pages/index/close') != -1 || currRoute().indexOf('app/pages/index/nosite') != -1) return;
 
         let queryStr = getQuery();
-
+        let h5Link = '';
         // #ifdef H5
-        let h5Link = location.origin + location.pathname + (queryStr.length > 0 ? '?' + queryStr.join('&') : '');
+        h5Link = location.origin + location.pathname + (queryStr.length > 0 ? '?' + queryStr.join('&') : '');
         wechatOptions = {
             link: h5Link
         }
         // #endif
         
         // #ifdef APP-PLUS
-        let h5Link = systemStore.site.wap_url + currShareRoute().path + (queryStr.length > 0 ? '?' + queryStr.join('&') : '');
+        h5Link = systemStore.site.wap_url + currShareRoute().path + (queryStr.length > 0 ? '?' + queryStr.join('&') : '');
         wechatOptions = {
             link: h5Link
         }
