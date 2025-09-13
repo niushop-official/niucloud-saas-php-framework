@@ -7,6 +7,9 @@
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
+        "compatible": {
+            "ignoreVersion": true
+        },
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
@@ -17,7 +20,16 @@
             "delay" : 0
         },
         /* 模块配置 */
-        "modules" : {},
+        "modules" : {
+            "Camera" : {},
+            "Barcode" : {},
+            "Contacts" : {},
+            "Geolocation" : {},
+            "Payment" : {},
+            "VideoPlayer" : {},
+            "Maps" : {},
+            "Share" : {}
+        },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
@@ -41,9 +53,34 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "android" ]
+                    }
+                },
+                "payment" : {
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "oauth" : {},
+                "maps" : {
+                    "tencent" : {
+                        "key" : ""
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "",
+                        "UniversalLinks" : ""
+                    }
+                }
+            }
         }
     },
     /* 快应用特有相关 */
