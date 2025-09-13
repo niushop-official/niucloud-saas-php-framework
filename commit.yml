@@ -3,30 +3,30 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid '789115d6009a09dc79d33016a247054501cb0c96'
-    oldFile: !uuid '52e63cfc30220b5fb70b177131390193f7b26338'
-  /niucloud/public:
-    newFile: !uuid '212bf38732fcb014ce2010f91603037df7a1d3e0'
-    oldFile: !uuid 'a6984078f59365b5e50efcd3b7e457b61c573ffa'
-  /niucloud/public/static:
-    newFile: !uuid 'd17e65a26a207a788f736792d60ab222c63b0718'
-    oldFile: !uuid '59cbdedfa8e4bf3a5d73986b2f8d87db0aedcfac'
-  /niucloud/public/static/resource:
-    newFile: !uuid 'c0142acd893a56fd336f4729b291b22277da0384'
-    oldFile: !uuid '5de5a9feaf758cd2cf617ae6b0dc13028f699f85'
-  /niucloud/public/static/resource/images:
-    newFile: !uuid 'eb5037691f7bfc9b08f6bc59f9d22e8fb21be6de'
-    oldFile: !uuid '67db8f6e257a075ec65b9e5a7fec694301d3567f'
-  /niucloud/public/static/resource/images/app:
-    newFile: !uuid '3e79dd22dc88e7a18664bcdf1803c23a9a772e51'
-    oldFile: !uuid '54ea77ddd347b7ae5da80ce9a6c82336f0a1038a'
-  /niucloud/public/static/resource/images/app/wechat_moments.png:
-    newFile: !uuid 'd0da84c5b0a64896051aef62260fd55d46863140'
-    oldFile: null
-  /niucloud/public/static/resource/images/version_update_bg.png:
-    newFile: !uuid '4059e075258b3b6d17fa4d0092223d68c9becd98'
-    oldFile: null
-gitCommitId: !uuid '934d7c6dba5437f20acdde373f4c0ceb0c47d0c2'
+    newFile: !uuid '6df9ef63b83535cb6b695a5d04ab8b5894a988d7'
+    oldFile: !uuid '789115d6009a09dc79d33016a247054501cb0c96'
+  /niucloud/config:
+    newFile: !uuid 'c829b2dcd8fd6cb457253f8e680de971934ea6c2'
+    oldFile: !uuid 'c8965f48239d3ed1d9cba7c1f76ea7c2c420e41e'
+  /niucloud/config/version.php:
+    newFile: !uuid 'dcb62083109703bf859d867cc259fd3f2a97b8e0'
+    oldFile: !uuid '4819e28957cd41c82031d501673cac092018bcfc'
+  /uni-app:
+    newFile: !uuid 'f9c992253e35a36752b92052508ffd8db726aef4'
+    oldFile: !uuid '1a97a268af36a8030846cd155384b070248ea7a8'
+  /uni-app/package-lock.json:
+    newFile: !uuid '574a08b350e42ad47195ed4b9780b6cbaa8970d4'
+    oldFile: !uuid '6beed264c1c64e59753ca2c79788e655863764ec'
+  /uni-app/src:
+    newFile: !uuid '7393175b56e0f692ef5e80ffef6b2d3b2d1a0a8a'
+    oldFile: !uuid '1eb7e792a4d175baa83deacd23bf0d78971891cf'
+  /uni-app/src/hooks:
+    newFile: !uuid 'f774fc7b590346235836c993f2bb362b0ca76f81'
+    oldFile: !uuid '886c4f31fa44a234069765dd0880c6071a328fda'
+  /uni-app/src/hooks/useShare.ts:
+    newFile: !uuid '5f09abb6366f90e07cd5a32cc20324eabfa29ba1'
+    oldFile: !uuid '955944ac6a368926fb5ab8ebf70da888fa4f6ee9'
+gitCommitId: !uuid '5f9ff5bfbe2d3397251c97ceac80cd27064eef19'
 renames: {
   }
-revisionId: 361
+revisionId: 362
