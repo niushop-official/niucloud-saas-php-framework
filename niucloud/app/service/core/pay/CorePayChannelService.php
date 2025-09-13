@@ -14,6 +14,7 @@ namespace app\service\core\pay;
 
 use app\dict\pay\PayDict;
 use app\model\pay\PayChannel;
+use app\service\core\channel\CoreAppService;
 use app\service\core\weapp\CoreWeappConfigService;
 use app\service\core\wechat\CoreWechatConfigService;
 use core\base\BaseCoreService;
@@ -124,10 +125,15 @@ class CorePayChannelService extends BaseCoreService
         //查询公众号配置
         $core_weapp_config_service = new CoreWeappConfigService();
         $mini_app_id = $core_weapp_config_service->getWeappConfig($site_id)[ 'app_id' ];//小程序appid
+        // 查询微信移动应用配置
+        $core_app_service = new CoreAppService();
+        $app_id = $core_app_service->getConfig($site_id)['wechat_app_id'] ?? ''; //App appid
+
         //todo  查询微信小程序 appid  .  应用appid.....
         return [
             'mp_app_id' => $mp_app_id,
-            'mini_app_id' => $mini_app_id
+            'mini_app_id' => $mini_app_id,
+            'app_id' => $app_id
             //............
         ];
     }

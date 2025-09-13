@@ -24,6 +24,7 @@ return [
     'ADD_FAIL' => '添加失败',
     'ADD_SUCCESS' => '添加成功',
     'UPLOAD_FAIL' => '上传失败',
+    'RELEASE_SUCCESS' => '发布成功',
     'ATTACHMENT_DELETE_FAIL' => '附件删除失败',
     'DATA_NOT_EXIST' => '数据不存在',
     'DOWNLOAD_FAIL' => '下载失败',
@@ -205,6 +206,7 @@ return [
     //海报
     'POSTER_NOT_EXIST' => '海报不存在',
     'POSTER_IN_USE_NOT_ALLOW_MODIFY' => '海报使用中禁止修改状态',
+    'POSTER_CREATE_ERROR' => '海报组件未配置完善,请联系管理员',
 
     //万能表单
     'DIY_FORM_NOT_EXIST' => '表单不存在',

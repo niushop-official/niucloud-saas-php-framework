@@ -66,6 +66,17 @@ class CoreH5Service extends BaseCoreService
                         ]
                     ]
                 ]
+            ],
+            "app-plus" => [
+                "distribute" => [
+                    "sdkConfigs" => [
+                        "maps" => [
+                            "tencent" => [
+                                "key" => $map_key
+                            ]
+                        ]
+                    ]
+                ]
             ]
         ]);
     }

@@ -11,7 +11,9 @@
 
 namespace app\service\api\sys;
 
+use app\service\core\channel\CoreAppService;
 use app\service\core\sys\CoreSysConfigService;
+use app\service\core\weapp\CoreWeappConfigService;
 use core\base\BaseApiService;
 
 /**
@@ -60,4 +62,11 @@ class ConfigService extends BaseApiService
         return (new CoreSysConfigService())->getMap($this->site_id);
     }
 
+    public function getAppConfig() {
+        $config = (new CoreAppService())->getConfig($this->site_id);
+        if (!empty($config) && isset($config['wechat_app_secret'])) unset($config['wechat_app_secret']);
+        $weapp_config = (new CoreWeappConfigService())->getWeappConfig($this->site_id);
+        $config['weapp_original'] = $weapp_config['weapp_original'];
+        return $config;
+    }
 }

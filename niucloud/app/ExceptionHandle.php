@@ -121,7 +121,7 @@ class ExceptionHandle extends Handle
         }
     }
 
-    private function handleException(\Exception $e) {
+    private function handleException(Throwable $e) {
         $trace = array_map(function ($class){
             return str_replace('\\', '/', $class);
         }, array_column($e->getTrace(), 'class'));
@@ -132,6 +132,8 @@ class ExceptionHandle extends Handle
             }
         }
 
-        return fail("{$trace[0]}第{$e->getLine()}行出现异常，异常信息：" .$e->getMessage());
+        $debug = env("APP_DEBUG", false);
+
+        return fail("{$trace[0]}第{$e->getLine()}行出现异常，异常信息：" .$e->getMessage(), $debug ? $e->getTrace() : []);
     }
 }

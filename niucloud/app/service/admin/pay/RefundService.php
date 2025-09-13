@@ -35,7 +35,11 @@ class RefundService extends BaseAdminService
      */
     public function getPage(array $where){
         $field = 'id,refund_no,out_trade_no,type,channel,money,reason,status,create_time,refund_time,close_time,fail_reason,voucher,trade_type,trade_id,refund_type,main_type,main_id';
-        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])->withSearch([ 'create_time', 'out_trade_no', 'refund_no', 'status' ], $where)->field($field)->append([ 'type_name', 'status_name' ])->order('create_time desc');
+        $search_model = $this->model->where([ [ 'site_id', '=', $this->site_id ] ])
+            ->withSearch([ 'create_time', 'out_trade_no', 'refund_no', 'status' ], $where)
+            ->field($field)
+            ->append([ 'type_name', 'status_name','trade_type_name' ])
+            ->order('create_time desc');
         return $this->pageQuery($search_model);
     }
 

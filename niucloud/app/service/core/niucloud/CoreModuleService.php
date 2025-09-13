@@ -49,6 +49,7 @@ class CoreModuleService extends BaseNiucloudClient
             'secret' => $this->secret,
             'labels' => [ $label_id ],
             'order_field' => 'sale_num desc, visit_num desc',
+            'recommend_type'=>'PHP'
         ];
         return $this->httpGet('store/saas/app', $params);
     }
@@ -58,6 +59,7 @@ class CoreModuleService extends BaseNiucloudClient
         $params = [
             'code' => $this->code,
             'secret' => $this->secret,
+            'recommend_type'=>'PHP'
         ];
         return $this->httpGet('promotion_adv', $params);
     }

@@ -7,9 +7,11 @@ use app\dict\sys\SmsDict;
 use app\service\core\http\HttpHelper;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
+use core\base\BaseCoreService;
 
-class CoreNiuSmsService extends BaseAdminService
+class CoreNiuSmsService extends BaseCoreService
 {
+
     /*************************牛云短信处理****************************/
     private const PACKAGE_LIST_URL = '/niusms/packages';
     private const SEND_CODE_URL = '/niusms/send';
@@ -43,7 +45,7 @@ class CoreNiuSmsService extends BaseAdminService
     private const ORDER_STATUS_URL = '/niusms/order/status/%s/%s';
 
     private $niushop_url_prefix = null;
-
+    public $site_id = null;
     /**
      * @throws \Exception
      */
@@ -58,6 +60,11 @@ class CoreNiuSmsService extends BaseAdminService
         }
     }
 
+    public function setSiteId(string $site_id){
+        $this->site_id = $site_id;
+        return $this;
+    }
+
     /**
      * 设置账号缓存
      * @param $params
@@ -65,7 +72,7 @@ class CoreNiuSmsService extends BaseAdminService
      */
     public function setNiuLoginConfig($params, $is_login = false)
     {
-        $config = $this->getNiuLoginConfig(true);
+        $config = $this->setSiteId($this->site_id)->getNiuLoginConfig(true);
         $config['default'] = $params['default'] ?? ($config['default'] ?? "");
         $config[SmsDict::NIUSMS] = [
             'username' => $params['username'] ?? $config[SmsDict::NIUSMS]['username'] ?? "",
@@ -151,7 +158,7 @@ class CoreNiuSmsService extends BaseAdminService
     {
         $url = $this->niushop_url_prefix . sprintf(self::ACCOUNT_INFO_URL, $username);
         $res = (new HttpHelper())->get($url);
-        $config = $this->getNiuLoginConfig();
+        $config = $this->setSiteId($this->site_id)->getNiuLoginConfig();
         if ($config['username'] == $res['username']) {
             $res['signature'] = $config['signature'] ?? "";
         }

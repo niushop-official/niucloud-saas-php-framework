@@ -15,6 +15,7 @@ namespace app\service\core\notice;
 use app\job\notice\Notice;
 use app\model\sys\SysNotice;
 use core\base\BaseCoreService;
+use core\exception\NoticeException;
 use think\facade\Log;
 
 
@@ -50,7 +51,7 @@ class NoticeService extends BaseCoreService
             return Notice::dispatch(['site_id' => $site_id, 'key' => $key, 'data' => $data, 'template' => $template], is_async: $template['async']);
 
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new NoticeException($e->getMessage());
         }
     }
 }

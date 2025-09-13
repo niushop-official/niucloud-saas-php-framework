@@ -38,7 +38,7 @@ trait WapTrait
         $content .= "           <view v-show=\"component.componentIsShow\"\n";
         $content .= "               @click=\"diyStore.changeCurrentIndex(index, component)\"\n";
         $content .= "               :class=\"diyGroup.getComponentClass(index,component)\" :style=\"component.pageStyle\">\n";
-        $content .= "                <view class=\"relative\" :style=\"{ marginTop : component.margin.top < 0 ? (component.margin.top * 2) + 'rpx' : '0' }\">\n";
+        $content .= "                <view class=\"relative\" :style=\"{ marginTop : component.margin.top < 0 ? (component.margin.top * 2) + 'rpx' : '0', marginBottom : component.margin.bottom < 0 ? (component.margin.bottom * 2) + 'rpx' : '0' }\">\n";
         $content .= "                   <!-- 装修模式下，设置负上边距后超出的内容，禁止选中设置 -->\n";
         $content .= "                    <view v-if=\"diyGroup.isShowPlaceHolder(index,component)\" class=\"absolute w-full z-1\" :style=\"{ height : (component.margin.top * 2 * -1) + 'rpx' }\" @click.stop=\"diyGroup.placeholderEvent\"></view>\n";
 
@@ -337,7 +337,6 @@ trait WapTrait
     {
         $manifest_json = str_replace('/', DIRECTORY_SEPARATOR, $compile_path . 'src/manifest.json');
         $manifest_content = $this->jsonStringToArray(file_get_contents($manifest_json));
-
         ( new CoreAddonBaseService() )->writeArrayToJsonFile(array_merge2($manifest_content, $merge_data), $manifest_json);
     }
 
@@ -348,8 +347,7 @@ trait WapTrait
      */
     private function jsonStringToArray($string)
     {
-        $list = explode(PHP_EOL, $string);
-
+        $list = explode("\n", $string);
         $json_array = [];
         foreach ($list as $index => $item) {
             if (strpos($item, '/*') === false) {

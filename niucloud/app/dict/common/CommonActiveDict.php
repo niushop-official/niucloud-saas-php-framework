@@ -73,7 +73,7 @@ class CommonActiveDict
                 'bg_color' => '#FF1C77'
             ],
         ];
-        return !empty($active) ? $data[$active] : $data;
+        return !empty($active) ? $data[$active] ?? [] : $data;
     }
 
     // 活动背景特效

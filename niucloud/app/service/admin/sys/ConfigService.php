@@ -135,6 +135,7 @@ class ConfigService extends BaseAdminService
     {
         $data = [
             'key' => $value[ 'key' ],
+            'amap_key' => $value['amap_key'],
             'is_open' => $value[ 'is_open' ], // 是否开启定位
             'valid_time' => $value[ 'valid_time' ] // 定位有效期/分钟，过期后将重新获取定位信息，0为不过期
         ];
@@ -154,6 +155,7 @@ class ConfigService extends BaseAdminService
             $info = [];
             $info[ 'value' ] = [
                 'key' => '',
+                'amap_key' => '',
                 'is_open' => 1, // 是否开启定位
                 'valid_time' => 5 // 定位有效期/分钟，过期后将重新获取定位信息，0为不过期
             ];
@@ -161,6 +163,8 @@ class ConfigService extends BaseAdminService
 
         $info[ 'value' ][ 'is_open' ] = $info[ 'value' ][ 'is_open' ] ?? 1;
         $info[ 'value' ][ 'valid_time' ] = $info[ 'value' ][ 'valid_time' ] ?? 5;
+        $info[ 'value' ][ 'amap_key' ] = $info[ 'value' ][ 'amap_key' ] ?? '';
+
         return $info[ 'value' ];
     }
 

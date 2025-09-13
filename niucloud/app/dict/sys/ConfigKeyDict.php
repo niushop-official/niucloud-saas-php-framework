@@ -40,4 +40,6 @@ class ConfigKeyDict
 
     public const SMS = 'SMS';//短信配置
     public const PINTUAN_ORDER_CONFIG = 'PINTUAN_ORDER_CONFIG';//拼团订单配置
+
+    public const APP = 'app';
 }

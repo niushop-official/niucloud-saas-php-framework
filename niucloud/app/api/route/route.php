@@ -68,6 +68,12 @@ Route::group(function () {
     // 通过外部交易号获取消息跳转路径
     Route::get('weapp/getMsgJumpPath', 'weapp.Weapp/getMsgJumpPath');
 
+    // app通过wx code登录
+    Route::post('wxapp/login', 'channel.App/wechatLogin');
+
+    // 获取App新的版本
+    Route::get('app/newversion', 'channel.App/getNewVersion');
+
     //登录
     Route::get('login', 'login.Login/login');
     //第三方绑定
@@ -148,6 +154,7 @@ Route::group(function () {
     Route::get('task/growth', 'sys.Task/growth');
     // 获取积分任务
     Route::get('task/point', 'sys.Task/point');
+
 })->middleware(ApiChannel::class)
     ->middleware(ApiCheckToken::class)
     ->middleware(ApiLog::class);

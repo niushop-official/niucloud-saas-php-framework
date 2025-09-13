@@ -35,6 +35,10 @@ class FileDict
 
     public const EXCEL = 'excel';//excel导入
 
+    public const APP_PACKAGE = 'app_package';//应用包
+
+    public const ANDROID_CERT = 'android_cert';//android证书
+
     /**
      * 附件类型
      * @return array
@@ -76,6 +80,8 @@ class FileDict
             self::AUDIO,//视频上传
             self::APPLET,//小程序包上传
             self::EXCEL,//excel导入
+            self::APP_PACKAGE,//应用包
+            self::ANDROID_CERT,//android证书
         ];
     }
 

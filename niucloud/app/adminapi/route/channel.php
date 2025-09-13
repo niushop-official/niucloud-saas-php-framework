@@ -29,6 +29,29 @@ Route::group('channel', function () {
     //设置微信配置
     Route::put('pc/config', 'channel.Pc/set');
 
+    /***************************************************** app端 ****************************************************/
+    Route::get('app/config', 'channel.App/get');
+    //设置手机端配置
+    Route::put('app/config', 'channel.App/set');
+    // 获取app版本列表
+    Route::get('app/version', 'channel.App/versionList');
+    // 获取app版本详情
+    Route::get('app/version/:id', 'channel.App/versionInfo');
+    // 添加app版本
+    Route::post('app/version', 'channel.App/add');
+    // 编辑app版本
+    Route::put('app/version/:id', 'channel.App/edit');
+    // 删除app版本
+    Route::delete('app/version/:id', 'channel.App/del');
+    // 获取app平台
+    Route::get('app/platfrom', 'channel.App/appPlatform');
+    // 获取app生成日志
+    Route::get('app/build/log/:key', 'channel.App/buildLog');
+    // 发布
+    Route::put('app/version/:id/release', 'channel.App/release');
+    // 生成证书
+    Route::post('app/generate_sing_cert', 'channel.App/generateSingCert');
+
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

@@ -56,6 +56,9 @@ class Index extends BaseInstall
             //sodium
             $sodium = extension_loaded('sodium');
             $system_variables[] = [ "name" => "sodium", "need" => "开启", "status" => $sodium ];
+            //imagick
+            $imagick = extension_loaded('imagick');
+            $system_variables[] = [ "name" => "imagick", "need" => "开启", "status" => $imagick ];
 
             $root_path = str_replace("\\", DIRECTORY_SEPARATOR, dirname(__FILE__, 4));
             $root_path = str_replace("../", DIRECTORY_SEPARATOR, $root_path);
@@ -88,7 +91,7 @@ class Index extends BaseInstall
             $this->assign("name", $name);
             $this->assign("verison", $verison);
             $this->assign("dirs_list", $dirs_list);
-            if ($verison && $pdo && $curl && $openssl && $gd && $fileinfo && $is_dir) {
+            if ($verison && $pdo && $curl && $openssl && $gd && $fileinfo && $is_dir && $imagick) {
                 $continue = true;
             } else {
                 $continue = false;

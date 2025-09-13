@@ -33,7 +33,7 @@ class NiuSmsService extends BaseAdminService
     {
         parent::__construct();
         $this->template_model = new NiuSmsTemplate();
-        $this->niu_service = new CoreNiuSmsService();
+        $this->niu_service = (new CoreNiuSmsService())->setSiteId($this->site_id);
     }
 
     public function enableNiuSms($enable)
@@ -102,7 +102,11 @@ class NiuSmsService extends BaseAdminService
      */
     public function registerAccount($data)
     {
-        $data['imgUrl'] = !empty($data['imgUrl']) ? request()->domain() . "/" . $data['imgUrl'] : "";
+        if (!empty($data['imgUrl']) && strstr($data['imgUrl'], 'http') === false) {
+            $data['imgUrl'] = request()->domain() . "/" . $data['imgUrl'];
+        } else {
+            $data['imgUrl'] = $data['imgUrl'] ?? '';
+        }
         $res = $this->niu_service->registerAccount($data);
         return $res;
     }
@@ -116,7 +120,7 @@ class NiuSmsService extends BaseAdminService
     {
         $account_info = $this->niu_service->loginAccount($params);
         if ($account_info) {
-            (new CoreNiuSmsService())->setNiuLoginConfig($params,true);
+            (new CoreNiuSmsService())->setNiuLoginConfig($params, true);
         }
         return $account_info;
     }
@@ -229,7 +233,11 @@ class NiuSmsService extends BaseAdminService
      */
     public function signCreate($username, $params)
     {
-        $params['imgUrl'] = !empty($params['imgUrl']) ? request()->domain() . "/" . $params['imgUrl'] : "";
+        if (!empty($params['imgUrl']) && strstr($params['imgUrl'], 'http') === false) {
+            $params['imgUrl'] = request()->domain() . '/' . $params['imgUrl'];
+        } else {
+            $params['imgUrl'] = $params['imgUrl'] ?? '';
+        }
         $res = $this->niu_service->signCreate($username, $params);
         if (!empty($res['failList'])) {
             throw new AdminException($res['failList'][0]['msg']);
@@ -391,9 +399,9 @@ class NiuSmsService extends BaseAdminService
             $audit_status = $report_info['audit_status'] ?? NoticeTypeDict::TEMPLATE_AUDIT_STATUS_NOT_REPORT;
             $error_status = '';
             if (!empty($report_info) && $variable != $params_json) {
-                if (empty($params_json)){
+                if (empty($params_json)) {
                     $error_status = NoticeTypeDict::TEMPLATE_NEED_PULL;
-                }else{
+                } else {
                     $error_status = $audit_status == NoticeTypeDict::TEMPLATE_AUDIT_STATUS_PASS
                         ? NoticeTypeDict::TEMPLATE_AUDIT_STATUS_NEED_AGAIN_REPORT
                         : NoticeTypeDict::TEMPLATE_AUDIT_STATUS_NEED_EDIT;

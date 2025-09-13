@@ -12,7 +12,7 @@ class WechatQrcodeListener extends BaseNoticeTemplate
 
     public function handle(array $params)
     {
-        if ('wechat' == $params['channel'] || $params['channel'] == 'h5') {
+        if ('wechat' == $params['channel'] || $params['channel'] == 'h5' || $params['channel'] == 'app') {
             $page = $params['page'];
             $url = $params['url'];
             $data = $params['data'];

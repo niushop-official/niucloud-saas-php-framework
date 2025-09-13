@@ -262,7 +262,7 @@ return [
                         'methods' => 'get',
                         'sort' => '70',
                         'status' => '1',
-                        'is_show' => '0',
+                        'is_show' => '1',
                         'children' => [
                             [
                                 'menu_name' => '新增',

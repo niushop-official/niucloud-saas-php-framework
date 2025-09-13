@@ -73,6 +73,22 @@ $system = [
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ],
             'size' => 10485760
+        ],
+        'app_package' => [
+            'ext' => ['apk', 'wgt'],
+            'mime' => [
+                'application/vnd.android.package-archive',
+                'application/vnd.wap.wgt'
+            ],
+            'size' => 104857600
+        ],
+        'android_cert' => [
+            'ext' => ['jks'],
+            'mime' => [
+                'application/octet-stream',
+                'application/x-java-keystore'
+            ],
+            'size' => 2097152
         ]
     ],
     'thumb' => [

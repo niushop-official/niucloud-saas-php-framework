@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace core\poster;
 
+use core\exception\CommonException;
 use Kkokk\Poster\Facades\Poster as PosterInstance;
 
 class Poster extends BasePoster
@@ -34,6 +35,9 @@ class Poster extends BasePoster
      */
     public function createPoster(array $poster_data, string $dir, string $file_path)
     {
+        if (!extension_loaded('imagick')){
+            throw new CommonException('海报组件未配置完善,请联系管理员');//POSTER_CREATE_ERROR
+        }
         $bg_type = $poster_data[ 'global' ][ 'bgType' ];
         $instance = PosterInstance::extension('imagick')->config([
             'path' => realpath($dir) . DIRECTORY_SEPARATOR . $file_path,

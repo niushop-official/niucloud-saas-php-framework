@@ -35,7 +35,7 @@ class ShowAppListener
                     'desc' => '管理核销员及核销记录',
                     'icon' => 'static/resource/images/marketing/verifier.png',
                     'key' => 'verify',
-                    'url' => '/marketing/verifier',
+                    'url' => '/marketing/verify/index',
                 ],
                 [
                     'title' => '万能表单',

@@ -18,6 +18,7 @@ use app\service\api\member\MemberLevelService;
 use app\service\api\member\MemberService;
 use app\service\api\site\SiteService;
 use app\service\api\sys\ConfigService;
+use app\service\core\sys\CoreSysConfigService;
 use core\base\BaseApiController;
 use think\Response;
 
@@ -83,13 +84,17 @@ class Config extends BaseApiController
             [ 'openid', '' ]
         ]);
 
+        $config_service = new ConfigService();
+
         $res = [];
         $res[ 'tabbar_list' ] = ( new DiyConfigService() )->getBottomList();
-        $res[ 'map_config' ] = ( new ConfigService() )->getMap();
+        $res[ 'map_config' ] = $config_service->getMap();
         $res[ 'site_info' ] = ( new SiteService() )->getSiteCache();
+        $res[ 'site_info' ]['wap_url'] = $config_service->getSceneDomain()['wap_url'];
         $res[ 'member_level' ] = ( new MemberLevelService() )->getList();
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
         $res[ 'theme_list' ] = ( new DiyService() )->getDiyTheme();
+        $res[ 'app_config' ] = $config_service->getAppConfig();
 
         $openid_field = match ( $this->request->getChannel() ) {
             'wechat' => 'wx_openid',
