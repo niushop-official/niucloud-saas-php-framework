@@ -2,8 +2,10 @@ import {defineConfig} from 'vite'
 import uni from '@dcloudio/vite-plugin-uni'
 import WindiCSS from 'vite-plugin-windicss'
 import MiniProgramTailwind from '@dcasia/mini-program-tailwind-webpack-plugin/rollup'
+import UniLayouts from '@uni-helper/vite-plugin-uni-layouts'
 
 const plugins = [
+    UniLayouts(),
     uni(),
     WindiCSS({
         scan: {
