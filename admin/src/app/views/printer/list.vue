@@ -129,7 +129,7 @@ const modifyPrinterStatusEvent = (printer_id: any, status: any) => {
         printer_id,
         status
     }).then((res) => {
-        loadPrinterList()
+        loadPrinterList(getTablePageStorage(printerTable.searchParam).page)
         isRepeat.value = false
     })
 }
@@ -163,7 +163,7 @@ const deleteEvent = (id: number) => {
         if (repeat.value) return
         repeat.value = true
         deletePrinter(id).then(() => {
-            loadPrinterList()
+            loadPrinterList(getTablePageStorage(printerTable.searchParam).page)
             repeat.value = false
         }).catch(() => {
             repeat.value = false
@@ -214,7 +214,7 @@ const refreshTokenEvent = (printer_id: any) => {
         if (repeat.value) return
         repeat.value = true
         refreshPrinterToken(printer_id).then((res: any) => {
-            loadPrinterList()
+            loadPrinterList(getTablePageStorage(printerTable.searchParam).page)
             repeat.value = false
         }).catch(() => {
             repeat.value = false

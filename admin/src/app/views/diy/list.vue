@@ -256,7 +256,7 @@ const editEvent = (data: any) => {
 // 设为使用
 const setUse = (id: any) => {
     setUseDiyPage({ id }).then(() => {
-        loadDiyPageList()
+        loadDiyPageList(getTablePageStorage(diyPageTableData.searchParam).page)
     })
 }
 const repeat = ref(false)
@@ -275,7 +275,7 @@ const copyEvent = (id: any) => {
 
         copyDiy({ id }).then((res: any) => {
             if (res.code == 1) {
-                loadDiyPageList()
+                loadDiyPageList(getTablePageStorage(diyPageTableData.searchParam).page)
             }
             repeat.value = false
         }).catch(err => {
@@ -294,7 +294,7 @@ const deleteEvent = (id: number) => {
         }
     ).then(() => {
         deleteDiyPage(id).then(() => {
-            loadDiyPageList()
+            loadDiyPageList(getTablePageStorage(diyPageTableData.searchParam).page)
         }).catch(() => {
         })
     })
@@ -358,7 +358,7 @@ const shareEvent = async (formEl: FormInstance | undefined) => {
                 id: shareFormId.value,
                 share: JSON.stringify(shareFormData)
             }).then(() => {
-                loadDiyPageList()
+                loadDiyPageList(getTablePageStorage(diyPageTableData.searchParam).page)
                 shareDialogVisible.value = false
             }).catch(() => {
             })

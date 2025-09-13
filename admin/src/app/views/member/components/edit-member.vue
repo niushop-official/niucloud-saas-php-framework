@@ -121,7 +121,7 @@ const formRules = computed(() => {
                     if (!value) return callback()
 
                     // 非空值时，验证身份证号格式
-                    const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+                    const reg = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
                     if (!reg.test(value)) {
                         callback(new Error('请输入正确的身份证号'))
                     } else {

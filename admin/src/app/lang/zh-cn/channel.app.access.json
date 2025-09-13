@@ -1,0 +1,13 @@
+{
+	"accessFlow": "接入流程",
+	"versionManage": "版本管理",
+	"title": "APP端管理",
+	"appInlet": "App接入流程",
+	"uniappApp": "uni-app应用开通",
+	"appAttestation1": "点击进入Dcloud官网开发者后台,创建或选择应用并维护好应用平台信息",
+	"clickAccess": "点击接入",
+	"appSetting": "App端配置",
+	"settingInfo": "点击配置",
+	"releaseVersion": "发布版本",
+	"toCreate": "去创建"
+}

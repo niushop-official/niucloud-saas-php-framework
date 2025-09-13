@@ -6,7 +6,7 @@
             <template v-if="Object.keys(marketingList).length">
 
                 <template v-for="(item, index) in marketingList" :key="index + 'b'">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center" v-if="item.list.length > 0">
                         <span class="text-page-title">{{ item.title }}</span>
                     </div>
 

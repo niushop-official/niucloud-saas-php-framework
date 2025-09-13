@@ -185,7 +185,7 @@
                                                 <el-slider v-model="diyStore.editComponent.margin.top" show-input size="small" :min="-100" class="ml-[10px] diy-nav-slider" />
                                             </el-form-item>
                                             <el-form-item :label="t('marginBottom')" v-if="diyStore.editComponent.ignore.indexOf('marginBottom') == -1">
-                                                <el-slider v-model="diyStore.editComponent.margin.bottom" show-input size="small" class="ml-[10px] diy-nav-slider" />
+                                                <el-slider v-model="diyStore.editComponent.margin.bottom" show-input size="small" class="ml-[10px] diy-nav-slider"  :min="-100" />
                                             </el-form-item>
                                             <el-form-item :label="t('marginBoth')" v-if="diyStore.editComponent.ignore.indexOf('marginBoth') == -1">
                                                 <el-slider v-model="diyStore.editComponent.margin.both" show-input size="small" class="ml-[10px] diy-nav-slider" />

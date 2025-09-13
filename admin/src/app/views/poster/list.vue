@@ -225,7 +225,7 @@ const modifyPosterStatusFn = (id:any, status:any) => {
     modifyPosterStatus({
         id, status
     }).then((res) => {
-        loadPosterPageList()
+        loadPosterPageList(getTablePageStorage(posterTableData.searchParam).page)
         isRepeat.value = false
     })
 }
@@ -237,7 +237,7 @@ const modifyPosterDefaultFn = (id:any) => {
     modifyPosterDefault({
         id
     }).then((res) => {
-        loadPosterPageList()
+        loadPosterPageList(getTablePageStorage(posterTableData.searchParam).page)
         isRepeat.value = false
     })
 }
@@ -254,7 +254,7 @@ const deleteEvent = (id: number) => {
         if (isRepeat.value) return
         isRepeat.value = true
         deletePoster(id).then(() => {
-            loadPosterPageList()
+            loadPosterPageList(getTablePageStorage(posterTableData.searchParam).page)
             isRepeat.value = false
         }).catch(() => {
             isRepeat.value = false

@@ -147,7 +147,7 @@ const deleteEvent = (id: number) => {
         }
     ).then(() => {
         deleteMemberLevel(id).then(() => {
-            loadMemberLevelList()
+            loadMemberLevelList(getTablePageStorage(memberLevelTableData.searchParam).page);
         }).catch(() => {
         })
     })

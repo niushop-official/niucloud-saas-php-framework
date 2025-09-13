@@ -1,0 +1,17 @@
+{
+    "wechatAppInfo": "微信应用信息",
+    "wechatAppid": "微信移动应用AppID",
+    "wechatAppidTips": "用于app端 微信登录 微信支付 微信分享",
+    "wechatAppsecret": "微信移动应用AppSecret",
+    "appidPlaceholder": "请输入AppID",
+    "appSecretPlaceholder": "请输入AppSecret",
+    "appInfo": "应用信息",
+    "uniAppId": "uniapp应用id",
+    "uniAppIdTips": "uniapp应用id需在Dcloud开发者中心创建",
+    "toCreate": "前往Dcloud官网",
+    "appName": "应用名称",
+    "applicationId": "安卓应用包名",
+    "applicationIdTips": "安卓应用的包名是Android系统中用于唯一标识应用的字符串，采用反向域名格式（如com.example.myapp）。每个应用在系统中拥有唯一的包名，用于区分不同应用",
+    "androidAppKey": "安卓离线打包Key",
+    "androidAppKeyTips": "安卓离线打包Key在Dcloud开发者中心 - 应用管理 - 点击应用 - 各平台信息 创建以及查看离线AppKey"
+}

@@ -23,6 +23,10 @@ const prop = defineProps({
     api: {
         type: String,
         default: 'sys/document/document'
+    },
+    accept: {
+        type: String,
+        default: '.doc,.docx,.xml,.txt,.pem,.zip,.rar,.7z,.crt,.key,.xls,.xlsx'
     }
 })
 
@@ -37,23 +41,27 @@ const value = computed({
     }
 })
 
-const upload: Record<string, any> = {
-    action: `${import.meta.env.VITE_APP_BASE_URL}/${prop.api}`,
-    showFileList: false,
-    headers: {},
-    accept: '.doc,.docx,.xml,.txt,.pem,.zip,.rar,.7z,.crt,.key,.xls,.xlsx',
-    onSuccess: (response: any, uploadFile: UploadFile) => {
-        if (response.code != undefined && response.code != 1) {
-            ElMessage({ message: response.msg, type: 'error' })
-            return
-        }
-        value.value = response.data.url
-        ElMessage({ message: t('upload.success'), type: 'success' })
-    }
-}
-upload.headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-upload.headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+const upload = computed(() => {
+    const headers: Record<string, any> = {}
+    headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+    headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+    const baseURL = import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.meta.env.VITE_APP_BASE_URL : `${import.meta.env.VITE_APP_BASE_URL}/`
 
+    return {
+        action: `${baseURL}${prop.api}`,
+        showFileList: false,
+        accept: prop.accept,
+        headers,
+        onSuccess: (response: any, uploadFile: UploadFile) => {
+            if (response.code != undefined && response.code != 1) {
+                ElMessage({ message: response.msg, type: 'error' })
+                return
+            }
+            value.value = response.data.url
+            ElMessage({ message: t('upload.success'), type: 'success' })
+        }
+    }
+})
 </script>
 
 <style lang="scss">

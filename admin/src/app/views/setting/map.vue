@@ -10,7 +10,11 @@
                 <el-form-item :label="t('mapKey')" prop="key">
                     <el-input v-model.trim="formData.key" class="input-width" clearable />
                     <span class="ml-2 cursor-pointer tutorial-btn" @click="tutorialFn">{{ t('clickTutorial') }}</span>
-                    <span class="ml-2 cursor-pointer secret-btn" @click="secretFn">{{ t('clickSecretKey') }}</span>
+                    <span class="ml-2 cursor-pointer secret-btn" @click="secretFn('https://lbs.qq.com/dev/console/key/manage')">{{ t('clickSecretKey') }}</span>
+                </el-form-item>
+                <el-form-item :label="t('aMapKey')" prop="key">
+                    <el-input v-model.trim="formData.amap_key" class="input-width" clearable />
+                    <span class="ml-2 cursor-pointer secret-btn" @click="secretFn('https://lbs.amap.com/')">{{ t('clickSecretKey') }}</span>
                 </el-form-item>
                 <el-form-item :label="t('isOpen')" prop="is_open">
                     <el-switch v-model="formData.is_open" :active-value="1" :inactive-value="0" />
@@ -42,6 +46,7 @@ const loading = ref(true)
 const formRef = ref<FormInstance>()
 const formData = reactive({
     key: '',
+    amap_key: '',
     is_open: 0,
     valid_time: 0
 })
@@ -107,8 +112,8 @@ const tutorialFn = () => {
 /**
  * 点击访问腾讯地图
  */
-const secretFn = () => {
-    window.open('https://lbs.qq.com/dev/console/key/manage')
+const secretFn = (url: string) => {
+    window.open(url)
 }
 </script>
 

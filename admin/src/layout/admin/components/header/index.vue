@@ -32,7 +32,7 @@
                 <!-- 面包屑导航 -->
                 <div class="flex items-center h-full pl-[10px] hidden-xs-only">
                     <el-breadcrumb separator="/">
-                        <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index">{{route.meta.title }}</el-breadcrumb-item>
+                        <el-breadcrumb-item v-for="(route, index) in breadcrumb" :key="index" :to="route.path" class="inter">{{route.meta.title }}</el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
             </div>

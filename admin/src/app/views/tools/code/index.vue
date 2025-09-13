@@ -328,7 +328,7 @@ const deleteEvent = (id: number) => {
         }
     ).then(() => {
         deleteGenerateTable(id).then(() => {
-            loadGenerateTableList()
+            loadGenerateTableList(getTablePageStorage(codeTableData.searchParam).page)
         }).catch(() => {
         })
     })
@@ -378,7 +378,7 @@ const generateCreateFn = (id: any, generate_type: any) => {
             codeTableData.loading = false
             window.open(img(res.data.file), '_blank')
         } else {
-            loadGenerateTableList()
+            loadGenerateTableList(getTablePageStorage(codeTableData.searchParam).page)
         }
     }).catch(() => {
         codeTableData.loading = false

@@ -6,9 +6,7 @@
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
-            <el-tabs v-model="activeName" class="mt-[20px]">
-                <el-tab-pane :label="t('管理员')" name="userList">
-                    <div class="flex justify-between items-center mt-[20px]">
+            <div class="flex justify-between items-center mt-[20px]">
                         <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
                             <el-form-item :label="t('accountNumber')" prop="search">
                                 <el-input v-model.trim="userTableData.searchParam.search" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
@@ -84,11 +82,14 @@
                                 @size-change="loadUserList()" @current-change="loadUserList" />
                         </div>
                     </div>
+            <!-- <el-tabs v-model="activeName" class="mt-[20px]">
+                <el-tab-pane :label="t('管理员')" name="userList">
+                   
                 </el-tab-pane>
                 <el-tab-pane :label="t('管理员角色')" name="userRole">
                     <userRole></userRole>
                 </el-tab-pane>
-            </el-tabs>
+            </el-tabs> -->
             <edit-user ref="editUserDialog" @complete="loadUserList()" />
         </el-card>
     </div>

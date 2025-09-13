@@ -307,22 +307,18 @@ const newVersion = ref<NewVersion>({
 // 插件
 const appList = ref<any>([])
 const getAppIndexFn = () => {
-    loading.value = true
     getAppIndex().then((res) => {
-        console.log(res)
         appList.value = res.data
-        loading.value = false
     })
 }
-getAppIndexFn()
+
 const bannerlistr = ref<any>([])
 const getAdvListFn = () => {
     getAdvList().then((res) => {
-        console.log(res.data)
         bannerlistr.value = res.data
     })
 }
-getAdvListFn()
+
 const getInfoFn = () => {
     if (copyright.value.copyright_desc) {
         dialogVisible.value = true
@@ -349,9 +345,8 @@ const getStatInfoFn = async() => {
     setTimeout(() => {
         drawChart()
     }, 20)
-    loading.value = false
 }
-getStatInfoFn()
+
 
 // 绘制折线图
 const drawChart = () => {
@@ -494,6 +489,25 @@ onMounted(() => {
     showQuickStart.value = localStorage.getItem('showQuickStart') !== 'false'
     showNiuCloud.value = localStorage.getItem('showNiuCloud') !== 'false'
     showBanner.value = localStorage.getItem('showBanner') !== 'false'
+
+      // 定义异步初始化函数
+  const initData = async () => {
+    loading.value = true;
+    try {
+        await Promise.all([
+        getStatInfoFn(),
+        getAdvListFn(),
+        getAppIndexFn()
+      ]);
+
+      loading.value = false;
+    } catch (error) {
+        console.error('初始化失败', error);
+        loading.value = false;
+    }
+  };
+  // 执行初始化函数
+  initData();
 })
 
 const closeModule = (module:any) => {

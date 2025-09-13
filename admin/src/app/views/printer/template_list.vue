@@ -148,7 +148,7 @@ const deleteEvent = (id: number) => {
         }
     ).then(() => {
         deletePrinterTemplate(id).then(() => {
-            loadPrinterTemplateList()
+            loadPrinterTemplateList(getTablePageStorage(printerTemplateTable.searchParam).page)
         })
     })
 }

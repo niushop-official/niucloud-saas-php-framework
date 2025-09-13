@@ -159,10 +159,10 @@
         <spread-popup ref="spreadPopupRef" />
 
         <!-- 表单提交成功页弹出框 -->
-        <form-submit-popup ref="formSubmitPopupRef" @complete="loadDiyFormList" />
+        <form-submit-popup ref="formSubmitPopupRef" @complete="loadDiyFormList(getTablePageStorage(diyFormTableData.searchParam).page)" />
 
         <!-- 表单填写设置弹出框 -->
-        <form-write-popup ref="formWritePopupRef" @complete="loadDiyFormList" />
+        <form-write-popup ref="formWritePopupRef" @complete="loadDiyFormList(getTablePageStorage(diyFormTableData.searchParam).page)" />
 
         <records-detail ref="recordsDetailDialog"/>
 
@@ -352,7 +352,7 @@ const copyEvent = (id: any) => {
 
         copyForm({ form_id: id }).then((res: any) => {
             if (res.code == 1) {
-                loadDiyFormList()
+                loadDiyFormList(getTablePageStorage(diyFormTableData.searchParam).page)
             }
             repeat.value = false
         }).catch(() => {
@@ -371,7 +371,7 @@ const deleteEvent = (form_id: number) => {
         }
     ).then(() => {
         deleteDiyForm({ form_ids: [form_id] }).then(() => {
-            loadDiyFormList()
+            loadDiyFormList(getTablePageStorage(diyFormTableData.searchParam).page)
         }).catch(() => {
         })
     })
@@ -438,7 +438,7 @@ const batchDeleteForms = () => {
         deleteDiyForm({
             form_ids
         }).then(() => {
-            loadDiyFormList()
+            loadDiyFormList(getTablePageStorage(diyFormTableData.searchParam).page)
             repeat.value = false
         }).catch(() => {
             repeat.value = false
@@ -497,7 +497,7 @@ const shareEvent = async (formEl: FormInstance | undefined) => {
                 form_id: shareFormId.value,
                 share: JSON.stringify(shareFormData)
             }).then(() => {
-                loadDiyFormList()
+                loadDiyFormList(getTablePageStorage(diyFormTableData.searchParam).page)
                 shareDialogVisible.value = false
             }).catch(() => {
             })
