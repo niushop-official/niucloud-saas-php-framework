@@ -49,11 +49,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 
 
-### 分销插件  :point_right:   FENXIAO
 
-### 上门服务插件  :point_right: O2O
-
-### 会员卡插件 :point_right: VIPCard
 
 ### 操作指南
 [官网地址](https://www.niucloud.com)
