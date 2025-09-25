@@ -2,46 +2,10 @@
 branches: {
   }
 fileChange:
-  /docker-compose:
-    newFile: null
-    oldFile: !uuid '7808bdbfdb9390156eb7dd99219b7911795f86e4'
-  /docker-compose/README.md:
-    newFile: null
-    oldFile: !uuid '3763d99d33093407fdf6abfafd8ae54b2750ba9e'
-  /docker-compose/docker-compose.yml:
-    newFile: null
-    oldFile: !uuid 'bad6254c6a612b5814db5d0c9d572efcc7d75571'
-  /docker-compose/mysql:
-    newFile: null
-    oldFile: !uuid '2d34f8fe8721921ae7ee37cc7d28eb0fed63eb52'
-  /docker-compose/mysql/my.cnf:
-    newFile: null
-    oldFile: !uuid '5699d79bc144ec8a180ed7201ca22e733b1989d4'
-  /docker-compose/nginx:
-    newFile: null
-    oldFile: !uuid '441e8a10eb53c58c0e919ab03d639d42d7b2da3c'
-  /docker-compose/nginx/vhost.conf:
-    newFile: null
-    oldFile: !uuid 'a1ca77dd228b45ce1ecfba64e267bf0b64c224b0'
-  /docker-compose/php:
-    newFile: null
-    oldFile: !uuid '6f2bfae1012cfadde784f082a27fcbb40bd76b67'
-  /docker-compose/php/Dockerfile:
-    newFile: null
-    oldFile: !uuid 'd34381892080dfea0b1eaa007ede64d1b88a6e1e'
-  /docker-compose/php/php-ini-overrides.ini:
-    newFile: null
-    oldFile: !uuid 'ee5e24fb64a568c759d642989f8b0d1d25e8a836'
-  /docker-compose/redis:
-    newFile: null
-    oldFile: !uuid '457d77c7cff61b0e11817cb5baa554187c88aff5'
-  /docker-compose/redis/redis.conf:
-    newFile: null
-    oldFile: !uuid '30e5e984408cded3e41a3fa3dfebb0bd6a39a06e'
-  /docker-compose/test.niucloud.com.conf:
-    newFile: null
-    oldFile: !uuid '6f4adb4deca2357c969e05d65db580b09496b324'
-gitCommitId: !uuid 'b6677ff3f3710fe1471c333db358287462fb4faa'
+  /README.md:
+    newFile: !uuid '68cdc1cd1d543e6e3340159afcf413a8ea5d6383'
+    oldFile: !uuid 'ecdb4ae741259ac339e7675eec17cd5d36c78da2'
+gitCommitId: !uuid '428213038739bde9f6b815f0ede706e97f3d306a'
 renames: {
   }
-revisionId: 365
+revisionId: 366
