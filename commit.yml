@@ -2,10 +2,238 @@
 branches: {
   }
 fileChange:
-  /README.md:
-    newFile: !uuid '68cdc1cd1d543e6e3340159afcf413a8ea5d6383'
-    oldFile: !uuid 'ecdb4ae741259ac339e7675eec17cd5d36c78da2'
-gitCommitId: !uuid '428213038739bde9f6b815f0ede706e97f3d306a'
+  /admin:
+    newFile: !uuid '9ea5d3d70efae376be8e8b45c0f90f9373a97ded'
+    oldFile: !uuid '7c410330af4dc1ed50eaa7e5f03a5938728232a6'
+  /admin/public:
+    newFile: !uuid 'd82e4de67cf7ab50e7911a895ab6f63efe8de173'
+    oldFile: !uuid '0a37c6290ef44fb4bbe447a6fddf4d56ba59d413'
+  /admin/public/ueditor:
+    newFile: !uuid '0998465493409510d6dc8cb639481290342241ce'
+    oldFile: !uuid 'dd871bd93ec0c5f181fa3f1a345c7651a581a0e3'
+  /admin/public/ueditor/themes:
+    newFile: !uuid 'a672aa76ef6bf57236a7a5498c70a8f59b826abd'
+    oldFile: !uuid '6e09f6339b4d64d424a6c3c224d15d8baf2e4c04'
+  /admin/public/ueditor/themes/default:
+    newFile: !uuid '3f87ad8b840b36acfa74a2698c32f71a9d570cee'
+    oldFile: !uuid '32afd1053d17cd5408412518c793e1dead1600fd'
+  /admin/public/ueditor/themes/default/css:
+    newFile: !uuid 'bee23c906d11a41e19454866caa811a5b8103a59'
+    oldFile: !uuid '1da00151536de69b378312943021c86730474f28'
+  /admin/public/ueditor/themes/default/css/ueditor.css:
+    newFile: !uuid '9572e0bd5f577809edf99a7c6215650de15819a3'
+    oldFile: !uuid '81421c3ead07feda18f397a0d9f545082ec7576b'
+  /admin/src:
+    newFile: !uuid '5eb18985e2b244873f175e6d1b915e244fe73e8b'
+    oldFile: !uuid '7cccca319fe89e5f5f180115091b00966effc518'
+  /admin/src/app:
+    newFile: !uuid '7e70873ffb641f9eee9642a11cd33bb1dab70301'
+    oldFile: !uuid '6d151e71e3ddb817b41df614a47d8c9fc0c16961'
+  /admin/src/app/api:
+    newFile: !uuid '3d50faf374e391c743009f88726149c147ca7aa5'
+    oldFile: !uuid '8f532952029f3dbfe05a322a3fe55a09c3edc6d2'
+  /admin/src/app/api/site.ts:
+    newFile: !uuid 'b63f3ffcd30673c74112d6c38bf662e7b5455b96'
+    oldFile: !uuid '79076b087f22b4c3bd499f5009540e5e23be531f'
+  /admin/src/app/components:
+    newFile: !uuid '50a852daeb9b4e6d5c2d4b472044c14c85039f25'
+    oldFile: !uuid '403159d75eca7fde817ea31dc3a285190000c917'
+  /admin/src/app/components/upgrade:
+    newFile: !uuid 'b195228bf8319313513e600c02c0a696e287e22e'
+    oldFile: !uuid '1ab0b25ef7b46ed5c43e9e96825df421a13619ad'
+  /admin/src/app/components/upgrade/index.vue:
+    newFile: !uuid '2f3af58d9d3d1f9a626a036fcedf0b019fc5d27b'
+    oldFile: !uuid 'f61bf9c97b81a83448eb95b2fd8f6997c38a258b'
+  /admin/src/app/views:
+    newFile: !uuid 'e275589fc7db87d0a154370ab465681e5997751c'
+    oldFile: !uuid '00dd609b31ef9821abce614c0217b58ddf15e131'
+  /admin/src/app/views/app:
+    newFile: !uuid '6d11422810387c90fc5a383b253213bd2cc769cc'
+    oldFile: !uuid 'ffeab832eb47f9abee6e74b2580e34078ffa384e'
+  /admin/src/app/views/app/index.vue:
+    newFile: !uuid '084e46ec741ef904e0f3c9c34c71d3ac7df576b0'
+    oldFile: !uuid '6a631f4c28d57ad6ecc3fde576c90f5ebc53fc6f'
+  /admin/src/app/views/app/marketing.vue:
+    newFile: !uuid '880a7ddde6fda8ed1d6e67fcbe1fb75d74f5fe25'
+    oldFile: !uuid '693b3d7468fc41392cf0ca6f6fdf4edba7ac4b5f'
+  /admin/src/app/views/channel:
+    newFile: !uuid 'ded34b1f68c912e73d874c2a5b4e8ab82cc6fe7a'
+    oldFile: !uuid '963eca79e566c4d6f3e2ad0a17b42a174eb57923'
+  /admin/src/app/views/channel/app:
+    newFile: !uuid 'dc27b5d1850c2d13d1c79717cc857e58c8e9ab22'
+    oldFile: !uuid 'f007d0e1c43e041336b50947a8bfbcd1da894f1b'
+  /admin/src/app/views/channel/app/components:
+    newFile: !uuid '85f192ddcfab72b3d97938ba3b13fb938909e3d8'
+    oldFile: !uuid '14c2cf140037242d1e11ddd11bff3ab0e9ac3da2'
+  /admin/src/app/views/channel/app/components/app-version-edit.vue:
+    newFile: !uuid 'f67251913da717c3dc23a908de9c14609922bcb8'
+    oldFile: !uuid '86e0f373b7125991b709d8854e627881a2b6aa13'
+  /admin/src/app/views/channel/app/version.vue:
+    newFile: !uuid '608b3aa498ea90321f3881736168accb62422e6c'
+    oldFile: !uuid '4aeb92782b21228b9c152308aca2da4a5e180567'
+  /admin/src/app/views/diy:
+    newFile: !uuid '4ce255d9dd05fc7d4d423fe34698acafb988f5e6'
+    oldFile: !uuid '9aca1cba3a5e6ddf9b4a650abed11b77b7f3db15'
+  /admin/src/app/views/diy/tabbar.vue:
+    newFile: !uuid '60f3598e17a9e31530f657a6bee4200eaf0caa6d'
+    oldFile: !uuid 'bc869edf994e83203ee9bb5f9130441800e8f431'
+  /admin/src/app/views/diy/theme_style.vue:
+    newFile: !uuid 'c3a7645cc71a0a8ecf4a1b711867bf6ca38d4cd2'
+    oldFile: !uuid 'a0b4837e7f8bacecd4e500fb556667f338e7d237'
+  /admin/src/app/views/index:
+    newFile: !uuid 'ccdc26fc09f868b71137b818d68f2e4b2a134aad'
+    oldFile: !uuid '9f1fd6023b11777c5676b326b64d2bf5f400a2a1'
+  /admin/src/app/views/index/store.vue:
+    newFile: !uuid '710c490695b1583cf654e84301b24082456f64b9'
+    oldFile: !uuid 'c04336429bf93fecea39fda1d2669e919580cc92'
+  /admin/src/app/views/poster:
+    newFile: !uuid '73385f4402fbe8da6726c39bef323fbc3b440e40'
+    oldFile: !uuid 'c7c7c47a17c0b49d3f49e886fb7bf4f1bb9060b8'
+  /admin/src/app/views/poster/edit.vue:
+    newFile: !uuid '51fe0807241d3c377923d33ecc1920753b9c7153'
+    oldFile: !uuid 'ee49094c127f43ce4e18c2d8cd5a8479ee75f36a'
+  /admin/src/app/views/poster/list.vue:
+    newFile: !uuid '72462ac257838489a7762c3e76f4b95fd6873cae'
+    oldFile: !uuid 'f15f38c2aafdb96a105d4e929146c9f16b1ec77a'
+  /admin/src/app/views/setting:
+    newFile: !uuid 'a94bdcbea0d14e77dbd4d6ac944adbc900fb4edf'
+    oldFile: !uuid '81546b4c8105f2695ec8d03ef5f34f27722ea3b9'
+  /admin/src/app/views/setting/copyright.vue:
+    newFile: !uuid 'a360c811b5a5dcd43b3bb210200005cb06823872'
+    oldFile: !uuid 'f2ca58287686dfe5b32fff1ca1424569a78334c9'
+  /admin/src/app/views/site:
+    newFile: !uuid 'ffc03f0c19dc7fc1e51aaf6ea481f0403fb1b11d'
+    oldFile: !uuid '763ae3eb953c2c477f2e7acf904c6f4d13bfb639'
+  /admin/src/app/views/site/components:
+    newFile: !uuid '7de8bbfe0ec23bb3c0a6c6b3158c529a0f7139d6'
+    oldFile: !uuid '4f7d8cc1f131bc820ab4e3ad28de9e1bbb357dd7'
+  /admin/src/app/views/site/components/user-edit.vue:
+    newFile: !uuid '5f96e577b463069b336b1acbf1cb44a946f98f60'
+    oldFile: !uuid 'a2b3e2f3a44e09ae05b82494acf9624656cf6041'
+  /admin/src/app/views/site/user.vue:
+    newFile: !uuid '2af4eacce49f6d4056d188ef63d65ce8af85b05f'
+    oldFile: !uuid '6e79769dcc04acbb72955cb6a0070d474c416c0c'
+  /admin/src/app/views/site/user_info.vue:
+    newFile: !uuid 'c7c4e97d22ea71266f85245b98c87b3ce212509f'
+    oldFile: !uuid '283f85b06d4ccc06cf42c40d2609f2743204a4d9'
+  /admin/src/app/views/tools:
+    newFile: !uuid '88c8600e03eef91a6df8c65e8ddbb53c54f79ba5'
+    oldFile: !uuid '9f7e52cca8cae391bac89303a49bf6f056901188'
+  /admin/src/app/views/tools/backup_records.vue:
+    newFile: !uuid '7054245939163f453f47e7bf6258be6108878e1b'
+    oldFile: !uuid '1cc88b9e1655c869072b19ed30789bc0d236836f'
+  /admin/src/app/views/tools/cloud_compile.vue:
+    newFile: !uuid '39b3247041252bda9c63da532bd85e2e2f5ca79b'
+    oldFile: !uuid 'ed35fca9c8dedc5758ffc0aaf7e15de4e7aa7a3e'
+  /admin/src/components:
+    newFile: !uuid '3a78a90463b1e78daef5f3ec353e60a87331a75a'
+    oldFile: !uuid '6b39e8d22588f0c764cc0326d0628210cc12d616'
+  /admin/src/components/editor:
+    newFile: !uuid '256b21590b988c9ffa9d9948856e991da1e89e30'
+    oldFile: !uuid '63056a6f01b9725f0a06b711d698a7fb1f0483ff'
+  /admin/src/components/editor/index.vue:
+    newFile: !uuid '46b3cd7beb06df325497606f0418431f039cf327'
+    oldFile: !uuid '6d1f7a0178bb211b803a1c09055466a259063837'
+  /admin/src/lang:
+    newFile: !uuid 'ca2c4a7b284a44da1aabf9bc39921185d2a6abd7'
+    oldFile: !uuid 'd133e73054bc5ef736390a7d7d981d2db96a3e3e'
+  /admin/src/lang/zh-cn:
+    newFile: !uuid 'b6f3f2ada4ca594579e3baed7f735795d3cf77bf'
+    oldFile: !uuid '29fae864c5990cb1e03a688dfb7237515834f0d4'
+  /admin/src/lang/zh-cn/common.json:
+    newFile: !uuid 'dd8272e2a14bcedfbc86c8dfbc379333438ce9c8'
+    oldFile: !uuid '99a4ad454da396855867c9791a5c7d96993a8046'
+  /admin/src/layout:
+    newFile: !uuid 'f9a9070c6ca2b779dd85400f2dc563cf3535c881'
+    oldFile: !uuid 'c554c01742b1d901dadc28c16745940ef8146b10'
+  /admin/src/layout/admin:
+    newFile: !uuid '214ac61e5ad4cffcb66bf6c2872b13e0509a024b'
+    oldFile: !uuid '32ae9588de815b4e6c0fad2742a6e75356ff2dee'
+  /admin/src/layout/admin/index.vue:
+    newFile: !uuid '7086239f6f9b60b9d2b2b16d1a34f098f9ad8d3b'
+    oldFile: !uuid '33eac606c3e6cdfe6ce1bd10d2f5d14d789faf05'
+  /admin/src/layout/admin_simplicity:
+    newFile: !uuid 'd40bbee0c78e96efbdebb0c62ebf98159446bda4'
+    oldFile: !uuid '922623a6577dc35122a4f03cf9637329e3a0d72f'
+  /admin/src/layout/admin_simplicity/index.vue:
+    newFile: !uuid '77fe71ac623636ab242e6ea16852681f88323812'
+    oldFile: !uuid '5eb66eea9850df803155ab8ea06bca41024c7e54'
+  /admin/src/layout/bussiness:
+    newFile: !uuid '5807428c03a36b7258e09e0578626a5da96b3314'
+    oldFile: !uuid 'a048a6681262d6d0096578a1f58a414340a99bb5'
+  /admin/src/layout/bussiness/components:
+    newFile: !uuid '9a822a907954aef79437b520ea410bf5bdc090c0'
+    oldFile: !uuid 'f794ce81a01ffb26a4aeed54b099648fcbd06ecd'
+  /admin/src/layout/bussiness/components/aside:
+    newFile: !uuid '38bbe13b02db3d60d225effe882ce9fdedcf271c'
+    oldFile: !uuid '4d6acc422820aed1064ea559fd465a3413cff850'
+  /admin/src/layout/bussiness/components/aside/menu-item.vue:
+    newFile: !uuid '26f070676da47e79bb945220d444d5195a4c07e7'
+    oldFile: !uuid '7f9e4e507835eb5408ab11a72f55ecc8e314fbb0'
+  /admin/src/layout/bussiness/components/aside/side.vue:
+    newFile: !uuid 'b391077e961db72e35254919f1fa9e704224f36a'
+    oldFile: !uuid 'fdebda659ff14b513d4a08ead3c265fe71b9e2f4'
+  /admin/src/layout/darkside:
+    newFile: !uuid '300cbe23edd343bedbc9df06c597d25b5cc9be02'
+    oldFile: !uuid '322154788d67503e6f52a3a6786ab4c12ff2a6f7'
+  /admin/src/layout/darkside/components:
+    newFile: !uuid '4e556a225342d9a1ff45ebe3286d4439d3801623'
+    oldFile: !uuid '387e145ab468231f0ae3f40da051fccb05d62cc3'
+  /admin/src/layout/darkside/components/aside:
+    newFile: !uuid 'c45e4c9b2d742ddf47a6a329317bcd24122f1bbe'
+    oldFile: !uuid '1870410f74a0de04e555820c32b5e2e2e2900a28'
+  /admin/src/layout/darkside/components/aside/menu-item.vue:
+    newFile: !uuid 'ac9362a648b0f10d27560515fd403c11881377aa'
+    oldFile: !uuid '99fdd679e7b421b512ec1f04eee0d61d68883a24'
+  /admin/src/layout/darkside/components/aside/side.vue:
+    newFile: !uuid 'f3b88364ea086ff0914c399281f52bc8e9a12f27'
+    oldFile: !uuid '1819a1f3ac46bca0457a563b89e49d359ae6149f'
+  /admin/src/layout/default:
+    newFile: !uuid 'bce52c30168f28023750a26bf67847ecc1bc1a37'
+    oldFile: !uuid '344efab2d5488f4a00b8fb78657d030fe54f0cd3'
+  /admin/src/layout/default/components:
+    newFile: !uuid '36ea674848d34fe8b58d5ada4f9ac69848cce664'
+    oldFile: !uuid '1b83554c7a84bfa41375856ed6bbf7a839bb62aa'
+  /admin/src/layout/default/components/aside:
+    newFile: !uuid '721d06424fe0d7994ea67ed362effd405d598dd2'
+    oldFile: !uuid 'bf515901caeb3b66e27f02d00b6ebab9ab1aac17'
+  /admin/src/layout/default/components/aside/menu-item.vue:
+    newFile: !uuid '34f609568953c04c2cb9e3104627eb7a32d6c2ce'
+    oldFile: !uuid 'd81aa2ba1fa2a283bd95f2c28dde6a0417af7057'
+  /admin/src/layout/default/components/aside/side.vue:
+    newFile: !uuid '46946dcb842aa00e232ef2acea94eb0ad1c7a3e0'
+    oldFile: !uuid '72d861c17af824467706e9d7ba3f9c7b69e28af2'
+  /admin/src/layout/default/components/header:
+    newFile: !uuid 'ae9c244bf962b14533d605b72679fb3c7e32318b'
+    oldFile: !uuid 'ee969d3b063fa7eaf89894069ad793d64a200742'
+  /admin/src/layout/default/components/header/index.vue:
+    newFile: !uuid '33b67600166d3f66631f593bff358b6a5cd31342'
+    oldFile: !uuid '6fea99743ec19c016e439d03ea1ba592d74adbcb'
+  /admin/src/layout/profession:
+    newFile: !uuid 'e260aceda9d69d625b7e464cb841196bc94690d5'
+    oldFile: !uuid 'f1ff393eb25ced685a5d93585bfdd8f0e6e3b6b4'
+  /admin/src/layout/profession/components:
+    newFile: !uuid '0698052ab0fd5a15a6433d90b1bddb595e4727df'
+    oldFile: !uuid 'e0a6e7c2343dc8af06beb9289c7c414aa35b78bf'
+  /admin/src/layout/profession/components/aside:
+    newFile: !uuid '07c8f4d80a615ee66dafd630b21d2222fff7b7c4'
+    oldFile: !uuid '3707a18653dc4f707648f4b8a27799d804bf3234'
+  /admin/src/layout/profession/components/aside/menu-item.vue:
+    newFile: !uuid 'ef4a300dbfc46574468e8c1dc2a94ffc862a5536'
+    oldFile: !uuid '5c22cb8fcbb599cf850040a9e0b24792c757ca08'
+  /admin/src/layout/profession/components/aside/side.vue:
+    newFile: !uuid '0cc442125399e06cfac533b0ede0e52b9ff1a1b1'
+    oldFile: !uuid 'abac660ce6927b02d90be4e80e4fb34075df7abd'
+  /admin/src/styles:
+    newFile: !uuid 'e4ecccf3aac616bddbf6edb19bde8fa911830094'
+    oldFile: !uuid '2899b19491e1861725d6a422d2681047c346fc4a'
+  /admin/src/styles/icon:
+    newFile: !uuid '6725dd061e14a83cdd3cb927fe84a993e6fdfdca'
+    oldFile: !uuid '910b26fcbd3cd80f295bcd5ce78f7a0ecd06048d'
+  /admin/src/styles/icon/addon-iconfont.css:
+    newFile: !uuid 'b630d0ecef3780701d44c5d56614ad369d12e45d'
+    oldFile: !uuid '375e1bbd2826fcc542125fae7e0e40dcf77a234e'
+gitCommitId: !uuid '231f476a6f17066544f782067a8ffc538045281a'
 renames: {
   }
-revisionId: 366
+revisionId: 367
