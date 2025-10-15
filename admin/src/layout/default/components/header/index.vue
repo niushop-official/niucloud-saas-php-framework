@@ -128,7 +128,7 @@ const dark = computed(() => {
 })
 const isMenuSearch = ref(false)
 const routers = userStore.routers
-const getParentTitleChain=(meta:any) =>{
+const getParentTitleChain = (meta: any) => {
     let titles = []
     let current = meta?.parent_route
 
@@ -139,35 +139,47 @@ const getParentTitleChain=(meta:any) =>{
         current = current.parent_route
     }
 
-    return titles.join(' - ')
-}
-const flattenRoutes = (routes:any, parent = null)=> {
-    let flat = [];
-    routes.forEach(route => {
-        const { path, name, meta = {}, short_title, children } = route
-        const isLeaf = meta.type ==1 && meta.show==1
-        if(isLeaf){
-            const title = meta.title || short_title || ''
-            const parentTitleChain = getParentTitleChain(meta)
-            const fullTitle = parentTitleChain ? `${parentTitleChain} - ${title}` : title
-            const item = {
-                path,
-                name,
-                title,
-                parent_title: parentTitleChain,
-                full_title: fullTitle
-            };
+    return titles.join(' - ');
+};
 
-            flat.push(item);
+// 2. 改造 flattenRoutes：增加 parentShow 参数，传递父级 show 状态
+const flattenRoutes = (routes: any, parent = null, parentShow = 1) => {
+    let flat = [];
+
+    routes.forEach(route => {
+        const { path, name, meta = {}, short_title, children } = route;
+        // 关键：当前菜单的最终 show 状态 = 自身 show（默认1） && 父级 show（默认1）
+        // 若父级 show 不是1，当前菜单直接隐藏，不加入列表
+        const currentShow = meta.show === undefined ? 1 : meta.show;
+        const finalShow = currentShow && parentShow; // 父级隐藏则子级必隐藏
+
+        // 叶子节点判断：type=1 + 最终 show=1（父级+自身都显示）
+        const isLeaf = meta.type === 1 && finalShow === 1;
+
+        if (isLeaf) {
+        const title = meta.title || short_title || '';
+        const parentTitleChain = getParentTitleChain(meta);
+        const fullTitle = parentTitleChain ? `${parentTitleChain} - ${title}` : title;
+        const item = {
+            path,
+            name,
+            title,
+            parent_title: parentTitleChain,
+            full_title: fullTitle
+        };
+        flat.push(item);
         }
+
+        // 递归处理子菜单：传递当前菜单的 finalShow 作为子级的 parentShow
         if (children && children.length > 0) {
-            flat = flat.concat(flattenRoutes(children, route))
+        flat = flat.concat(flattenRoutes(children, route, finalShow));
         }
     });
 
     return flat;
-}
-const flatRoutes = flattenRoutes(routers)
+};
+
+const flatRoutes = flattenRoutes(routers);
 const selectedRoute = ref('')
 const handleRouteSelect = (name:any) => {
     if (name) {

@@ -249,7 +249,7 @@ import Storage from '@/utils/storage'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const terminalId = ref(Date.now()); 
+const terminalId = ref(Date.now());
 const showDialog = ref<boolean>(false)
 const upgradeContent = ref<null | AnyObject>(null)
 const isAllowUpgrade = ref(true) // 是否允许升级
@@ -299,7 +299,7 @@ const getUpgradeTaskFn = () => {
         if (!upgradeContent.value) {
             upgradeContent.value = data.upgrade_content
 
-            if (upgradeContent.value || !data.upgrade_content || !Array.isArray(data.upgrade_content.content)) {
+            if (!data.upgrade_content || !Array.isArray(data.upgrade_content.content)) {
                 return
             }
 
@@ -691,7 +691,7 @@ defineExpose({
     white-space: pre-wrap;
 }
 
-::v-deep .number-of-steps {
+:deep(.number-of-steps) {
     .el-step__line {
         margin: 0 25px;
         background: #dddddd;

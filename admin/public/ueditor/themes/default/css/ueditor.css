@@ -147,7 +147,10 @@ div.edui-box {
     overflow: visible;
     z-index: 1 !important;
 }
-
+/* 全屏状态 */
+.edui-default .edui-editor.edui-fullscreen {
+    z-index: 999 !important;
+  }
 .edui-editor div {
     width: auto;
     height: auto;

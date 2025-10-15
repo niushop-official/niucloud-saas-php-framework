@@ -38,4 +38,9 @@ const appStore = useAppStore()
 const tabbarStore = useTabbarStore()
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.inter .el-breadcrumb__inner){
+    font-weight: inherit !important;
+    color: var(--el-text-color-regular) !important;
+}
+</style>

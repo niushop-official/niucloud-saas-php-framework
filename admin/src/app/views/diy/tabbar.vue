@@ -35,7 +35,7 @@
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="bottomNavTableData.page" v-model:page-size="bottomNavTableData.limit"
                                layout="total, sizes, prev, pager, next, jumper" :total="bottomNavTableData.total"
-                               @size-change="loadbottomNavList()" @current-change="loadbottomNavList" />
+                               @size-change="loadBottomNavList()" @current-change="loadBottomNavList" />
             </div>
 
         </el-card>

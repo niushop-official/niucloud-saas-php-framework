@@ -18,7 +18,7 @@
                                         <div class="image-slot">
                                             <img class="w-[40px] h-[40px]" src="@/app/assets/images/index/app_default.png" />
                                         </div>
-                                    </template>
+                                    </template> 
                                 </el-image>
                                 <div class="flex flex-col justify-between w-[180px]">
                                     <div class="text-[14px] flex items-center">
@@ -45,7 +45,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getShowMarketing } from '@/app/api/site'
+// import { getShowMarketing } from '@/app/api/site'
 import { img } from '@/utils/common'
 import useUserStore from '@/stores/modules/user'
 import { useRouter } from 'vue-router'
@@ -57,8 +57,8 @@ const marketingList = ref<Record<string, any>[]>([])
 
 const loading = ref(true)
 const getMarketingList = async () => {
-    const res = await getShowMarketing()
-    marketingList.value = res.data
+    // const res = await getShowMarketing()
+    // marketingList.value = res.data
     loading.value = false
 }
 getMarketingList()

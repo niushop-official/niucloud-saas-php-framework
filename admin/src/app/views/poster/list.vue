@@ -6,7 +6,7 @@
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" class="w-[100px]" @click="dialogVisible = true">{{ t('添加海报') }}</el-button>
             </div>
-            <div class="mt-[20px]" v-if="!isImagick">
+            <div class="mt-[20px]" v-if="!isImagick && !posterTableData.loading">
                 <el-alert type="warning" show-icon :closable="false">
                     <template #title>
                         <span class="!text-[14px]">检测到PHP未安装ImageMagick扩展，需安装后才能使用海报功能</span>
@@ -277,7 +277,7 @@ const previewPoster = (data: any) => {
         if (res.data) {
             previewPosterUrl.value = res.data
             previewDialogVisible.value = true
-        }
+        } 
         isRepeat.value = false
     })
 }
@@ -287,11 +287,10 @@ const resetForm = (formEl: FormInstance | undefined) => {
     formEl.resetFields()
     loadPosterPageList()
 }
-const isImagick = ref(false)
+const isImagick = ref(true)
 // 判断是否安装imagemagick扩展
 const checkImagickFn = () => {
     checkImagick().then((res:any) => {
-        console.log(res)
         isImagick.value = res.data
         
     })

@@ -30,8 +30,9 @@ import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
 import { img } from '@/utils/common'
-import { findFirstValidRoute } from '@/router/routers'
-import { getShowMarketing } from '@/app/api/site'
+import { findFirstValidRoute ,formatRouters} from '@/router/routers'
+import { getShowApp,getShowSpecialMenu} from '@/app/api/site'
+
 import storage from '@/utils/storage'
 
 const systemStore = useSystemStore()
@@ -46,20 +47,27 @@ const logoUrl = computed(() => {
     return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
 })
 
-const getMarketingList = async () => {
-    const res = await getShowMarketing()
-    const marketingList = res.data
-    const marketingKeys = marketingList?.marketing?.list?.map(item => item.key) ?? []
-    // menuData.value.forEach((item, index, arr) => {
-    //     if (marketingKeys.includes(item.name)) {
-    //         arr.splice(index, 1)
-    //     }
-    // })
-    storage.set({ key: 'defaultMarketingKeys', data: marketingKeys })
+const appList = ref<Record<string, any>[]>([])
+
+const getAppList = async () => {
+    const res = await getShowApp()
+    appList.value = res.data
+    
+    storage.set({ key: 'defaultAppList', data: appList.value })
+}
+const specialList = ref<Record<string, any>[]>([])
+const getShowSpecialMenuList = async () => {
+    const res = await getShowSpecialMenu()
+    // specialList.value = formatRouters(res.data.list)
+    specialList.value = res.data.list
+
+    storage.set({ key: 'specialAppList', data: specialList.value })
 }
 
+
 onMounted(() => {
-    getMarketingList()
+    getAppList()
+    getShowSpecialMenuList()
 })
 
 routers.forEach(item => {
@@ -87,6 +95,7 @@ routers.forEach(item => {
         addonRouters[item.meta.addon] = item
     }
 
+    // console.log('menuData', menuData.value)
     // 排序, 功能正确，改了排序后需要把菜单排序的默认值重新调整一下【多应用一级菜单，单应用二级菜单】
     // menuData.value.sort((a, b) => {
     //     if (a.meta.sort && b.meta.sort) {

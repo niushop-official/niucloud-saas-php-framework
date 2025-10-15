@@ -62,7 +62,7 @@
                     </div>
                     
                     <div v-show="formData.package_type == 'cloud'">
-                        <el-form-item :label="t('icon')">
+                        <el-form-item :label="t('icon')" prop="build.icon">
                             <div class="input-width" >
                                 <upload-file v-model="formData.build.icon" accept=".zip" api="sys/document/applet"></upload-file>
                             </div>
@@ -80,7 +80,7 @@
                             <div class="form-tip flex items-center">证书可以自己生成也可通过niucloud提供的<span class="text-primary cursor-pointer" @click="generateSingCertRef.open()">证书生成工具生成</span></div>
                         </el-form-item>
                         <div v-show="formData.cert.type == 'private'">
-                            <el-form-item :label="t('certFile')" prop="cert.cert_file">
+                            <el-form-item :label="t('certFile')" prop="cert.file">
                                 <div class="input-width" >
                                     <upload-file v-model="formData.cert.file" accept="" api="sys/document/android_cert"></upload-file>
                                 </div>
@@ -166,6 +166,7 @@ const initialFormData = {
     },
     cert: {
         type: 'public',
+        file: '',
         key_alias: '',
         key_password: '',
         store_password: ''
@@ -211,7 +212,7 @@ const formRules = computed(() => {
         'build.icon': [
             { required: formData.package_type == 'cloud', message: '请上传图标文件', trigger: 'blur' },
         ],
-        'cert.cert_file': [
+        'cert.file': [
             { required: formData.package_type == 'cloud' && formData.cert.type == 'private', message: '请上传证书文件', trigger: 'blur' }
         ],
         'cert.key_alias': [

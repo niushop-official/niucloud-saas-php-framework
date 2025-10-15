@@ -529,17 +529,20 @@ const save = (callback: any) => {
 
     const api = posterStore.id ? editPoster : addPoster
     api(data).then((res: any) => {
-        isRepeat.value = false
+        // isRepeat.value = false
         if (res.code == 1) {
             if (posterStore.id) {
                 isRepeat.value = false // 不刷新
             } else {
+                // isRepeat.value = false 
                 location.href = `${location.origin}${backPath}`
             }
             if (callback) callback(res.data.id)
         }
     }).catch(() => {
         isRepeat.value = false
+    }).finally(() => {
+        // isRepeat.value = false
     })
 }
 

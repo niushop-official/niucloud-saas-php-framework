@@ -291,13 +291,13 @@ export function getSiteAddons() {
  * @returns
  */
 export function getShowApp() {
-    return request.get('site/showApp')
+    return request.get('site/showCustomer')
 }
 
 /**
- * 获取营销列表
+ * 获取站点应用特殊
  * @returns
  */
-export function getShowMarketing() {
-    return request.get('site/showMarketing')
+export function getShowSpecialMenu() {
+    return request.get('site/special_menu')
 }

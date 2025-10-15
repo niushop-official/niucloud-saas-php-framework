@@ -91,6 +91,17 @@ const handleEditorReady = (editor) => {
         emit('handleBlur', editor.getContent()) // 把内容传出去
     })
 
+    // 全屏切换监听
+    editor.addListener('fullscreenchanged', (type, fullscreen) =>{
+        const editorDom = editor.ui.getDom()
+        if (fullscreen) {
+            editorDom.classList.add('edui-fullscreen')
+        } else {
+            editorDom.classList.remove('edui-fullscreen')
+        }
+        console.log('全屏切换',  fullscreen)
+    })
+
     // 方案二：原型链扩展（如果编辑器版本支持）
     const originalCount = editor.getContentLength; // 原生统计方法
 

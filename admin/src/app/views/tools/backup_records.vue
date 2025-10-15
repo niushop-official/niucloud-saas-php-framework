@@ -858,7 +858,7 @@ const batchDelete = () => {
     background-color: var(--el-table-header-bg-color);
 }
 
-::v-deep .number-of-steps {
+:deep(.number-of-steps) {
     .el-step__line {
         margin: 0 25px;
         background: #dddddd;

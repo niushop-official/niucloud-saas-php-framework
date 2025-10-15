@@ -42,4 +42,8 @@ const tabbarStore = useTabbarStore()
 .bg-page {
     background-color: #F7F7FA;
 }
+:deep(.inter .el-breadcrumb__inner){
+    font-weight: inherit !important;
+    color: var(--el-text-color-regular) !important;
+}
 </style>

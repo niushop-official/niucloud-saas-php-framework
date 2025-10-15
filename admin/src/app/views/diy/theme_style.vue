@@ -91,7 +91,7 @@ const editEvent = (data)=> {
 <!-- 设置弹窗标题 -->
 <style scoped>
 /* 使用深度选择器 */
-::v-deep .custom-theme-dialog .el-dialog__title {
+:deep(.custom-theme-dialog .el-dialog__title) {
   font-size: 16px;
 }
 </style>

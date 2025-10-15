@@ -65,7 +65,7 @@
                             <el-button type="primary" link v-if="row.status == 'upload_success'" @click="releaseEvent(row)">{{ t('release') }}</el-button>
                             <el-button type="primary" link v-if="row.status == 'create_fail'" @click="handleFailReason(row)">{{ t('failReason') }}</el-button>
                             <el-button type="primary" link v-if="row.package_path && row.upgrade_type != 'market'" @click="downloadEvent(row)">{{ t('download') }}</el-button>
-                            <el-button type="primary" link @click="deleteEvent(row)">{{ t('delete') }}</el-button>
+                            <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
                         </template>
                     </el-table-column>
 

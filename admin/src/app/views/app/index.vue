@@ -50,6 +50,7 @@ import { img } from '@/utils/common'
 import useUserStore from '@/stores/modules/user'
 import { useRouter } from 'vue-router'
 import { t } from '@/lang'
+import storage from '@/utils/storage'
 
 const addonIndexRoute = useUserStore().addonIndexRoute
 const router = useRouter()
@@ -73,6 +74,7 @@ const toLink = (item: any) => {
     } else {
         addonIndexRoute[item.key] && router.push({ name: addonIndexRoute[item.key] })
     }
+    storage.set({ key: 'activeAppKey', data: item.key })
 }
 </script>
 

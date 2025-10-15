@@ -30,9 +30,9 @@ import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
 import { img } from '@/utils/common'
-import { findFirstValidRoute } from '@/router/routers'
-import { getShowMarketing } from '@/app/api/site'
+import { findFirstValidRoute ,formatRouters} from '@/router/routers'
 import storage from '@/utils/storage'
+import {getShowApp, getShowSpecialMenu} from '@/app/api/site'
 
 const systemStore = useSystemStore()
 const userStore = useUserStore()
@@ -46,20 +46,26 @@ const logoUrl = computed(() => {
     return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
 })
 
-const getMarketingList = async () => {
-    const res = await getShowMarketing()
-    const marketingList = res.data
-    const marketingKeys = marketingList?.marketing?.list?.map(item => item.key) ?? []
-    // menuData.value.forEach((item, index, arr) => {
-    //     if (marketingKeys.includes(item.name)) {
-    //         arr.splice(index, 1)
-    //     }
-    // })
-    storage.set({ key: 'darksideMarketingKeys', data: marketingKeys })
+const appList = ref<Record<string, any>[]>([])
+
+const getAppList = async () => {
+    const res = await getShowApp()
+    appList.value = res.data
+    
+    storage.set({ key: 'defaultAppList', data: appList.value })
+}
+const specialList = ref<Record<string, any>[]>([])
+const getShowSpecialMenuList = async () => {
+    const res = await getShowSpecialMenu()
+    // specialList.value = formatRouters(res.data.list)
+    specialList.value = res.data.list
+    storage.set({ key: 'specialAppList', data: specialList.value })
 }
 
+
 onMounted(() => {
-    getMarketingList()
+    getAppList()
+    getShowSpecialMenuList()
 })
 
 routers.forEach((item, index) => {

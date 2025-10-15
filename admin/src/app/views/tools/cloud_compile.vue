@@ -53,7 +53,7 @@
                         <el-timeline-item :hollow="true">
                             <div class="text-[16px] text-[#1D1F3A]">编译uniapp代码</div>
                             <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">
-                                <span>云编泽会将uniapp端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>
+                                <span>云编译会将uniapp端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>
                                 <span class="text-[#F09000] mx-[3px] font-bold">public/wap</span>
                                 <span>目录中，这样手机端网页的访问路径将变为</span>
                                 <span class="text-primary ml-[3px] font-500"> https://域名/wap</span>
@@ -62,7 +62,7 @@
                         <el-timeline-item :hollow="true">
                             <div class="text-[16px] text-[#1D1F3A]">编译web代码</div>
                             <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">
-                                <span>云编泽会将web端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>
+                                <span>云编译会将web端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>
                                 <span class="text-[#F09000] mx-[3px] font-bold">public/web</span>
                                 <span>目录中，这样电脑端网页的访问路径将变为</span>
                                 <span class="text-primary ml-[3px] font-500"> https://域名/web</span>

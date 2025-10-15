@@ -336,7 +336,7 @@
                             <template #content>
                                 <div class="w-[400px]">
                                     {{t("installTips")}}
-                                </div>    
+                                </div>
                             </template>
                             <el-button :disabled="!installCheckResult.is_pass || cloudInstalling" :loading="localInstalling" @click="handleInstall">{{ t("localInstall") }}</el-button>
                         </el-tooltip>
@@ -344,7 +344,7 @@
                             <template #content>
                                 <div class="w-[400px]">
                                     {{t("cloudInstallTips")}}
-                                </div>    
+                                </div>
                             </template>
                             <el-button type="primary" :disabled="!installCheckResult.is_pass || localInstalling" :loading="cloudInstalling" @click="handleCloudInstall">{{ t("cloudInstall") }}</el-button>
                         </el-tooltip>
@@ -771,7 +771,7 @@ const installAddonFn = (key: string) => {
  */
 const upgradeStartTime = ref<number | null>(null)
 const upgradeDuration = ref(0) // 单位：秒
-let upgradeTimer: ReturnType<typeof setInterval> | null = null 
+let upgradeTimer: ReturnType<typeof setInterval> | null = null
 let notificationEl = null
 
 const getInstallTask = (first: boolean = true) => {
@@ -816,7 +816,7 @@ const getInstallTask = (first: boolean = true) => {
             setTimeout(() => {
                 getInstallTask(false)
             }, 2000)
-            
+
         } else {
             if (!first) {
                 installStep.value = 2
@@ -1269,7 +1269,7 @@ html.dark .table-head-bg {
     height: 100px;
 }
 :deep(.el-table__body tr:hover td:first-child) {
-    // border-bottom: 1px solid var(--el-table-border-color); 
+    // border-bottom: 1px solid var(--el-table-border-color);
 }
 :deep(.el-table__body tr) {
   position: relative;
@@ -1383,7 +1383,7 @@ html.dark .table-head-bg {
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
-::v-deep .number-of-steps {
+:deep(.number-of-steps) {
     .el-step__line {
         margin: 0 25px;
         background: #dddddd;
