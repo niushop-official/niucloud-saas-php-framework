@@ -115,7 +115,7 @@ class CoreExportService extends BaseCoreService
         $data_list = [];
         foreach ($data_array as $v)
         {
-            $data_list = empty($data_list) ? $v : array_merge($data_list, $v);
+            $data_list = array_merge($data_list, $v );
         }
         return $data_list;
     }

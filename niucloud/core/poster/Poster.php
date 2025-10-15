@@ -41,7 +41,7 @@ class Poster extends BasePoster
         $bg_type = $poster_data[ 'global' ][ 'bgType' ];
         $instance = PosterInstance::extension('imagick')->config([
             'path' => realpath($dir) . DIRECTORY_SEPARATOR . $file_path,
-            'dpi' => [480,480]
+            'dpi' => [120,120]
         ]);
         $bg_width = $poster_data[ 'global' ][ 'width' ];
         $bg_height = $poster_data[ 'global' ][ 'height' ];

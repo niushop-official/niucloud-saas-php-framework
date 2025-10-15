@@ -93,7 +93,7 @@ class CoreAppCloudService extends CoreCloudBaseService
         // uni
         $uni_dir = $package_dir . 'uni-app';
 
-        dir_copy($this->root_path . 'uni-app', $uni_dir, exclude_dirs: [ 'node_modules', 'unpackage', 'dist' ]);
+        dir_copy($this->root_path . 'uni-app', $uni_dir, exclude_dirs: [ 'node_modules', 'unpackage', 'dist', '.git' ]);
         $this->handleUniapp($uni_dir);
         // 替换env文件
         $this->weappEnvReplace($uni_dir . DIRECTORY_SEPARATOR . '.env.production');

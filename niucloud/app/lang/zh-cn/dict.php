@@ -467,5 +467,21 @@ return [
         'pintuan_name' => '拼团',
         'seckill_short' => '秒',
         'seckill_name' => '秒杀',
+        'relay_short' => '接',
+        'relay_name' => '接龙',
+    ],
+    //应用菜单下 特殊菜单定义
+    'dict_site_addon_menu' => [
+        'system_tool_short' => '系统',
+        'system_tool' => '系统工具',
+
+        'marking_tool_short' => '工具',
+        'marking_tool' => '营销工具',
+
+        'marking_active_short' => '活动',
+        'marking_active' => '营销活动',
+
+        'addon_tool_short' => '插件',
+        'addon_tool' => '应用插件',
     ]
 ];

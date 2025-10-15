@@ -120,7 +120,7 @@ class NiuSmsService extends BaseAdminService
     {
         $account_info = $this->niu_service->loginAccount($params);
         if ($account_info) {
-            (new CoreNiuSmsService())->setNiuLoginConfig($params, true);
+            $this->niu_service->setNiuLoginConfig($params, true);
         }
         return $account_info;
     }

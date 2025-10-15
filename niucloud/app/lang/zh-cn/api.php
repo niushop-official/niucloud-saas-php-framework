@@ -68,6 +68,7 @@ return [
     'NOT_EXIST_UPGRADE_CONTENT' => '没有获取到可以升级的内容',
     'CLOUD_BUILD_AUTH_CODE_NOT_FOUND' => '请先填写授权码',
     'TASK_CYCLE_ERROR' => '任务周期填写错误',
+    'UPGRADE_TASK_EXIST' => '有正在执行的升级任务，可以展开正在升级的任务，也可以在开发>更新缓存中清除缓存重新开始升级',
     //登录注册重置账号....
 
     'LOGIN_SUCCESS' => '登录成功',
@@ -106,6 +107,7 @@ return [
     'NO_SITE_USER_ROLE' => '用户不存在关联权限',
     'ADMIN_NOT_ALLOW_EDIT_ROLE' => '超级管理员不允许改动权限',
     'USERNAME_REPEAT' => '账号重复',
+    'MOBILE_REPEAT' => '手机号重复',
     'SITE_USER_EXIST' => '该用户已存在',
 
     //角色管理

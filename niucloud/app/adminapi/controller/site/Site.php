@@ -178,14 +178,13 @@ class Site extends BaseAdminController
         return success(data: $data);
     }
 
-    public function showApp()
+    /**
+     * 统一展示 安装的插件 应用 营销工具等。。
+     * @return Response
+     */
+    public function showCustomer()
     {
-        return success((new SiteService())->getShowAppTools());
-    }
-
-    public function showMarketing()
-    {
-        return success((new SiteService())->getShowMarketingTools());
+        return success((new SiteService())->showCustomer());
     }
 
     /**
@@ -230,6 +229,12 @@ class Site extends BaseAdminController
     public function captcha()
     {
         return success(( new CaptchaService() )->create());
+    }
+
+    public function getSpecialMenuList()
+    {
+        return success('SUCCESS', (new SiteService())->getSpecialMenuList());
+
     }
 
 

@@ -18,7 +18,8 @@ $data = [
         //wokrerman的启动停止和重启
         'workerman' => 'app\command\workerman\Workerman',
         //重置管理员密码
-        'reset:password' => 'app\command\Resetpassword'
+        'reset:password' => 'app\command\Resetpassword',
+        'refresh:area' => 'app\command\refreshAreaCommand',
     ],
 ];
 return (new DictLoader("Console"))->load($data);

@@ -37,9 +37,9 @@ class ConfigService extends BaseAdminService
      * 获取版权信息(网站整体，不按照站点设置)
      * @return array|mixed
      */
-    public function getCopyright()
+    public function getCopyright($site_id)
     {
-        return ( new CoreSysConfigService() )->getCopyright($this->site_id);
+        return ( new CoreSysConfigService() )->getCopyright($site_id);
     }
 
     /**
@@ -66,9 +66,10 @@ class ConfigService extends BaseAdminService
      * 获取网站信息
      * @return array
      */
-    public function getWebSite()
+    public function getWebSite($site_id = 0)
     {
-        $info = ( new SiteService() )->getInfo($this->site_id);
+        $site_id = $site_id != 0 ? $site_id : $this->site_id;
+        $info = ( new SiteService() )->getInfo($site_id);
         $service_info = $this->getService();
         $info['site_login_logo'] = $service_info[ 'site_login_logo' ];
         $info['site_login_bg_img'] = $service_info[ 'site_login_bg_img' ];

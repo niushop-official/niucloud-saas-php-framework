@@ -106,6 +106,7 @@ class User extends BaseAdminController
         $data = $this->request->params([
             ['username', ''],
             ['password', ''],
+            ['mobile', ''],
             ['real_name', ''],
             ['status', UserDict::ON],
             ['head_img', ''],
@@ -124,6 +125,7 @@ class User extends BaseAdminController
     public function edit($uid) {
         $data = $this->request->params([
             ['password', ''],
+            ['mobile', ''],
             ['real_name', ''],
             ['head_img', ''],
         ]);

@@ -30,7 +30,8 @@ class Config extends BaseAdminController
      */
     public function getWebsite()
     {
-        return success(( new ConfigService() )->getWebSite());
+        $site_id = $this->request->header()['site-id'];
+        return success(( new ConfigService() )->getWebSite($site_id));
     }
 
     /**
@@ -84,7 +85,8 @@ class Config extends BaseAdminController
      */
     public function getCopyright()
     {
-        return success(( new ConfigService() )->getCopyright());
+        $site_id = $this->request->header()['site-id'];
+        return success(( new ConfigService() )->getCopyright($site_id));
     }
 
     /**

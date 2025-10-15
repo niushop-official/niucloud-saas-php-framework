@@ -54,7 +54,7 @@ class App extends BaseController
             'mobile' => 'mobile'
         ]);
 
-        // 校验手机验证码（电脑端扫码）
+        // 校验手机验证码
         ( new LoginService() )->checkMobileCode($data[ 'mobile' ]);
 
         $wechat_app_service = new WechatAppService();

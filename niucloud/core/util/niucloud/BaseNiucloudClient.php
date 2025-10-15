@@ -48,6 +48,7 @@ class BaseNiucloudClient
      * @var string
      */
     protected string $baseUri = 'https://api.niucloud.com/openapi/';
+//    protected string $baseUri = 'http://niucloud-admin.cn/openapi/';//调试放开
 
     /**
      *

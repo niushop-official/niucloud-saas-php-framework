@@ -137,18 +137,18 @@ class CoreCloudBuildService extends BaseCoreService
         // 拷贝手机端文件
         $wap_is_compile = ( new Addon() )->where([ [ 'compile', 'like', '%wap%' ] ])->field('id')->findOrEmpty();
         if ($wap_is_compile->isEmpty()) {
-            dir_copy($this->root_path . 'uni-app', $package_dir . 'uni-app', exclude_dirs: [ 'node_modules', 'unpackage', 'dist' ]);
+            dir_copy($this->root_path . 'uni-app', $package_dir . 'uni-app', exclude_dirs: [ 'node_modules', 'unpackage', 'dist', '.git' ]);
             $this->handleUniapp($package_dir . 'uni-app');
         }
         // 拷贝admin端文件
         $admin_is_compile = ( new Addon() )->where([ [ 'compile', 'like', '%admin%' ] ])->field('id')->findOrEmpty();
         if ($admin_is_compile->isEmpty()) {
-            dir_copy($this->root_path . 'admin', $package_dir . 'admin', exclude_dirs: [ 'node_modules', 'dist', '.vscode', '.idea' ]);
+            dir_copy($this->root_path . 'admin', $package_dir . 'admin', exclude_dirs: [ 'node_modules', 'dist', '.vscode', '.idea', '.git' ]);
         }
         // 拷贝web端文件
         $web_is_compile = ( new Addon() )->where([ [ 'compile', 'like', '%web%' ] ])->field('id')->findOrEmpty();
         if ($web_is_compile->isEmpty()) {
-            dir_copy($this->root_path . 'web', $package_dir . 'web', exclude_dirs: [ 'node_modules', '.output', '.nuxt' ]);
+            dir_copy($this->root_path . 'web', $package_dir . 'web', exclude_dirs: [ 'node_modules', '.output', '.nuxt', '.git' ]);
         }
 
         $this->handleCustomPort($package_dir);

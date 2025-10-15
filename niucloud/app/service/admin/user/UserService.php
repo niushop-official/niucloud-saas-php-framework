@@ -37,7 +37,7 @@ class UserService extends BaseAdminService
     public function __construct()
     {
         parent::__construct();
-       $this->model = new SysUser();
+        $this->model = new SysUser();
     }
 
     /**
@@ -50,7 +50,7 @@ class UserService extends BaseAdminService
         AuthService::isSuperAdmin();
         $super_admin_uid = Cache::get('super_admin_uid');
 
-        $field = 'uid,username,head_img,real_name,last_ip,last_time,login_count,status';
+        $field = 'uid,username,mobile,head_img,real_name,last_ip,last_time,login_count,status';
         $search_model = $this->model->withSearch([ 'username', 'real_name', 'last_time' ], $where)->field($field)->append([ 'status_name' ])->order('uid desc');
         return $this->pageQuery($search_model, function ($item) use ($super_admin_uid) {
             $item['site_num'] = (new SysUserRole())->where([['uid', '=', $item['uid']], ['site_id', '<>', request()->defaultSiteId() ] ])->count();
@@ -71,7 +71,7 @@ class UserService extends BaseAdminService
         $where = array(
             ['uid', '=', $uid],
         );
-        $field = 'uid, username, head_img, real_name, last_ip, last_time, create_time, login_count, delete_time, update_time';
+        $field = 'uid, username, head_img, mobile, real_name, last_ip, last_time, create_time, login_count, delete_time, update_time';
         $info = $this->model->where($where)->field($field)->findOrEmpty()->toArray();
 
         if (!empty($info)) {
@@ -96,11 +96,14 @@ class UserService extends BaseAdminService
      */
     public function add(array $data){
         if ($this->checkUsername($data['username'])) throw new CommonException('USERNAME_REPEAT');
+        //手机号 唯一校验  后续调整为使用validate
+        if ($this->checkUserMobile($data['mobile'])) throw new CommonException('MOBILE_REPEAT');
 
         Db::startTrans();
         try {
             $user_data = [
                 'username' => $data['username'],
+                'mobile' => $data['mobile'],
                 'head_img' => $data['head_img'],
                 'status' => $data['status'],
                 'real_name' => $data['real_name'],
@@ -181,6 +184,29 @@ class UserService extends BaseAdminService
     }
 
     /**
+     * 检测用户名是否重复
+     * @param $username
+     * @return bool
+     * @throws DbException
+     */
+    public function checkUserMobile($mobile,$uid=0)
+    {
+        if (empty($mobile)){
+            return true;
+        }
+        $where[] = ['mobile', '=', $mobile];
+        if ($uid != 0){
+            $where[] = ['uid', '<>', $uid];
+        }
+        $count = $this->model->where($where)->count();
+        if($count > 0)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    /**
      * 用户模型对象
      * @param int $uid
      * @return SysUser|array|mixed|Model
@@ -210,6 +236,10 @@ class UserService extends BaseAdminService
         }
         if(isset($data['head_img'])){
             $user_data['head_img'] = $data['head_img'];
+        }
+        if(isset($data['mobile']) && !empty($data['mobile'])){//手机号 唯一校验  后续调整为使用validate
+            if ($this->checkUserMobile($data['mobile'],$uid)) throw new CommonException('MOBILE_REPEAT');
+            $user_data['mobile'] = $data['mobile'];
         }
         if(isset($data['real_name'])){
             $user_data['real_name'] = $data['real_name'];
@@ -294,8 +324,8 @@ class UserService extends BaseAdminService
         $all_uid = array_column($this->getUserAll($where), 'uid');
         $all_role_uid = (new SysUserRole())->distinct(true)->order('id desc')->select()->column('uid');
         $data = $this->model->distinct(true)->hasWhere('userrole', function ($query) {
-                $query->where([['is_admin', '=', 1]])->whereOr([['site_id', '=', 0]]);
-            })->withSearch(['username', 'realname', 'create_time'], $where)
+            $query->where([['is_admin', '=', 1]])->whereOr([['site_id', '=', 0]]);
+        })->withSearch(['username', 'realname', 'create_time'], $where)
             ->field($field)
             ->order('SysUser.uid desc')
             ->select()

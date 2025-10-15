@@ -27,16 +27,12 @@ class AutoClearPosterAndQrcode extends BaseJob
             // 清理海报目录
             $dir = 'upload/poster';
             $dir = public_path($dir);
-            Log::write('AutoClearPosterAndQrcode尝试清理海报目录: ' . $dir);
             $res = $this->clearDirectory($dir);
-            Log::write('AutoClearPosterAndQrcode海报目录清理结果: ' . ($res ? '成功' : '失败'));
 
             // 清理二维码目录
             $qrcode_dir = 'upload/qrcode';
             $qrcode_dir = public_path($qrcode_dir);
-            Log::write('AutoClearPosterAndQrcode尝试清理二维码目录: ' . $qrcode_dir);
             $res = $this->clearDirectory($qrcode_dir);
-            Log::write('AutoClearPosterAndQrcode二维码目录清理结果: ' . ($res ? '成功' : '失败'));
 
             return true;
         } catch (\Exception $e) {

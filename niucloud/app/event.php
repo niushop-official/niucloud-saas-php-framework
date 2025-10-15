@@ -11,9 +11,9 @@ $system_event = [
         /**
          * 系统事件
          */
-        'AppInit' => [ 'app\listener\system\AppInitListener' ],
+        'AppInit' => ['app\listener\system\AppInitListener'],
         //站点初始化
-        'SiteInit' => [ 'app\listener\system\SiteInitListener' ],
+        'SiteInit' => ['app\listener\system\SiteInitListener'],
         // 站点创建之后
         'AddSiteAfter' => [
             'app\listener\system\AddSiteAfterListener'
@@ -26,26 +26,26 @@ $system_event = [
          * 会员相关事件
          */
         //会员注册事件
-        'MemberRegister' => [ 'app\listener\member\MemberRegisterListener' ],
+        'MemberRegister' => ['app\listener\member\MemberRegisterListener'],
         //会员登录事件
-        'MemberLogin' => [ 'app\listener\member\MemberLoginListener' ],
+        'MemberLogin' => ['app\listener\member\MemberLoginListener'],
         //会员账户变化事件
-        'MemberAccount' => [ 'app\listener\member\MemberAccountListener' ],
+        'MemberAccount' => ['app\listener\member\MemberAccountListener'],
         //扫码事件
-        'Scan' => [ 'app\listener\scan\ScanListener' ],
+        'Scan' => ['app\listener\scan\ScanListener'],
         /**
          * 支付相关事件
          */
-        'PayCreate' => [ 'app\listener\pay\PayCreateListener' ],
+        'PayCreate' => ['app\listener\pay\PayCreateListener'],
         //支付成功
-        'PaySuccess' => [ 'app\listener\pay\PaySuccessListener' ],
+        'PaySuccess' => ['app\listener\pay\PaySuccessListener'],
         //退款成功
-        'RefundSuccess' => [ 'app\listener\pay\RefundSuccessListener' ],
+        'RefundSuccess' => ['app\listener\pay\RefundSuccessListener'],
         //转账成功
-        'TransferSuccess' => [ 'app\listener\pay\TransferSuccessListener' ],
+        'TransferSuccess' => ['app\listener\pay\TransferSuccessListener'],
         // 任务失败统一回调,有四种定义方式
         'queue_failed' => [
-            [ 'app\listener\job\QueueFailedLoggerListener', 'report' ],
+            ['app\listener\job\QueueFailedLoggerListener', 'report'],
         ],
         //系统应用管理加载
         'AppManage' => [
@@ -118,25 +118,28 @@ $system_event = [
         'StatField' => [],
 
         // 获取海报数据
-        'GetPosterType' => [ 'app\listener\system\PosterType' ],
-        'GetPosterData' => [ 'app\listener\system\Poster' ],
+        'GetPosterType' => ['app\listener\system\PosterType'],
+        'GetPosterData' => ['app\listener\system\Poster'],
 
         // 小程序授权变更事件
-        'WeappAuthChangeAfter' => [ 'app\listener\system\WeappAuthChangeAfter' ],
+        'WeappAuthChangeAfter' => ['app\listener\system\WeappAuthChangeAfter'],
         'ShowApp' => [
             'app\listener\system\ShowAppListener'
         ],
         'ShowMarketing' => [
             'app\listener\system\ShowMarketingListener'
         ],
+        'ShowCustomer' => [
+            'app\listener\system\ShowCustomerListener'
+        ],
         //获取微信转账场景配置
         'GetWechatTransferTradeScene' => [
             'app\listener\transfer\TransferCashOutListener'
         ],
         //主题色
-        'ThemeColor' => [ 'app\listener\diy\ThemeColorListener' ],
+        'ThemeColor' => ['app\listener\diy\ThemeColorListener'],
     ],
     'subscribe' => [
     ],
 ];
-return ( new DictLoader("Event") )->load($system_event);
+return (new DictLoader("Event"))->load($system_event);

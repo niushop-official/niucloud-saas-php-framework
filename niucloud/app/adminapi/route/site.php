@@ -97,9 +97,8 @@ Route::group('site', function () {
     // 获取店铺包含的插件
     Route::get('addons', 'site.Site/addons');
     // 获取应用列表
-    Route::get('showapp', 'site.Site/showApp');
-    // 获取营销列表
-    Route::get('showMarketing', 'site.Site/showMarketing');
+    Route::get('showCustomer', 'site.Site/showCustomer');
+    Route::get('special_menu', 'site.Site/getSpecialMenuList');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

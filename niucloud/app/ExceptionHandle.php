@@ -89,13 +89,6 @@ class ExceptionHandle extends Handle
             'previous' => $e->getPrevious(),
         ] : [];
 
-        // 添加自定义异常处理机制
-        if (strpos($e->getMessage(), 'open_basedir') !== false) {
-            return fail('OPEN_BASEDIR_ERROR');
-        }
-        if (strpos($e->getMessage(), 'Allowed memory size of') !== false) {
-            return fail('PHP_SCRIPT_RUNNING_OUT_OF_MEMORY');
-        }
         if ($e instanceof DbException) {
             return fail(get_lang('DATA_GET_FAIL').':'.$e->getMessage(), [
                 'file' => $e->getFile(),
@@ -122,17 +115,28 @@ class ExceptionHandle extends Handle
     }
 
     private function handleException(Throwable $e) {
+        // 添加自定义异常处理机制
+        if (strpos($e->getMessage(), 'open_basedir') !== false) {
+            return fail('OPEN_BASEDIR_ERROR');
+        }
+        if (strpos($e->getMessage(), 'Allowed memory size of') !== false) {
+            return fail('PHP_SCRIPT_RUNNING_OUT_OF_MEMORY');
+        }
+        if (preg_match('/^(fopen|file_get_contents|file_put_contents|include|require)\((.+?)\):.*Permission denied/', $e->getMessage(), $matches)) {
+            $filePath = $matches[2]; // 提取出来的文件路径
+            return fail("请检查文件{$filePath}是否存在或权限是否正确");
+        }
         $trace = array_map(function ($class){
             return str_replace('\\', '/', $class);
         }, array_column($e->getTrace(), 'class'));
+        $debug = env("APP_DEBUG", false);
 
         foreach ($trace as $class) {
             if (preg_match('#^addon/([^/]+)/#', $class, $matches)) {
-                return fail("{$matches[1]}插件内{$class}第{$e->getLine()}行出现异常，异常信息：" .$e->getMessage());
+                return fail("{$matches[1]}插件内{$class}第{$e->getLine()}行出现异常，异常信息：" .$e->getMessage(),$debug?$e->getTrace():[]);
             }
         }
 
-        $debug = env("APP_DEBUG", false);
 
         return fail("{$trace[0]}第{$e->getLine()}行出现异常，异常信息：" .$e->getMessage(), $debug ? $e->getTrace() : []);
     }

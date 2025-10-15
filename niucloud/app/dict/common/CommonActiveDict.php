@@ -28,6 +28,7 @@ class CommonActiveDict
     const NEWCOMER_DISCOUNT = 'newcomer_discount'; // 新人专享  新
     const PINTUAN = 'pintuan'; // 新人专享  新
     const SECKILL = 'seckill'; // 秒杀  秒
+    const RELAY = 'relay'; // 接龙  接
 
     public static function getActiveShort($active = '')
     {
@@ -71,6 +72,11 @@ class CommonActiveDict
                 'name' => get_lang('common_active_short.pintuan_short'),
                 'active_name' => get_lang('common_active_short.pintuan_name'),
                 'bg_color' => '#FF1C77'
+            ],
+            self::RELAY => [
+                'name' => get_lang('common_active_short.relay_short'),
+                'active_name' => get_lang('common_active_short.relay_name'),
+                'bg_color' => '#0EB108'
             ],
         ];
         return !empty($active) ? $data[$active] ?? [] : $data;
