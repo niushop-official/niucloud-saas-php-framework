@@ -1,14 +1,14 @@
 <template>
     <view class="min-h-[100vh] bg-[var(--page-bg-color)]  overflow-hidden" :style="themeColor()">
         <view class="fixed left-0 right-0 top-0 z-99">
-            <view class="bg-[#fff] px-[var(--sidebar-m)] py-[14rpx] flex items-center">
-                <view class="search-input">
+            <view class="bg-[#f6f6f6] px-[var(--sidebar-m)] py-[14rpx] flex items-center">
+                <view class="search-input bg-[#fff]">
                     <text class="nc-iconfont nc-icon-sousuo-duanV6xx1 btn" @click="searchTypeFn()"></text>
                     <input class="input" maxlength="50" type="text" v-model="keyword" placeholder="请输入搜索关键词" placeholderClass="text-[var(--text-color-light9)] text-[24rpx]" confirm-type="search" @confirm="searchTypeFn()">
                     <text v-if="keyword" class="nc-iconfont nc-icon-cuohaoV6xx1 clear" @click="keyword=''"></text>
                 </view>
             </view>
-            <view class="tab-style-1 pt-[4rpx] bg-[#fff]">
+            <view class="tab-style-1 pt-[4rpx] bg-[#f6f6f6]">
                 <view class="tab-left">
                     <view class="tab-left-item"
                           :class="{'!text-primary class-select':fromType.from_type === item.from_type && fromType.account_data_gt === item.account_data_gt}"

@@ -35,14 +35,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, version } from 'vue'
+import { ref, version, computed } from 'vue'
 import {onBackPress, onHide} from "@dcloudio/uni-app";
 import useSystemStore from '@/stores/system';
 import { img, getUrl } from '@/utils/common';
 
 const systemStore = useSystemStore();
 
-const show = ref(false)
+const show = computed({
+    get() {
+        return systemStore.updateVersionPopup
+    },
+    set(value: boolean){
+        systemStore.updateVersionPopup = false
+    }
+})
 const downloading = ref(false)
 const downloadProgress = ref(0)
 const versionInfo = ref({})
@@ -60,7 +67,6 @@ const closeFn = () => {
         lock[versionInfo.value.version_code] = true
         uni.setStorageSync('update_version_close_lock', lock)
         show.value = false
-        systemStore.updateVersionPopup = false
     }else{
 		uni.showToast({
 			title: '下载过程中不允许关闭',

@@ -87,6 +87,18 @@ export const useShare = () => {
                 uni.setStorageSync('weappOptions', weappOptions)
                 // #endif
             }
+
+            // 在这里判断isStop（关键：放在参数处理之后）
+            if (options.hasOwnProperty('isStop') && options.isStop) {
+                // 停止执行，更新store后返回
+                useSystemStore().$patch((state) => {
+                    state.shareOptions = {
+                        wechatOptions,
+                        weappOptions
+                    }
+                })
+                return; // 终止整个setShare函数
+            }
         } 
         getShareInfo({
                route: '/' + currRoute(),
@@ -96,11 +108,11 @@ export const useShare = () => {
 
             let wechat = data.wechat;
             if (wechat) {
-                wechatOptions.title = wechat.title
-                wechatOptions.desc = wechat.desc
+                wechatOptions.title = wechat.title? wechat.title : options.wechat?.title
+                wechatOptions.desc = wechat.desc? wechat.desc : options.wechat?.desc
                 wechatOptions.imgUrl = wechat.url ? img(wechat.url) : ''
             } else {
-                wechatOptions.title = document.title;
+                wechatOptions.title = document ? document.title : ''
                 wechatOptions.desc = ''
             }
             // #ifdef H5

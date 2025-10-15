@@ -125,7 +125,7 @@ onLoad((data: any) => {
         if (uni.getStorageSync('addressInfo')) {
             Object.assign(formData.value, uni.getStorageSync('addressInfo'))
         }
-        formData.value.address = data.name;
+        // formData.value.address = data.name;
         getAddress(data.latng);
         const tempArr = getQueryVariable('latng').split(',');
         formData.value.lat = tempArr[0];
@@ -294,7 +294,7 @@ const chooseLocation = () => {
     });
     // #endif
 
-    // #ifndef H5
+    // #ifdef H5
     const urlencode = formData.value;
     uni.setStorageSync('addressInfo', urlencode);
     let backurl = location.origin + location.pathname + '?source=' + source.value;
@@ -309,6 +309,9 @@ const chooseLocation = () => {
 const getAddress = (latlng: any) => {
     getAddressByLatlng({ latlng }).then((res: any) => {
         if (res.data) {
+            // #ifdef H5
+            formData.value.address = res.data.formatted_addresses.recommend;
+            // #endif
             formData.value.full_address = '';
             formData.value.full_address += res.data.province != undefined ? res.data.province : '';
             formData.value.full_address += res.data.city != undefined ? '' + res.data.city : '';

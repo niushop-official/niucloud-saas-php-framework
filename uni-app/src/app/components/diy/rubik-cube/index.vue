@@ -321,8 +321,9 @@ const calcFourSquare = () => {
         }
     });
     diyComponent.value.list.forEach((item: any, index: any) => {
-        item.imgWidth = 'calc((100% - ' + upx2px(diyComponent.value.imageGap * 2) + 'px) / 2)';
-        item.widthStyle = item.imgWidth;
+        //影响下次计算ratio
+        // item.imgWidth = 'calc((100% - ' + upx2px(diyComponent.value.imageGap * 2) + 'px) / 2)';
+        item.widthStyle = 'calc((100% - ' + upx2px(diyComponent.value.imageGap * 2) + 'px) / 2)';
         if (index <= 1) {
             item.imgHeight = maxHeightFirst;
         } else if (index > 1) {

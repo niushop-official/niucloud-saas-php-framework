@@ -13,6 +13,20 @@ export const redirect = (redirect: any) => {
     if (useDiyStore().mode == 'decorate') return
 
     let { url, mode, param, success, fail, complete } = redirect
+    // 新增：判断是否为外部链接
+    if (url && (url.indexOf('https') != -1 || url.indexOf('http') != -1)) {
+
+        // #ifdef H5
+        window.location.href = url;
+        // #endif
+
+        // #ifdef MP
+        redirect({
+            url: '/app/pages/webview/index',
+            param: { src: encodeURIComponent(url) }
+        });
+        // #endif
+    }
     let originalUrl = url; // 原始地址
     let newLogin = false; // 是否需要登录
 
@@ -292,7 +306,6 @@ export function img(path: string): string {
 
     if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
     if (typeof imgDomain == 'string' && imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)
-
     return isUrl(path) ? path : `${imgDomain}/${path}`
 }
 

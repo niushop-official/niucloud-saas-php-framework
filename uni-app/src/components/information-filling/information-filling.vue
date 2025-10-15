@@ -25,8 +25,12 @@
                         <u-form-item :label="t('mobile')" prop="mobile" :border-bottom="true" v-if="isBindMobile || config.login.is_bind_mobile">
                             <input type="mobile" v-model="formData.mobile" :disabled="true" v-if="formData.mobile" placeholderClass="text-[28rpx]"  class="text-[28rpx]">
                             <template v-else>
-                                <u-button v-if="info" :customStyle="{border:'none',color: '#999',width:'140rpx', textAlign:'left',margin:'0rpx'}" :text="t('getMobile')" open-type="getPhoneNumber" @getphonenumber="memberStore.bindMobile" class="text-[28rpx]"></u-button>
-                                <u-button v-else :customStyle="{border:'none',color: '#999',width:'140rpx', textAlign:'left',margin:'0rpx'}" :text="t('getMobile')" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" class="text-[28rpx]"></u-button>
+                                <u-button v-if="info" :customStyle="{border:'none',color: '#999',width:'140rpx', textAlign:'left',margin:'0rpx',fontSize:'28rpx'}" open-type="getPhoneNumber" @getphonenumber="memberStore.bindMobile">
+                                    <text class="text-[28rpx]">{{ t('getMobile') }}</text>
+                                </u-button>
+                                <u-button v-else :customStyle="{border:'none',color: '#999',width:'140rpx', textAlign:'left',margin:'0rpx',fontSize:'28rpx'}" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+                                    <text class="text-[28rpx]">{{ t('getMobile') }}</text>
+                                </u-button>
                             </template>
                         </u-form-item>
                     </view>

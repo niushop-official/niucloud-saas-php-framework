@@ -41,18 +41,18 @@
     "register": "注册",
     "complete": "完成",
     "close": "关闭",
-    "diyForm":{
-        "back":"返回",
-        "hidden":"已隐藏",
-        "view":"查看",
-        "know":"我知道了",
-        "prompt":"提示",
-        "call":"拨打",
-        "copy":"复制号码",
-        "uploadTips":"请上传图片",
-        "tips":"仅限本人和管理员能查看完整号码：",
-        "viewFillingDetails":"查看填写详情",
-        "detailInformation":"详细信息"
+    "diyForm": {
+        "back": "返回",
+        "hidden": "已隐藏",
+        "view": "查看",
+        "know": "我知道了",
+        "prompt": "提示",
+        "call": "拨打",
+        "copy": "复制号码",
+        "uploadTips": "请上传图片",
+        "tips": "仅限本人和管理员能查看完整号码：",
+        "viewFillingDetails": "查看填写详情",
+        "detailInformation": "详细信息"
     },
     "pay": {
         "orderInfo": "订单信息",
@@ -143,5 +143,17 @@
     "o2o.orderNo": "订单号",
     "o2o.actualPayment": "实付款",
     "o2o.orderDetail": "详情",
-    "notHave": "无"
+    "notHave": "无",
+    "tourism.scenic": "景点",
+    "tourism.way": "线路",
+    "tourism.hotel": "酒店",
+    "tourism.seeMore": "查看更多",
+    "vipcard.seeMore": "查看更多",
+    "shop.emptyAddress": "暂无收货地址，请先创建地址",
+    "shop.addAddress": "新增收货地址",
+    "shop.selectAddress": "选择地址",
+    "shop_fenxiao.orderNo": "订单号",
+    "shop_giftcard.actualPayment": "实付款",
+    "shop_giftcard.orderClose": "关闭订单",
+    "shop_giftcard.orderNo": "订单号"
 }

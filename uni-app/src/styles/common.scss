@@ -279,7 +279,8 @@ button[type='primary'],uni-button[type='primary']{
 }
 //普通tab切换样式
 .tab-style-2{
-	@apply box-border bg-white;
+	@apply box-border ;
+    background-color: #f6f6f6; /* 直接覆盖背景色 */
 	padding: 0 30rpx;
 	.tab-content{
 		@apply flex whitespace-nowrap justify-between;
@@ -309,9 +310,9 @@ button[type='primary'],uni-button[type='primary']{
 }
 //两个tab选项卡样式
 .tab-style-3{
-	@apply flex whitespace-nowrap justify-around box-border bg-white;
+	@apply flex whitespace-nowrap justify-around box-border ;
 	height: 88rpx;
-	
+    background-color: #f6f6f6; /* 直接覆盖背景色 */
 	.tab-items{
 		@apply flex-1;
 		line-height: 88rpx;

@@ -9,7 +9,7 @@ export function topTabar() {
         topStatusBar: {
             style: 'style-1',
             bgColor: 'transparent',
-            rollBgColor: '#fff',
+            rollBgColor: '#f6f6f6',
             textColor: '#fff',
             rollTextColor: '#333'
         }

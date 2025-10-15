@@ -11,12 +11,12 @@
                         </view>
                         <view v-if="data.customer_phone" class="w-full h-[1rpx] bg-dashed-style my-[40rpx]"></view>
                         <view class="px-[24rpx] flex flex-col items-center justify-center" v-if="data.customer_qrcode">
-                            <view class="border border-[#eee] border-solid rounded-[10rpx] border-[1rpx] w-[240rpx] h-[240rpx] flex items-center justify-center">
+                            <view class="border border-[#eee] border-solid rounded-[10rpx] border-[1rpx] p-[10rpx] flex items-center justify-center">
                                 <image class="w-[226rpx] h-[226rpx]" :src="img(data.customer_qrcode)" mode="widthFix" />
                             </view>
                             <view class="text-[26rpx] text-[#333] mt-[20rpx]">扫描二维码添加客服</view>
                         </view>
-                        <view class="px-[50rpx] mt-[16rpx] text-[22rpx] text-[#999] leading-[1.5]" style="text-indent: 2em;">{{ data.customer_guided_words }}</view>
+                        <view class="px-[50rpx] mt-[16rpx] text-center text-[22rpx] text-[#999] leading-[1.5]">{{ data.customer_guided_words }}</view>
                     </scroll-view>
                 </view>
                 <!-- <view @click="servicesDataShow = false" class="mt-[50rpx] nc-iconfont nc-icon-cuohaoV6xx1 !text-[50rpx] text-[#fff]"></view> -->

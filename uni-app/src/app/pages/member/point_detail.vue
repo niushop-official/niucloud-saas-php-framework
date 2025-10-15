@@ -1,8 +1,8 @@
 <template>
     <view class="bg-[var(--page-bg-color)] min-h-[100vh]" :style="themeColor()">
         <view class="fixed left-0 right-0 top-0 z-10085">
-            <view class="bg-[#fff] px-[30rpx] h-[88rpx] flex-center relative z-10084">
-                <view class="search-input">
+            <view class="bg-[#f6f6f6] px-[30rpx] h-[88rpx] pt-[10rpx] flex-center relative z-10084">
+                <view class="search-input bg-[#fff]">
                     <view class="flex-1 text-[24rpx] leading-[60rpx] text-[var(--text-color-light9)]" :class="{'!text-[#333]':from_type}" @click="typePopup = true">{{ from_type_name || '请选择来源用途' }}</view>
                     <text class="nc-iconfont nc-icon-shangV6xx-1 !text-[26rpx] ml-[18rpx] !text-[var(--text-color-light6)]" v-if="typePopup" @click="typePopup = false"></text>
                     <text class="nc-iconfont nc-icon-xiaV6xx !text-[26rpx] ml-[18rpx] !text-[var(--text-color-light6)]" v-else @click="typePopup = true"></text>
@@ -19,7 +19,7 @@
                     </view>
                 </u-popup>
             </view>
-            <view class="px-[var(--sidebar-m)] py-[30rpx] flex items-center justify-between">
+            <view class="px-[var(--sidebar-m)] pb-[30rpx] pt-[20rpx] bg-[#f6f6f6] flex items-center justify-between">
                 <view class="flex items-center">
                     <view class="px-[30rpx]  bg-[#fff] rounded-[30rpx] text-[24rpx] leading-[54rpx] mr-[20rpx] text-[#333]"
                         :class="{'!text-[var(--primary-color)] font-500':amount_type == item.status}"

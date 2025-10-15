@@ -201,7 +201,8 @@ const getFriendspayInfoFn = (tradeType : string, tradeId : number) => {
 			},
 			weapp: {
 				...share
-			}
+			},
+            isStop:true
 		});
 		// 分享 - end
         copyUrlFn();

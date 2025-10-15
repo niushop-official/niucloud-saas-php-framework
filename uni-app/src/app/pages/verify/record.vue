@@ -1,8 +1,8 @@
 <template>
     <view class="bg-[var(--page-bg-color)] min-h-screen overflow-hidden" :style="themeColor()">
-        <view class="fixed left-0 right-0 top-0 z-99 bg-[#fff]">
+        <view class="fixed left-0 right-0 top-0 z-99 bg-[#f6f6f6]">
             <view class="py-[14rpx] flex items-center justify-between px-[20rpx]">
-                <view class="flex-1 search-input mr-[20rpx]">
+                <view class="flex-1 search-input bg-[#fff] mr-[20rpx]">
                     <text @click.stop="searchTypeFn()" class="nc-iconfont nc-icon-sousuo-duanV6xx1 btn"></text>
                     <input class="input" maxlength="50" type="text" v-model="keyword" placeholder="请输入搜索关键词" placeholderClass="text-[var(--text-color-light9)] text-[24rpx]" confirm-type="search" @confirm="searchTypeFn()">
                     <text v-if="keyword" class="nc-iconfont nc-icon-cuohaoV6xx1 clear" @click="keyword=''"></text>
