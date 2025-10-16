@@ -1,0 +1,1 @@
+import{Z as r,f as n,x as _,o,k as u,t as c,__tla as p}from"./entry.d8ede324.js";let l,i=Promise.all([(()=>{try{return p}catch{}})()]).then(async()=>{function s(){return r.get("relay/hello_world")}let t;t={class:"text-[24px]"},l=n({__name:"index",setup(x){const a=_("");return s().then(e=>{a.value=e.data}),(e,d)=>(o(),u("span",t,c(a.value),1))}})});export{i as __tla,l as default};

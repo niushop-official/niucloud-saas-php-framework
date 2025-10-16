@@ -1,0 +1,1 @@
+const e={index:{index:"\u9996\u9875"},auth:{login:"\u767B\u5F55",register:"\u767B\u5F55",bind:"\u624B\u673A\u53F7\u7ED1\u5B9A"},member:{index:"\u6B22\u8FCE\u9875",center:"\u4E2A\u4EBA\u4E2D\u5FC3"},article:{list:"\u6587\u7AE0",detail:"\u6587\u7AE0"},site:{close:"\u7AD9\u70B9\u5DF2\u5173\u95ED",nosite:"\u7AD9\u70B9\u4E0D\u5B58\u5728"}},t={pages:e};export{t as default,e as pages};
