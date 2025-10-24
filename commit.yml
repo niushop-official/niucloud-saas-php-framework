@@ -3,21 +3,21 @@ branches: {
   }
 fileChange:
   /niucloud:
-    newFile: !uuid 'edacae65fb6be2cc9614251d27dcaf6f13b37c35'
-    oldFile: !uuid 'e78e3a2ae4baadbf318f48e0a53c945ad1caff42'
+    newFile: !uuid 'dc29dd05196ada76a75fbbdec359eac528b5ae90'
+    oldFile: !uuid 'edacae65fb6be2cc9614251d27dcaf6f13b37c35'
   /niucloud/public:
-    newFile: !uuid '2decca66540f1fbb88b8980d4ebf7a5a628f5dcf'
-    oldFile: !uuid '527f30ea84dd876775f42befb22cf3927eb5fd8c'
+    newFile: !uuid 'fa0ff03f78ab25d67b2f36d5374fc6baa97c6e8f'
+    oldFile: !uuid '2decca66540f1fbb88b8980d4ebf7a5a628f5dcf'
   /niucloud/public/static:
-    newFile: !uuid '2656f35f08b2e2733efa86347366c28135616f52'
-    oldFile: !uuid 'd17e65a26a207a788f736792d60ab222c63b0718'
+    newFile: !uuid '331c14008bbe204938044694d728ffeb481211e1'
+    oldFile: !uuid '2656f35f08b2e2733efa86347366c28135616f52'
   /niucloud/public/static/font:
-    newFile: !uuid '2e866165329c48e68f1eba97d9a3ea70b4181e77'
-    oldFile: !uuid '319b4a308fb0ccddd0a305f06b16f0a7593295a9'
-  /niucloud/public/static/font/OPLUSSANS3-REGULAR.TTF:
-    newFile: null
-    oldFile: !uuid 'd2c2155e4c3f4239c4c664743b5e72ab14993f2f'
-gitCommitId: !uuid '17b26f3f526d8bc0fa672ca711ef7eb41f3db086'
+    newFile: !uuid 'e6397c09d66f887b315753b5f78228d588ff0d44'
+    oldFile: !uuid '2e866165329c48e68f1eba97d9a3ea70b4181e77'
+  /niucloud/public/static/font/OPLUSSANS3-REGULAR.ttf:
+    newFile: !uuid 'd2c2155e4c3f4239c4c664743b5e72ab14993f2f'
+    oldFile: null
+gitCommitId: !uuid '08d14372e1eb029a20d6941d2f9ce471477ab6e3'
 renames: {
   }
-revisionId: 371
+revisionId: 372
