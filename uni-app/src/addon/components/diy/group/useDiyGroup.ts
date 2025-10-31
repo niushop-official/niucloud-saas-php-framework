@@ -5,6 +5,8 @@ import { onPageScroll, onHide, onShow } from '@dcloudio/uni-app';
 import useDiyStore from '@/app/stores/diy';
 
 export function useDiyGroup(params: any = {}) {
+    // 新增：控制版权显示的状态，默认隐藏
+    const showCopyright = ref(false); 
 
     let scrollVal: any = ""; //组件滚动值集合
     const componentsScrollBool: any = ref({}); //组件是否根据滚动进行相应改变
@@ -98,6 +100,10 @@ export function useDiyGroup(params: any = {}) {
                             componentsScrollBool.value[key] = -1;
                         }
                     }
+                    // 新增：页面加载完成后，显示版权
+                    showCopyright.value = true;
+                    console.log('组件加载完成', showCopyright.value);
+
                 }, 500)
             });
         });
@@ -174,11 +180,13 @@ export function useDiyGroup(params: any = {}) {
         scrollV: scrollValStr.value,
         data: data.value,
         componentsScrollBool: componentsScrollBool.value,
+        showCopyright, // 新增：暴露版权显示状态
         placeholderEvent,
         refresh,
         isShowPlaceHolder,
         getComponentClass,
         onPageScroll: onPageScrollLifeCycle,
         onMounted: onMountedLifeCycle
+       
     }
 }

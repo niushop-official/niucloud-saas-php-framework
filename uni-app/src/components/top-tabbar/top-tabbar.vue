@@ -192,7 +192,7 @@ if (componentsScrollVal) {
 let pages = getCurrentPages();
 const isBackShow = computed(() => {
     let bool = false;
-    if (props.isBack && pages.length > 1) {
+    if (props.isBack) {
         bool = true; 
     } 
     return bool;
@@ -205,7 +205,14 @@ const goBack = () => {
     if (typeof props.customBack === 'function') {
         props.customBack();
     } else {
-        uni.navigateBack();
+        if (getCurrentPages().length > 1) {
+            uni.navigateBack()
+        } else {
+            redirect({
+                url: '/addon/shop/pages/index',
+                mode: 'reLaunch'
+            });
+        }  
     }
 }
 /******************************* 返回按钮-end ***********************/

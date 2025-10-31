@@ -19,7 +19,7 @@
                     </view>
                 </u-popup>
             </view>
-            <view class="px-[var(--sidebar-m)] pb-[30rpx] pt-[20rpx] bg-[#f6f6f6] flex items-center justify-between">
+            <view class="px-[var(--sidebar-m)] pb-[20rpx] pt-[20rpx] bg-[#f6f6f6] flex items-center justify-between">
                 <view class="flex items-center">
                     <view class="px-[30rpx]  bg-[#fff] rounded-[30rpx] text-[24rpx] leading-[54rpx] mr-[20rpx] text-[#333]"
                         :class="{'!text-[var(--primary-color)] font-500':amount_type == item.status}"
@@ -31,9 +31,9 @@
                 </view>
             </view>
         </view>
-        <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" top="202rpx">
+        <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" top="185rpx">
             <view v-for="(item,index) in pointList" :key="index"
-                  class="sidebar-margin card-template  mb-[var(--top-m)]">
+                  class="sidebar-margin card-template  mt-[var(--top-m)]">
                 <view class="flex justify-between items-center">
                     <view class="text-[#333]">
                         <text class="text-[26rpx]">{{ item.month_info.year }}年</text>

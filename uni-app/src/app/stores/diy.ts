@@ -13,6 +13,7 @@ interface Diy {
         pageStartBgColor: string, // 页面背景颜色（开始）
         pageEndBgColor: string, // 页面背景颜色（结束）
         bottomTabBar: any, // 底部导航
+        copyright: any, // 版权信息
         bgUrl: string
     },
     // 组件集合
@@ -38,6 +39,14 @@ const useDiyStore = defineStore('diy', {
                 bottomTabBar: {
                     control: true, // 是否允许展示编辑
                     isShow: true, // 是否显示
+                    designNav:{
+                        title:'',
+                        key:''
+                    }
+                },
+                copyright:{
+                    control: true, // 是否允许展示编辑
+                    isShow: false, // 是否显示
                 },
                 bgUrl: ''
             },

@@ -34,7 +34,8 @@ interface System {
         weappOptions: any
     },
     versionInfo: any,
-    updateVersionPopup: boolean
+    updateVersionPopup: boolean,
+    copyright:any
 }
 
 const useSystemStore = defineStore('system', {
@@ -76,7 +77,8 @@ const useSystemStore = defineStore('system', {
                 weappOptions: {}
             },
             versionInfo: null,
-            updateVersionPopup: false
+            updateVersionPopup: false,
+            copyright:null
         }
     },
     actions: {
@@ -114,6 +116,9 @@ const useSystemStore = defineStore('system', {
                     this.siteAddons = data.site_info.site_addons.map((item: AnyObject) => {
                         return item.key
                     })
+
+                    // 版权设置
+                    this.copyright = data.copyright
 
                     // 会员等级
                     const memberStore = useMemberStore();

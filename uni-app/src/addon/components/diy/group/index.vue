@@ -124,13 +124,16 @@
 
 
                    <!-- 以下是addon文件夹下的自定义组件 -->
-
                </view>
            </view>
        </template>
+       <template v-if="diyStore.mode == '' && data.global && diyGroup.showCopyright.value && data.global.copyright && data.global.copyright.isShow">
+            <copy-right />
+       </template>
+      
        <template v-if="diyStore.mode == '' && data.global && data.global.bottomTabBar && data.global.bottomTabBar.isShow">
            <view class="pt-[20rpx]"></view>
-           <tabbar />
+           <tabbar :addon="data.global.bottomTabBar.designNav.key" />
        </template>
    </view>
 </template>

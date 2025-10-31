@@ -46,7 +46,6 @@ if (!addon && configStore.addon) {
 }
 
 const tabbar: any = reactive({})
-
 const setTabbar = () => {
     let list = cloneDeep(useConfigStore().tabbarList);
     if (list.length == 1) {
@@ -95,6 +94,19 @@ const setTabbar = () => {
 }
 
 setTabbar()
+
+// 移除原有的 "if (!props.addon)" 条件限制，直接监听 configStore.addon
+watch(
+    () => useConfigStore().addon,
+    (newAddon, oldAddon) => {
+        // 当 props.addon 为空时，才响应 configStore.addon 的变化
+        if (!props.addon && newAddon !== oldAddon) {
+            addon = newAddon; // 同步更新本地 addon 变量
+            setTabbar(); // 重新设置 TabBar
+        }
+    },
+    { immediate: true, deep: true } // 立即执行 + 深度监听
+);
 
 watch(
     () => props.addon,

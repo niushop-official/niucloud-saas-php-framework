@@ -216,7 +216,7 @@
     ],
     "subPackages": [
         // {{ PAGE_BEGAIN }}
-        // {{ PAGE_END }}
+// {{ PAGE_END }}
         {
             "root": "app/components",
             "pages": []
