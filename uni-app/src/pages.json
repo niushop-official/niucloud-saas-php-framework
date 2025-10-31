@@ -392,7 +392,6 @@
             }
         ]
     },
-    "uniIdRouter": {},
     "easycom": {
         "custom": {
             "diy-group": "@/addon/components/diy/group/index.vue",
