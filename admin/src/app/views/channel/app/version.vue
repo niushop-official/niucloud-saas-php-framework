@@ -22,7 +22,7 @@
             </el-alert>
 
             <div class="mt-[20px]">
-                <el-button type="primary" @click="addEvent">{{ t('addAppVersion') }}</el-button>
+                <el-button type="primary" @click="addEvent" :disabled="loading">{{ t('addAppVersion') }}</el-button>
             </div>
 
             <div class="mt-[10px]">
@@ -41,7 +41,11 @@
 
                     <el-table-column prop="platform_name" :label="t('platform')" min-width="120" :show-overflow-tooltip="true"/>
 
-                    <el-table-column prop="status_name" :label="t('status')" min-width="120" :show-overflow-tooltip="true"/>
+                    <el-table-column prop="status_name" :label="t('status')" min-width="120" align="center" :show-overflow-tooltip="true">
+                        <template #default="{ row }">
+                            <el-button link :loading="row.status == 'creating'">{{ row.status_name }}</el-button>
+                        </template>
+                    </el-table-column>
 
                     <el-table-column prop="status" :label="t('isForcedUpgradeTitle')" min-width="120" align="center" :show-overflow-tooltip="true">
                         <template #default="{ row }">
@@ -63,7 +67,7 @@
                         <template #default="{ row }">
                             <el-button type="primary" link v-if="row.release_time == 0" @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button type="primary" link v-if="row.status == 'upload_success'" @click="releaseEvent(row)">{{ t('release') }}</el-button>
-                            <el-button type="primary" link v-if="row.status == 'create_fail'" @click="handleFailReason(row)">{{ t('failReason') }}</el-button>
+                            <el-button type="primary" link v-if="row.status == 'creating'" @click="seeBuildLog(row)">{{ t('seeBuildLog') }}</el-button>
                             <el-button type="primary" link v-if="row.package_path && row.upgrade_type != 'market'" @click="downloadEvent(row)">{{ t('download') }}</el-button>
                             <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
                         </template>
@@ -86,21 +90,31 @@
             </el-scrollbar>
         </el-dialog>
     </div>
+    
+    <el-dialog v-model="showDialog" :title="t('buildLog')" width="850px" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="dialogClose">
+        <div class="h-[370px]">
+            <terminal ref="terminalRef" :name="`upgrade-${terminalId}`"  context="" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd" />
+        </div>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
-import { img } from '@/utils/common'
+import { img, getAppType } from '@/utils/common'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { getVersionList, getBuildLog, deleteVersion, releaseVersion } from '@/app/api/app'
 import Edit from '@/app/views/channel/app/components/app-version-edit.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { Terminal, TerminalFlash } from 'vue-web-terminal'
+import 'vue-web-terminal/lib/theme/dark.css'
+import { getAuthInfo } from '@/app/api/module'
+
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
 const activeName = ref('/channel/app/version')
-
+const terminalRef: any = ref(null)
 const appVersionTable = reactive({
     page: 1,
     limit: 10,
@@ -110,6 +124,18 @@ const appVersionTable = reactive({
     searchParam: {
         platfrom: ''
     }
+})
+const showDialog = ref(false)
+const loading = ref(true)
+const authCode = ref('')
+
+getAuthInfo().then(res => {
+    if (res.data.data && res.data.data.auth_code) {
+        authCode.value = res.data.data.auth_code
+    }
+    loading.value = false
+}).catch(() => {
+    loading.value = false
 })
 
 const handleClick = (val: any) => {
@@ -146,6 +172,10 @@ const editAppVersionDialog: Record<string, any> | null = ref(null)
  * 添加app版本管理
  */
 const addEvent = () => {
+    if (!authCode.value) {
+        authElMessageBox()
+        return
+    }
     editAppVersionDialog.value.setFormData()
     editAppVersionDialog.value.showDialog = true
 }
@@ -192,18 +222,68 @@ const releaseEvent = (data: any) => {
     })
 }
 
+let buildLog = []
 const getAppBuildLogFn = (key: string) => {
     getBuildLog(key).then(res => {
         if (res.data) {
             if (res.data.status == '') {
+                if (showDialog.value) {
+                    if (!buildLog.length) {
+                        terminalRef.value.execute('clear')
+                        terminalRef.value.execute('开始打包')
+                    }
+                    res.data.build_log.data[0].forEach((item) => {
+                        if (!buildLog.includes(item.action)) {
+                            terminalRef.value.pushMessage({ content: `${item.action}` })
+                            buildLog.push(item.action)
+                        }
+                    })
+                }
                 setTimeout(() => {
                     getAppBuildLogFn(key)
                 }, 2000)
             } else {
+                if (res.data.status == 'fail' && showDialog.value) {
+                    terminalRef.value.pushMessage({ content: res.data.fail_reason, class: 'error' })
+                } else {
+                    showDialog.value = false
+                }
                 loadAppVersionList()
+                buildLog = []
             }
         }
     })
+}
+
+const seeBuildLog = () => {
+    showDialog.value = true;
+}
+
+/**
+ * 升级进度动画
+ */
+let flashInterval: any = null
+const terminalFlash = new TerminalFlash()
+const onExecCmd = (key, command, success, failed, name) => {
+    if (command == '开始打包') {
+        success(terminalFlash)
+        const frames = makeIterator(['/', '——', '\\', '|'])
+        flashInterval = setInterval(() => {
+            terminalFlash.flush('> ' + frames.next().value)
+        }, 150)
+    }
+}
+
+const makeIterator = (array: string[]) => {
+    let nextIndex = 0
+    return {
+        next () {
+            if (nextIndex + 1 == array.length) {
+                nextIndex = 0
+            }
+            return { value: array[nextIndex++] }
+        }
+    }
 }
 
 const failReason = ref('')
@@ -221,6 +301,28 @@ const resetForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return
     formEl.resetFields()
     loadAppVersionList()
+}
+
+const authElMessageBox = () => {
+    if (getAppType() == 'admin') {
+        ElMessageBox.confirm(
+            t('authTips'),
+            t('warning'),
+            {
+                distinguishCancelAndClose: true,
+                confirmButtonText: t('toBind'),
+                cancelButtonText: t('toNiucloud')
+            }
+        ).then(() => {
+            router.push({ path: '/app/authorize' })
+        }).catch((action: string) => {
+            if (action === 'cancel') {
+                window.open('https://www.niucloud.com/app')
+            }
+        })
+    } else {
+        ElMessageBox.alert(t('siteAuthTips'), t('warning'))
+    }
 }
 </script>
 

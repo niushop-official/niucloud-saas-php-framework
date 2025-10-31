@@ -45,6 +45,24 @@
                                         <template v-if="oplatformConfig.app_id && oplatformConfig.app_secret">
                                             <el-button type="primary" @click="router.push('/channel/weapp/config')">{{ weappConfig.app_id ? t("seeConfig") : t("weappSettingBtn") }}</el-button>
                                             <el-button type="primary" plain @click="authBindWeapp">{{ weappConfig.is_authorization ? t("refreshAuth") : t("authWeapp") }}</el-button>
+                                            <template v-if="weappConfig.is_authorization">
+                                                <el-button type="primary" plain @click="cencelAuth" >{{ t("取消授权") }}</el-button>
+                                                <el-tooltip class="box-item" effect="light" placement="top">
+                                                    <el-icon color="#666" size="15px"  class="ml-[5px]">
+                                                        <QuestionFilled />
+                                                    </el-icon>
+                                                    <template #content>
+                                                        <div>
+                                                            <div>
+                                                                非通过API创建的开放平台账号需要登录微信公众品平台进行取消授权操作
+                                                            </div>
+                                                            <div>
+                                                                微信公众平台：  <a class="ml-[3px] text-[var(--el-color-primary)]" target="_blank" href="https://mp.weixin.qq.com/cgi-bin/loginpage">https://mp.weixin.qq.com/cgi-bin/loginpage</a>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </el-tooltip>
+                                            </template>
                                         </template>
                                         <template v-else>
                                             <el-button type="primary" @click="router.push('/channel/weapp/config')">{{ t("weappSettingBtn") }}</el-button>
@@ -107,9 +125,10 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { t } from '@/lang'
 import { img } from '@/utils/common'
 import { getWeappConfig } from '@/app/api/weapp'
-import { getAuthorizationUrl } from '@/app/api/wxoplatform'
+import { getAuthorizationUrl ,cancelAuthorization} from '@/app/api/wxoplatform'
 import { getWxoplatform } from '@/app/api/sys'
 import { useRoute, useRouter } from 'vue-router'
+import { ElMessageBox } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()
@@ -156,6 +175,24 @@ const handleClick = (val: any) => {
 const authBindWeapp = () => {
     getAuthorizationUrl().then(({ data }) => {
         window.open(data)
+    })
+}
+const repeat = ref(false)
+const cencelAuth = () => {
+    ElMessageBox.confirm(t('确认取消授权吗？'), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        if (repeat.value) return
+        repeat.value = true
+        cancelAuthorization({}).then(() => {
+            repeat.value = false
+        }).catch(() => {
+            repeat.value = false
+        })
     })
 }
 </script>

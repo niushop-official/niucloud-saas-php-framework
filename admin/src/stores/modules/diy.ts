@@ -77,8 +77,17 @@ const useDiyStore = defineStore('diy', {
                 bottomTabBar: {
                     control: true, // 是否允许展示编辑
                     isShow: true, // 是否显示
+                    designNav:{ //类型
+                        title: "", // 标题
+                        key: "", // 组件标识
+                    }  
                 },
 
+                // 版权信息
+                copyright: {
+                    control: true, // 是否允许展示编辑
+                    isShow: false, // 是否显示
+                },
                 // 弹框 count：不弹出 -1，首次弹出 1，每次弹出 0
                 popWindow: {
                     imgUrl: "",
@@ -169,6 +178,16 @@ const useDiyStore = defineStore('diy', {
 
                 // 底部导航
                 bottomTabBar: {
+                    control: true, // 是否允许展示编辑
+                    isShow: true, // 是否显示
+                    designNav:{ //类型
+                        title: "", // 标题
+                        key: "", // 组件标识
+                    } 
+                },
+
+                // 版权信息
+                copyright: {
                     control: true, // 是否允许展示编辑
                     isShow: true, // 是否显示
                 },

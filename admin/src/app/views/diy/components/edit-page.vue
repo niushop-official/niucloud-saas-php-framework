@@ -63,6 +63,20 @@
                     <el-switch v-model="diyStore.global.bottomTabBar.isShow" />
                     <div class="text-sm text-gray-400">{{ t('tabbarSwitchTips') }}</div>
                 </el-form-item>
+                <el-form-item :label="t('选择导航')">
+                    <tabbar-select-popup v-model="diyStore.global.bottomTabBar.designNav"  />
+                </el-form-item>
+            </el-form>
+          
+            
+        </div>
+        <div class="edit-attr-item-wrap" v-if="diyStore.global.copyright.control">
+            <h3 class="mb-[10px]">{{ t('版权信息内容') }}</h3>
+            <el-form label-width="80px" class="px-[10px]">
+                <el-form-item :label="t('版权信息')" class="display-block">
+                    <el-switch v-model="diyStore.global.copyright.isShow" />
+                    <div class="text-sm text-gray-400">{{ t('此处控制当前页面版权信息是否显示') }}</div>
+                </el-form-item>
             </el-form>
         </div>
         <div class="edit-attr-item-wrap">
@@ -178,6 +192,7 @@ import { t } from '@/lang'
 import { watch, ref } from 'vue'
 import useDiyStore from '@/stores/modules/diy'
 import { img } from '@/utils/common'
+import tabbarSelectPopup from './tabbar-select-popup.vue'
 
 const diyStore = useDiyStore()
 

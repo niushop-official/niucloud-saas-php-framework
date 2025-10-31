@@ -95,3 +95,10 @@ export function syncSiteWeapp(params: Record<string, any>) {
 export function getAuthRecord(params: Record<string, any>) {
     return request.get('wxoplatform/authorization/record', { params })
 }
+
+/**
+ * 取消授权
+ */
+export function cancelAuthorization(params: Record<string, any>) {
+    return request.post('wxoplatform/authorization/cancel', params, { showSuccessMessage: true })
+}

@@ -45,5 +45,11 @@
     "failReason": "失败原因",
 	"appVersionReleaseTips": "发布后无法再对该版本进行修改，确定要发布该版本吗？",
 	"appVersionDeleteTips": "确定要删除该版本吗？",
-    "upgradeType": "升级方式"
+    "upgradeType": "升级方式",
+    "seeBuildLog": "查看打包日志",
+    "buildLog": "打包日志",
+    "authTips": "上传代码需先绑定授权码，如果已有授权请先进行绑定，没有授权可到niucloud官网购买云服务之后再进行操作",
+    "toBind": "绑定授权",
+    "toNiucloud": "去niucloud官网",
+    "siteAuthTips": "上传代码需先绑定授权码，请联系平台管理员进行绑定"
 }

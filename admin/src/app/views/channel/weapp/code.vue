@@ -14,11 +14,30 @@
             </el-tabs>
 
             <div class="mt-[20px]" v-if="!weappConfig.is_authorization">
-                <el-button type="primary" @click="insert" :loading="uploading" :disabled="loading">{{ t('cloudRelease') }}</el-button>
+                <el-button type="primary" @click="openDialog" :loading="uploading" :disabled="loading">{{ t('cloudRelease') }}</el-button>
                 <el-button @click="localInsert" :disabled="loading">{{ t('localRelease') }}</el-button>
             </div>
             <div class="mt-[20px]" v-else>
                 <el-button type="primary" @click="againUpload" :loading="uploading" :disabled="loading">{{ t('uploadWeapp') }}</el-button>
+            </div>
+
+            <div class="text-[14px] mt-[15px]">
+                <div class="flex items-center">
+                    <div v-if="weappTableData.version_info.release_version">
+                        线上版本: <span class="mr-10 text-primary">{{ weappTableData.version_info.release_version }}</span>
+                    </div>
+                    <div v-if="weappTableData.version_info.release_time">
+                        发布时间: <span >{{ weappTableData.version_info.release_time }}</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div v-if="weappTableData.version_info.exp_version" class="mt-2">
+                        体验版本: <span class="mr-10 text-primary">{{ weappTableData.version_info.exp_version }}</span>
+                    </div>
+                    <div v-if="weappTableData.version_info.exp_time" class="mt-2">
+                        过期时间: <span >{{ weappTableData.version_info.exp_time }}</span>
+                    </div>
+                </div>
             </div>
 
             <el-table class="mt-[15px]" :data="weappTableData.data" v-loading="weappTableData.loading" size="default">
@@ -71,6 +90,42 @@
                     <el-button @click="dialogVisible = false">{{ t('cancel') }}</el-button>
                     <el-button type="primary" @click="insert">
                         {{ t('confirm') }}
+                    </el-button> 
+                </span>
+            </template>
+        </el-dialog>
+        <el-dialog v-model="cloudVersionDialogVisible" :title="t('codeDownTwoDesc')" width="600px" :before-close="handleCloseCloudVersion">
+            <el-form ref="cloudRuleFormRef" :model="form" :rules="formRules"  label-width="120px">
+                <el-form-item prop="type" :label="t('版本号类型')">
+                    <div>
+                        <el-radio-group v-model="form.type">
+                            <el-radio :label="1">{{ t('默认') }}</el-radio>
+                            <el-radio :label="2">{{ t('自定义') }}</el-radio>
+                        </el-radio-group>
+                        <div class="mt-[10px] text-[12px] text-[#999] leading-[20px]">默认为列表版本号递增，自定义则为手动输入版本号进行上传，首位必须大于1</div>  
+                    </div>
+                </el-form-item>
+                <el-form-item prop="version" :label="t('code')" v-if="form.type == 2">
+                    <div class="flex items-end">
+                        <el-form-item prop="code1">
+                            <el-input v-model.number="form.code1"  class="!w-[70px]" :placeholder="t('codePlaceholder')" />
+                        </el-form-item>
+                        <span class="mx-[10px]">.</span>
+                        <el-form-item prop="code2">
+                            <el-input v-model.number="form.code2" class="!w-[70px]" :placeholder="t('codePlaceholder')"  />
+                        </el-form-item>
+                        <span class="mx-[10px]">.</span>
+                        <el-form-item prop="code3">
+                            <el-input v-model.number="form.code3" class="!w-[70px]" :placeholder="t('codePlaceholder')"  />
+                        </el-form-item>
+                    </div>  
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="handleCloseCloudVersion">{{ t('cancel') }}</el-button>
+                    <el-button type="primary" @click="save">
+                        {{ t('confirm') }}
                     </el-button>
                 </span>
             </template>
@@ -116,19 +171,22 @@ const weappTableData:{
     limit: number,
     total: number,
     loading: boolean,
-    data: AnyObject
+    data: AnyObject,
+    version_info: AnyObject
 } = reactive({
     page: 1,
     limit: 10,
     total: 0,
     loading: false,
-    data: []
+    data: [],
+    version_info: {}
 })
 const form = ref({
-    desc: '',
-    code: '',
-    path: '',
-    content: ''
+    type:1,
+    version: '',
+    code1: '1',
+    code2: '0',
+    code3: '0'
 })
 const uploadSuccessShowDialog = ref(false)
 const authCode = ref('')
@@ -161,7 +219,62 @@ const handleClick = (val: any) => {
     router.push({ path: activeName.value })
 }
 const ruleFormRef = ref<any>(null)
-
+const cloudRuleFormRef = ref<any>(null)
+// 表单校验规则
+const formRules = reactive({
+    code1: [
+        {
+            validator: (rule: any, value: number, callback: any) => {
+                if (value < 1) {
+                    callback(new Error(t('必须大于1')));
+                } else {
+                    callback();
+                }
+            },
+            trigger: 'blur'
+        }
+    ],
+    code2: [
+        {
+            validator: (rule: any, value: number, callback: any) => {
+                if (value < 0) {
+                    callback(new Error(t('必须大于0')));
+                } else {
+                    callback();
+                }
+            },
+            trigger: 'blur'
+        }
+    ],
+    code3: [
+        {
+            validator: (rule: any, value: number, callback: any) => {
+                if (value < 0) {
+                    callback(new Error(t('必须大于0')));
+                } else {
+                    callback();
+                }
+            },
+            trigger: 'blur'
+        }
+    ],
+    version:[
+        {
+            required: true,
+            validator: (rule: any, value: string, callback: any) => {
+                if(form.value.type == 2){
+                    if(!form.value.code1 || !form.value.code2 || !form.value.code3){
+                        callback(new Error(t('请填写版本号')));
+                    }else{
+                        callback();
+                    }
+                }else{
+                    callback();
+                }
+            }
+        }
+    ]
+});
 /**
  * 获取版本列表
  */
@@ -177,6 +290,7 @@ const getWeappVersionListFn = (page: number = 1) => {
         weappTableData.data = res.data.data
         weappTableData.total = res.data.total
         if (page == 1 && weappTableData.data.length && weappTableData.data[0].status == 0) getWeappUploadLogFn(weappTableData.data[0].task_key)
+        weappTableData.version_info = res.data.version_info
     }).catch(() => {
         weappTableData.loading = false
     })
@@ -184,8 +298,54 @@ const getWeappVersionListFn = (page: number = 1) => {
 
 getWeappVersionListFn()
 
+const openDialog = () => {
+    if (!authCode.value) {
+        authElMessageBox()
+        return
+    }
+    if (!weappConfig.value.app_id) {
+        configElMessageBox()
+        return
+    }
+    form.value = {
+        type:1,
+        version: '',
+        code1: '1',
+        code2: '0',
+        code3: '0'
+    }
+    cloudVersionDialogVisible.value = true
+}
 const handleClose = () => {
     ruleFormRef.value.clearValidate()
+}
+
+const cloudVersionDialogVisible = ref(false)
+const handleCloseCloudVersion = () => {
+    cloudVersionDialogVisible.value = false
+    form.value = {
+        type:1,
+        version: '',
+        code1: '1',
+        code2: '0',
+        code3: '0'
+    }
+}
+
+const save = () => {
+    cloudRuleFormRef.value.validate((valid: boolean) => {
+        if (valid) {
+            if (form.value.type == 2) {
+                form.value.version = `${form.value.code1}.${form.value.code2}.${form.value.code3}`
+            }
+            delete form.value.code1
+            delete form.value.code2
+            delete form.value.code3
+            delete form.value.type
+            cloudVersionDialogVisible.value = false
+            insert()
+        }
+    })
 }
 
 const uploading = ref(false)
@@ -206,7 +366,7 @@ const insert = () => {
 
     setWeappVersion(form.value).then(res => {
         getWeappVersionListFn()
-        getWeappPreviewImage()
+        getWeappPreviewImage() 
         uploading.value = false
     }).catch(() => {
         uploading.value = false

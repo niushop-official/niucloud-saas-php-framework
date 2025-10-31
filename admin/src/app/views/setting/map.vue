@@ -76,9 +76,7 @@ const formRules = computed(() => {
 const setFormData = async () => {
     loading.value = true
     const service_data = await (await getMap()).data
-    formData.key = service_data.key
-    formData.is_open = service_data.is_open
-    formData.valid_time = service_data.valid_time
+    Object.assign(formData, service_data)
     loading.value = false
 }
 setFormData()

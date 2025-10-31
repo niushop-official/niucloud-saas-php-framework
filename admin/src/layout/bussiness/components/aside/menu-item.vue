@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
+import { useRouter , useRoute} from 'vue-router'
 import { computed } from 'vue'
 import { img } from '@/utils/common'
 import menuItem from './menu-item.vue'
@@ -32,6 +32,8 @@ import useUserStore from '@/stores/modules/user'
 import storage from '@/utils/storage'
 
 const router = useRouter()
+const route = useRoute()
+
 const props = defineProps({
     routes: {
         type: Object,
@@ -70,8 +72,13 @@ const handleJump = (routeName: string) => {
     if (specialMenuNamesLevel1.includes(routeName)) {
         routeName = 'addon_list'
     }
+    // 跳转时添加随机查询参数（用于触发页面感知）
+    const query = route.name === routeName 
+      ? { refresh: Date.now() } // 相同路由时添加随机参数
+      : {};
+    
     // 执行跳转
-    router.push({ name: routeName })
+    router.push({ name: routeName, query });
 }
 
 </script>

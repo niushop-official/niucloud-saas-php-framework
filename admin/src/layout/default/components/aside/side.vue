@@ -44,7 +44,7 @@ const addonIndexRoute = userStore.addonIndexRoute
 const menuData = ref<Record<string, any>[]>([])
 const addonRouters: Record<string, any> = {}
 const logoUrl = computed(() => {
-    return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
+    return userStore.siteInfo.logo ? userStore.siteInfo.logo : systemStore.website.logo
 })
 
 const appList = ref<Record<string, any>[]>([])

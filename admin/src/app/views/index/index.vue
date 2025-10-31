@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center justify-center">
-        <el-card class="box-card !border-none profile-data w-[1280px] mt-[20px] loading-box" shadow="never" v-loading="loading" >
+        <el-card class="box-card !border-none profile-data w-[1280px] mt-[20px] loading-box" shadow="never">
         <!-- <div>   -->
             <div  class="box-border">
                 <div class="bg-[#fff] mb-[20px] rounded-[6px] relative banner-box" v-if="showBanner" @mouseenter="hovering = 'banner'"  @mouseleave="hovering = ''">
@@ -11,7 +11,21 @@
                     </span>
                     <div class="flex h-[156px]">
                         <div class="w-full h-full ">
-                            <el-carousel :interval="3000" height="156px" class="rounded-[6px]">
+                         <!-- 轮播图加载中 -->
+                         <div v-if="loading" class="skeleton-loading h-full flex items-center justify-center">
+                            <el-skeleton
+                                style="width: 100%"
+                                :loading="loading"
+                                animated
+                                :throttle="{ leading: 500, initVal: true }"
+                                >
+                                <template #template>
+                                    <el-skeleton-item variant="image" style="width: 100%; height: 156px;" />
+                                </template>
+                              
+                                </el-skeleton>
+                        </div>
+                            <el-carousel v-else :interval="3000" height="156px" class="rounded-[6px]">
                                 <!-- <el-carousel-item >
                                     <div class="h-full index-carousel" @click="toApplication">
                                         <img :src="img('static/resource/images/banner_1.png')" alt="" class="w-full h-full cursor-pointer">
@@ -99,86 +113,121 @@
                         </div>
                     </div>
                 </div>
-
-                <div v-if="showNiuCloud && appList.length > 0" class="mt-[50px] relative" @mouseenter="hovering = 'niuCloud'"  @mouseleave="hovering = ''">
-                    <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'niuCloud'">
-                        <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('niuCloud')">
-                            <CircleCloseFilled />
-                        </el-icon>
-                    </span>
-                    <p class="text-[18px] text-[#1D1F3A]">NIUCLOUD生态精选应用推荐</p>
-                    <!-- <div class="flex justify-between mt-[20px]">
-                        <div class="flex">
-                            <div :class="['flex items-center text-[14px] h-[32px] rounded-full px-[20px] mr-[24px] text-[#fff] bg-[#AFB1C8] hover:bg-[#7B7E9A] cursor-pointer', { '!text-[#fff] !bg-[#7B7E9A]': activeName === 'installed' }]" @click="activeNameTabFn('installed')">{{ t("全部") }}</div>
-                            <div :class="['flex items-center text-[14px] h-[32px] rounded-full px-[20px] mr-[24px] text-[#fff] bg-[#AFB1C8] hover:bg-[#7B7E9A] cursor-pointer', { '!text-[#fff] !bg-[#7B7E9A]': activeName === 'uninstalled' }]" @click="activeNameTabFn('uninstalled')">{{ t("商城") }}</div>
-                            <div :class="['flex items-center text-[14px] h-[32px] rounded-full px-[20px] mr-[24px] text-[#fff] bg-[#AFB1C8] hover:bg-[#7B7E9A] cursor-pointer', { '!text-[#fff] !bg-[#7B7E9A]': activeName === 'all' }]" @click="activeNameTabFn('all')">{{ t("数字人") }}</div>
-                            <div :class="['flex items-center text-[14px] h-[32px] rounded-full px-[20px] mr-[24px] text-[#fff] bg-[#AFB1C8] hover:bg-[#7B7E9A] cursor-pointer', { '!text-[#fff] !bg-[#7B7E9A]': activeName === 'all1' }]" @click="activeNameTabFn('all1')">{{ t("拼团") }}</div>
-                        </div>
-                    </div> -->
-                    <div class="mt-[20px]">
-                        <div class="grid grid-cols-5 gap-4">
-                            <div v-for="(item,index) in appList.slice(0,5)" :key="index" @click="toApplicationDetail(item)" class="bg-[#EDEEF4] rounded-[8px] overflow-hidden text-[#666] cursor-pointer hover:shadow-xl transition-shadow duration-300 border-[1px] border-[#EDEEF4]">
-                                <img :src="img(item.app_logo)" alt="" class="w-full rounded-t-[6px]" >
-                                <div class="bg-[#fff] p-[10px]">
-                                    <div class="text-[16px] text-[#1D1F3A] mb-[10px]">
-                                        <span class="using-hidden">{{ item.app_name }}</span>
-                                    </div>
-                                    <div class="text-[12px] text-[#4F516D]">
-                                        <span class="using-hidden">{{ item.app_desc }}</span>
-                                    </div>
-                                    <div class="text-[12px] mt-[20px] flex justify-between">
-                                        <div class="flex items-center">
-                                            <img :src="img(item.developer.headimg)" alt="" class="w-[18px] h-[18px] rounded-full mr-[6px]" v-if="item.developer.headimg">
-                                            <img src="@/app/assets/images/member_head.png" alt="" class="w-[18px] h-[18px] rounded-full mr-[6px]" v-else>
-                                            <span class="text-[#4F516D] text-[12px] using-hidden">{{ item.developer.nickname }}</span>
+                <template v-if="loading">
+                    <div v-if="showNiuCloud" class="mt-[50px] relative" @mouseenter="hovering = 'niuCloud'"  @mouseleave="hovering = ''">
+                        <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'niuCloud'">
+                            <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('niuCloud')">
+                                <CircleCloseFilled />
+                            </el-icon>
+                        </span>
+                        <p class="text-[18px] text-[#1D1F3A]">NIUCLOUD生态精选应用推荐</p>
+                        <!-- 应用列表加载中 -->
+                        <div v-if="loading" class="mt-[20px] grid grid-cols-5 gap-4">
+                            <div v-for="i in 5" :key="i" class="bg-[#EDEEF4] rounded-[8px] overflow-hidden">
+                                <el-skeleton
+                                    style="width: 240px"
+                                    :loading="loading"
+                                    animated
+                                    :throttle="{ leading: 500, initVal: true }"
+                                    >
+                                    <template #template>
+                                        <el-skeleton-item variant="image" style="width: 240px; height: 265px" />
+                                        <div style="padding: 14px">
+                                        <el-skeleton-item variant="h3" style="width: 50%" />
+                                        <div
+                                            style="
+                                            display: flex;
+                                            align-items: center;
+                                            justify-items: space-between;
+                                            margin-top: 16px;
+                                            height: 16px;
+                                            "
+                                        >
+                                            <el-skeleton-item variant="text" style="margin-right: 16px" />
+                                            <el-skeleton-item variant="text" style="width: 30%" />
                                         </div>
-                                        <div class="flex items-center">
-                                            <div class="mr-[10px]">
-                                                <span class="iconfont iconchakan !text-[12px] mr-[8px] !text-[#4F516D]"></span>
-                                                <span class="text-[#4F516D] text-[12px]">{{ item.visit_num}}</span>
+                                        </div>
+                                    </template>
+                                
+                                    </el-skeleton>
+                            </div>
+                        </div>              
+                    </div>
+                </template>
+                <template v-else>
+                    <div v-if="showNiuCloud && appList.length >0" class="mt-[50px] relative" @mouseenter="hovering = 'niuCloud'"  @mouseleave="hovering = ''">
+                        <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'niuCloud'">
+                            <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('niuCloud')">
+                                <CircleCloseFilled />
+                            </el-icon>
+                        </span>
+                        <p class="text-[18px] text-[#1D1F3A]">NIUCLOUD生态精选应用推荐</p>
+                        <div class="mt-[20px]">
+                            <div class="grid grid-cols-5 gap-4">
+                                <div v-for="(item,index) in appList.slice(0,5)" :key="index" @click="toApplicationDetail(item)" class="bg-[#EDEEF4] rounded-[8px] overflow-hidden text-[#666] cursor-pointer hover:shadow-xl transition-shadow duration-300 border-[1px] border-[#EDEEF4]">
+                                    <img :src="img(item.app_logo)" alt="" class="w-full rounded-t-[6px]" >
+                                    <div class="bg-[#fff] p-[10px]">
+                                        <div class="text-[16px] text-[#1D1F3A] mb-[10px]">
+                                            <span class="using-hidden">{{ item.app_name }}</span>
+                                        </div>
+                                        <div class="text-[12px] text-[#4F516D]">
+                                            <span class="using-hidden">{{ item.app_desc }}</span>
+                                        </div>
+                                        <div class="text-[12px] mt-[20px] flex justify-between">
+                                            <div class="flex items-center">
+                                                <img :src="img(item.developer.headimg)" alt="" class="w-[18px] h-[18px] rounded-full mr-[6px]" v-if="item.developer.headimg">
+                                                <img src="@/app/assets/images/member_head.png" alt="" class="w-[18px] h-[18px] rounded-full mr-[6px]" v-else>
+                                                <span class="text-[#4F516D] text-[12px] using-hidden">{{ item.developer.nickname }}</span>
                                             </div>
-                                            <div>
-                                                <span class="iconfont iconxiaoliang !text-[12px] mr-[8px] !text-[#4F516D]"></span>
-                                                <span class="text-[#4F516D] text-[12px]">{{ item.sale_num }}</span>
+                                            <div class="flex items-center">
+                                                <div class="mr-[10px]">
+                                                    <span class="iconfont iconchakan !text-[12px] mr-[8px] !text-[#4F516D]"></span>
+                                                    <span class="text-[#4F516D] text-[12px]">{{ item.visit_num}}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="iconfont iconxiaoliang !text-[12px] mr-[8px] !text-[#4F516D]"></span>
+                                                    <span class="text-[#4F516D] text-[12px]">{{ item.sale_num }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>              
                     </div>
-                </div>
+                </template>
+                
 
                 <div class="text-[18px]  mt-[50px] mb-[15px]">{{ t("dataSummarize") }}</div>
                 <el-card class="box-card !border-none profile-data" shadow="never">
                     <el-row :gutter="20" class="top">
                         <el-col>
                             <el-card shadow="never" @click="toHref('site/manage','1')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.today_data.norma_site_count }}</div>
+                                <div class="text-[20px] font-bold">{{ statInfo.today_data.norma_site_count || 0 }}</div>
                                 <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("normalSiteSum") }}</div>
                             </el-card>
                         </el-col>
                         <el-col>
                             <el-card shadow="never" @click="toHref('site/manage','1')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.today_data.week_expire_site_count }}</div>
+                                <div class="text-[20px] font-bold">{{ statInfo.today_data.week_expire_site_count|| 0  }}</div>
                                 <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("weekExpireSiteCount") }}</div>
                             </el-card>
                         </el-col>
                         <el-col>
                             <el-card shadow="never" @click="toHref('site/manage','2')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.today_data.expire_site_count }}</div>
+                                <div class="text-[20px] font-bold">{{ statInfo.today_data.expire_site_count|| 0  }}</div>
                                 <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("expireSiteSum") }}</div>
                             </el-card>
                         </el-col>
                         <el-col>
                             <el-card shadow="never" @click="toHref('/app_manage/app_store','uninstalled')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.app.app_no_installed_count }}</div>
+                                <div class="text-[20px] font-bold">{{ statInfo.app.app_no_installed_count|| 0  }}</div>
                                 <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("noInstallAppSun") }}</div>
                             </el-card>
                         </el-col>
                         <el-col>
                             <el-card shadow="never" @click="toHref('/app_manage/app_store','installed')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.app.app_installed_count }}</div>
+                                <div class="text-[20px] font-bold">{{ statInfo.app.app_installed_count|| 0  }}</div>
                                 <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("installAppSun") }}</div>
                             </el-card>
                         </el-col>
