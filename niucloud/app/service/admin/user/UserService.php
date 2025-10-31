@@ -37,7 +37,7 @@ class UserService extends BaseAdminService
     public function __construct()
     {
         parent::__construct();
-        $this->model = new SysUser();
+       $this->model = new SysUser();
     }
 
     /**
@@ -97,13 +97,13 @@ class UserService extends BaseAdminService
     public function add(array $data){
         if ($this->checkUsername($data['username'])) throw new CommonException('USERNAME_REPEAT');
         //手机号 唯一校验  后续调整为使用validate
-        if ($this->checkUserMobile($data['mobile'])) throw new CommonException('MOBILE_REPEAT');
+        if ($this->checkUserMobile($data['mobile'] ?? '')) throw new CommonException('MOBILE_REPEAT');
 
         Db::startTrans();
         try {
             $user_data = [
                 'username' => $data['username'],
-                'mobile' => $data['mobile'],
+                'mobile' => $data['mobile'] ?? '',
                 'head_img' => $data['head_img'],
                 'status' => $data['status'],
                 'real_name' => $data['real_name'],
@@ -192,7 +192,7 @@ class UserService extends BaseAdminService
     public function checkUserMobile($mobile,$uid=0)
     {
         if (empty($mobile)){
-            return true;
+            return false;
         }
         $where[] = ['mobile', '=', $mobile];
         if ($uid != 0){
@@ -324,8 +324,8 @@ class UserService extends BaseAdminService
         $all_uid = array_column($this->getUserAll($where), 'uid');
         $all_role_uid = (new SysUserRole())->distinct(true)->order('id desc')->select()->column('uid');
         $data = $this->model->distinct(true)->hasWhere('userrole', function ($query) {
-            $query->where([['is_admin', '=', 1]])->whereOr([['site_id', '=', 0]]);
-        })->withSearch(['username', 'realname', 'create_time'], $where)
+                $query->where([['is_admin', '=', 1]])->whereOr([['site_id', '=', 0]]);
+            })->withSearch(['username', 'realname', 'create_time'], $where)
             ->field($field)
             ->order('SysUser.uid desc')
             ->select()

@@ -33,6 +33,7 @@ class CoreMemberAccountService extends BaseCoreService
         $member_model = new Member();
         $member_account_log_model = new MemberAccountLog();
         //账户检测
+        Db::startTrans();
         $member_info = $member_model->where([
             [ 'member_id', '=', $member_id ],
             [ 'site_id', '=', $site_id ]
@@ -57,8 +58,6 @@ class CoreMemberAccountService extends BaseCoreService
             'memo' => $memo,
             'related_id' => $related_id,
         ];
-
-        Db::startTrans();
         try {
 
             $res = $member_account_log_model->create($data);

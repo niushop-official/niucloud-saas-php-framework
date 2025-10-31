@@ -83,6 +83,11 @@ class CoreMemberCashOutService extends BaseCoreService
                 $cash_out->account_type . '_cash_outing' => $member[$cash_out->account_type . '_cash_outing'] - $cash_out->apply_money
             ]
         );
+        //提现完成后事件
+        event('AfterCashFinish',[
+            'site_id'=>$site_id,
+            'cash_out'=>$cash_out
+        ]);
         return true;
     }
 
@@ -109,6 +114,7 @@ class CoreMemberCashOutService extends BaseCoreService
      */
     public function apply(int $site_id, int $member_id, array $data)
     {
+
         $core_member_service = new CoreMemberService();
         $member = $core_member_service->find($site_id, $member_id);
 
@@ -176,6 +182,12 @@ class CoreMemberCashOutService extends BaseCoreService
                 $core_member_cash_out_service->audit($site_id, $cash_out->id, 'agree');
             }
             Db::commit();
+            //发起提现后事件
+            event('AfterCashApply',[
+                'site_id'=>$site_id,
+                'member_id'=>$member_id,
+                'data'=>$data
+            ]);
             return $cash_out['id'];
         } catch ( Exception $e ) {
             Db::rollback();
@@ -353,6 +365,11 @@ class CoreMemberCashOutService extends BaseCoreService
                 $cash_out->account_type . '_cash_outing' => $member[$cash_out->account_type . '_cash_outing'] - $cash_out->apply_money
             ]
         );
+        //提现拒绝后事件
+        event('AfterCashRefuse',[
+            'site_id'=>$site_id,
+            'cash_out'=>$cash_out
+        ]);
         return true;
     }
 

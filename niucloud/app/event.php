@@ -138,6 +138,9 @@ $system_event = [
         ],
         //主题色
         'ThemeColor' => ['app\listener\diy\ThemeColorListener'],
+        'AfterCashApply' => ['app\listener\member\cash\AfterCashApplyListener'],
+        'AfterCashRefuse' => ['app\listener\member\cash\AfterCashRefuseListener'],
+        'AfterCashFinish' => ['app\listener\member\cash\AfterCashFinishListener'],
     ],
     'subscribe' => [
     ],

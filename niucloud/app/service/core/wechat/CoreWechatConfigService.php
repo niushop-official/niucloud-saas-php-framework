@@ -108,4 +108,14 @@ class CoreWechatConfigService extends BaseCoreService
     {
         return ( new CoreConfigService() )->setConfig($site_id, ConfigKeyDict::WECHAT_AUTHORIZATION_INFO, $config);
     }
+
+    /**
+     * 清除授权信息
+     * @param int $site_id
+     * @return mixed
+     */
+    public function clearWechatAuthorizationInfo(int $site_id)
+    {
+        return ( new CoreConfigService() )->clearConfig($site_id, ConfigKeyDict::WECHAT_AUTHORIZATION_INFO);
+    }
 }

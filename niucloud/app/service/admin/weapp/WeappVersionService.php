@@ -37,13 +37,16 @@ class WeappVersionService extends BaseAdminService
      */
     public function add(array $data)
     {
-        $uploading = $this->model->where([ ['site_id', '=', $this->site_id], ['status', '=', 0] ])->field('id')->findOrEmpty();
+        $uploading = $this->model->where([['site_id', '=', $this->site_id], ['status', '=', 0]])->field('id')->findOrEmpty();
         if (!$uploading->isEmpty()) throw new CommonException('WEAPP_UPLOADING');
-
-        $version_no = $this->model->where([ ['site_id', '=', $this->site_id] ])->order('version_no desc')->field('version_no')->findOrEmpty()->toArray()['version_no'] ?? 0;
-        $version_no += 1;
-        $version = "1.0.{$version_no}";
-
+        if (empty($data['version'])) {
+            $version_no = $this->model->where([['site_id', '=', $this->site_id]])->order('version_no desc')->field('version_no')->findOrEmpty()->toArray()['version_no'] ?? 0;
+            $version_no += 1;
+            $version = "1.0.{$version_no}";
+        }else{
+            $version_no = 0;//自定义的version_no标记为0 不因自定义版本打断默认的连续性
+            $version = $data['version'];
+        }
         $upload_res = (new CoreWeappCloudService())->setConfig(function () {
             $config = (new CoreWeappConfigService())->getWeappConfig($this->site_id);
             return [
@@ -68,9 +71,10 @@ class WeappVersionService extends BaseAdminService
         return $res->id;
     }
 
-    public function getPreviewImage() {
+    public function getPreviewImage()
+    {
         try {
-            $version = $this->model->where([ ['site_id', '=', $this->site_id] ])->order('id desc')->findOrEmpty();
+            $version = $this->model->where([['site_id', '=', $this->site_id]])->order('id desc')->findOrEmpty();
             if (!$version->isEmpty() || in_array($version['status'], [CloudDict::APPLET_UPLOAD_SUCCESS, CloudDict::APPLET_AUDITING])) {
                 if ($version['from_type'] == 'cloud_build') {
                     return (new CoreWeappCloudService())->getWeappPreviewImage();
@@ -94,7 +98,9 @@ class WeappVersionService extends BaseAdminService
         $order = 'create_time desc';
         $where[] = ['site_id', '=', $this->site_id];
         $search_model = $this->model->where($where)->field($field)->order($order)->append(['status_name']);
-        return $this->pageQuery($search_model);
+        $list = $this->pageQuery($search_model);
+        $list['version_info'] = (new CoreWeappService())->getWeappVersion($this->site_id);
+        return $list;
     }
 
     /**
@@ -107,7 +113,7 @@ class WeappVersionService extends BaseAdminService
     {
         $data['status'] = 0;
         $data['update_time'] = time();
-        $this->model->where([['id', '=', $id], ['site_id', '=', $this->site_id] ])->create($data);
+        $this->model->where([['id', '=', $id], ['site_id', '=', $this->site_id]])->create($data);
         return true;
     }
 
@@ -116,7 +122,8 @@ class WeappVersionService extends BaseAdminService
      * @param int $id
      * @return true
      */
-    public function del(int $id){
+    public function del(int $id)
+    {
         $this->model->where([['id', '=', $id], ['site_id', '=', $this->site_id]])->delete();
         return true;
     }
@@ -126,17 +133,18 @@ class WeappVersionService extends BaseAdminService
      * @param string $key
      * @return null
      */
-    public function getUploadLog(string $key) {
+    public function getUploadLog(string $key)
+    {
         $build_log = (new CoreWeappCloudService())->getWeappCompileLog($key);
 
         if (isset($build_log['data']) && isset($build_log['data'][0]) && is_array($build_log['data'][0])) {
             $last = end($build_log['data'][0]);
             if ($last['code'] == 0) {
-                (new WeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_FAIL, 'fail_reason' => $last['msg'] ?? '', 'update_time' => time() ], ['task_key' => $key]);
+                (new WeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_FAIL, 'fail_reason' => $last['msg'] ?? '', 'update_time' => time()], ['task_key' => $key]);
                 return $build_log;
             }
             if ($last['percent'] == 100) {
-                (new WeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS, 'update_time' => time() ], ['task_key' => $key]);
+                (new WeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS, 'update_time' => time()], ['task_key' => $key]);
             }
         }
         return $build_log;

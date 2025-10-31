@@ -21,6 +21,7 @@ use app\service\core\weapp\CoreWeappConfigService;
 use app\service\core\wechat\CoreWechatConfigService;
 use app\service\core\wxoplatform\CoreOplatformService;
 use core\base\BaseAdminService;
+use core\exception\AdminException;
 use core\exception\CommonException;
 
 /**
@@ -33,7 +34,7 @@ class OplatformService extends BaseAdminService
     public function createPreAuthorizationUrl()
     {
         $app = CoreOplatformService::app();
-        return $app->createPreAuthorizationUrl((string)url('/site/wxoplatform/callback', [],'',true));
+        return $app->createPreAuthorizationUrl((string)url('/site/wxoplatform/callback', [], '', true));
     }
 
     /**
@@ -48,7 +49,8 @@ class OplatformService extends BaseAdminService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function authorization(array $data) {
+    public function authorization(array $data)
+    {
         $app = CoreOplatformService::app();
         $authorization = $app->getAuthorization($data['auth_code'])->toArray();
 
@@ -59,7 +61,7 @@ class OplatformService extends BaseAdminService
         $result['authorization_info']['auth_code'] = $data['auth_code'];
 
         // 小程序
-        $qrcode_dir = 'file/image/'.$this->site_id.'/'.date('Ym').'/'.date('d');
+        $qrcode_dir = 'file/image/' . $this->site_id . '/' . date('Ym') . '/' . date('d');
         if (isset($authorizer_info['MiniProgramInfo'])) {
             $this->weappCheck($authorizer_info, $authorization_info);
 
@@ -67,9 +69,9 @@ class OplatformService extends BaseAdminService
             $config_data = [
                 'weapp_name' => $authorizer_info['nick_name'],
                 'weapp_original' => $authorizer_info['user_name'],
-                'app_id'            => $authorization_info['authorizer_appid'],
+                'app_id' => $authorization_info['authorizer_appid'],
                 'qr_code' => (new CoreFetchService())->image($authorizer_info['qrcode_url'], $this->site_id, $qrcode_dir)['url'],
-                'is_authorization'  => 1
+                'is_authorization' => 1
             ];
             $service->setWeappConfig($this->site_id, $config_data);
 
@@ -77,7 +79,7 @@ class OplatformService extends BaseAdminService
             $service->setWeappAuthorizationInfo($this->site_id, $result);
 
             // 授权成功之后调用
-            WeappAuthChangeAfter::dispatch(['site_id' => $this->site_id, 'event' => 'authorized' ]);
+            WeappAuthChangeAfter::dispatch(['site_id' => $this->site_id, 'event' => 'authorized']);
         } else { // 公众号
             $this->wechatCheck($authorizer_info, $authorization_info);
 
@@ -85,16 +87,40 @@ class OplatformService extends BaseAdminService
             $config_data = [
                 'wechat_name' => $authorizer_info['nick_name'],
                 'wechat_original' => $authorizer_info['user_name'],
-                'app_id'            => $authorization_info['authorizer_appid'],
+                'app_id' => $authorization_info['authorizer_appid'],
                 'qr_code' => (new CoreFetchService())->image($authorizer_info['qrcode_url'], $this->site_id, $qrcode_dir)['url'],
-                'is_authorization'  => 1
+                'is_authorization' => 1
             ];
             $service->setWechatConfig($this->site_id, $config_data);
             $result['authorizer_info']['qrcode_url'] = $config_data['qr_code'];
             $service->setWechatAuthorizationInfo($this->site_id, $result);
 
             // 授权成功之后调用
-            WechatAuthChangeAfter::dispatch(['site_id' => $this->site_id, 'event' => 'authorized' ]);
+            WechatAuthChangeAfter::dispatch(['site_id' => $this->site_id, 'event' => 'authorized']);
+        }
+        return true;
+    }
+
+    /**
+     * @return true
+     * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function cancelAuthorization()
+    {
+        $service = new CoreWeappConfigService();
+        $authorization = $service->getWeappAuthorizationInfo($this->site_id);
+        $res = CoreOplatformService::unAuth($this->site_id, $authorization['authorization_info']['authorizer_appid']);
+        if ($res['errcode'] != 0) {
+            if ($res['errcode'] == 89003) {
+                throw new AdminException('当前授权开放平台非通过API创建，请登录微信公众平台手动解除授权');
+            }
+            throw new AdminException($res['errmsg']);
         }
         return true;
     }
@@ -104,10 +130,11 @@ class OplatformService extends BaseAdminService
      * @param $app_id
      * @return true
      */
-    public function clearAuthorization($app_id) {
-        (new SysConfig())->where([ ['value', 'like', "%{$app_id}%"], ['config_key', 'in', [
+    public function clearAuthorization($app_id)
+    {
+        (new SysConfig())->where([['value', 'like', "%{$app_id}%"], ['config_key', 'in', [
             ConfigKeyDict::WEAPP, ConfigKeyDict::WECHAT, ConfigKeyDict::WEAPP_AUTHORIZATION_INFO, ConfigKeyDict::WECHAT_AUTHORIZATION_INFO
-        ] ] ])->delete();
+        ]]])->delete();
 
         WechatAuthChangeAfter::dispatch(['site_id' => $this->site_id, 'event' => 'unauthorized']);
         WeappAuthChangeAfter::dispatch(['site_id' => $this->site_id, 'event' => 'unauthorized']);
@@ -121,14 +148,15 @@ class OplatformService extends BaseAdminService
      * @param $authorization_info
      * @return void
      */
-    private function weappCheck($authorizer_info, $authorization_info) {
-        $is_exist = (new SysConfig())->where([ ['value', 'like', "%{$authorization_info['authorizer_appid']}%"], ['config_key', '=', ConfigKeyDict::WEAPP], ['site_id', '<>', $this->site_id] ])->count();
+    private function weappCheck($authorizer_info, $authorization_info)
+    {
+        $is_exist = (new SysConfig())->where([['value', 'like', "%{$authorization_info['authorizer_appid']}%"], ['config_key', '=', ConfigKeyDict::WEAPP], ['site_id', '<>', $this->site_id]])->count();
         if ($is_exist) throw new CommonException('WEAPP_EXIST');
 
         if ($authorizer_info['service_type_info']['id'] != 0 || $authorizer_info['verify_type_info']['id'] == -1) throw new CommonException('请使用已认证的小程序进行授权');
 
         // 授权的权限
-        $authority = array_map(function ($item){
+        $authority = array_map(function ($item) {
             return $item['funcscope_category']['id'];
         }, $authorization_info['func_info']);
 
@@ -143,14 +171,15 @@ class OplatformService extends BaseAdminService
      * @param $authorization_info
      * @return void
      */
-    private function wechatCheck($authorizer_info, $authorization_info) {
-        $is_exist = (new SysConfig())->where([ ['value', 'like', "%{$authorization_info['authorizer_appid']}%"], ['config_key', '=', ConfigKeyDict::WECHAT], ['site_id', '<>', $this->site_id] ])->count();
+    private function wechatCheck($authorizer_info, $authorization_info)
+    {
+        $is_exist = (new SysConfig())->where([['value', 'like', "%{$authorization_info['authorizer_appid']}%"], ['config_key', '=', ConfigKeyDict::WECHAT], ['site_id', '<>', $this->site_id]])->count();
         if ($is_exist) throw new CommonException('WECHAT_EXIST');
 
         if ($authorizer_info['service_type_info']['id'] != 2 || $authorizer_info['verify_type_info']['id'] == -1) throw new CommonException('请使用已认证的服务号进行授权');
 
         // 授权的权限
-        $authority = array_map(function ($item){
+        $authority = array_map(function ($item) {
             return $item['funcscope_category']['id'];
         }, $authorization_info['func_info']);
 
@@ -159,11 +188,12 @@ class OplatformService extends BaseAdminService
         }
     }
 
-    public function getAuthRecord($data) {
+    public function getAuthRecord($data)
+    {
         $condition = [
-            ['config_key', 'in', [ ConfigKeyDict::WECHAT_AUTHORIZATION_INFO, ConfigKeyDict::WEAPP_AUTHORIZATION_INFO ] ]
+            ['config_key', 'in', [ConfigKeyDict::WECHAT_AUTHORIZATION_INFO, ConfigKeyDict::WEAPP_AUTHORIZATION_INFO]]
         ];
-        $search_model = (new SysConfig())->field('*')->where($condition)->with(['site' => function($query){
+        $search_model = (new SysConfig())->field('*')->where($condition)->with(['site' => function ($query) {
             $query->field('site_id,site_name');
         }])->order('update_time desc');
         return $this->pageQuery($search_model);

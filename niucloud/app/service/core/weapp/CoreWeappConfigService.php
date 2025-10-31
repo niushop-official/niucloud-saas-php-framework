@@ -90,4 +90,15 @@ class  CoreWeappConfigService extends BaseCoreService
     {
         return ( new CoreConfigService() )->setConfig($site_id, ConfigKeyDict::WEAPP_AUTHORIZATION_INFO, $config);
     }
+
+    /**
+     * 清除小程序授权信息
+     * @param int $site_id
+     * @param array $config
+     * @return SysConfig|bool|Model
+     */
+    public function clearWeappAuthorizationInfo(int $site_id)
+    {
+        return ( new CoreConfigService() )->clearConfig($site_id, ConfigKeyDict::WEAPP_AUTHORIZATION_INFO);
+    }
 }

@@ -128,4 +128,21 @@ class CoreConfigService extends BaseCoreService
         }
         return $config_info[ 'value' ];
     }
+
+    /**
+     * 清除配置
+     * @param int $site_id
+     * @param string $key
+     * @param array $value
+     * @return SysConfig|bool|Model
+     */
+    public function clearConfig(int $site_id, string $key)
+    {
+        $where = array(
+            [ 'config_key', '=', $key ],
+            [ 'site_id', '=', $site_id ]
+        );
+        $this->model->where($where)->delete();
+        Cache::tag(self::$cache_tag_name . $site_id)->clear();
+    }
 }

@@ -24,7 +24,7 @@ class Oplatform extends BaseAdminController
      */
     public function getAuthorizationUrl()
     {
-        return success(data:(new OplatformService())->createPreAuthorizationUrl());
+        return success(data: (new OplatformService())->createPreAuthorizationUrl());
     }
 
     /**
@@ -32,7 +32,8 @@ class Oplatform extends BaseAdminController
      * @description 授权
      * @return Response
      */
-    public function authorization() {
+    public function authorization()
+    {
         $data = $this->request->params([
             ['auth_code', ''],
             ['expires_in', ''],
@@ -40,7 +41,18 @@ class Oplatform extends BaseAdminController
         return success((new OplatformService())->authorization($data));
     }
 
-    public function getAuthRecord() {
+    /**
+     * 授权
+     * @description 授权
+     * @return Response
+     */
+    public function cancelAuthorization()
+    {
+        return success((new OplatformService())->cancelAuthorization());
+    }
+
+    public function getAuthRecord()
+    {
         $data = $this->request->params([
             ['name', ''],
         ]);

@@ -95,6 +95,7 @@ class Config extends BaseApiController
         $res[ 'login_config' ] = ( new MemberConfigService() )->getLoginConfig($data[ 'url' ]);
         $res[ 'theme_list' ] = ( new DiyService() )->getDiyTheme();
         $res[ 'app_config' ] = $config_service->getAppConfig();
+        $res[ 'copyright' ] = ( new ConfigService() )->getCopyright();
 
         $openid_field = match ( $this->request->getChannel() ) {
             'wechat' => 'wx_openid',

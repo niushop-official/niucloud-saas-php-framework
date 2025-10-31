@@ -121,9 +121,12 @@ trait WapTrait
         $content .= "                </view>\n";
         $content .= "            </view>\n";
         $content .= "        </template>\n";
+        $content .= "        <template v-if=\"diyStore.mode == '' && data.global && diyGroup.showCopyright.value && data.global.copyright && data.global.copyright.isShow\">\n";
+        $content .= "           <copy-right />\n";
+        $content .= "        </template>\n\n";
         $content .= "        <template v-if=\"diyStore.mode == '' && data.global && data.global.bottomTabBar && data.global.bottomTabBar.isShow\">\n";
         $content .= "            <view class=\"pt-[20rpx]\"></view>\n";
-        $content .= "            <tabbar />\n";
+        $content .= "            <tabbar :addon=\"data.global.bottomTabBar.designNav.key\" />\n";
         $content .= "        </template>\n";
         $content .= "    </view>\n";
         $content .= "</template>\n";

@@ -53,7 +53,8 @@ class Version extends BaseAdminController
     public function add()
     {
         $data = $this->request->params([
-            ['desc', '']
+            ['desc', ''],
+            ['version', '']//特殊指定版本号
         ]);
         return success(data:(new WeappVersionService())->add($data));
     }

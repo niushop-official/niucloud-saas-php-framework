@@ -37,17 +37,17 @@ class CoreWeappService extends BaseCoreService
         $core_weapp_service = new CoreWeappConfigService();
         $weapp_config = $core_weapp_service->getWeappConfig($site_id);
 
-        if ($weapp_config[ 'is_authorization' ]) {
-            $authorization_info = $core_weapp_service->getWeappAuthorizationInfo($site_id)[ 'authorization_info' ];
-            return CoreOplatformService::app()->getMiniAppWithRefreshToken($weapp_config[ 'app_id' ], $authorization_info[ 'authorizer_refresh_token' ]);
+        if ($weapp_config['is_authorization']) {
+            $authorization_info = $core_weapp_service->getWeappAuthorizationInfo($site_id)['authorization_info'];
+            return CoreOplatformService::app()->getMiniAppWithRefreshToken($weapp_config['app_id'], $authorization_info['authorizer_refresh_token']);
         } else {
-            if (empty($weapp_config[ 'app_id' ]) || empty($weapp_config[ 'app_secret' ])) throw new WechatException('WEAPP_NOT_EXIST');//公众号未配置
+            if (empty($weapp_config['app_id']) || empty($weapp_config['app_secret'])) throw new WechatException('WEAPP_NOT_EXIST');//公众号未配置
 
             $config = array(
-                'app_id' => $weapp_config[ 'app_id' ],
-                'secret' => $weapp_config[ 'app_secret' ],
-                'token' => $weapp_config[ 'token' ],
-                'aes_key' => $weapp_config[ 'encryption_type' ] == 'not_encrypt' ? '' : $weapp_config[ 'encoding_aes_key' ],// 明文模式请勿填写 EncodingAESKey
+                'app_id' => $weapp_config['app_id'],
+                'secret' => $weapp_config['app_secret'],
+                'token' => $weapp_config['token'],
+                'aes_key' => $weapp_config['encryption_type'] == 'not_encrypt' ? '' : $weapp_config['encoding_aes_key'],// 明文模式请勿填写 EncodingAESKey
                 'http' => [
                     'throw' => true, // 状态码非 200、300 时是否抛出异常，默认为开启
                     'timeout' => 5.0,
@@ -81,7 +81,7 @@ class CoreWeappService extends BaseCoreService
         $core_weapp_service = new CoreWeappConfigService();
         $weapp_config = $core_weapp_service->getWeappConfig($site_id);
 
-        if (!$weapp_config[ 'is_authorization' ]) {
+        if (!$weapp_config['is_authorization']) {
             self::app($site_id)->getAccessToken()->refresh();
         }
     }
@@ -100,7 +100,7 @@ class CoreWeappService extends BaseCoreService
     {
         $scene = [];
         foreach ($data as $v) {
-            $scene[] = $v[ 'key' ] . '-' . $v[ 'value' ];
+            $scene[] = $v['key'] . '-' . $v['value'];
         }
         $response = self::appApiClient($site_id)->postJson('/wxa/getwxacodeunlimit', [
             'scene' => implode('&', $scene),
@@ -111,7 +111,7 @@ class CoreWeappService extends BaseCoreService
         ]);
         if ($response->isFailed()) {
             // 出错了，处理异常
-            throw new CommonException('微信小程序码生成失败：errcode:' . $response[ 'errcode' ] . 'errmsg:' . $response[ 'errmsg' ]);
+            throw new CommonException('微信小程序码生成失败：errcode:' . $response['errcode'] . 'errmsg:' . $response['errmsg']);
         }
         $response->saveAs($filepath);
         return $filepath;
@@ -135,5 +135,32 @@ class CoreWeappService extends BaseCoreService
         $filepath = $dir . time() . '.png';
         file_put_contents($filepath, $response->getContent());
         return $filepath;
+    }
+
+    /**
+     * 获取小程序版本信息
+     * @param $site_id
+     * @return array
+     * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function getWeappVersion($site_id)
+    {
+        $weapp_config = (new CoreWeappConfigService())->getWeappConfig($site_id);
+        if ($weapp_config['is_authorization'] == 1) {
+            $result = CoreOplatformService::weappVersion($site_id);
+            if (isset($result['errcode']) && $result['errcode'] != 0) throw new CommonException($result['errmsg']);
+            return [
+                "release_version" => $result['release_info']['release_version'],
+                "release_time" => date('Y-m-d H:i:s', $result['release_info']['release_time']),
+                "exp_version" => $result['exp_info']['exp_version'] ?? '',
+                "exp_time" => !empty($result['exp_info']['exp_time']) ? date('Y-m-d H:i:s', $result['exp_info']['exp_time']) : '',
+            ];
+        }
+        return [];
     }
 }

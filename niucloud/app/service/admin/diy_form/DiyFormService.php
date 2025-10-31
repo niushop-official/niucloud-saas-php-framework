@@ -186,7 +186,7 @@ class DiyFormService extends BaseAdminService
             // 初始化表单提交成功页配置
             ( new CoreDiyFormConfigService() )->addSubmitConfig([ 'site_id' => $this->site_id, 'form_id' => $res->form_id ]);
             Db::commit();
-            return $res->id;
+            return $res->form_id;
         } catch (\Exception $e) {
             Db::rollback();
             throw new CommonException($e->getMessage());

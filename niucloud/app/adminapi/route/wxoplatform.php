@@ -30,6 +30,7 @@ Route::group('wxoplatform', function () {
     Route::get('authorizationUrl', 'wxoplatform.Oplatform/getAuthorizationUrl');
     // 确认授权
     Route::get('authorization', 'wxoplatform.Oplatform/authorization');
+    Route::post('authorization/cancel', 'wxoplatform.Oplatform/cancelAuthorization');
     // 授权记录
     Route::get('authorization/record', 'wxoplatform.Oplatform/getAuthRecord');
     // 平台提交小程序版本

@@ -51,7 +51,8 @@ class CoreOplatformService extends BaseCoreService
         return new Application($config);
     }
 
-    public static function codeToSession($site_id, $js_code) {
+    public static function codeToSession($site_id, $js_code)
+    {
         $app = self::app();
         $weapp_config = (new CoreWeappConfigService())->getWeappAuthorizationInfo($site_id);
 
@@ -69,8 +70,9 @@ class CoreOplatformService extends BaseCoreService
      * @param string $app_id
      * @return int|mixed
      */
-    public static function getSiteIdByAuthorizerAppid(string $app_id) {
-        $data = (new SysConfig())->where([ ['value', 'like', "%{$app_id}%"], ['config_key', 'in', [ConfigKeyDict::WEAPP, ConfigKeyDict::WECHAT] ] ])->field('site_id')->findOrEmpty()->toArray();
+    public static function getSiteIdByAuthorizerAppid(string $app_id)
+    {
+        $data = (new SysConfig())->where([['value', 'like', "%{$app_id}%"], ['config_key', 'in', [ConfigKeyDict::WEAPP, ConfigKeyDict::WECHAT]]])->field('site_id')->findOrEmpty()->toArray();
         return $data['site_id'] ?? 0;
     }
 
@@ -79,7 +81,8 @@ class CoreOplatformService extends BaseCoreService
      * @param $authorizer_appid
      * @return mixed
      */
-    public static function getAuthorizerInfo($app, $authorizer_appid) {
+    public static function getAuthorizerInfo($app, $authorizer_appid)
+    {
         $api = $app->getClient();
 
         $response = $api->post('/cgi-bin/component/api_get_authorizer_info', [
@@ -102,7 +105,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function getTemplateDraftList() {
+    public static function getTemplateDraftList()
+    {
         $app = self::app();
         return $app->getClient()->get('/wxa/gettemplatedraftlist')->toArray();
     }
@@ -117,7 +121,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function getTemplateList() {
+    public static function getTemplateList()
+    {
         $app = self::app();
         return $app->getClient()->get('/wxa/gettemplatelist', ['template_type' => 0])->toArray();
     }
@@ -133,7 +138,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function addToTemplate(array $data) {
+    public static function addToTemplate(array $data)
+    {
         $app = self::app();
         return $app->getClient()->post('/wxa/addtotemplate', [
             'json' => [
@@ -154,7 +160,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function deleteTemplate(string $template_id) {
+    public static function deleteTemplate(string $template_id)
+    {
         $app = self::app();
         return $app->getClient()->post('/wxa/deletetemplate', [
             'json' => [
@@ -174,7 +181,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function commitWeapp($site_id, array $json) {
+    public static function commitWeapp($site_id, array $json)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/wxa/commit', [
             'json' => $json
@@ -194,7 +202,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function submitAudit($site_id, array $json) {
+    public static function submitAudit($site_id, array $json)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/wxa/submit_audit', [
             'json' => $json
@@ -211,7 +220,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function releaseWeapp($site_id) {
+    public static function releaseWeapp($site_id)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/wxa/release', ['json' => []])->toArray();
     }
@@ -228,7 +238,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function getCodePrivacyInfo($site_id) {
+    public static function getCodePrivacyInfo($site_id)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->get('/wxa/security/get_code_privacy_info')->toArray();
     }
@@ -238,7 +249,8 @@ class CoreOplatformService extends BaseCoreService
      * @param $site_id
      * @return array|mixed[]
      */
-    public static function getPrivacySetting($site_id) {
+    public static function getPrivacySetting($site_id)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/cgi-bin/component/getprivacysetting', [
             'json' => [
@@ -259,7 +271,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function setPrivacySetting($site_id, $data) {
+    public static function setPrivacySetting($site_id, $data)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/cgi-bin/component/setprivacysetting', [
             'json' => [
@@ -284,7 +297,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function getDomain($site_id) {
+    public static function getDomain($site_id)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/wxa/modify_domain_directly', [
             'json' => [
@@ -306,7 +320,8 @@ class CoreOplatformService extends BaseCoreService
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public static function setDomain($site_id, $data) {
+    public static function setDomain($site_id, $data)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->post('/wxa/modify_domain_directly', [
             'json' => [
@@ -324,8 +339,57 @@ class CoreOplatformService extends BaseCoreService
     /**
      * 撤回代码审核
      */
-    public static function undocodeAudit($site_id) {
+    public static function undocodeAudit($site_id)
+    {
         $app = CoreWeappService::app($site_id);
         return $app->getClient()->get('/wxa/undocodeaudit')->toArray();
     }
+
+    /**
+     * 上传小程序代码
+     * @param array $json
+     * @return array|mixed[]
+     * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public static function weappVersion($site_id)
+    {
+        $app = CoreWeappService::app($site_id);
+        return $app->getClient()->post('/wxa/getversioninfo', ['json' => []])->toArray();
+    }
+
+    /**
+     * 取消授权
+     * @param $site_id
+     * @param $authorizer_appid
+     * @return array|mixed[]
+     * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public static function unAuth($site_id, $authorizer_appid)
+    {
+        $openPlatform = self::app();
+        // 1. 格式化并校验AppID
+        $app = CoreWeappService::app($site_id);
+        $token = $app->getAccessToken()->getToken();
+        $component_appid = $openPlatform->getAccount()->getAppId();
+        $response = $openPlatform->getClient()->postJson(
+            '/cgi-bin/open/unbind?access_token=' . $token,
+            [
+                'open_appid' => $component_appid,
+                'appid' => $authorizer_appid
+            ]
+        );
+        return $response->toArray();
+    }
+
 }

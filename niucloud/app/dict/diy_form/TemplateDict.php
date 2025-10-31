@@ -25,14 +25,14 @@ class TemplateDict
      */
     public static function getTemplate($params = [])
     {
-        $other_template_data = ( new DictLoader("DiyFormTemplate") )->load([]);
+        $other_template_data = (new DictLoader("DiyFormTemplate"))->load([]);
         $template = self::template();
         $data = array_merge($other_template_data, $template);
-        if (!empty($params) && !empty($params[ 'type' ])) {
-            if (!empty($params[ 'template_key' ])) {
-                return $data[ $params[ 'type' ] ][ $params[ 'template_key' ] ] ?? [];
+        if (!empty($params) && !empty($params['type'])) {
+            if (!empty($params['template_key'])) {
+                return $data[$params['type']][$params['template_key']] ?? [];
             }
-            return $data[ $params[ 'type' ] ] ?? [];
+            return $data[$params['type']] ?? [];
         }
 
         return $data;
@@ -79,7 +79,15 @@ class TemplateDict
                             ],
                             "bottomTabBar" => [
                                 'control' => true,
-                                'isShow' => true
+                                'isShow' => true,
+                                'designNav' => [
+                                    'title' => '',
+                                    'key' => ''
+                                ]
+                            ],
+                            "copyright" => [
+                                'control' => true,
+                                'isShow' => false
                             ],
                             "popWindow" => [
                                 "imgUrl" => "",
@@ -724,7 +732,15 @@ class TemplateDict
                             ],
                             "bottomTabBar" => [
                                 'control' => true,
-                                'isShow' => true
+                                'isShow' => true,
+                                'designNav' => [
+                                    'title' => '',
+                                    'key' => ''
+                                ]
+                            ],
+                            "copyright" => [
+                                'control' => true,
+                                'isShow' => false
                             ],
                             "popWindow" => [
                                 "imgUrl" => "",
