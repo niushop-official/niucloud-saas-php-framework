@@ -61,7 +61,7 @@ const getMarketingList = async () => {
     // marketingList.value = res.data
     loading.value = false
 }
-getMarketingList()
+// getMarketingList()
 
 const toLink = (item: any) => {
     if (item.url) {

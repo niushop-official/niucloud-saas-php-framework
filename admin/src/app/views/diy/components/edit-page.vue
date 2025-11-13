@@ -77,6 +77,9 @@
                     <el-switch v-model="diyStore.global.copyright.isShow" />
                     <div class="text-sm text-gray-400">{{ t('此处控制当前页面版权信息是否显示') }}</div>
                 </el-form-item>
+                <el-form-item :label="t('文字颜色')" class="display-block">
+                    <el-color-picker v-model="diyStore.global.copyright.textColor" show-alpha />
+                </el-form-item>
             </el-form>
         </div>
         <div class="edit-attr-item-wrap">

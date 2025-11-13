@@ -131,8 +131,9 @@ export function img(path: string): string {
 
     if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
     if (typeof imgDomain == 'string' && imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)
-
-    return isUrl(path) ? path : `${imgDomain}/${path}`
+	if(path){
+		return isUrl(path) ? path : `${imgDomain}/${path}`
+	}
 }
 
 /**

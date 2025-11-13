@@ -126,7 +126,9 @@ const prop = defineProps({
     },
     ignore: {
         type: Array,
-        default: []
+        default: () => {
+            return [] // 指定需要忽略的自定义链接，例如：['DIY_MAKE_PHONE_CALL']，表示隐藏拨打电话
+        }
     }
 })
 

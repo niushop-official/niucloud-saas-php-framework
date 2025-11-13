@@ -18,7 +18,7 @@ export function getMemberList(params: Record<string, any>) {
  * @returns
  */
 export function getMemberInfo(id: number) {
-    return request.get(`member/member/${id}`);
+    return request.get(`member/member/${ id }`);
 }
 
 /**
@@ -61,7 +61,7 @@ export function getRegisterChannelType(params: Record<string, any>) {
  * @param member_id
  */
 export function deleteMember(member_id: number) {
-    return request.delete(`member/member/${member_id}`, { showSuccessMessage: true })
+    return request.delete(`member/member/${ member_id }`, { showSuccessMessage: true })
 }
 
 /***************************************************** 会员标签 ****************************************************/
@@ -81,7 +81,7 @@ export function getMemberLabelList(params: Record<string, any>) {
  * @returns
  */
 export function getMemberLabelInfo(label_id: number) {
-    return request.get(`member/label/${label_id}`);
+    return request.get(`member/label/${ label_id }`);
 }
 
 /**
@@ -98,7 +98,7 @@ export function addMemberLabel(params: Record<string, any>) {
  * @param params
  */
 export function updateMemberLabel(params: Record<string, any>) {
-    return request.put(`member/label/${params.label_id}`, params, { showSuccessMessage: true })
+    return request.put(`member/label/${ params.label_id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -107,7 +107,7 @@ export function updateMemberLabel(params: Record<string, any>) {
  * @returns
  */
 export function deleteMemberLabel(label_id: number) {
-    return request.delete(`member/label/${label_id}`, { showSuccessMessage: true })
+    return request.delete(`member/label/${ label_id }`, { showSuccessMessage: true })
 }
 
 /**
@@ -122,7 +122,7 @@ export function getMemberLabelAll() {
  * @param params
  */
 export function editMemberDetail(params: Record<string, any>) {
-    return request.put(`member/member/modify/${params.member_id}/${params.field}`, params, { showSuccessMessage: true })
+    return request.put(`member/member/modify/${ params.member_id }/${ params.field }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -143,7 +143,7 @@ export function memberBatchModify(params: Record<string, any>) {
  * @param change_type
  */
 export function getChangeTypeList(change_type: string) {
-    return request.get(`member/account/change_type/${change_type}`)
+    return request.get(`member/account/change_type/${ change_type }`)
 }
 
 /**
@@ -321,7 +321,7 @@ export function getBalanceStatus() {
  * 获取余额变动类型
  */
 export function getAccountType(params: Record<string, any>) {
-    return request.get(`member/account/change_type/${params.account_type}`)
+    return request.get(`member/account/change_type/${ params.account_type }`)
 }
 
 
@@ -357,7 +357,7 @@ export function getCashOutList(params: Record<string, any>) {
  * @param id
  */
 export function getCashOutDetail(id: number) {
-    return request.get(`member/cash_out/${id}`, {})
+    return request.get(`member/cash_out/${ id }`, {})
 }
 
 /**
@@ -365,14 +365,18 @@ export function getCashOutDetail(id: number) {
  * @param params
  */
 export function memberAudit(params: Record<string, any>) {
-    return request.put(`member/cash_out/audit/${params.id}/${params.action}`, params, { showSuccessMessage: true })
+    return request.put(`member/cash_out/audit/${ params.id }/${ params.action }`, params, { showSuccessMessage: true })
 }
+
 /**
  * 会员取消提现
  * @param params
  */
 export function memberCancel(params: Record<string, any>) {
-    return request.put(`member/cash_out/cancel/${params.id}`, params, { showSuccessMessage: true,showErrorMessage: true })
+    return request.put(`member/cash_out/cancel/${ params.id }`, params, {
+        showSuccessMessage: true,
+        showErrorMessage: true
+    })
 }
 
 
@@ -381,7 +385,7 @@ export function memberCancel(params: Record<string, any>) {
  * @param params
  */
 export function memberTransfer(params: Record<string, any>) {
-    return request.put(`member/cash_out/transfer/${params.id}`, params, { showSuccessMessage: true })
+    return request.put(`member/cash_out/transfer/${ params.id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -389,14 +393,15 @@ export function memberTransfer(params: Record<string, any>) {
  * @param params
  */
 export function memberRemark(params: Record<string, any>) {
-    return request.put(`member/cash_out/remark/${params.id}`, params, { showSuccessMessage: true })
+    return request.put(`member/cash_out/remark/${ params.id }`, params, { showSuccessMessage: true })
 }
+
 /**
  * 检查打款进度
  * @param id
  */
 export function memberCheck(id: number) {
-    return request.put(`member/cash_out/check/${id}`, {}, { showSuccessMessage: true })
+    return request.put(`member/cash_out/check/${ id }`, {}, { showSuccessMessage: true })
 }
 
 /**
@@ -404,7 +409,7 @@ export function memberCheck(id: number) {
  * @param params
  */
 export function editMemberStatus(params: Record<string, any>) {
-    return request.put(`member/setstatus/${params.status}`, params, { showSuccessMessage: true })
+    return request.put(`member/setstatus/${ params.status }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -453,6 +458,7 @@ export function getGrowthRuleDict() {
 export function getPointRuleDict() {
     return request.get(`member/dict/point_rule`)
 }
+
 /***************************************************** 会员等级 ****************************************************/
 
 /**
@@ -470,7 +476,7 @@ export function getMemberLevelPageList(params: Record<string, any>) {
  * @returns
  */
 export function getMemberLevelInfo(level_id: number) {
-    return request.get(`member/level/${level_id}`);
+    return request.get(`member/level/${ level_id }`);
 }
 
 /**
@@ -487,7 +493,7 @@ export function addMemberLevel(params: Record<string, any>) {
  * @param params
  */
 export function updateMemberLevel(params: Record<string, any>) {
-    return request.put(`member/level/${params.level_id}`, params, { showSuccessMessage: true })
+    return request.put(`member/level/${ params.level_id }`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -496,7 +502,7 @@ export function updateMemberLevel(params: Record<string, any>) {
  * @returns
  */
 export function deleteMemberLevel(level_id: number) {
-    return request.delete(`member/level/${level_id}`, { showSuccessMessage: true })
+    return request.delete(`member/level/${ level_id }`, { showSuccessMessage: true })
 }
 
 /**
@@ -512,14 +518,14 @@ export function getMemberLevelAll() {
  * 获取会员权益内容
  */
 export function getMemberBenefitsContent() {
-    return request.get(`member/benefits/content`);
+    return request.post(`member/benefits/content`);
 }
 
 /**
  * 获取会员礼包内容
  */
 export function getMemberGiftsContent(params: Record<string, any>) {
-    return request.get(`member/gifts/content`, { params });
+    return request.post(`member/gifts/content`, params);
 }
 
 /**
@@ -555,7 +561,7 @@ export function getMemberAddress(params: Record<string, any>) {
 }
 
 /**
- * 添加收货地址 
+ * 添加收货地址
  */
 export function addMemberAddress(params: Record<string, any>) {
     return request.post(`member/address`, params);

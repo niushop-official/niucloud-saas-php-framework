@@ -17,10 +17,10 @@
                             
                             <div v-if="systemStore.menuIsCollapse" class="text-left text-[14px] mt-[3px] w-[75px] using-hidden ml-[10px]">{{ item.meta.title || item.meta.short_title }}</div> 
                             <div v-else class="text-center text-[12px] using-hidden mt-1">{{ item.meta.short_title || item.meta.title }}</div> 
-                            <div v-if="systemStore.menuIsCollapse && item.name=='app_store' && recentlyUpdated.length>0" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
-                            <div v-if="!systemStore.menuIsCollapse && item.name=='app_store' && recentlyUpdated.length>0" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
-                            <div v-if="systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
-                            <div v-if="!systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
+                            <div v-if="systemStore.menuIsCollapse && item.name=='app_store' && (recentlyUpdated.length>0 || isNewVersion)" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
+                            <div v-if="!systemStore.menuIsCollapse && item.name=='app_store' && (recentlyUpdated.length>0 || isNewVersion)" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
+                            <!-- <div v-if="systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
+                            <div v-if="!systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div> -->
                         
                         </div>
                     </template>

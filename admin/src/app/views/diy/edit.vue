@@ -455,7 +455,7 @@ initPage({
             diyStore.components.push(com)
         }
     }
-
+	console.log( component.value )
     loadDiyTemplatePages(data.type)
 
     // 加载预览

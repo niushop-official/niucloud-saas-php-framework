@@ -36,6 +36,11 @@
                     <el-input v-model.trim="formData.app_secret" :placeholder="t('appSecretPlaceholder')" class="input-width" clearable />
                     <div class="form-tip">{{ t('wechatAppsecretTips') }}</div>
                 </el-form-item>
+
+                <el-form-item :label="t('wechatBaseUri')" prop="base_uri" v-if="!formData.is_authorization">
+                    <el-input v-model.trim="formData.base_uri" :placeholder="t('wechatBaseUriPlaceholder')" class="input-width" clearable />
+                    <div class="form-tip">{{ t('wechatBaseUriTips') }}</div>
+                </el-form-item>
             </el-card>
 
             <el-card class="box-card !border-none mt-[15px]" shadow="never">
@@ -140,7 +145,8 @@ const formData = reactive<Record<string, any>>({
     token: '',
     encoding_aes_key: '',
     encryption_type: 'not_encrypt',
-    is_authorization: 0
+    is_authorization: 0,
+    base_uri: ''
 })
 
 const formRef = ref<FormInstance>()

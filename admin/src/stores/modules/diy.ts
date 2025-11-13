@@ -87,6 +87,7 @@ const useDiyStore = defineStore('diy', {
                 copyright: {
                     control: true, // 是否允许展示编辑
                     isShow: false, // 是否显示
+                    textColor : "#ccc", // 文字颜色
                 },
                 // 弹框 count：不弹出 -1，首次弹出 1，每次弹出 0
                 popWindow: {
@@ -190,6 +191,7 @@ const useDiyStore = defineStore('diy', {
                 copyright: {
                     control: true, // 是否允许展示编辑
                     isShow: true, // 是否显示
+                    textColor : "#ccc", // 文字颜色
                 },
 
                 // 弹框 count：不弹出 -1，首次弹出 1，每次弹出 0

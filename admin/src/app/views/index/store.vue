@@ -1,273 +1,359 @@
 <template>
     <!--应用市场-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ t("localAppText") }}</span>
+    <div class="main-container bg-body min-h-[70vh]" v-loading="loading">
+        <el-card class="box-card !border-none" shadow="never" v-if="!loading">
+            <div class="flex items-center mb-4">
+                <div class="flex items-center flex-1">
+                    <h2 class="text-lg font-semibold mr-[20px]">应用列表</h2>
+                    <button class="text-gray-500 text-sm mr-[20px]" @click="activeNameTabFn('installed')" :class="{'!text-primary': activeName == 'installed'}">已安装</button>
+                    <button class="text-gray-500 text-sm mr-[20px]" @click="activeNameTabFn('uninstalled')" :class="{'!text-primary': activeName == 'uninstalled'}">未安装</button>
+                    <button class="text-gray-500 text-sm mr-[20px]" @click="activeNameTabFn('all')" :class="{'!text-primary': activeName == 'all'}">已购买</button>
+                    <button class="text-gray-500 text-sm relative" @click="activeNameTabFn('recentlyUpdated')" :class="{'!text-primary': activeName == 'recentlyUpdated'}">
+                        可更新
+                        <div v-if="localList.recentlyUpdated.length" class="w-[8px] h-[8px] bg-[red] rounded-[8px] z-1 absolute top-[-2px] right-[-2px]"></div>
+                    </button>
+                </div>
+                <i class="iconfont cursor-pointer" @click="switchShowType" :class="showType == 'card' ? 'iconliebiao' : 'iconliebiaoqiehuan'"></i>
             </div>
 
-            <el-tabs v-model="activeName" class="mt-[10px]">
-                <el-tab-pane :label="t('installLabel')" name="installed"></el-tab-pane>
-                <el-tab-pane :label="t('uninstalledLabel')" name="uninstalled"></el-tab-pane>
-                <el-tab-pane :label="t('buyLabel')" name="all"></el-tab-pane>
-                <el-tab-pane :label="t('recentlyUpdated')" name="recentlyUpdated">
-                    <template #label>
-                        <span class="custom-tabs-label">
-                            <span>{{ t('recentlyUpdated') }}</span>
-                            <span v-if="localList['recentlyUpdated'].length > 0" class="w-[15px] h-[15px] bg-[#DA203E] absolute text-[#fff] text-[11px] flex items-center justify-center rounded-full top-[3px] right-[-12px]">{{ localList['recentlyUpdated'].length }}</span>
-                        </span>
-                    </template>
-                </el-tab-pane>
-            </el-tabs>
-            <div class="flex justify-between my-[10px]">
-                <div class="flex items-center search-form">
-                    <el-input class="!w-[192px] !h-[32px] rounded-[4px]" :placeholder="t('search')" v-model.trim="search_name" @keyup.enter="query">
-                        <template #suffix>
-                            <el-icon class="el-input__icon cursor-pointer" size="14px" @click="query">
-                                <search />
-                            </el-icon>
-                        </template>
-                    </el-input>
-                    <el-select v-model="search_type" placeholder="请选择类型" class="!w-[192px] !h-[32px] rounded-[4px] ml-[20px] " >
-                        <el-option :label="t('全部')" value="" />
-                        <el-option  v-for="(label, value) in typeList"  :key="value"  :label="label" :value="value"></el-option>
-                    </el-select>
-                    <el-button type="primary" @click="query" class="ml-[20px]">{{ t("搜索") }}</el-button>
-                </div>
-                <div>
-                    <el-button type="primary" v-show="activeName === 'recentlyUpdated'" @click="batchUpgrade" :loading="upgradeRef?.loading" :disabled="authLoading">{{ t("batchUpgrade") }}</el-button>
-                    <!-- <el-button type="primary" @click="handleCloudBuild" :loading="cloudBuildRef?.loading" :disabled="authLoading">{{ t("cloudBuild") }}</el-button> -->
-                </div>
-
-            </div>
-            <div class="relative">
-                <el-table v-if="localList[activeName].length && !loading"  :tree-props="{ children: 'children' }" :default-expand-all="true" :data="info[activeName]" row-key="key" size="large"  @selection-change="handleSelectionChange">
-                    <el-table-column width="24">
-                        <template #default="{ row }">
-                            <div class="tree-child-cell" :class="{ 'is-tree-parent': row.children?.length, 'is-tree-child': typeof row.support_app === 'string' && row.support_app !== '' && visibleRowKeys.has(row.support_app)}">
-                            <span style="opacity: 0;">.</span>
+            <!-- 系统版本栏 -->
+            <div class="flex items-center justify-between bg-body p-4 rounded-md border rounded border-solid border-[var(--el-color-info-light-8)]">
+                <div class="flex">
+                    <div class="flex items-center">
+                        <div class="w-[40px] h-[40px] bg-purple-100 rounded flex items-center justify-center mr-2 relative">
+                            <img class="max-w-full max-h-full" src="@/app/assets/images/app_store/system_version.png" alt="" />
+                            <div v-if="frameworkVersion != frameworkNewVersion" class="w-[8px] h-[8px] bg-[red] rounded-[8px] z-1 absolute top-[-2px] right-[-2px]"></div>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold">系统版本:
+                                <span v-if="frameworkVersion">V{{frameworkVersion}} ({{frameworkVersionCode}})</span>
+                            </p>
+                            <p class="text-xs text-gray-500">最新版本: V{{ frameworkNewVersion }}</p>
+                        </div>
+                        <el-button class="ml-[25px]" @click="updateInformationFn({key: 'niucloud-admin'})"><el-icon class="mr-[5px]"><DocumentCopy /></el-icon>更新记录</el-button>
+                    </div>
+                    <div class="border-r mx-[25px] border-solid border-[var(--el-color-info-light-8)] hidden xl:inline-block"></div>
+                    <div class="items-center hidden xl:flex">
+                        <div class="flex items-center mr-4">
+                            <div class="w-[40px] h-[40px] bg-green-100 rounded flex items-center justify-center mr-2">
+                                <img class="max-w-full max-h-full" src="@/app/assets/images/app_store/app_manage.png" alt="" />
                             </div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column type="selection" v-if="activeName === 'recentlyUpdated'" />
-                    <el-table-column :label="t('appName')" align="left" width="500">
-                        <template #default="{ row }">
-                            <div class="flex items-center cursor-pointer relative left-[-10px]">
-                                <el-image class="w-[54px] h-[54px]" :src="row.icon" fit="contain">
+                            <div>
+                                <p class="text-sm font-bold">应用管理</p>
+                                <p class="text-xs text-gray-500">
+                                    <span class="mr-[15px] text-success">已安装: {{ localList.installed.length }}</span>
+                                    <span class="mr-[15px] text-warning">可更新: {{ localList.recentlyUpdated.length }}</span>
+                                    <span class="mr-[15px] text-primary">未安装: {{ localList.uninstalled.length }}</span>
+                                    <span class="mr-[15px] text-error">已购买: {{ localList.all.length }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center flex-1 w-0 justify-end">
+                    <el-button @click="oneClickRepair"><i class="iconfont iconyijianxiufu mr-[5px]" ></i>一键修复</el-button>
+                    <el-button type="primary" v-show="activeName == 'uninstalled'" @click="batchInstall"><i class="iconfont iconanzhuang1 mr-[5px]"></i>安装<span v-if="batchUpgradeApp.length">({{ batchUpgradeApp.length }})</span></el-button>
+                    <el-button type="primary" v-show="activeName == 'recentlyUpdated'" @click="batchUpgrade"><i class="iconfont iconyijianshengji mr-[5px]"></i>一键升级<span v-if="batchUpgradeApp.length">({{ batchUpgradeApp.length }})</span></el-button>
+                    <el-checkbox label="全选" :model-value="localList[activeName].length && localList[activeName].length == batchUpgradeApp.length" @change="appKeyAllSelect" v-show="activeName == 'uninstalled' || activeName == 'recentlyUpdated'" value="Value A" class="ml-[12px]"/>
+                </div>
+            </div>
+        </el-card>
+
+        <div class="flex mb-4 flex-wrap" v-show="showType == 'card'" v-if="localList[activeName].length && !loading">
+            <div class="rounded-md border p-[16px] pr-[20px] app-card mb-[20px] ml-[20px] cursor-pointer"
+                 @click="appKeySingleSelect($event, row.key)"
+                 :class="{'border-primary': batchUpgradeApp.includes(row.key)}" v-for="row in localList[activeName]" :key="row.key">
+
+                <div class="flex justify-between mb-2">
+                    <div class="flex items-center flex-1 w-0">
+                        <div class="w-[48px] h-[48px] bg-purple-100 rounded flex items-center justify-center mr-2 relative">
+                            <div class="w-full h-full overflow-hidden rounded">
+                                <el-image class="w-full h-full overflow-hidden rounded" :src="row.icon" fit="contain">
                                     <template #error>
                                         <div class="flex items-center w-full h-full">
-                                        <img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
+                                            <img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
                                         </div>
                                     </template>
                                 </el-image>
-                                <div class="flex-1 w-0 flex flex-col justify-center pl-[20px] font-500 text-[13px]">
-                                    <div class="w-[236px] truncate leading-[18px]">{{ row.title }}</div>
-                                    <div class="w-[236px] truncate leading-[18px] mt-[6px]" v-if="row.install_info && Object.keys(row.install_info)?.length">{{ row.install_info.version }}</div>
-                                    <div class="w-[236px] truncate leading-[18px] mt-[6px]" v-else>{{ row.version }}</div>
-                                    <div class="mt-[3px] flex flex-nowrap">
-                                        <el-tag type="danger" size="small" v-if="activeName == 'recentlyUpdated' && row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version">{{ t("newVersion") }}{{ row.version }}</el-tag>
-                                        <el-tooltip v-if="versionJudge(row)" effect="dark" :content="`该插件适配框架版本为${ row.support_version }，与已安装框架版本${frameworkVersion}不完全兼容`" placement="top-start">
-                                            <el-tag type="warning" size="small" class="ml-[3px]">该插件适配框架版本为{{ row.support_version }}，与已安装框架版本{{frameworkVersion}}不完全兼容</el-tag>
-                                        </el-tooltip>
-                                    </div>
-                                </div>
+                                <img src="@/app/assets/images/app_store/app_type_addon.png" alt="" class="absolute z-1 right-0 bottom-0" v-if="row.type == 'addon'">
+                                <img src="@/app/assets/images/app_store/app_type_app.png" alt="" class="absolute z-1 right-0 bottom-0" v-else>
                             </div>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column align="left" min-width="150">
-                        <template #header>
-                            <div class="flex items-center">
-                                <span class="font-500 text-[13px] mr-[5px]">{{ t("appIdentification") }}</span>
-                                <el-tooltip class="box-item" effect="light" :content="t('tipText')" placement="bottom">
-                                <el-icon class="cursor-pointer text-[16px] text-[#a9a9a9]">
-                                    <QuestionFilled />
-                                </el-icon>
-                                </el-tooltip>
-                            </div>
-                        </template>
-                        <template #default="{ row }">
-                            <span class="font-500 text-[13px]">{{ row.key }}</span>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column :label="t('introduction')" align="left" min-width="250">
-                        <template #default="{ row }">
-                            <span class="font-500 text-[13px] multi-hidden">{{ row.desc }}</span>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column :label="t('type')" align="left" min-width="80">
-                        <template #default="{ row }">
-                            <span class="font-500 text-[13px] multi-hidden">{{ row.type === "app" ? t("app") : t("addon") }}</span>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column :label="t('author')" align="left" min-width="80">
-                        <template #default="{ row }">
-                            <span class="font-500 text-[13px]">{{ row.author }}</span>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column :label="t('operation')" fixed="right" align="right" width="250">
-                        <template #default="{ row }">
-                            <el-button class="!text-[13px]" v-if="activeName == 'recentlyUpdated' && row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version" type="primary" link @click="upgradeAddonFn(row.key)">{{ t("upgrade") }}</el-button>
-                            <el-button class="!text-[13px]" v-if="row.install_info && Object.keys(row.install_info)?.length" type="primary" link @click="uninstallAddonFn(row.key)">{{ t("unload") }}</el-button>
-                            <template v-if="row.is_download && (!row.install_info || !Object.keys(row.install_info).length)">
-                                <el-button class="!text-[13px]" type="primary" link @click="installAddonFn(row.key)">{{ t("install") }}</el-button>
-                                <el-button class="!text-[13px]" type="primary" link @click="deleteAddonFn(row.key)">{{ t("delete") }}</el-button>
-                            </template>
-                            <el-button class="!text-[13px]" v-if="!row.is_download" :loading="downloading == row.key" :disabled="downloading != ''" type="primary" link @click.stop="downEvent(row)">
-                                <span>{{ t("down") }}</span>
-                            </el-button>
-                            <el-button class="!text-[13px]" type="primary" link @click="getAddonDetailFn(row)">{{ t("detail") }}</el-button>
-                            <el-button class="!text-[13px]" type="primary" link @click="updateInformationFn(row)">更新信息</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="data-loading" v-if="loading || !localList[activeName].length">
-                    <el-table :data="[]" size="large" class="pt-[5px]">
-                        <el-table-column :label="t('appName')" align="left" width="320" />
-                        <el-table-column align="left" min-width="120" />
-                        <el-table-column :label="t('introduction')" align="left" min-width="200" />
-                        <el-table-column :label="t('type')" align="left" min-width="100" />
-                        <el-table-column :label="t('author')" align="left" min-width="100" />
-                        <el-table-column :label="t('operation')" fixed="right" align="right" width="150" />
-                        <template #empty>
-                            <span></span>
-                        </template>
-                    </el-table>
-                    <div class="h-[100px]" v-loading="loading" v-if="loading"></div>
-                </div>
-                <el-empty class="mx-auto overview-empty" v-if="!localList.installed.length && !loading && activeName == 'installed' && !authLoading">
-                    <template #image>
-                        <div class="w-[230px] mx-auto">
-                            <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
+                            <div class="w-[8px] h-[8px] bg-[red] rounded-[8px] z-1 absolute top-[-2px] right-[-2px]" v-if="row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version"></div>
                         </div>
-                    </template>
-                    <template #description>
-                        <p class="flex items-center">{{ t("installed-empty") }}</p>
-                    </template>
-                </el-empty>
-                <el-empty class="mx-auto overview-empty" v-if="!localList.uninstalled.length && !loading && activeName == 'uninstalled' && !authLoading">
-                    <template #image>
-                        <div class="w-[230px] mx-auto">
-                            <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
+                        <div class="flex-1 w-0">
+                            <p class="text-sm font-medium truncate" :title="row.title">{{ row.title }}</p>
+                            <p class="text-xs text-gray-500 truncate"  :title="row.key">{{ row.key }}</p>
                         </div>
-                    </template>
-                    <template #description>
-                        <p class="flex items-center">
-                            <span>{{ t("descriptionLeft") }}</span>
-                            <el-link type="primary" @click="goRouter" class="mx-[5px]">{{ t("link") }}</el-link>
-                            <span>{{ t("descriptionRight") }}</span>
-                        </p>
-                    </template>
-                </el-empty>
-                <div v-if="!localList.all.length && !loading && !authinfo && activeName == 'all' && !authLoading" class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6">
-                    <div class="mb-[20px] text-sm text-[#888]">检测到当前账号尚未绑定授权，请先绑定授权！</div>
-                    <div class="flex flex-1 flex-wrap justify-center relative">
-                        <el-button class="w-[154px] !h-[48px] mt-[8px]" type="primary" @click="authCodeApproveFn">授权码认证</el-button>
-                        <el-popover ref="getAuthCodeDialog" placement="bottom" :width="478" trigger="click" class="mt-[8px]">
-                            <div class="px-[18px] py-[8px]">
-                                <p class="leading-[32px] text-[14px]">您在官方应用市场购买任意一款应用，即可获得授权码。输入正确授权码认证通过后，即可支持在线升级和其它相关服务</p>
-                                <div class="flex justify-end mt-[36px]">
-                                    <el-button class="w-[182px] !h-[48px]" plain @click="market">去应用市场逛逛</el-button>
-                                    <el-button class="w-[100px] !h-[48px]" plain @click="getAuthCodeDialog.hide()">关闭</el-button>
-                                </div>
-                            </div>
-                            <template #reference>
-                                <el-button class="w-[154px] !h-[48px] mt-[8px] !text-[var(--el-color-primary)] hover:!text-[var(--el-color-primary)] !bg-transparent" plain type="primary">如何获取授权码?</el-button>
-                            </template>
-                        </el-popover>
                     </div>
+                    <el-checkbox @click.stop :model-value="batchUpgradeApp.includes(row.key)" :value="row.key" @change="appKeySingleSelect($event, row.key)" class="!w-[14px] !h-[14px]" v-if="activeName == 'recentlyUpdated' || activeName == 'uninstalled'"></el-checkbox>
                 </div>
-                <el-empty class="mx-auto overview-empty" v-if="!localList.all.length && !loading && authinfo && activeName == 'all' && !authLoading">
-                    <template #image>
-                        <div class="w-[230px] mx-auto">
-                            <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
-                        </div>
+                <div class="flex justify-between">
+                    <div class="text-base">
+                        <span>版本: </span>
+                        <span>{{ row.install_info && Object.keys(row.install_info)?.length ? row.install_info.version : row.version }}</span>
+                        <template v-if="row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version">
+                            <i class="iconfont iconyoujiantou text-warning mx-[2px]"></i>
+                            <span class="text-warning">{{ row.version }}</span>
+                        </template>
+                    </div>
+                    <el-button type="primary" link @click.stop="updateInformationFn(row)">更新记录</el-button>
+                </div>
+
+                <div class="flex mt-[20px]">
+                    <template v-if="!row.is_download">
+                        <el-button type="primary" class="flex-1" :loading="downloading == row.key" :disabled="downloading != ''" @click.stop="downEvent(row)"><i class="iconfont iconanzhuang1 mr-[5px]"></i>立即下载</el-button>
                     </template>
-                    <template #description>
-                        <p class="flex items-center">
-                            <span>{{ t("buyDescriptionLeft") }}</span>
-                            <el-link type="primary" @click="goRouter" class="mx-[5px]">{{ t("link") }}</el-link>
-                            <span>{{ t("descriptionRight") }}</span>
-                        </p>
+                    <template v-else-if="!row.install_info || Object.keys(row.install_info).length == 0">
+                        <el-button type="primary" class="flex-1" @click.stop="installAddonFn(row.key)"><i class="iconfont iconanzhuang1 mr-[5px]"></i>立即安装</el-button>
+                        <el-button plain @click.stop="deleteAddonFn(row.key)">删除</el-button>
                     </template>
-                </el-empty>
-                <el-empty class="mx-auto overview-empty" v-if="!localList.recentlyUpdated.length && !loading && authinfo && activeName == 'recentlyUpdated' && !authLoading">
-                    <template #image>
-                        <div class="w-[230px] mx-auto">
-                            <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
-                        </div>
+                    <template v-else>
+                        <el-button type="warning" class="flex-1" @click.stop="upgradeAddonFn(row.key)" v-if="row.install_info.version != row.version">
+                            <i class="iconfont icongengxin mr-[5px]"></i>立即更新
+                        </el-button>
+                        <el-button class="flex-1" :disabled="true" v-else>
+                            <el-icon class="mr-[5px]"><Check /></el-icon>已是最新
+                        </el-button>
+                        <el-button plain @click.stop="uninstallAddonFn(row.key)">卸载</el-button>
                     </template>
-                    <template #description>
-                        <p class="flex items-center">{{ t("recentlyUpdatedEmpty") }}</p>
-                    </template>
-                </el-empty>
+                </div>
             </div>
+        </div>
 
-            <el-dialog v-model="authCodeApproveDialog" title="授权码认证" width="400px">
-                <el-form :model="formData" label-width="0" ref="formRef" :rules="formRules" class="page-form">
-                    <el-card class="box-card !border-none" shadow="never">
-                        <el-form-item prop="auth_code">
-                            <el-input v-model.trim="formData.auth_code" :placeholder="t('authCodePlaceholder')" class="input-width" clearable size="large" />
+        <div class="relative px-[20px] pb-[20px]" v-show="showType == 'list'">
+            <el-table v-if="localList[activeName].length && !loading" ref="tableRef" :tree-props="{ children: 'children' }" :default-expand-all="true" :data="info[activeName]" row-key="key" size="large">
+                <el-table-column width="24">
+                    <template #default="{ row }">
+                        <div class="tree-child-cell" :class="{ 'is-tree-parent': row.children?.length, 'is-tree-child': typeof row.support_app === 'string' && row.support_app !== '' && visibleRowKeys.has(row.support_app)}">
+                        <span style="opacity: 0;">.</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column v-if="activeName === 'recentlyUpdated' || activeName === 'uninstalled'" width="60px">
+                    <template #default="{ row }">
+                        <el-checkbox @click.stop :model-value="batchUpgradeApp.includes(row.key)" :value="row.key" @change="appKeySingleSelect($event, row.key)"></el-checkbox>
+                    </template>
+                </el-table-column>
+                <el-table-column :label="t('appName')" align="left" width="500">
+                    <template #default="{ row }">
+                        <div class="flex items-center cursor-pointer relative left-[-10px]">
+                            <el-image class="w-[54px] h-[54px]" :src="row.icon" fit="contain">
+                                <template #error>
+                                    <div class="flex items-center w-full h-full">
+                                    <img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
+                                    </div>
+                                </template>
+                            </el-image>
+                            <div class="flex-1 w-0 flex flex-col justify-center pl-[20px] font-500 text-[13px]">
+                                <div class="w-[236px] truncate leading-[18px]">{{ row.title }}</div>
+                                <div class="w-[236px] truncate leading-[18px] mt-[6px]" v-if="row.install_info && Object.keys(row.install_info)?.length">{{ row.install_info.version }}</div>
+                                <div class="w-[236px] truncate leading-[18px] mt-[6px]" v-else>{{ row.version }}</div>
+                                <div class="mt-[3px] flex flex-nowrap">
+                                    <el-tag type="danger" size="small" v-if="activeName == 'recentlyUpdated' && row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version">{{ t("newVersion") }}{{ row.version }}</el-tag>
+                                    <el-tooltip v-if="versionJudge(row)" effect="dark" :content="`该插件适配框架版本为${ row.support_version }，与已安装框架版本${frameworkVersion}不完全兼容`" placement="top-start">
+                                        <el-tag type="warning" size="small" class="ml-[3px]">该插件适配框架版本为{{ row.support_version }}，与已安装框架版本{{frameworkVersion}}不完全兼容</el-tag>
+                                    </el-tooltip>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </el-table-column>
+
+                <el-table-column align="left" min-width="150">
+                    <template #header>
+                        <div class="flex items-center">
+                            <span class="font-500 text-[13px] mr-[5px]">{{ t("appIdentification") }}</span>
+                            <el-tooltip class="box-item" effect="light" :content="t('tipText')" placement="bottom">
+                            <el-icon class="cursor-pointer text-[16px] text-[#a9a9a9]">
+                                <QuestionFilled />
+                            </el-icon>
+                            </el-tooltip>
+                        </div>
+                    </template>
+                    <template #default="{ row }">
+                        <span class="font-500 text-[13px]">{{ row.key }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column :label="t('introduction')" align="left" min-width="250">
+                    <template #default="{ row }">
+                        <span class="font-500 text-[13px] multi-hidden">{{ row.desc }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column :label="t('type')" align="left" min-width="80">
+                    <template #default="{ row }">
+                        <span class="font-500 text-[13px] multi-hidden">{{ row.type === "app" ? t("app") : t("addon") }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column :label="t('author')" align="left" min-width="80">
+                    <template #default="{ row }">
+                        <span class="font-500 text-[13px]">{{ row.author }}</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column :label="t('operation')" fixed="right" align="right" width="250">
+                    <template #default="{ row }">
+                        <el-button class="!text-[13px]" v-if="activeName == 'recentlyUpdated' && row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version" type="primary" link @click="upgradeAddonFn(row.key)">{{ t("upgrade") }}</el-button>
+                        <el-button class="!text-[13px]" v-if="row.install_info && Object.keys(row.install_info)?.length" type="primary" link @click="uninstallAddonFn(row.key)">{{ t("unload") }}</el-button>
+                        <template v-if="row.is_download && (!row.install_info || !Object.keys(row.install_info).length)">
+                            <el-button class="!text-[13px]" type="primary" link @click="installAddonFn(row.key)">{{ t("install") }}</el-button>
+                            <el-button class="!text-[13px]" type="primary" link @click="deleteAddonFn(row.key)">{{ t("delete") }}</el-button>
+                        </template>
+                        <el-button class="!text-[13px]" v-if="!row.is_download" :loading="downloading == row.key" :disabled="downloading != ''" type="primary" link @click.stop="downEvent(row)">
+                            <span>{{ t("down") }}</span>
+                        </el-button>
+                        <el-button class="!text-[13px]" type="primary" link @click="getAddonDetailFn(row)">{{ t("detail") }}</el-button>
+                        <el-button class="!text-[13px]" type="primary" link @click="updateInformationFn(row)">更新信息</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="data-loading" v-if="loading || !localList[activeName].length">
+                <el-table :data="[]" size="large" class="pt-[5px]">
+                    <el-table-column :label="t('appName')" align="left" width="320" />
+                    <el-table-column align="left" min-width="120" />
+                    <el-table-column :label="t('introduction')" align="left" min-width="200" />
+                    <el-table-column :label="t('type')" align="left" min-width="100" />
+                    <el-table-column :label="t('author')" align="left" min-width="100" />
+                    <el-table-column :label="t('operation')" fixed="right" align="right" width="150" />
+                    <template #empty>
+                        <span></span>
+                    </template>
+                </el-table>
+                <div class="h-[100px]" v-loading="loading" v-if="loading"></div>
+            </div>
+        </div>
+
+        <el-empty class="mx-auto overview-empty" v-if="!localList.installed.length && !loading && activeName == 'installed' && !authLoading">
+            <template #image>
+                <div class="w-[230px] mx-auto">
+                    <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
+                </div>
+            </template>
+            <template #description>
+                <p class="flex items-center">{{ t("installed-empty") }}</p>
+            </template>
+        </el-empty>
+        <el-empty class="mx-auto overview-empty" v-if="!localList.uninstalled.length && !loading && activeName == 'uninstalled' && !authLoading">
+            <template #image>
+                <div class="w-[230px] mx-auto">
+                    <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
+                </div>
+            </template>
+            <template #description>
+                <p class="flex items-center">
+                    <span>{{ t("descriptionLeft") }}</span>
+                    <el-link type="primary" @click="goRouter" class="mx-[5px]">{{ t("link") }}</el-link>
+                    <span>{{ t("descriptionRight") }}</span>
+                </p>
+            </template>
+        </el-empty>
+        <div v-if="!localList.all.length && !loading && !authinfo && activeName == 'all' && !authLoading" class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6">
+            <div class="mb-[20px] text-sm text-[#888]">检测到当前账号尚未绑定授权，请先绑定授权！</div>
+            <div class="flex flex-1 flex-wrap justify-center relative">
+                <el-button class="w-[154px] !h-[48px] mt-[8px]" type="primary" @click="authCodeApproveFn">授权码认证</el-button>
+                <el-popover ref="getAuthCodeDialog" placement="bottom" :width="478" trigger="click" class="mt-[8px]">
+                    <div class="px-[18px] py-[8px]">
+                        <p class="leading-[32px] text-[14px]">您在官方应用市场购买任意一款应用，即可获得授权码。输入正确授权码认证通过后，即可支持在线升级和其它相关服务</p>
+                        <div class="flex justify-end mt-[36px]">
+                            <el-button class="w-[182px] !h-[48px]" plain @click="market">去应用市场逛逛</el-button>
+                            <el-button class="w-[100px] !h-[48px]" plain @click="getAuthCodeDialog.hide()">关闭</el-button>
+                        </div>
+                    </div>
+                    <template #reference>
+                        <el-button class="w-[154px] !h-[48px] mt-[8px] !text-[var(--el-color-primary)] hover:!text-[var(--el-color-primary)] !bg-transparent" plain type="primary">如何获取授权码?</el-button>
+                    </template>
+                </el-popover>
+            </div>
+        </div>
+        <el-empty class="mx-auto overview-empty" v-if="!localList.all.length && !loading && authinfo && activeName == 'all' && !authLoading">
+            <template #image>
+                <div class="w-[230px] mx-auto">
+                    <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
+                </div>
+            </template>
+            <template #description>
+                <p class="flex items-center">
+                    <span>{{ t("buyDescriptionLeft") }}</span>
+                    <el-link type="primary" @click="goRouter" class="mx-[5px]">{{ t("link") }}</el-link>
+                    <span>{{ t("descriptionRight") }}</span>
+                </p>
+            </template>
+        </el-empty>
+        <el-empty class="mx-auto overview-empty" v-if="!localList.recentlyUpdated.length && !loading && activeName == 'recentlyUpdated'">
+            <template #image>
+                <div class="w-[230px] mx-auto">
+                    <img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
+                </div>
+            </template>
+            <template #description>
+                <p class="flex items-center">{{ t("recentlyUpdatedEmpty") }}</p>
+            </template>
+        </el-empty>
+
+        <el-dialog v-model="authCodeApproveDialog" title="授权码认证" width="400px">
+            <el-form :model="formData" label-width="0" ref="formRef" :rules="formRules" class="page-form">
+                <el-card class="box-card !border-none" shadow="never">
+                    <el-form-item prop="auth_code">
+                        <el-input v-model.trim="formData.auth_code" :placeholder="t('authCodePlaceholder')" class="input-width" clearable size="large" />
+                    </el-form-item>
+
+                    <div class="mt-[20px]">
+                        <el-form-item prop="auth_secret">
+                            <el-input v-model.trim="formData.auth_secret" clearable :placeholder="t('authSecretPlaceholder')" class="input-width" size="large" />
                         </el-form-item>
+                    </div>
 
-                        <div class="mt-[20px]">
-                            <el-form-item prop="auth_secret">
-                                <el-input v-model.trim="formData.auth_secret" clearable :placeholder="t('authSecretPlaceholder')" class="input-width" size="large" />
-                            </el-form-item>
-                        </div>
+                    <div class="text-sm mt-[10px] text-info">{{ t("authInfoTips") }}</div>
 
-                        <div class="text-sm mt-[10px] text-info">{{ t("authInfoTips") }}</div>
+                    <div class="mt-[20px]">
+                        <el-button type="primary" class="w-full" size="large" :loading="saveLoading" @click="save(formRef)">{{ t("confirm") }}
+                        </el-button>
+                    </div>
+                    <div class="mt-[10px] text-right">
+                        <el-button type="primary" link @click="market">{{ t("notHaveAuth") }}</el-button>
+                    </div>
+                </el-card>
+            </el-form>
+        </el-dialog>
+        <!-- 详情 -->
+        <el-dialog v-model="appStoreShowDialog" :title="t('plugDetail')" width="500px" :destroy-on-close="true">
+            <el-form :model="appStoreInfo" label-width="120px" ref="formRef" class="page-form">
+                <el-form-item :label="t('title')">
+                    <div class="input-width">{{ appStoreInfo.title }}</div>
+                </el-form-item>
+                <el-form-item :label="t('desc')">
+                    <div class="input-width">{{ appStoreInfo.desc }}</div>
+                </el-form-item>
+                <el-form-item :label="t('author')">
+                    <div class="input-width">{{ appStoreInfo.author }}</div>
+                </el-form-item>
+                <el-form-item :label="t('version')">
+                    <div class="input-width">{{ appStoreInfo.version }}</div>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="appStoreShowDialog = false">{{ t("confirm") }}</el-button>
+                </span>
+            </template>
+        </el-dialog>
 
-                        <div class="mt-[20px]">
-                            <el-button type="primary" class="w-full" size="large" :loading="saveLoading" @click="save(formRef)">{{ t("confirm") }}
-                            </el-button>
-                        </div>
-                        <div class="mt-[10px] text-right">
-                            <el-button type="primary" link @click="market">{{ t("notHaveAuth") }}</el-button>
-                        </div>
-                    </el-card>
-                </el-form>
-            </el-dialog>
-            <!-- 详情 -->
-            <el-dialog v-model="appStoreShowDialog" :title="t('plugDetail')" width="500px" :destroy-on-close="true">
-                <el-form :model="appStoreInfo" label-width="120px" ref="formRef" class="page-form">
-                    <el-form-item :label="t('title')">
-                        <div class="input-width">{{ appStoreInfo.title }}</div>
-                    </el-form-item>
-                    <el-form-item :label="t('desc')">
-                        <div class="input-width">{{ appStoreInfo.desc }}</div>
-                    </el-form-item>
-                    <el-form-item :label="t('author')">
-                        <div class="input-width">{{ appStoreInfo.author }}</div>
-                    </el-form-item>
-                    <el-form-item :label="t('version')">
-                        <div class="input-width">{{ appStoreInfo.version }}</div>
-                    </el-form-item>
-                </el-form>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button type="primary" @click="appStoreShowDialog = false">{{ t("confirm") }}</el-button>
-                    </span>
-                </template>
-            </el-dialog>
-
-            <!-- 安装弹窗 -->
-            <el-dialog v-model="installShowDialog" :title="t('addonInstall')" width="850px" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="installShowDialogClose">
-                <el-steps :space="200" :active="installStep" class="number-of-steps" process-status="process" align-center v-if="installStep != 2 && !errorDialog ">
-                    <el-step :title="t('envCheck')" class="flex-1" />
-                    <el-step :title="t('installProgress')" class="flex-1" />
-                    <el-step :title="t('installComplete')" class="flex-1" />
-                </el-steps>
-                <div v-show="installStep == 0" v-loading="!installCheckResult.dir">
-                    <!-- <el-scrollbar max-height="50vh"> -->
-                        <div class="min-h-[150px]">
-                            <div class="my-3" v-if="installCheckResult.dir">
+        <!-- 安装弹窗 -->
+        <el-dialog v-model="installShowDialog" :title="t('addonInstall')" width="850px" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="installShowDialogClose">
+            <el-steps :space="200" :active="installStep" class="number-of-steps" process-status="process" align-center v-if="installStep != 2 && !errorDialog ">
+                <el-step :title="t('envCheck')" class="flex-1" />
+                <el-step :title="t('installProgress')" class="flex-1" />
+                <el-step :title="t('installComplete')" class="flex-1" />
+            </el-steps>
+            <div v-show="installStep == 0" v-loading="!installCheckResult.dir">
+                <!-- <el-scrollbar max-height="50vh"> -->
+                    <div class="min-h-[150px]">
+                        <el-scrollbar style="height: calc(50vh); overflow: auto">
+                            <div class="mt-3" v-if="installCheckResult.dir">
                                 <p class="pt-[20px] pl-[20px]">{{ t("dirPermission") }}</p>
-                                <div v-if="!installCheckResult.is_pass" class="mt-[10px] mx-[20px] text-[14px] cursor-pointer text-primary flex items-center justify-between bg-[#EFF6FF] rounded-[4px] p-[10px]" @click="cloudBuildCheckDirFn">
+                                <div v-if="!installCheckResult.file_permission_is_pass" class="mt-[10px] mx-[20px] text-[14px] cursor-pointer text-primary flex items-center justify-between bg-[#EFF6FF] rounded-[4px] p-[10px]" @click="cloudBuildCheckDirFn">
                                     <div class="flex items-center">
                                         <el-icon :size="17"><QuestionFilled /></el-icon>
                                         <span class="ml-[5px] leading-[20px]">编译权限错误，查看解决方案</span></div>
@@ -285,187 +371,193 @@
                                             <span>{{ t("status") }}</span>
                                         </el-col>
                                     </el-row>
-                                    <el-scrollbar style="height: calc(300px); overflow: auto">
-                                        <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in installCheckResult.dir.is_readable" :key="index">
-                                            <el-col :span="18">
-                                                <span>{{ item.dir }}</span>
-                                            </el-col>
-                                            <el-col :span="3">
-                                                <span>{{ t("readable") }}</span>
-                                            </el-col>
-                                            <el-col :span="3" >
-                                                <span v-if="item.status">
-                                                    <el-icon color="green">
-                                                        <Select />
-                                                    </el-icon>
-                                                </span>
-                                                <span v-else>
-                                                    <el-icon color="red">
-                                                        <CloseBold />
-                                                    </el-icon>
-                                                </span>
-                                            </el-col>
-                                        </el-row>
-                                        <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in installCheckResult.dir.is_write" :key="index">
-                                            <el-col :span="18">
-                                                <span>{{ item.dir }}</span>
-                                            </el-col>
-                                            <el-col :span="3">
-                                                <span>{{ t("write") }}</span>
-                                            </el-col>
-                                            <el-col :span="3">
-                                                <span v-if="item.status" class="text-right">
-                                                    <el-icon color="green">
-                                                        <Select />
-                                                    </el-icon>
-                                                </span>
-                                                <span v-else>
-                                                    <el-icon color="red">
-                                                        <CloseBold />
-                                                    </el-icon>
-                                                </span>
-                                            </el-col>
-                                        </el-row>
-                                    </el-scrollbar>
+                                    <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in installCheckResult.dir.is_readable" :key="index">
+                                        <el-col :span="18">
+                                            <span>{{ item.dir }}</span>
+                                        </el-col>
+                                        <el-col :span="3">
+                                            <span>{{ t("readable") }}</span>
+                                        </el-col>
+                                        <el-col :span="3" >
+                                            <span v-if="item.status">
+                                                <el-icon color="green">
+                                                    <Select />
+                                                </el-icon>
+                                            </span>
+                                            <span v-else>
+                                                <el-icon color="red">
+                                                    <CloseBold />
+                                                </el-icon>
+                                            </span>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in installCheckResult.dir.is_write" :key="index">
+                                        <el-col :span="18">
+                                            <span>{{ item.dir }}</span>
+                                        </el-col>
+                                        <el-col :span="3">
+                                            <span>{{ t("write") }}</span>
+                                        </el-col>
+                                        <el-col :span="3">
+                                            <span v-if="item.status" class="text-right">
+                                                <el-icon color="green">
+                                                    <Select />
+                                                </el-icon>
+                                            </span>
+                                            <span v-else>
+                                                <el-icon color="red">
+                                                    <CloseBold />
+                                                </el-icon>
+                                            </span>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </div>
-                        </div>
-                    <!-- </el-scrollbar> -->
-                    <div class="flex justify-end">
-                        <el-tooltip effect="dark" placement="top">
-                            <template #content>
-                                <div class="w-[400px]">
-                                    {{t("installTips")}}
+                            <div class="my-3" v-if="installCheckResult.addon_check && installCheckResult.addon_check.length">
+                                <p class="pl-[20px]">插件验证</p>
+                                <div class="px-[20px] pt-[10px] text-[14px]">
+                                    <el-alert class="!mb-[10px]" v-for="item in installCheckResult.addon_check" type="error" :closable="false">
+                                        <div v-html="item.msg"></div>
+                                    </el-alert>
                                 </div>
-                            </template>
-                            <el-button :disabled="!installCheckResult.is_pass || cloudInstalling" :loading="localInstalling" @click="handleInstall">{{ t("localInstall") }}</el-button>
-                        </el-tooltip>
-                        <el-tooltip effect="dark" placement="top">
-                            <template #content>
-                                <div class="w-[400px]">
-                                    {{t("cloudInstallTips")}}
-                                </div>
-                            </template>
-                            <el-button type="primary" :disabled="!installCheckResult.is_pass || localInstalling" :loading="cloudInstalling" @click="handleCloudInstall">{{ t("cloudInstall") }}</el-button>
-                        </el-tooltip>
+                            </div>
+                        </el-scrollbar>
                     </div>
-                </div>
-                <div v-show="installStep == 1 && !errorDialog" class="h-[50vh] mt-[20px]">
-                    <terminal ref="terminalRef" :name="`install-${terminalId}`" :context="currAddon" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd" />
-                </div>
-                <div v-show="installStep == 2" class="h-[50vh] mt-[20px] flex flex-col">
-                    <!-- <el-result icon="success" :title="t('addonInstallSuccess')"></el-result> -->
-                    <!-- 提示信息 -->
-                    <!-- <div v-for="(item, index) in installAfterTips" class="mb-[10px]" :key="index">
-                        <el-alert :title="item" type="error" :closable="false" />
-                    </div> -->
-                    <el-result icon="success" :title="t('addonInstallSuccess')">
-                        <template #icon>
-                            <img src="@/app/assets/images/success_icon.png" alt="">
-                        </template>
-                        <template #extra>
-                            <div v-for="(item, index) in installAfterTips" class="mb-[10px]" :key="index">
-                                <div class="text-[16px] text-[#4F516D] mt-[5px]">{{ item }}</div>
-                            </div>
-                            <div class="text-[16px] text-[#9699B6] mt-[10px]" v-if="upgradeDuration>0">本次安装用时{{ formatUpgradeDuration }}</div>
-                            <div class="mt-[20px]">
-                                <el-button @click="handleBack()" v-if="installType=='cloud'" class="!w-[90px]">返回</el-button>
-                                <el-button @click="installShowDialog=false" type="primary" class="!w-[90px]">完成</el-button>
+                <!-- </el-scrollbar> -->
+                <div class="flex justify-end">
+                    <el-tooltip effect="dark" placement="top">
+                        <template #content>
+                            <div class="w-[400px]">
+                                {{t("installTips")}}
                             </div>
                         </template>
-                    </el-result>
-                </div>
-                <div class="h-[50vh] mt-[20px] flex flex-col" v-show="errorDialog">
-                    <el-result icon="error" :title="t('安装失败')">
-                        <template #icon>
-                            <img src="@/app/assets/images/error_icon.png" alt="">
+                        <el-button :disabled="!installCheckResult.is_pass || cloudInstalling" :loading="localInstalling" @click="handleInstall">{{ t("localInstall") }}</el-button>
+                    </el-tooltip>
+                    <el-tooltip effect="dark" placement="top">
+                        <template #content>
+                            <div class="w-[400px]">
+                                {{t("cloudInstallTips")}}
+                            </div>
                         </template>
-                        <template #extra>
-                            <el-scrollbar class="max-h-[120px] !overflow-auto text-[15px] text-[#4F516D] mb-[15px] mt-[-15px]">
-                                {{errorMsg}}
-                            </el-scrollbar>
-                            <el-button @click="handleBack()" v-if="installType=='cloud'" class="!w-[90px]">错误信息</el-button>
+                        <el-button type="primary" :disabled="!installCheckResult.is_pass || localInstalling" :loading="cloudInstalling" @click="handleCloudInstall">{{ t("cloudInstall") }}</el-button>
+                    </el-tooltip>
+                </div>
+            </div>
+            <div v-show="installStep == 1 && !errorDialog" class="h-[50vh] mt-[20px]">
+                <terminal ref="terminalRef" :name="`install-${terminalId}`" :context="currAddon" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd" />
+            </div>
+            <div v-show="installStep == 2" class="h-[50vh] mt-[20px] flex flex-col">
+                <!-- <el-result icon="success" :title="t('addonInstallSuccess')"></el-result> -->
+                <!-- 提示信息 -->
+                <!-- <div v-for="(item, index) in installAfterTips" class="mb-[10px]" :key="index">
+                    <el-alert :title="item" type="error" :closable="false" />
+                </div> -->
+                <el-result icon="success" :title="t('addonInstallSuccess')">
+                    <template #icon>
+                        <img src="@/app/assets/images/success_icon.png" alt="">
+                    </template>
+                    <template #extra>
+                        <div v-for="(item, index) in installAfterTips" class="mb-[10px]" :key="index">
+                            <div class="text-[16px] text-[#4F516D] mt-[5px]">{{ item }}</div>
+                        </div>
+                        <div class="text-[16px] text-[#9699B6] mt-[10px]" v-if="upgradeDuration>0">本次安装用时{{ formatUpgradeDuration }}</div>
+                        <div class="mt-[20px]">
+                            <el-button @click="handleBack()" v-if="installType=='cloud'" class="!w-[90px]">返回</el-button>
                             <el-button @click="installShowDialog=false" type="primary" class="!w-[90px]">完成</el-button>
-                        </template>
-                    </el-result>
-                </div>
-            </el-dialog>
+                        </div>
+                    </template>
+                </el-result>
+            </div>
+            <div class="h-[50vh] mt-[20px] flex flex-col" v-show="errorDialog">
+                <el-result icon="error" :title="t('安装失败')">
+                    <template #icon>
+                        <img src="@/app/assets/images/error_icon.png" alt="">
+                    </template>
+                    <template #extra>
+                        <el-scrollbar class="max-h-[120px] !overflow-auto text-[15px] text-[#4F516D] mb-[15px] mt-[-15px]">
+                            {{errorMsg}}
+                        </el-scrollbar>
+                        <el-button @click="handleBack()" v-if="installType=='cloud'" class="!w-[90px]">错误信息</el-button>
+                        <el-button @click="installShowDialog=false" type="primary" class="!w-[90px]">完成</el-button>
+                    </template>
+                </el-result>
+            </div>
+        </el-dialog>
 
-            <el-dialog v-model="uninstallShowDialog" :title="t('addonUninstall')" width="850px" :close-on-click-modal="false" :close-on-press-escape="false">
-                <el-scrollbar max-height="50vh">
-                    <div class="min-h-[150px]">
-                        <div class="bg-[#fff] my-3" v-if="uninstallCheckResult.dir">
-                            <p class="pt-[20px] pl-[20px]">{{ t("dirPermission") }}</p>
-                            <div class="px-[20px] pt-[10px] text-[14px]">
-                                <el-row class="py-[10px] items table-head-bg pl-[15px] mb-[10px]">
-                                    <el-col :span="18">
-                                        <span>{{ t("path") }}</span>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <span>{{ t("demand") }}</span>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <span>{{ t("status") }}</span>
-                                    </el-col>
-                                </el-row>
-                                <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in uninstallCheckResult.dir.is_readable" :key="index">
-                                    <el-col :span="18">
-                                        <span>{{ item.dir }}</span>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <span>{{ t("readable") }}</span>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <span v-if="item.status">
-                                            <el-icon color="green">
-                                                <Select />
-                                            </el-icon>
-                                        </span>
-                                        <span v-else>
-                                            <el-icon color="red">
-                                                <CloseBold />
-                                            </el-icon>
-                                        </span>
-                                    </el-col>
-                                </el-row>
-                                <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in uninstallCheckResult.dir.is_write" :key="index">
-                                    <el-col :span="18">
-                                        <span>{{ item.dir }}</span>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <span>{{ t("write") }}</span>
-                                    </el-col>
-                                    <el-col :span="3" >
-                                        <span v-if="item.status">
-                                            <el-icon color="green">
-                                                <Select />
-                                            </el-icon>
-                                        </span>
-                                        <span v-else>
-                                            <el-icon color="red">
-                                                <CloseBold />
-                                            </el-icon>
-                                        </span>
-                                    </el-col>
-                                </el-row>
-                            </div>
+        <el-dialog v-model="uninstallShowDialog" :title="t('addonUninstall')" width="850px" :close-on-click-modal="false" :close-on-press-escape="false">
+            <el-scrollbar max-height="50vh">
+                <div class="min-h-[150px]">
+                    <div class="bg-[#fff] my-3" v-if="uninstallCheckResult.dir">
+                        <p class="pt-[20px] pl-[20px]">{{ t("dirPermission") }}</p>
+                        <div class="px-[20px] pt-[10px] text-[14px]">
+                            <el-row class="py-[10px] items table-head-bg pl-[15px] mb-[10px]">
+                                <el-col :span="18">
+                                    <span>{{ t("path") }}</span>
+                                </el-col>
+                                <el-col :span="3">
+                                    <span>{{ t("demand") }}</span>
+                                </el-col>
+                                <el-col :span="3">
+                                    <span>{{ t("status") }}</span>
+                                </el-col>
+                            </el-row>
+                            <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in uninstallCheckResult.dir.is_readable" :key="index">
+                                <el-col :span="18">
+                                    <span>{{ item.dir }}</span>
+                                </el-col>
+                                <el-col :span="3">
+                                    <span>{{ t("readable") }}</span>
+                                </el-col>
+                                <el-col :span="3">
+                                    <span v-if="item.status">
+                                        <el-icon color="green">
+                                            <Select />
+                                        </el-icon>
+                                    </span>
+                                    <span v-else>
+                                        <el-icon color="red">
+                                            <CloseBold />
+                                        </el-icon>
+                                    </span>
+                                </el-col>
+                            </el-row>
+                            <el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in uninstallCheckResult.dir.is_write" :key="index">
+                                <el-col :span="18">
+                                    <span>{{ item.dir }}</span>
+                                </el-col>
+                                <el-col :span="3">
+                                    <span>{{ t("write") }}</span>
+                                </el-col>
+                                <el-col :span="3" >
+                                    <span v-if="item.status">
+                                        <el-icon color="green">
+                                            <Select />
+                                        </el-icon>
+                                    </span>
+                                    <span v-else>
+                                        <el-icon color="red">
+                                            <CloseBold />
+                                        </el-icon>
+                                    </span>
+                                </el-col>
+                            </el-row>
                         </div>
                     </div>
-                </el-scrollbar>
-            </el-dialog>
+                </div>
+            </el-scrollbar>
+        </el-dialog>
 
-            <!-- 下载提示 -->
-            <el-dialog v-model="unloadHintDialog" title="下载提示" width="30%">
-                <span>本地已经存在该插件/应用，再次下载会覆盖该插件/应用。</span>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button @click="unloadHintDialog = false">取消</el-button>
-                        <el-button type="primary" @click="downEventHintFn">确定</el-button>
-                    </span>
-                </template>
-            </el-dialog>
-            <!-- 更新信息 -->
-        </el-card>
+        <!-- 下载提示 -->
+        <el-dialog v-model="unloadHintDialog" title="下载提示" width="30%">
+            <span>本地已经存在该插件/应用，再次下载会覆盖该插件/应用。</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="unloadHintDialog = false">取消</el-button>
+                    <el-button type="primary" @click="downEventHintFn">确定</el-button>
+                </span>
+            </template>
+        </el-dialog>
+        <!-- 更新信息 -->
     </div>
     <upgrade-log :upgradeKey="upgradeKey" ref="upgradeLogRef" />
     <upgrade ref="upgradeRef" @complete="localListFn" @cloudbuild="handleCloudBuild" />
@@ -473,7 +565,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, watch, h ,computed } from 'vue'
+import { ref, reactive, watch, h, computed, nextTick } from 'vue'
 import { t } from '@/lang'
 import {
     getAddonLocal,
@@ -488,7 +580,7 @@ import {
     getAddonInit
 } from '@/app/api/addon'
 import { deleteAddonDevelop } from '@/app/api/tools'
-import { downloadVersion, getAuthInfo, setAuthInfo } from '@/app/api/module'
+import { downloadVersion, getAuthInfo, setAuthInfo, getFrameworkNewVersion } from '@/app/api/module'
 import { getVersions } from '@/app/api/auth'
 import { ElMessage, ElMessageBox, ElNotification, FormInstance, FormRules } from 'element-plus'
 import 'vue-web-terminal/lib/theme/dark.css'
@@ -501,9 +593,10 @@ import Upgrade from '@/app/components/upgrade/index.vue'
 import CloudBuild from '@/app/components/cloud-build/index.vue'
 import UpgradeLog from '@/app/components/upgrade-log/index.vue'
 
+const tableRef = ref(null)
 const router = useRouter()
 const route = useRoute()
-const terminalId = ref(Date.now());
+const terminalId = ref(Date.now())
 const activeName = ref(storage.get('storeActiveName') || 'installed')
 const upgradeRef = ref(null)
 const cloudBuildRef = ref(null)
@@ -514,10 +607,22 @@ const userStore = useUserStore()
 const unloadHintDialog = ref(false)
 const terminalRef = ref(null)
 const frameworkVersion = ref('')
+const frameworkVersionCode = ref('')
 const upgradeLogRef = ref<any>(null)
+const showType = ref(storage.get('storeShowType') || 'card')
+const frameworkNewVersion = ref('')
 getVersions().then((res) => {
     frameworkVersion.value = res.data.version.version
+    frameworkVersionCode.value = res.data.version.code
 })
+getFrameworkNewVersion().then(({ data }) => {
+    frameworkNewVersion.value = data.last_version
+})
+
+const switchShowType = () => {
+    showType.value = showType.value == 'card' ? 'list' : 'card'
+    storage.set({key: 'storeShowType', data: showType.value})
+}
 
 const typeList = ref({})
 const getAddonInitFn = () => {
@@ -534,6 +639,12 @@ const downEventHintFn = () => {
 const activeNameTabFn = (data: any) => {
     activeName.value = data
     storage.set({ key: 'storeActiveName', data })
+
+    if ((data == 'uninstalled' || data == 'recentlyUpdated') && localList.value[activeName.value].length) {
+        batchUpgradeApp.value = localList.value[activeName.value].map(item => item.key)
+    } else {
+        batchUpgradeApp.value = []
+    }
 }
 if (route.query.id) {
     activeNameTabFn(route.query.id)
@@ -603,26 +714,7 @@ const buildInfo = (list: any[]) => {
 
     return result
 }
-// const query = () => {
-//     if (search_name.value == '' || search_name.value == null) {
-//         info.value.installed = buildInfo(localList.value.installed)
-//         info.value.uninstalled = buildInfo(localList.value.uninstalled)
-//         info.value.all = buildInfo(localList.value.all)
-//         info.value.recentlyUpdated = buildInfo(localList.value.recentlyUpdated)
-//         return false
-//     }
 
-//     const filteredInstalled = localList.value.installed.filter((el: any) => el.title.indexOf(search_name.value) != -1)
-//     const filteredUninstalled = localList.value.uninstalled.filter((el: any) => el.title.indexOf(search_name.value) != -1)
-//     const filteredAll = localList.value.all.filter((el: any) => el.title.indexOf(search_name.value) != -1)
-//     const filteredRecentlyUpdated = localList.value.recentlyUpdated.filter((el: any) => el.title.indexOf(search_name.value) != -1)
-
-//     // 构建父子关系
-//     info.value.installed = buildInfo(filteredInstalled)
-//     info.value.uninstalled = buildInfo(filteredUninstalled)
-//     info.value.all = buildInfo(filteredAll)
-//     info.value.recentlyUpdated = buildInfo(filteredRecentlyUpdated)
-// }
 const query = () => {
     const name = search_name.value
     const type = search_type.value
@@ -689,6 +781,7 @@ const localListFn = () => {
                 appLink.value[item.meta.app] = item.name
             }
         })
+        activeNameTabFn(activeName.value)
         loading.value = false
     }).catch(() => {
         loading.value = false
@@ -909,6 +1002,7 @@ const handleCloudInstall = () => {
         installStep.value = 1
         terminalRef.value.execute('clear')
         terminalRef.value.execute('开始安装插件')
+        if (res.data.length) installAfterTips.value = res.data
         getInstallTask()
         cloudInstalling.value = false
     }).catch((res) => {
@@ -1155,23 +1249,55 @@ const versionJudge = (row: any) => {
     return false
 }
 
-let batchUpgradeApp = []
-const handleSelectionChange = (e: any) => {
-    batchUpgradeApp = e.map(item => item.key)
+const batchUpgradeApp = ref<String[]>([])
+
+const appKeyAllSelect = () => {
+    if (localList.value[activeName.value].length) {
+        if (localList.value[activeName.value].length == batchUpgradeApp.value.length) {
+            batchUpgradeApp.value = []
+        } else {
+            batchUpgradeApp.value = localList.value[activeName.value].map(item => item.key)
+        }
+    }
+}
+
+const appKeySingleSelect = (event: any, key: string) => {
+    if (activeName.value != 'recentlyUpdated' && activeName.value != 'uninstalled') return
+    if (batchUpgradeApp.value.includes(key)) {
+        batchUpgradeApp.value.splice(batchUpgradeApp.value.indexOf(key), 1)
+    } else {
+        batchUpgradeApp.value.push(key)
+    }
 }
 
 const batchUpgrade = () => {
-    if (!batchUpgradeApp.length) {
-        ElMessage({ message: '请先勾选要升级的插件', type: 'error', duration: 5000 })
+    const appKeys = batchUpgradeApp.value
+    if (frameworkVersion.value != frameworkNewVersion.value) {
+        appKeys.unshift('niucloud-admin')
+    }
+    if (!appKeys.length) {
+        ElMessage({ message: localList.recentlyUpdated.length ? '请先勾选要升级的插件' : '当前已是最新版', type: 'error', duration: 5000 })
         return
     }
+    upgradeAddonFn(appKeys.toString())
+}
 
-    upgradeAddonFn(batchUpgradeApp.toString())
+const batchInstall = () => {
+    const appKeys = batchUpgradeApp.value
+    if (!appKeys.length) {
+        ElMessage({ message: '请先勾选要安装的插件', type: 'error', duration: 5000 })
+        return
+    }
+    installAddonFn(appKeys.toString())
 }
 
 const visibleRowKeys = computed(() => {
-    return new Set((info.value[activeName.value] || []).map(row => row.key));
-});
+    return new Set((info.value[activeName.value] || []).map(row => row.key))
+})
+
+const oneClickRepair = () => {
+    ElMessage({ message: '即将上线敬请期待', duration: 5000 })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -1449,6 +1575,11 @@ html.dark .table-head-bg {
     .is-wait {
         color: #333;
     }
+}
+
+.app-card {
+    width: calc((100% - 120px) / 5);
+    min-width: 260px;
 }
 
 </style>

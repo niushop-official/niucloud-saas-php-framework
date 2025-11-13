@@ -82,6 +82,7 @@ getUrl().then((res: any) => {
 
 // 生成H5二维码（支持多参数）
 const generateH5QRCode = () => {
+	console.log( params.value)
     // 处理参数为URL格式
     const queryStr = params.value
         .map(item => `${encodeURIComponent(item.name)}=${encodeURIComponent(item.value)}`)
