@@ -149,9 +149,9 @@ Route::group('member', function() {
     //全部会员等级
     Route::get('level/all', 'member.MemberLevel/getAll');
     // 获取会员权益内容
-    Route::get('benefits/content', 'member.Member/getMemberBenefitsContent');
+    Route::post('benefits/content', 'member.Member/getMemberBenefitsContent');
     // 获取会员礼包内容
-    Route::get('gifts/content', 'member.Member/getMemberGiftsContent');
+    Route::post('gifts/content', 'member.Member/getMemberGiftsContent');
     /***************************************************** 会员签到 ****************************************************/
     //签到设置
     Route::put('sign/config', 'member.MemberSign/setSign');

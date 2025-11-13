@@ -43,7 +43,8 @@ class CoreWechatConfigService extends BaseCoreService
             'token' => $info[ 'token' ] ?? '',
             'encoding_aes_key' => $info[ 'encoding_aes_key' ] ?? '',
             'encryption_type' => $info[ 'encryption_type' ] ?? 'not_encrypt',//加解密模式   not_encrypt 明文   compatible 兼容  safe 安全
-            'is_authorization' => $info[ 'is_authorization' ] ?? 0
+            'is_authorization' => $info[ 'is_authorization' ] ?? 0,
+            'base_uri' => $info['base_uri'] ?? ''
         ];
     }
 

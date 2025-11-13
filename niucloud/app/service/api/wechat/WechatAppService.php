@@ -143,6 +143,7 @@ class WechatAppService extends BaseApiService
                 if (!empty($avatar)) $member_info->headimg = $avatar;
                 if (!empty($nickname)) $member_info->nickname = $nickname;
             }
+            if (empty($member_info->wx_unionid) && !empty($unionid)) $member_info->wx_unionid = $unionid;
             return $login_service->login($member_info, MemberLoginTypeDict::WECHAT);
         }
     }

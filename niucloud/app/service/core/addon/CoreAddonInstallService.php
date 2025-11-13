@@ -23,6 +23,7 @@ use think\db\exception\DbException;
 use think\db\exception\PDOException;
 use think\facade\Cache;
 use think\facade\Db;
+use think\facade\Log;
 
 /**
  * 安装服务层
@@ -63,11 +64,14 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
     private $install_task = null;
 
+    private $addon_list = [];
+
     public function __construct($addon)
     {
         parent::__construct();
-        $this->addon = $addon;
-        $this->install_addon_path = $this->addon_path . $addon . DIRECTORY_SEPARATOR;
+        $this->addon_list = explode(',', $addon);
+        $this->addon = $this->addon_list[0];
+        $this->install_addon_path = $this->addon_path . $this->addon . DIRECTORY_SEPARATOR;
 
         $this->cache_key = "install_{$addon}";
 
@@ -93,29 +97,16 @@ class CoreAddonInstallService extends CoreAddonBaseService
      */
     public function installCheck()
     {
-        $from_admin_dir = $this->install_addon_path . 'admin' . DIRECTORY_SEPARATOR;
-        $from_web_dir = $this->install_addon_path . 'web' . DIRECTORY_SEPARATOR;
-        $from_wap_dir = $this->install_addon_path . 'uni-app' . DIRECTORY_SEPARATOR;
-        $from_resource_dir = $this->install_addon_path . 'resource' . DIRECTORY_SEPARATOR;
-
         // 放入的文件
-        $to_admin_dir = $this->root_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon'. DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_admin_dir = $this->root_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon'. DIRECTORY_SEPARATOR;
         $to_web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR;
-        $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon'. DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon'. DIRECTORY_SEPARATOR;
 
-        $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR;
 
         if (!is_dir($this->root_path . 'admin' . DIRECTORY_SEPARATOR)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
         if (!is_dir($this->root_path . 'web' . DIRECTORY_SEPARATOR)) throw new CommonException('WEB_DIR_NOT_EXIST');
         if (!is_dir($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
-
-        // 配置文件
-        $package_path = $this->install_addon_path . 'package' . DIRECTORY_SEPARATOR;
-        $package_file = [];
-        search_dir($package_path, $package_file);
-        $package_file = array_map(function ($file) use ($package_path) {
-            return str_replace($package_path . DIRECTORY_SEPARATOR, '', $file);
-        }, $package_file);
 
         $data = [
             // 目录检测
@@ -127,10 +118,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
             ]
         ];
 
-        if (is_dir($from_admin_dir)) $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $from_admin_dir), 'status' => is_readable($from_admin_dir)];
-        if (is_dir($from_web_dir)) $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $from_web_dir), 'status' => is_readable($from_web_dir)];
-        if (is_dir($from_wap_dir)) $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $from_wap_dir), 'status' => is_readable($from_wap_dir)];
-        if (is_dir($from_resource_dir)) $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $from_resource_dir), 'status' => is_readable($from_resource_dir)];
+        if (is_dir($this->addon_path)) $data['dir']['is_readable'][] = ['dir' => str_replace(project_path(), '', $this->addon_path), 'status' => is_readable($this->addon_path)];
 
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_admin_dir), 'status' => is_dir($to_admin_dir) ? is_write($to_admin_dir) : mkdir($to_admin_dir, 0777, true)];
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_web_dir), 'status' => is_dir($to_web_dir) ? is_write($to_web_dir) : mkdir($to_web_dir, 0777, true)];
@@ -138,7 +126,8 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_resource_dir), 'status' => is_dir($to_resource_dir) ? is_write($to_resource_dir) : mkdir($to_resource_dir, 0777, true)];
 
         // 校验niucloud/public下 wap web admin 目录及文件是否可读可写
-        $check_res = checkDirPermissions(public_path() . 'wap');
+        $check_res = checkDirPermissions($this->addon_path);
+        $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'wap'));
         $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'admin'));
         $check_res = array_merge2($check_res, checkDirPermissions(public_path() . 'web'));
 
@@ -153,13 +142,65 @@ class CoreAddonInstallService extends CoreAddonBaseService
             }
         }
 
-        $check_res = array_merge(
-            array_column($data['dir']['is_readable'], 'status'),
-            array_column($data['dir']['is_write'], 'status')
-        );
+        // 检测插件
+        $framework_version = config('version.version');
+        $framework_version_arr = explode('.', $framework_version);
+
+        $data['addon_check'] = [];
+        foreach ($this->addon_list as $addon) {
+            $install_data = $this->getAddonConfig($addon);
+            if (empty($install_data)) {
+                $data['addon_check'][] = [
+                    'msg' => "未找到插件{$addon}的info.json文件",
+                    'status' => false
+                ];
+                continue;
+            }
+            $core_addon_service = new CoreAddonService();
+            if (!empty($core_addon_service->getInfoByKey($addon))) {
+                $data['addon_check'][] = [
+                    'msg' => $install_data['title'] . '插件已安装,不能重复安装',
+                    'status' => false
+                ];
+                continue;
+            }
+            if (isset($install_data['support_app']) && !empty($install_data['support_app']) &&
+                empty($core_addon_service->getInfoByKey($install_data['support_app'])) && !in_array($install_data['support_app'], $this->addon_list)) {
+                $support_app_data = $this->getAddonConfig($install_data['support_app']);
+                $data['addon_check'][] = [
+                    'msg' => $install_data['title'] . '插件的主应用'. (empty($support_app_data) ? $install_data['support_app'] : $support_app_data['title']) .'插件还未安装，请先安装主应用',
+                    'status' => false
+                ];
+                continue;
+            }
+            if (!isset($install_data['support_version']) || empty($install_data['support_version'])) {
+                $data['addon_check'][] = [
+                    'msg' => $install_data['title'] . '插件的info.json文件中未检测到匹配框架当前版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]的信息无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>',
+                    'status' => false
+                ];
+                continue;
+            }
+            $support_framework_arr = explode('.', $install_data['support_version']);
+            if ($framework_version_arr[0].$framework_version_arr[1] != $support_framework_arr[0].$support_framework_arr[1]) {
+                if ((float) "$support_framework_arr[0].$support_framework_arr[1]" < (float) "$framework_version_arr[0].$framework_version_arr[1]") {
+                    $data['addon_check'][] = [
+                        'msg' => $install_data['title'] . '插件的info.json文件中检测到支持的框架版本['. $install_data['support_version'] .']低于当前框架版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>',
+                        'status' => false
+                    ];
+                }
+            }
+        }
 
         // 是否通过校验
-        $data['is_pass'] = !in_array(false, $check_res);
+        $data['is_pass'] = !in_array(false, array_merge(
+            array_column($data['dir']['is_readable'], 'status'),
+            array_column($data['dir']['is_write'], 'status'),
+            array_column($data['addon_check'], 'status')
+        ));
+        $data['file_permission_is_pass'] = !in_array(false, array_merge(
+            array_column($data['dir']['is_readable'], 'status'),
+            array_column($data['dir']['is_write'], 'status'),
+        ));
         Cache::set($this->cache_key . '_install_check', $data['is_pass']);
         return $data;
     }
@@ -170,58 +211,34 @@ class CoreAddonInstallService extends CoreAddonBaseService
      */
     public function install(string $mode = 'local')
     {
-        $core_addon_service = new CoreAddonService();
-        if (!empty($core_addon_service->getInfoByKey($this->addon))) throw new AddonException('REPEAT_INSTALL');
-
-        $install_data = $this->getAddonConfig($this->addon);
-        if (empty($install_data)) throw new AddonException('ADDON_INFO_FILE_NOT_EXIST');
-
-        $framework_version = config('version.version');
-        $framework_version_arr = explode('.', $framework_version);
-
-        // 检测框架版本是否支持
-        if (!isset($install_data['support_version']) || empty($install_data['support_version']))
-            throw new AddonException('您要安装的插件或应用的info.json文件中未检测到匹配框架当前版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]的信息无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>');
-
-        $support_framework_arr = explode('.', $install_data['support_version']);
-        if ($framework_version_arr[0].$framework_version_arr[1] != $support_framework_arr[0].$support_framework_arr[1]) {
-            if ((float) "$support_framework_arr[0].$support_framework_arr[1]" < (float) "$framework_version_arr[0].$framework_version_arr[1]") {
-                throw new AddonException('您要安装的插件或应用的info.json文件中检测到支持的框架版本['. $install_data['support_version'] .']低于当前框架版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>');
-            }
-        }
-
         $check_res = Cache::get($this->cache_key . '_install_check');
         if (!$check_res) throw new CommonException('INSTALL_CHECK_NOT_PASS');
 
         if ($this->install_task) throw new CommonException('ADDON_INSTALLING');
-        $this->install_task = [ 'mode' => $mode, 'addon' => $this->addon, 'step' => [], 'timestamp' => time() ];
+        $this->install_task = [ 'mode' => $mode, 'addon' => $this->addon, 'addon_list' => $this->addon_list, 'step' => [], 'fail_addon' => [], 'timestamp' => time() ];
         Cache::set('install_task', $this->install_task);
 
         set_time_limit(0);
 
-        $install_step = ['installDir','installWap','installDepend'];
+        // 备份前端目录
+        $this->backupFrontend();
 
-        if (!empty($install_data['compile']) || $mode == 'cloud') {
-            // 备份前端目录
-            $install_step[] = 'backupFrontend';
-        }
+        $tips = [];
+        if ($mode != 'cloud') $tips[] = get_lang('dict_addon.install_after_update');
 
-        // 检测插件是否存在编译内容
-        if (!empty($install_data['compile'])) {
-            $install_step[] = 'coverCompile';
-        }
+        foreach ($this->addon_list as $addon) {
+            $this->install_task['addon'] = $addon;
+            Cache::set('install_task', $this->install_task);
 
-        if ($mode == 'cloud') {
-            $install_step[] = 'cloudInstall';
-        } else {
-            $install_step[] = 'handleAddonInstall';
-        }
+            $this->addon = $addon;
+            $this->install_addon_path = $this->addon_path . $this->addon . DIRECTORY_SEPARATOR;
+            $install_data = $this->getAddonConfig($addon);
 
-        try {
-            foreach ($install_step as $step) {
-                $this->install_task['step'][] = $step;
-                $this->$step();
-                if ($step != 'handleAddonInstall') Cache::set('install_task', $this->install_task);
+            $install_step = ['installDir','installDepend'];
+
+            // 检测插件是否存在编译内容
+            if (!empty($install_data['compile'])) {
+                $install_step[] = 'coverCompile';
             }
 
             if ($mode != 'cloud') {
@@ -233,41 +250,57 @@ class CoreAddonInstallService extends CoreAddonBaseService
                     return str_replace($package_path . DIRECTORY_SEPARATOR, '', $file);
                 }, $package_file);
 
-                $tips = [get_lang('dict_addon.install_after_update')];
-                if (in_array('admin-package.json', $package_file)) $tips[] = get_lang('dict_addon.install_after_admin_update');
-                if (in_array('composer.json', $package_file)) $tips[] = get_lang('dict_addon.install_after_composer_update');
-                if (in_array('uni-app-package.json', $package_file)) $tips[] = get_lang('dict_addon.install_after_wap_update');
-                if (in_array('web-package.json', $package_file)) $tips[] = get_lang('dict_addon.install_after_web_update');
-                return $tips;
+                if (in_array('admin-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_admin_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_admin_update');
+                if (in_array('composer.json', $package_file) && !in_array(get_lang('dict_addon.install_after_composer_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_composer_update');
+                if (in_array('uni-app-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_wap_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_wap_update');
+                if (in_array('web-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_web_update'), $tips) ) $tips[] = get_lang('dict_addon.install_after_web_update');
             }
-            return true;
-        } catch (\Exception $e) {
-            Cache::set('install_task', $this->install_task);
-            $this->installExceptionHandle();
-            throw new CommonException($e->getMessage());
+
+            try {
+                $this->install_task['step'] = [];
+                foreach ($install_step as $step) {
+                    $this->install_task['step'][] = $step;
+                    Cache::set('install_task', $this->install_task);
+                    $this->$step();
+                }
+            } catch (\Exception $e) {
+                $this->install_task['fail_addon'] = $this->addon;
+                $this->installExceptionHandle($addon);
+                if (count($this->addon_list) == 1) {
+                    throw new CommonException($e->getMessage());
+                }
+                Log::write($install_data['title'] . '插件安装失败');
+                Log::write($e->getTrace());
+                $tips[] = $install_data['title'] . '插件安装失败';
+            }
         }
+
+        $this->installWap();
+
+        if ($mode == 'cloud') {
+            $this->install_task['tips'] = $tips;
+            Cache::set('install_task', $this->install_task);
+            $this->cloudInstall();
+        } else {
+            $this->handleAddonInstall();
+        }
+        return empty($tips) ? true : $tips;
     }
 
     /**
      * 安装异常处理
      * @return void
      */
-    public function installExceptionHandle() {
+    public function installExceptionHandle($name = '') {
         $install_task = Cache::get('install_task');
 
-        if (in_array('installDir', $install_task['step'])) {
+        foreach ($this->addon_list as $addon) {
+            if (!empty($name) && $name != $addon) continue;
             @$this->uninstallDir();
-        }
-
-        if (in_array('installWap', $install_task['step'])) {
             @$this->uninstallWap();
         }
 
-        if (in_array('backupFrontend', $install_task['step'])) {
-            @$this->revertFrontendBackup();
-        }
-
-        Cache::set('install_task', null);
+        @$this->revertFrontendBackup();
     }
 
     /**
@@ -275,7 +308,10 @@ class CoreAddonInstallService extends CoreAddonBaseService
      * @return void
      */
     public function cancleInstall() {
-        if (Cache::get('install_task')) $this->installExceptionHandle();
+        if (Cache::get('install_task')) {
+            $this->installExceptionHandle();
+            Cache::set('install_task', null);
+        }
     }
 
     /**
@@ -411,25 +447,37 @@ class CoreAddonInstallService extends CoreAddonBaseService
      */
     public function handleAddonInstall()
     {
-        // 执行安装sql
-        $this->installSql();
-        // 安装菜单
-        $this->installMenu();
-        // 安装计划任务
-        $this->installSchedule();
-
         $core_addon_service = new CoreAddonService();
-        $install_data = $this->getAddonConfig($this->addon);
-        $install_data['icon'] = 'addon/' . $this->addon . '/icon.png';
-        $core_addon_service->set($install_data);
+
+        $fail_addon = $this->install_task['fail_addon'] ?? [];
+
+        foreach ($this->addon_list as $addon) {
+            if (in_array($addon, $fail_addon)) continue;
+
+            $this->addon = $addon;
+            $this->install_addon_path = $this->addon_path . $this->addon . DIRECTORY_SEPARATOR;
+
+            // 执行安装sql
+            $this->installSql();
+            // 安装菜单
+            $this->installMenu();
+            // 安装计划任务
+            $this->installSchedule();
+
+            $install_data = $this->getAddonConfig($this->addon);
+            $install_data['icon'] = 'addon/' . $this->addon . '/icon.png';
+            $core_addon_service->set($install_data);
+
+            //执行插件安装方法
+            $class = "addon\\" . $this->addon . "\\" . 'Addon';
+            if (class_exists($class)) {
+                (new $class())->install();
+            }
+        }
+
         //清理缓存
         Cache::tag(self::$cache_tag_name)->clear();
-        //执行命令
-        //执行插件安装方法
-        $class = "addon\\" . $this->addon . "\\" . 'Addon';
-        if (class_exists($class)) {
-            (new $class())->install();
-        }
+
         // 清除插件安装中标识
         Cache::delete('install_task');
         Cache::delete($this->cache_key . '_install_check');
@@ -691,13 +739,13 @@ class CoreAddonInstallService extends CoreAddonBaseService
     {
 
         // 编译 diy-group 自定义组件代码文件
-        $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
+        $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon_list);
 
         // 编译 pages.json 页面路由代码文件
-        $this->installPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR);
+        $this->installPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon_list);
 
         // 编译 加载插件标题语言包
-        $this->compileLocale($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
+        $this->compileLocale($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon_list);
 
     }
 

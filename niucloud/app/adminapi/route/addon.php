@@ -27,13 +27,13 @@ Route::group(function () {
     Route::get('addon/:id', 'addon.Addon/info');
 
     //安装插件
-    Route::post('addon/install/:addon', 'addon.Addon/install');
+    Route::post('addon/install/:addon', 'addon.Addon/install')->pattern(['addon' => '[\w|\,]+']);
     //云安装插件
-    Route::post('addon/cloudinstall/:addon', 'addon.Addon/cloudInstall');
+    Route::post('addon/cloudinstall/:addon', 'addon.Addon/cloudInstall')->pattern(['addon' => '[\w|\,]+']);
     // 云编译进度
-    Route::get('addon/cloudinstall/:addon', 'addon.Addon/cloudInstallLog');
+    Route::get('addon/cloudinstall/:addon', 'addon.Addon/cloudInstallLog')->pattern(['addon' => '[\w|\,]+']);
     //插件安装检测安装环境
-    Route::get('addon/install/check/:addon', 'addon.Addon/installCheck');
+    Route::get('addon/install/check/:addon', 'addon.Addon/installCheck')->pattern(['addon' => '[\w|\,]+']);
     // 获取安装任务
     Route::get('addon/installtask', 'addon.Addon/getInstallTask');
     //下载插件

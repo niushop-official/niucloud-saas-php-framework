@@ -160,7 +160,8 @@ class PagesDict
                             ],
                             "copyright" => [
                                 'control' => true,
-                                'isShow' => false
+                                'isShow' => false,
+                                'textColor' =>'#ccc'
                             ],
                             "template" => [
                                 'textColor' => "#303133",
@@ -243,7 +244,8 @@ class PagesDict
                             ],
                             "copyright" => [
                                 'control' => true,
-                                'isShow' => false
+                                'isShow' => false,
+                                'textColor' =>'#ccc'
                             ],
                             "template" => [
                                 'textColor' => "#303133",
@@ -720,7 +722,8 @@ class PagesDict
                             ],
                             "copyright" => [
                                 'control' => true,
-                                'isShow' => false
+                                'isShow' => false,
+                                'textColor' =>'#ccc'
                             ],
                             "template" => [
                                 'textColor' => "#303133",

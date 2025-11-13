@@ -69,8 +69,9 @@ class AuthService extends BaseAdminService
         $method = strtolower(trim($request->method()));
         $site_info = (new AuthSiteService())->getSiteInfo();
         if ($method != 'get') {
-            if ($site_info['status'] == SiteDict::EXPIRE) throw new AuthException('SITE_EXPIRE_NOT_ALLOW');
-            if ($site_info['status'] == SiteDict::CLOSE) throw new AuthException('SITE_CLOSE_NOT_ALLOW');
+//            throw new AuthException('演示站禁止操作');
+            if ($site_info[ 'status' ] == SiteDict::EXPIRE) throw new AuthException('SITE_EXPIRE_NOT_ALLOW');
+            if ($site_info[ 'status' ] == SiteDict::CLOSE) throw new AuthException('SITE_CLOSE_NOT_ALLOW');
         }
 
         $menu_service = new MenuService();

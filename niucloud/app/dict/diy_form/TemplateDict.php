@@ -87,7 +87,8 @@ class TemplateDict
                             ],
                             "copyright" => [
                                 'control' => true,
-                                'isShow' => false
+                                'isShow' => false,
+                                'textColor' =>'#ccc'
                             ],
                             "popWindow" => [
                                 "imgUrl" => "",
@@ -740,7 +741,8 @@ class TemplateDict
                             ],
                             "copyright" => [
                                 'control' => true,
-                                'isShow' => false
+                                'isShow' => false,
+                                'textColor' =>'#ccc'
                             ],
                             "popWindow" => [
                                 "imgUrl" => "",

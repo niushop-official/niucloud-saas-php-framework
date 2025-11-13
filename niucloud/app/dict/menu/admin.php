@@ -1688,21 +1688,7 @@ return [
                         'is_show' => '1',
                     ]
                 ]
-            ],
-            [
-                'menu_name' => '系统更新',
-                'menu_key' => 'system_upgrade',
-                'menu_short_name' => '系统更新',
-                'menu_type' => '1',
-                'icon' => 'iconfont iconxitonggengxin1',
-                'api_url' => '',
-                'router_path' => 'tools/upgrade',
-                'view_path' => 'app/upgrade',
-                'methods' => '',
-                'sort' => '97',
-                'status' => '1',
-                'is_show' => '1',
-            ],
+            ]
         ],
     ],
 

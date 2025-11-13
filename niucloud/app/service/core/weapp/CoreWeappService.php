@@ -155,10 +155,10 @@ class CoreWeappService extends BaseCoreService
             $result = CoreOplatformService::weappVersion($site_id);
             if (isset($result['errcode']) && $result['errcode'] != 0) throw new CommonException($result['errmsg']);
             return [
-                "release_version" => $result['release_info']['release_version'],
-                "release_time" => date('Y-m-d H:i:s', $result['release_info']['release_time']),
-                "exp_version" => $result['exp_info']['exp_version'] ?? '',
-                "exp_time" => !empty($result['exp_info']['exp_time']) ? date('Y-m-d H:i:s', $result['exp_info']['exp_time']) : '',
+                "release_version" => !empty($result['release_info']) ? $result['release_info']['release_version'] : '',
+                "release_time" => !empty($result['release_info']) ? date('Y-m-d H:i:s', $result['release_info']['release_time']) : '',
+                "exp_version" => !empty($result['exp_info']) ? ($result['exp_info']['exp_version'] ?? '') : '',
+                "exp_time" => !empty($result['exp_info']) ? date('Y-m-d H:i:s', $result['exp_info']['exp_time']) : '',
             ];
         }
         return [];

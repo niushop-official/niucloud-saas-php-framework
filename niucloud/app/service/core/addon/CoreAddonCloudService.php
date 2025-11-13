@@ -133,6 +133,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
                     return $build_log;
                 }
                 if ($last['percent'] == 100) {
+                    $addon = isset($install_task['addon_list']) ? implode(',', $install_task['addon_list']) : $addon;
                     $build_log['data'][0] = $this->buildSuccess($addon, $build_log['data'][0], $install_task['timestamp']);
                 }
             }

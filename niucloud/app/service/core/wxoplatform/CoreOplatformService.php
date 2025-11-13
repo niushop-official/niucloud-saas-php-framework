@@ -44,7 +44,7 @@ class CoreOplatformService extends BaseCoreService
             'token' => $oplatform_config['token'],
             'aes_key' => $oplatform_config['aes_key'],// 明文模式请勿填写 EncodingAESKey
             'http' => [
-                'timeout' => 5.0,
+                'timeout' => 10,//若返回不及时会导致接口返回报错   9402205 （猜测）
                 'retry' => true, // 使用默认重试配置
             ]
         );

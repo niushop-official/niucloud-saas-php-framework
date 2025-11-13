@@ -42,7 +42,8 @@ class Config extends BaseAdminController
             ['token', ''],
             ['encoding_aes_key', ''],
             ['qr_code', ''],
-            ['encryption_type', '']
+            ['encryption_type', ''],
+            ['base_uri', '']
         ]);
         $this->validate($data, 'app\validate\channel\Wechat.set');
         (new WechatConfigService())->setWechatConfig($data);

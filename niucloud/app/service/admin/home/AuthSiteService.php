@@ -213,6 +213,9 @@ class AuthSiteService extends BaseAdminService
      * @return true
      */
     public function createSite(array $data) {
+
+//        throw new CommonException('演示站禁止操作');
+
         if (!AuthService::isSuperAdmin()) {
             $limit = (new UserCreateSiteLimit())->where([ ['uid', '=', $this->uid], ['group_id', '=', $data['group_id'] ] ])->findOrEmpty();
             if ($limit->isEmpty()) throw new CommonException('NO_PERMISSION_TO_CREATE_SITE_GROUP');

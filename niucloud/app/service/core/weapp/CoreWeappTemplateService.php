@@ -17,6 +17,7 @@ use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use EasyWeChat\Kernel\Support\Collection;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
+use think\facade\Log;
 
 /**
  * 微信小程序服务提供
@@ -39,12 +40,13 @@ class CoreWeappTemplateService extends BaseCoreService
      */
     public function send(int $site_id, string $template_id, string $touser, array $data, string $page = ''){
         $api = CoreWeappService::appApiClient($site_id);
-        $api->postJson('cgi-bin/message/subscribe/send', [
+        $res = $api->postJson('cgi-bin/message/subscribe/send', [
             'template_id' => $template_id, // 所需下发的订阅模板id
             'touser' => $touser,     // 接收者（用户）的 openid
             'page' => $page,       // 点击模板卡片后的跳转页面，仅限本小程序内的页面。支持带参数,（示例index?foo=bar）。该字段不填则模板无跳转。
             'data' => $data,
         ]);
+        Log::write('小程序消息发送RESPONSE'.json_encode($res->toArray(),256));
     }
 
     /**

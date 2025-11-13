@@ -26,6 +26,7 @@ class CommonActiveDict
     const EXCHANGE = 'exchange';// 积分商城     积
     const MANJIANSONG = 'manjiansong'; // 满减送   满减
     const NEWCOMER_DISCOUNT = 'newcomer_discount'; // 新人专享  新
+    const FRIEND_HELP = 'friend_help'; // 好友助力  友
     const PINTUAN = 'pintuan'; // 新人专享  新
     const SECKILL = 'seckill'; // 秒杀  秒
     const RELAY = 'relay'; // 接龙  接
@@ -77,6 +78,11 @@ class CommonActiveDict
                 'name' => get_lang('common_active_short.relay_short'),
                 'active_name' => get_lang('common_active_short.relay_name'),
                 'bg_color' => '#0EB108'
+            ],
+            self::FRIEND_HELP => [
+                'name' => get_lang('common_active_short.friend_help_short'),
+                'active_name' => get_lang('common_active_short.friend_help_name'),
+                'bg_color' => '#F20C8A'
             ],
         ];
         return !empty($active) ? $data[$active] ?? [] : $data;

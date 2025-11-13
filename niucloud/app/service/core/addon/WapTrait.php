@@ -83,7 +83,12 @@ trait WapTrait
             }
         }
         if (!empty($addon)) {
-            $addon_arr[] = $addon; // 追加新装插件
+            // 追加新装插件
+            if (is_array($addon)) {
+                $addon_arr = array_merge($addon_arr, $addon);
+            } else if (is_string($addon)) {
+                $addon_arr[] = $addon;
+            }
         }
         $addon_arr = array_unique($addon_arr);
 
@@ -122,7 +127,7 @@ trait WapTrait
         $content .= "            </view>\n";
         $content .= "        </template>\n";
         $content .= "        <template v-if=\"diyStore.mode == '' && data.global && diyGroup.showCopyright.value && data.global.copyright && data.global.copyright.isShow\">\n";
-        $content .= "           <copy-right />\n";
+        $content .= "           <copy-right :textColor=\"data.global.copyright.textColor\" />\n";
         $content .= "        </template>\n\n";
         $content .= "        <template v-if=\"diyStore.mode == '' && data.global && data.global.bottomTabBar && data.global.bottomTabBar.isShow\">\n";
         $content .= "            <view class=\"pt-[20rpx]\"></view>\n";
@@ -184,7 +189,7 @@ trait WapTrait
      * @param $compile_path
      * @return bool|int|void
      */
-    public function installPageCode($compile_path)
+    public function installPageCode($compile_path, $addon = '')
     {
         if (!file_exists($this->geAddonPackagePath($this->addon) . 'uni-app-pages.php')) return;
 
@@ -195,7 +200,25 @@ trait WapTrait
         }
 
         $pages = [];
-        $addon_arr = array_unique(array_merge([ $this->addon ], array_column(( new CoreAddonService() )->getInstallAddonList(), 'key')));
+
+        $addon_service = new CoreAddonService();
+        $addon_list = $addon_service->getInstallAddonList();
+        $addon_arr = [];
+        if (!empty($addon_list)) {
+            foreach ($addon_list as $k => $v) {
+                $addon_arr[] = $v[ 'key' ];
+            }
+        }
+        if (!empty($addon)) {
+            // 追加新装插件
+            if (is_array($addon)) {
+                $addon_arr = array_merge($addon_arr, $addon);
+            } else if (is_string($addon)) {
+                $addon_arr[] = $addon;
+            }
+        }
+        $addon_arr = array_unique($addon_arr);
+
         foreach ($addon_arr as $addon) {
             if (!file_exists($this->geAddonPackagePath($addon) . 'uni-app-pages.php')) continue;
             $uniapp_pages = require $this->geAddonPackagePath($addon) . 'uni-app-pages.php';
@@ -284,8 +307,16 @@ trait WapTrait
                     $json = json_decode($app_json, true);
                     // 清空当前安装/卸载的插件语言包
                     foreach ($json as $jk => $jc) {
-                        if (strpos($jk, $addon) !== false) {
-                            unset($json[ $jk ]);
+                        if (is_array($addon)) {
+                            foreach ($addon as $key) {
+                                if (strpos($jk, $key) !== false) {
+                                    unset($json[ $jk ]);
+                                }
+                            }
+                        } else {
+                            if (strpos($jk, $addon) !== false) {
+                                unset($json[ $jk ]);
+                            }
                         }
                     }
                     $locale_data[ $cv ] = [
@@ -305,8 +336,16 @@ trait WapTrait
                 $addon_arr[] = $v[ 'key' ];
             }
         }
-        $addon_arr[] = $addon; // 追加新装插件
+        if (!empty($addon)) {
+            // 追加新装插件
+            if (is_array($addon)) {
+                $addon_arr = array_merge($addon_arr, $addon);
+            } else if (is_string($addon)) {
+                $addon_arr[] = $addon;
+            }
+        }
         $addon_arr = array_unique($addon_arr);
+
         foreach ($addon_arr as $k => $v) {
             $addon_path = $compile_path . str_replace('/', DIRECTORY_SEPARATOR, 'addon/' . $v . '/locale'); // 插件语言包根目录
             $addon_file_arr = getFileMap($addon_path, []);

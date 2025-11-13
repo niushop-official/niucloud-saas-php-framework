@@ -51,6 +51,7 @@ class CoreWechatService extends BaseCoreService
                     'retry' => true, // 使用默认重试配置
                 ]
             );
+            if (isset($wechat_config['base_uri']) && !empty($wechat_config['base_uri'])) $config['http']['base_uri'] = $wechat_config['base_uri'];
             return new Application($config);
         }
     }

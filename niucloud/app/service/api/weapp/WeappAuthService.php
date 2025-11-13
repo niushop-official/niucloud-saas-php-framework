@@ -175,6 +175,7 @@ class WeappAuthService extends BaseApiService
 //                    }
                 }
             }
+            if (empty($member_info->wx_unionid) && !empty($unionid)) $member_info->wx_unionid = $unionid;
             return $login_service->login($member_info, MemberLoginTypeDict::WEAPP);
         }
     }

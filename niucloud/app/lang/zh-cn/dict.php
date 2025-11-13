@@ -469,6 +469,8 @@ return [
         'seckill_name' => '秒杀',
         'relay_short' => '接',
         'relay_name' => '接龙',
+        'friend_help_short' => '友',
+        'friend_help_name' => '好友助力',
     ],
     //应用菜单下 特殊菜单定义
     'dict_site_addon_menu' => [

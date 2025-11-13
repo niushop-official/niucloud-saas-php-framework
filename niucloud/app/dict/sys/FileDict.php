@@ -78,6 +78,7 @@ class FileDict
             self::IMAGE,//图片上传
             self::VIDEO,//视频上传
             self::AUDIO,//视频上传
+            self::DOCUMENT,//文件上传
             self::APPLET,//小程序包上传
             self::EXCEL,//excel导入
             self::APP_PACKAGE,//应用包

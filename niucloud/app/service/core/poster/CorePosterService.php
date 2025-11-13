@@ -131,7 +131,6 @@ class CorePosterService extends BaseCoreService
             $condition[] = ['is_default', '=', 1];
         }
         $poster = (new Poster())->where($condition)->findOrEmpty();
-
         try {
 
             if ($poster->isEmpty()) {
@@ -146,7 +145,6 @@ class CorePosterService extends BaseCoreService
             }
 
             if (empty($poster)) throw new CommonException('海报模板不存在');
-
             $poster_data = [];
             $poster_data_arr = array_values(array_filter(event('GetPosterData', [
                 'type' => $type,
@@ -154,7 +152,6 @@ class CorePosterService extends BaseCoreService
                 'param' => $param,
                 'channel' => $channel
             ])));
-
             // 合并模版数据
             foreach ($poster_data_arr as $k => $v) {
                 $poster_data = array_merge($poster_data, $v);
