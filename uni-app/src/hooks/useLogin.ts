@@ -12,6 +12,7 @@ import { getWechatAuthCode } from '@/app/api/system'
 import useMemberStore from '@/stores/member'
 import useConfigStore from '@/stores/config'
 import useSystemStore from '@/stores/system'
+import { ref } from 'vue'
 
 export function useLogin() {
     /**
@@ -84,20 +85,44 @@ export function useLogin() {
     /**
      * 执行登录后跳转
      */
-    const handleLoginBack = () => {
+    const ler = ref(0)
+    const handleLoginBack = (e) => {
+          ler.value = e
         uni.removeStorageSync('autoLoginLock')
         uni.getStorage({
             key: 'loginBack',
             success: (res: any) => {
-                res ? redirect(
+                if(ler.value == 1){
+                    redirect({
+                        url:'/addon/home_service/technician/pages/member/index',
+                        mode: 'redirectTo'
+                    })
+                }else if(ler.value == 2){
+                    redirect({
+                        url:'/addon/home_service/store/pages/member/index',
+                        mode: 'redirectTo'
+                    })
+                }else{
+                      res ? redirect(
                     {
                         ...res.data,
                         mode: 'redirectTo'
                     }
                 ) : redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
+                }
+              
             },
             fail: (res) => {
-                redirect({ url: '/app/pages/index/index', mode: 'switchTab' })
+                  console.log(ler.value)
+                if(ler.value==1){
+                    redirect({ url:'/addon/home_service/technician/pages/member/index', mode: 'switchTab' })
+
+                }else  if(ler.value==2){
+                    redirect({ url:'/addon/home_service/store/pages/member/index', mode: 'switchTab' })
+                }else{
+                    redirect({ url:'/app/pages/index/index', mode: 'switchTab' })
+
+                }
             }
         })
     }

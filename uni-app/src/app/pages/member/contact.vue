@@ -17,12 +17,19 @@
 import { t } from '@/locale'
 import { img } from '@/utils/common';
 import { ref } from 'vue';
+import { onLoad } from '@dcloudio/uni-app';
 
 const sendMessageTitle = ref('')
 const sendMessagePath = ref('')
 const sendMessageImg = ref('')
 
 sendMessageImg.value = img('static/resource/images/member/contact_service.png')
+
+onLoad((data: any) => {
+    data.send_title && (sendMessageTitle.value = data.send_title)
+    data.send_path && (sendMessagePath.value = decodeURIComponent(data.send_path))
+    data.send_img && (sendMessageImg.value = decodeURIComponent(data.send_img))
+})
 </script>
 
 <style lang="scss" scoped>

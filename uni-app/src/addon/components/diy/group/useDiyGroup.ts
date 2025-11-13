@@ -102,7 +102,6 @@ export function useDiyGroup(params: any = {}) {
                     }
                     // 新增：页面加载完成后，显示版权
                     showCopyright.value = true;
-                    console.log('组件加载完成', showCopyright.value);
 
                 }, 500)
             });

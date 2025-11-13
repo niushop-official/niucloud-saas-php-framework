@@ -7,9 +7,9 @@ import useConfigStore from '@/stores/config'
 import useSystemStore from '@/stores/system'
 import { useLogin } from '@/hooks/useLogin'
 import { useShare } from '@/hooks/useShare'
-
+import { useLocation } from '@/hooks/useLocation'
+const locationVal = useLocation(true);
 onLaunch((data: any) => {
-
     // 添加初始化拦截器
     launchInterceptor()
     const systemStore = useSystemStore()

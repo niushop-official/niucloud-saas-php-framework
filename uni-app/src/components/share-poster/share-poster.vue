@@ -113,6 +113,7 @@ const props = defineProps({
 const emits = defineEmits(['close'])
 
 const sharePopupShow = ref(false);
+const posterType = ref(props.posterType)
 
 // 复制
 const copyUrl = () => {
@@ -134,7 +135,8 @@ const copyUrl = () => {
     });
 }
 
-const openShare = () => {
+const openShare = (data: any) => {
+    posterType.value = data?.type || posterType.value || ''
     sharePopupShow.value = true
     loadPoster();
 }
@@ -154,7 +156,7 @@ const loadPoster = () => {
         isPosterImg.value = false;
         let obj = {
             id: props.posterId,
-            type: props.posterType,
+            type: posterType.value,
             param: props.posterParam
         }
         let startTime = Date.parse(new Date());

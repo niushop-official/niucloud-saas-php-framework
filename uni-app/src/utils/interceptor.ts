@@ -4,6 +4,7 @@ import { redirect, getToken, getSiteId,currRoute, setThemeColor } from '@/utils/
 import { memberLog } from '@/app/api/auth'
 import { useShare } from '@/hooks/useShare'
 
+
 /**
  * 页面跳转拦截器
  */
@@ -24,7 +25,10 @@ export const redirectInterceptor = (route: { path: string, query: object }) => {
     // #endif
 
     // #ifdef MP
-    route.path.indexOf('addon') != -1 && language.loadAllLocaleMessages('addon', uni.getLocale())
+    try {
+        language.loadAllLocaleMessages('addon', uni.getLocale())
+    } catch (e) {
+    }
     // #endif
 
     // 校验是否需要登录

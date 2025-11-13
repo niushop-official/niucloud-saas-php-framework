@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, getCurrentInstance, nextTick } from 'vue';
-import { redirect, img } from '@/utils/common';
+import { redirect, img ,currRoute} from '@/utils/common';
 import useSystemStore from '@/stores/system';
 import useDiyStore from '@/app/stores/diy';
 import { useLocation } from '@/hooks/useLocation'
@@ -192,9 +192,11 @@ if (componentsScrollVal) {
 let pages = getCurrentPages();
 const isBackShow = computed(() => {
     let bool = false;
-    if (props.isBack) {
+    if (props.isBack && pages.length > 1) {
         bool = true; 
-    } 
+    } else if (currRoute() == 'app/pages/auth/index') {
+        bool = true;
+    }
     return bool;
 })
 

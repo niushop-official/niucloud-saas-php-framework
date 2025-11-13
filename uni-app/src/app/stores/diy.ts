@@ -47,6 +47,7 @@ const useDiyStore = defineStore('diy', {
                 copyright:{
                     control: true, // 是否允许展示编辑
                     isShow: false, // 是否显示
+                    textColor: '#ccc',
                 },
                 bgUrl: ''
             },

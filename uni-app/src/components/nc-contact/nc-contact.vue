@@ -10,7 +10,9 @@
             :send-message-title="props.sendMessageTitle"
             :send-message-path="props.sendMessagePath"
             :send-message-img="props.sendMessageImg"
-            :show-message-card="true">
+            :show-message-card="true"
+            @contact="handleContact"
+            >
         </button>
 
         <u-popup :show="popupShow" @close="popupShow = false" mode="center" :round="5" :safeAreaInsetBottom="false">
@@ -33,6 +35,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import useSystemStore from '@/stores/system'
+import { redirect } from '@/utils/common';
 
 const props = defineProps({
     sendMessageTitle: {
@@ -68,6 +71,12 @@ const callPhone = () => {
     uni.makePhoneCall({
         phoneNumber: siteInfo.value.phone
     });
+}
+
+const handleContact = (e) => {
+    if (e.detail && e.detail.path) {
+        redirect({ mode: 'redirectTo', url: e.detail.path, param: e.detail.query || {} })
+    }
 }
 
 defineExpose({})
