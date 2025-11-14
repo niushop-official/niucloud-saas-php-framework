@@ -516,7 +516,7 @@ const open = (addonKey: string = '', callback = null) => {
         active.value = 'upgrade'
         if (callback) callback()
     } else {
-        if (addonKey && frameworkVersion.value != newFrameworkVersion.value) {
+        if (addonKey && addonKey.indexOf('niucloud-admin') == -1 && frameworkVersion.value != newFrameworkVersion.value) {
             ElMessage({ message: '存在新版本框架，请先升级框架', type: 'error' })
             if (callback) callback()
             return

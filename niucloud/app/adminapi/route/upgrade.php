@@ -30,13 +30,13 @@ Route::group('', function () {
     Route::post('upgrade/clear', 'addon.Upgrade/clearUpgradeTask');
 
     // 升级环境检测
-    Route::get('upgrade/check/[:addon]', 'addon.Upgrade/upgradePreCheck')->pattern(['addon' => '[\w|\,]+']);
+    Route::get('upgrade/check/[:addon]', 'addon.Upgrade/upgradePreCheck')->pattern(['addon' => '[\w,-]+']);
 
     // 升级
-    Route::post('upgrade/[:addon]', 'addon.Upgrade/upgrade')->pattern(['addon' => '[\w|\,]+']);
+    Route::post('upgrade/[:addon]', 'addon.Upgrade/upgrade')->pattern(['addon' => '[\w,-]+']);
 
     // 获取升级内容
-    Route::get('upgrade/[:addon]', 'addon.Upgrade/getUpgradeContent')->pattern(['addon' => '[\w|\,]+']);
+    Route::get('upgrade/[:addon]', 'addon.Upgrade/getUpgradeContent')->pattern(['addon' => '[\w,-]+']);
 
     Route::post('upgrade/operate/:operate', 'addon.Upgrade/operate');
 

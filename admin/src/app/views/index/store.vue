@@ -53,7 +53,9 @@
                 <div class="flex items-center flex-1 w-0 justify-end">
                     <el-button @click="oneClickRepair"><i class="iconfont iconyijianxiufu mr-[5px]" ></i>一键修复</el-button>
                     <el-button type="primary" v-show="activeName == 'uninstalled'" @click="batchInstall"><i class="iconfont iconanzhuang1 mr-[5px]"></i>安装<span v-if="batchUpgradeApp.length">({{ batchUpgradeApp.length }})</span></el-button>
-                    <el-button type="primary" v-show="activeName == 'recentlyUpdated'" @click="batchUpgrade"><i class="iconfont iconyijianshengji mr-[5px]"></i>一键升级<span v-if="batchUpgradeApp.length">({{ batchUpgradeApp.length }})</span></el-button>
+                    <el-button type="primary" v-show="activeName == 'recentlyUpdated' || (frameworkVersion != frameworkNewVersion && activeName != 'uninstalled')" @click="batchUpgrade">
+                        <i class="iconfont iconyijianshengji mr-[5px]"></i>一键升级<span v-if="batchUpgradeApp.length">({{ batchUpgradeApp.length }})</span>
+                    </el-button>
                     <el-checkbox label="全选" :model-value="localList[activeName].length && localList[activeName].length == batchUpgradeApp.length" @change="appKeyAllSelect" v-show="activeName == 'uninstalled' || activeName == 'recentlyUpdated'" value="Value A" class="ml-[12px]"/>
                 </div>
             </div>
@@ -592,6 +594,7 @@ import useUserStore from '@/stores/modules/user'
 import Upgrade from '@/app/components/upgrade/index.vue'
 import CloudBuild from '@/app/components/cloud-build/index.vue'
 import UpgradeLog from '@/app/components/upgrade-log/index.vue'
+import {deepClone} from "@/utils/common";
 
 const tableRef = ref(null)
 const router = useRouter()
@@ -1271,7 +1274,7 @@ const appKeySingleSelect = (event: any, key: string) => {
 }
 
 const batchUpgrade = () => {
-    const appKeys = batchUpgradeApp.value
+    const appKeys = deepClone(batchUpgradeApp.value)
     if (frameworkVersion.value != frameworkNewVersion.value) {
         appKeys.unshift('niucloud-admin')
     }
