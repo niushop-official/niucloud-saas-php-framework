@@ -6,7 +6,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 请到官方网站了解更多 https://www.niucloud.com
 
-### NIUCLOUD-ADMIN 技术特点
+### NIUCLOUD-ADMIN 技术特点 
 
 :fa-quote-left: 前端（**Vite+TypeScript+Vue3+ElementPlus**）+ **API**接口完全分离 + 后端（**PHP8+THINKPHP8**) + 数据库（**MYSQL8.0+**） :fa-quote-right:
 ```
