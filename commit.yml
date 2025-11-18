@@ -2,61 +2,10 @@
 branches: {
   }
 fileChange:
-  /admin:
-    newFile: !uuid 'd83ab7c841cc501b8fd04f029a2bc5a8c11a7e73'
-    oldFile: !uuid '2090f38b180e3523733b1a938f0930b01f7b8151'
-  /admin/src:
-    newFile: !uuid '03792276f8513af8f5c53864014b4006f03b9a74'
-    oldFile: !uuid 'f4a3d112b311e519c15279f7b5dfa60f7e750c9a'
-  /admin/src/app:
-    newFile: !uuid '2d063d9ee3c8595c7290918e590fbdc689125297'
-    oldFile: !uuid 'd9fd24737cd3ed9aa0902ebb75043100c28a62a6'
-  /admin/src/app/components:
-    newFile: !uuid 'ec283a1b34acbbeda58f5e341d77142ce58d6ac4'
-    oldFile: !uuid '50a852daeb9b4e6d5c2d4b472044c14c85039f25'
-  /admin/src/app/components/upgrade:
-    newFile: !uuid '8ff497f6010724226995c3e8d2f403aa885eea76'
-    oldFile: !uuid 'b195228bf8319313513e600c02c0a696e287e22e'
-  /admin/src/app/components/upgrade/index.vue:
-    newFile: !uuid '1e5aa17ed8324e40e508d70755ca1fd861fb6d95'
-    oldFile: !uuid '2f3af58d9d3d1f9a626a036fcedf0b019fc5d27b'
-  /admin/src/app/views:
-    newFile: !uuid '1691c2f9f2469b3e93ac15da0e920740f215d9cf'
-    oldFile: !uuid '372bf2c0ed78094acf89be4b063af5476a9e86f8'
-  /admin/src/app/views/index:
-    newFile: !uuid '4e7fac92b50ce5c8a99fcdf67f5f752f415a0a9b'
-    oldFile: !uuid '99b674b49f99269397a3a5e3d19624c9d83c98b7'
-  /admin/src/app/views/index/store.vue:
-    newFile: !uuid '9e01807cb4c5cb27220e88e6d8f6e47ab947cd04'
-    oldFile: !uuid '7252b1d549c0276357884ec3e7e1635a2434b7d4'
-  /niucloud:
-    newFile: !uuid '5ee64265d9f30db9f4ef737c099399c03081d17d'
-    oldFile: !uuid '4b2ba1beb74a90af5ee4c9126b3a4807899c0a0c'
-  /niucloud/app:
-    newFile: !uuid 'e10b652e3f10dc1b2a3508de6ead060d3ea675fc'
-    oldFile: !uuid 'feaa00a09bad397097bb74bcb9691a708fee9985'
-  /niucloud/app/adminapi:
-    newFile: !uuid '3651e7ceb34e8982c77327bc8e6c91505fa3e296'
-    oldFile: !uuid '10f977724ec7ef8c6e006e256752c277c6f41196'
-  /niucloud/app/adminapi/route:
-    newFile: !uuid 'e0eca01571d013d62d370a0351ff5e8fa2934c6e'
-    oldFile: !uuid '9d9a6dc02a5eccafa857915fb473808ae81ce6ac'
-  /niucloud/app/adminapi/route/upgrade.php:
-    newFile: !uuid '8b24ca3dd2cbef47ce1a915bb49b702ab466fa84'
-    oldFile: !uuid 'be9598f06a87cd813df9339452a6e7d41fb7b6c9'
-  /niucloud/app/service:
-    newFile: !uuid '3096dd769b132f65361a867ed862a6940491940f'
-    oldFile: !uuid '3edbc476faef952c0b9b499f2bb6452d84d84734'
-  /niucloud/app/service/admin:
-    newFile: !uuid '3de49e1f6f6ca8d7692ee7186df037a7d1a210bb'
-    oldFile: !uuid 'e6fb1884f13fc0d8eab5eb99edf09a254c285036'
-  /niucloud/app/service/admin/upgrade:
-    newFile: !uuid '800b9d6724ecf3ba0f2f681f991faf02650d0b79'
-    oldFile: !uuid '6e3c8437c538e936ac06c6c62e17b0883ef79f09'
-  /niucloud/app/service/admin/upgrade/UpgradeService.php:
-    newFile: !uuid '331a2a7a86613e1143c535a896c0eb728d0b0fa1'
-    oldFile: !uuid '24ecb2d3c73735255f37d9bbc97a6ea731f1dda9'
-gitCommitId: !uuid 'cf293a1decac0138b4e09fde4a5478c9933f4ba7'
+  /README.md:
+    newFile: !uuid 'e966b0158758866e3d23a0142bfa60a01519c61b'
+    oldFile: !uuid 'aabbefb529834c3e52f29ce4f2d91daea3089a7f'
+gitCommitId: !uuid 'cdd869f49c62380df1c6bfd9d5efa698641e00b0'
 renames: {
   }
-revisionId: 384
+revisionId: 385
