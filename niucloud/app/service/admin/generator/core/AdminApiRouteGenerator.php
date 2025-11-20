@@ -212,7 +212,7 @@ use app\adminapi\middleware\AdminLog;";
     {
         if(!empty($this->addonName))
         {
-            $dir = $this->outDir . DIRECTORY_SEPARATOR.'addon'.DIRECTORY_SEPARATOR.'.$this->addonName.'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'adminapi'.DIRECTORY_SEPARATOR.'route'.DIRECTORY_SEPARATOR;
+            $dir = $this->outDir . DIRECTORY_SEPARATOR.'addon'.DIRECTORY_SEPARATOR.$this->addonName.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'adminapi'.DIRECTORY_SEPARATOR.'route'.DIRECTORY_SEPARATOR;
         }else{
             $dir = $this->outDir . 'niucloud'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'adminapi'.DIRECTORY_SEPARATOR.'route'.DIRECTORY_SEPARATOR;
         }
