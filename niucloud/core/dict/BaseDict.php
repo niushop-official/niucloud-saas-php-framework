@@ -85,7 +85,16 @@ abstract class BaseDict extends Storage
     public function getAllLocalAddons()
     {
         $addon_dir = root_path() . 'addon';
-        $addons = array_diff(scandir($addon_dir), ['.', '..']);
+        $items = array_diff(scandir($addon_dir), ['.', '..']);
+
+        // 过滤掉文件，只返回目录（使用 @ 抑制 open_basedir 警告）
+        $addons = [];
+        foreach ($items as $item) {
+            if (@is_dir($addon_dir . DIRECTORY_SEPARATOR . $item)) {
+                $addons[] = $item;
+            }
+        }
+
         return $addons;
     }
 
