@@ -24,7 +24,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 ### NIUCLOUD 框架截图
 ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj1.png)
 ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj2.png)
-![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj3.png)
+![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/31f58ff2ca4c1b8421b4ad622921dfed.png)
 ![](https://niucloud-bucket.oss-cn-beijing.aliyuncs.com/gitee_saas/saas/saas_kj4.png)
 
 
