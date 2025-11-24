@@ -2,28 +2,10 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid '1a5e0c3839ac412c1efe405458820b7d2d928c18'
-    oldFile: !uuid '5ee64265d9f30db9f4ef737c099399c03081d17d'
-  /niucloud/app:
-    newFile: !uuid 'ead105dd5270a63d41f68788973714e6a5194db6'
-    oldFile: !uuid 'e10b652e3f10dc1b2a3508de6ead060d3ea675fc'
-  /niucloud/app/service:
-    newFile: !uuid 'fffc5b74a35e95597abcc31f29688348f4430962'
-    oldFile: !uuid '3096dd769b132f65361a867ed862a6940491940f'
-  /niucloud/app/service/admin:
-    newFile: !uuid '59cce649b67eab5db494cab275d23596d3818dc8'
-    oldFile: !uuid '3de49e1f6f6ca8d7692ee7186df037a7d1a210bb'
-  /niucloud/app/service/admin/generator:
-    newFile: !uuid 'bc8b768e62f1cf437d8b9d7cd06796728c3bd2c2'
-    oldFile: !uuid '2d9a8ca99058a73898abffe3891c424ab68fe8bd'
-  /niucloud/app/service/admin/generator/core:
-    newFile: !uuid '9627c8b534cc68410fe2d63002c8b5e6d0865014'
-    oldFile: !uuid 'd2daa4cbcea8503ce43392ec440bd0edb565062a'
-  /niucloud/app/service/admin/generator/core/AdminApiRouteGenerator.php:
-    newFile: !uuid '9607b0e3e44f997906fc70828f9ff9da4553f3f8'
-    oldFile: !uuid '599354dc1b813d1d3c4b9f16eef79f8162aeeae3'
-gitCommitId: !uuid '59aeae7f5abd64a3ab1f30a8f53e3bc3a93b15de'
+  /README.md:
+    newFile: !uuid 'cc4e88e05eb3f63b4f4ad80bea0fd1e432310020'
+    oldFile: !uuid 'e966b0158758866e3d23a0142bfa60a01519c61b'
+gitCommitId: !uuid 'cf761aea980cd649a7a15709cb31c06f7dc867ef'
 renames: {
   }
-revisionId: 386
+revisionId: 387
