@@ -19,13 +19,19 @@
                     <el-form-item :label="t('url')" prop="url">
                         <el-input v-model.trim="sysUserLogTableData.searchParam.url" :placeholder="t('urlPlaceholder')" />
                     </el-form-item>
+                    <el-form-item :label="t('操作时间')" prop="create_time">
+                        <el-date-picker v-model="sysUserLogTableData.searchParam.create_time" type="datetimerange"
+                            value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('startDate')"
+                            :end-placeholder="t('endDate')" />
+                    </el-form-item>
+
 
                     <el-form-item>
                         <el-button type="primary" @click="loadSysUserLogList()">{{ t('search') }}</el-button>
                         <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
                     </el-form-item>
                 </el-form>
-                <div class="flex justify-end items-center w-[20%]">
+                <div class="flex justify-end items-center w-[10%]">
                     <div>
                         <el-button type="primary" class="w-[100px]" @click="clearEvent()">{{ t('清空日志') }}</el-button>
                     </div>
@@ -83,7 +89,8 @@ const sysUserLogTableData = reactive({
     searchParam: {
         ip: '',
         username: '',
-        url: ''
+        url: '',
+        create_time:''
     }
 })
 

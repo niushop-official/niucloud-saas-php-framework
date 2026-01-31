@@ -24,5 +24,6 @@
   "startBackUp": "开始备份",
   "backUpEnd": "备份完成",
   "remark": "备注",
-  "remarkEmpty": "无"
+  "remarkEmpty": "无",
+  "status": "状态"
 }

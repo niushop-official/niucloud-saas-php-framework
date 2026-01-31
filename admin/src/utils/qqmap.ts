@@ -134,6 +134,9 @@ export const createPolygon = (map: any, geometriesData: any) => {
  * @param key
  */
 export const deleteGeometry = (key: string) => {
+    if (!geometry[key]) {
+        return
+    }
     geometry[key].graphical.remove(key)
     geometry[key].editor.delete()
 }

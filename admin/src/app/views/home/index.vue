@@ -203,11 +203,11 @@
                                 {{ item.site_group.group_name }}
                             </div>
                             <el-scrollbar class="flex pb-[20px] pt-[4px] box-border !h-[260px] w-[100%] scrollbarBox">
-                                <div class="flex mx-[30px] mt-[14px] leading-[1] items-center w-full" v-for="app in item.site_group.app_name">
+                                <div class="flex mx-[30px] mt-[14px] leading-[1] items-center" v-for="app in item.site_group.app_name">
                                     <div class="nc-iconfont nc-icon-duiV6mm text-[#466CEA]"></div>
                                     <div class="text-[14px] text-[#666666] ml-[3px] truncate">{{ app }}</div>
                                 </div>
-                                <div class="flex mx-[30px] mt-[14px] leading-[1] text-center w-full" v-for="addon in item.site_group.addon_name">
+                                <div class="flex mx-[30px] mt-[14px] leading-[1] text-center" v-for="addon in item.site_group.addon_name">
                                     <div class="nc-iconfont nc-icon-duiV6mm text-[#466CEA]"></div>
                                     <div class="text-[14px] text-[#666666] ml-[3px] truncate">{{ addon }}</div>
                                 </div>
@@ -363,6 +363,7 @@ const selectSite = (site: any) => {
 }
 
 const toHome = () => {
+    window.localStorage.setItem('admin.siteId', 0)
     if (!window.localStorage.getItem('admin.token')) {
         window.localStorage.setItem('admin.token', getToken())
         window.localStorage.setItem('admin.comparisonTokenStorage', getToken())

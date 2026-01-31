@@ -25,12 +25,13 @@ export const ROOT_ROUTER: RouteRecordRaw = {
 // 平台端根路由
 export const ADMIN_ROUTE: RouteRecordRaw = {
     path: '/admin',
-    name: Symbol('admin'),
+    name: 'admin',
     children: [
         {
             path: '',
-            name: Symbol('adminRoot'),
-            component: Default
+            name: 'adminRoot',
+            component: Default,
+            children: []
         },
         {
             path: 'login',
@@ -46,16 +47,16 @@ export const ADMIN_ROUTE: RouteRecordRaw = {
 // HOME端根路由
 export const HOME_ROUTE: RouteRecordRaw = {
     path: '/home',
-    name: Symbol('home'),
+    name: 'home',
     children: [
         {
             path: '',
-            name: Symbol('homeRoot'),
+            name: 'homeRoot',
             component: Default
         },
         {
             path: 'index',
-            name: Symbol('homeIndex'),
+            name: 'homeIndex',
             meta: {
                 type: 1,
                 title: '站点管理'
@@ -68,12 +69,13 @@ export const HOME_ROUTE: RouteRecordRaw = {
 // 站点端根路由
 export const SITE_ROUTE: RouteRecordRaw = {
     path: '/site',
-    name: Symbol('site'),
+    name: 'site',
     children: [
         {
             path: '',
-            name: Symbol('siteRoot'),
-            component: Default
+            name: 'siteRoot',
+            component: Default,
+            children: []
         },
         {
             path: 'wxoplatform/callback',
@@ -98,7 +100,7 @@ export const SITE_ROUTE: RouteRecordRaw = {
 export const DECORATE_ROUTER: RouteRecordRaw = {
     path: '/decorate',
     component: Decorate,
-    name: Symbol('decorate'),
+    name: 'decorate',
     children: []
 }
 
@@ -144,12 +146,11 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
             addon: route.addon,
             attr: route.menu_attr,
             parent_route: parentRoute ? parentRoute.meta : parentRoute,
-            sort: route.sort
+            sort: route.sort,
+            componentName: route.menu_key
         }
     }
-    if (route.menu_type == 0) {
-        record.component = parentRoute ? RouterView : () => Promise.resolve(Default)
-    } else {
+    if (route.menu_type == 1) {
         record.component = route.addon ? addonModules[`/src/addon/${ route.addon }/views/${ route.view_path }.vue`] : modules[`/src/app/views/${ route.view_path }.vue`]
     }
     return record

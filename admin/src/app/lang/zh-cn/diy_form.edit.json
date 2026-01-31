@@ -244,7 +244,7 @@
   "carouselSearchSwiperSet": "轮播图设置",
   "carouselSearchSwiperControl": "展示开关",
   "carouselSearchSwiperInterval": "切换间隔 / 秒",
-  "carouselSearchSwiperTips": "建议上传尺寸相同的图片，推荐尺寸750*350；鼠标拖拽可调整图片顺序",
+  "carouselSearchSwiperTips": "建议上传尺寸相同的图片，推荐尺寸750*580；鼠标拖拽可调整图片顺序",
   "carouselSearchTabStyle": "选项卡样式",
   "carouselSearchStyle": "搜索框样式",
   "noColor": "常规颜色",

@@ -279,6 +279,8 @@ const previewPoster = (data: any) => {
             previewDialogVisible.value = true
         } 
         isRepeat.value = false
+    }).catch(() => {
+        isRepeat.value = false
     })
 }
 

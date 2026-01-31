@@ -79,7 +79,7 @@ routers.forEach(item => {
 
 const oneMenuActive = ref(oneMenuData.value[0].name)
 watch(route, () => {
-    twoMenuData.value = route.matched[1].children ?? []
+    twoMenuData.value = route.matched[2].children ?? []
     oneMenuActive.value = route.matched[1].name == ADMIN_ROUTE.children[0].name ? route.matched[2].name : route.matched[1].name
     defaultOpeneds.value = twoMenuData.value.map(item => item.name)
 }, { immediate: true })

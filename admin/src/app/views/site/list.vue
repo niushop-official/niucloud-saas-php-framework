@@ -36,14 +36,14 @@
 
                         <el-form-item prop="create_time" v-if="isShow">
                             <el-date-picker v-model="siteTableData.searchParam.create_time" type="datetimerange"
-                                value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('startDate')"
-                                :end-placeholder="t('endDate')" />
+                                            value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('createTimeStartDate')"
+                                            :end-placeholder="t('createTimeEndDate')" />
                         </el-form-item>
 
                         <el-form-item prop="expire_time" v-if="isShow">
                             <el-date-picker v-model="siteTableData.searchParam.expire_time" type="datetimerange"
-                                value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('startDate')"
-                                :end-placeholder="t('endDate')" />
+                                            value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('expireTimeStartDate')"
+                                            :end-placeholder="t('expireTimeEndDate')" />
                         </el-form-item>
 
                         <el-form-item>
@@ -53,7 +53,7 @@
                         </el-form-item>
                     </el-form>
                     <div class="flex justify-end items-center flex-1">
-                        <div class="right-btn-group "> 
+                        <div class="right-btn-group ">
                             <tempalte  class="flex items-center">
                                  <el-tooltip
                                     class="box-item"
@@ -392,7 +392,7 @@ const getSiteAllowChangeFn = ()=>{
         let isAllowChange = allowChange.value ? true : false
         localStorage.setItem('isAllowChange',isAllowChange.toString())
     })
-    
+
 }
 getSiteAllowChangeFn()
 

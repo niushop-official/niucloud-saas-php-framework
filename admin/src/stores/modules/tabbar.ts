@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { RouteLocationNormalizedLoaded, RouteRecordName } from 'vue-router'
+import useSystemStore from '@/stores/modules/system'
 
 interface Tabbar {
     curr: string,
@@ -26,7 +27,8 @@ const useTabbarStore = defineStore('tabbar', {
                 path: roter.path,
                 title: roter.meta ? roter.meta.title : '',
                 name: roter.name,
-                query: roter.query || {}
+                query: roter.query || {},
+                compomentName: roter.matched.at(-1).components.default.__name
             }
         },
         removeTab(path: string) {
@@ -40,8 +42,9 @@ const useTabbarStore = defineStore('tabbar', {
         tabLength: (state) => Object.keys(state.tabs).length,
         tabNames: (state) => {
             const name: any[] = []
+            if (!useSystemStore().tab) return name
             Object.keys(state.tabs).forEach(key => {
-                name.push(state.tabs[key].name)
+                name.push(state.tabs[key].compomentName)
             })
             return name
         }

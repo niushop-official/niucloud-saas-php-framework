@@ -32,5 +32,5 @@
     "safeModeTips": "安全模式下，消息包为纯密文，需要开发者加密和解密，安全系数高",
     "wechatBaseUri": "借权域名",
     "wechatBaseUriPlaceholder": "",
-    "wechatBaseUriTips": "默认留空，填写后将替换https://open.weixin.gg.com/获取授权!"
+    "wechatBaseUriTips": "默认留空，填写后将替换https://open.weixin.qq.com/获取授权!"
 }

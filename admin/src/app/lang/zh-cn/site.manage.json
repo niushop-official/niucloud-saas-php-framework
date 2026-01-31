@@ -74,5 +74,9 @@
     "foldText":"展开/折叠",
     "appName": "套餐内含应用",
     "addonName": "套餐内含插件",
-    "siteInitTips":"确定要初始化站点吗？该操作将删除站点内所有数据，该操作无法退回，确定要继续初始化吗？"
+    "siteInitTips":"确定要初始化站点吗？该操作将删除站点内所有数据，该操作无法退回，确定要继续初始化吗？",
+    "createTimeStartDate": "开始时间（创建时间）",
+    "createTimeEndDate": "结束时间（创建时间）",
+    "expireTimeStartDate": "开始时间（到期时间）",
+    "expireTimeEndDate": "结束时间（到期时间）"
 }

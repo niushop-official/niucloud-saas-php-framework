@@ -24,10 +24,10 @@
 
             <el-form-item :label="t('parentMenu')" prop="parent_key">
                 <el-tree-select class="input-width" v-if="formData.addon != ''" v-model="formData.parent_key"
-                    :props="{ label: 'menu_name', value: 'menu_key' }" :data="addonMenuList" check-strictly
+                    :props="{ label: 'menu_name', value: 'menu_key' }" :data="addonMenuListWithDisabled" check-strictly
                     :render-after-expand="false" />
                 <el-tree-select class="input-width" v-else v-model="formData.parent_key"
-                    :props="{ label: 'menu_name', value: 'menu_key' }" :data="sysMenuList" check-strictly
+                    :props="{ label: 'menu_name', value: 'menu_key' }" :data="sysMenuListWithDisabled" check-strictly
                     :render-after-expand="false" />
             </el-form-item>
 
@@ -183,6 +183,38 @@ const getAddonMenuFn = async (key: any) => {
     const { data } = await getAddonMenu(key)
     addonMenuList.value = data
 }
+
+const markMenuDisabled = (menuList: any[], menuType: number): any[] => {
+    return menuList.map(item => {
+        const newItem = { ...item }
+        // 判断当前节点是否可选
+        if (item.menu_key === '') {
+            // “顶级”节点（仅存在于 sysMenuList）
+            newItem.disabled = menuType === 2 // 按钮不能选顶级
+        } else {
+            if (menuType === 2) {
+                // 当前要创建的是按钮 → 只允许选择 menu_type === 1（菜单）
+                newItem.disabled = item.menu_type !== 1
+            } else {
+                // 当前要创建的是目录/菜单 → 只允许选择 menu_type === 0（目录）
+                newItem.disabled = item.menu_type !== 0
+            }
+        }
+        // 递归处理 children
+        if (Array.isArray(item.children) && item.children.length > 0) {
+            newItem.children = markMenuDisabled(item.children, menuType)
+        }
+        return newItem
+    })
+}
+
+const sysMenuListWithDisabled = computed(() => {
+    return markMenuDisabled(sysMenuList.value, formData.menu_type)
+})
+
+const addonMenuListWithDisabled = computed(() => {
+    return markMenuDisabled(addonMenuList.value, formData.menu_type)
+})
 
 // 选择应用
 const addonChange = async (val: any) => {

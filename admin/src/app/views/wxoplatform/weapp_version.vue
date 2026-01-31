@@ -53,7 +53,7 @@
                     <el-table-column :label="t('operation')" align="right" fixed="right" width="330">
                         <template #default="{ row }">
                             <div class="flex flex-col items-end">
-                                <el-button type="primary" link @click="commit(row.group_id)">{{ t('weappVersionUpdate') }}</el-button>
+                                <el-button type="primary" link :loading="uploading == row.group_id" @click="commit(row.group_id)">{{ t('weappVersionUpdate') }}</el-button>
                                 <el-button type="primary" link @click="showCommitRecordDialog(row.group_id)">{{ t('weappVersionUpdateRecord') }}</el-button>
                                 <el-button type="primary" link @click="syncSiteWeappFn(row.group_id)">{{ t('siteWeappSync') }}</el-button>
                             </div>
@@ -82,6 +82,7 @@
             <el-table-column prop="create_time" :label="t('createTime')"></el-table-column>
             <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
                 <template #default="{ row }">
+                    <el-button type="primary" link v-if="row.status == 0 || row.status == -1" @click="deleteVersion(row)">{{ t('delete') }}</el-button>
                     <el-button type="primary" link v-if="row.status == -1" @click="handleFailReason(row)">{{ t('failReason') }}</el-button>
                 </template>
             </el-table-column>
@@ -96,19 +97,27 @@
         <el-scrollbar class="h-[60vh] w-full whitespace-pre-wrap p-[20px]">
             {{ failReason }}
         </el-scrollbar>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button type="primary" @click="helpInfo">{{ t('helpInfo') }}</el-button>
+                <el-button @click="failReasonDialogVisible = false">
+                    {{ t('close') }}
+                </el-button> 
+            </span>
+        </template>
     </el-dialog>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord, getSiteGroupCommitRecord, syncSiteWeapp } from '@/app/api/wxoplatform'
+import { getWeappLastCommitRecord, weappCommit, getWeappCommitRecord, getSiteGroupCommitRecord, syncSiteWeapp, delVersion } from '@/app/api/wxoplatform'
 import { t } from '@/lang'
 import { ElMessageBox } from 'element-plus'
 
 const route = useRoute()
 const pageName = route.meta.title
-const uploading = ref(false)
+const uploading = ref(0)
 const lastRecord = ref({})
 const commitRecordDialogShow = ref(false)
 const commitRecordTableData = reactive({
@@ -136,19 +145,36 @@ const handleFailReason = (data: any) => {
     failReason.value = data.fail_reason
     failReasonDialogShow.value = true
 }
+const helpInfo = () => {
+    window.open('https://doc.niucloud.com/saasUse.html?keywords=/configFAQ/minWaChatUpload')
+}
+
+const deleteVersion = (data: any) => {
+    ElMessageBox.confirm(t('delWeappVersionTips'), t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        delVersion(data.id).then(() => {
+            loadCommitRecordList()
+        })
+    })
+}
 
 getWeappLastCommitRecord().then(({ data }) => {
     lastRecord.value = data
 })
 
 const commit = (siteGroupId = '') => {
-    if (uploading.value) return
-    uploading.value = true
+    if (uploading.value != 0) return
+    uploading.value = siteGroupId
 
     weappCommit({ site_group_id: siteGroupId }).then(() => {
-        uploading.value = false
+        uploading.value = 0
     }).catch(() => {
-        uploading.value = false
+        uploading.value = 0
     })
 }
 

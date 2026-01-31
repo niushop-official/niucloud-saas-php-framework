@@ -401,3 +401,12 @@ export function getTablePageStorage(where: any = {}) {
     }
     return data;
 }
+
+
+// 距离显示
+
+export function distance(distance: string | number): string {
+    const dist = typeof distance === 'string' ? parseFloat(distance) : distance;
+    if (isNaN(dist)) return distance.toString();
+    return dist < 1 ? parseInt((dist * 1000).toString()) + 'm' : dist.toFixed(1) + 'km'
+}

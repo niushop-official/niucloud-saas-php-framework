@@ -33,7 +33,7 @@
                 </el-scrollbar>
             </div>
             <el-scrollbar v-if="twoMenuData.length" class="two-menu w-[190px]">
-                <div class="w-[190px] h-[64px] flex items-center justify-center text-[16px] border-0 border-b-[1px] border-solid border-[#eee]">{{ route.matched[1].meta.title }}</div>
+                <div class="w-[190px] h-[64px] flex items-center justify-center text-[16px] border-0 border-b-[1px] border-solid border-[#eee]">{{ route.matched[2].meta.title }}</div>
                 <el-menu :default-active="route.name" :router="true" class="aside-menu" :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" />
                 </el-menu>
@@ -307,21 +307,21 @@ watch(route, () => {
     } else {
         // 多应用
         if (siteInfo?.apps.length > 1) {
-            twoMenuData.value = route.matched[1].children
-            oneMenuActive.value = route.matched[1].name
+            twoMenuData.value = route.matched[2].children
+            oneMenuActive.value = route.matched[2].name
         } else {
             // 单应用
-            const oneMenu = route.matched[1]
+            const oneMenu = route.matched[2]
             if (oneMenu.meta.addon == '') {
-                oneMenuActive.value = route.matched[1].name
-                twoMenuData.value = route.matched[1].children ?? []
+                oneMenuActive.value = route.matched[2].name
+                twoMenuData.value = route.matched[2].children ?? []
             } else {
                 if (oneMenu.meta.addon == siteInfo?.apps[0].key) {
+                    oneMenuActive.value = route.matched[3].name
+                    twoMenuData.value = route.matched[3].children ?? []
+                } else {
                     oneMenuActive.value = route.matched[2].name
                     twoMenuData.value = route.matched[2].children ?? []
-                } else {
-                    oneMenuActive.value = route.matched[1].name
-                    twoMenuData.value = route.matched[1].children ?? []
                 }
             }
         }

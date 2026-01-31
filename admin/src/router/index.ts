@@ -134,20 +134,11 @@ router.beforeEach(async (to: any, from, next) => {
 
                     // 添加动态路由
                     userStore.routers.forEach(route => {
-                        if (!route.children) {
-                            if (route.meta.app == 'admin') {
-                                router.addRoute(ADMIN_ROUTE.children[0].name, route)
-                            } else {
-                                router.addRoute(SITE_ROUTE.children[0].name, route)
-                            }
-                            return
-                        }
-
                         // 动态添加可访问路由表
                         if (route.meta.app == 'admin') {
-                            router.addRoute(ADMIN_ROUTE.name, route)
+                            router.addRoute(ADMIN_ROUTE.children[0].name, route)
                         } else {
-                            router.addRoute(SITE_ROUTE.name, route)
+                            router.addRoute(SITE_ROUTE.children[0].name, route)
                         }
                     })
                     next(to)

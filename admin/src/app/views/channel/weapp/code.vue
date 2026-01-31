@@ -135,6 +135,14 @@
             <el-scrollbar class="h-[60vh] w-full whitespace-pre-wrap p-[20px]">
                 <div v-html="failReason"></div>
             </el-scrollbar>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="helpInfo">{{ t('helpInfo') }}</el-button>
+                    <el-button @click="failReasonDialogVisible = false">
+                        {{ t('close') }}
+                    </el-button> 
+                </span>
+            </template>
         </el-dialog>
 
         <el-dialog v-model="uploadSuccessShowDialog" :title="t('warning')" width="500px" draggable>
@@ -468,6 +476,10 @@ const failReasonDialogVisible = ref(false)
 const handleFailReason = (data: any) => {
     failReason.value = data.fail_reason
     failReasonDialogVisible.value = true
+}
+
+const helpInfo = () => {
+    window.open('https://doc.niucloud.com/saasUse.html?keywords=/configFAQ/minWaChatUpload')
 }
 
 const knownToKnow = () => {

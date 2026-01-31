@@ -30,8 +30,8 @@
 
                 <div class="w-[700px]">
                     <div class="flex flex-wrap">
-                        <!-- 多应用切换启动页 -->
-                        <el-button type="primary" @click="showDialog = true" v-if="siteApps.length > 1">{{ t('changePage') }}</el-button>
+                        <!-- 多应用切换启动页  v-if="siteApps.length > 1" -->
+                        <el-button type="primary" @click="showDialog = true">{{ t('changePage') }}</el-button>
                         <el-button type="primary" @click="toDecorate()" v-show="page.use_template.action == 'decorate'" class="ml-[12px]">{{ t('decorate') }}</el-button>
                     </div>
 

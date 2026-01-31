@@ -23,6 +23,18 @@
                         <upload-image v-model="formData.site_bg" />
                         <div class="form-tip">{{t('siteBgImgTip')}}</div>
                     </el-form-item>
+                    <el-form-item :label="t('siteLoginLogo')">
+                        <div>
+                            <upload-image v-model="formData.site_login_logo" />
+                            <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginLogoTips') }}</p>
+                        </div>
+                    </el-form-item>
+                    <el-form-item :label="t('siteLoginBgImg')">
+                        <div>
+                            <upload-image v-model="formData.site_login_bg_img" />
+                            <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginBgImgTips') }}</p>
+                        </div>
+                    </el-form-item>
                 </div>
             </el-card>
         </el-form>
@@ -51,7 +63,9 @@ const formData = reactive<Record<string, number | string>>({
     is_captcha: 0,
     is_site_captcha: 0,
     bg: '',
-    site_bg: ''
+    site_bg: '',
+    site_login_logo: '',
+    site_login_bg_img: ''
 })
 
 const getFormData = async () => {

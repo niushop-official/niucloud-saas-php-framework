@@ -48,5 +48,6 @@
 	"publicType": "公众平台类型",
 	"siteName": "站点名称",
 	"authTime": "授权时间",
-	"qrcode": "二维码"
+	"qrcode": "二维码",
+    "delWeappVersionTips": "是否确定要删除该版本？"
 }

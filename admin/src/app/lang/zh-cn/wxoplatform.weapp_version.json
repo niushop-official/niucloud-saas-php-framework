@@ -13,5 +13,6 @@
   "syncTemplateError": "未能同步到模板库",
   "templateID": "模板ID",
   "siteWeappSync": "站点小程序同步",
-  "syncSiteWeappTips": "是否要给该套餐下已授权小程序的站点提交代码？"
+  "syncSiteWeappTips": "是否要给该套餐下已授权小程序的站点提交代码？",
+  "helpInfo": "查看帮助"
 }

@@ -60,11 +60,11 @@
                     <el-input v-model="attachmentParam.real_name" class="m-0 !w-[200px]" clearable :placeholder="t('upload.placeholder' + type + 'Name')" prefix-icon="Search" @input="getAttachmentList()" />
                 </el-col>
             </el-row>
-            <div class="flex-1 my-[15px] h-0" v-loading="attachment.loading">
+            <div class="flex-1 mb-[15px] mt-[10px] h-0" v-loading="attachment.loading">
                 <el-scrollbar>
                     <!-- 选择弹出框 -->
                     <div class="flex flex-wrap" v-if="attachment.data.length && (operate === true || scene != 'attachment')">
-                        <div class="attachment-item mr-[10px]" :class="scene == 'select' ? 'w-[100px]' : 'w-[120px]'" v-for="(item, index) in attachment.data" :key="index">
+                        <div class="attachment-item relative mr-[10px] mt-[6px]" :class="scene == 'select' ? 'w-[100px]' : 'w-[120px]'" v-for="(item, index) in attachment.data" :key="index">
                             <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center" :class="scene == 'select' ? 'h-[100px]' : 'h-[120px]'" @click="selectFile(item)">
 
                                 <el-image :src="img(item.thumb)" fit="contain" v-if="type == 'image'"/>
@@ -76,8 +76,9 @@
                                         <span class="absolute bottom-[2px] right-[2px] text-white z-[2] leading-none">{{ getFileIndex(item.att_id) }}</span>
                                     </div>
                                 </div>
-
                             </div>
+
+                            <icon name="element CircleCloseFilled" v-if="type != 'icon' && !operate" @click="deleteAttachmentEvent(index)" class="top-[-6px] right-[-6px] absolute z-[3] del-icon hidden cursor-pointer opacity-[0.8]" />
 
                             <div class="flex items-center">
                                 <el-tooltip placement="top">
@@ -110,7 +111,7 @@
 
                     <!-- 素材管理 -->
                     <div class="flex flex-wrap" v-else-if="attachment.data.length && operate === false">
-                        <div class="attachment-item mr-[10px] w-[120px]" v-for="(item, index) in attachment.data" :key="index">
+                        <div class="attachment-item relative mr-[10px] mt-[6px] w-[120px]" v-for="(item, index) in attachment.data" :key="index">
                             <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center h-[120px]">
                                 <el-image :src="img(item.thumb)" fit="contain" v-if="type == 'image'" :preview-src-list="item.image_list"/>
                                 <video :src="img(item.thumb)" v-else-if="type == 'video'" @click="previewVideo(index)"></video>
@@ -122,6 +123,7 @@
                                     <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{ item.real_name }}</div>
                                 </el-tooltip>
                             </div>
+                            <icon name="element CircleCloseFilled" v-if="type != 'icon'" @click="deleteAttachmentEvent(index)" class="top-[-6px] right-[-6px] absolute z-[3] del-icon hidden cursor-pointer opacity-[0.8]" />
                         </div>
                     </div>
                     <div class="flex absolute top-0 left-0 right-0 bottom-0 items-center justify-center" v-else>
@@ -667,6 +669,9 @@ defineExpose({
 
 .attachment-item:hover {
     .attachment-action {
+        display: block;
+    }
+    .del-icon {
         display: block;
     }
 }

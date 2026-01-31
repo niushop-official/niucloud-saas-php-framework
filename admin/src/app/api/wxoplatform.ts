@@ -61,6 +61,13 @@ export function getWeappLastCommitRecord() {
 }
 
 /**
+ * 删除版本
+ */
+export function delVersion(id: number) {
+    return request.delete(`wxoplatform/weapp/version/${id}`)
+}
+
+/**
  * 小程序代码提交
  * @returns
  */

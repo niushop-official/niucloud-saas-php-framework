@@ -20,18 +20,6 @@
                         <p class="text-[12px] text-[#a9a9a9]">{{ t('iconPlaceholder') }}</p>
                     </div>
                 </el-form-item>
-                <el-form-item :label="t('siteLoginLogo')" v-if="appType == 'admin'">
-                    <div>
-                        <upload-image v-model="formData.site_login_logo" />
-                        <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginLogoTips') }}</p>
-                    </div>
-                </el-form-item>
-                <el-form-item :label="t('siteLoginBgImg')" v-if="appType == 'admin'">
-                    <div>
-                        <upload-image v-model="formData.site_login_bg_img" />
-                        <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginBgImgTips') }}</p>
-                    </div>
-                </el-form-item>
                 <el-form-item :label="t('keywords')">
                     <el-input v-model.trim="formData.keywords" :placeholder="t('keywordsPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
                 </el-form-item>

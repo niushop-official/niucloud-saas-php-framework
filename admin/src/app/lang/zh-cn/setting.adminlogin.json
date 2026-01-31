@@ -4,5 +4,9 @@
       "admin": "平台端",
       "adminBgImgTip": "建议上传尺寸为450*400px",
       "site": "站点端",
-      "siteBgImgTip": "建议上传尺寸为620*980px"
+      "siteBgImgTip": "建议上传尺寸为620*980px",
+      "siteLoginLogo": "站点登录Logo",
+      "siteLoginLogoTips": "站点端登录Logo，建议图片尺寸：132*40像素；图片格式：jpg、png、jpeg。",
+      "siteLoginBgImg": "站点登录背景图",
+      "siteLoginBgImgTips": "站点端登录背景图，建议图片尺寸：1920*1280像素；图片格式：jpg、png、jpeg。"
 }

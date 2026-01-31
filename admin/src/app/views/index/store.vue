@@ -62,9 +62,9 @@
         </el-card>
 
         <div class="flex mb-4 flex-wrap" v-show="showType == 'card'" v-if="localList[activeName].length && !loading">
-            <div class="rounded-md border p-[16px] pr-[20px] app-card mb-[20px] ml-[20px] cursor-pointer"
+            <div class="rounded-md border p-[16px] app-card mb-[20px] ml-[20px] cursor-pointer"
                  @click="appKeySingleSelect($event, row.key)"
-                 :class="{'border-primary': batchUpgradeApp.includes(row.key)}" v-for="row in localList[activeName]" :key="row.key">
+                 :class="{'selected': batchUpgradeApp.includes(row.key)}" v-for="row in localList[activeName]" :key="row.key">
 
                 <div class="flex justify-between mb-2">
                     <div class="flex items-center flex-1 w-0">
@@ -87,9 +87,24 @@
                             <p class="text-xs text-gray-500 truncate"  :title="row.key">{{ row.key }}</p>
                         </div>
                     </div>
-                    <el-checkbox @click.stop :model-value="batchUpgradeApp.includes(row.key)" :value="row.key" @change="appKeySingleSelect($event, row.key)" class="!w-[14px] !h-[14px]" v-if="activeName == 'recentlyUpdated' || activeName == 'uninstalled'"></el-checkbox>
+                    <view class="w-[60px]">
+                        <template v-if="!row.is_download">
+                            <el-button type="primary" class="flex-1" :loading="downloading == row.key" :disabled="downloading != ''" @click.stop="downEvent(row)">下载</el-button>
+                        </template>
+                        <template v-else-if="!row.install_info || Object.keys(row.install_info).length == 0">
+                            <el-button type="primary" class="flex-1" @click.stop="installAddonFn(row.key)">安装</el-button>
+                        </template>
+                        <template v-else>
+                            <el-button type="warning" class="flex-1" @click.stop="upgradeAddonFn(row.key)" v-if="row.install_info.version != row.version">
+                                更新
+                            </el-button>
+                            <el-button class="flex-1" :disabled="true" v-else>
+                                最新
+                            </el-button>
+                        </template>
+                    </view>
                 </div>
-                <div class="flex justify-between">
+                <div class="flex justify-between items-center">
                     <div class="text-base">
                         <span>版本: </span>
                         <span>{{ row.install_info && Object.keys(row.install_info)?.length ? row.install_info.version : row.version }}</span>
@@ -98,26 +113,17 @@
                             <span class="text-warning">{{ row.version }}</span>
                         </template>
                     </div>
-                    <el-button type="primary" link @click.stop="updateInformationFn(row)">更新记录</el-button>
-                </div>
-
-                <div class="flex mt-[20px]">
-                    <template v-if="!row.is_download">
-                        <el-button type="primary" class="flex-1" :loading="downloading == row.key" :disabled="downloading != ''" @click.stop="downEvent(row)"><i class="iconfont iconanzhuang1 mr-[5px]"></i>立即下载</el-button>
-                    </template>
-                    <template v-else-if="!row.install_info || Object.keys(row.install_info).length == 0">
-                        <el-button type="primary" class="flex-1" @click.stop="installAddonFn(row.key)"><i class="iconfont iconanzhuang1 mr-[5px]"></i>立即安装</el-button>
-                        <el-button plain @click.stop="deleteAddonFn(row.key)">删除</el-button>
-                    </template>
-                    <template v-else>
-                        <el-button type="warning" class="flex-1" @click.stop="upgradeAddonFn(row.key)" v-if="row.install_info.version != row.version">
-                            <i class="iconfont icongengxin mr-[5px]"></i>立即更新
-                        </el-button>
-                        <el-button class="flex-1" :disabled="true" v-else>
-                            <el-icon class="mr-[5px]"><Check /></el-icon>已是最新
-                        </el-button>
-                        <el-button plain @click.stop="uninstallAddonFn(row.key)">卸载</el-button>
-                    </template>
+                    <el-dropdown class="ml-[12px]">
+                        <i class="iconfont iconzhankai !text-xs"></i>
+                        <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item @click="getAddonDetailFn(row)">{{ t("detail") }}</el-dropdown-item>
+                            <el-dropdown-item @click="updateInformationFn(row)">更新记录</el-dropdown-item>
+                            <el-dropdown-item v-if="row.is_download && (!row.install_info || !Object.keys(row.install_info).length)"  @click="deleteAddonFn(row.key)">删除</el-dropdown-item>
+                            <el-dropdown-item v-if="row.is_download && row.install_info && Object.keys(row.install_info).length"  @click="uninstallAddonFn(row.key)">卸载</el-dropdown-item>
+                        </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </div>
             </div>
         </div>
@@ -446,7 +452,14 @@
                 </div>
             </div>
             <div v-show="installStep == 1 && !errorDialog" class="h-[50vh] mt-[20px]">
-                <terminal ref="terminalRef" :name="`install-${terminalId}`" :context="currAddon" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd" />
+                <div class="flex flex-col h-full">
+                    <div class="flex-1 h-0">
+                        <terminal ref="terminalRef" :name="`install-${terminalId}`" :context="currAddon" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd" />
+                    </div>
+                    <div class="flex justify-end mt-[20px]">
+                        <el-button type="primary" :loading="true" class="!w-[140px]">已用时 {{ formatUpgradeDuration }}</el-button>
+                    </div>
+                </div>
             </div>
             <div v-show="installStep == 2" class="h-[50vh] mt-[20px] flex flex-col">
                 <!-- <el-result icon="success" :title="t('addonInstallSuccess')"></el-result> -->
@@ -638,6 +651,8 @@ const currDownData = ref()
 const downEventHintFn = () => {
     downEvent(currDownData.value, true)
 }
+
+const batchUpgradeApp = ref<String[]>([])
 
 const activeNameTabFn = (data: any) => {
     activeName.value = data
@@ -873,12 +888,6 @@ let notificationEl = null
 const getInstallTask = (first: boolean = true) => {
     getAddonInstalltask().then((res) => {
         if (res.data) {
-            upgradeStartTime.value = Date.now()
-            upgradeDuration.value = 0
-            if (upgradeTimer) clearInterval(upgradeTimer)
-            upgradeTimer = setInterval(() => {
-                upgradeDuration.value++
-            }, 1000)
             if (first) {
                 installLog = []
                 currAddon.value = res.data.addon
@@ -894,9 +903,14 @@ const getInstallTask = (first: boolean = true) => {
                         showClose: false
                     })
                 }
+                if (upgradeTimer) clearInterval(upgradeTimer)
+                upgradeDuration.value = parseInt(Date.now() / 1000) - res.data.timestamp
+                upgradeTimer = setInterval(() => {
+                    upgradeDuration.value++
+                }, 1000)
             }
             if (res.data.error) {
-                terminalRef.value.pushMessage({ content: res.data.error, class: 'error' })
+                terminalRef.value?.pushMessage({ content: res.data.error, class: 'error' })
                 errorMsg.value = res.data.error
                 errorDialog.value = true
                 if (upgradeTimer) {
@@ -912,7 +926,6 @@ const getInstallTask = (first: boolean = true) => {
             setTimeout(() => {
                 getInstallTask(false)
             }, 2000)
-
         } else {
             if (!first) {
                 installStep.value = 2
@@ -922,11 +935,12 @@ const getInstallTask = (first: boolean = true) => {
                 }
                 localListFn()
                 userStore.clearRouters()
-                notificationEl.close()
+                notificationEl?.close()
             }
         }
     }).catch((e) => {
-        terminalRef.value.pushMessage({ content: e.message, class: 'error' })
+        console.log(e)
+        terminalRef.value?.pushMessage({ content: e.message, class: 'error' })
     })
 }
 
@@ -1251,8 +1265,6 @@ const versionJudge = (row: any) => {
     if (parseFloat(`${ supportVersionApp[0] }.${ supportVersionApp[1] }`) < parseFloat(`${ frameworkVersionArr[0] }.${ frameworkVersionArr[1] }`)) return true
     return false
 }
-
-const batchUpgradeApp = ref<String[]>([])
 
 const appKeyAllSelect = () => {
     if (localList.value[activeName.value].length) {
@@ -1583,6 +1595,11 @@ html.dark .table-head-bg {
 .app-card {
     width: calc((100% - 120px) / 5);
     min-width: 260px;
+
+    &.selected {
+        background-color: var(--el-color-primary-light-9);
+        border-color: var(--el-color-primary-light-9);
+    }
 }
 
 </style>

@@ -70,7 +70,13 @@ getAppList()
 
 const toLink = (item: any) => {
     if (item.url) {
-        router.push(item.url)
+        // 判断如果携带is_target=true就通过新窗口打开
+        if (item.url.indexOf('is_target=true') != -1) {
+            const url = router.resolve(item.url)
+            window.open(url.href)
+        } else {
+            router.push(item.url)
+        }
     } else {
         addonIndexRoute[item.key] && router.push({ name: addonIndexRoute[item.key] })
     }

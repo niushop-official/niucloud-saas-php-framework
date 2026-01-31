@@ -33,8 +33,8 @@
         <el-main class="login-main w-full mt-[120px] justify-center h-0" v-else-if="!imgLoading && loginType == 'site'">
             <div>
                 <div class="login-main-left flex flex-col items-center justify-center">
-                    <div class="w-[130px] h-[40px] overflow-hidden" v-if="webSite.site_login_logo">
-                        <el-image class="w-full h-full" :src="img(webSite.site_login_logo)" fit="contain">
+                    <div class="w-[130px] h-[40px] overflow-hidden" v-if="loginConfig.site_login_logo">
+                        <el-image class="w-full h-full" :src="img(loginConfig.site_login_logo)" fit="contain">
                             <template #error>
                                 <div class="flex justify-center items-center w-full h-full">
                                     <img class="max-w-[130px]" src="@/app/assets/images/white_logo.png" alt="" object-fit="contain" />
@@ -119,7 +119,7 @@ route.redirectedFrom && (route.query.redirect = route.redirectedFrom.path)
 const webSite: any = computed(() => useSystemStore().website)
 
 const siteBackgroundStyle = computed(() => ({
-    backgroundImage: webSite.value?.site_login_bg_img ? `url(${img(webSite.value.site_login_bg_img)})` : '',
+    backgroundImage: loginConfig.value?.site_login_bg_img ? `url(${img(loginConfig.value.site_login_bg_img)})` : '',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center'

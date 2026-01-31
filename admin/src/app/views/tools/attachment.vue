@@ -44,7 +44,7 @@ const type = ref(attachmentType[0])
 
     .el-tabs {
         display: flex;
-        flex-direction:  column;
+        flex-direction: column-reverse;
         height: calc(100% - 40px);
     }
 
