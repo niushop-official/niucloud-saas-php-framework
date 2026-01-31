@@ -146,12 +146,20 @@ class Index extends BaseInstall
 
             $conn = @mysqli_connect($dbhost, $dbuser, $dbpwd);
             if ($conn) {
+                $sql_mode_result = mysqli_query($conn, "SELECT @@global.sql_mode");
+                $sql_mode = strtolower($sql_mode_result->fetch_array()[0] ?? '');
+                if (strpos($sql_mode, 'only_full_group_by') !== false) {
+                    return fail([
+                        "status" => -2,
+                        "message" => "请将mysql配置sql_mode字段中的值“ONLY_FULL_GROUP_BY”去掉"
+                    ]);
+                }
+
                 if (empty($dbname)) {
                     $result = [
                         "status" => 1,
                         "message" => "数据库连接成功"
                     ];
-
                 } else {
                     try {
                         if (@mysqli_select_db($conn, $dbname)) {

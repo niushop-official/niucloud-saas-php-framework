@@ -35,6 +35,8 @@ Route::group('wxoplatform', function () {
     Route::get('authorization/record', 'wxoplatform.Oplatform/getAuthRecord');
     // 平台提交小程序版本
     Route::post('weapp/version/commit', 'wxoplatform.WeappVersion/weappCommit');
+    // 删除小程序版本
+    Route::delete('weapp/version/:id', 'wxoplatform.WeappVersion/delVersion');
     // 获取最后一次提交记录
     Route::get('weapp/commit/last', 'wxoplatform.WeappVersion/lastCommitRecord');
     // 获取小程序提交记录

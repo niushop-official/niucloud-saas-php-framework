@@ -526,7 +526,7 @@ class SiteService extends BaseAdminService
     {
         $auth_menu_list = (new AuthService())->getAuthMenuList(1);
         $auth_menu_list = array_column($auth_menu_list, null, 'menu_key');
-        $auth_menu_list = $auth_menu_list['addon'];
+        $auth_menu_list = $auth_menu_list['addon'] ?? [];
 
         $list = $this->showCustomer(false);//获取对应的需要展示的key
         $addon_menu_list = SiteDict::getAddonChildMenu();
@@ -550,9 +550,11 @@ class SiteService extends BaseAdminService
                 'is_show' => '1',
             ];
             $children = [];
-            foreach ($auth_menu_list['children'] as $datum_item) {
-                if (in_array($datum_item['menu_key'], $menu_key_list)) {
-                    $children[] = $datum_item;
+            if(!empty($auth_menu_list)){
+                foreach ($auth_menu_list['children'] as $datum_item) {
+                    if (in_array($datum_item['menu_key'], $menu_key_list)) {
+                        $children[] = $datum_item;
+                    }
                 }
             }
             $temp_menu['children'] = $children;

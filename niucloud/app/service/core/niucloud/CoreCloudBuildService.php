@@ -58,13 +58,10 @@ class CoreCloudBuildService extends BaseCoreService
         $web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR;
         $wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR;
 
-        try {
-            if (!is_dir($admin_dir)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
-            if (!is_dir($web_dir)) throw new CommonException('WEB_DIR_NOT_EXIST');
-            if (!is_dir($wap_dir)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
-        } catch (\Exception $e) {
-            throw new CommonException($e->getMessage());
-        }
+        if (!is_dir($admin_dir)) throw new CommonException('ADMIN_DIR_NOT_EXIST');
+        if (!is_dir($web_dir)) throw new CommonException('WEB_DIR_NOT_EXIST');
+        if (!is_dir($wap_dir)) throw new CommonException('UNIAPP_DIR_NOT_EXIST');
+        if (!class_exists('ZipArchive')) throw new CommonException('ZIP_ARCHIVE_NOT_EXIST');
 
         $data = [
             // 目录检测
@@ -161,6 +158,7 @@ class CoreCloudBuildService extends BaseCoreService
             'timestamp' => time(),
             'token' => $action_token[ 'data' ][ 'token' ] ?? ''
         ];
+        set_time_limit(0);
         $response = ( new CloudService(true) )->httpPost('cloud/build?' . http_build_query($query), [
             'multipart' => [
                 [
@@ -292,21 +290,21 @@ class CoreCloudBuildService extends BaseCoreService
                         $zip->extractTo($temp_dir . 'download');
                         $zip->close();
 
-//                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'admin')) {
-//                            del_target_dir(public_path() .'admin', true);
-//                        }
-//                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'web')) {
-//                            del_target_dir(public_path() .'web', true);
-//                        }
-//                        if (is_dir($temp_dir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'wap')) {
-//                            del_target_dir(public_path() .'wap', true);
-//                        }
-
-                        dir_copy($temp_dir . 'download', root_path());
+                        $exclude_files = ['favicon.ico', 'niucloud.ico'];
+                        dir_copy($temp_dir . 'download', root_path(), exclude_files: $exclude_files);
 
                         $this->clearTask();
                     } else {
-                        $log[] = [ 'code' => 0, 'msg' => '编译包解压失败', 'action' => '编译包解压', 'percent' => '100' ];
+                        // 压缩包解压失败 尝试重新下载
+                        if (!isset($this->build_task[ 'retry' ])) {
+                            unlink($zip_resource);
+                            $this->build_task['retry'] = 1;
+                            unset($this->build_task['index']);
+                            Cache::set($this->cache_key, $this->build_task);
+                            $log[] = [ 'code' => 1, 'msg' => '编译包解压失败,尝试重新下载', 'action' => '编译包解压失败,尝试重新下载', 'percent' => '100' ];
+                        } else {
+                            $log[] = [ 'code' => 0, 'msg' => '编译包解压失败', 'action' => '编译包解压', 'percent' => '100' ];
+                        }
                     }
                 }
             }

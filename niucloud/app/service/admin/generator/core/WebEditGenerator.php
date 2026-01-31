@@ -106,7 +106,7 @@ class WebEditGenerator extends BaseGenerator
     {
         $content = '';
         foreach ($this->tableColumn as $column) {
-            if (!$column['is_insert'] || !$column['is_update'] || $column['is_pk']) {
+            if (!$column['is_insert'] || !$column['is_update'] || $column['is_pk'] || $column['is_delete']) {
                 continue;
             }
 

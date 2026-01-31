@@ -24,16 +24,14 @@ class AutoClearPosterAndQrcode extends BaseJob
     {
         Log::write('AutoClearPosterAndQrcode 定时清除 二维码及海报数据开始' . date('Y-m-d H:i:s'));
         try {
-            // 清理海报目录
-            $dir = 'upload/poster';
-            $dir = public_path($dir);
-            $res = $this->clearDirectory($dir);
-
-            // 清理二维码目录
-            $qrcode_dir = 'upload/qrcode';
-            $qrcode_dir = public_path($qrcode_dir);
-            $res = $this->clearDirectory($qrcode_dir);
-
+            $dirs = [
+                'upload/poster',
+                'upload/qrcode',
+            ];
+            foreach ($dirs as $dir) {
+                $dir = public_path($dir);
+                $res = $this->clearDirectory($dir);
+            }
             return true;
         } catch (\Exception $e) {
             Log::write('AutoClearPosterAndQrcode 定时清除异常: ' . $e->getMessage() . ' 位置: ' . $e->getFile() . ':' . $e->getLine() . $e->getTraceAsString());
@@ -42,7 +40,7 @@ class AutoClearPosterAndQrcode extends BaseJob
     }
 
     /**
-     * 清空指定目录下的所有文件和子目录
+     * 清空指定目录下一周前的文件和空的子目录
      *
      * @param string $directory 目录路径
      * @param bool $preserveDirectory 是否保留根目录（默认保留）
@@ -60,6 +58,9 @@ class AutoClearPosterAndQrcode extends BaseJob
             Log::write('AutoClearPosterAndQrcode目录不存在或不是有效目录: ' . $directory);
             return false;
         }
+
+        // 计算一周前的时间戳（7天 = 7*24*60*60 = 604800秒）
+        $one_week_ago = time() - 604800;
 
         // 打开目录
         $handle = opendir($directory);
@@ -80,20 +81,47 @@ class AutoClearPosterAndQrcode extends BaseJob
 
             // 递归处理子目录
             if (is_dir($path)) {
-                // 递归清空子目录
-                if (!$this->clearDirectory($path, false)) {
+                // 递归清理子目录（只删一周前文件，保留子目录本身）
+                if (!$this->clearDirectory($path, true)) {
                     Log::write('AutoClearPosterAndQrcode递归清理子目录失败: ' . $path);
                     closedir($handle);
                     return false;
                 }
-                Log::write('AutoClearPosterAndQrcode已递归删除子目录: ' . $path);
-                // 子目录已经在递归调用中被删除，不需要再次删除
+
+                // 检查子目录是否为空，若为空则删除（可选逻辑，根据需求调整）
+                $isEmpty = true;
+                $sub_handle = opendir($path);
+                while (($sub_entry = readdir($sub_handle)) !== false) {
+                    if ($sub_entry !== '.' && $sub_entry !== '..') {
+                        $isEmpty = false;
+                        break;
+                    }
+                }
+                closedir($sub_handle);
+
+                if ($isEmpty && !$preserveDirectory) {
+                    if (!rmdir($path)) {
+                        Log::write('AutoClearPosterAndQrcode删除空目录失败: ' . $path);
+                    } else {
+                        Log::write('AutoClearPosterAndQrcode已删除空目录: ' . $path);
+                    }
+                }
             } else {
-                // 删除文件
-                if (!unlink($path)) {
-                    Log::write('AutoClearPosterAndQrcode删除文件失败: ' . $path);
-                    closedir($handle);
-                    return false;
+                // 获取文件的创建/修改时间（优先用修改时间filemtime，更贴合业务）
+                $file_time = filemtime($path);
+
+                // 校验：文件时间有效 且 早于一周前
+                if ($file_time !== false && $file_time <= $one_week_ago) {
+                    // 删除一周前的文件
+                    if (!unlink($path)) {
+                        Log::write('AutoClearPosterAndQrcode删除文件失败: ' . $path);
+                        closedir($handle);
+                        return false;
+                    }
+                    Log::write('AutoClearPosterAndQrcode已删除一周前的文件: ' . $path);
+                } else {
+                    // 跳过近期文件，记录日志（可选）
+                    Log::write('AutoClearPosterAndQrcode跳过近期文件: ' . $path);
                 }
             }
         }
@@ -101,7 +129,7 @@ class AutoClearPosterAndQrcode extends BaseJob
         // 关闭目录句柄
         closedir($handle);
 
-        // 是否删除根目录本身
+        // 根目录是否删除（默认保留，避免目录丢失）
         if (!$preserveDirectory) {
             Log::write('AutoClearPosterAndQrcode准备删除根目录: ' . $directory);
             if (!rmdir($directory)) {
@@ -115,6 +143,4 @@ class AutoClearPosterAndQrcode extends BaseJob
 
         return true;
     }
-
-
 }

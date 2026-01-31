@@ -15,6 +15,7 @@ use app\dict\sys\CloudDict;
 use app\model\weapp\WeappVersion;
 use app\service\core\wxoplatform\CoreOplatformService;
 use core\base\BaseAdminService;
+use think\facade\Log;
 
 /**
  */
@@ -92,14 +93,19 @@ class OplatformServerService extends BaseAdminService
      * @return true
      */
     private function weappAuditSuccess($message) {
-        $site_id = CoreOplatformService::getSiteIdByAuthorizerAppid($message['ToUserName']);
-        CoreOplatformService::releaseWeapp($site_id);
-        (new WeappVersion())->where(['site_id' => $site_id, 'status' => CloudDict::APPLET_AUDITING ])->update(['status' => CloudDict::APPLET_PUBLISHED ]);
+        try {
+            $site_id = CoreOplatformService::getSiteIdByAuthorizerAppid($message['ToUserName']);
+            CoreOplatformService::releaseWeapp($site_id);
+            (new WeappVersion())->where(['site_id' => $site_id, 'status' => CloudDict::APPLET_AUDITING ])->update(['status' => CloudDict::APPLET_PUBLISHED ]);
 
-        // 发布后重新设置下域名
-        request()->siteId($site_id);
-        (new WeappVersionService())->setDomain();
-        return true;
+            // 发布后重新设置下域名
+            request()->siteId($site_id);
+            (new WeappVersionService())->setDomain();
+            return true;
+        } catch (\Exception $e) {
+            Log::write($message['ToUserName'] . "小程序审核通过处理异常");
+            Log::write($e->getTrace());
+        }
     }
 
     /**

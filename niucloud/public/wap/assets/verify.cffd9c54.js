@@ -1,0 +1,1 @@
+import{as as r}from"./index-d1f306f3.js";function e(e){return r.get("verify_records",e)}function t(){return r.get("check_verifier")}function n(e){return r.get("get_verify_by_code",e)}function s(e){return r.post(`verify/${e}`,{},{showErrorMessage:!0})}function o(e){return r.get(`verify_detail/${e}`,{},{showErrorMessage:!0})}export{n as a,o as b,e as c,t as g,s as v};

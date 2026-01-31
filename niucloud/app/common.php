@@ -1,6 +1,9 @@
 <?php
 
+use Location\Coordinate;
+use Location\Distance\Vincenty;
 use think\Container;
+use think\exception\InvalidArgumentException;
 use think\Response;
 use think\facade\Lang;
 use think\facade\Queue;
@@ -758,7 +761,11 @@ function cache_remember(string $name = null, $value = '', $tag = null, $options 
     if (is_null($tag)) {
         Cache::set($name, $value, $options['expire'] ?? null);
     } else {
-        Cache::tag($tag)->set($name, $value, $options['expire'] ?? null);
+        try {
+            Cache::tag($tag)->set($name, $value, $options['expire'] ?? null);
+        } catch (InvalidArgumentException $e) {
+            Cache::tag($tag)->set($name, $value, $options['expire'] ?? null);
+        }
     }
     return $value;
 
@@ -1157,4 +1164,19 @@ function downloadImage($img_url, $file_name)
     curl_close($ch);
     fclose($fp);
     return true;
+}
+
+/**
+ * 获取地图两坐标点之间距离
+ * @param $lat1
+ * @param $lng1
+ * @param $lat2
+ * @param $lng2
+ * @return float
+ */
+function get_map_distance($lat1, $lng1, $lat2, $lng2)
+{
+    $location = new Coordinate($lat1, $lng1);
+    $distance = ( new Vincenty() )->getDistance($location, new Coordinate((float) $lat2, (float) $lng2));
+    return round($distance/1000, 3);
 }

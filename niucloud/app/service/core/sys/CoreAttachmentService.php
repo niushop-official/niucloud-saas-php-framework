@@ -11,6 +11,7 @@
 
 namespace app\service\core\sys;
 
+use app\dict\sys\StorageDict;
 use app\model\sys\SysAttachment;
 use app\service\core\upload\CoreFileService;
 use core\base\BaseCoreService;
@@ -128,13 +129,29 @@ class CoreAttachmentService extends BaseCoreService
         if(empty($list))
             throw new UploadFileException('PLEACE_SELECT_IMAGE');
 
-        $ids = array_column($list, 'att_id');
+        $del_success_ids = [];
         foreach($list as $v){
-            $file_driver = (new CoreFileService())->driver($site_id, $v['storage_type']);
-            //读取上传附件的信息用于后续得校验和数据写入,删除失败直接通过
-            $file_driver->delete($v['path']);
+            try {
+                $file_driver = (new CoreFileService())->driver($site_id, $v['storage_type']);
+                //读取上传附件的信息用于后续得校验和数据写入,删除失败直接通过
+                $file_driver->delete($v['path']);
+            } catch (\Exception $e) {
+                // 如果附件在云存储中删除失败后 尝试该资源是否是在平台云存储中
+                if ($v['storage_type'] != StorageDict::LOCAL) {
+                    try {
+                        $file_driver = (new CoreFileService())->driver(0, $v['storage_type']);
+                        $file_driver->delete($v['path']);
+                    } catch (\Exception $e) {
+                        if (!empty($del_success_ids)) {
+                            $this->model->destroy($del_success_ids);
+                        }
+                        throw new UploadFileException($e->getMessage());
+                    }
+                }
+            }
+            $del_success_ids[] = $v['att_id'];
         }
-        $this->model->destroy($ids);
+        $this->model->destroy($del_success_ids);
         return true;
     }
 }

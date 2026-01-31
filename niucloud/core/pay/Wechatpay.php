@@ -130,13 +130,14 @@ class Wechatpay extends BasePay
     public function app(array $params)
     {
         try {
-            return $this->returnFormat(Pay::wechat()->app([
+            $result = $this->returnFormat(Pay::wechat()->app([
                 'out_trade_no' => $params['out_trade_no'],
                 'description' => $params['body'],
                 'amount' => [
                     'total' => $params['money'],
                 ],
             ]));
+            return ['orderInfo' => $result];
         } catch (\Exception $e) {
             if ($e instanceof InvalidResponseException) {
                 throw new PayException($e->response->all()['message'] ?? '');

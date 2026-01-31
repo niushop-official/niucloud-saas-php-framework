@@ -34,6 +34,7 @@ trait AccessToken
     {
         $this->access_token = '';
         Cache::delete($this->access_token_cache);
+        if (file_exists(public_path() . 'access_token.txt')) unlink(file_exists(public_path() . 'access_token.txt'));
         return $this;
     }
     /**
@@ -55,6 +56,9 @@ trait AccessToken
         if (empty($this->access_token)) {
             $this->access_token = Cache::get($this->access_token_cache, '');
         }
+        if (empty($this->access_token) && file_exists(public_path() . 'access_token.txt')) {
+            $this->access_token = file_get_contents(public_path() . 'access_token.txt');
+        }
         return $this->access_token;
     }
 
@@ -67,7 +71,9 @@ trait AccessToken
     {
         $access_token_info = $this->httpGet('auth', ['code' => $this->code, 'secret' => $this->secret, 'token' => $this->createToken(), 'product_key' => self::PRODUCT, 'redirect_uri' => $this->getDomain(false)]);
         if (isset($access_token_info['code']) && $access_token_info['code'] != 1) throw new NiucloudException($access_token_info['msg']);
-        $this->setAccessToken($access_token_info['data']['token']);
+        if (isset($access_token_info['data']['token']) && !empty($access_token_info['data']['token'])) {
+            $this->setAccessToken($access_token_info['data']['token']);
+        }
     }
 
 }

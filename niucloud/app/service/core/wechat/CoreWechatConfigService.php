@@ -66,7 +66,8 @@ class CoreWechatConfigService extends BaseCoreService
             'token' => $data[ 'token' ] ?? '',
             'encoding_aes_key' => $data[ 'encoding_aes_key' ] ?? '',
             'encryption_type' => $data[ 'encryption_type' ] ?? '',
-            'is_authorization' => $data[ 'is_authorization' ] ?? $old[ 'is_authorization' ]
+            'is_authorization' => $data[ 'is_authorization' ] ?? $old[ 'is_authorization' ],
+            'base_uri' => $data['base_uri'] ?? ''
         ];
         return ( new CoreConfigService() )->setConfig($site_id, ConfigKeyDict::WECHAT, $config);
     }

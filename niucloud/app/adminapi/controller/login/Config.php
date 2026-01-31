@@ -46,6 +46,8 @@ class Config extends BaseAdminController
             ['is_site_captcha', 0],
             ['bg', ''],
             ['site_bg', ''],
+            ['site_login_logo', ''],
+            ['site_login_bg_img', ''],
         ]);
         (new ConfigService())->setConfig($data);
         return success('MODIFY_SUCCESS');

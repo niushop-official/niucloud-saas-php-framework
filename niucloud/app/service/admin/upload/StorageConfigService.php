@@ -124,6 +124,9 @@ class StorageConfigService extends BaseAdminService
         {
             $config['default'] = $storage_type;
         }else if ($config['default'] == $storage_type) {
+            if ($this->site_id == 0){
+                throw new AdminException('SUPER_UPLOAD_STORAGE_TYPE_ALL_CLOSE');
+            }
             throw new AdminException('UPLOAD_STORAGE_TYPE_ALL_CLOSE');
 //            $config['default'] = '';
         }

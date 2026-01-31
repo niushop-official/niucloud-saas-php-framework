@@ -233,8 +233,12 @@ class Alipay extends BasePay
                 'out_trade_no' => $out_trade_no
             ];
         } else {
-            //todo 这儿可以抛出错误
-            return false;
+            return [
+                'status' => RefundDict::FAIL,
+                'refund_no' => $refund_no,
+                'out_trade_no' => $out_trade_no,
+                'fail_reason' => $result['sub_msg'] ?? ''
+            ];
         }
     }
 

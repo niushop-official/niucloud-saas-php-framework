@@ -128,15 +128,15 @@ class UpgradeService extends BaseAdminService
         // 检测全部目录及文件是否可读可写，忽略指定目录
 
         // 忽略指定目录，admin
-        $exclude_admin_dir = [ 'dist', 'node_modules', '.git' ];
+        $exclude_admin_dir = [ 'dist', 'node_modules', '.git', '.user.ini' ];
         $check_res = checkDirPermissions(project_path() . 'admin', [], $exclude_admin_dir);
 
         // 忽略指定目录，uni-app
-        $exclude_uniapp_dir = [ 'dist', 'node_modules', '.git' ];
+        $exclude_uniapp_dir = [ 'dist', 'node_modules', '.git', '.user.ini' ];
         $check_res = array_merge2($check_res, checkDirPermissions(project_path() . 'uni-app', [], $exclude_uniapp_dir));
 
         // 忽略指定目录，web
-        $exclude_web_dir = [ '.nuxt', '.output', 'dist', 'node_modules', '.git' ];
+        $exclude_web_dir = [ '.nuxt', '.output', 'dist', 'node_modules', '.git', '.user.ini' ];
         $check_res = array_merge2($check_res, checkDirPermissions(project_path() . 'web', [], $exclude_web_dir));
 
         // 忽略指定目录，niucloud
@@ -314,8 +314,6 @@ class UpgradeService extends BaseAdminService
                 }
                 if (!in_array($step, [ 'upgradeComplete', 'restoreComplete' ])) {
                     Cache::set($this->cache_key, $this->upgrade_task);
-                } else {
-                    $this->clearUpgradeTask(2);
                 }
             } catch (CloudBuildException $e) {
                 if (strpos($e->getMessage(), '队列') !== false) {
@@ -467,7 +465,7 @@ class UpgradeService extends BaseAdminService
         // 覆盖文件
         if (is_dir($code_dir . $version_no)) {
             // 忽略环境变量文件
-            $exclude_files = [ '.env.development', '.env.production', '.env', '.env.dev', '.env.product' ];
+            $exclude_files = [ '.env.development', '.env.production', '.env', '.env.dev', '.env.product', 'favicon.ico', 'niucloud.ico' ];
             dir_copy($code_dir . $version_no, $to_dir, exclude_files: $exclude_files);
             if ($addon != AddonDict::FRAMEWORK_KEY) {
                 ( new CoreAddonInstallService($addon) )->installDir();
@@ -630,13 +628,55 @@ class UpgradeService extends BaseAdminService
             $sql_data = array_filter($this->getSqlQuery($sql_content));
 
             if (!empty($sql_data)) {
+                try {
+                    $default_collation = Db::query("SHOW VARIABLES LIKE 'collation_database'")[0]['Value'] ?? 'utf8mb4_general_ci';
+                } catch (\Exception $e) {
+                    $default_collation = 'utf8mb4_general_ci';
+                }
                 foreach ($sql_data as $sql) {
                     $sql = $prefix ? $this->handleSqlPrefix($sql, $prefix) : $sql;
-                    Db::query($sql);
+                    // 处理成默认排序规则
+                    $sql = preg_replace_callback(
+                        '/\bCOLLATE\s*(=)?\s*[`"\']?([a-zA-Z0-9_]+)[`"\']?/i',
+                        function ($matches) use ($default_collation) {
+                            return "COLLATE " . $default_collation;
+                        },
+                        $sql
+                    );
+                    // 判断是否是新增字段
+                    $pattern = '/^ALTER\s+TABLE\s+(`?)(\w+)\1\s+ADD(?:\s+COLUMN)?\s+(`?)(\w+)\3\s+/i';
+                    if (preg_match($pattern, $sql, $matches)) {
+                        if (!$this->columnExists($matches[2],  $matches[4])) {
+                            Db::query($sql);
+                        }
+                    }else{
+                        Db::query($sql);
+                    }
                 }
             }
         }
         return true;
+    }
+
+    /**
+     * 判断数据表中某个字段是否存在
+     *
+     * @param string $table 表名（不带前缀）
+     * @param string $column 字段名
+     * @param string|null $database 指定数据库名（可选，默认当前连接的数据库）
+     * @return bool
+     */
+    private function columnExists(string $table, string $column, ?string $database = null): bool
+    {
+        $db = env('database.database', '');
+
+        $count = Db::query(
+            "SELECT COUNT(*) AS cnt FROM information_schema.COLUMNS 
+         WHERE table_schema = ? AND table_name = ? AND column_name = ?",
+            [$db, $table, $column]
+        );
+
+        return (int)$count[0]['cnt'] > 0;
     }
 
     /**
@@ -704,20 +744,10 @@ class UpgradeService extends BaseAdminService
         foreach ($log[ 'data' ][ 0 ] as $item) {
             if ($item[ 'code' ] == 0) {
                 $this->upgrade_task[ 'step' ] = 'gteCloudBuildLog';
-                $this->upgrade_task[ 'error' ][] = $item[ 'msg' ];
+//                $this->upgrade_task[ 'error' ][] = $item[ 'msg' ];
+                $this->upgrade_task[ 'cloud_build_error' ] = $item[ 'msg' ];
                 Cache::set($this->cache_key, $this->upgrade_task);
-
-                $fail_reason = [
-                    'Message' => '失败原因 云编译错误：' . $item[ 'msg' ],
-                    'File' => '',
-                    'Line' => '',
-                    'Trace' => ''
-                ];
-
                 ( new CoreCloudBuildService() )->clearTask();
-
-                $this->upgradeErrorHandle($fail_reason);
-
                 return true;
             }
             if (!in_array($item[ 'action' ], $this->upgrade_task[ 'log' ])) {
@@ -746,7 +776,13 @@ class UpgradeService extends BaseAdminService
         }
         // 执行完成，更新升级记录状态，备份记录状态
         ( new UpgradeRecordsService() )->complete($this->upgrade_task[ 'key' ]);
-        $this->clearUpgradeTask(2);
+        if (!isset($this->upgrade_task['cloud_build_error'])) {
+            $this->upgrade_task['step'] = 'upgradeComplete';
+            $this->clearUpgradeTask(2);
+        } else {
+            $this->upgrade_task['step'] = 'upgradeComplete';
+            Cache::set($this->cache_key, $this->upgrade_task);
+        }
         return true;
     }
 
@@ -780,7 +816,7 @@ class UpgradeService extends BaseAdminService
         if (!isset($this->upgrade_task['is_need_backup']) || $this->upgrade_task['is_need_backup']) {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         } else {
-            $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+            $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'backup_key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         }
         try {
             if (is_dir($backup_dir)) {
@@ -803,7 +839,7 @@ class UpgradeService extends BaseAdminService
         if (!isset($this->upgrade_task['is_need_backup']) || $this->upgrade_task['is_need_backup']) {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         } else {
-            $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+            $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'backup_key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         }
         try {
             if (is_dir($backup_dir)) {
@@ -834,7 +870,11 @@ class UpgradeService extends BaseAdminService
 
     public function restoreComplete()
     {
-        ( new UpgradeRecordsService() )->failed($this->upgrade_task[ 'key' ], $this->upgrade_task['error']);
+        $error = $this->upgrade_task['error'] ?? [];
+        if (isset($this->upgrade_task['cloud_build_error'])) $error[] = $this->upgrade_task['cloud_build_error'];
+        ( new UpgradeRecordsService() )->failed($this->upgrade_task[ 'key' ], $error);
+        $this->upgrade_task['step'] = 'restoreComplete';
+        Cache::set($this->cache_key, $this->upgrade_task);
         $this->clearUpgradeTask(2);
         return true;
     }
@@ -953,6 +993,15 @@ class UpgradeService extends BaseAdminService
             case 'rollback':
                 $fail_reason = [
                     'Message' => '失败原因：一键云编译队列任务过多',
+                    'File' => '',
+                    'Line' => '',
+                    'Trace' => ''
+                ];
+                $this->upgradeErrorHandle($fail_reason);
+                break;
+            case 'cloud_build_error_rollback':
+                $fail_reason = [
+                    'Message' => '失败原因：云编译失败，错误原因：' . $this->upgrade_task['cloud_build_error'],
                     'File' => '',
                     'Line' => '',
                     'Trace' => ''

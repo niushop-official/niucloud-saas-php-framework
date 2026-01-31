@@ -86,4 +86,15 @@ class WeappVersion extends BaseAdminController
         (new WeappVersionService())->syncSiteGroupAuthWeapp($data['site_group_id']);
         return success();
     }
+
+    /**
+     * 删除版本
+     * @param $id
+     * @description 删除版本
+     * @return Response
+     */
+    public function delVersion($id) {
+        (new WeappVersionService())->delVersion($id);
+        return success();
+    }
 }

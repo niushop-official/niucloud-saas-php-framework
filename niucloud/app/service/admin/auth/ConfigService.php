@@ -40,6 +40,8 @@ class ConfigService extends BaseAdminService
             'is_site_captcha' => $info['is_site_captcha'] ?? 0,//是否启用站点验证码
             'bg' => $info['bg'] ?? '',//平台登录端 背景
             'site_bg' => $info['site_bg'] ?? '',//站点登录端  背景
+            'site_login_logo' => $info['site_login_logo'] ?? '',//站点登录端  背景
+            'site_login_bg_img' => $info['site_login_bg_img'] ?? '',//站点登录端  背景
         ];
     }
 
@@ -55,6 +57,8 @@ class ConfigService extends BaseAdminService
             'is_site_captcha' => $data['is_site_captcha'] ?? 0,//是否启用站点验证码
             'bg' => $data['bg'] ?? '',//平台登录端 背景
             'site_bg' => $data['site_bg'] ?? '',//站点登录端  背景
+            'site_login_logo' => $data['site_login_logo'] ?? '',//站点登录端  背景
+            'site_login_bg_img' => $data['site_login_bg_img'] ?? '',//站点登录端  背景
         ];
         (new CoreConfigService())->setConfig($this->site_id, ConfigKeyDict::ADMIN_LOGIN, $config);
         return true;

@@ -20,9 +20,11 @@ use app\service\admin\sys\MenuService;
 use app\service\admin\sys\RoleService;
 use app\service\admin\user\UserRoleService;
 use app\service\admin\user\UserService;
+use app\service\core\niucloud\CoreAuthService;
 use app\service\core\site\CoreSiteService;
 use core\base\BaseAdminService;
 use core\exception\AuthException;
+use core\exception\CommonException;
 use Exception;
 use think\facade\Cache;
 
@@ -64,6 +66,7 @@ class AuthService extends BaseAdminService
      */
     public function checkRole(Request $request)
     {
+        $this->checkAuthinfo($request);
 
         $rule = strtolower(trim($request->rule()->getRule()));
         $method = strtolower(trim($request->method()));
@@ -94,6 +97,33 @@ class AuthService extends BaseAdminService
 
         throw new AuthException('NO_PERMISSION');
 
+    }
+
+    public function checkAuthinfo(Request $request) {
+        $rule = strtolower(trim($request->rule()->getRule()));
+        $method = strtolower(trim($request->method()));
+
+        if ($method == 'get') return;
+
+        $ignore = ['niucloud/authinfo', 'upgrade', 'niucloud/build', 'sys/cache/clear'];
+        foreach ($ignore as $item) {
+            if (strpos($rule, $item) !== false) return;
+        }
+
+        $authinfo = (new CoreAuthService())->getAuthInfo()['data'] ?? [];;
+        if (empty($authinfo)) return;
+
+        if (!$this->isCheckDomain()) return;
+
+        $site_address = $authinfo['site_address'] ?? '';
+        $domain = request()->domain();
+        if (!empty($site_address) && strpos($domain, $site_address) !== false) return;
+
+        throw new CommonException("授权域名校验失败！请确保当前访问域名与授权码绑定的域名一致");
+    }
+
+    private function isCheckDomain() {
+        return !(request()->ip() == '127.0.0.1' || request()->host() == 'localhost');
     }
 
     /**

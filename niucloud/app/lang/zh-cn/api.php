@@ -69,6 +69,7 @@ return [
     'CLOUD_BUILD_AUTH_CODE_NOT_FOUND' => '请先填写授权码',
     'TASK_CYCLE_ERROR' => '任务周期填写错误',
     'UPGRADE_TASK_EXIST' => '有正在执行的升级任务，可以展开正在升级的任务，也可以在开发>更新缓存中清除缓存重新开始升级',
+    'ZIP_ARCHIVE_NOT_EXIST' => '请先安装或启用zip扩展',
     //登录注册重置账号....
 
     'LOGIN_SUCCESS' => '登录成功',

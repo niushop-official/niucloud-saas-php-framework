@@ -420,6 +420,11 @@ class CoreAddonInstallService extends CoreAddonBaseService
             $sql_arr = parse_sql($sql);
             if (!empty($sql_arr)) {
                 $prefix = config('database.connections.mysql.prefix');
+                try {
+                    $default_collation = Db::query("SHOW VARIABLES LIKE 'collation_database'")[0]['Value'] ?? 'utf8mb4_general_ci';
+                } catch (\Exception $e) {
+                    $default_collation = 'utf8mb4_general_ci';
+                }
                 Db::startTrans();
                 try {
                     foreach ($sql_arr as $sql_line) {
@@ -427,6 +432,14 @@ class CoreAddonInstallService extends CoreAddonBaseService
                         if (!empty($sql_line)) {
                             $sql_line = str_ireplace('{{prefix}}', $prefix, $sql_line);
                             $sql_line = str_ireplace('INSERT INTO ', 'INSERT IGNORE INTO ', $sql_line);
+                            // 处理成默认排序规则
+                            $sql_line = preg_replace_callback(
+                                '/\bCOLLATE\s*(=)?\s*[`"\']?([a-zA-Z0-9_]+)[`"\']?/i',
+                                function ($matches) use ($default_collation) {
+                                    return "COLLATE " . $default_collation;
+                                },
+                                $sql_line
+                            );
                             Db::execute($sql_line);
                         }
                     }

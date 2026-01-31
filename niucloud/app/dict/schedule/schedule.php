@@ -26,9 +26,10 @@ return [
         ],
         'class' => 'app\job\schedule\AutoClearScheduleLog',
         'function' => ''
-    ],    [
+    ],
+    [
         'key' => 'auto_clear_poster_qrcode',
-        'name' => '定时清理海报及二维码数据',
+        'name' => '定时清理一周前的海报及二维码数据',
         'desc' => '',
         'time' => [
             'type' => 'day',
@@ -37,6 +38,19 @@ return [
             'min' => 1
         ],
         'class' => 'app\job\schedule\AutoClearPosterAndQrcode',
+        'function' => ''
+    ],
+    [
+        'key' => 'auto_clear_system_log',
+        'name' => '定时清理一周前的业务日志',
+        'desc' => '',
+        'time' => [
+            'type' => 'day',
+            'day' => 1,
+            'hour' => 1,
+            'min' => 1
+        ],
+        'class' => 'app\job\schedule\AutoClearLogFiles',
         'function' => ''
     ],
     [
@@ -62,7 +76,7 @@ return [
         ],
         'class' => 'app\job\upgrade\AutoClearUpgradeRecords',
         'function' => ''
-    ],[
+    ], [
         'key' => 'auto_clear_user_log',
         'name' => '定时清理用户操作日志',
         'desc' => '',

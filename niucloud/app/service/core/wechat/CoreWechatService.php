@@ -16,6 +16,8 @@ use core\base\BaseCoreService;
 use core\exception\WechatException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\OfficialAccount\Application;
+use Overtrue\Socialite\Contracts\ProviderInterface as SocialiteProviderInterface;
+use Overtrue\Socialite\Providers\WeChat;
 
 /**
  * easywechat主体提供
@@ -51,8 +53,18 @@ class CoreWechatService extends BaseCoreService
                     'retry' => true, // 使用默认重试配置
                 ]
             );
-            if (isset($wechat_config['base_uri']) && !empty($wechat_config['base_uri'])) $config['http']['base_uri'] = $wechat_config['base_uri'];
-            return new Application($config);
+
+            $app = new Application($config);
+            if (isset($wechat_config['base_uri']) && !empty($wechat_config['base_uri'])) {
+                $app->setOAuthFactory(fn (): SocialiteProviderInterface => (new WechatOAuthFactory(
+                    [
+                        'client_id' => $wechat_config['app_id'],
+                        'client_secret' => $wechat_config['app_secret'],
+                        'base_uri' => $wechat_config['base_uri']
+                    ]
+                )));
+            }
+            return $app;
         }
     }
 
@@ -67,6 +79,9 @@ class CoreWechatService extends BaseCoreService
         return self::app($site_id)->getClient();
     }
 
+    public static function getOauth() {
+
+    }
 
     /**
      * 回复文本消息

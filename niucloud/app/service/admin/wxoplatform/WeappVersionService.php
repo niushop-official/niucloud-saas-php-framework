@@ -220,6 +220,18 @@ class WeappVersionService extends BaseAdminService
     }
 
     /**
+     * 删除版本
+     * @param $id
+     * @return void
+     */
+    public function delVersion($id) {
+        $version = (new WxOplatfromWeappVersion())->where([ ['id', '=', $id] ])->findOrEmpty();
+        if ($version->isEmpty()) throw new CommonException('NOT_YET_PRESENT_TEMPLATE_LIBRARY');
+
+        (new WxOplatfromWeappVersion())->where([ ['id', '=', $id] ])->delete();
+    }
+
+    /**
      * 站点提交
      * @return true
      */

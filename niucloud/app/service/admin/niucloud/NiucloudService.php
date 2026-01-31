@@ -17,6 +17,7 @@ use app\service\core\niucloud\CoreModuleService;
 use app\service\core\sys\CoreConfigService;
 use core\base\BaseAdminService;
 use core\exception\CommonException;
+use think\facade\Cache;
 
 /**
  * 消息管理服务层
@@ -47,6 +48,7 @@ class NiucloudService extends BaseAdminService
         $auth_info = $service->getAuthInfo()['data'] ?? [];
         if (empty($auth_info)) throw new CommonException('AUTH_NOT_EXISTS');
         $service->clearAccessToken();
+        Cache::set("authinfo", null);
         return $this->core_config_service->setConfig(0,ConfigKeyDict::NIUCLOUD_CONFIG, $data);
     }
 

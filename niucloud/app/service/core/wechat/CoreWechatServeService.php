@@ -149,6 +149,7 @@ class CoreWechatServeService extends BaseCoreService
                 'scene' => $scene
             ],
         ];
-        return $api->postJson('cgi-bin/qrcode/create', $param);
+        $response = $api->postJson('cgi-bin/qrcode/create', $param);
+        return json_decode($response->getContent(), true);
     }
 }

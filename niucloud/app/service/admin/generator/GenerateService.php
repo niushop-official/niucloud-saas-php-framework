@@ -205,7 +205,7 @@ class GenerateService extends BaseAdminService
 
             $table_id = $res->id;
             $add_column_data = [];
-            $default_column = ['id', 'create_time', 'update_time'];
+            $default_column = ['id', 'create_time', 'update_time', 'site_id', 'delete_time'];
             foreach ($fields as $k => $v){
                 $required = 0;
                 if ($v['notnull'] && !$v['primary'] && !in_array($v['name'], $default_column)) {

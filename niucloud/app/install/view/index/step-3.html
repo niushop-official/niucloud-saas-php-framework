@@ -56,6 +56,12 @@
                                 <div style='float:left' class="mysql-message" id='dbpwdsta'></div>
                             </td>
                         </tr>
+                        <tr class="sql-mode-error" style="display: none">
+                            <td></td>
+                            <td>
+                                <div class="message" style="color: red;">请将mysql配置sql_mode字段中的值“ONLY_FULL_GROUP_BY”去掉</div>
+                            </td>
+                        </tr>
                         <tr>
                             <td class="onetd"><span class="required">*</span>数据库名称：</td>
                             <td>
@@ -224,7 +230,14 @@
             type: "post",
             dataType: 'json',
             success: function(data){
-                inputBoxPointer('dbpwdsta').innerHTML = data.data.message;
+                if (data.data.status == -2) {
+                    inputBoxPointer('dbpwdsta').innerHTML = '数据库连接成功'
+                    $('.sql-mode-error .message').text(data.data.message)
+                    $('.sql-mode-error').show()
+                } else {
+                    $('.sql-mode-error').hide()
+                    inputBoxPointer('dbpwdsta').innerHTML = data.data.message;
+                }
                 is_existdb = data.data.status;
                 message = data.data.message;
             }
