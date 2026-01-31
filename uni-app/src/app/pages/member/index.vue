@@ -18,6 +18,9 @@
         <wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
         <!-- #endif -->
 
+        <template v-if="diyStore && diyStore.mode == '' && diyStore.global && diyStore.global.bottomTabBar && diyStore.global.bottomTabBar.isShow">
+            <tabbar :addon="diyStore.global.bottomTabBar.designNav?.key" />
+        </template>
     </view>
 </template>
 
@@ -28,9 +31,11 @@ import { useShare } from '@/hooks/useShare'
 import { redirect } from '@/utils/common';
 import diyGroup from '@/addon/components/diy/group/index.vue'
 import useMemberStore from '@/stores/member'
+import useDiyStore from '@/app/stores/diy'
 
 // 会员信息
 const memberStore = useMemberStore()
+const diyStore = useDiyStore()
 const userInfo = computed(() => memberStore.info)
 const { setShare } = useShare()
 

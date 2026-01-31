@@ -19,6 +19,9 @@
         <wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
         <!-- #endif -->
 
+        <template v-if="diyStore && diyStore.mode == '' && diyStore.global && diyStore.global.bottomTabBar && diyStore.global.bottomTabBar.isShow">
+            <tabbar :addon="diyStore.global.bottomTabBar.designNav?.key" />
+        </template>
     </view>
 </template>
 
@@ -27,9 +30,10 @@ import { ref, nextTick } from 'vue';
 import { useDiy } from '@/hooks/useDiy'
 import { useShare } from '@/hooks/useShare'
 import diyGroup from '@/addon/components/diy/group/index.vue'
+import useDiyStore from '@/app/stores/diy'
 
 const { setShare } = useShare()
-
+const diyStore = useDiyStore()
 const diy = useDiy({})
 
 const diyGroupRef = ref(null)

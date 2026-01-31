@@ -8,14 +8,6 @@ export function pay(data : AnyObject) {
 }
 
 /**
- * 测试支付
- */
-export function testPay(data : AnyObject) {
-    return request.get(`home_service/pay/pay`, data, { showErrorMessage: true })
-}
-
-
-/**
  * 获取支付信息
  */
 export function getPayInfo(tradeType : string, tradeId : number, params: Record<string, any>) {

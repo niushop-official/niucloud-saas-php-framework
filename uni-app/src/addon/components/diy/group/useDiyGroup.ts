@@ -152,6 +152,7 @@ export function useDiyGroup(params: any = {}) {
     })
     onHide(() => {
         isPagesHide.value = true;
+        diyStore.global.bottomTabBar.isShow = false
     })
 
     // 监听滚动事件

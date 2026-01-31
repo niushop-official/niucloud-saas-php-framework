@@ -3,7 +3,7 @@
         <view class="u-navbar z-100" :class="{'fixed': props.scrollBool != -1, 'absolute': props.scrollBool == -1}" :style="{ backgroundColor: bgColor}">
             <view class="navbar-inner" :style="{ width: '100%', height: placeholderHeight + 'px' }">
                 <view v-if="topStatusBarData.style == 'style-1'" class="content-wrap" :class="[topStatusBarData.textAlign]" :style="navbarInnerStyle">
-                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :class="{'!text-transparent': !isBackShow}" :style="{ color: titleTextColor }" @tap="goBack"></view>
+                    <view v-if="isBackShow" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :class="{'!text-transparent': !isBackShow}" :style="{ color: titleTextColor }" @tap="goBack"></view>
                     <view class="title-wrap" :style="styleOneFontSize">{{ data.title }}</view>
                 </view>
                 <view v-if="topStatusBarData.style == 'style-2'" class="content-wrap" :style="navbarInnerStyle" @click="diyStore.toRedirect(topStatusBarData.link)">
@@ -194,7 +194,7 @@ const isBackShow = computed(() => {
     let bool = false;
     if (props.isBack && pages.length > 1) {
         bool = true; 
-    } else if (currRoute() == 'app/pages/auth/index') {
+    } else if (currRoute() == 'app/pages/auth/index' || currRoute() == 'app/pages/auth/login') {
         bool = true;
     }
     return bool;

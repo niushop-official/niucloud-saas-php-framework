@@ -24,7 +24,7 @@ class Wechat {
                 timestamp: data.timestamp, // 必填，生成签名的时间戳
                 nonceStr: data.nonceStr, // 必填，生成签名的随机串
                 signature: data.signature,// 必填，签名
-                jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode', 'getLocation','hideMenuItems'] // 必填，需要使用的JS接口列表
+                jsApiList: ['chooseWXPay', 'updateAppMessageShareData', 'updateTimelineShareData', 'scanQRCode', 'getLocation', 'openLocation', 'hideMenuItems'] // 必填，需要使用的JS接口列表
             });
             if (callback) callback();
         })
@@ -81,6 +81,28 @@ class Wechat {
             });
         })
     }
+
+    /**
+	 * 导航
+	 * @param {Object} callback
+	 */
+	public openLocation(data: any, callback: any = null) {
+		wx.ready(function() {
+			wx.openLocation({
+				latitude: data.latitude, // 纬度，浮点数，范围为90 ~ -90
+				longitude: data.longitude, // 经度，浮点数，范围为180 ~ -180
+				name: data.name, // 位置名
+				address: data.address, // 地址详情说明
+				scale: data.scale || 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
+				success: function(res) {
+					typeof callback == 'function' && callback(res);
+				},
+				fail: function(res) {
+					typeof callback == 'function' && callback(res);
+				}
+			});
+		})
+	}
 
     /**
      * 商家转账接口

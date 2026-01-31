@@ -5,7 +5,7 @@
                 示例版权信息
             </view>
         </template>
-        <tempalte v-else>
+        <template v-else>
             <view class="flex flex-col justify-center items-center p-[30rpx]" :style="{ color:textColor}">
                 <img :src="img(systemStore.copyright.logo)" mode="heightFix" class="max-h-[60rpx]" v-if="systemStore.copyright?.logo" />
                 <view class="text-[22rpx] mt-[20rpx]" v-if="systemStore.copyright?.copyright_desc" @click="systemStore.copyright?.copyright_link && redirect({ url: systemStore.copyright.copyright_link})">
@@ -19,7 +19,7 @@
                     {{ systemStore.copyright.gov_record }}
                 </view>
             </view>
-        </tempalte>
+        </template>
     </view>
 </template>
 

@@ -58,9 +58,10 @@
                     <text class="text-[28rpx] text-[#333]">{{ subItem.value }}</text>
                 </view>
             </view>
-            <view class="common-tab-bar w-[100%]"></view>
-            <view class="verify-tab-bar fixed flex-center !text-[26rpx] rounded-[50rpx] h-[80rpx] left-[20rpx] right-[20rpx] text-[#fff] font-500" :class="verifyInfo.is_can_use ? 'primary-btn-bg' : 'bg-[#ccc]'" @click="verifyFn">确定</view>
-
+            <view class="common-tab-bar w-[100%]">
+                <view class="common-tab-bar-placeholder"></view>
+                <view class="verify-tab-bar fixed flex-center !text-[26rpx] rounded-[50rpx] h-[80rpx] left-[20rpx] right-[20rpx] text-[#fff] font-500" :class="verifyInfo.is_can_use ? 'primary-btn-bg' : 'bg-[#ccc]'" @click="verifyFn">确定</view>
+            </view>
         </template>
         <loading-page :loading="loading"></loading-page>
     </view>

@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { redirect } from '@/utils/common'
+import { deepClone, redirect } from '@/utils/common'
 import { t } from '@/locale'
 import { addAddress, editAddress, getAddressInfo } from '@/app/api/member'
 import manifestJson from '@/manifest.json'
@@ -296,7 +296,6 @@ const chooseLocation = () => {
 
     // #ifdef H5
     const urlencode = formData.value;
-    uni.setStorageSync('addressInfo', urlencode);
     let backurl = location.origin + location.pathname + '?source=' + source.value;
     if (isSelectMap.value) {
         backurl = backurl + '&isSelectMap=' + isSelectMap.value
@@ -318,6 +317,7 @@ const getAddress = (latlng: any) => {
             formData.value.full_address += res.data.district != undefined ? '' + res.data.district : '';
 
             formData.value.address_name = formData.value.full_address.replace(/-/g, '');
+           
             formData.value.area = (res.data.province + res.data.city + res.data.district) || res.data.full_address;
             formData.value.province_id = res.data.province_id != undefined ? res.data.province_id : 0;
             formData.value.city_id = res.data.city_id != undefined ? res.data.city_id : 0;

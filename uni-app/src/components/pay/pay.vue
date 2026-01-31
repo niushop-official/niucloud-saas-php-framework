@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { t } from '@/locale'
-import { getPayInfo, pay,testPay } from '@/app/api/pay'
+import { getPayInfo, pay } from '@/app/api/pay'
 import { img, redirect, isWeixinBrowser, moneyFormat } from '@/utils/common'
 import wechat from '@/utils/wechat'
 
@@ -148,7 +148,7 @@ const confirmPay = () => {
                 // #ifndef H5
                 uni.requestPayment({
                     provider: 'alipay',
-                    ...res.data,
+                    orderInfo: res.data,
                     success: (res: any) => {
                         toPayResult()
                     },
@@ -181,7 +181,7 @@ const confirmPay = () => {
 uni.$on('checkIsReturnAfterPayment', () => {
     const data = uni.getStorageSync('paymenting')
     if (uni.getStorageSync('paymenting')) {
-        
+
         redirect({
             url: '/app/pages/pay/result',
             param: {
@@ -248,7 +248,7 @@ const toPayResult = () => {
         })
         return
     }
-    
+
     redirect({
         url: '/app/pages/pay/result',
         param: { trade_type: payInfo.value?.trade_type, trade_id: payInfo.value?.trade_id },

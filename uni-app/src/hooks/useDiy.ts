@@ -143,6 +143,9 @@ export function useDiy(params: any = {}) {
                                 item.pageStyle += 'padding-left:' + item.margin.both * 2 + 'rpx' + ';';
                             }
                         });
+                        
+                        diyStore.global = diyData.global
+                        diyStore.value = diyData.value
 
                         // 控制自定义头部是否出现 | 微信小程序
                         isShowTopTabbar.value = diyData.value.some((item: any) => {

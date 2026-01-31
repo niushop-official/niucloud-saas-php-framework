@@ -244,7 +244,7 @@ button[type='primary'],uni-button[type='primary']{
 			margin-right: 40rpx;
 			color: #333;
 			line-height: 40rpx;
-			font-size: 28rpx;
+			font-size: 26rpx;
 			&.class-select{
 				position: relative;
 				font-weight: 700;
@@ -288,7 +288,7 @@ button[type='primary'],uni-button[type='primary']{
 		.tab-items{
 			line-height: 88rpx;
 			font-weight: 400;
-			font-size: 28rpx;
+			font-size: 26rpx;
 			&.class-select{
 				position: relative;
 				font-weight: 700;
@@ -317,7 +317,7 @@ button[type='primary'],uni-button[type='primary']{
 		@apply flex-1;
 		line-height: 88rpx;
 		font-weight: 400;
-		font-size: 28rpx;
+		font-size: 26rpx;
 		text-align: center;
 		margin:0 var(--sidebar-m);
 		&.class-select{
@@ -567,4 +567,8 @@ button[type='primary'],uni-button[type='primary']{
 	padding: 0 24rpx;
 	min-width: 144rpx;
 	color: #333;
+}
+
+.u-tabbar__content__item-wrapper {
+    height: calc(env(safe-area-inset-bottom) + 100rpx)!important;
 }

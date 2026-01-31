@@ -23,6 +23,10 @@
         <!-- #ifdef APP -->
         <update-version ref="updateVersionRef"></update-version>
         <!-- #endif -->
+
+        <template v-if="diyStore && diyStore.mode == '' && diyStore.global && diyStore.global.bottomTabBar && diyStore.global.bottomTabBar.isShow">
+            <tabbar :addon="diyStore.global.bottomTabBar.designNav?.key" />
+        </template>
     </view>
 </template>
 
@@ -34,8 +38,11 @@ import { useShare } from '@/hooks/useShare'
 import diyGroup from '@/addon/components/diy/group/index.vue'
 import updateVersion from '@/components/update-version/update-version.vue'
 import useSystemStore from '@/stores/system';
+import useDiyStore from '@/app/stores/diy'
 
 const { setShare } = useShare()
+
+const diyStore = useDiyStore()
 
 uni.hideTabBar() // 隐藏tabbar
 

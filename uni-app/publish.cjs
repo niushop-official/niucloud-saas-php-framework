@@ -15,6 +15,7 @@ const main = () => {
             if (mode == 'build') {
                 handleWeappAddonComponents(mode)
                 handleWeappLanguage(mode)
+                handleProjectConfig(mode)
             } else if (mode == 'dev') {
                 listenWeappRunDev()
             }
@@ -96,6 +97,19 @@ const handleWeappLanguage = (mode) => {
     }
 }
 
+const handleProjectConfig = (mode) => {
+    const src = `./dist/${mode}/mp-weixin/project.config.json`
+
+    try {
+        let content = fs.readFileSync(src, 'utf8');
+        const config = JSON.parse(content)
+        config.setting.minifyWXML = false
+        fs.writeFileSync(src, JSON.stringify(config))
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 const listenWeappRunDev = () => {
     const devProcess = spawn('npm', ['run', 'dev:niu-mp-weixin'], {
         stdio: ['pipe', 'pipe', 'pipe'],
@@ -112,6 +126,7 @@ const listenWeappRunDev = () => {
             serverReady = true;
             handleWeappAddonComponents('dev')
             handleWeappLanguage('dev')
+            handleProjectConfig('dev')
         }
     });
 
