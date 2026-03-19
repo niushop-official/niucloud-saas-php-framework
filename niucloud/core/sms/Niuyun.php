@@ -49,7 +49,7 @@ class Niuyun extends BaseSms
      */
     public function send(string $mobile, string $template_id, array $data = [])
     {
-        Log::write("SEND_NY_SMS pre " . json_encode($data, 256));
+        Log::write("SEND_NY_SMS pre mobile: ".$mobile.'  tem_id:'.$template_id . json_encode($data, 256));
         if (empty($this->signature)) {
             throw new CommonException('签名未配置');
         }

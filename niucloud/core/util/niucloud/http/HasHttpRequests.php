@@ -164,7 +164,10 @@ trait HasHttpRequests
     public function getHttpClient(): ClientInterface
     {
         if (!($this->httpClient instanceof ClientInterface)) {
-            $this->httpClient = new Client(['handler' => HandlerStack::create($this->getGuzzleHandler())]);
+            $this->httpClient = new Client([
+                'handler' => HandlerStack::create($this->getGuzzleHandler()),
+//                'proxy'=>''//调试放开
+            ]);
         }
 
         return $this->httpClient;

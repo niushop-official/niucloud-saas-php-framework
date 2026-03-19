@@ -6,8 +6,8 @@ use core\dict\DictLoader;
 $data = [
     // 指令定义
     'commands' => [
-        'addon:install' => 'app\command\Addon\Install',
-        'addon:uninstall' => 'app\command\Addon\Uninstall',
+        'addon:install' => 'app\command\addon\Install',
+        'addon:uninstall' => 'app\command\addon\Uninstall',
         'menu:refresh' => 'app\command\Menu',
         //消息队列 自定义命令
         'queue:work' => 'app\command\queue\Queue',
@@ -19,7 +19,7 @@ $data = [
         'workerman' => 'app\command\workerman\Workerman',
         //重置管理员密码
         'reset:password' => 'app\command\Resetpassword',
-        'refresh:area' => 'app\command\refreshAreaCommand',
+        'refresh:area' => 'app\command\RefreshAreaCommand',
     ],
 ];
 return (new DictLoader("Console"))->load($data);

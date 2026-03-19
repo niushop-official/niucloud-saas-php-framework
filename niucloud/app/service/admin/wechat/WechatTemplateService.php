@@ -66,7 +66,7 @@ class WechatTemplateService extends BaseAdminService
         //删除原来的消息模板
 //        (new CoreWechatTemplateService())->deletePrivateTemplate($this->site_id, $wechat_template_id);
         $template_loader = new TemplateLoader('wechat', [ 'site_id' => $this->site_id ]);
-        $template_loader->delete([ 'templateId' => $wechat_template_id ]);
+        $del_res = $template_loader->delete([ 'templateId' => $wechat_template_id ]);
         //新的消息模板
 //        $res = (new CoreWechatTemplateService())->addTemplate($this->site_id, $temp_key, $keyword_name_list);
         $res = $template_loader->addTemplate([ 'shortId' => $temp_key, 'keyword_name_list' => $keyword_name_list ]);
@@ -75,6 +75,9 @@ class WechatTemplateService extends BaseAdminService
             //修改
             $notice_service->modify($key, 'wechat_template_id', $res[ 'template_id' ]);
         } else {
+            if (isset($res[ 'errcode' ]) && $res[ 'errcode' ] == 45026) {
+                throw new NoticeException('模板数量超出限制');
+            }
             throw new NoticeException($res[ 'errmsg' ]);
         }
         return true;

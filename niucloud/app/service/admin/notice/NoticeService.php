@@ -13,7 +13,9 @@ namespace app\service\admin\notice;
 
 use app\dict\notice\NoticeDict;
 use app\dict\notice\NoticeTypeDict;
+use app\model\site\SiteMerchantBind;
 use app\model\sys\SysNotice;
+use app\service\core\notice\CoreNoticeBindMerchantService;
 use app\service\core\notice\CoreNoticeService;
 use core\base\BaseAdminService;
 use core\exception\AdminException;
@@ -72,7 +74,29 @@ class NoticeService extends BaseAdminService
     public function editMessageStatus(string $key, string $type, int $status)
     {
         if (!array_key_exists($type, NoticeTypeDict::getType())) throw new AdminException('NOTICE_TYPE_NOT_EXIST');
-        if (!array_key_exists($key, NoticeDict::getNotice())) return fail('NOTICE_TYPE_NOT_EXIST');
+        $notice_list = NoticeDict::getNotice();
+        if (!array_key_exists($key, $notice_list)) return fail('NOTICE_TYPE_NOT_EXIST');
+        if (isset($notice_list[$key]['is_need_bind_merchant']) && $notice_list[$key]['is_need_bind_merchant'] == 1) {
+            $bind_info = (new BindMerchantService())->merchantBindInfo();
+            switch ($type) {
+                case NoticeTypeDict::SMS:
+                    if ($status == 1 && empty($bind_info['mobile'])) {
+                        throw new AdminException('NEED_BIND_MERCHANT');
+                    }
+                    break;
+                case NoticeTypeDict::WECHAT:
+                    if ($status == 1 && empty($bind_info['wechat_openid'])) {
+                        throw new AdminException('NEED_BIND_MERCHANT');
+                    }
+                    break;
+                case NoticeTypeDict::WEAPP:
+                    if ($status == 1 && empty($bind_info['weapp_openid'])) {
+                        throw new AdminException('NEED_BIND_MERCHANT');
+                    }
+                    break;
+            }
+        }
+
         return (new CoreNoticeService())->edit($this->site_id, $key, ['is_' . $type => $status]);
     }
 
@@ -85,17 +109,32 @@ class NoticeService extends BaseAdminService
     public function edit(string $key, string $type, array $data)
     {
         if (!array_key_exists($type, NoticeTypeDict::getType())) throw new AdminException('NOTICE_TYPE_NOT_EXIST');
-        if (!array_key_exists($key, NoticeDict::getNotice())) return fail('NOTICE_TYPE_NOT_EXIST');
+        $notice_list = NoticeDict::getNotice();
+        if (!array_key_exists($key, $notice_list)) return fail('NOTICE_TYPE_NOT_EXIST');
         $save_data = ['is_' . $type => $data['status']];
+        $is_need_bind = 0;
+        if (isset($notice_list[$key]['is_need_bind_merchant']) && $notice_list[$key]['is_need_bind_merchant'] == 1) {
+            $is_need_bind = 1;
+            $bind_info = (new BindMerchantService())->merchantBindInfo();
+        }
         switch ($type) {
             case NoticeTypeDict::SMS:
+                if ($is_need_bind && $data['status'] == 1 && empty($bind_info['mobile'])) {
+                    throw new AdminException('NEED_BIND_MERCHANT');
+                }
                 $save_data['sms_id'] = $data['sms_id'] ?? '';
                 break;
             case NoticeTypeDict::WECHAT:
+                if ($is_need_bind && $data['status'] == 1 && empty($bind_info['wechat_openid'])) {
+                    throw new AdminException('NEED_BIND_MERCHANT');
+                }
                 $save_data['wechat_first'] = $data['wechat_first'] ?? '';
                 $save_data['wechat_remark'] = $data['wechat_remark'] ?? '';
                 break;
             case NoticeTypeDict::WEAPP:
+                if ($is_need_bind && $data['status'] == 1 && empty($bind_info['weapp_openid'])) {
+                    throw new AdminException('NEED_BIND_MERCHANT');
+                }
                 break;
         }
         if ($type == NoticeTypeDict::SMS && $data['status'] == 1) {
@@ -103,5 +142,4 @@ class NoticeService extends BaseAdminService
         }
         return (new CoreNoticeService())->edit($this->site_id, $key, $save_data);
     }
-
 }

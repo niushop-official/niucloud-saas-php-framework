@@ -39,11 +39,16 @@ class PayChannelDict
                 'key' => $k,
                 'pay_type' => $pay_type
             ];
+            if (in_array($k,[ChannelDict::WEAPP,ChannelDict::WECHAT])){
+                unset($temp_pay_type[ PayDict::ALIPAY ]);
+                $list[ $k ][ 'pay_type' ] = $temp_pay_type;
+            }
             // PC端暂不支持 帮付
             if ($k == ChannelDict::PC) {
                 unset($temp_pay_type[ PayDict::FRIENDSPAY ]);
                 $list[ $k ][ 'pay_type' ] = $temp_pay_type;
             }
+
         }
         return $list;
     }

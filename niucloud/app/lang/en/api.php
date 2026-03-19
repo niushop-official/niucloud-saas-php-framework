@@ -75,7 +75,7 @@ return [
     'ATTACHMENT_GROUP_HAS_IMAGE' => '附件组中存在图片不允许删除',
     'OSS_TYPE_NOT_EXIST' => '云存储类型不存在',
     'URL_FILE_NOT_EXIST' => '获取不到网址指向的文件',
-    'PLEACE_SELECT_IMAGE' => '请选择要删除的图片',
+    'PLEASE_SELECT_IMAGE' => '请选择要删除的图片',
     'UPLOAD_TYPE_ERROR' => '不是有效的上传类型',
 
 

@@ -21,6 +21,7 @@ use think\facade\Route;
 Route::group('weapp', function() {
 
     /***************************************************** 微信配置 ****************************************************/
+    Route::get('auth_url', 'weapp.Auth/getWeappQrcodeUrl');
     Route::get('config', 'weapp.Config/get');
     //设置微信配置
     Route::put('config', 'weapp.Config/set');

@@ -1,7 +1,7 @@
 <?php
 declare (strict_types=1);
 
-namespace app\command\Addon;
+namespace app\command\addon;
 
 use app\service\core\addon\CoreAddonInstallService;
 use Exception;

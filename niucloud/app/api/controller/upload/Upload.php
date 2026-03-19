@@ -68,4 +68,38 @@ class Upload extends BaseApiController
         $base64_service = new Base64Service();
         return success($base64_service->image($data['content']));
     }
+
+    public function config()
+    {
+        return success([
+            'upload_max_filesize' => [
+                'unit' => 'KB',
+                'num'=>$this->convertPhpSizeToBytes(ini_get('upload_max_filesize'))/1024
+            ],
+        ]);
+    }
+
+    private  function convertPhpSizeToBytes($size_str) {
+        // 去除字符串两端的空格，统一转为大写（方便判断单位）
+        $size_str = trim(strtoupper($size_str));
+        // 如果是空值或纯数字（无单位），默认单位为字节
+        if (!preg_match('/^(\d+(\.\d+)?)([BKMGTP]B?)?$/', $size_str, $matches)) {
+            return (int)$size_str;
+        }
+
+        // 提取数值和单位
+        $size = (float)$matches[1];
+        $unit = isset($matches[3]) ? $matches[3] : 'B'; // 默认单位为B
+
+        // 根据单位转换为字节
+        switch ($unit) {
+            case 'TB': case 'T': $size *= 1024;
+            case 'GB': case 'G': $size *= 1024;
+            case 'MB': case 'M': $size *= 1024;
+            case 'KB': case 'K': $size *= 1024;
+            case 'B': default: break; // 字节无需转换
+        }
+
+        return (int)$size;
+    }
 }

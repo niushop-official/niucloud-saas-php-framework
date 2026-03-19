@@ -56,6 +56,7 @@ Route::group(function () {
     //公众号扫码登录
     Route::post('wechat/scanlogin', 'wechat.Wechat/scanLogin');
     //小程序通过code登录
+    Route::post('weapp/bind/merchant', 'weapp.Weapp/bindAdminMerchant');
     Route::post('weapp/login', 'weapp.Weapp/login');
     //小程序通过code注册
     Route::post('weapp/register', 'weapp.Weapp/register');

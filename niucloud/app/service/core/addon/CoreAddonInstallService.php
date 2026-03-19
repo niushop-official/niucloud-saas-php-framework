@@ -175,7 +175,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
             }
             if (!isset($install_data['support_version']) || empty($install_data['support_version'])) {
                 $data['addon_check'][] = [
-                    'msg' => $install_data['title'] . '插件的info.json文件中未检测到匹配框架当前版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]的信息无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>',
+                    'msg' => $install_data['title'] . '插件的info.json文件中未检测到匹配框架当前版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]的信息无法安装，<a style="text-decoration: underline;" href="https://doc.press.niucloud.com/php/saas-framework/use/installFAQ/pluginNotCompatible.html" target="blank">点击查看相关手册</a>',
                     'status' => false
                 ];
                 continue;
@@ -184,7 +184,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
             if ($framework_version_arr[0].$framework_version_arr[1] != $support_framework_arr[0].$support_framework_arr[1]) {
                 if ((float) "$support_framework_arr[0].$support_framework_arr[1]" < (float) "$framework_version_arr[0].$framework_version_arr[1]") {
                     $data['addon_check'][] = [
-                        'msg' => $install_data['title'] . '插件的info.json文件中检测到支持的框架版本['. $install_data['support_version'] .']低于当前框架版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]无法安装，<a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3244512" target="blank">点击查看相关手册</a>',
+                        'msg' => $install_data['title'] . '插件的info.json文件中检测到支持的框架版本['. $install_data['support_version'] .']低于当前框架版本['. $framework_version_arr[0].'.'.$framework_version_arr[1] .'.*]无法安装，<a style="text-decoration: underline;" href="https://doc.press.niucloud.com/php/saas-framework/use/installFAQ/pluginNotCompatible.html" target="blank">点击查看相关手册</a>',
                         'status' => false
                     ];
                 }

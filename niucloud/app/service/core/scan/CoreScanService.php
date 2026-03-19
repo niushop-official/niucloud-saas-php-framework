@@ -58,6 +58,7 @@ class CoreScanService extends BaseCoreService
      * @return true
      */
     public function actionByScan(int $site_id, string $key, array $data){
+        $data['site_id'] = $site_id;
         $cache_name = self::$cache_name.$key;
         $cache =  Cache::get($cache_name);
         Log::write('scan_log_'.$key);

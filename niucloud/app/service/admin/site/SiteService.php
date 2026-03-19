@@ -93,6 +93,12 @@ class SiteService extends BaseAdminService
             $info['site_addons'] = (new Addon())->where([['key', 'in', $site_addons]])->field('key,title,desc,icon,type')->select()->toArray();
             $info['uid'] = (new SysUserRole())->where([['site_id', '=', $site_id], ['is_admin', '=', 1]])->value('uid');
         }
+        if (empty($info['logo'])) {
+            $info['logo'] = 'static/resource/images/site/logo.png';
+        }
+        if (empty($info['icon'])) {
+            $info['icon'] = 'static/resource/images/site/icon.png';
+        }
         return $info;
     }
 
@@ -425,7 +431,7 @@ class SiteService extends BaseAdminService
     /**
      * @return array[]
      */
-    public function showCustomer($is_sort=true)
+    public function showCustomer($is_sort = true)
     {
         $show_list = event('ShowCustomer', ['site_id' => $this->site_id]);
         $addon_type_list = SiteDict::getAddonChildMenu();
@@ -453,7 +459,13 @@ class SiteService extends BaseAdminService
         $site_addon = $this->getSiteAddons([]);
         $menu_model = (new SysMenu());
         $addon_urls = $menu_model
-            ->where([['addon', 'in', array_column($site_addon, 'key')], ['addon', 'not in', $keys], ['is_show', '=', 1], ['menu_type', '=', 1]])
+            ->where([
+                ['addon', 'in', array_column($site_addon, 'key')],
+                ['addon', 'not in', $keys],
+                ['is_show', '=', 1],
+                ['menu_type', '=', 1],
+                ['app_type', '=', 'site'],
+            ])
             ->order('id asc')
             ->group('addon')
             ->column('router_path', 'addon');
@@ -472,7 +484,7 @@ class SiteService extends BaseAdminService
                 ];
             }
         }
-        if($is_sort){
+        if ($is_sort) {
             usort($return, function (array $a, array $b) {
                 $sortA = isset($a['sort']) ? (int)$a['sort'] : 0;
                 $sortB = isset($b['sort']) ? (int)$b['sort'] : 0;
@@ -534,7 +546,7 @@ class SiteService extends BaseAdminService
         foreach ($addon_menu_list as $item) {
             $menu_key_list = array_column($list[$item['key']]['list'] ?? [], 'key');
             $temp_menu = [
-                'app_type'=>'site',
+                'app_type' => 'site',
                 'menu_name' => $item['name'],
                 'menu_key' => $item['key'],
                 'menu_short_name' => $item['short_name'],
@@ -550,7 +562,7 @@ class SiteService extends BaseAdminService
                 'is_show' => '1',
             ];
             $children = [];
-            if(!empty($auth_menu_list)){
+            if (!empty($auth_menu_list)) {
                 foreach ($auth_menu_list['children'] as $datum_item) {
                     if (in_array($datum_item['menu_key'], $menu_key_list)) {
                         $children[] = $datum_item;

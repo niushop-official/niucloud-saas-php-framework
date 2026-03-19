@@ -1,0 +1,1 @@
+import{b5 as t}from"./index-69eae4f0.js";const o=""+new URL("site_empty-d23c6e2a.png",import.meta.url).href;function i(e){return t.get("home/site",{params:e})}function s(){return t.get("home/site/group")}function n(e){return t.post("home/site/create",e)}export{o as _,i as a,n as c,s as g};

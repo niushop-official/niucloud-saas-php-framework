@@ -4,10 +4,12 @@ namespace app\listener\notice;
 
 use app\dict\notice\NoticeTypeDict;
 use app\service\core\member\CoreMemberService;
+use app\service\core\notice\CoreNoticeBindMerchantService;
 use app\service\core\notice\CoreNoticeLogService;
 use app\service\core\weapp\CoreWeappConfigService;
 use core\exception\NoticeException;
 use core\template\TemplateLoader;
+use think\facade\Log;
 
 class Wechat
 {
@@ -17,18 +19,35 @@ class Wechat
         $site_id = $data[ 'site_id' ];
         $template = $data[ 'template' ];//模板
         $vars = $data[ 'vars' ];//模板变量
+        $weapp_page = $vars[ '__weapp_page' ] ?? '';
+
         $key = $data[ 'key' ];
         $to = $data[ 'to' ];//发送对象主题
 
         //完全信任消息的设置, 不再依赖support_type
         if ($template[ 'is_wechat' ]) {
-            $member_id = $to[ 'member_id' ] ?? 0;
-            //会员的
-            if ($member_id > 0) {//查询openid
-                $info = ( new CoreMemberService() )->getInfoByMemberId($site_id, $member_id);
-                $openid = $info[ 'wx_openid' ] ?? '';
-                $nickname = $info[ 'nickname' ] ?? '';
+            Log::write('template_info');
+            Log::write(json_encode($template,256));
+
+            if ($template['receiver_type'] ==1){
+                $member_id = $to[ 'member_id' ] ?? 0;
+                //会员的
+                if ($member_id > 0) {//查询openid
+                    $info = ( new CoreMemberService() )->getInfoByMemberId($site_id, $member_id);
+                    $openid = $info[ 'wx_openid' ] ?? '';
+                    $nickname = $info[ 'nickname' ] ?? '';
+                }
+            }else{
+                $merchant_id = $to[ 'merchant_id' ] ?? 0;
+                $weapp_page = '';//通知商户的消息不进行跳转
+                $vars[ '__wechat_page' ] = '';
+                if ($merchant_id > 0) {
+                    $info = (new CoreNoticeBindMerchantService())->getInfo($merchant_id);
+                    $openid = $info[ 'wechat_openid' ] ?? '';
+                    $nickname = '商户通知';
+                }
             }
+
             //或者还有用户的
             if (!empty($openid)) {
                 $wechat_template_id = $template[ 'wechat_template_id' ];
@@ -53,14 +72,13 @@ class Wechat
                     'key' => $key,
                     'notice_type' => NoticeTypeDict::WECHAT,
                     'uid' => $data[ 'uid' ] ?? 0,
-                    'member_id' => $member_id,
+                    'member_id' => $member_id ?? 0,
                     'nickname' => $nickname ?? '',
                     'receiver' => $openid,
                     'params' => $vars,
                     'content' => $wechat
                 );
 
-                $weapp_page = $vars[ '__weapp_page' ] ?? '';
                 if (!empty($weapp_page)) {
                     $appid = ( new CoreWeappConfigService() )->getWeappConfig($site_id)[ 'app_id' ] ?? '';
                     if (!empty($appid)) {
@@ -82,7 +100,8 @@ class Wechat
                     if (!empty($miniprogram)) {
                         $send_data[ 'miniprogram' ] = $miniprogram;
                     }
-                    ( new TemplateLoader(NoticeTypeDict::WECHAT, [ 'site_id' => $site_id ]) )->send($send_data);
+                    $send_res = ( new TemplateLoader(NoticeTypeDict::WECHAT, [ 'site_id' => $site_id ]) )->send($send_data);
+                    Log::write('发送结果'.$send_res);
                     ( new CoreNoticeLogService() )->add($site_id, $log_data);
                 } catch (NoticeException $e) {
                     $log_data[ 'result' ] = $e->getMessage();

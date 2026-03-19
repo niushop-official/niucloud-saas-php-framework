@@ -32,6 +32,7 @@ Route::group('file', function() {
  */
 Route::group('file', function() {
     //上传图片
+    Route::get('config', 'upload.Upload/config');
     Route::post('image', 'upload.Upload/image');
     //上传视频
     Route::post('video', 'upload.Upload/video');

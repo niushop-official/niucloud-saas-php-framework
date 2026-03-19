@@ -45,17 +45,20 @@ class CoreAddonService extends CoreAddonBaseService
     public function getLocalAddonList()
     {
         $list = [];
-        $online_app_list = [];
+        $online_app_list = $online_apps= [];
         $install_addon_list = $this->model->append(['status_name'])->column('title, icon, key, desc, status, author, version, install_time, update_time, cover', 'key');
         try {
             $niucloud_module_list = (new CoreModuleService())->getModuleList()['data'] ?? [];
             foreach ($niucloud_module_list as $v) {
                 $data = array(
+                    'app_id' => $v['app']['app_id'],
                     'title' => $v['app']['app_name'],
                     'desc' => $v['app']['app_desc'],
                     'key' => $v['app']['app_key'] ?? '',
                     'version' => $v['version'] ?? '',
                     'author' => $v['site_name'],
+                    'author_phone' => $v['site_phone'],
+                    'expire_time' => $v['expire_time'],
                     'type' => $v['app']['app_type'],
                     'support_app' => $v['app']['support_channel'] ?? [],
                     'is_download' => false,
@@ -66,7 +69,8 @@ class CoreAddonService extends CoreAddonBaseService
                 $data['install_info'] = $install_addon_list[$v['app']['app_key']] ?? [];
                 $list[$v['app']['app_key']] = $data;
             }
-            $online_app_list = array_column($list, 'key');
+            $online_app_list = array_column($list ,'key');
+            $online_apps = array_column($list,'app_id' ,'key');
         } catch (Throwable $e) {
             $error = $e->getMessage();
         }
@@ -80,8 +84,11 @@ class CoreAddonService extends CoreAddonBaseService
                     $key = $data['key'];
                     $data['install_info'] = $install_addon_list[$key] ?? [];
                     $data['is_download'] = true;
-                    $data['is_local'] = in_array($data['key'], $online_app_list) ? false : true;
+                    $data['is_local'] = !in_array($data['key'], $online_app_list);
                     $data['version'] = isset($list[$data['key']]) ? $list[$data['key']]['version'] : $data['version'];
+                    $data['app_id'] =  in_array($data['key'], $online_app_list) ? $online_apps[$data['key']] : 0;
+                    $data['author_phone'] = '';
+                    $data['expire_time'] = '长期有效';
                     $list[$key] = $data;
                 }
             }

@@ -141,12 +141,12 @@ class NoticeTypeDict
     }
 
     const PARAMS_TYPE_VALID_CODE = 'valid_code';
-    const PARAMS_TYPE_MOBILE_NUMBER = 'mobile_number';
     const PARAMS_TYPE_OTHER_NUMBER = 'other_number';
     const PARAMS_TYPE_AMOUNT = 'amount';
     const PARAMS_TYPE_DATE = 'date';
     const PARAMS_TYPE_CHINESE = 'chinese';
     const PARAMS_TYPE_OTHERS = 'others';
+    const PARAMS_TYPE_INT_NUMBER = 'int_number';
     public static function getApiParamsType()
     {
         return [
@@ -159,20 +159,12 @@ class NoticeTypeDict
                 'max'=>6
             ],
             [
-                'name' => '手机号',
-                'type' => self::PARAMS_TYPE_MOBILE_NUMBER,
-                'desc' => '1-15位纯数字',
-                'rule' => '/^\d$/',
-                'min'=>1,
-                'max'=>15
-            ],
-            [
-                'name' => '其他号码',
+                'name' => '其他号码（手机号）',
                 'type' => self::PARAMS_TYPE_OTHER_NUMBER,
-                'desc' => '1-32位字母+数字组合',
+                'desc' => '1-20位字母+数字组合',
                 'rule'=>'/^[a-zA-Z0-9]$/',
                 'min'=>1,
-                'max'=>32
+                'max'=>20
             ],
             [
                 'name' => '金额',
@@ -189,18 +181,26 @@ class NoticeTypeDict
             [
                 'name' => '中文',
                 'type' => self::PARAMS_TYPE_CHINESE,
-                'desc' => '1-32中文，支持中文园括号()',
-                'rule' => '/^[\p{Han}()（）]$/u',
+                'desc' => '1-15中文，支持中文圆括号()',
+                'rule' => '/^[\p{Han}（）]+$/u',
                 'min'=>1,
-                'max'=>32
+                'max'=>15
+            ],
+            [
+                'name' => '纯数字',
+                'type' => self::PARAMS_TYPE_INT_NUMBER,
+                'desc' => ' 1-10个数字',
+                'rule' => '/^\d$/',
+                'min'=>1,
+                'max'=>10
             ],
             [
                 'name' => '其他',
                 'type' => self::PARAMS_TYPE_OTHERS,
-                'desc' => ' 1-35个中文数字字母组合，支持中文符号和空格',
+                'desc' => ' 1-30个中文数字字母组合,支持中文符号。',
                 'rule' => '/^[\p{Han}\p{N}\p{L}\p{P}\p{S}\s]$/u',
                 'min'=>1,
-                'max'=>35
+                'max'=>30
             ],
         ];
     }

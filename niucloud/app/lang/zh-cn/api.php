@@ -122,7 +122,7 @@ return [
     'ATTACHMENT_GROUP_HAS_IMAGE' => '附件组中存在图片不允许删除',
     'OSS_TYPE_NOT_EXIST' => '云存储类型不存在',
     'URL_FILE_NOT_EXIST' => '获取不到网址指向的文件',
-    'PLEACE_SELECT_IMAGE' => '请选择要删除的图片',
+    'PLEASE_SELECT_IMAGE' => '请选择要删除的图片',
     'UPLOAD_TYPE_ERROR' => '不是有效的上传类型',
     'OSS_FILE_URL_NOT_EXIST' => '远程资源文件地址不能为空',
     'BASE_IMAGE_FILE_NOT_EXIST' => 'base图片资源不能为空',
@@ -134,6 +134,7 @@ return [
 
 
     //消息管理
+    'NEED_BIND_MERCHANT' => '未绑定【商家信息】接收者账号',
     'NOTICE_TYPE_NOT_EXIST' => '消息类型不存在',
     'SMS_TYPE_NOT_EXIST' => '短信类型不存在',
     'SMS_DRIVER_NOT_EXIST' => '短信驱动不存在',

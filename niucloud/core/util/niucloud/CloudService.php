@@ -30,6 +30,9 @@ class CloudService
         $local_cloud_compile_config = (new CoreConfigService())->getConfig(0, 'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
         if (!empty($local_cloud_compile_config) && isset($local_cloud_compile_config['isOpen']) && $local_cloud_compile_config['isOpen'] == 1){
             $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
+            if (empty($baseUri)){
+                throw new CommonException("已开启`第三方云编译`，但未配置云编译服务器地址，详情查看：平台端》云编译》第三方云编译");
+            }
         }
 
         if (!empty($local_cloud_compile)){

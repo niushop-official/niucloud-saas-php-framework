@@ -37,52 +37,67 @@ class CommonActiveDict
             self::IMPULSE_BUY => [
                 'name' => get_lang('common_active_short.impulse_buy_short'),
                 'active_name' => get_lang('common_active_short.impulse_buy_name'),
-                'bg_color' => "#FF7700"
+                'bg_color' => "#FF7700",
+                'jump_url'=>'/site/shop_impulse_buy/list',/////
+                'is_need_params'=>1
             ],
             self::GIFTCARD => [
                 'name' => get_lang('common_active_short.gift_card_short'),
                 'active_name' => get_lang('common_active_short.gift_card_name'),
-                'bg_color' => '#F00000'
+                'bg_color' => '#F00000',
+                'jump_url'=>'/site/shop_giftcard/giftcard/list',/////
+                'is_need_params'=>1
             ],
             self::DISCOUNT => [
                 'name' => get_lang('common_active_short.discount_short'),
                 'active_name' => get_lang('common_active_short.discount_name'),
-                'bg_color' => '#FFA322'
+                'bg_color' => '#FFA322',
+                'jump_url'=>'/site/shop/marketing/discount/list',/////
+                'is_need_params'=>1
             ],
             self::EXCHANGE => [
                 'name' => get_lang('common_active_short.exchange_short'),
                 'active_name' => get_lang('common_active_short.exchange_name'),
-                'bg_color' => '#00C441'
+                'bg_color' => '#00C441',
+                'jump_url'=>'/site/shop/marketing/exchange/goods_list',/////
+                'is_need_params'=>1
             ],
             self::MANJIANSONG => [
                 'name' => get_lang('common_active_short.manjiansong_short'),
                 'active_name' => get_lang('common_active_short.manjiansong_name'),
-                'bg_color' => '#249DE9'
+                'bg_color' => '#249DE9',
+                'jump_url'=>'/site/shop/marketing/manjian/list',/////
+                'is_need_params'=>1
             ],
             self::NEWCOMER_DISCOUNT => [
                 'name' => get_lang('common_active_short.newcomer_discount_short'),
                 'active_name' => get_lang('common_active_short.newcomer_discount_name'),
-                'bg_color' => '#BB27FF'
+                'bg_color' => '#BB27FF',
+                'jump_url'=>'/site/shop/marketing/newcomer/config'
             ],
             self::SECKILL => [
                 'name' => get_lang('common_active_short.seckill_short'),
                 'active_name' => get_lang('common_active_short.seckill_name'),
-                'bg_color' => '#F606CA'
+                'bg_color' => '#F606CA',
+                'jump_url'=>'/site/seckill/active/list'
             ],
             self::PINTUAN => [
                 'name' => get_lang('common_active_short.pintuan_short'),
                 'active_name' => get_lang('common_active_short.pintuan_name'),
-                'bg_color' => '#FF1C77'
+                'bg_color' => '#FF1C77',
+                'jump_url'=>'/site/pintuan/active/list'
             ],
             self::RELAY => [
                 'name' => get_lang('common_active_short.relay_short'),
                 'active_name' => get_lang('common_active_short.relay_name'),
-                'bg_color' => '#0EB108'
+                'bg_color' => '#0EB108',
+                'jump_url'=>'/site/relay/active/list'
             ],
             self::FRIEND_HELP => [
                 'name' => get_lang('common_active_short.friend_help_short'),
                 'active_name' => get_lang('common_active_short.friend_help_name'),
-                'bg_color' => '#F20C8A'
+                'bg_color' => '#F20C8A',
+                'jump_url'=>'/site/friend_help/active/list'
             ],
         ];
         return !empty($active) ? $data[$active] ?? [] : $data;

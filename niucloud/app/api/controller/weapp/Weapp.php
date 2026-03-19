@@ -103,4 +103,19 @@ class Weapp extends BaseApiController
         return success($weapp_auth_service->updateOpenid($data[ 'code' ]));
     }
 
+    /**
+     * 绑定商家接受信息小程序账号
+     * @return Response
+     */
+    public function bindAdminMerchant()
+    {
+        $data = $this->request->params([
+            [ 'user_info', '' ],
+            [ 'openid', '' ],
+            [ 'type',''],
+        ]);
+        $weapp_auth_service = new WeappAuthService();
+        return success($weapp_auth_service->bindAdminMerchant($data));
+    }
+
 }

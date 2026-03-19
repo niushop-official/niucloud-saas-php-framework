@@ -11,6 +11,7 @@ CREATE TABLE `activity_exchange_code`
     `activity_id`    INT(11) NOT NULL DEFAULT 0 COMMENT '活动ID',
     `type`           VARCHAR(20)  NOT NULL DEFAULT '' COMMENT '类型    例seckill_goods-秒杀商品',
     `type_id`        INT(11) NOT NULL DEFAULT 0 COMMENT '类型对应id  秒杀商品id',
+    `type_item_id`   int          NOT NULL DEFAULT 0 COMMENT '规格id',
     `expire_time`    INT(11) NOT NULL DEFAULT 0 COMMENT '过期时间 0-不过期',
     `member_id`      INT(11) NOT NULL DEFAULT 0 COMMENT '领取会员',
     `received_time`  INT(11) NOT NULL DEFAULT 0 COMMENT '领取时间',
@@ -388,6 +389,7 @@ CREATE TABLE `member`
     `member_label`           varchar(255)   NOT NULL DEFAULT '' COMMENT '会员标签',
     `wx_openid`              varchar(255)   NOT NULL DEFAULT '' COMMENT '微信用户openid',
     `weapp_openid`           varchar(255)   NOT NULL DEFAULT '' COMMENT '微信小程序openid',
+    `wxapp_openid`           varchar(255)   NOT NULL DEFAULT '' COMMENT '微信移动应用openid',
     `wx_unionid`             varchar(255)   NOT NULL DEFAULT '' COMMENT '微信unionid',
     `ali_openid`             varchar(255)   NOT NULL DEFAULT '' COMMENT '支付宝账户id',
     `douyin_openid`          varchar(255)   NOT NULL DEFAULT '' COMMENT '抖音小程序openid',
@@ -1218,7 +1220,7 @@ CREATE TABLE `sys_user`
 (
     `uid`         smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '系统用户ID',
     `username`    varchar(255) NOT NULL DEFAULT '' COMMENT '用户账号',
-    `mobile`    varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
+    `mobile`      varchar(20)  NOT NULL DEFAULT '' COMMENT '手机号',
     `head_img`    varchar(255) NOT NULL DEFAULT '',
     `password`    varchar(100) NOT NULL DEFAULT '' COMMENT '用户密码',
     `real_name`   varchar(16)  NOT NULL DEFAULT '' COMMENT '实际姓名',
@@ -5075,14 +5077,18 @@ VALUES (110000, 0, '北京市', '北京', '116.405285', '39.904989', 1, 0, 1),
        (460400500, 460400, '华南热作学院', '华南热作学院', '109.494073', '19.505382', 3, 0, 1);
 
 
-ALTER TABLE activity_exchange_code
-    CHANGE COLUMN activity_type activity_type VARCHAR(20) NOT NULL DEFAULT '' COMMENT '例seckill-秒杀活动';
-
-ALTER TABLE activity_exchange_code
-    ADD COLUMN type_item_id INT(11) NOT NULL DEFAULT 0 COMMENT '规格id';
-
-ALTER TABLE member
-    ADD COLUMN wxapp_openid VARCHAR(255) NOT NULL DEFAULT '' COMMENT '微信移动应用openid';
-
-ALTER TABLE member
-    MODIFY wxapp_openid VARCHAR(255) NOT NULL DEFAULT '' COMMENT '微信移动应用openid' AFTER weapp_openid;
+CREATE TABLE `site_merchant_bind`
+(
+    id            int NOT NULL AUTO_INCREMENT,
+    site_id       int NOT NULL DEFAULT 0 COMMENT '站点id',
+    wechat_openid VARCHAR(255) NOT NULL DEFAULT '' COMMENT '微信openid',
+    weapp_openid  VARCHAR(255) NOT NULL DEFAULT '' COMMENT '小程序openid',
+    mobile        VARCHAR(20)  NOT NULL DEFAULT '' COMMENT '手机号',
+    extends       TEXT                  DEFAULT NULL COMMENT '扩展数据 微信用户信息/小程序用户信息',
+    create_time   int NOT NULL DEFAULT 0 COMMENT '创建时间',
+    update_time   int NOT NULL DEFAULT 0 COMMENT '更新时间',
+    PRIMARY KEY (id)
+) ENGINE = INNODB,
+CHARACTER SET utf8mb4,
+COLLATE utf8mb4_general_ci,
+COMMENT = '商户信息接收账号绑定表';

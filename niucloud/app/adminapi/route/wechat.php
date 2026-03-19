@@ -19,6 +19,7 @@ use think\facade\Route;
  * 路由
  */
 Route::group('wechat', function () {
+    Route::get('auth_url', 'wechat.Auth/getWechatQrcodeUrl');
 
     /***************************************************** 微信配置 ****************************************************/
     Route::get('config', 'wechat.Config/get');

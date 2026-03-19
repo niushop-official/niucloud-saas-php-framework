@@ -142,10 +142,12 @@ class UpgradeService extends BaseAdminService
         // 忽略指定目录，niucloud
         $exclude_niucloud_dir = [
             'public' . DIRECTORY_SEPARATOR . 'admin',
+            'public' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR .'niucloud.ico',
             'public' . DIRECTORY_SEPARATOR . 'wap',
             'public' . DIRECTORY_SEPARATOR . 'web',
             'public' . DIRECTORY_SEPARATOR . 'upload',
             'public' . DIRECTORY_SEPARATOR . 'file',
+            'public' . DIRECTORY_SEPARATOR . 'favicon.ico',
             'runtime',
             'vendor',
             '.user.ini',

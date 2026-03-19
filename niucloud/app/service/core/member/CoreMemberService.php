@@ -214,11 +214,13 @@ class CoreMemberService extends BaseCoreService
     public static function sendGrowth(int $site_id, int $member_id, string $key, array $param = [])
     {
         $config = ( new CoreMemberConfigService() )->getGrowthRuleConfig($site_id);
+
         if (!isset($config[ $key ]) || empty($config[ $key ]) || empty($config[ $key ][ 'is_use' ])) return true;
 
         $config = $config[ $key ];
 
-        $dict = ( new DictLoader("GrowthRule") )->load();
+        $dict = ( new DictLoader("GrowthRule") )->load() ?? [];
+
         if (!isset($dict[ $key ])) return true;
         $dict = $dict[ $key ];
 
@@ -234,7 +236,7 @@ class CoreMemberService extends BaseCoreService
 
         if ($growth <= 0) return true;
 
-        ( new CoreMemberAccountService() )->addLog($site_id, $member_id, MemberAccountTypeDict::GROWTH, $growth, $param[ 'from_type' ] ?? '', $param[ 'momo' ] ?? $dict[ 'desc' ], $param[ 'related_id' ] ?? 0);
+        ( new CoreMemberAccountService() )->addLog($site_id, $member_id, MemberAccountTypeDict::GROWTH, $growth, $param[ 'from_type' ] ?? ($key ?? ''), $param[ 'momo' ] ?? $dict[ 'desc' ], $param[ 'related_id' ] ?? 0);
         return true;
     }
 

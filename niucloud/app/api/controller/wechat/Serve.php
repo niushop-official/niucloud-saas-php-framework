@@ -17,7 +17,7 @@ use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use ReflectionException;
-use Symfony\Component\HttpFoundation\Response;
+use think\facade\Log;
 use Throwable;
 
 /**
@@ -37,6 +37,7 @@ class Serve extends BaseController
      * @throws Throwable
      */
     public function serve($site_id){
+        Log::write('请求参数'.json_encode($this->request->all()));
         ob_clean();
         $result = (new WechatServeService())->serve();
         return response($result->getBody())->header([

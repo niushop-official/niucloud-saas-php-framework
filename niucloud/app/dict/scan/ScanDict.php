@@ -22,6 +22,7 @@ class ScanDict
 
 
     const WECHAT_LOGIN = 'wechat_login';//微信登录
+    const ADMIN_MERCHANT_BIND_WECHAT = 'admin_merchant_bind_wechat';//微信登录
 
 
 }

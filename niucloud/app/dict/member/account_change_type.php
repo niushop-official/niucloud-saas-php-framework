@@ -189,5 +189,17 @@ return [
             //是否累增
             'is_change_get' => 0,
         ],
+    ],
+    MemberAccountTypeDict::GROWTH => [
+
+        //调整
+        'member_register' => [
+            //名称
+            'name' => get_lang('dict_member.account_point_member_register'),
+            //是否增加
+            'inc' => 1,
+            //是否减少
+            'dec' => 0,
+        ],
     ]
 ];

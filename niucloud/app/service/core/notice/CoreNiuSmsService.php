@@ -281,7 +281,7 @@ class CoreNiuSmsService extends BaseCoreService
     public function templateList($username, $params)
     {
         $params = array_merge($params, $this->getPageParam());
-        $params['limit'] = $params['limit'] ?? 100;
+        $params['limit'] = $params['size'] ?? 100;
         $url = $this->niushop_url_prefix . sprintf(self::TEMPLATE_LIST_URL, $username);
         $res = (new HttpHelper())->get($url, $params);
         return $res;

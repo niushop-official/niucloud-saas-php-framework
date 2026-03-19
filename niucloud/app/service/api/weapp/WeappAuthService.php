@@ -13,10 +13,12 @@ namespace app\service\api\weapp;
 
 use app\dict\member\MemberLoginTypeDict;
 use app\dict\member\MemberRegisterTypeDict;
+use app\dict\notice\BindMerchantDict;
 use app\service\api\login\LoginService;
 use app\service\api\login\RegisterService;
 use app\service\api\member\MemberConfigService;
 use app\service\api\member\MemberService;
+use app\service\core\notice\CoreNoticeBindMerchantService;
 use app\service\core\weapp\CoreWeappAuthService;
 use core\base\BaseApiService;
 use core\exception\ApiException;
@@ -56,8 +58,8 @@ class WeappAuthService extends BaseApiService
         $result = $this->core_weapp_serve_service->session($this->site_id, $code);
 //        if(empty($result)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
 //        $userinfo = $this->core_weapp_serve_service->decryptData($result['session_key'], $iv, $encrypted_data);
-        $openid = $result[ 'openid' ] ?? '';//对应微信的 openid
-        $unionid = $result[ 'unionid' ] ?? '';//对应微信的 unionid
+        $openid = $result['openid'] ?? '';//对应微信的 openid
+        $unionid = $result['unionid'] ?? '';//对应微信的 unionid
         if (empty($openid)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
         //todo 这儿还可能会获取用户昵称 头像  性别 ....用以更新会员信息
 //        $nickname = $userinfo['nickName'] ?? '';//对应微信的 nickname
@@ -92,22 +94,22 @@ class WeappAuthService extends BaseApiService
 //            $avatar,
 //            $nickname,
 //            $sex
-        ] = $this->getUserInfoByCode($data[ 'code' ]);
+        ] = $this->getUserInfoByCode($data['code']);
 
         $member_service = new MemberService();
-        $member_info = $member_service->findMemberInfo([ 'weapp_openid' => $openid, 'site_id' => $this->site_id ]);
+        $member_info = $member_service->findMemberInfo(['weapp_openid' => $openid, 'site_id' => $this->site_id]);
         if ($member_info->isEmpty() && !empty($unionid)) {
-            $member_info = $member_service->findMemberInfo([ 'wx_unionid' => $unionid, 'site_id' => $this->site_id ]);
+            $member_info = $member_service->findMemberInfo(['wx_unionid' => $unionid, 'site_id' => $this->site_id]);
             if (!$member_info->isEmpty()) {
                 $member_info->weapp_openid = $openid;
             }
         }
 
-        $config = ( new MemberConfigService() )->getLoginConfig();
-        $is_auth_register = $config[ 'is_auth_register' ];
-        $is_force_access_user_info = $config[ 'is_force_access_user_info' ];
-        $is_bind_mobile = $config[ 'is_bind_mobile' ];
-        $is_mobile = $config[ 'is_mobile' ];
+        $config = (new MemberConfigService())->getLoginConfig();
+        $is_auth_register = $config['is_auth_register'];
+        $is_force_access_user_info = $config['is_force_access_user_info'];
+        $is_bind_mobile = $config['is_bind_mobile'];
+        $is_mobile = $config['is_mobile'];
 
         if ($member_info->isEmpty()) {
 
@@ -116,24 +118,24 @@ class WeappAuthService extends BaseApiService
 
                 // 开启强制获取会员信息并且开启强制绑定手机号，必须获取全部信息才能进行注册
                 if ($is_force_access_user_info && $is_bind_mobile) {
-                    if (!empty($data[ 'nickname' ]) && !empty($data[ 'headimg' ]) && !empty($data[ 'mobile' ])) {
-                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid, $data[ 'nickname' ], $data[ 'headimg' ]);
+                    if (!empty($data['nickname']) && !empty($data['headimg']) && !empty($data['mobile'])) {
+                        return $this->register($openid, $data['mobile'], $data['mobile_code'], $unionid, $data['nickname'], $data['headimg']);
                     } else {
-                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                        return ['openid' => $openid, 'unionid' => $unionid]; // 将重要信息返回给前端保存
                     }
                 } else if ($is_force_access_user_info) {
                     // 开启强制获取会员信息时，必须获取到昵称和头像才能进行注册
-                    if (!empty($data[ 'nickname' ]) && !empty($data[ 'headimg' ])) {
-                        return $this->register($openid, '', '', $unionid, $data[ 'nickname' ], $data[ 'headimg' ]);
+                    if (!empty($data['nickname']) && !empty($data['headimg'])) {
+                        return $this->register($openid, '', '', $unionid, $data['nickname'], $data['headimg']);
                     } else {
-                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                        return ['openid' => $openid, 'unionid' => $unionid]; // 将重要信息返回给前端保存
                     }
                 } else if ($is_bind_mobile) {
                     // 开启强制绑定手机号，必须获取手机号才能进行注册
-                    if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
-                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
+                    if (!empty($data['mobile']) || !empty($data['mobile_code'])) {
+                        return $this->register($openid, $data['mobile'], $data['mobile_code'], $unionid);
                     } else {
-                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                        return ['openid' => $openid, 'unionid' => $unionid]; // 将重要信息返回给前端保存
                     }
                 } else if (!$is_force_access_user_info && !$is_bind_mobile) {
                     // 关闭强制获取用户信息、并且关闭强制绑定手机号的情况下允许注册
@@ -143,16 +145,16 @@ class WeappAuthService extends BaseApiService
             } else {
                 // 关闭自动注册，但是开启了强制绑定手机号，必须获取手机号才能进行注册
                 if ($is_bind_mobile) {
-                    if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
-                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
+                    if (!empty($data['mobile']) || !empty($data['mobile_code'])) {
+                        return $this->register($openid, $data['mobile'], $data['mobile_code'], $unionid);
                     } else {
-                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                        return ['openid' => $openid, 'unionid' => $unionid]; // 将重要信息返回给前端保存
                     }
-                } else if($is_mobile) {
-                    if (!empty($data[ 'mobile' ]) || !empty($data[ 'mobile_code' ])) {
-                        return $this->register($openid, $data[ 'mobile' ], $data[ 'mobile_code' ], $unionid);
+                } else if ($is_mobile) {
+                    if (!empty($data['mobile']) || !empty($data['mobile_code'])) {
+                        return $this->register($openid, $data['mobile'], $data['mobile_code'], $unionid);
                     } else {
-                        return [ 'openid' => $openid, 'unionid' => $unionid ]; // 将重要信息返回给前端保存
+                        return ['openid' => $openid, 'unionid' => $unionid]; // 将重要信息返回给前端保存
                     }
                 }
             }
@@ -162,11 +164,11 @@ class WeappAuthService extends BaseApiService
             // 开启自动注册会员,获取到昵称和头像进行修改
             if ($is_auth_register) {
                 if ($is_force_access_user_info) {
-                    if (!empty($data[ 'nickname' ])) {
-                        $member_info[ 'nickname' ] = $data[ 'nickname' ];
+                    if (!empty($data['nickname'])) {
+                        $member_info['nickname'] = $data['nickname'];
                     }
-                    if (!empty($data[ 'headimg' ])) {
-                        $member_info[ 'headimg' ] = $data[ 'headimg' ];
+                    if (!empty($data['headimg'])) {
+                        $member_info['headimg'] = $data['headimg'];
                     }
                 }
                 if ($is_bind_mobile) {
@@ -203,8 +205,8 @@ class WeappAuthService extends BaseApiService
             if (!empty($mobile_code)) {
                 $result = $this->core_weapp_serve_service->getUserPhoneNumber($this->site_id, $mobile_code);
                 if (empty($result)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
-                $phone_info = $result[ 'phone_info' ];
-                $mobile = $phone_info[ 'purePhoneNumber' ];
+                $phone_info = $result['phone_info'];
+                $mobile = $phone_info['purePhoneNumber'];
                 if (empty($mobile)) throw new ApiException('WECHAT_EMPOWER_NOT_EXIST');
             }
             $is_verify_mobile = false;
@@ -212,11 +214,11 @@ class WeappAuthService extends BaseApiService
             $is_verify_mobile = true;
         }
         $member_service = new MemberService();
-        $member_info = $member_service->findMemberInfo([ 'weapp_openid' => $openid, 'site_id' => $this->site_id ]);
+        $member_info = $member_service->findMemberInfo(['weapp_openid' => $openid, 'site_id' => $this->site_id]);
         if (!$member_info->isEmpty()) throw new AuthException('MEMBER_IS_EXIST');//账号已存在, 不能在注册
 
         if (!empty($wx_unionid)) {
-            $member_info = $member_service->findMemberInfo([ 'wx_unionid' => $wx_unionid, 'site_id' => $this->site_id ]);
+            $member_info = $member_service->findMemberInfo(['wx_unionid' => $wx_unionid, 'site_id' => $this->site_id]);
             if (!$member_info->isEmpty()) throw new AuthException('MEMBER_IS_EXIST');//账号已存在, 不能在注册
         }
 
@@ -249,13 +251,18 @@ class WeappAuthService extends BaseApiService
 //            $sex
         ] = $this->getUserInfoByCode($code);
         $member_service = new MemberService();
-        $member = $member_service->findMemberInfo([ 'weapp_openid' => $openid, 'site_id' => $this->site_id ]);
+        $member = $member_service->findMemberInfo(['weapp_openid' => $openid, 'site_id' => $this->site_id]);
         if (!$member->isEmpty()) throw new AuthException('MEMBER_OPENID_EXIST');//openid已存在
 
-        $member_info = $member_service->findMemberInfo([ 'member_id' => $this->member_id, 'site_id' => $this->site_id ]);
+        $member_info = $member_service->findMemberInfo(['member_id' => $this->member_id, 'site_id' => $this->site_id]);
         if ($member_info->isEmpty()) throw new AuthException('MEMBER_NOT_EXIST');//账号不存在
-        $member_service->editByFind($member_info, [ 'weapp_openid' => $openid ]);
+        $member_service->editByFind($member_info, ['weapp_openid' => $openid]);
         return true;
+    }
+
+    public function bindAdminMerchant($data)
+    {
+        return (new CoreNoticeBindMerchantService())->bindAccount($this->site_id, $data['openid'],BindMerchantDict::WEAPP,$data['user_info']);
     }
 
 }

@@ -127,7 +127,7 @@ class CoreAttachmentService extends BaseCoreService
         $core_attachment_service = new CoreAttachmentService();
         $list = $core_attachment_service->getList($site_id, compact('att_ids'));
         if(empty($list))
-            throw new UploadFileException('PLEACE_SELECT_IMAGE');
+            throw new UploadFileException('PLEASE_SELECT_IMAGE');
 
         $del_success_ids = [];
         foreach($list as $v){

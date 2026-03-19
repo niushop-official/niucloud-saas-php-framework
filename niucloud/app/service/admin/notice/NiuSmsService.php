@@ -233,15 +233,54 @@ class NiuSmsService extends BaseAdminService
      */
     public function signCreate($username, $params)
     {
-        if (!empty($params['imgUrl']) && strstr($params['imgUrl'], 'http') === false) {
-            $params['imgUrl'] = request()->domain() . '/' . $params['imgUrl'];
-        } else {
-            $params['imgUrl'] = $params['imgUrl'] ?? '';
+        $params['imgUrl'] = $this->formatImageUrl($params['imgUrl']);
+        $params['bizLicenseUrl'] = $this->formatImageUrl($params['bizLicenseUrl']);
+        $params['qccUrl'] = $this->formatImageUrl($params['qccUrl']);
+        $params['tmnetUrl'] = $this->formatImageUrl($params['tmnetUrl']);
+        $params['mobileIcpUrl'] = $this->formatImageUrl($params['mobileIcpUrl']);
+        $params['telecomAppstoreUrl'] = $this->formatImageUrl($params['telecomAppstoreUrl']);
+        $params['idcardFrontUrl'] = $this->formatImageUrl($params['idcardFrontUrl']);
+        $params['idcardBackUrl'] = $this->formatImageUrl($params['idcardBackUrl']);
+        if (empty($params['idcardFrontUrl'])) {
+            throw new ApiException('身份证正面不能为空');
+        }
+        if (empty($params['idcardBackUrl'])) {
+            throw new ApiException('身份证反面不能为空');
+        }
+        if (empty($params['bizLicenseUrl'])) {
+            throw new ApiException('营业执照');
+        }
+        if (in_array($params['signSource'], [4, 5]) && empty($params['telecomAppstoreUrl'])) {
+            throw new ApiException('应用商店/小程序页面开发者截图不能为空');
+        }
+        if (in_array($params['signSource'], [4, 5]) && empty($params['mobileIcpUrl'])) {
+            throw new ApiException('移动ICP截图不能为空');
+        }
+        if (in_array($params['signSource'], [3]) && empty($params['tmnetUrl'])) {
+            throw new ApiException('中国商标网截图不能为空');
+        }
+        if (in_array($params['signSource'], [1, 2]) && $params['signType'] == 1 && empty($params['qccUrl'])) {
+            throw new ApiException('企查查唯一性截图不能为空');
         }
         $res = $this->niu_service->signCreate($username, $params);
         if (!empty($res['failList'])) {
             throw new AdminException($res['failList'][0]['msg']);
         }
+    }
+
+    /**
+     * 格式化图片地址
+     * @param $url
+     * @return string
+     */
+    private function formatImageUrl($url)
+    {
+        if (!empty($url) && strstr($url, 'http') === false) {
+            $url = request()->domain() . '/' . $url;
+        } else {
+            $url = $url ?? '';
+        }
+        return $url;
     }
 
     /**
