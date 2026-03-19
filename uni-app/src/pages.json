@@ -149,6 +149,13 @@
             "needLogin": true
         },
         {
+            "path": "app/pages/setting/authorization",
+            "style": {
+                "navigationBarTitleText": "%pages.setting.authorization%"
+            },
+            "needLogin": true
+        },
+        {
             "path": "app/pages/webview/index",
             "style": {
                 "navigationBarTitleText": "%pages.webview.index%"
@@ -216,7 +223,7 @@
     ],
     "subPackages": [
         // {{ PAGE_BEGAIN }}
-// {{ PAGE_END }}
+        // {{ PAGE_END }}
         {
             "root": "app/components",
             "pages": []

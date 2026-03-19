@@ -1,6 +1,6 @@
 <template>
     <view class="bg-[var(--page-bg-color)] min-h-[100vh]" :style="themeColor()">
-        <view class="fixed left-0 right-0 top-0 z-10085">
+        <view class="fixed left-0 right-0 top-0 z-10085 container">
             <view class="bg-[#f6f6f6] px-[30rpx] h-[88rpx] pt-[10rpx] flex-center relative z-10084">
                 <view class="search-input bg-[#fff]">
                     <view class="flex-1 text-[24rpx] leading-[60rpx] text-[var(--text-color-light9)]" :class="{'!text-[#333]':from_type}" @click="typePopup = true">{{ from_type_name || '请选择来源用途' }}</view>
@@ -31,7 +31,7 @@
                 </view>
             </view>
         </view>
-        <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" top="185rpx">
+        <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="getPointListFn" :top="mescrollTop">
             <view v-for="(item,index) in pointList" :key="index"
                   class="sidebar-margin card-template  mt-[var(--top-m)]">
                 <view class="flex justify-between items-center">
@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { t } from '@/locale'
-import { redirect, img } from '@/utils/common';
+import { redirect, img ,pxToRpx} from '@/utils/common';
 import { getPointList, getPointType } from '@/app/api/member';
 import MescrollBody from '@/components/mescroll/mescroll-body/mescroll-body.vue';
 import MescrollEmpty from '@/components/mescroll/mescroll-empty/mescroll-empty.vue';
@@ -96,6 +96,21 @@ const typeList = ref([
     { name: '支出', status: 'disburse' }
 ])
 
+const mescrollTop = ref('0rpx');
+// 仅在页面渲染完成后计算一次高度
+const calculateMescrollTop = () => {
+    const query = uni.createSelectorQuery()
+    query.select('.container').boundingClientRect(rect => {
+        if (rect) {
+            // 直接用头部实际高度
+            const topVal =  pxToRpx(rect.height) 
+            mescrollTop.value = topVal + 'rpx';
+        } else {
+            // 兜底用原有固定值
+            mescrollTop.value = '185rpx';
+        }
+    }).exec();
+};
 const getPointListFn = (mescroll: any) => {
     let data = {
         page: mescroll.num,
@@ -129,6 +144,7 @@ const getPointTypeFn = () => {
     getPointType('point').then((res: any) => {
         pointType.value = res.data
     })
+    setTimeout(() => calculateMescrollTop(), 200);
 }
 getPointTypeFn()
 // 关键词搜索条件搜索

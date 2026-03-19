@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { deepClone, redirect } from '@/utils/common'
 import { t } from '@/locale'
@@ -82,6 +82,7 @@ import { addAddress, editAddress, getAddressInfo } from '@/app/api/member'
 import manifestJson from '@/manifest.json'
 import { getAddressByLatlng,getAreatree } from '@/app/api/system'
 import useSystemStore from '@/stores/system';
+import { useLocation } from '@/hooks/useLocation'
 
 const systemStore = useSystemStore();
 const formData: any = ref({
@@ -362,6 +363,7 @@ const findIdByNameAndParentId = (list, name, parentId = 0) => {
   }
   return '';
 };
+
 const loadingchoosegAddress = ref(false)
 const choosegAddress = () =>{
     loadingchoosegAddress.value = true
@@ -386,6 +388,35 @@ const choosegAddress = () =>{
             }
         });
 }
+
+onMounted(()=>{
+    // #ifdef MP 
+    uni.authorize({
+        scope: 'scope.userLocation',
+        success: (res) => {},
+        fail: () => {
+            // 授权失败，引导到设置页
+            uni.showModal({
+                title: '位置授权',
+                content: '需要位置授权才能快速选地址，是否前往设置？',
+                confirmText: '去设置',
+                success: (res) => {
+                    if (res.confirm) {
+                        uni.openSetting({
+                            success: (settingRes) => {
+                                if (settingRes.authSetting['scope.userLocation']) {
+                                    const locationVal = useLocation(true);
+                                    locationVal.init();
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    })
+    // #endif
+})
 </script>
 
 <style lang="scss" scoped>

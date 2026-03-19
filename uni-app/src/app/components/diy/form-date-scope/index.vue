@@ -72,9 +72,9 @@
         </view>
         <view class="calendar-wrap">
             <u-calendar :show="calendarShow" mode="range" @confirm="confirm" @close="calendarShow=false"
-                        closeOnClickOverlay="true"
+                        closeOnClickOverlay="true" :min-date="calendarMinDate" monthNum="12" 
                         :defaultDate="defaultDate" startText="开始" endText="结束" confirmDisabledText="禁止选择"
-                        color="var(--primary-color)" ref="calendar" monthNum="2"></u-calendar>
+                        color="var(--primary-color)" ref="calendar"></u-calendar>
         </view>
 
         <!-- 遮罩层，装修使用 -->
@@ -94,6 +94,8 @@ const diyStore = useDiyStore();
 const calendarShow = ref(false);
 
 const errorInfo: any = ref(null);
+let currentDateTime = new Date();
+const calendarMinDate = ref(new Date(currentDateTime.getFullYear(), currentDateTime.getMonth() - 9, currentDateTime.getDate()));
 
 const diyComponent = computed(() => {
     if (diyStore.mode == 'decorate') {

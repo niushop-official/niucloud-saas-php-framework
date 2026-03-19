@@ -1,7 +1,7 @@
 <template>
     <template v-if="tabbar && Object.keys(tabbar).length">
         <u-tabbar :value="value" zIndex="9999" :fixed="true" :placeholder="true" :safeAreaInsetBottom="false" :inactive-color="tabbar.value.textColor" :active-color="tabbar.value.textHoverColor" :border="props.border" class="custom-tabbar">
-            <view class="safe-area flex bg-white">
+            <view class="safe-area flex bg-white" :style="{'background-color': tabbar.value.backgroundColor}">
                 <template v-for="item in tabbar.value.list">
                     <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :text="item.text" :icon="img(value == item.link.url ? item.iconSelectPath : item.iconPath)" :name="item.link.url" v-if="tabbar.value.type == 1" @click="itemBtn(item.link.url)"></u-tabbar-item>
                     <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :icon="img(value == item.link.url ? item.iconSelectPath : item.iconPath)" :name="item.link.url" v-if="tabbar.value.type == 2" @click="itemBtn(item.link.url)"></u-tabbar-item>

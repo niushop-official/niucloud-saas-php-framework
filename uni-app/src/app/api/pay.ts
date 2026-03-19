@@ -13,6 +13,3 @@ export function pay(data : AnyObject) {
 export function getPayInfo(tradeType : string, tradeId : number, params: Record<string, any>) {
     return request.get(`pay/info/${tradeType}/${tradeId}`, params, { showErrorMessage: true })
 }
-
-
-

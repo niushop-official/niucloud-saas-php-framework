@@ -1,6 +1,6 @@
 <template>
     <view class="min-h-[100vh] !bg-[var(--page-bg-color)]" :style="themeColor()" v-if="memberStore.info">
-        <view class="fixed w-full z-2  !bg-[var(--page-bg-color)]">
+        <view class="fixed w-full z-2  !bg-[var(--page-bg-color)] container">
             <view class="pb-[190rpx] text-[#fff] w-full" :style="headerStyle">
                 <!-- #ifdef MP-WEIXIN || APP-PLUS -->
                 <top-tabbar :data="param" class="top-header" />
@@ -125,7 +125,7 @@ onShow(() => {
         for (let key in res.data) {
             cashOutConfigObj[key] = res.data[key];
         }
-
+        setTimeout(() => calculateMescrollTop(), 200);
     })
     if (systemStore.siteAddons.includes('recharge')) {
         rechargeConfig().then((res: any) => {
@@ -145,24 +145,38 @@ const headerStyle = computed(() => {
     }
 })
 
-const mescrollTop = computed(() => {
-    if ((cashOutConfigObj.is_open == 1 || rechargeConfigObj.is_use == 1)) {
-        if (Object.keys(systemStore.menuButtonInfo).length) {
-            return (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + pxToRpx(8) + 700) + 'rpx'
+// 定义ref指向头部容器
+const mescrollTop = ref('0rpx');
+
+// 仅在页面渲染完成后计算一次高度
+const calculateMescrollTop = () => {
+    const query = uni.createSelectorQuery()
+    query.select('.container').boundingClientRect(rect => {
+        if (rect) {
+            // 直接用头部实际高度
+            const topVal =  pxToRpx(rect.height) 
+            mescrollTop.value = topVal + 'rpx';
         } else {
-            return '718rpx'
+            // 兜底用原有固定值
+            if ((cashOutConfigObj.is_open == 1 || rechargeConfigObj.is_use == 1)) {
+                if (Object.keys(systemStore.menuButtonInfo).length) {
+                    mescrollTop.value =  (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + pxToRpx(8) + 700) + 'rpx'
+                } else {
+                    mescrollTop.value =  '718rpx'
+                }
+            } else {
+                // #ifdef APP-PLUS
+                mescrollTop.value =  (pxToRpx(Number(systemStore.systemInfo.statusBarHeight)) + pxToRpx(8) + 632) + 'rpx'
+                // #endif
+                if (Object.keys(systemStore.menuButtonInfo).length) {
+                    mescrollTop.value =  (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + pxToRpx(8) + 632) + 'rpx'
+                } else {
+                    mescrollTop.value =  '650rpx'
+                }
+            }
         }
-    } else {
-        // #ifdef APP-PLUS
-        return (pxToRpx(Number(systemStore.systemInfo.statusBarHeight)) + pxToRpx(8) + 632) + 'rpx'
-        // #endif
-        if (Object.keys(systemStore.menuButtonInfo).length) {
-            return (pxToRpx(Number(systemStore.menuButtonInfo.height)) + pxToRpx(systemStore.menuButtonInfo.top) + pxToRpx(8) + 632) + 'rpx'
-        } else {
-            return '650rpx'
-        }
-    }
-})
+    }).exec();
+};
 
 //获取数据来源类型
 const accountTypeList = ref([

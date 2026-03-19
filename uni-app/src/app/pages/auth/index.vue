@@ -32,7 +32,10 @@
                     <view class="w-full flex items-center justify-center mb-[40rpx]" v-if="loginConfig.is_auth_register">
 
                         <!-- 开启强制绑定手机号或者手机号登录的情况，排除强制获取用户信息的情况（is_force_access_user_info为0） -->
-                        <button v-if="!wapMemberMobile && loginConfig.is_bind_mobile && !loginConfig.is_force_access_user_info" class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" :open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy">{{ t('quickLoginOrLogout') }}</button>
+                        <template v-if="!wapMemberMobile && loginConfig.is_bind_mobile && !loginConfig.is_force_access_user_info">
+                            <button v-if="!privacyAgreed" class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" @click="callProtocolFn">{{ t('quickLoginOrLogout') }}</button>
+                            <button v-else class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" :open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy">{{ t('quickLoginOrLogout') }}</button>
+                        </template>
 
                         <!-- 授权登录/注册 -->
                         <button v-else class="w-[630rpx] h-[88rpx] !mx-[0] !bg-[var(--primary-color)] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" @click="oneClickLogin()">{{ t('quickLoginOrLogout') }}</button>
@@ -41,12 +44,15 @@
 
                     <!-- 未开启第三方登录/注册，但是开启了手机号登录，则一键手机号登录/注册 -->
                     <view class="w-full flex items-center justify-center mb-[40rpx]" v-else-if="!loginConfig.is_auth_register && loginConfig.is_mobile">
-                        <button v-if="!wapMemberMobile" class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" :open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy('mobileAuth')">{{ t('quickLoginOrLogout') }}</button>
+                        <template v-if="!wapMemberMobile">
+                            <button v-if="!privacyAgreed" class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" @click="callProtocolFn">{{ t('quickLoginOrLogout') }}</button>
+                            <button v-else class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" :open-type="openType" @getphonenumber="mobileAuth" @click="checkWxPrivacy('mobileAuth')">{{ t('quickLoginOrLogout') }}</button>
+                        </template>
                         <button v-else class="w-[630rpx] h-[88rpx] !bg-[var(--primary-color)] !mx-[0] text-[26rpx] rounded-[44rpx] leading-[88rpx] font-500 !text-[#fff]" @click="oneClickLogin()">{{ t('quickLoginOrLogout') }}</button>
                     </view>
 
                     <!-- 小程序隐私协议 -->
-                    <wx-privacy-popup ref="wxPrivacyPopupRef"></wx-privacy-popup>
+                    <wx-privacy-popup ref="wxPrivacyPopupRef" @disagree="checkPrivacyStatus" @agree="checkPrivacyStatus"></wx-privacy-popup>
 
                     <!-- #endif -->
 
@@ -237,6 +243,20 @@ onShow(() => {
     loginLoading.value = false;
 })
 
+// 是否同意隐私协议
+const privacyAgreed = ref(true)
+const checkPrivacyStatus = () => {
+    // 微信小程序隐私协议校验（uniapp 兼容写法）
+    wx.getPrivacySetting({
+        success(res) {
+            privacyAgreed.value = !res.needAuthorization;
+        },
+        fail(err) {
+            console.error('检查隐私协议失败：', err);
+        }
+    });
+}
+
 const warpStyle = computed(() => {
     let style = '';
     if (configStore.login.bg_url) {
@@ -249,6 +269,7 @@ const warpStyle = computed(() => {
 })
 
 // 检测是否同意小程序隐私协议和登录政策协议
+
 const checkWxPrivacy = (status: any = '') => {
     if (!isAgree.value && configStore.login.agreement_show) {
         // 针对微信小程序获取手机号特殊处理
@@ -260,6 +281,15 @@ const checkWxPrivacy = (status: any = '') => {
         return true;
     }
     return false;
+}
+
+const callProtocolFn = ()=>{
+    // #ifdef MP
+    if (wxPrivacyPopupRef.value) {
+        wxPrivacyPopupRef.value.proactive();
+        return true
+    }
+    // #endif
 }
 
 // 一键登录

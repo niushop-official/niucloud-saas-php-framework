@@ -61,8 +61,8 @@
         </view>
         <view class="calendar-wrap">
             <u-calendar :show="calendarShow" mode="single" @confirm="confirm" @close="calendarShow=false"
-                        closeOnClickOverlay="true"
-                        :formatter="formatter" confirmDisabledText="禁止选择" color="var(--primary-color)"
+                        closeOnClickOverlay="true" :min-date="calendarMinDate"
+                        :formatter="formatter" confirmDisabledText="禁止选择" color="var(--primary-color)" monthNum="12" 
                         ref="calendar" :maxDate="maxDate"></u-calendar>
             <u-datetime-picker :show="show" v-model="diyComponent.field.value.date" mode="datetime" @cancel="show=false"
                                closeOnClickOverlay="true" @confirm="calendarConfirm" @close="show=false"
@@ -86,6 +86,7 @@ const maxDate = ref(currentDate.getTime());
 
 let currentDateTime = new Date();
 const minDate = ref(currentDateTime.getTime());
+const calendarMinDate = ref(new Date(currentDateTime.getFullYear(), currentDateTime.getMonth() - 9, currentDateTime.getDate()));
 
 const props = defineProps(['component', 'index', 'global']);
 const diyStore = useDiyStore();
