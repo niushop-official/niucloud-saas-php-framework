@@ -9,6 +9,14 @@ export function getWeappConfig() {
 }
 
 /**
+ * 获取微信小程序配置
+ * @returns
+ */
+export function getWeappAuthUrl() {
+    return request.get('weapp/auth_url')
+}
+
+/**
  * 编辑微信小程序配置
  * @param params
  * @returns

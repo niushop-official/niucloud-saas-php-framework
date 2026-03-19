@@ -146,6 +146,9 @@ export const deleteGeometry = (key: string) => {
  * @param key
  */
 export const selectGeometry = (key: string) => {
+    if (!geometry[key] || !geometry[key].editor) {
+        return
+    }
     geometry[key].editor.select([key])
 }
 

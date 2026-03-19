@@ -38,10 +38,12 @@ class Storage {
      */
     public get(key: string) {
         try {
-            const json: any = window.localStorage.getItem(`${this.prefix}.${key}`)
-            return JSON.parse(json)
+            const value = window.localStorage.getItem(`${this.prefix}.${key}`)
+            if (value === null) return null
+            return JSON.parse(value)
         } catch (error) {
-            return window.localStorage.getItem(`${this.prefix}.${key}`)
+            const value = window.localStorage.getItem(`${this.prefix}.${key}`)
+            return value !== null ? value : null
         }
     }
 

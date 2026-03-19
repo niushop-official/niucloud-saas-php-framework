@@ -87,7 +87,7 @@
         <input type="hidden" v-model="comparisonToken">
         <input type="hidden" v-model="comparisonSiteId">
 
-        <el-dialog v-model="detectionLoginDialog" :title="t('layout.detectionLoginTip')" width="30%" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
+        <el-dialog v-model="detectionLoginDialog" :title="t('layout.detectionLoginTip')" width="30%" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false" :append-to-body="true">
             <span>{{ t('layout.detectionLoginContent') }}</span>
             <template #footer>
                 <span class="dialog-footer">

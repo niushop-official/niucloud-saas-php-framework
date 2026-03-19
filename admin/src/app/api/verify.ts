@@ -36,7 +36,7 @@ export function getVerifyDetailInfo(verifyCode: string) {
  * @returns
  */
 export function verify(verifyCode: string, params: Record<string, any>) {
-    return request.post(`verify/verify/${ verifyCode }`,params,{ showSuccessMessage: true})
+    return request.post(`verify/verify/${ verifyCode }`, params, { showSuccessMessage: true })
 }
 /***************************************************** 核销员 ****************************************************/
 
@@ -97,5 +97,5 @@ export function getVerifyInfo(id: number) {
  * @returns
  */
 export function editVerifier(params: Record<string, any>) {
-    return request.post(`verify/verifier/${ params.id }`, params,{ showSuccessMessage: true })
+    return request.post(`verify/verifier/${ params.id }`, params, { showSuccessMessage: true })
 }

@@ -196,13 +196,14 @@ export function findFirstValidRoute(routes: RouteRecordRaw[]): string | undefine
  * @param rules
  */
 export function findRules(routes: Route[], rules :string[] = []) : string[] {
+    let resultRules = [...rules]
     for (const route of routes) {
         if (route.auth && Array.isArray(route.auth)) {
-            rules = rules.concat(route.auth)
+            resultRules = resultRules.concat(route.auth)
         }
         if (route.children) {
-            rules = findRules(route.children, rules)
+            resultRules = findRules(route.children, resultRules)
         }
     }
-    return rules
+    return resultRules
 }

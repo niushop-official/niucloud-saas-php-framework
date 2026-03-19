@@ -33,6 +33,12 @@
                         </template>
                     </el-table-column>
 
+                    <el-table-column :label="t('消息类型')" min-width="100" align="center">
+                        <template #default="{ row }">
+                            <span class="text-[#fff] rounded-[3px] px-[8px] py-[2px]" :class="{'bg-[#008000]': row.receiver_type == 1, 'bg-[#0000ff]': row.receiver_type == 0}">{{ row.receiver_type == 1 ? t('buyerNews') : t('sellerMessage') }}</span>
+                        </template>
+                    </el-table-column>
+
                     <el-table-column :label="t('response')" min-width="180">
                         <template #default="{ row }">
                             <div v-for="(item, index) in row.weapp.content" :key="'a' + index" class="text-left">{{ item.join(":") }}</div>

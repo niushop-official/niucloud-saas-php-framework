@@ -159,10 +159,10 @@ export function getPrinterBrand(params: Record<string, any>) {
  * @returns
  */
 export function refreshPrinterToken(printer_id: number) {
-    return request.put(`sys/printer/refreshtoken/${ printer_id }`,{},{
+    return request.put(`sys/printer/refreshtoken/${ printer_id }`, {}, {
         showErrorMessage: true,
         showSuccessMessage: true
-    });
+    })
 }
 
 /**
@@ -171,7 +171,7 @@ export function refreshPrinterToken(printer_id: number) {
  * @returns
  */
 export function testPrint(printer_id: number) {
-    return request.put(`sys/printer/testprint/${ printer_id }`, {},{ showErrorMessage: true, showSuccessMessage: true });
+    return request.put(`sys/printer/testprint/${ printer_id }`, {}, { showErrorMessage: true, showSuccessMessage: true })
 }
 
 /**

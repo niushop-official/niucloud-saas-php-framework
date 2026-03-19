@@ -11,12 +11,64 @@ export function getNoticeList(params: any) {
 }
 
 /**
- * 消息发送记录
+ * 消发送记录
  * @param params
  * @returns
  */
 export function getNoticeLog(params: any) {
     return request.get(`notice/log`, { params })
+}
+
+/**
+ * 获取消息发送记录
+ * @param params
+ * @returns
+ */
+export function getBindInfo() {
+    return request.get(`notice/bind/info`)
+}
+
+/**
+ * 取消绑定
+ * @param params
+ * @returns
+ */
+export function cancelBind(params: any) {
+    return request.post(`notice/bind/cancel`, params)
+}
+
+/**
+ * 获取微信配置
+ * @returns
+ */
+export function getWechatAuthUrl() {
+    return request.get('notice/bind/wechat')
+}
+
+/**
+ * 获取微信配置
+ * @returns
+ */
+export function getWeappAuthUrl() {
+    return request.get('notice/bind/weapp')
+}
+
+
+/**
+ * 获取微信配置
+ * @returns
+ */
+export function sendSms(params: Record<string, any>) {
+    return request.post('notice/bind/sms/send',params, { showSuccessMessage: true })
+}
+
+
+/**
+ * 获取微信配置
+ * @returns
+ */
+export function bindSms(params: Record<string, any>) {
+    return request.post('notice/bind/sms/bind',params, { showSuccessMessage: true })
 }
 
 /**
@@ -60,7 +112,7 @@ export function getSmsList() {
  * @returns
  */
 export function getSmsInfo(sms_type: string) {
-    return request.get(`notice/notice/sms/${ sms_type }`,)
+    return request.get(`notice/notice/sms/${ sms_type }`)
 }
 
 /**
@@ -91,7 +143,7 @@ export function getAccountIsLogin() {
  * @param params
  */
 export function loginAccount(params: Record<string, any>) {
-    return request.post(`notice/niusms/account/login`,params,{ showSuccessMessage: true })
+    return request.post(`notice/niusms/account/login`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -99,7 +151,7 @@ export function loginAccount(params: Record<string, any>) {
  * @param params
  */
 export function registerAccount(params: Record<string, any>) {
-    return request.post(`notice/niusms/account/register`,params,{ showSuccessMessage: true })
+    return request.post(`notice/niusms/account/register`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -115,7 +167,7 @@ export function getAccountInfo(username: string) {
  * @param params
  */
 export function getTemplateList(params: Record<string, any>) {
-    return request.get(`notice/niusms/template/list/${params.sms_type}/${params.username}`,{})
+    return request.get(`notice/niusms/template/list/${params.sms_type}/${params.username}`, {})
 }
 
 /**
@@ -124,7 +176,7 @@ export function getTemplateList(params: Record<string, any>) {
  * @param params
  */
 export function getSignList(username: string, params: Record<string, any>) {
-    return request.get(`notice/niusms/sign/list/${username}`,{params})
+    return request.get(`notice/niusms/sign/list/${username}`, { params })
 }
 
 /**
@@ -150,8 +202,8 @@ export function deleteSign(username: string, params: Record<string, any>) {
  * @param username
  * @param params
  */
-export function editAccount(username: string,params: Record<string, any>) {
-  return request.post(`notice/niusms/account/edit/${username}`, params, { showSuccessMessage: true });
+export function editAccount(username: string, params: Record<string, any>) {
+    return request.post(`notice/niusms/account/edit/${username}`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -160,7 +212,7 @@ export function editAccount(username: string,params: Record<string, any>) {
  * @param params
  */
 export function getSmsSendList(username: string, params: Record<string, any>) {
-    return request.get(`notice/niusms/account/send_list/${username}`,{params})
+    return request.get(`notice/niusms/account/send_list/${username}`, { params })
 }
 
 /**
@@ -169,7 +221,7 @@ export function getSmsSendList(username: string, params: Record<string, any>) {
  * @param params
  */
 export function getSmsOrdersList(username: string, params: Record<string, any>) {
-    return request.get(`notice/niusms/order/list/${username}`,{params})
+    return request.get(`notice/niusms/order/list/${username}`, { params })
 }
 
 /**
@@ -197,7 +249,7 @@ export function getsiteCaptcha() {
  * @param params
  */
 export function getSmsSend(params: Record<string, any>) {
-    return request.post(`notice/niusms/send`,params,{ showSuccessMessage: true })
+    return request.post(`notice/niusms/send`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -223,7 +275,7 @@ export function getTemplateReportConfig() {
  * @param params
  */
 export function reportTemplate(sms_type: string, username: string, params: Record<string, any>) {
-    return request.post(`notice/niusms/template/report/${sms_type}/${username}`,params,{ showSuccessMessage: true })
+    return request.post(`notice/niusms/template/report/${sms_type}/${username}`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -234,8 +286,8 @@ export function reportTemplate(sms_type: string, username: string, params: Recor
  * @param username
  * @param params
  */
-export function getreportTemplateInfo(sms_type: string, username: string,params: Record<string, any>) {
-    return request.get(`notice/niusms/template/info/${sms_type}/${username}`,{params})
+export function getreportTemplateInfo(sms_type: string, username: string, params: Record<string, any>) {
+    return request.get(`notice/niusms/template/info/${sms_type}/${username}`, { params })
 }
 
 
@@ -254,7 +306,7 @@ export function smsOrderCreate(username: string, params: Record<string, any>) {
  * @param params
  */
 export function getOrderPayInfo(username: string, params: Record<string, any>) {
-    return request.get(`notice/niusms/order/pay/${username}`, {params})
+    return request.get(`notice/niusms/order/pay/${username}`, { params })
 }
 
 /**
@@ -263,7 +315,7 @@ export function getOrderPayInfo(username: string, params: Record<string, any>) {
  * @param params
  */
 export function getOrderInfo(username: string, params: Record<string, any>) {
-    return request.get(`notice/niusms/order/info/${username}`, {params})
+    return request.get(`notice/niusms/order/info/${username}`, { params })
 }
 
 /**
@@ -272,7 +324,7 @@ export function getOrderInfo(username: string, params: Record<string, any>) {
  * @param params
  */
 export function getOrderPayStatus(username: string, params: Record<string, any>) {
-    return request.get(`notice/niusms/order/status/${username}`, {params})
+    return request.get(`notice/niusms/order/status/${username}`, { params })
 }
 
 /**
@@ -289,7 +341,7 @@ export function calculateOrderPay(username: string, params: Record<string, any>)
  * @param params
  */
 export function enableNiusms(params: Record<string, any>) {
-    return request.put(`notice/niusms/enable`,params,{ showSuccessMessage: true })
+    return request.put(`notice/niusms/enable`, params, { showSuccessMessage: true })
 }
 
 /**
@@ -307,8 +359,8 @@ export function templateSync(sms_type: string, username: string) {
  * @param username
  * @param params
  */
-export function resetPassword(username: string,params: Record<string, any>) {
-    return request.post(`notice/niusms/account/reset/password/${username}`,params,{ showSuccessMessage: true})
+export function resetPassword(username: string, params: Record<string, any>) {
+    return request.post(`notice/niusms/account/reset/password/${username}`, params, { showSuccessMessage: true })
 }
 
 /**

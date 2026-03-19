@@ -52,12 +52,14 @@ const useSystemStore = defineStore('system', {
         async getWebsiteInfo() {
             await getWebConfig().then(({ data }) => {
                 this.website = data
-            }).catch()
+            }).catch(() => {
+            })
         },
         async getWebsiteLayout() {
             await getWebsiteLayout().then(({ data }) => {
                 this.layoutConfig = data
-            }).catch()
+            }).catch(() => {
+            })
         }
     }
 })

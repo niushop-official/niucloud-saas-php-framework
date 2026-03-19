@@ -479,7 +479,7 @@ const handleFailReason = (data: any) => {
 }
 
 const helpInfo = () => {
-    window.open('https://doc.niucloud.com/saasUse.html?keywords=/configFAQ/minWaChatUpload')
+    window.open('https://doc.press.niucloud.com/php/saas-framework/use/configFAQ/minWaChatUpload.html')
 }
 
 const knownToKnow = () => {

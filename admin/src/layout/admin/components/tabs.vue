@@ -53,7 +53,10 @@ const tabClick = (content: any) => {
 const removeTab = (content: any) => {
     if (route.path == content) {
         const tabs = Object.keys(tabbarStore.tabs)
-        router.push({ path: tabs[tabs.indexOf(content) - 1] })
+        const currentIndex = tabs.indexOf(content)
+        if (currentIndex > 0) {
+            router.push({ path: tabs[currentIndex - 1] })
+        }
     }
     tabbarStore.removeTab(content)
 }

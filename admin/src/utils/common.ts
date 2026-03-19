@@ -127,13 +127,14 @@ export function isUrl(str: string): boolean {
  * @returns
  */
 export function img(path: string): string {
+    if (!path) return ''
+    
     let imgDomain = import.meta.env.VITE_IMG_DOMAIN || location.origin
 
-    if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
-    if (typeof imgDomain == 'string' && imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)
-	if(path){
-		return isUrl(path) ? path : `${imgDomain}/${path}`
-	}
+    if (path.startsWith('/')) path = path.replace(/^\//, '')
+    if (imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)
+    
+    return isUrl(path) ? path : `${imgDomain}/${path}`
 }
 
 /**
@@ -409,4 +410,29 @@ export function distance(distance: string | number): string {
     const dist = typeof distance === 'string' ? parseFloat(distance) : distance;
     if (isNaN(dist)) return distance.toString();
     return dist < 1 ? parseInt((dist * 1000).toString()) + 'm' : dist.toFixed(1) + 'km'
+}
+
+// 获取图片尺寸的函数
+export function getImageDimensions (url: string) {
+
+    return new Promise((resolve) => {
+        const imgObj = new Image()
+        imgObj.onload = () => {
+            // 成功加载
+            const size = {
+                width: imgObj.naturalWidth,
+                height: imgObj.naturalHeight
+            }
+            resolve(size)
+        }
+
+        imgObj.onerror = (err) => {
+            // 加载失败
+            resolve(null)
+        }
+
+        // 设置图片源，开始加载
+        // 注意：如果图片跨域且服务器未设置CORS，可能会触发onerror
+        imgObj.src = img(url)
+    })
 }

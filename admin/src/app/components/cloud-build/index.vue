@@ -377,7 +377,7 @@ const dialogCancel = () => {
 }
 
 const cloudBuildCheckDirFn = () => {
-    window.open('https://doc.niucloud.com/v6.html?keywords=/chang-jian-wen-ti-chu-li/er-shi-wu-3001-sheng-7ea7-yun-bian-yi-mu-lu-du-xie-quan-xian-zhuang-tai-bu-tong-guo-ru-he-chu-li')
+    window.open('https://doc.press.niucloud.com/php/v6-shop/use/chang-jian-wen-ti-chu-li/er-shi-wu-3001-sheng-7ea7-yun-bian-yi-mu-lu-du-xie-quan-xian-zhuang-tai-bu-tong-guo-ru-he-chu-li.html')
 }
 
 watch(() => showDialog.value, () => {

@@ -17,7 +17,7 @@
   "mobileOrUsernameNoEmpty": "普通注册方式至少需启用一种",
   "loginPageSet": "界面设置",
   "bgUrl": "背景图",
-  "bgUrlPlaceholder": "建议图片尺寸：750*669像素；图片格式：jpg、png、jpeg",
+  "bgUrlPlaceholder": "前台快捷登录/注册页的背景图，建议图片尺寸：750*669像素；图片格式：jpg、png、jpeg",
   "desc": "描述",
   "descPlaceholder": "请输入描述"
 }

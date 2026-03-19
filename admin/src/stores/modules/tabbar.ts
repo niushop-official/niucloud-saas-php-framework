@@ -17,18 +17,18 @@ const useTabbarStore = defineStore('tabbar', {
         }
     },
     actions: {
-        addTab(roter: RouteLocationNormalizedLoaded) {
-            if (roter.meta && roter.meta.type != 1) return
-            if (this.tabs[roter.name]) {
-                this.tabs[roter.name].query = roter.query || {}
+        addTab(router: RouteLocationNormalizedLoaded) {
+            if (router.meta && router.meta.type != 1) return
+            if (this.tabs[router.name]) {
+                this.tabs[router.name].query = router.query || {}
                 return
             }
-            this.tabs[roter.name] = {
-                path: roter.path,
-                title: roter.meta ? roter.meta.title : '',
-                name: roter.name,
-                query: roter.query || {},
-                compomentName: roter.matched.at(-1).components.default.__name
+            this.tabs[router.name] = {
+                path: router.path,
+                title: router.meta ? router.meta.title : '',
+                name: router.name,
+                query: router.query || {},
+                componentName: router.matched.at(-1)?.components.default.__name
             }
         },
         removeTab(path: string) {
@@ -44,7 +44,7 @@ const useTabbarStore = defineStore('tabbar', {
             const name: any[] = []
             if (!useSystemStore().tab) return name
             Object.keys(state.tabs).forEach(key => {
-                name.push(state.tabs[key].compomentName)
+                name.push(state.tabs[key].componentName)
             })
             return name
         }

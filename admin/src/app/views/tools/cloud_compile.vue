@@ -83,7 +83,7 @@
                         温馨提示
                     </span>
                     <span class="text-[12px] text-[#9699B6] ml-[10px]">运行环境要求：需预先配置 Nodejs 环境</span>
-                    <span class="text-[14px]  text-primary cursor-pointer ml-[10px] border-b-[1px] border-solid border-primary"  @click="linkEvent('https://doc.niucloud.com/saas.html?keywords=/di-san-fang-yun-bian-yi-pei-zhi')">搭建教程</span>
+                    <span class="text-[14px]  text-primary cursor-pointer ml-[10px] border-b-[1px] border-solid border-primary"  @click="linkEvent('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html')">搭建教程</span>
                 </div>
                  <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">
                     <span>1、下载第三方云编译服务器搭建程序包</span><span class="text-primary cursor-pointer "  @click="linkEvent('https://gitee.com/niucloud-team/niucloud-compile-server')"> niucloud-compile-server</span>
@@ -139,7 +139,7 @@
                 </div>
                 <div>
                     <div class="ml-[40px] text-[#374151] text-[14px] italic">
-                        <span class="text-[16px] italic">#安装依赖：</span>
+                        <span class="text-[16px] italic font-500">#安装依赖：</span>
                         <span class="italic">进入admin端与uniapp端以及web端目录都可执行</span>
                     </div>
                     <div class="ml-[40px] w-[1085px] h-[40px]  bg-[#F9F9FB] rounded-[4px] mt-[10px] flex items-center justify-between border-[#F1F1F8] border-solid border-[1px] px-[10px]">
@@ -149,9 +149,9 @@
                 </div>
                 <div class="mt-[21px]">
                     <div class="ml-[40px] text-[14px] text-[#374151] italic">
-                        <span class="text-[16px] italic">#后台admin端口打包：</span>
+                        <span class="text-[16px] italic font-500">#后台admin端口打包：</span>
                         <span>进入admin目录下执行，执行后编译代码默认移动到系统的niucloud下的</span>
-                        <span class="text-[#F09000] mx-[3px]">public/admin</span>
+                        <span class="text-[#F09000] mx-[3px] font-bold">public/admin</span>
                         <span>目录下</span>
                     </div>
                     <div class="ml-[40px] w-[1085px] h-[40px]  bg-[#F9F9FB] rounded-[4px] mt-[10px] flex items-center justify-between border-[#F1F1F8] border-solid border-[1px] px-[10px]">
@@ -161,9 +161,9 @@
                 </div>
                 <div class="mt-[21px]">
                     <div class="ml-[40px] text-[14px] text-[#374151] italic">
-                        <span class="text-[16px] italic">#使用uniapp打包H5：</span>
+                        <span class="text-[16px] italic font-500">#使用uniapp打包H5：</span>
                         <span>进入uniapp目录下执行，执行后编译代码默认移动到系统niucloud下的</span>
-                        <span class="text-[#F09000] mx-[3px]">public/wap</span>
+                        <span class="text-[#F09000] mx-[3px] font-bold">public/wap</span>
                         <span>目录下</span>
                     </div>
                     <div class="ml-[40px] w-[1085px] h-[40px]  bg-[#F9F9FB] rounded-[4px] mt-[10px] flex items-center justify-between border-[#F1F1F8] border-solid border-[1px] px-[10px]">
@@ -173,9 +173,9 @@
                 </div>
                 <div class="mt-[21px]">
                     <div class="ml-[40px] text-[14px] text-[#374151] italic">
-                        <span class="text-[16px] italic">#使用uniapp打包微信小程序：</span>
+                        <span class="text-[16px] italic font-500">#使用uniapp打包微信小程序：</span>
                         <span>进入uniapp目录下执行，执行后编译代码默认移动到系统niucloud下的</span>
-                        <span class="text-[#F09000] mx-[3px]">uni-app/dist/build/mp-weixin</span>
+                        <span class="text-[#F09000] mx-[3px] font-bold">uni-app/dist/build/mp-weixin</span>
                         <span>目录</span>
                     </div>
                     <div class="ml-[40px] w-[1085px] h-[40px]  bg-[#F9F9FB] rounded-[4px] mt-[10px] flex items-center justify-between border-[#F1F1F8] border-solid border-[1px] px-[10px]">
@@ -185,9 +185,9 @@
                 </div>
                 <div class="mt-[21px]">
                     <div class="ml-[40px] text-[14px] text-[#374151] italic">
-                        <span class="text-[16px] italic">#前台web(pc)端打包:：</span>
+                        <span class="text-[16px] italic font-500">#前台web(pc)端打包:：</span>
                         <span>进入web目录下执行，执行后编译代码默认移动到系统niucloud下的</span>
-                        <span class="text-[#F09000] mx-[3px]">public/web</span>
+                        <span class="text-[#F09000] mx-[3px] font-bold">public/web</span>
                         <span>目录下</span>
                     </div>
                     <div class="ml-[40px] w-[1085px] h-[40px]  bg-[#F9F9FB] rounded-[4px] mt-[10px] flex items-center justify-between border-[#F1F1F8] border-solid border-[1px] px-[10px]">

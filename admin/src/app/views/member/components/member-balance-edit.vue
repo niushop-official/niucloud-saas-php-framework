@@ -14,7 +14,9 @@
             </el-form-item>
 
             <el-form-item :label="t('adjustBalance')" prop="adjust">
-                <el-input-number v-model="formData.adjust" clearable :min="0" :max="999999" :placeholder="t('adjustBalancePlaceholder')" @focus="formData.adjust = ''"  class="!w-[200px]"/>
+                <div>
+                    <el-input-number v-model="formData.adjust" clearable :min="0" :max="999999" :placeholder="t('adjustBalancePlaceholder')" @focus="formData.adjust = ''"  class="!w-[200px]"/>
+                </div>
             </el-form-item>
 
             <el-form-item :label="t('memo')" prop="memo">
@@ -70,7 +72,7 @@ const formRules = computed(() => {
                         callback(new Error(t('adjustBalancePlaceholder')))
                     }
 
-                    if (formData.adjust_type == -1 && (parseFloat(formData.balance) - adjust < 0)) {
+                    if (formData.adjust_type == -1 && (parseFloat(formData.balance) - adjust) < 0) {
                         callback(new Error(t('adjustBalanceMaxAccountMessage')))
                     }
 

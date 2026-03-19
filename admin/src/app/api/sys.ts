@@ -591,21 +591,21 @@ export function setPatConfig(params: Record<string, any>) {
 /**
  * 刷新菜单
  */
-export function menuRefresh(params: Record<string, any>) {
+export function menuRefresh() {
     return request.post(`sys/menu/refresh`, {})
 }
 
 /**
  * 清理数据字段缓存
  */
-export function clearSchemaCache(params: Record<string, any>) {
+export function clearSchemaCache() {
     return request.post(`sys/schema/clear`, {}, { showSuccessMessage: true })
 }
 
 /**
  * 清理缓存
  */
-export function clearCache(params: Record<string, any>) {
+export function clearCache() {
     return request.post(`sys/cache/clear`, {}, { showSuccessMessage: true })
 }
 
@@ -793,4 +793,12 @@ export function getWxoplatform() {
  */
 export function getQrcode(params: Record<string, any>) {
     return request.get(`sys/qrcode`, { params, showErrorMessage: false })
+}
+
+/**
+ * 校验消息队列
+ * @returns
+ */
+export function checkJobStatus() {
+    return request.get(`sys/job`)
 }

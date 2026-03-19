@@ -33,6 +33,7 @@
 <script lang="ts" setup>
 import { computed, ref, defineProps, nextTick } from "vue"
 import { t } from "@/lang"
+import { ElMessage } from "element-plus"
 import { getAppVersionList, getFrameworkVersionList } from "@/app/api/module"
 
 const props = defineProps({

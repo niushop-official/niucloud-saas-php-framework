@@ -47,7 +47,7 @@ const formRules = reactive<FormRules>({
                         callback('请输入积分数量')
                     } else if (isNaN(value) || !regExp.number.test(value)) {
                         callback('积分数量格式错误')
-                    } else if (value <=0) {
+                    } else if (value <= 0) {
                         callback('积分数量不能小于等于0')
                     } else{
                         callback();

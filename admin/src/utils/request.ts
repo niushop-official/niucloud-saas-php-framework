@@ -183,14 +183,26 @@ class Request {
     }
 
     private messageCache = new Map();
+    private readonly CACHE_EXPIRY = 5000; // 5秒内重复内容不再弹出，可自定义过期时间
+    private readonly MAX_CACHE_SIZE = 100;
 
     private showElMessage(options: MessageParams) {
         const cacheKey = options.message
+        const now = Date.now()
         const cachedMessage = this.messageCache.get(cacheKey);
 
-        if (!cachedMessage || Date.now() - cachedMessage.timestamp > 5000) { // 5秒内重复内容不再弹出，可自定义过期时间
-            this.messageCache.set(cacheKey, { timestamp: Date.now() });
+        if (!cachedMessage || now - cachedMessage.timestamp > this.CACHE_EXPIRY) {
+            this.messageCache.set(cacheKey, { timestamp: now });
             ElMessage(options)
+        }
+        
+        // 定期清理过期缓存，防止内存泄漏
+        if (this.messageCache.size > this.MAX_CACHE_SIZE) {
+            for (const [key, value] of this.messageCache.entries()) {
+                if (now - value.timestamp > this.CACHE_EXPIRY) {
+                    this.messageCache.delete(key)
+                }
+            }
         }
     }
 }

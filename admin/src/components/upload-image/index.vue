@@ -11,7 +11,7 @@
                         <icon name="element Delete" color="#fff" size="18px" @click.stop="removeImage" />
                     </div>
                 </div>
-                <upload-attachment :limit="limit" @confirm="confirmSelect" v-else>
+                <upload-attachment :limit="uploadImgNum" @confirm="confirmSelect" v-else>
                     <div class="w-full h-full flex items-center justify-center flex-col content-wrap">
                         <icon name="element Plus" size="20px" color="var(--el-text-color-secondary)" />
                         <div class="leading-none text-xs mt-[10px] text-secondary">{{ imageText || t('upload.root') }}</div>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="rounded cursor-pointer overflow-hidden relative border border-dashed border-color" :style="style" v-if="images.data.length < limit">
-                <upload-attachment :limit="limit" @confirm="confirmSelect">
+                <upload-attachment :limit="uploadImgNum" @confirm="confirmSelect">
                     <div class="w-full h-full flex items-center justify-center flex-col content-wrap">
                         <icon name="element Plus" size="20px" color="var(--el-text-color-secondary)" />
                         <div class="leading-none text-xs mt-[10px] text-secondary">{{ imageText || t('upload.root') }}</div>
@@ -104,6 +104,11 @@ const setValue = () => {
     value.value = toRaw(images.data).toString()
     previewImageList = toRaw(images.data).map((url: string) => { return url.indexOf('data:image') != -1 ? url : img(url) })
 }
+
+const uploadImgNum = computed(() => {
+    const num = prop.limit - images.data.length
+    return num
+})
 
 watch(() => value.value, () => {
     if (value.value.indexOf('data:image') != -1) {

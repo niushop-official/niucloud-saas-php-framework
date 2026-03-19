@@ -141,7 +141,7 @@ export function deleteSiteGroup(group_id: number) {
  * @param params
  * @returns
  */
-export function getSiteGroupAll(params: Record<string, any> = {}) {
+export function getSiteGroupAll() {
     return request.get(`site/group/all`)
 }
 
