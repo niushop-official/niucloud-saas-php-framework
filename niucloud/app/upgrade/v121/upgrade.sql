@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS `site_merchant_bind`;
 CREATE TABLE `site_merchant_bind`
 (
     id            int NOT NULL AUTO_INCREMENT,

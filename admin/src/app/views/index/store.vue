@@ -816,16 +816,16 @@
           </div>
         </div>
 
-        <div class="app-section-header mt-[20px] mb-[12px]" v-if="detailAddon.is_local || !detailAddon.is_local&&detailAddon.expire_time">
+        <div class="app-section-header mt-[20px] mb-[12px]">
           <div class="app-section-title">服务周期</div>
           <div class="app-section-line"></div>
         </div>
-        <div class="space-y-[10px] text-[14px]" v-if="detailAddon.is_local || !detailAddon.is_local&&detailAddon.expire_time">
+        <div class="space-y-[10px] text-[14px]">
           <div class="flex items-center">
             <div class="w-[84px] text-[#9699B6]">有效期至：</div>
             <div class="text-[#374151] flex items-center">
-              <div class="text-[#374151]">{{detailAddon.is_local ? '长期' : detailAddon.expire_time }}</div>
-              <div class="ml-[10px] flex items-center gap-[3px]">
+              <div class="text-[#374151]">{{ detailAddon.expire_time || '--' }}</div>
+              <div class="ml-[10px] flex items-center gap-[3px]" v-if="detailAddon.app_id">
                 <span class="iconfont icongouwuche text-[var(--el-color-primary)]"></span>
                 <span class="text-[var(--el-color-primary)] text-[14px] cursor-pointer" @click="toLink('pc')">续费应用</span>
               </div>
@@ -853,11 +853,11 @@
           </div>
         </template>
 
-        <div class="app-section-header mt-[20px] mb-[12px]" v-if="detailAddon.key != 'niucloud-admin'">
+        <div class="app-section-header mt-[20px] mb-[12px]" v-if="detailAddon.key != 'niucloud-admin' && detailAddon.app_id">
           <div class="app-section-title">访问应用</div>
           <div class="app-section-line"></div>
         </div>
-        <div class="flex gap-[30px]" v-if="detailAddon.key != 'niucloud-admin'">
+        <div class="flex gap-[30px]" v-if="detailAddon.key != 'niucloud-admin' && detailAddon.app_id">
           <div class="bg-[#F5F5F5] w-[336px] h-[60px] px-[20px] flex items-center justify-between cursor-pointer" @click="toLink('pc')">
             <div class="flex items-center">
               <div class="w-[28px] h-[28px] flex items-center justify-center mr-[2px]">
@@ -891,8 +891,8 @@
           <div class="app-section-title">更新历史</div>
           <div class="app-section-line"></div>
         </div>
-        <div class="detail-upgrade-log h-[500px] overflow-auto" v-loading="detailLogLoading">
-          <el-scrollbar>
+        <div class="detail-upgrade-log -mx-[20px] h-[500px] overflow-auto" v-loading="detailLogLoading">
+          <el-scrollbar class="px-[20px]">
             <el-timeline style="width: 100%" v-if="detailVersionList.length">
               <el-timeline-item v-for="(item, index) in detailVersionList" :key="item.version_no || index" placement="left">
                 <el-collapse v-model="detailLogActive" accordion>
@@ -900,8 +900,8 @@
                     <template #title>
                       <div class="flex items-center justify-between flex-1">
                         <div class="flex flex-col items-baseline">
-                          <p class="text-[#1D1F3A] text-[16px]">版本：V{{ item.version_no }} </p>
-                          <div class="flex items-center">
+                          <p class="text-[#1D1F3A] text-[14px]">版本：V{{ item.version_no }} </p>
+                          <div class="flex items-center leading-[1] mt-[2px]">
                             <span class="text-[#9699B6] text-[14px]">{{ timeSplit(item.release_time)[0] }}</span>
                             <span class="text-[#9699B6] text-[14px] ml-[3px]">{{ timeSplit(item.release_time)[1] }}</span>
                           </div>

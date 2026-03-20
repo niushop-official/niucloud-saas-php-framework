@@ -17,7 +17,6 @@ use think\facade\Route;
 //支付异步回调
 Route::any('pay/notify/:site_id/:channel/:type/:action', 'pay.Pay/notify')
     ->middleware(ApiChannel::class)
-    ->middleware(ApiCheckToken::class)
     ->middleware(ApiLog::class);
 /**
  * 路由
@@ -27,7 +26,6 @@ Route::group('pay',function () {
     Route::get('friendspay/info/:trade_type/:trade_id', 'pay.Pay/friendspayInfo');
 
 })->middleware(ApiChannel::class)
-    ->middleware(ApiCheckToken::class)
     ->middleware(ApiLog::class);
 
 Route::group('pay',function () {

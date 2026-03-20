@@ -45,7 +45,7 @@ class CoreAddonService extends CoreAddonBaseService
     public function getLocalAddonList()
     {
         $list = [];
-        $online_app_list = $online_apps= [];
+        $online_app_list = $online_apps = [];
         $install_addon_list = $this->model->append(['status_name'])->column('title, icon, key, desc, status, author, version, install_time, update_time, cover', 'key');
         try {
             $niucloud_module_list = (new CoreModuleService())->getModuleList()['data'] ?? [];
@@ -67,10 +67,15 @@ class CoreAddonService extends CoreAddonBaseService
                     'cover' => $v['app']['window_logo'][0],
                 );
                 $data['install_info'] = $install_addon_list[$v['app']['app_key']] ?? [];
+                //给安装的插件中为授权插件或应用的数据赋值过期时间
+                if (isset($install_addon_list[$v['app']['app_key']])) {
+                    $install_addon_list[$v['app']['app_key']]['expire_time'] = $v['expire_time'];
+                }
+
                 $list[$v['app']['app_key']] = $data;
             }
-            $online_app_list = array_column($list ,'key');
-            $online_apps = array_column($list,'app_id' ,'key');
+            $online_app_list = array_column($list, 'key');
+            $online_apps = array_column($list, 'app_id', 'key');
         } catch (Throwable $e) {
             $error = $e->getMessage();
         }
@@ -86,9 +91,9 @@ class CoreAddonService extends CoreAddonBaseService
                     $data['is_download'] = true;
                     $data['is_local'] = !in_array($data['key'], $online_app_list);
                     $data['version'] = isset($list[$data['key']]) ? $list[$data['key']]['version'] : $data['version'];
-                    $data['app_id'] =  in_array($data['key'], $online_app_list) ? $online_apps[$data['key']] : 0;
+                    $data['app_id'] = in_array($data['key'], $online_app_list) ? $online_apps[$data['key']] : 0;
                     $data['author_phone'] = '';
-                    $data['expire_time'] = '长期有效';
+                    $data['expire_time'] = !isset($install_addon_list[$data['key']]) ? '长期有效' : ($install_addon_list[$data['key']]['expire_time'] ?? '');
                     $list[$key] = $data;
                 }
             }
