@@ -34,7 +34,7 @@ trait AccessToken
     {
         $this->access_token = '';
         Cache::delete($this->access_token_cache);
-        if (file_exists(public_path() . 'access_token.txt')) unlink(file_exists(public_path() . 'access_token.txt'));
+        if (file_exists(public_path() . 'access_token.txt')) unlink(public_path() . 'access_token.txt');
         return $this;
     }
     /**

@@ -271,6 +271,7 @@ return [
     'PAY_NOT_FOUND_TRADE' => '找不到可支付的交易',
 
     'MERCHANT_TRANSFER_SCENARIOS_THAT_DO_NOT_EXIST' => '不存在的商户转账场景',
+    'MERCHANT_TRANSFER_SCENE_ID_MIN_4' => '场景ID最短为4位',
     //退款相关
     'REFUND_NOT_EXIST' => '退款单据不存在',
     //订单相关  8***

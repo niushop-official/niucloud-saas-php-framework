@@ -32,13 +32,13 @@ class CloudDict
 
     public static function getAppletUploadStatus($status) {
         $status_list = [
-            self::APPLET_UPLOADING => get_lang('dict_cloud_applet.uploading'),
-            self::APPLET_UPLOAD_SUCCESS => get_lang('dict_cloud_applet.upload_success'),
-            self::APPLET_UPLOAD_FAIL => get_lang('dict_cloud_applet.upload_fail'),
-            self::APPLET_AUDITING => get_lang('dict_cloud_applet.auditing'),
-            self::APPLET_AUDIT_FAIL => get_lang('dict_cloud_applet.audit_fail'),
-            self::APPLET_PUBLISHED => get_lang('dict_cloud_applet.published'),
-            self::APPLET_AUDIT_UNDO => get_lang('dict_cloud_applet.undo')
+            self::APPLET_UPLOADING => get_lang('dict_cloud_applet.uploading'),//上传中
+            self::APPLET_UPLOAD_SUCCESS => get_lang('dict_cloud_applet.upload_success'),//上传成功
+            self::APPLET_UPLOAD_FAIL => get_lang('dict_cloud_applet.upload_fail'),//上传失败
+            self::APPLET_AUDITING => get_lang('dict_cloud_applet.auditing'),//审核中
+            self::APPLET_AUDIT_FAIL => get_lang('dict_cloud_applet.audit_fail'),//审核失败
+            self::APPLET_PUBLISHED => get_lang('dict_cloud_applet.published'),//已发布
+            self::APPLET_AUDIT_UNDO => get_lang('dict_cloud_applet.undo')//已撤回
         ];
         return $status_list[$status] ?? '';
     }

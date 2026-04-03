@@ -97,11 +97,13 @@ class CoreTransferService extends BaseCoreService
             'transfer_payment_code' => $data[ 'transfer_payment_code' ] ?? ''
         );
         $transfer->save($transfer_data);
+        Log::write('【scene_data】'.json_encode($transfer_data,256));
         switch ($transfer_type) {
             case TransferDict::WECHAT:
 //                $out_batch_no = create_no();
                 $transfer_account = $data[ 'transfer_payee' ] ?? [];
                 $scene_data = ( new CoreTransferSceneService() )->getSceneInfoByType($site_id, $transfer[ 'trade_type' ]);
+                Log::write('【scene_data】'.json_encode($scene_data,256));
                 //通过业务获取业务场景
                 $temp_infos = $scene_data[ 'infos' ] ?? [];//转账场景信息
                 if (!empty($temp_infos)) {

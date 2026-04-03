@@ -307,7 +307,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
     /**
      * 获取小程序编译日志
      * @param string $timestamp
-     * @return void
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function getWeappCompileLog(string $timestamp)
     {
@@ -316,6 +316,44 @@ class CoreWeappCloudService extends CoreCloudBaseService
             'timestamp' => $timestamp
         ];
         return ( new CloudService(true) )->httpGet('cloud/get_weapp_logs?' . http_build_query($query));
+    }
+
+    /**
+     * 中断上传并清除日志
+     */
+    public function stopUploadAndClearLogs(string $timestamp)
+    {
+        // 1. 中断上传
+        $this->stopWeappUpload($timestamp);
+
+        // 2. 删除日志（del_weapp_logs）
+        return $this->delWeappLogs($timestamp);
+    }
+
+    /**
+     * 中断小程序上传
+     * @param string $timestamp
+     * @return mixed
+     */
+    public function stopWeappUpload(string $timestamp)
+    {
+        $query = [
+            'authorize_code' => $this->auth_code,
+            'timestamp' => $timestamp
+        ];
+        return ( new CloudService(true) )->httpGet('cloud/stop_weapp_upload?' . http_build_query($query));
+    }
+
+    /**
+     * 删除小程序上传日志
+     */
+    public function delWeappLogs(string $timestamp)
+    {
+        $query = [
+            'authorize_code' => $this->auth_code,
+            'timestamp' => $timestamp
+        ];
+        return (new CloudService(true))->httpGet('cloud/del_weapp_logs?' . http_build_query($query));
     }
 
     /**

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <link rel="icon" type="image" href="../favicon.ico"/>
+    <title>地图位置</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .map-wrap {
+        }
+
+        #mapDiv {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+    <script>
+        var map;
+        var zoom = 16;
+        var mapApiKey = '';
+        var selectedLongitude = 116.391349;
+        var selectedLatitude = 39.907375;
+
+        function loadTianDiTuScript(key) {
+            return new Promise(function (resolve, reject) {
+                if (window.T) {
+                    resolve();
+                    return;
+                }
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://api.tianditu.gov.cn/api?v=4.0&tk=' + key;
+                script.onload = function () {
+                    resolve();
+                };
+                script.onerror = function () {
+                    reject(new Error('load script error'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        function getQueryObject() {
+            const params = new URLSearchParams(window.location.search)
+            return Object.fromEntries(params.entries())
+        }
+
+        function onLoad() {
+            // 从URL参数中获取地图key
+            var key = getQueryParam('key') || '';
+            if (!key) {
+                // alert('地图key为空');
+                return;
+            }
+            mapApiKey = key;
+            loadTianDiTuScript(key).then(function () {
+                map = new T.Map('mapDiv');
+
+                var query = getQueryObject();
+                if (query && query.latitude && query.longitude) {
+                    selectedLatitude = query.latitude
+                    selectedLongitude = query.longitude
+                }
+
+                map.centerAndZoom(new T.LngLat(selectedLongitude, selectedLatitude), zoom);
+
+                //创建标注对象
+                //创建图片对象
+                var icon = new T.Icon({
+                    iconUrl: "map_icon.png",
+                    iconSize: new T.Point(18, 25),
+                    iconAnchor: new T.Point(18, 25)
+                });
+
+                //向地图上添加自定义标注
+                var marker = new T.Marker(new T.LngLat(selectedLongitude, selectedLatitude), { icon: icon });
+                //向地图上添加标注
+                map.addOverLay(marker);
+
+            }).catch(function () {
+                // alert('地图加载失败');
+            });
+        }
+
+        function getQueryParam(name) {
+            var match = window.location.search.match(new RegExp('(?:\\?|&)' + name + '=([^&]*)'));
+            return match ? decodeURIComponent(match[1]) : '';
+        }
+    </script>
+</head>
+<body onLoad="onLoad()">
+<div class="map-wrap">
+    <div id="mapDiv"></div>
+</div>
+</body>
+</html>

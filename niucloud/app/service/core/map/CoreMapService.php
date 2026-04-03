@@ -39,41 +39,30 @@ class CoreMapService extends BaseCoreService
      */
     public function getPolyline($site_id, $params)
     {
-
-        $url = 'https://apis.map.qq.com/ws/direction/v1/driving/';
         $map = $this->getMapConfig($site_id);
+        $map_type = $map['map_type'] ?? 'tianditu';
 
-        $get_data = [
-            'key' => $map[ 'key' ],
-            'from' => $params[ 'from' ],
-            'to' => $params[ 'to' ], // 是否返回周边POI列表：1.返回；0不返回(默认)
-        ];
+        if ($map_type == 'tencent') {
+            $map_service = new \app\service\core\map\CoreQqMap($site_id);
 
-        $url = $url . '?' . http_build_query($get_data);
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-
-        $res = curl_exec($curl);
-        $res = json_decode($res, true);
-        if ($res) {
-            curl_close($curl);
-
-            if ($res[ 'status' ] == 0) {
-                return $res['result'];
-            } else {
-                throw new CommonException('请检查地图配置：'.$res[ 'message' ]);
-            }
+            $res = $map_service->getPolyline(['from' => $params[ 'from' ], 'to' => $params[ 'to' ]]);
 
         } else {
-            $error = curl_errno($curl);
-            curl_close($curl);
-            throw new CommonException($error);
+            $map_service = new \app\service\core\map\CoreTiandituMap($site_id);
+            $from_arr = explode(',', $params['from']);
+            $to_arr = explode(',', $params['to']);
+
+            $from = isset($from_arr[1]) ? $from_arr[1] . ',' . $from_arr[0] : $params['from'];
+            $to = isset($to_arr[1]) ? $to_arr[1] . ',' . $to_arr[0] : $params['to'];
+
+            $postStr = [
+                'orig' => $from,
+                'dest' => $to,
+                'style' => '0' // 0: 最快路线
+            ];
+            $res = $map_service->getPolyline(['data' => $postStr]);
         }
+        return is_string($res) ? json_decode($res, true) : $res;
     }
 
 

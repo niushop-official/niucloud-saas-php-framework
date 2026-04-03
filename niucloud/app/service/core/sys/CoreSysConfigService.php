@@ -112,10 +112,6 @@ class CoreSysConfigService extends BaseCoreService
             ];
         }
 
-        // 前端不展示关键信息
-        if (!empty($info[ 'value' ][ 'key' ])) {
-            unset($info[ 'value' ][ 'key' ]);
-        }
         $info[ 'value' ][ 'is_open' ] = $info[ 'value' ][ 'is_open' ] ?? 1;
         $info[ 'value' ][ 'valid_time' ] = $info[ 'value' ][ 'valid_time' ] ?? 5;
         return $info[ 'value' ];

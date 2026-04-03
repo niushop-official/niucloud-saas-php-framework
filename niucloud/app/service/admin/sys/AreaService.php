@@ -105,25 +105,16 @@ class AreaService extends BaseAdminService
      */
     public function getAddress(string $address){
         $map = (new ConfigService())->getMap();
-        $url = "https://apis.map.qq.com/ws/geocoder/v1/?address=".$address."&key=".$map['key'];
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-
-        $res = curl_exec($curl);
-        $res = json_decode($res, true);
-        if($res){
-            curl_close($curl);
-            return $res;
-        }else {
-            $error = curl_errno($curl);
-            curl_close($curl);
-            return $error;
+        $map_type = $map['map_type'] ? $map['map_type'] : 'tianditu';
+        if ($map_type == 'tencent') {
+            $map_service = new \app\service\core\map\CoreQqMap($this->site_id);
+            $res = $map_service->addressToDetail(['address' => $address]);
+        }else{
+            $map_service = new \app\service\core\map\CoreTiandituMap($this->site_id);
+            $res = $map_service->addressToDetail(['address' => $address]);
         }
+
+        return is_string($res) ? json_decode($res,true) : $res;
     }
 
     /**
@@ -133,30 +124,20 @@ class AreaService extends BaseAdminService
      */
     public function getAddressInfo(string $location){
         $map = (new ConfigService())->getMap();
-        $url = "https://apis.map.qq.com/ws/geocoder/v1/?location=".$location."&key=".$map['key'];
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+        $map_type = $map['map_type'] ? $map['map_type'] : 'tianditu';
 
-        // 设置 Referer 头（需替换为你的授权域名）
-        curl_setopt($curl, CURLOPT_HTTPHEADER, [
-            'Referer: ' . $this->request->domain()
-        ]);
-
-        $res = curl_exec($curl);
-        $res = json_decode($res, true);
-        if($res){
-            curl_close($curl);
-            return $res;
-        }else {
-            $error = curl_errno($curl);
-            curl_close($curl);
-            return $error;
+        if ($map_type == 'tencent') {
+            $map_service = new \app\service\core\map\CoreQqMap($this->site_id);
+            $res = $map_service->locationToDetail(['location' => $location]);
+        } else {
+            $map_service = new \app\service\core\map\CoreTiandituMap($this->site_id);
+            $loc_arr = explode(',', $location);
+            $lat = $loc_arr[0] ?? '';
+            $lon = $loc_arr[1] ?? '';
+            $res = $map_service->locationToDetail(['lat' => $lat, 'lon' => $lon]);
         }
+
+        return is_string($res) ? json_decode($res, true) : $res;
     }
 
     public function getAreaId($name, $level){

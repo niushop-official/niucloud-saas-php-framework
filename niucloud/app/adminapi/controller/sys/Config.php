@@ -138,8 +138,11 @@ class Config extends BaseAdminController
     public function setMap()
     {
         $data = $this->request->params([
+            [ 'map_type', 'tianditu' ],
             [ 'key', '' ],
             [ 'amap_key', ''],
+            [ 'tianditu_map_key', ''],
+            [ 'tianditu_map_web_key', ''],
             [ 'is_open', 0 ], // 是否开启定位
             [ 'valid_time', 0 ] // 定位有效期/分钟，过期后将重新获取定位信息，0为不过期
         ]);
@@ -154,7 +157,11 @@ class Config extends BaseAdminController
      */
     public function getMap()
     {
-        return success(( new ConfigService() )->getMap());
+        $data = $this->request->params([
+            [ 'need_encrypt', true ],
+        ]);
+        $need_encrypt = filter_var($data['need_encrypt'], FILTER_VALIDATE_BOOLEAN);
+        return success(( new ConfigService() )->getMap($need_encrypt));
     }
 
     /**

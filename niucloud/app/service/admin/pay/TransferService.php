@@ -44,6 +44,9 @@ class TransferService extends BaseAdminService
         $config = $core_transfer_service->getWechatTransferSceneConfig($this->site_id) ?? [];
         $scene_list = TransferDict::getWechatTransferScene();
         if(empty($scene_list[$scene])) throw new AdminException('MERCHANT_TRANSFER_SCENARIOS_THAT_DO_NOT_EXIST');
+        if (!empty($data['scene_id']) && strlen($data['scene_id']) <4) {
+            throw new AdminException('MERCHANT_TRANSFER_SCENE_ID_MIN_4');
+        }
         $config[$scene] = $data['scene_id'];
         $core_transfer_service->setWechatTransferSceneConfig($this->site_id, $config);
         return true;

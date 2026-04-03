@@ -11,6 +11,7 @@
 
 namespace app\service\admin\sys;
 
+use app\dict\common\CommonDict;
 use app\service\admin\site\SiteService;
 use app\service\core\channel\CoreH5Service;
 use app\service\core\sys\CoreConfigService;
@@ -134,9 +135,34 @@ class ConfigService extends BaseAdminService
      */
     public function setMap(array $value)
     {
+        $old_config = $this->getMap();
+
+        // 检测数据是否发生变化，如果没有变化，则保持未加密前的数据
+        if (!empty($value[ 'key' ]) && $value[ 'key' ] == CommonDict::ENCRYPT_STR) {
+            $value[ 'key' ] = $old_config[ 'key' ];
+        }
+
+        // 检测数据是否发生变化，如果没有变化，则保持未加密前的数据
+        if (!empty($value[ 'amap_key' ]) && $value[ 'amap_key' ] == CommonDict::ENCRYPT_STR) {
+            $value[ 'amap_key' ] = $old_config[ 'amap_key' ];
+        }
+
+        // 检测数据是否发生变化，如果没有变化，则保持未加密前的数据
+        if (!empty($value[ 'tianditu_map_key' ]) && $value[ 'tianditu_map_key' ] == CommonDict::ENCRYPT_STR) {
+            $value[ 'tianditu_map_key' ] = $old_config[ 'tianditu_map_key' ];
+        }
+
+        // 检测数据是否发生变化，如果没有变化，则保持未加密前的数据
+        if (!empty($value[ 'tianditu_map_web_key' ]) && $value[ 'tianditu_map_web_key' ] == CommonDict::ENCRYPT_STR) {
+            $value[ 'tianditu_map_web_key' ] = $old_config[ 'tianditu_map_web_key' ];
+        }
+
         $data = [
+            'map_type' => $value[ 'map_type' ] ,
             'key' => $value[ 'key' ],
             'amap_key' => $value['amap_key'],
+            'tianditu_map_key' => $value['tianditu_map_key'],
+            'tianditu_map_web_key' => $value['tianditu_map_web_key'],
             'is_open' => $value[ 'is_open' ], // 是否开启定位
             'valid_time' => $value[ 'valid_time' ] // 定位有效期/分钟，过期后将重新获取定位信息，0为不过期
         ];
@@ -148,23 +174,45 @@ class ConfigService extends BaseAdminService
 
     /**
      * 获取地图key
+     * @param bool $need_encrypt
      */
-    public function getMap()
+    public function getMap($need_encrypt = false)
     {
         $info = ( new CoreConfigService() )->getConfig($this->site_id, 'MAPKEY');
         if (empty($info)) {
             $info = [];
             $info[ 'value' ] = [
+                'map_type' => 'tianditu',
                 'key' => '',
                 'amap_key' => '',
+                'tianditu_map_key' => '',
+                'tianditu_map_web_key' => '',
                 'is_open' => 1, // 是否开启定位
                 'valid_time' => 5 // 定位有效期/分钟，过期后将重新获取定位信息，0为不过期
             ];
         }
+        if (!empty($info[ 'value' ]) && $need_encrypt) {
+            // 加密敏感信息
+            if (!empty($info[ 'value' ][ 'key' ])) {
+                $info[ 'value' ][ 'key' ] = CommonDict::ENCRYPT_STR;
+            }
+            if (!empty($info[ 'value' ][ 'amap_key' ])) {
+                $info[ 'value' ][ 'amap_key' ] = CommonDict::ENCRYPT_STR;
+            }
+            if (!empty($info[ 'value' ][ 'tianditu_map_key' ])) {
+                $info[ 'value' ][ 'tianditu_map_key' ] = CommonDict::ENCRYPT_STR;
+            }
+            if (!empty($info[ 'value' ][ 'tianditu_map_web_key' ])) {
+                $info[ 'value' ][ 'tianditu_map_web_key' ] = CommonDict::ENCRYPT_STR;
+            }
+        }
 
         $info[ 'value' ][ 'is_open' ] = $info[ 'value' ][ 'is_open' ] ?? 1;
         $info[ 'value' ][ 'valid_time' ] = $info[ 'value' ][ 'valid_time' ] ?? 5;
+        $info[ 'value' ][ 'map_type' ] = $info[ 'value' ][ 'map_type' ] ?? 'tianditu';
         $info[ 'value' ][ 'amap_key' ] = $info[ 'value' ][ 'amap_key' ] ?? '';
+        $info[ 'value' ][ 'tianditu_map_key' ] = $info[ 'value' ][ 'tianditu_map_key' ] ?? '';
+        $info[ 'value' ][ 'tianditu_map_web_key' ] = $info[ 'value' ][ 'tianditu_map_web_key' ] ?? '';
 
         return $info[ 'value' ];
     }

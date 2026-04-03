@@ -107,29 +107,24 @@ class AreaService extends BaseApiService
      */
     public function getAddressByLatlng($params)
     {
-        $url = 'https://apis.map.qq.com/ws/geocoder/v1/';
         $map = ( new ConfigService() )->getMap();
+        $map_type = $map['map_type'] ?? 'tianditu';
 
-        $get_data = array(
-            'key' => $map[ 'key' ],
-            'location' => $params[ 'latlng' ],
-            'get_poi' => 0, // 是否返回周边POI列表：1.返回；0不返回(默认)
-        );
+        if ($map_type == 'tencent') {
+            $map_service = new \app\service\core\map\CoreQqMap($this->site_id);
+            $res = $map_service->locationToDetail(['location' => $params['latlng']]);
+        } else {
+            $map_service = new \app\service\core\map\CoreTiandituMap($this->site_id);
+            $loc_arr = explode(',', $params['latlng']);
+            $lat = $loc_arr[0] ?? '';
+            $lon = $loc_arr[1] ?? '';
+            $res = $map_service->locationToDetail(['lat' => $lat, 'lon' => $lon]);
+        }
+        if (is_string($res)) {
+            $res = json_decode($res, true);
+        }
 
-        $url = $url . '?' . http_build_query($get_data);
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, 0);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 1);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-
-        $res = curl_exec($curl);
-        $res = json_decode($res, true);
         if ($res) {
-            curl_close($curl);
-
             if ($res[ 'status' ] == 0) {
                 $return_array = $res[ 'result' ][ 'address_component' ] ?? []; // 地址部件，address不满足需求时可自行拼接
                 $address_reference = $res[ 'result' ][ 'address_reference' ] ?? [];
@@ -224,9 +219,7 @@ class AreaService extends BaseApiService
             }
 
         } else {
-            $error = curl_errno($curl);
-            curl_close($curl);
-            throw new ApiException($error);
+            throw new ApiException('地图接口请求失败');
         }
     }
 

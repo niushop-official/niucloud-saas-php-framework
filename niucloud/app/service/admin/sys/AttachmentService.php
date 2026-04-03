@@ -136,7 +136,11 @@ class AttachmentService extends BaseAdminService
         }
         return $this->getPageList($this->model, $where, 'att_id,path,real_name,att_type,url', 'att_id desc', each:function($item, $key)
     {
-        $item[ 'thumb' ] = get_thumb_images($this->site_id, $item[ 'url' ], FileDict::SMALL);
+        if ($item['att_type'] == 'image') {
+            $item[ 'thumb' ] = get_thumb_images($this->site_id, $item[ 'url' ], FileDict::SMALL);
+        } else {
+            $item[ 'thumb' ] = $item[ 'url' ];
+        }
     });
     }
 

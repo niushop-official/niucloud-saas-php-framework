@@ -124,6 +124,8 @@ class WeappVersionService extends BaseAdminService
      */
     public function del(int $id)
     {
+        $info = $this->model->where([['id', '=', $id], ['site_id', '=', $this->site_id]])->find();
+        $this->stopUpload($info['task_key']);
         $this->model->where([['id', '=', $id], ['site_id', '=', $this->site_id]])->delete();
         return true;
     }
@@ -148,5 +150,16 @@ class WeappVersionService extends BaseAdminService
             }
         }
         return $build_log;
+    }
+
+    /**
+     * 获取小程序上传日志
+     * @param string $key
+     * @return null
+     */
+    public function stopUpload(string $key)
+    {
+        return  (new CoreWeappCloudService())->stopUploadAndClearLogs($key);
+
     }
 }

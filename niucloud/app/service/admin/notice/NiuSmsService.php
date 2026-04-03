@@ -29,6 +29,8 @@ use think\db\exception\ModelNotFoundException;
  */
 class NiuSmsService extends BaseAdminService
 {
+    public $template_model = null;
+    public $niu_service = null;
     public function __construct()
     {
         parent::__construct();
