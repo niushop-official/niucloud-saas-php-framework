@@ -4,8 +4,11 @@ const geometry: any = {}
 
 /**
  * 在地图上创建一个圆形
+ * @param map 地图实例
+ * @param geometriesData 圆形数据
+ * @param onSelect 图形被选中时的回调函数
  */
-export const createCircle = (map: any, geometriesData: any) => {
+export const createCircle = (map: any, geometriesData: any, onSelect?: (key: string) => void) => {
     const TMap = (window as any).TMap
     const LatLng = TMap.LatLng
 
@@ -27,7 +30,11 @@ export const createCircle = (map: any, geometriesData: any) => {
                 showBorder: true,
                 borderColor: `rgb(${color.toString()})`,
                 borderWidth: 2
-            })
+            }),
+             highlight: new TMap.PolygonStyle({
+                                    color: 'rgba(255, 255, 0, 0.6)'
+                                })
+            
         },
         geometries: [
             {
@@ -38,25 +45,84 @@ export const createCircle = (map: any, geometriesData: any) => {
             }
         ]
     })
-    geometry[geometriesData.key] = { graphical: multiCircle }
+    
+    // 如果已存在该图形，先删除
+    if (geometry[geometriesData.key]) {
+        try {
+            geometry[geometriesData.key].graphical.remove(geometriesData.key)
+            geometry[geometriesData.key].editor?.delete()
+        } catch (e) {
+            // 删除旧图形失败
+            // console.warn('删除旧图形失败:', e)
+        }
+    }
 
-    // 创建图形编辑器
-    const editor = new TMap.tools.GeometryEditor({
-        map: map,
-        overlayList: [
-            {
-                overlay: multiCircle,
-                id: geometriesData.key,
-            }
-        ],
-        actionMode: TMap.tools.constants.EDITOR_ACTION.INTERACT,
-        activeOverlayId: geometriesData.key, // 激活图层
-        selectable: true // 开启点选功能
-    })
+    let editor = null
+    // 检查 TMap.tools 是否存在
+    if (TMap.tools) {
+        // 创建图形编辑器 - 支持拖动中心点和调整半径
+        try {
+            editor = new TMap.tools.GeometryEditor({
+                map: map,
+                overlayList: [
+                    {
+                        overlay: multiCircle,
+                        id: geometriesData.key,
+                        selectedStyleId: 'highlight'
+                    }
+                ],
+                actionMode: TMap.tools.constants?.EDITOR_ACTION?.INTERACT || 0, // 交互模式，支持拖动中心点和调整半径
+                activeOverlayId: null, // 初始不激活，等待用户选择
+                selectable: true ,// 开启点选功能
+                snappable: true // 开启吸附
+            })
+            editor.setKeyboardDeleteEnable(false);
 
-    editor.on('adjust_complete', (data: any) => {
-        geometriesData.center = { lat: data.center.lat, lng: data.center.lng }
-        geometriesData.radius = parseInt(data.radius)
+            // 监听调整开始事件 - 禁用地图拖拽
+            editor.on('adjust_start', () => {
+                currentMap?.setDraggable(false)
+            })
+
+            // 监听调整完成事件
+            editor.on('adjust_complete', (data: any) => {
+                if (data?.center && data.radius !== undefined) {
+                    geometriesData.center = { lat: data.center.lat, lng: data.center.lng }
+                    geometriesData.radius = parseInt(data.radius)
+                }
+                setTimeout(() => currentMap?.setDraggable(true), 100)
+            })
+
+            // 监听调整中事件（实时更新）
+            editor.on('adjust', (data: any) => {
+                if (data?.center && data.radius !== undefined) {
+                    geometriesData.center = { lat: data.center.lat, lng: data.center.lng }
+                    geometriesData.radius = parseInt(data.radius)
+                }
+            })
+
+            // 监听选中事件
+            editor.on('select', () => {
+                // 只有在用户点击地图上的图形时才触发，而不是在切换页面时
+                if (onSelect) {
+                    onSelect(geometriesData.key)
+                }
+            })
+        } catch (e) {
+            console.warn('创建编辑器失败:', e)
+        }
+    }
+
+    // 为圆形添加点击事件监听器
+    multiCircle.on('click', () => {
+        // 先选中当前图形，使其高亮显示
+        if (editor) {
+            editor.select([geometriesData.key])
+            editor.setActiveOverlay?.(geometriesData.key)
+        }
+        // 然后触发选中回调
+        if (onSelect) {
+            onSelect(geometriesData.key)
+        }
     })
 
     geometry[geometriesData.key] = { graphical: multiCircle, editor }
@@ -64,10 +130,11 @@ export const createCircle = (map: any, geometriesData: any) => {
 
 /**
  * 在地图上创建一个多边形
- * @param map
- * @param geometriesData
+ * @param map 地图实例
+ * @param geometriesData 多边形数据
+ * @param onSelect 图形被选中时的回调函数
  */
-export const createPolygon = (map: any, geometriesData: any) => {
+export const createPolygon = (map: any, geometriesData: any, onSelect?: (key: string) => void) => {
     const TMap = (window as any).TMap
     const LatLng = TMap.LatLng
 
@@ -86,6 +153,17 @@ export const createPolygon = (map: any, geometriesData: any) => {
         Math.floor(Math.random() * 255)
     ]
 
+    // 如果已存在该图形，先删除
+    if (geometry[geometriesData.key]) {
+        try {
+            geometry[geometriesData.key].graphical.remove(geometriesData.key)
+            geometry[geometriesData.key].editor?.delete()
+        } catch (e) {
+            // 删除旧多边形失败
+            // console.warn('删除旧多边形失败:', e)
+        }
+    }
+
     const multiPolygon = new TMap.MultiPolygon({
         map: map,
         styles: {
@@ -94,7 +172,10 @@ export const createPolygon = (map: any, geometriesData: any) => {
                 showBorder: true,
                 borderColor: `rgb(${color.toString()})`,
                 borderWidth: 2
-            })
+            }),
+             highlight: new TMap.PolygonStyle({
+                                    color: 'rgba(255, 255, 0, 0.6)'
+                                })
         },
         geometries: [
             {
@@ -107,23 +188,70 @@ export const createPolygon = (map: any, geometriesData: any) => {
         ]
     });
 
-    const editor = new TMap.tools.GeometryEditor({
-        map: map,
-        overlayList: [
-            {
-                overlay: multiPolygon,
-                id: geometriesData.key,
-            }
-        ],
-        actionMode: TMap.tools.constants.EDITOR_ACTION.INTERACT,
-        activeOverlayId: geometriesData.key, // 激活图层
-        selectable: true, // 开启点选功能
-    })
+    let editor = null
+    // 检查 TMap.tools 是否存在
+    if (TMap.tools) {
+        // 创建图形编辑器 - 支持拖动边框和调整形状
+        try {
+            editor = new TMap.tools.GeometryEditor({
+                map: map,
+                overlayList: [
+                    {
+                        overlay: multiPolygon,
+                        id: geometriesData.key,
+                        selectedStyleId: 'highlight'
+                    }
+                ],
+                actionMode: TMap.tools.constants?.EDITOR_ACTION?.INTERACT || 0, // 交互模式，支持拖动边框和调整形状
+                activeOverlayId: null, // 初始不激活，等待用户选择
+                selectable: true, // 开启点选功能
+                snappable: true // 开启吸附
+            })
 
-    editor.on('adjust_complete', (data: any) => {
-        geometriesData.paths = data.paths.map(item => {
-            return { lat: item.lat, lng: item.lng}
-        })
+            editor.setKeyboardDeleteEnable(false);
+            // 监听调整开始事件 - 禁用地图拖拽
+            editor.on('adjust_start', () => {
+                currentMap?.setDraggable(false)
+            })
+
+            // 监听调整完成事件
+            editor.on('adjust_complete', (data: any) => {
+                if (data?.paths) {
+                    geometriesData.paths = data.paths.map((item: any) => ({ lat: item.lat, lng: item.lng }))
+                }
+                setTimeout(() => currentMap?.setDraggable(true), 100)
+            })
+
+            // 监听调整中事件（实时更新）
+            editor.on('adjust', (data: any) => {
+                if (data?.paths) {
+                    geometriesData.paths = data.paths.map((item: any) => ({ lat: item.lat, lng: item.lng }))
+                }
+            })
+
+            // 监听选中事件
+            editor.on('select', () => {
+                // 只有在用户点击地图上的图形时才触发，而不是在切换页面时
+                if (onSelect) {
+                    onSelect(geometriesData.key)
+                }
+            })
+        } catch (e) {
+            console.warn('创建编辑器失败:', e)
+        }
+    }
+
+    // 为多边形添加点击事件监听器
+    multiPolygon.on('click', () => {
+        // 先选中当前图形，使其高亮显示
+        if (editor) {
+            editor.select([geometriesData.key])
+            editor.setActiveOverlay?.(geometriesData.key)
+        }
+        // 然后触发选中回调
+        if (onSelect) {
+            onSelect(geometriesData.key)
+        }
     })
 
     geometry[geometriesData.key] = { graphical: multiPolygon, editor }
@@ -131,25 +259,68 @@ export const createPolygon = (map: any, geometriesData: any) => {
 
 /**
  * 删除图形
- * @param key
  */
 export const deleteGeometry = (key: string) => {
-    if (!geometry[key]) {
-        return
+    if (!geometry[key]) return
+    try {
+        geometry[key].graphical?.remove(key)
+        geometry[key].editor?.delete()
+        delete geometry[key]
+    } catch (e) {
+        console.warn('删除图形失败:', e)
     }
-    geometry[key].graphical.remove(key)
-    geometry[key].editor.delete()
+}
+
+/**
+ * 清空所有图形
+ */
+export const clearAllGeometry = () => {
+    Object.keys(geometry).forEach(deleteGeometry)
+}
+
+// 保存地图引用，用于控制地图拖拽
+let currentMap: any = null
+
+/**
+ * 设置地图引用
+ * @param map 地图实例
+ */
+export const setMapInstance = (map: any) => {
+    currentMap = map
 }
 
 /**
  * 选中图形
- * @param key
  */
 export const selectGeometry = (key: string) => {
-    if (!geometry[key] || !geometry[key].editor) {
-        return
+    if (!geometry[key]?.editor) return
+    
+    try {
+        // 取消其他图形的选中状态
+        Object.keys(geometry).forEach(k => {
+            if (k !== key && geometry[k]?.editor) {
+                geometry[k].editor.deselect?.()
+                geometry[k].editor.setActiveOverlay?.(null)
+            }
+        })
+        // 选中当前图形
+        geometry[key].editor.select?.([key])
+        geometry[key].editor.setActiveOverlay?.(key)
+    } catch (e) {
+        // 删除图形失败
+            // console.error('选中图形失败:', e)
     }
-    geometry[key].editor.select([key])
+}
+
+/**
+ * 取消选中所有图形
+ */
+export const deselectAllGeometry = () => {
+    Object.keys(geometry).forEach(k => {
+        geometry[k]?.editor?.deselect?.()
+        geometry[k]?.editor?.setActiveOverlay?.(null)
+    })
+    currentMap?.setDraggable(true)
 }
 
 /**

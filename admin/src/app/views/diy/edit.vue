@@ -469,18 +469,21 @@ initPage({
     if (import.meta.env.MODE == 'development') {
 
         // env文件配置过wap域名
-        if (wapDomain.value) {
-            wapUrl.value = wapDomain.value + '/wap'
-            repeat = false
-            setDomain()
-        }
+        // if (wapDomain.value) {
+        //     wapUrl.value = wapDomain.value + '/wap'
+        //     repeat = false
+        //     setDomain()
+        // }
 
-        let wap_domain_storage = storage.get('wap_domain')
-        if (wap_domain_storage) {
-            wapUrl.value = wap_domain_storage
-            repeat = false
-            setDomain()
-        }
+        // let wap_domain_storage = storage.get('wap_domain')
+        // if (wap_domain_storage) {
+        //     wapUrl.value = wap_domain_storage
+        //     repeat = false
+        //     setDomain()
+        // }
+		wapUrl.value = 'http://localhost:5173/wap'
+		repeat = false
+		setDomain()
     }
 
     if (repeat) {

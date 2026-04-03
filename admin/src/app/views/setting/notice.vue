@@ -351,13 +351,12 @@ import {
   getWechatAuthUrl,
   getWeappAuthUrl,
   sendSms,
-  bindSms,
+  bindSms
 } from '@/app/api/notice'
 import Sms from '@/app/views/setting/components/notice-sms.vue'
 import Wechat from '@/app/views/setting/components/notice-wechat.vue'
 import Weapp from '@/app/views/setting/components/notice-weapp.vue'
 import QRCode from 'qrcode'
-import { chain } from 'lodash-es'
 import { img } from '@/utils/common'
 import { SuccessFilled } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
@@ -436,7 +435,6 @@ const isBind = ref({
 // 查看是否绑定
 const getBindInfoFn = (isFirstQuery = false) => {
   getBindInfo().then((res) => {
-    console.log(res.data)
     if (Object.keys(res.data).length > 0) {
       isBind.value.bind_sms = res.data.mobile ? 1 : 0 // 新增：更新短信绑定状态
       isBind.value.bind_wechat = res.data.wechat_openid ? 1 : 0 // 新增：更新微信绑定状态

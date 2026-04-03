@@ -629,8 +629,8 @@ export function setMap(params: Record<string, any>) {
 /**
  * 获取地图配置
  */
-export function getMap() {
-    return request.get(`sys/config/map`)
+export function getMap(params: Record<string, any>) {
+    return request.get(`sys/config/map`, { params })
 }
 
 /**
