@@ -104,7 +104,7 @@
                     </view>
                 </view>
             </view>
-            <view class="footer w-full" v-if="registerType.length > 1" :class="{'fixed bottom-0 left-0 right-0': type == 'mobile', 'pt-[60rpx]': type == 'username'}">
+            <view class="footer w-full" v-if="registerType.length > 1" :class="{'fixed bottom-0 left-0 right-0': type == 'mobile', 'pt60': type == 'username'}">
                 <view class="text-[26rpx] leading-[36rpx] text-[#666] text-center mb-[30rpx] font-400">其他注册方式</view>
                 <view class="flex justify-center gap-[40rpx]">
                     <text v-if="type == 'mobile' && configStore.login.is_mobile" @click="type = 'username'" class="w-[66rpx] h-[66rpx] flex items-center justify-center iconfont iconmima6Vmm border-[2rpx] rounded-[50%] border-solid border-[#ddd] !text-[26rpx]"></text>
@@ -376,5 +376,8 @@ const toLink = () => {
 .footer {
     padding-bottom: calc(151rpx + constant(safe-area-inset-bottom));
     padding-bottom: calc(151rpx + env(safe-area-inset-bottom));
+}
+.pt60 {
+    padding-top: 60rpx;
 }
 </style>

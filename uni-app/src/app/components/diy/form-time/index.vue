@@ -28,7 +28,7 @@
             <view class="layout-one-content">
                 <view class="nc-iconfont nc-icon-a-shijianV6xx-36 !text-[32rpx] text-[#999] mr-[16rpx]"></view>
                 <view class="flex-1 text-overflow-ellipsis flex"
-                      :class="{'!text-[#999]' : !diyComponent.field.value && !diyComponent.defaultControl}"
+                      :class="{'text-color-999' : !diyComponent.field.value && !diyComponent.defaultControl}"
                       :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}"
                       @click="startDatetime = true">{{ startTime }}</view>
             </view>
@@ -45,7 +45,7 @@
                 </view>
                 <view class="layout-two-content" @click="openCalendar">
                     <view class="flex-1 text-overflow-ellipsis flex justify-end "
-                          :class="{'!text-[#999]' : !diyComponent.field.value && !diyComponent.defaultControl}"
+                          :class="{'text-color-999' : !diyComponent.field.value && !diyComponent.defaultControl}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}"
                           @click="startDatetime = true">{{ startTime }}</view>
                     <text class="nc-iconfont !text-[#666] !text-[36rpx] nc-icon-youV6xx -mr-[8rpx]"></text>
@@ -232,5 +232,8 @@ defineExpose({
 
 .form-item-frame :deep(.u-picker .u-toolbar__wrapper__cancel), .form-item-frame :deep(.u-picker .u-toolbar__wrapper__confirm) {
     font-size: 28rpx;
+}
+.text-color-999 {
+    color: #999 !important;
 }
 </style>

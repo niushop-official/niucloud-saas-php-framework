@@ -1,6 +1,6 @@
 <template>
     <view :style="themeColor()">
-        <view class="min-h-screen overflow-hidden" v-if="Object.values(info).length" :class="{ 'bg-[#F6F6F6]' : info && info.is_use }">
+        <view class="min-h-screen overflow-hidden" v-if="Object.values(info).length" :class="{ 'is-use' : info && info.is_use }">
             <view v-if="info.is_use">
                 <view class="sigin-header">
                     <!-- #ifndef H5 -->
@@ -51,9 +51,8 @@
                                     <view class="flex flex-wrap items-center justify-start" v-if="!flag">
                                         <template v-for="(item,index) in state.weekCount" :key="index">
                                             <view class="w-[14.28%] flex flex-col justify-center items-center">
-                                                <view v-if="filteredDate(item)"
-                                                      class="w-[74rpx] h-[92rpx] bg-[#f4f4f4] text-[var(--text-color-light6)] box-border py-[10rpx] rounded-[8rpx] flex flex-col  items-center"
-                                                      :class="{'sign-bg !text-[#fff]': isVerDate(item),'!bg-[#f9f9f9] border-[1rpx] !text-[var(--text-color-light9)] border-[#f5f5f5] border-solid': !isVerDate(item) && item < state.curDate && (state.curMonth + 1) == (new Date().getMonth() + 1) ,'mb-[20rpx]':isCurrentDate(item),'mb-[30rpx]':!isCurrentDate(item)}"
+                                                <view v-if="filteredDate(item)" class="filtered-date-wrap"
+                                                      :class="{'sign-bg': isVerDate(item),'week-normal': !isVerDate(item) && item < state.curDate && (state.curMonth + 1) == (new Date().getMonth() + 1) ,'mb20':isCurrentDate(item),'mb30':!isCurrentDate(item)}"
                                                       @click="getDayPackFn(item)">
                                                     <text class="text-[24rpx] leading-[28rpx] mb-[6rpx]">{{ filteredDate(item) }}</text>
                                                     <view v-if="filteredDate(item)" class="flex items-center justufy-center">
@@ -75,8 +74,8 @@
                                         <template v-for="(item,index) in state.dataCount">
                                             <view class="w-[14.28%] flex flex-col justify-center items-center mb-[30rpx]">
                                                 <view v-if="filteredDate(item)"
-                                                      class="w-[74rpx] h-[92rpx] bg-[#F6FAFF] text-[var(--text-color-light6)] box-border py-[10rpx] rounded-[8rpx] flex flex-col  items-center"
-                                                      :class="{'sign-bg !text-[#fff]': isVerDate(item) && active ,'!bg-[#FDFDFD] border-[1rpx] border-[#F0F4FA] border-solid': !isVerDate(item) && item < state.curDate && (state.curMonth + 1) == (new Date().getMonth() + 1) && state.curYear == new Date().getFullYear() ,'mb-[20rpx]':isCurrentDate(item),'mb-[30rpx]':!isCurrentDate(item)}"
+                                                      class="filtered-date-wrap"
+                                                      :class="{'sign-bg': isVerDate(item) && active ,'day-normal': !isVerDate(item) && item < state.curDate && (state.curMonth + 1) == (new Date().getMonth() + 1) && state.curYear == new Date().getFullYear() ,'mb20':isCurrentDate(item),'mb30':!isCurrentDate(item)}"
                                                       @click="getDayPackFn(item)">
                                                     <text class="text-[24rpx] leading-[28rpx] mb-[6rpx]">{{ filteredDate(item) }}</text>
                                                     <view v-if="filteredDate(item)" class="flex items-center justufy-center">
@@ -122,7 +121,7 @@
                             </view> -->
                         </view>
                         <view>
-                            <view v-for="(item,index) in info.continue_award" :key="index" class="flex items-center border-box" :class="{'mt-[40rpx]':index}">
+                            <view v-for="(item,index) in info.continue_award" :key="index" class="flex items-center border-box" :class="{'mt40':index}">
                                 <view class="w-[90rpx] h-[90rpx] rounded-[50%] bg-[#E7F6FF] flex items-center justify-center  flex-shrink-0" v-if="(index + 1) % 4 == 1">
                                     <image :src="img('static/resource/images/app/icon_02.png')" class="w-[40rpx] h-[40rpx]"/>
                                 </view>
@@ -497,6 +496,7 @@ const topStyle = computed(() => {
 
 .sign-bg {
     background: linear-gradient(90deg, #FFA359 0%, #FF5426 100%), #F2F2F2;
+    color: #fff !important;
 }
 
 :deep(.award-popup .u-popup__content) {
@@ -510,5 +510,39 @@ const topStyle = computed(() => {
 .bg-button {
     background: linear-gradient(180deg, #FFEAE1 0%, #FFCDD0 34%, #E0052C 100%);
     border-radius: 40rpx;
+}
+.is-use {
+    background-color: #F6F6F6;
+}
+.mb20{
+    margin-bottom: 20rpx;
+}
+.mb30 {
+    margin-bottom: 30rpx;
+}
+.mt40 {
+    margin-top: 40rpx;
+}
+.filtered-date-wrap {
+    width: 74rpx;
+    height: 92rpx;
+    background-color: #f4f4f4;
+    color: var(--text-color-light6);
+    box-sizing: border-box;
+    padding-top: 10rpx;
+    padding-bottom: 10rpx;
+    border-radius: 8rpx;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &.week-normal{
+        background-color: #f9f9f9 !important;
+        border: 1rpx solid #f5f5f5;
+        color: var(--text-color-light9) !important;
+    }
+    &.day-normal{
+        background-color: #FDFDFD !important;
+        border: 1rpx solid #F0F4FA;
+    }
 }
 </style>

@@ -3,11 +3,11 @@
         <view class="u-navbar z-100" :class="{'fixed': props.scrollBool != -1, 'absolute': props.scrollBool == -1}" :style="{ backgroundColor: bgColor}">
             <view class="navbar-inner" :style="{ width: '100%', height: placeholderHeight + 'px' }">
                 <view v-if="topStatusBarData.style == 'style-1'" class="content-wrap" :class="[topStatusBarData.textAlign]" :style="navbarInnerStyle">
-                    <view v-if="isBackShow" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :class="{'!text-transparent': !isBackShow}" :style="{ color: titleTextColor }" @tap="goBack"></view>
+                    <view v-if="isBackShow" class="back-wrap nc-iconfont nc-icon-zuoV6xx" :class="{'!text-transparent': !isBackShow}" :style="{ color: titleTextColor }" @tap="goBack"></view>
                     <view class="title-wrap" :style="styleOneFontSize">{{ data.title }}</view>
                 </view>
                 <view v-if="topStatusBarData.style == 'style-2'" class="content-wrap" :style="navbarInnerStyle" @click="diyStore.toRedirect(topStatusBarData.link)">
-                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" :class="{'!text-transparent': !isBackShow}" @tap="goBack"></view>
+                    <view class="back-wrap nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" :class="{'!text-transparent': !isBackShow}" @tap="goBack"></view>
                     <view class="title-wrap" :style="{ color: topStatusBarData.textColor }">
                         <view>
                             <image :src="img(topStatusBarData.imgUrl)" mode="heightFix"/>
@@ -17,7 +17,7 @@
                 </view>
 
                 <view v-if="topStatusBarData.style == 'style-3'" :style="navbarInnerStyle" class="content-wrap">
-                    <view v-if="isBackShow" class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
+                    <view v-if="isBackShow" class="back-wrap nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
                     <view class="title-wrap" @click="diyStore.toRedirect(topStatusBarData.link)">
                         <image :src="img(topStatusBarData.imgUrl)" mode="heightFix"/>
                     </view>
@@ -29,7 +29,7 @@
                 </view>
 
                 <view v-if="topStatusBarData.style == 'style-4'" :style="navbarInnerStyle" class="content-wrap">
-                    <view class="back-wrap -ml-[16rpx] text-[26px] nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
+                    <view class="back-wrap nc-iconfont nc-icon-zuoV6xx" :style="{ color: titleTextColor }" @tap="goBack" :class="{'!text-transparent': !isBackShow}"></view>
                     <text class="nc-iconfont nc-icon-dizhiguanliV6xx text-[28rpx]" :style="{ color: topStatusBarData.textColor }"></text>
                     <view class="title-wrap" @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-if="systemStore.diyAddressInfo">{{ systemStore.diyAddressInfo.community }}</view>
                     <view class="title-wrap" @click.stop="locationVal.reposition()" :style="{ color: topStatusBarData.textColor }" v-else>{{ systemStore.defaultPositionAddress }}</view>
@@ -312,6 +312,8 @@ defineExpose({
 .back-wrap {
     padding-right: 10rpx;
     line-height: 1;
+    margin-left: -16rpx;
+    font-size: 26rpx;
 
     .iconfont {
         font-size: 40rpx;

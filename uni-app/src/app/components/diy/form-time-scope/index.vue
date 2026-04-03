@@ -35,14 +35,14 @@
                 <view class="layout-one-content flex-1" @click="startDatetime = true">
                     <view class="nc-iconfont nc-icon-a-shijianV6xx-36 !text-[32rpx] text-[#999] mr-[16rpx]"></view>
                     <view class="flex-1 text-overflow-ellipsis"
-                          :class="{'!text-[#999]' : !diyComponent.defaultControl && !diyComponent.field.value.start.date}"
+                          :class="{'text-color-999' : !diyComponent.defaultControl && !diyComponent.field.value.start.date}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ startTime }}</view>
                 </view>
                 <view class="mx-[10rpx]" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">-</view>
                 <view class="layout-one-content flex-1" @click="endDatetime = true">
                     <view class="nc-iconfont nc-icon-a-shijianV6xx-36 !text-[32rpx] text-[#999] mr-[16rpx]"></view>
                     <view class="flex-1 text-overflow-ellipsis"
-                          :class="{'!text-[#999]' : !diyComponent.defaultControl && !diyComponent.field.value.end.date}"
+                          :class="{'text-color-999' : !diyComponent.defaultControl && !diyComponent.field.value.end.date}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ endTime }}</view>
                 </view>
             </view>
@@ -60,12 +60,12 @@
                 </view>
                 <view class="layout-two-content" @click="openCalendar">
                     <view class="text-overflow-ellipsis flex justify-center"
-                          :class="{'!text-[#999]' : !diyComponent.field.value.start.date && !diyComponent.defaultControl}"
+                          :class="{'text-color-999' : !diyComponent.field.value.start.date && !diyComponent.defaultControl}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}"
                           @click="startDatetime = true">{{ startTime }}</view>
                     <view class="mx-[10rpx]" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">-</view>
                     <view class="text-overflow-ellipsis flex justify-center"
-                          :class="{'!text-[#999]' : !diyComponent.field.value.end.date && !diyComponent.defaultControl}"
+                          :class="{'text-color-999' : !diyComponent.field.value.end.date && !diyComponent.defaultControl}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}"
                           @click="endDatetime = true">{{ endTime }}</view>
                     <text class="nc-iconfont !text-[#666] !text-[36rpx] nc-icon-youV6xx -mr-[8rpx]"></text>
@@ -361,5 +361,8 @@ defineExpose({
 
 .form-item-frame :deep(.u-picker .u-toolbar__wrapper__cancel), .form-item-frame :deep(.u-picker .u-toolbar__wrapper__confirm) {
     font-size: 28rpx;
+}
+.text-color-999 {
+    color: #999 !important;
 }
 </style>

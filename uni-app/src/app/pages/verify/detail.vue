@@ -3,7 +3,7 @@
         <template v-if="!loading">
             <view class="pt-[20rpx] sidebar-margin">
                 <view class="flex flex-col card-template">
-                    <view class="flex" :class="{'mb-[20rpx]': verifyInfo.value.list.length-1 != index}" v-for="(item,index) in verifyInfo.value.list" :key="index">
+                    <view class="flex" :class="{'mb20': verifyInfo.value.list.length-1 != index}" v-for="(item,index) in verifyInfo.value.list" :key="index">
                         <image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-if="item.cover" :src="img(item.cover)"/>
                         <image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-else :src="img('addon/tourism/tourism/member/hotel.png')"/>
                         <view class="flex flex-col flex-1 ml-[20rpx] py-[4rpx]">
@@ -40,7 +40,7 @@
 
                 <view v-for="(item,index) in verifyInfo.value.content.diy" :key="index" class="card-template top-mar">
                     <view class="title">{{ item.title }}</view>
-                    <view class="card-template-item justify-between" v-for="(subItem,subIndex) in item.list" :key="subIndex" :class="{'mt-30rpx' : subIndex == '0'}">
+                    <view class="card-template-item justify-between" v-for="(subItem,subIndex) in item.list" :key="subIndex" :class="{'mt30' : subIndex == '0'}">
                         <text class="text-[28rpx] text-[#333]">{{ subItem.title }}</text>
                         <view class="text-[28rpx] text-[#333]">{{ subItem.value }}</view>
                     </view>
@@ -80,3 +80,11 @@ const getVerifyDetailFn = () => {
     })
 }
 </script>
+<style lang="scss" scoped>
+.mb20 {
+    margin-bottom: 20rpx;
+
+.mt30{
+    margin-top: 30rpx;
+}}
+</style>

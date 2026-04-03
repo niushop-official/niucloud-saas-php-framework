@@ -48,7 +48,7 @@
 
                                     <text v-if="diyComponent.mode != 'img'"
                                           class="graphic-text w-full text-center truncate leading-normal"
-                                          :class="{ 'pt-[16rpx]' : diyComponent.mode != 'text' }"
+                                          :class="{ 'pt16' : diyComponent.mode != 'text' }"
                                           :style="{ fontSize: diyComponent.font.size * 2 + 'rpx', fontWeight: diyComponent.font.weight, color: diyComponent.font.color }">{{ item.title }}</text>
                                 </view>
 
@@ -88,7 +88,7 @@
                                 </view>
                                 <text v-if="diyComponent.mode != 'img'"
                                       class="graphic-text w-full text-center truncate leading-normal"
-                                      :class="{ 'pt-[16rpx]' : diyComponent.mode != 'text' }"
+                                      :class="{ 'pt16' : diyComponent.mode != 'text' }"
                                       :style="{ fontSize: diyComponent.font.size * 2 + 'rpx', fontWeight: diyComponent.font.weight, color: diyComponent.font.color }">{{ item.title }}</text>
                             </view>
                         </template>
@@ -120,7 +120,7 @@
                             </view>
                             <text v-if="diyComponent.mode != 'img'"
                                   class="graphic-text w-full text-center truncate leading-normal"
-                                  :class="{ 'pt-[16rpx]' : diyComponent.mode != 'text' }"
+                                  :class="{ 'pt16' : diyComponent.mode != 'text' }"
                                   :style="{ fontSize: diyComponent.font.size * 2 + 'rpx', fontWeight: diyComponent.font.weight, color: diyComponent.font.color }">{{ item.title }}</text>
                         </view>
                     </view>
@@ -369,5 +369,8 @@ const isShowSlideTemp = (index, numItem) => {
             }
         }
     }
+}
+.pt16 {
+    padding-top: 16rpx;
 }
 </style>

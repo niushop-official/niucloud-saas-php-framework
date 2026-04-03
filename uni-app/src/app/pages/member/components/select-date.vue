@@ -7,12 +7,12 @@
             </view>
             <view class="px-[30rpx] mb-[20rpx]">
                 <view class="flex items-center justify-between mb-[30rpx]">
-                    <view class="w-[160rpx] h-[60rpx] leading-[60rpx] rounded-[30rpx] bg-[#F4F6FA] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[#F4F6FA]"  v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == item.type}"  @click="loadDateFn(item)">{{item.name}}</view>
+                    <view class="cur-select-date-wrap" v-for="(item,index) in curselectDate" :key="'a'+index" :class="{'selected': currentValue.type == item.type}" @click="loadDateFn(item)">{{item.name}}</view>
                 </view>
                 <view class="flex items-center justify-between">
-                    <view class="w-[316rpx] h-[60rpx] leading-[60rpx] rounded-[30rpx] bg-[#F4F6FA] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[#F4F6FA]" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == 'first'}" @click="currentValue.type = 'first'">{{dateList.nowDate[0]}}</view>
+                    <view class="now-date-wrap" :class="{'selected': currentValue.type == 'first'}" @click="currentValue.type = 'first'">{{dateList.nowDate[0]}}</view>
                     <view class="nc-iconfont nc-icon-jianV6xx"></view>
-                    <view class="w-[316rpx] h-[60rpx] leading-[60rpx] rounded-[30rpx] bg-[#F4F6FA] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[#F4F6FA]" :class="{'text-primary !border-[var(--primary-color)] !bg-[rgba(239,0,12,0.04)]': currentValue.type == 'second'}" @click="currentValue.type = 'second'">{{dateList.nowDate[1]}}</view>
+                    <view class="now-date-wrap" :class="{'selected': currentValue.type == 'second'}" @click="currentValue.type = 'second'">{{dateList.nowDate[1]}}</view>
                 </view>
             </view>
             <view class="h-[396rpx]">
@@ -179,7 +179,7 @@ defineExpose({
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 :deep(.uni-picker-view-content){
     z-index: 10;
 }
@@ -188,5 +188,40 @@ defineExpose({
 }
 :deep(.uni-picker-view-indicator::after){
     border: none !important;
+}
+.cur-select-date-wrap {
+    width: 160rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    border-radius: 30rpx;
+    background-color: #F4F6FA;
+    text-align: center;
+    font-size: 26rpx;
+    color: var(--text-color-light6);
+    border-width: 2rpx;
+    border-style: solid;
+    border-color: #F4F6FA;
+
+    &.selected {
+        color: var(--primary-color);
+        border: var(--primary-color) !important;
+        background-color: rgba(239, 0, 12, 0.04) !important;
+    }
+}
+.now-date-wrap{
+    width: 316rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    border-radius: 30rpx;
+    background-color: #F4F6FA;
+    text-align: center;
+    font-size: 26rpx;
+    color: var(--text-color-light6);
+    border: 2rpx solid #F4F6FA;
+    &.selected {
+        color: var(--primary-color);
+        border: var(--primary-color) !important;
+        background-color: rgba(239, 0, 12, 0.04) !important;
+    }
 }
 </style>

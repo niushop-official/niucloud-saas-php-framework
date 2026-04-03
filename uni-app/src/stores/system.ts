@@ -46,6 +46,9 @@ const useSystemStore = defineStore('system', {
             siteAddons: [],
             currRoute: '',
             mapConfig: {
+                map_type: 'tencent',
+                key:'', // 腾讯地图key
+                tianditu_map_web_key: '', // 天地图key
                 is_open: 1,
                 valid_time: 0
             },
@@ -105,6 +108,9 @@ const useSystemStore = defineStore('system', {
                     // 地图配置
                     this.mapConfig.is_open = data.map_config.is_open;
                     this.mapConfig.valid_time = data.map_config.valid_time;
+                    this.mapConfig.map_type = data.map_config.map_type;
+                    this.mapConfig.key = data.map_config.key
+                    this.mapConfig.tianditu_map_web_key = data.map_config.tianditu_map_web_key;
                     uni.setStorageSync('mapConfig', this.mapConfig);
 
                     // 主题色

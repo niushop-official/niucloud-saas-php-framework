@@ -28,7 +28,7 @@
             <view class="layout-one-content" @click="openCalendar">
                 <view class="nc-iconfont nc-icon-a-riliV6xx-36 !text-[32rpx] text-[#999] mr-[16rpx]"></view>
                 <view class="flex-1 text-overflow-ellipsis flex"
-                      :class="{'!text-[#999]' : !diyComponent.field.value.date && !diyComponent.defaultControl}"
+                      :class="{'default-control' : !diyComponent.field.value.date && !diyComponent.defaultControl}"
                       :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx' }">{{ startDate }}</view>
             </view>
             <view class="layout-one-attribute-wrap" v-if="inputAttribute().length">
@@ -45,7 +45,7 @@
                 </view>
                 <view class="layout-two-content" @click="openCalendar">
                     <view class="flex-1 text-overflow-ellipsis flex justify-end"
-                          :class="{'!text-[#999]' : !diyComponent.field.value.date && !diyComponent.defaultControl}"
+                          :class="{'default-control' : !diyComponent.field.value.date && !diyComponent.defaultControl}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ startDate }}</view>
                     <text class="nc-iconfont !text-[#666] !text-[36rpx] nc-icon-youV6xx -mr-[8rpx]"></text>
                 </view>
@@ -269,6 +269,9 @@ defineExpose({
 
 <style lang="scss" scoped>
 @import '@/styles/diy_form.scss';
+.default-control {
+    color: #999 !important;
+}
 </style>
 
 <style lang="scss">

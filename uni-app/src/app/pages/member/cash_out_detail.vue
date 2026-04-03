@@ -8,7 +8,7 @@
                 </view> -->
                 <view class="flex items-center flex-col mb-[80rpx]">
                     <text class="text-[60rpx] font-bold price-font mb-[16rpx]">{{ cashOutInfo.apply_money }}</text>
-                    <text class="text-[28rpx] text-[#333]" :class="{'text-primary': cashOutInfo.status == 1, 'text-[#999]': cashOutInfo.status == 4 }">{{ cashOutInfo.status_name }}</text>
+                    <text class="status-name" :class="{'text-primary': cashOutInfo.status == 1, 'gray': cashOutInfo.status == 4 }">{{ cashOutInfo.status_name }}</text>
                 </view>
                 <!-- 状态1.待审核2.待转账 3.已转账 4.转账中 -1拒绝' -->
                 <view>
@@ -295,5 +295,13 @@ onUnload(() => {
 .tab-bar {
     padding-bottom: constant(safe-area-inset-bottom);
     padding-bottom: env(safe-area-inset-bottom);
+}
+.status-name {
+    font-size: 28rpx;
+    color: #333;
+
+    &.gray {
+        color: #999;
+    }
 }
 </style>

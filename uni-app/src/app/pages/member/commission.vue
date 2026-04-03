@@ -42,19 +42,17 @@
         </view>
         <mescroll-body ref="mescrollRef" @init="mescrollInit" :down="{ use: false }" @up="geCommissionListFn" :top="mescrollTop">
             <view class="px-[var(--sidebar-m)] pt-[10rpx] body-bottom" v-if="list.length">
-                <view v-for="(item,index) in list" :key="item.id"
-                      class="w-full h-[140rpx] flex justify-between items-center card-template"
-                      :class="{'mt-[var(--top-m)]':index}">
+                <view v-for="(item,index) in list" :key="item.id" class="card-template" :class="{'mt':index}">
                     <view class="flex items-center">
                         <view class="w-[80rpx] h-[80rpx] rounded-[40rpx] text-[40rpx] font-500  text-[#fff] flex items-center justify-center"
-                            :class="{'bg-[#EF000C]' :item.account_data > 0, 'bg-[#1379FF]':item.account_data <= 0 }">{{ item.account_data > 0 ? '收' : '提' }}</view>
+                            :class="{'account-data-bg-red' :item.account_data > 0, 'account-data-bg-blue':item.account_data <= 0 }">{{ item.account_data > 0 ? '收' : '提' }}</view>
                         <view class="flex flex-col ml-[20rpx]">
                             <view class="text-[#333] text-[28rpx] leading-[36rpx]">{{ item.from_type_name }}</view>
                             <view class="text-[var(--text-color-light9)] text-[24rpx] mt-[12rpx]">{{ item.create_time }}</view>
                         </view>
                     </view>
                     <view class="text-[36rpx] leading-[50rpx] price-font"
-                          :class="{'text-[#EF000C]' :item.account_data > 0, 'text-[#1379FF]':item.account_data <= 0 }">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
+                          :class="{'account-data-text-red' :item.account_data > 0, 'account-data-text-blue':item.account_data <= 0 }">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
                 </view>
             </view>
             <mescroll-empty v-if="!list.length && !loading &&!listLoading"></mescroll-empty>
@@ -166,7 +164,7 @@ const confirmFn = (data: any) => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .member-level {
     background: linear-gradient(360deg, #F23621 11%, #FF7F71 100%), #D9D9D9;
     border-radius: 0 20rpx 20rpx 0;
@@ -179,5 +177,28 @@ const confirmFn = (data: any) => {
 .body-bottom {
     padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
     padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+}
+.card-template {
+    width: 100%;
+    height: 140rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.mt {
+        margin-top: var(--top-m);
+    }
+}
+.account-data-bg-red{
+    background-color: #EF000C;
+}
+.account-data-bg-blue {
+    background-color: #1379FF;
+}
+.account-data-text-red{
+    color: #EF000C;
+}
+.account-data-text-blue{
+    color: #1379FF;
 }
 </style>

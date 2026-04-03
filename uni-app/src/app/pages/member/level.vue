@@ -16,8 +16,7 @@
                                     <view v-if="memberInfo.member_level == item.level_id && swiperIndex == index"
                                           class="text-[24rpx] absolute top-0 left-0 z-10 h-[66rpx] !bg-contain w-[150rpx] flex pt-[12rpx] pl-[16rpx]  box-border"
                                           :style="{ background: 'url(' + img(currLevelInfo.level_tag) + ') no-repeat',color: currLevelInfo.level_style.level_color}">当前等级</view>
-                                    <view class="absolute top-0 left-0 right-0 bottom-0 z-20 px-[30rpx] pt-[68rpx] box-border"
-                                        :class="{'px-[50rpx]': swiperIndex != index}">
+                                    <view class="swiper-level-item-wrap" :class="{'px50': swiperIndex != index}">
                                         <view class="flex items-center leading-[50rpx] mb-[90rpx]">
                                             <image class="h-[32rpx] w-[34rpx] align-middle" :src="img(item.level_icon ? item.level_icon : '')" mode="aspectFill" />
                                             <view class="text-[36rpx]  font-bold ml-[10rpx] max-w-[340rpx] truncate" :style="{color:currLevelInfo.level_style.level_color}">{{ item.level_name }}</view>
@@ -55,8 +54,8 @@
                                 <template v-for="(item,index) in list" :key="item.id">
                                     <view :style="levelStyle" class=" flex-shrink-0 flex flex-col items-center justify-center"
                                           @click="changeLevel(index)" :id="'id' + index">
-                                        <view class="w-[14rpx] h-[14rpx] level-class" :class="{'level-select': levelIndex == (index)}"></view>
-                                        <view :style="maxWidth" class="text-[22rpx] text-[#aaa] mt-[16rpx] truncate" :class="{'!text-[#fff]': levelIndex == (index)}">{{ item.level_name }}</view>
+                                        <view class="level-class" :class="{'level-select': levelIndex == (index)}"></view>
+                                        <view :style="maxWidth" class="level-name" :class="{'selected': levelIndex == (index)}">{{ item.level_name }}</view>
                                     </view>
                                 </template>
                             </view>
@@ -85,7 +84,7 @@
                         <text class="text-[30rpx] text-[#333] font-500 leading-[44rpx]">升级礼包</text>
                     </view>
                     <view class="flex flex-wrap">
-                        <view v-for="(item,index) in currLevelInfo.gifts_arr" :key="index" class="mb-[20rpx]" :class="{'mr-[21rpx]': (index+1) % 3 != 0}">
+                        <view v-for="(item,index) in currLevelInfo.gifts_arr" :key="index" class="mb20" :class="{'mr21': (index+1) % 3 != 0}">
                             <view class="relative box-border mb-[16rpx] w-[216rpx] h-[180rpx] !bg-contain" :style="{ background: 'url(' + img(item.background) + ') no-repeat'}"></view>
                             <view class="text-center font-500 text-[#333] text-[28rpx] truncate leading-[40rpx] max-w-[216rpx]">{{ item.text }}</view>
                         </view>
@@ -314,6 +313,8 @@ const changeLevel = (index: any) => {
 
 .level-class {
     position: relative;
+    width: 14rpx;
+    height: 14rpx;
 
     &::before {
         content: "";
@@ -354,5 +355,39 @@ const changeLevel = (index: any) => {
 .level_benefits {
     background-repeat: no-repeat;
     background-size: 100% 100%;
+}
+.swiper-level-item-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+    padding-left: 30rpx;
+    padding-right: 30rpx;
+    padding-top: 68rpx;
+    box-sizing: border-box;
+    &.px50 {
+        padding-left: 50rpx;
+        padding-right: 50rpx;
+    }
+}
+.level-name {
+    font-size: 22rpx;
+    color: #aaa;
+    margin-top: 16rpx;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &.selected {
+        color: #fff !important;
+    }
+}
+.mb20 {
+    margin-bottom: 20rpx;
+}
+.mr21 {
+    margin-right: 21rpx;
 }
 </style>

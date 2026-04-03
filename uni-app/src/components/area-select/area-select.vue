@@ -3,32 +3,32 @@
         <view @touchmove.prevent.stop class="popup-common">
             <view class="title">请选择地区</view>
             <view class="flex p-[30rpx] pt-[0] text-sm font-500">
-                <view v-if="areaList.province.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'province'}" @click="currSelect = 'province'">
+                <view v-if="areaList.province.length" class="area-select-wrap" :class="{'selected': currSelect == 'province'}" @click="currSelect = 'province'">
                     <view v-if="selected.province">{{ selected.province.name }}</view>
                     <view v-else>请选择</view>
                 </view>
-                <view v-if="areaList.city.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'city' }" @click="currSelect = 'city'">
+                <view v-if="areaList.city.length" class="area-select-wrap" :class="{'selected': currSelect == 'city' }" @click="currSelect = 'city'">
                     <view v-if="selected.city">{{ selected.city.name }}</view>
                     <view v-else>请选择</view>
                 </view>
-                <view v-if="areaList.district.length" class="flex-1 pr-[10rpx]" :class="{'text-[var(--primary-color)]': currSelect == 'district' }" @click="currSelect = 'district'">
+                <view v-if="areaList.district.length" class="area-select-wrap" :class="{'selected': currSelect == 'district' }" @click="currSelect = 'district'">
                     <view v-if="selected.district">{{ selected.district.name }}</view>
                     <view v-else>请选择</view>
                 </view>
-                <view class="flex-1 pr-[10rpx]" v-else></view>
+                <view class="area-select-wrap" v-else></view>
             </view>
             <scroll-view scroll-y="true" class="h-[700rpx] overflow-y-auto" :scroll-top="scrollTop" scroll-with-animation @touchmove.stop>
                 <view class="flex p-[30rpx] pt-[0] text-sm font-500">
-                    <view v-if="areaList.province.length" class="flex-1 pr-[10rpx]" :style="{ opacity: currSelect == 'province' ? 1 : 0, pointerEvents: currSelect == 'province' ? 'auto' : 'none',height: currSelect == 'province' ? 'auto' : '0',overflow: currSelect == 'province' ? 'auto' : 'hidden' }">
-                        <view v-for="(item, index) in areaList.province" :key="item.id" class="h-[80rpx] flex items-center" :class="{'text-[var(--primary-color)]': selected.province && selected.province.id == item.id }" @click="handleProvinceClick(item)">{{ item.name }}</view>
+                    <view v-if="areaList.province.length" class="area-select-wrap" :style="{ opacity: currSelect == 'province' ? 1 : 0, pointerEvents: currSelect == 'province' ? 'auto' : 'none',height: currSelect == 'province' ? 'auto' : '0',overflow: currSelect == 'province' ? 'auto' : 'hidden' }">
+                        <view v-for="(item, index) in areaList.province" :key="item.id" class="h-[80rpx] flex items-center" :class="{'selected': selected.province && selected.province.id == item.id }" @click="handleProvinceClick(item)">{{ item.name }}</view>
                     </view>
-                    <view v-if="areaList.city.length" class="flex-1 pr-[10rpx]" :style="{ opacity: currSelect == 'city' ? 1 : 0, pointerEvents: currSelect == 'city' ? 'auto' : 'none',height: currSelect == 'city' ? 'auto' : '0',overflow: currSelect == 'city' ? 'auto' : 'hidden' }">
-                        <view v-for="(item, index) in areaList.city" :key="item.id" class="h-[80rpx] flex items-center" :class="{'text-[var(--primary-color)]': selected.city && selected.city.id == item.id }" @click="handleCityClick(item)">{{ item.name }}</view>
+                    <view v-if="areaList.city.length" class="area-select-wrap" :style="{ opacity: currSelect == 'city' ? 1 : 0, pointerEvents: currSelect == 'city' ? 'auto' : 'none',height: currSelect == 'city' ? 'auto' : '0',overflow: currSelect == 'city' ? 'auto' : 'hidden' }">
+                        <view v-for="(item, index) in areaList.city" :key="item.id" class="h-[80rpx] flex items-center" :class="{'selected': selected.city && selected.city.id == item.id }" @click="handleCityClick(item)">{{ item.name }}</view>
                     </view>
-                    <view v-if="areaList.district.length" class="flex-1 pr-[10rpx]" :style="{ opacity: currSelect == 'district' ? 1 : 0, pointerEvents: currSelect == 'district' ? 'auto' : 'none',height: currSelect == 'district' ? 'auto' : '0',overflow: currSelect == 'district' ? 'auto' : 'hidden' }">
-                        <view v-for="(item, index) in areaList.district" :key="item.id" class="h-[80rpx] flex items-center " :class="{'text-[var(--primary-color)]': selected.district && selected.district.id == item.id }" @click="selected.district = item">{{ item.name }}</view>
+                    <view v-if="areaList.district.length" class="area-select-wrap" :style="{ opacity: currSelect == 'district' ? 1 : 0, pointerEvents: currSelect == 'district' ? 'auto' : 'none',height: currSelect == 'district' ? 'auto' : '0',overflow: currSelect == 'district' ? 'auto' : 'hidden' }">
+                        <view v-for="(item, index) in areaList.district" :key="item.id" class="h-[80rpx] flex items-center " :class="{'selected': selected.district && selected.district.id == item.id }" @click="selected.district = item">{{ item.name }}</view>
                     </view>
-                    <view class="flex-1 pr-[10rpx]" v-else></view>
+                    <view class="area-select-wrap" v-else></view>
                 </view>
             </scroll-view>
         </view>
@@ -230,4 +230,13 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.area-select-wrap {
+    flex: 1;
+    padding-right: 10rpx;
+
+    &.selected {
+        color: var(--primary-color);
+    }
+}
+</style>

@@ -43,8 +43,7 @@
 
             <u-checkbox-group v-if="diyComponent.style == 'style-2'" v-model="selectValue" @change="checkboxChange" iconPlacement="left" placement="column">
                 <view v-for="(item, index) in diyComponent.options" :key="index" @click="selectRadio(item)"
-                      class="layout-one-content mb-[16rpx]"
-                      :class="{'!mb-[0]': (diyComponent.options.length-1) == index}">
+                      class="layout-one-content mb16" :class="{'imp-mb0': (diyComponent.options.length-1) == index}">
                     <u-checkbox class="!m-[0]" activeColor="var(--primary-color)" :labelSize="(diyComponent.fontSize * 2) + 'rpx'" :labelColor="diyComponent.textColor" :label="item.text" :name="item.id"></u-checkbox>
                 </view>
             </u-checkbox-group>
@@ -55,7 +54,7 @@
                     </text>
                 </view>
                 <text v-else class="text-[28rpx] text-[#999]" :style="{'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ checkboxPlaceholder }}</text>
-                <text class="nc-iconfont nc-icon-xiaV6xx pull-down-arrow text-[#666]" :class="{'selected': selectShow}" :style="{'font-size': (diyComponent.fontSize * 2+2) + 'rpx !important'}"></text>
+                <text class="nc-iconfont nc-icon-xiaV6xx pull-down-arrow" :class="{'selected': selectShow}" :style="{'font-size': (diyComponent.fontSize * 2+2) + 'rpx !important'}"></text>
             </view>
 
             <view class="layout-one-attribute-wrap" v-if="inputAttribute().length">
@@ -64,7 +63,7 @@
         </view>
         <view class="base-layout-two" v-if="diyGlobal.completeLayout == 'style-2'">
             <text v-if="diyStore.mode == 'decorate' && diyComponent.isHidden" class="layout-two-is-hidden">{{ t('diyForm.hidden') }}</text>
-            <view class="layout-two-wrap" :class="{'!pb-[20rpx]': ((diyComponent.style == 'style-2' || diyComponent.style == 'style-3') && diyGlobal.borderControl),'no-border': !diyGlobal.borderControl}">
+            <view class="layout-two-wrap" :class="{'imp-pb20': ((diyComponent.style == 'style-2' || diyComponent.style == 'style-3') && diyGlobal.borderControl),'no-border': !diyGlobal.borderControl}">
                 <view class="layout-two-label"
                       :class="{'justify-start': diyGlobal.completeAlign == 'left', 'justify-end': diyGlobal.completeAlign == 'right'}">
                     <text class="required" v-if="diyComponent.field.required">{{ diyComponent.field.required ? '*' : '' }}</text>
@@ -81,9 +80,8 @@
                 <view class="layout-two-content" v-if="diyComponent.style == 'style-2'">
                     <view class="justify-end w-full">
                         <u-checkbox-group v-model="selectValue" placement="column" @change="checkboxChange" iconPlacement="left">
-                            <view v-for="(item, index) in diyComponent.options" :key="index" @click="selectRadio(item)"
-                                  class="border-solid border-[2rpx] border-[#e6e6e6] rounded-[10rpx] flex items-center h-[80rpx] mb-[16rpx] px-[16rpx] box-border"
-                                  :class="{'mb-[0]': diyComponent.options.length == (index+1)}">
+                            <view v-for="(item, index) in diyComponent.options" :key="index" @click="selectRadio(item)" class="radio-wrap"
+                                  :class="{'mb0': diyComponent.options.length == (index+1)}">
                                 <u-checkbox activeColor="var(--primary-color)"
                                             :labelSize="(diyComponent.fontSize * 2) + 'rpx'"
                                             :labelColor="diyComponent.textColor" class="!m-[0]" :label="item.text"
@@ -103,7 +101,7 @@
                             </text>
                         </view>
                         <text v-else class="text-[28rpx] text-[#999]" :style="{'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ checkboxPlaceholder }}</text>
-                        <text class="nc-iconfont nc-icon-xiaV6xx pull-down-arrow text-[#666]" :class="{'selected': selectShow}" :style="{'font-size': (diyComponent.fontSize * 2+2) + 'rpx !important'}"></text>
+                        <text class="nc-iconfont nc-icon-xiaV6xx pull-down-arrow" :class="{'selected': selectShow}" :style="{'font-size': (diyComponent.fontSize * 2+2) + 'rpx !important'}"></text>
                     </view>
                 </view>
             </view>
@@ -338,6 +336,7 @@ defineExpose({
 .pull-down-arrow {
     transition: all .3s;
     transform: rotate(0);
+    color: #666;
 
     &.selected {
         transform: rotate(180deg);
@@ -347,5 +346,29 @@ defineExpose({
 .form-item-frame :deep(.u-checkbox .u-checkbox__icon-wrap) {
     width: 30rpx !important;
     height: 30rpx !important;
+}
+.mb16{
+    margin-bottom: 16rpx;
+}
+.imp-mb0{
+    margin-bottom: 0 !important;
+}
+.imp-pb20 {
+    padding-bottom: 20rpx !important;
+}
+.radio-wrap {
+    border: 2px solid #e6e6e6;
+    border-radius: 10rpx;
+    display: flex;
+    align-items: center;
+    height: 80rpx;
+    margin-bottom: 16rpx;
+    padding-left: 16rpx;
+    padding-right: 16rpx;
+    box-sizing: border-box;
+
+    &.mb0 {
+        margin-bottom: 0;
+    }
 }
 </style>

@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { deepClone, redirect } from '@/utils/common'
+import { deepClone, redirect,openMapSelector } from '@/utils/common'
 import { t } from '@/locale'
 import { addAddress, editAddress, getAddressInfo } from '@/app/api/member'
 import manifestJson from '@/manifest.json'
@@ -262,7 +262,7 @@ const save = () => {
 const chooseLocation = () => {
     let latitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.latitude : '';
     let longitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.longitude : '';
-    
+
     // #ifndef H5
     uni.chooseLocation({
         latitude,
@@ -301,7 +301,11 @@ const chooseLocation = () => {
     if (isSelectMap.value) {
         backurl = backurl + '&isSelectMap=' + isSelectMap.value
     }
-    window.location.href = 'https://apis.map.qq.com/tools/locpicker?search=1&type=0&backurl=' + encodeURIComponent(backurl) + '&key=' + manifestJson.h5.sdkConfigs.maps.qqmap.key + '&referer=myapp';
+    let params = ''
+    if (latitude && longitude) {
+        params = `latng=${ latitude },${ longitude }`
+    }
+    openMapSelector(backurl, params);
     // #endif
 }
 

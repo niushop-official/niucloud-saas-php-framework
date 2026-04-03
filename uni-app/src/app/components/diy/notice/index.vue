@@ -15,12 +15,12 @@
                     <!-- 横向滚动 -->
                     <view class="horizontal-wrap" :style="marqueeStyle" v-if="diyComponent.scrollWay == 'horizontal'">
                         <view class="marquee marquee-one" id="marquee-one">
-                            <view class="item flex-shrink-0 !leading-[40rpx] h-[40rpx]" :class="{'ml-[80rpx]':index}"
+                            <view class="item" :class="{'ml80':index}"
                                   v-for="(item, index) in diyComponent.list" :key="index" @click="toRedirect(item)"
                                   :style="{ color: diyComponent.textColor, fontSize: diyComponent.fontSize * 2 + 'rpx',  fontWeight: diyComponent.fontWeight }">{{ item.text }}</view>
                         </view>
                         <view class="marquee" v-if="marqueeBodyWidth < (marqueeOneWidth-30)">
-                            <view class="item flex-shrink-0 !leading-[40rpx] h-[40rpx]" :class="{'ml-[80rpx]':index}"
+                            <view class="item" :class="{'ml80':index}"
                                   v-for="(item, index) in diyComponent.list" :key="index" @click="toRedirect(item)"
                                   :style="{ color: diyComponent.textColor, fontSize: diyComponent.fontSize * 2 + 'rpx',  fontWeight: diyComponent.fontWeight }">{{ item.text }}</view>
                         </view>
@@ -272,6 +272,14 @@ swiper {
     //   -moz-perspective: 1000;
     //   -ms-perspective: 1000;
     //   perspective: 1000;
+    .item{
+        flex-shrink: 0;
+        line-height: 40rpx !important;
+        height: 40rpx;
+        &.ml80 {
+            margin-left: 80rpx;
+        }
+    }
 }
 
 @keyframes marquee {

@@ -36,7 +36,7 @@
             </view>
 
             <u-radio-group v-if="diyComponent.style == 'style-2'" v-model="selectedRadioId" @change="groupChange" iconPlacement="left" placement="column">
-                <view v-for="(item, index) in diyComponent.options" :key="index" @click="selectRadio(item)" class="layout-one-content mb-[16rpx]" :class="{'!mb-[0]': (diyComponent.options.length-1) == index}">
+                <view v-for="(item, index) in diyComponent.options" :key="index" @click="selectRadio(item)" class="layout-one-content mb16" :class="{'imp-mb0': (diyComponent.options.length-1) == index}">
                     <u-radio activeColor="var(--primary-color)" :labelSize="(diyComponent.fontSize * 2) + 'rpx'" :labelColor="diyComponent.textColor" class="mr-[20rpx]" :label="item.text" :name="item.id"></u-radio>
                 </view>
             </u-radio-group>
@@ -55,7 +55,7 @@
         </view>
         <view class="base-layout-two" v-if="diyGlobal.completeLayout == 'style-2'">
             <text v-if="diyStore.mode == 'decorate' && diyComponent.isHidden" class="layout-two-is-hidden">{{ t('diyForm.hidden') }}</text>
-            <view class="layout-two-wrap" :class="{'!pb-[20rpx]': ((diyComponent.style == 'style-2' || diyComponent.style == 'style-3') && diyGlobal.borderControl),'no-border': !diyGlobal.borderControl}">
+            <view class="layout-two-wrap" :class="{'imp-pb20': ((diyComponent.style == 'style-2' || diyComponent.style == 'style-3') && diyGlobal.borderControl),'no-border': !diyGlobal.borderControl}">
                 <view class="layout-two-label" :class="{'justify-start': diyGlobal.completeAlign == 'left', 'justify-end': diyGlobal.completeAlign == 'right'}"><text class="required">{{ diyComponent.field.required ? '*' : '' }}</text>
                     <text class="name" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx' ,'font-weight': diyComponent.fontWeight}">{{ diyComponent.field.name }}</text>
                 </view>
@@ -77,7 +77,7 @@
                         <u-radio-group v-model="selectedRadioId" @change="groupChange" placement="column" iconPlacement="left">
                             <view v-for="(item, index) in diyComponent.options" :key="index" @click="selectRadio(item)"
                                   class="border-solid border-[2rpx] border-[#e6e6e6] rounded-[10rpx] flex items-center h-[80rpx] mb-[16rpx] px-[16rpx] box-border"
-                                  :class="{'mb-[0]': diyComponent.options.length == (index+1)}">
+                                  :class="{'mb0': diyComponent.options.length == (index+1)}">
                                 <u-radio activeColor="var(--primary-color)"
                                          :labelSize="(diyComponent.fontSize * 2) + 'rpx'"
                                          :labelColor="diyComponent.textColor" class="!m-[0]" :label="item.text"
@@ -349,5 +349,17 @@ defineExpose({
 .form-item-frame :deep(.u-radio-group .u-radio__icon-wrap) {
     width: 30rpx !important;
     height: 30rpx !important;
+}
+.mb16 {
+    margin-bottom: 16rpx;
+}
+.imp-mb0 {
+    margin-bottom: 0 !important;
+}
+.imp-pb20 {
+    padding-bottom: 20rpx !important;
+}
+.mb0 {
+    margin-bottom: 0;
 }
 </style>

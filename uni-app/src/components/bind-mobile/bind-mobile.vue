@@ -34,7 +34,7 @@
                         </view>
                     </view>
                     <view class="mt-[100rpx]">
-                        <button class="primary-btn-bg text-[26rpx] !text-[#fff] !h-[80rpx] leading-[80rpx] rounded-full font-500" :class="{'opacity-50': loading}" :disabled="loading" @click="handleBind">{{ t('bind') }}</button>
+                        <button class="primary-btn-bg bind-btn" :class="{'opacity50': loading}" :disabled="loading" @click="handleBind">{{ t('bind') }}</button>
                     </view>
                 </u-form>
             </view>
@@ -168,5 +168,17 @@ defineExpose({
 
 :deep(.u-checkbox) {
     margin: 0 !important;
+}
+.bind-btn {
+    font-size: 26rpx;
+    color: #fff !important;
+    height: 80rpx !important;
+    line-height: 80rpx;
+    border-radius: 999rpx;
+    font-weight: 500;
+
+    &.opacity50 {
+        opacity: 0.5;
+    }
 }
 </style>

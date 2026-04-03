@@ -50,7 +50,7 @@
                         </view> -->
                     </view>
                     <view class="border-0 border-solid border-b-[1rpx] border-[#f6f6f6] mb-[20rpx]">
-                        <view v-for="(item, index) in friendsInfo.trade_info.item_list" class="flex justify-between" :class="{' mb-[34rpx]': (index + 1) != friendsInfo.trade_info.length }">
+                        <view v-for="(item, index) in friendsInfo.trade_info.item_list" class="flex justify-between" :class="{'mb34': (index + 1) != friendsInfo.trade_info.length }">
                             <view class="w-[170rpx] h-[170rpx] rounded-[var(--goods-rounded-big)] overflow-hidden flex-shrink-0">
                                 <up-image class="overflow-hidden" radius="var(--goods-rounded-big)" width="170rpx" height="170rpx"  :src="img(item.item_image ? item.item_image : '')" model="aspectFill">
                                     <template #error>
@@ -223,5 +223,8 @@ const save = () =>{
 }
 .botton-color{
 	background: linear-gradient( 94deg, #FB7939 0%, #FE120E 99%), #EF000C;
+}
+.mb34 {
+    margin-bottom: 34rpx;
 }
 </style>

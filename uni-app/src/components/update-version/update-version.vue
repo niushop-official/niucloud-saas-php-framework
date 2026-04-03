@@ -25,7 +25,7 @@
                 <!-- 下载进度条 -->
                 <view class="mt-[30rpx] mx-[10rpx]" v-if="downloading">
                     <view class="w-full h-[10rpx] bg-[#E0E0E0] rounded-full overflow-hidden">
-                        <view class="h-full bg-[#F11C0C] rounded-full" :style="{ width: downloadProgress + '%' }" :class="downloading ? 'downloading-animation' : ''"></view>
+                        <view class="download-progress" :style="{ width: downloadProgress + '%' }" :class="downloading ? 'downloading-animation' : ''"></view>
                     </view>
                 </view>
             </view>
@@ -283,5 +283,10 @@ defineExpose({
 	/* 关键样式：让\n生效 */
 	white-space: pre-line;
 	line-height: 1.6;
+}
+.download-progress {
+    height: 100%;
+    background-color: #F11C0C;
+    border-radius: 999rpx;
 }
 </style>

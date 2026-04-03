@@ -35,14 +35,14 @@
                 <view class="layout-one-content flex-1" @click="openCalendar">
                     <view class="nc-iconfont nc-icon-a-riliV6xx-36 !text-[32rpx] text-[#999] mr-[16rpx]"></view>
                     <view class="flex-1 text-overflow-ellipsis"
-                          :class="{'!text-[#999]' : !diyComponent.field.value.start.timestamp && !diyComponent.defaultControl}"
+                          :class="{'default-control' : !diyComponent.field.value.start.timestamp && !diyComponent.defaultControl}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx' }">{{ startDate }}</view>
                 </view>
                 <view class="mx-[10rpx]" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">-</view>
                 <view class="layout-one-content flex-1" @click="openCalendar">
                     <view class="nc-iconfont nc-icon-a-riliV6xx-36 !text-[32rpx] text-[#999] mr-[16rpx]"></view>
                     <view class="flex-1 text-overflow-ellipsis"
-                          :class="{'!text-[#999]' : !diyComponent.field.value.end.timestamp && !diyComponent.defaultControl}"
+                          :class="{'default-control' : !diyComponent.field.value.end.timestamp && !diyComponent.defaultControl}"
                           :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ endDate }}</view>
                 </view>
             </view>
@@ -58,9 +58,9 @@
                     <text class="name" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx' ,'font-weight': diyComponent.fontWeight}">{{ diyComponent.field.name }}</text>
                 </view>
                 <view class="layout-two-content" @click="openCalendar">
-                    <view class="text-overflow-ellipsis flex justify-center" :class="{'!text-[#999]' : !diyComponent.field.value.start.timestamp && !diyComponent.defaultControl}" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ startDate }}</view>
+                    <view class="text-overflow-ellipsis flex justify-center" :class="{'default-control' : !diyComponent.field.value.start.timestamp && !diyComponent.defaultControl}" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ startDate }}</view>
                     <view class="mx-[10rpx]" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">-</view>
-                    <view class="text-overflow-ellipsis flex justify-center" :class="{'!text-[#999]' : !diyComponent.field.value.end.timestamp && !diyComponent.defaultControl}" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ endDate }}</view>
+                    <view class="text-overflow-ellipsis flex justify-center" :class="{'default-control' : !diyComponent.field.value.end.timestamp && !diyComponent.defaultControl}" :style="{'color': diyComponent.textColor,'font-size': (diyComponent.fontSize * 2) + 'rpx'}">{{ endDate }}</view>
                     <text class="nc-iconfont !text-[#666] !text-[36rpx] nc-icon-youV6xx -mr-[8rpx]"></text>
                 </view>
             </view>
@@ -305,6 +305,9 @@ defineExpose({
     overflow: hidden;
     white-space: nowrap;
     display: inline-block;
+}
+.default-control {
+    color: #999 !important;
 }
 </style>
 <style lang="scss">

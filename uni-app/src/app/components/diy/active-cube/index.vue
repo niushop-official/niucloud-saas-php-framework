@@ -69,7 +69,7 @@
                                 <view class="text-[26rpx] mt-[10rpx] pb-[16rpx]" :style="{ fontWeight : diyComponent.blockStyle.fontWeight }">{{ item.title.text }}</view>
                                 <view class="text-[22rpx] text-gray-500 pb-[26rpx]">{{ item.subTitle.text }}</view>
                                 <view class="link relative text-[22rpx] leading-[40rpx] flex items-center text-white rounded-[20rpx] h-[40rpx] pl-[20rpx] pr-[10rpx]" :style="btnCss(item.moreTitle)" v-if="item.moreTitle.text">
-                                    <text class="mr-[8rpx]" :class="{'italic': diyComponent.blockStyle.btnText == 'italics'}">{{ item.moreTitle.text }}</text>
+                                    <text class="more-title" :class="{'italic': diyComponent.blockStyle.btnText == 'italics'}">{{ item.moreTitle.text }}</text>
                                     <text class="iconfont iconjiantou-you-cuxiantiao-fill !text-[20rpx] text-[#fff]"></text>
                                 </view>
                             </view>
@@ -84,8 +84,7 @@
                 </view>
                 <scroll-view :scroll-x="true" class="whitespace-nowrap" :id="'warpStyle3-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-3'">
                     <view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
-                        <view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)"
-                              class="flex flex-col items-center justify-between p-[10rpx] bg-white mt-[20rpx] w-[157rpx] h-[200rpx] box-border"
+                        <view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="item-wrap-style3"
                               :style="itemStyle3 + commonTempCss(item)"
                               :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}">
                             <view class="w-[141rpx] h-[141rpx] rounded-[var(--rounded-small)] overflow-hidden" v-if="item.imageUrl">
@@ -103,8 +102,7 @@
 
                 <scroll-view scroll-x="true" class="whitespace-nowrap" :id="'warpStyle4-'+diyComponent.id" v-if="diyComponent.blockStyle.value == 'style-4'">
                     <view v-for="(item,index) in diyComponent.list" :key="item.id" class="inline-flex">
-                        <view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)"
-                              class="flex flex-col items-center justify-between p-[4rpx] bg-[#F93D02] mt-[20rpx] box-border"
+                        <view :id="'item'+index+diyComponent.id" @click="diyStore.toRedirect(item.link)" class="item-wrap-style4"
                               :class="{'!mr-[0rpx]': index+1 === diyComponent.list.length}"
                               :style="commonTempCss(item) + itemStyle4">
                             <view class="w-[149rpx] h-[149rpx] box-border px-[18rpx] pt-[16rpx] pb-[6rpx] bg-[#fff] flex flex-col items-center rounded-[var(--rounded-small)]">
@@ -284,5 +282,30 @@ const refresh = () => {
 
         }
     }
+}
+.more-title {
+    margin-right: 8rpx;
+}
+.item-wrap-style3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10rpx;
+    background-color: white;
+    margin-top: 20rpx;
+    width: 157rpx;
+    height: 200rpx;
+    box-sizing: border-box;
+}
+.item-wrap-style4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rpx;
+    background-color: #F93D02;
+    margin-top: 20rpx;
+    box-sizing: border-box;
 }
 </style>

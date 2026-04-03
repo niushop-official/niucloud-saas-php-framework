@@ -19,7 +19,7 @@
                 </view>
             </view>
             <view class="card-template mt-[var(--top-m)] sidebar-margin">
-                <view class="flex" :class="{'mb-[var(--top-m)]': (verifyInfo.value.list.length - 1 != index)}" v-for="(item,index) in verifyInfo.value.list" :key="index">
+                <view class="flex" :class="{'mb-var': (verifyInfo.value.list.length - 1 != index)}" v-for="(item,index) in verifyInfo.value.list" :key="index">
                     <image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-if="item.cover" :src="img(item.cover)"/>
                     <image class="w-[150rpx] h-[150rpx] rounded-[var(--goods-rounded-big)]" mode="aspectFill" v-else :src="img('addon/tourism/tourism/member/hotel.png')"/>
                     <view class="flex flex-col flex-1 ml-[20rpx] py-[4rpx]">
@@ -60,7 +60,7 @@
             </view>
             <view class="common-tab-bar w-[100%]">
                 <view class="common-tab-bar-placeholder"></view>
-                <view class="verify-tab-bar fixed flex-center !text-[26rpx] rounded-[50rpx] h-[80rpx] left-[20rpx] right-[20rpx] text-[#fff] font-500" :class="verifyInfo.is_can_use ? 'primary-btn-bg' : 'bg-[#ccc]'" @click="verifyFn">确定</view>
+                <view class="verify-tab-bar" :class="verifyInfo.is_can_use ? 'primary-btn-bg' : 'bg-ccc'" @click="verifyFn">确定</view>
             </view>
         </template>
         <loading-page :loading="loading"></loading-page>
@@ -160,5 +160,22 @@ const verifyFn = () => {
 .verify-tab-bar{
     bottom: calc(constant(safe-area-inset-bottom) + 30rpx);
     bottom: calc(env(safe-area-inset-bottom) + 30rpx);
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26rpx !important;
+    border-radius: 50rpx;
+    height: 80rpx;
+    left: 20rpx;
+    right: 20rpx;
+    color: #fff;
+    font-weight: 500;
+    &.bg-ccc{
+        background-color: #ccc;
+    }
+}
+.mb-var{
+    margin-bottom: var(--top-m);
 }
 </style>

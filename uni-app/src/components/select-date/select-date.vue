@@ -5,18 +5,18 @@
             <view class="absolute  top-[36rpx] right-[36rpx] text-[24rpx] text-[var(--text-color-light6)] leading-[30rpx] z-10" @click="clearDate">清除</view>
             <view class="px-[var(--popup-sidebar-m)] mb-[20rpx] mt-[10rpx]">
                 <view class="flex items-center justify-between mb-[30rpx]">
-                    <view class="w-[160rpx] h-[66rpx] box-border flex-center rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"
+                    <view class="cur-select-date-wrap"
                         v-for="(item,index) in curselectDate" :key="'a'+index"
-                        :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == item.type}"
+                        :class="{'text-primary current': currentValue.type == item.type}"
                         @click="loadDateFn(item)">{{ item.name }}</view>
                 </view>
                 <view class="flex items-center justify-between">
-                    <view class="w-[316rpx] h-[66rpx] box-border leading-[62rpx] rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"
-                        :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == 'first'}"
+                    <view class="now-date-wrap"
+                        :class="{'text-primary current': currentValue.type == 'first'}"
                         @click="currentValue.type = 'first'">{{ dateList.nowDate[0].substr(0, 10) }}</view>
                     <view class="nc-iconfont nc-icon-jianV6xx"></view>
-                    <view class="w-[316rpx] h-[66rpx] box-border leading-[62rpx] rounded-[33rpx] bg-[var(--temp-bg)] text-center text-[26rpx] text-[var(--text-color-light6)] border-[2rpx] border-solid border-[var(--temp-bg)]"
-                        :class="{'text-primary !border-[var(--primary-color)] !bg-[var(--primary-color-light)]': currentValue.type == 'second'}"
+                    <view class="now-date-wrap"
+                        :class="{'text-primary current': currentValue.type == 'second'}"
                         @click="currentValue.type = 'second'">{{ dateList.nowDate[1].substr(0, 10) }}</view>
                 </view>
             </view>
@@ -232,6 +232,43 @@ defineExpose({
         height: 70rpx;
         background: linear-gradient(#fff, rgba(255, 255, 255, .5));
         z-index: 12;
+    }
+}
+.popup-common {
+    .cur-select-date-wrap{
+        width: 160rpx;
+        height: 66rpx;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 33rpx;
+        background-color: var(--temp-bg);
+        text-align: center;
+        font-size: 26rpx;
+        color: var(--text-color-light6);
+        border-width: 2rpx;
+        border-style: solid;
+        border-color: var(--temp-bg);
+    }
+    .current{
+        color: var(--primary-color);
+        border-color: var(--primary-color) !important;
+        background-color: var(--primary-color-light) !important;
+    }
+    .now-date-wrap{
+        width: 316rpx;
+        height: 66rpx;
+        box-sizing: border-box;
+        line-height: 62rpx;
+        border-radius: 33rpx;
+        background-color: var(--temp-bg);
+        text-align: center;
+        font-size: 26rpx;
+        color: var(--text-color-light6);
+        border-width: 2rpx;
+        border-style: solid;
+        border-color: var(--temp-bg);
     }
 }
 </style>

@@ -25,8 +25,7 @@
                 <view v-for="(item,index) in list" :key="item.id" class="sidebar-margin mb-[var(--top-m)] card-template relative">
                     <view class="flex items-center justify-between mb-[20rpx]">
                         <view class="text-[28rpx] font-500 text-[#333] leading-[40rpx]">{{ item.from_type_name }}</view>
-                        <view class="absolute right-[30rpx] top-[30rpx] text-[36rpx] font-500 text-[#03B521] leading-[50rpx] price-font"
-                            :class="{'!text-[var(--price-text-color)]':item.account_data > 0}">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
+                        <view class="account-data-wrap price-font" :class="{'selected':item.account_data > 0}">{{ item.account_data > 0 ? '+' + item.account_data : item.account_data }}</view>
                     </view>
                     <view class="text-[24rpx] text-[var(--text-color-light6)] mb-[14rpx]" v-if="item.memo">{{ item.memo }}</view>
                     <view class="text-[24rpx] text-[var(--text-color-light6)]">{{ item.create_time }}</view>
@@ -150,9 +149,22 @@ const confirmFn = (data: any) => {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .body-bottom {
     padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
     padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+}
+.account-data-wrap {
+    position: absolute;
+    right: 30rpx;
+    top: 30rpx;
+    font-size: 36rpx;
+    font-weight: 500;
+    color: #03B521;
+    line-height: 50rpx;
+
+    &.selected {
+        color: var(--price-text-color) !important;
+    }
 }
 </style>

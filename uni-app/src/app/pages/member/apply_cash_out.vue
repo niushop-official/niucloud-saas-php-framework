@@ -28,7 +28,7 @@
                     <!-- 提现到微信 -->
                     <view class="p-[20rpx] mb-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]"
                         v-if="config.transfer_type.includes('wechatpay') && openId"
-                        :class="{'border-[#00C800] bg-[#ECF9EF]': applyData.transfer_type == 'wechatpay'}"
+                        :class="{'wechat-wrap': applyData.transfer_type == 'wechatpay'}"
                         @click="transferWeixin">
                         <view>
                             <image class="h-[60rpx] w-[60rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/wechat.png')" mode="widthFix" />
@@ -42,7 +42,7 @@
                     <!-- 提现到微信收款码 -->
                     <view class="p-[20rpx] mb-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]"
                         v-if="config.transfer_type.includes('wechat_code')"
-                        :class="{'border-[#00C800] bg-[#ECF9EF]': applyData.transfer_type == 'wechat_code' && wechatCodeInfo}">
+                        :class="{'wechat-wrap': applyData.transfer_type == 'wechat_code' && wechatCodeInfo}">
                         <view @click="transferWechatCode">
                             <image class="h-[60rpx] w-[60rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/wechat_code.png')" mode="widthFix" />
                         </view>
@@ -68,7 +68,7 @@
                     <!-- 提现到支付宝 -->
                     <view class="p-[20rpx] mb-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]"
                         v-if="config.transfer_type.includes('alipay')"
-                        :class="{'border-[#009FE8] bg-[#EEF8FC]': applyData.transfer_type == 'alipay' && alipayAccountInfo}">
+                        :class="{'alipay-wrap': applyData.transfer_type == 'alipay' && alipayAccountInfo}">
                         <view @click="transferAlipay">
                             <image class="h-[60rpx] w-[60rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/alipay-icon.png')" mode="widthFix" />
                         </view>
@@ -94,7 +94,7 @@
                     <!-- 提现到银行卡 -->
                     <view class="p-[20rpx] flex items-center rounded-[var(--rounded-mid)] border-[1rpx] border-solid border-[#eee]"
                         v-if="config.transfer_type.includes('bank')"
-                        :class="{'border-[#089C98] bg-[#F6FFFF]': applyData.transfer_type == 'bank' && bankAccountInfo}">
+                        :class="{'bank-wrap': applyData.transfer_type == 'bank' && bankAccountInfo}">
                         <view @click="transferBank">
                             <image class="h-[42rpx] w-[60rpx] align-middle" :src="img('static/resource/images/member/apply_withdrawal/bank-icon.png')" mode="widthFix" />
                         </view>
@@ -440,5 +440,17 @@ const transferWechatCode = () => {
 .tab-bar {
     padding-bottom: calc(constant(safe-area-inset-bottom) + 30rpx);
     padding-bottom: calc(env(safe-area-inset-bottom) + 30rpx);
+}
+.wechat-wrap {
+    border-color: #00C800;
+    background-color: #ECF9EF;
+}
+.alipay-wrap {
+    border-color: #009FE8;
+    background-color: #EEF8FC;
+}
+.bank-wrap {
+    border-color: #089C98;
+    background-color: #F6FFFF;
 }
 </style>

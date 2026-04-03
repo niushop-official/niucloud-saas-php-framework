@@ -7,7 +7,7 @@
                 <text class="text-[22rpx] truncate max-w-[164rpx]" v-if="diyComponent.moduleOne.head.subText" :style="{color: diyComponent.moduleOne.head.subTextColor}">{{ diyComponent.moduleOne.head.subText }}</text>
             </view>
             <view class="flex items-center">
-                <view v-for="(item,index) in diyComponent.moduleOne.list" :key="index" class="flex flex-col items-center" :class="{'mr-[10rpx]': index == 0}" @click="diyStore.toRedirect(item.link)">
+                <view v-for="(item,index) in diyComponent.moduleOne.list" :key="index" class="flex flex-col items-center" :class="{'mr10': index == 0}" @click="diyStore.toRedirect(item.link)">
                     <view class="bg-[#fff] flex items-center justify-center w-[148rpx] h-[148rpx] rounded-[12rpx] mb-[16rpx]">
                         <image v-if="item.imageUrl" class="w-[102rpx] h-[102rpx]" :src="img(item.imageUrl)" mode="aspectFill" />
                         <u-icon v-else name="photo" color="#999" size="50"></u-icon>
@@ -25,7 +25,7 @@
             </view>
             <view class="flex items-center">
                 <view v-for="(item,index) in diyComponent.moduleTwo.list" :key="index"
-                      class="flex flex-col items-center" :class="{'mr-[10rpx]': index == 0}"
+                      class="flex flex-col items-center" :class="{'mr10': index == 0}"
                       @click="diyStore.toRedirect(item.link)">
                     <view class="bg-[#fff] flex items-center justify-center w-[148rpx] h-[148rpx] rounded-[12rpx] mb-[16rpx]">
                         <image v-if="item.imageUrl" class="w-[102rpx] h-[102rpx]" :src="img(item.imageUrl)" mode="aspectFill"/>
@@ -127,4 +127,8 @@ const refresh = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.mr10 {
+    margin-right: 10rpx;
+}
+</style>

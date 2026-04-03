@@ -3,7 +3,7 @@
         <view class="w-screen h-screen flex flex-col items-center" v-if="payInfo">
             <top-tabbar ref="topTabbarRef" :data="topTabbarParam" />
             <view class="flex-1 flex flex-col items-center w-full pt-[180rpx]">
-                <view class="flex items-baseline" :class="{'text-[#06c05d]': payInfo.status==2, 'text-red': payInfo.status!=2}">
+                <view class="flex items-baseline" :class="{'pay-status-green': payInfo.status==2, 'text-red': payInfo.status!=2}">
                     <text class="nc-iconfont -mb-[4rpx] !text-[32rpx]" :class="{'nc-icon-duihaoV6mm': payInfo.status==2, 'nc-icon-tanhaoV6mm': payInfo.status!=2}"></text>
                     <text class="text-[36rpx] ml-[16rpx] font-500">{{ payInfo.status == 2 ? '支付成功' : '支付失败' }}</text>
                 </view>
@@ -80,4 +80,8 @@ const complete = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.pay-status-green{
+    color: #06c05d;
+}
+</style>

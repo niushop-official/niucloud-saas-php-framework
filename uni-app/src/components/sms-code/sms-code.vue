@@ -1,5 +1,5 @@
 <template>
-    <view class="text-[26rpx]" :class="{'text-primary': sendSms.canGetCode.value, 'text-gray-300': !sendSms.canGetCode.value}" @click="handleSend">{{ sendSms.tips.value }}</view>
+    <view class="fs-26" :class="{'text-primary': sendSms.canGetCode.value, 'text-gray-300': !sendSms.canGetCode.value}" @click="handleSend">{{ sendSms.tips.value }}</view>
     <u-code :seconds="sendSms.seconds" :change-text="sendSms.changeText" ref="smsRef" @change="sendSms.codeChange"></u-code>
     <u-modal :show="show" :title="t('captchaTitle')" :confirm-text="t('confirm')" :cancel-text="t('cancel')" :show-cancel-button="true" @cancel="show = false" @confirm="handleConfirm" confirmColor="var(--primary-color)">
         <view class="flex mt-[20rpx]">
@@ -88,5 +88,8 @@ const handleConfirm = async() => {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.fs-26{
+    font-size: 26rpx;
+}
 </style>
