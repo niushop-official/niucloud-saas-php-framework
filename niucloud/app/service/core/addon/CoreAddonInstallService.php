@@ -18,7 +18,9 @@ use app\service\core\menu\CoreMenuService;
 use app\service\core\schedule\CoreScheduleInstallService;
 use core\exception\AddonException;
 use core\exception\CommonException;
+use core\util\niucloud\CloudService;
 use core\util\Terminal;
+use EasyWeChat\Kernel\Exceptions\Exception;
 use think\db\exception\DbException;
 use think\db\exception\PDOException;
 use think\facade\Cache;
@@ -224,7 +226,16 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $this->backupFrontend();
 
         $tips = [];
-        if ($mode != 'cloud') $tips[] = get_lang('dict_addon.install_after_update');
+        if ($mode != 'cloud') {
+            $tips[] = get_lang('dict_addon.install_after_update');
+        } else {
+            try {
+                (new CloudService())->checkLocal();
+            } catch (\Exception $e) {
+                Cache::set('install_task', null);
+                throw new CommonException($e->getMessage(), $e->getCode());
+            }
+        }
 
         foreach ($this->addon_list as $addon) {
             $this->install_task['addon'] = $addon;
@@ -625,6 +636,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $addon_info = $core_addon_service->getInfoByKey($this->addon);
         if (empty($addon_info)) throw new AddonException('NOT_UNINSTALL');
         if (!$this->uninstallSql()) throw new AddonException('ADDON_SQL_FAIL');
+        if (!$this->uninstallDir()) throw new AddonException('ADDON_DIR_FAIL');
 
         // 卸载菜单
         $this->uninstallMenu();

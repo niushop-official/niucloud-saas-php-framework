@@ -70,7 +70,8 @@
             </div>
             <div class="flex justify-end mt-[20px]" v-show="cloudBuildTask">
                 <el-button @click="dialogCancel()" class="!w-[90px]">取消</el-button>
-                <el-button type="primary" :loading="timeloading" class="!w-[140px]">已用时 {{ formattedDuration }}</el-button>
+                <el-button type="primary" :loading="timeloading" class="!w-[140px]" v-if="!errorInfo">已用时 {{ formattedDuration }}</el-button>
+                <el-button type="primary" @click="active = 'error'" v-if="errorInfo">下一步</el-button>
             </div>
         </div>
         <div v-show="active == 'error'">
@@ -81,10 +82,18 @@
                             <img src="@/app/assets/images/error_icon.png" alt="">
                         </template>
                         <template #extra>
-                            <el-scrollbar class="max-h-[150px] !overflow-auto text-[15px] text-[#4F516D] mb-[15px] mt-[-15px]">
+                            <el-scrollbar class="max-h-[150px] !overflow-auto text-[15px] text-[#4F516D] mb-[15px] mt-[-15px]" v-if="errorInfo">
                                 {{errorInfo}}
                             </el-scrollbar>
+                            <el-alert :closable="false" class="!mb-[15px] !w-full" v-if="errorAnalysis.analysis" type="warning">
+                                <template #default>
+                                    <div class="text-left">
+                                        错误分析：{{ errorAnalysis.analysis }}
+                                    </div>
+                                </template>
+                            </el-alert>
                             <el-button @click="handleReturn" class="!w-[90px]">错误信息</el-button>
+                            <el-button @click="againBuild" type="primary" plain class="!w-[90px]" v-if="errorAnalysis.error_addon">重新编译</el-button>
                             <el-button @click="showDialog=false" type="primary" class="!w-[90px]">完成</el-button>
                         </template>
                     </el-result>
@@ -106,25 +115,85 @@
                 </div>
             </div>
         </div>
+        <div v-show="active == 'again_build'">
+            <div class="h-[50vh] flex flex-col">
+                <div class="flex-1 h-0 flex items-center flex-col">
+                    <el-table
+                        ref="tableRef"
+                        :data="installedAddonList"
+                        row-key="key"
+                        size="large"
+                        @selection-change="handleSelectionChange"
+                    >
+                        <el-table-column type="selection" width="55" />
+                        <el-table-column label="应用信息" align="left" width="300">
+                            <template #default="{ row }">
+                                <div class="flex items-center cursor-pointer relative left-[-10px]">
+                                    <el-image class="w-[54px] h-[54px] rounded-[5px]" :src="row.icon" fit="contain">
+                                        <template #error>
+                                            <div class="flex items-center w-full h-full rounded-[5px]">
+                                                <img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
+                                            </div>
+                                        </template>
+                                    </el-image>
+                                    <div class="flex-1 w-0 flex flex-col justify-center pl-[20px] font-500 text-[13px]">
+                                        <div class="w-[236px] truncate leading-[18px]">{{ row.title }}</div>
+                                    </div>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="编译结果" align="left">
+                            <template #default="{ row }">
+                                <div class="flex items-center" v-if="errorAnalysis.error_addon && errorAnalysis.error_addon != row.key">
+                                    <el-icon class="text-success mr-1"><SuccessFilled /></el-icon> 编译成功
+                                </div>
+                                <div v-else class="flex items-center">
+                                    <el-icon class="text-error mr-1"><WarningFilled /></el-icon> 编译失败，请排除该插件后重新进行编译
+                                </div>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <div class="flex justify-end mt-[20px]">
+                    <el-button @click="dialogCancel()" class="!w-[90px]">取消</el-button>
+                    <el-button @click="active = 'error'" plain type="primary" class="!w-[90px]">上一步</el-button>
+                    <el-button type="primary" @click="againBuild" :loading="loading" class="!w-[100px]">开始编译</el-button>
+                </div>
+            </div>
+        </div>
     </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref, h, watch, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { t } from '@/lang'
 import { getCloudBuildLog, getCloudBuildTask, cloudBuild, clearCloudBuildTask, preBuildCheck } from '@/app/api/cloud'
+import { getInstalledAddonList } from '@/app/api/addon'
 import { Terminal, TerminalFlash } from 'vue-web-terminal'
 import 'vue-web-terminal/lib/theme/dark.css'
 import { AnyObject } from '@/types/global'
-import { ElNotification, ElMessageBox } from 'element-plus'
+import {ElNotification, ElMessageBox, ElMessage} from 'element-plus'
 
 const showDialog = ref<boolean>(false)
-const terminalId = ref(Date.now());
+const terminalId = ref(Date.now())
 const cloudBuildTask = ref<null | AnyObject>(null)
 const active = ref('build')
 const cloudBuildCheck = ref<null | AnyObject>(null)
 const loading = ref(false)
 const terminalRef = ref(null)
+const selectAddon = ref([])
+const installedAddonList = ref([])
+const tableRef = ref(null)
+
+getInstalledAddonList().then(({ data }) => {
+    installedAddonList.value = Object.values(data)
+})
+
+const handleSelectionChange = (rows) => {
+    selectAddon.value = rows.map(row => {
+        return row.key
+    })
+}
 
 let cloudBuildLog = []
 
@@ -157,6 +226,7 @@ const getCloudBuildTaskFn = () => {
 getCloudBuildTaskFn()
 const errorInfo = ref('')
 const timeloading = ref(false)
+const errorAnalysis = ref({})
 const getCloudBuildLogFn = () => {
     timeloading.value = true
     getCloudBuildLog().then(res => {
@@ -206,6 +276,7 @@ const getCloudBuildLogFn = () => {
                     cloudBuildLog.push(item.action)
 
                     if (item.code == 0) {
+                        errorAnalysis.value = res.data.error_analysis || {}
                         error = item.msg
                         terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
                         timeloading.value = false
@@ -294,9 +365,57 @@ const open = async () => {
             cloudBuildCheck.value = data
             showDialog.value = true
         }
+    }).catch((e) => {
+        loading.value = false
+        showDialog.value = false
+        if (e.code && e.code == 601) {
+            ElMessageBox.confirm(
+                '云编译服务未启动，必须在启动后进行云编译！',
+                '提示',
+                {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '重新检测',
+                    cancelButtonText: '查看操作手册',
+                    type: 'warning'
+                }
+            ).then(() => {
+                open()
+            }).catch((action) => {
+                action == 'cancel' && window.open('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html', '_blank')
+            })
+        } else {
+            ElMessage({ message: e.msg, type: 'error' })
+        }
+    })
+}
+
+const againBuild = () => {
+    if (active.value != 'again_build') {
+        active.value = 'again_build'
+        selectAddon.value = installedAddonList.value.map((item) => {
+            tableRef.value.toggleRowSelection(item, true)
+            return item.key
+        })
+        return
+    }
+    loading.value = true
+    cloudBuild({
+        addon: selectAddon.value
+    }).then(({ data }) => {
+        active.value = 'build'
+        loading.value = false
+        cloudBuildTask.value = data
+        showDialog.value = true
+        localStorage.removeItem('cloud_build_start_time')
+        getCloudBuildLogFn()
     }).catch(() => {
         showDialog.value = false
+        loading.value = false
     })
+}
+
+const selectable = (row: any) => {
+    return selectAddon.value.includes(row.key)
 }
 
 /**

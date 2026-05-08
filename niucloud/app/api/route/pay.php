@@ -26,6 +26,7 @@ Route::group('pay',function () {
     Route::get('friendspay/info/:trade_type/:trade_id', 'pay.Pay/friendspayInfo');
 
 })->middleware(ApiChannel::class)
+    ->middleware(ApiCheckToken::class, false)//表示验证登录
     ->middleware(ApiLog::class);
 
 Route::group('pay',function () {

@@ -35,6 +35,7 @@ use core\exception\CloudBuildException;
 use core\exception\CommonException;
 use core\util\DbBackup;
 use core\util\niucloud\BaseNiucloudClient;
+use core\util\niucloud\CloudService;
 use think\facade\Cache;
 use think\facade\Db;
 use think\facade\Log;
@@ -228,28 +229,31 @@ class UpgradeService extends BaseAdminService
         $response = ( new CoreAddonCloudService() )->upgradeAddon($upgrade);
         if (isset($response[ 'code' ]) && $response[ 'code' ] == 0) throw new CommonException($response[ 'msg' ]);
 
+        $key = uniqid();
+        $upgrade_dir = $this->upgrade_dir . $key . DIRECTORY_SEPARATOR;
+
+        if (!is_dir($upgrade_dir)) {
+            dir_mkdir($upgrade_dir);
+        }
+
+        // 是否需要备份
+        $is_need_backup = $data['is_need_backup'] ?? true;
+        if (!$is_need_backup) {
+            unset($this->steps['backupCode']);
+            unset($this->steps['backupSql']);
+        }
+
+        // 是否需要云编译
+        $is_need_cloudbuild = $data['is_need_cloudbuild'] ?? true;
+        if (!$is_need_cloudbuild) {
+            unset($this->steps['cloudBuild']);
+            unset($this->steps['gteCloudBuildLog']);
+        } else {
+            // 校验云编译服务
+            (new CloudService())->checkLocal();
+        }
+
         try {
-            $key = uniqid();
-            $upgrade_dir = $this->upgrade_dir . $key . DIRECTORY_SEPARATOR;
-
-            if (!is_dir($upgrade_dir)) {
-                dir_mkdir($upgrade_dir);
-            }
-
-            // 是否需要备份
-            $is_need_backup = $data['is_need_backup'] ?? true;
-            if (!$is_need_backup) {
-                unset($this->steps['backupCode']);
-                unset($this->steps['backupSql']);
-            }
-
-            // 是否需要云编译
-            $is_need_cloudbuild = $data['is_need_cloudbuild'] ?? true;
-            if (!$is_need_cloudbuild) {
-                unset($this->steps['cloudBuild']);
-                unset($this->steps['gteCloudBuildLog']);
-            }
-
             $upgrade_task = [
                 'key' => $key,
                 'upgrade' => $upgrade,
@@ -731,7 +735,15 @@ class UpgradeService extends BaseAdminService
      */
     public function cloudBuild()
     {
-        ( new CoreCloudBuildService() )->cloudBuild();
+        try {
+            ( new CoreCloudBuildService() )->cloudBuild();
+        } catch (CommonException $e) {
+            if ($e->getCode() == 601) {
+                ( new CoreCloudBuildService() )->cloudBuild(['checkLocal' => false]);
+            } else {
+                throw new CommonException($e->getMessage(), $e->getCode());
+            }
+        }
     }
 
     /**

@@ -438,7 +438,7 @@ const executeUpgradeFn = () => {
     executeUpgrade().then(() => {
         getUpgradeTaskFn()
     }).catch((err) => {
-        if (err.message.indexOf('队列') != -1) {
+        if (err.msg.indexOf('队列') != -1) {
             retrySecond.value = 30
             retrySecondInterval = setInterval(() => {
                 retrySecond.value--
@@ -447,6 +447,26 @@ const executeUpgradeFn = () => {
                 }
             }, 1000)
             cloudBuildErrorTipsShowDialog.value = true
+        } else if (err.code && err.code == 601) {
+            ElMessageBox.confirm(
+                '云编译服务未启动，必须在启动后进行云编译！',
+                '提示',
+                {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '重新检测',
+                    cancelButtonText: '查看操作手册',
+                    type: 'warning'
+                }
+            ).then(() => {
+                open()
+            }).catch((action) => {
+                action == 'cancel' && window.open('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html', '_blank')
+            })
+        } else if (err.response && err.response.status && err.response.status == 502) {
+            ElMessage({ dangerouslyUseHTMLString: true, duration: 5000, message: '程序执行超时请先调整超时限制, 具体操作方法<a style="text-decoration: underline;" href="https://doc.press.niucloud.com/php/v6-shop/use/chang-jian-wen-ti-chu-li/er-shi-ba-3001-an-88c5-sheng-ji-guo-cheng-zhong-ti-shi-201c-502-bad-gateway-201d-wen-ti-jie-jue.html#%E5%AE%89%E8%A3%85-%E5%8D%87%E7%BA%A7%E5%AE%8C%E6%88%90%E5%90%8E-%E4%BA%91%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%8F%90%E7%A4%BA-502-bad-gateway-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3" target="blank">点击查看相关手册</a>', type: 'error' })
+            setTimeout(() => {
+                executeUpgradeFn()
+            }, 5000)
         } else {
             ElMessage({ message: err.message, type: 'error' })
         }
@@ -526,8 +546,26 @@ const upgradeAddonFn = () => {
 
     upgradeAddon(appKey, upgradeOption.value).then(() => {
         getUpgradeTaskFn()
-    }).catch(() => {
+    }).catch((res) => {
         loading.value = false
+        if (res.code && res.code == 601) {
+            ElMessageBox.confirm(
+                '云编译服务未启动，必须在启动后进行云编译！',
+                '提示',
+                {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: '重新检测',
+                    cancelButtonText: '查看操作手册',
+                    type: 'warning'
+                }
+            ).then(() => {
+                upgradeAddonFn()
+            }).catch((action) => {
+                action == 'cancel' && window.open('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html', '_blank')
+            })
+        } else {
+            ElMessage({ message: res.msg, type: 'error' })
+        }
     })
 }
 const dialogUpgradePrompt = ref(false)
@@ -624,6 +662,14 @@ const dialogClose = (done: () => {}) => {
         done()
     }
 }
+
+window.addEventListener('beforeunload', function (event) {
+    if (showDialog.value && active.value == 'upgrade' && upgradeTask.value && ['upgradeComplete', 'restoreComplete'].includes(upgradeTask.value.step) === false && !isBack.value) {
+        event.preventDefault()
+        event.returnValue = ''
+        return t('upgrade.showDialogCloseTips')
+    }
+})
 
 watch(
     () => showDialog.value,

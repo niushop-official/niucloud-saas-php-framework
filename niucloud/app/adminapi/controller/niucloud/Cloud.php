@@ -30,7 +30,10 @@ class Cloud extends BaseAdminController
      * @return \think\Response
      */
     public function build() {
-        return success(data:(new CoreCloudBuildService())->cloudBuild());
+        $data = $this->request->params([
+            [ 'addon', [] ]
+        ]);
+        return success(data:(new CoreCloudBuildService())->cloudBuild($data['addon']));
     }
 
     /**
@@ -79,7 +82,7 @@ class Cloud extends BaseAdminController
         $data = $this->request->params([
             [ 'url', '' ],
         ]);
-        $is_connected = (new CloudService(true,$data['url']))->is_connected;
+        $is_connected = (new CloudService(true, $data['url']))->is_connected;
         return success('SUCCESS',$is_connected);
     }
 
@@ -92,7 +95,6 @@ class Cloud extends BaseAdminController
     {
         $data = $this->request->params([
             [ 'url', '' ],
-            [ 'is_open', 0 ],
         ]);
         return success('SUCCESS',(new NiucloudService())->setLocalCloudCompileConfig($data));
     }

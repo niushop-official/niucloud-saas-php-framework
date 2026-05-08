@@ -21,6 +21,27 @@ interface requestResponse extends AxiosResponse {
     config: InternalRequestConfig
 }
 
+class ErrorResponse {
+    msg: string = '';
+    code: number = 0;
+    response: any = null;
+
+    constructor(msg: string);
+    constructor(code: number, msg: string, response: any);
+
+    constructor(arg1?: string | number, arg2?: string, arg3?: any) {
+        if (typeof arg1 === 'number') {
+            this.code = arg1;
+            this.msg = arg2 || '';
+            this.response = arg3; // 修正点3：补上漏掉的赋值
+        } else {
+            this.msg = (arg1 as string) || '';
+            this.code = 0;
+            this.response = null;
+        }
+    }
+}
+
 class Request {
     private instance: AxiosInstance;
 
@@ -45,7 +66,7 @@ class Request {
                 return config
             },
             (err: any) => {
-                return Promise.reject(err)
+                return Promise.reject(new ErrorResponse(0, err.message, err.response))
             }
         )
 
@@ -57,7 +78,7 @@ class Request {
 					if (res.code != 1) {
 					    this.handleAuthError(res.code)
 					    if (res.code != 401 && response.config.showErrorMessage !== false) this.showElMessage({ message: res.msg, type: 'error', dangerouslyUseHTMLString: true, duration: 5000 })
-					    return Promise.reject(new Error(res.msg || 'Error'))
+					    return Promise.reject(res)
 					} else {
 					    if (response.config.showSuccessMessage) ElMessage({ message: res.msg, type: 'success' })
 					    return res
@@ -67,7 +88,7 @@ class Request {
             },
             (err: any) => {
                 this.handleNetworkError(err)
-                return Promise.reject(err)
+                return Promise.reject(new ErrorResponse(0, err.message, err.response))
             }
         )
     }
@@ -195,7 +216,7 @@ class Request {
             this.messageCache.set(cacheKey, { timestamp: now });
             ElMessage(options)
         }
-        
+
         // 定期清理过期缓存，防止内存泄漏
         if (this.messageCache.size > this.MAX_CACHE_SIZE) {
             for (const [key, value] of this.messageCache.entries()) {

@@ -142,10 +142,6 @@
                         <diy-form-file ref="diyFormFileRef" :component="component" :global="data.global"
                                        :index="index"/>
                     </template>
-
-
-                    <!-- 以下是addon文件夹下的自定义组件 -->
-
                 </view>
             </view>
         </template>
@@ -162,7 +158,6 @@
     </view>
 </template>
 <script lang="ts" setup>
-
 import topTabbar from '@/components/top-tabbar/top-tabbar.vue'
 import popAds from '@/components/pop-ads/pop-ads.vue'
 import { useDiyGroup } from './useDiyGroup'

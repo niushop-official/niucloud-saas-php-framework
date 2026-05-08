@@ -323,7 +323,17 @@ class CorePayService extends BaseCoreService
     public function createByTrade($site_id, $trade_type, $trade_id)
     {
         //创建新的支付单据
-        $data = array_values(array_filter(event('PayCreate', [ 'site_id' => $site_id, 'trade_type' => $trade_type, 'trade_id' => $trade_id ])))[ 0 ] ?? [];
+        $event_result = event('PayCreate', [ 'site_id' => $site_id, 'trade_type' => $trade_type, 'trade_id' => $trade_id ]);
+
+        // PHP 8.0+ 兼容性处理：确保 event 返回值是数组
+        if (!is_array($event_result)) {
+            $event_result = [];
+        }
+        // 过滤掉 false/null 等无效值，只保留有效的数组元素
+        $filtered = array_values(array_filter($event_result, function($item) {
+            return is_array($item) && !empty($item);
+        }));
+        $data = !empty($filtered) ? $filtered[0] : [];
         if (empty($data)) throw new PayException('PAY_NOT_FOUND_TRADE');//找不到可支付的交易
 
         if (isset($data[ 'status' ]) && $data[ 'money' ] == 0) {

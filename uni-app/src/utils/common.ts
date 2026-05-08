@@ -865,7 +865,7 @@ export function openMapSelector(backurl: string, params = '') {
         // 天地图的位置选择器URL
         // 注意：天地图的位置选择器API可能与腾讯地图不同，需要根据实际API文档调整
         const baseUrl = (import.meta.env.VITE_APP_BASE_URL || `${ location.origin }`).replace(/\/api\/$/, '')
-        const url = baseUrl + `/tianmap?search=1&type=0&backurl=${ encodeURIComponent(backurl) }&key=${ tiandituKey }` + (params ? '&' + params : '')
+        const url = baseUrl + `/tianmap/index.html?search=1&type=0&backurl=${ encodeURIComponent(backurl) }&key=${ tiandituKey }` + (params ? '&' + params : '')
         window.location.href = url;
     }
 }

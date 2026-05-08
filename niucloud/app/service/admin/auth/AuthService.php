@@ -110,7 +110,11 @@ class AuthService extends BaseAdminService
             if (strpos($rule, $item) !== false) return;
         }
 
-        $authinfo = (new CoreAuthService())->getAuthInfo()['data'] ?? [];;
+        $authinfo = [];
+        try {
+            $authinfo = (new CoreAuthService())->getAuthInfo()['data'] ?? [];;
+        } catch (Exception $e) {
+        }
         if (empty($authinfo)) return;
 
         if (!$this->isCheckDomain()) return;

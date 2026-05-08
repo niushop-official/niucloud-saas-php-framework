@@ -13,6 +13,7 @@ namespace app\service\admin\weapp;
 
 use app\dict\common\CommonDict;
 use app\model\sys\SysConfig;
+use app\service\core\sys\CoreConfigService;
 use app\service\core\weapp\CoreWeappConfigService;
 use app\service\core\wxoplatform\CoreOplatformService;
 use core\base\BaseAdminService;
@@ -80,6 +81,12 @@ class WeappConfigService extends BaseAdminService
      * @return array
      */
     public function getWeappStaticInfo(){
+        $local_cloud_compile_config = (new CoreConfigService())->getConfig(0, 'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
+        $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
+        if (empty($baseUri)) $baseUri = 'oss.niucloud.com';
+        $baseUri = str_replace('http://', '', $baseUri);
+        $baseUri = str_replace('https://', '', $baseUri);
+
         $domain = request()->domain();
         $domain = str_replace('http://', 'https://', $domain);
         return [
@@ -88,7 +95,7 @@ class WeappConfigService extends BaseAdminService
             'socket_url'   => "wss://".request()->host(),
             'upload_url'  => $domain,
             'download_url'   => $domain,
-            'upload_ip' => gethostbyname('oss.niucloud.com')
+            'upload_ip' => gethostbyname($baseUri)
         ];
     }
 

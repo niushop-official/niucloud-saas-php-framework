@@ -24,31 +24,28 @@ class CloudService
         if ($checkLocal) $this->is_connected = $this->checkLocal($local_cloud_compile);
     }
 
-    public function checkLocal($local_cloud_compile) {
+    public function checkLocal($local_cloud_compile = '') {
         $baseUri = $this->baseUri;
-
-        $local_cloud_compile_config = (new CoreConfigService())->getConfig(0, 'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
-        if (!empty($local_cloud_compile_config) && isset($local_cloud_compile_config['isOpen']) && $local_cloud_compile_config['isOpen'] == 1){
-            $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
-            if (empty($baseUri)){
-                throw new CommonException("已开启`第三方云编译`，但未配置云编译服务器地址，详情查看：平台端》云编译》第三方云编译");
-            }
-        }
 
         if (!empty($local_cloud_compile)){
             $baseUri = $local_cloud_compile;
+        } else {
+            $local_cloud_compile_config = (new CoreConfigService())->getConfig(0, 'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
+            $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
+            if (empty($baseUri)){
+                throw new CommonException('CONNECT_FAIL', 601);
+            }
         }
 
         $is_connected = false;
         try {
             $res = (new Client(['base_uri' => $baseUri ]))->request("GET", '', []);
-//            dd($res->getBody()->getContents());
             if ($res->getStatusCode() == '200' && $res->getBody()->getContents() == '欢迎使用NiuCloud编译服务!') {
                 $this->baseUri = $baseUri;
                 $is_connected = true;
             }
         } catch (\Throwable $e) {
-            throw new CommonException('CONNECT_FAIL');
+            throw new CommonException('CONNECT_FAIL', 601);
         }
         return $is_connected;
     }

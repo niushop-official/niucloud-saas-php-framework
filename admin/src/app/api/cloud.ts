@@ -3,8 +3,8 @@ import request from '@/utils/request'
 /**
  * 云编译
  */
-export function cloudBuild() {
-    return request.post('niucloud/build', {})
+export function cloudBuild(params: Record<string, any> = {}) {
+    return request.post('niucloud/build', params)
 }
 
 /**
@@ -32,5 +32,5 @@ export function clearCloudBuildTask() {
  * 云编译前检测
  */
 export function preBuildCheck() {
-    return request.get('niucloud/build/check')
+    return request.get('niucloud/build/check', { showErrorMessage: false })
 }

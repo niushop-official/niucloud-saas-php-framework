@@ -320,7 +320,7 @@ return [
     'NEED_TO_AUTHORIZE_FIRST' => '使用云服务需先进行授权',
     'WEAPP_UPLOADING' => '小程序有正在上传的版本，请等待上一版本上传完毕后再进行操作',
     'CLOUD_BUILD_TASK_EXIST' => '已有正在执行中的编译任务',
-    'CONNECT_FAIL' => '连接失败',
+    'CONNECT_FAIL' => '云编译服务连接失败',
 
     //核销相关
     'VERIFY_TYPE_ERROR' => '核销类型错误',

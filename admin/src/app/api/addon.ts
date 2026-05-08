@@ -31,7 +31,7 @@ export function installAddon(params: Record<string, any>) {
  * @returns
  */
 export function cloudInstallAddon(params: Record<string, any>) {
-    return request.post(`addon/cloudinstall/${ params.addon }`, params)
+    return request.post(`addon/cloudinstall/${ params.addon }`, params, { showErrorMessage: false })
 }
 
 /**

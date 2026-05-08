@@ -101,46 +101,46 @@ getTransferSceneFn()
 
 // 更改场景值（最终修复版）
 const handleInput = (e: any, key: any, data: any) => {
-  const val = e.target.value?.trim() || ''
-  const originalVal = originalValues.value[key] || ''
+    const val = e.target.value?.trim() || ''
+    const originalVal = originalValues.value[key] || ''
 
-  // 有值 → 清空：必须提交接口置空
-  if (val === '' && originalVal !== '') {
-    data.error = false
-    setSceneId({
-      scene: key,
-      scene_id: ''
-    }).then(() => {
-      data.disabled = true
-      getTransferSceneFn()
-    })
-    return
-  }
+    // 有值 → 清空：必须提交接口置空
+    if (val === '' && originalVal !== '') {
+        data.error = false
+        setSceneId({
+            scene: key,
+            scene_id: ''
+        }).then(() => {
+            data.disabled = true
+            getTransferSceneFn()
+        })
+        return
+    }
 
-  // 本来就空：不提交
-  if (val === '' && originalVal === '') {
-    data.error = false
-    data.disabled = true
-    return
-  }
+    // 本来就空：不提交
+    if (val === '' && originalVal === '') {
+        data.error = false
+        data.disabled = true
+        return
+    }
 
-  // 有值但长度不够：提示，不提交
-  if (val.length < 4) {
-    data.error = true
-    return
-  }
+    // 有值但长度不够：提示，不提交
+    if (val.length < 4) {
+        data.error = true
+        return
+    }
 
-  // 合法 4-5 位：提交
-  if (val.length >= 4 && val.length <= 5) {
-    data.error = false
-    setSceneId({
-      scene: key,
-      scene_id: val
-    }).then(() => {
-      data.disabled = true
-      getTransferSceneFn()
-    })
-  }
+    // 合法 4-5 位：提交
+    if (val.length >= 4 && val.length <= 5) {
+        data.error = false
+        setSceneId({
+            scene: key,
+            scene_id: val
+        }).then(() => {
+            data.disabled = true
+            getTransferSceneFn()
+        })
+    }
 }
 
 const inputRefs = ref<any>({})

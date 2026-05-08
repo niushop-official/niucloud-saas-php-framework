@@ -164,4 +164,18 @@ class CoreModuleService extends BaseNiucloudClient
     {
         return $this->httpGet('store/app_version/list', [ 'product_key' => self::PRODUCT, 'app_key' => $app_key ])[ 'data' ] ?? false;
     }
+
+    /**
+     * 编译异常分析
+     * @param string $msg
+     * @return array|\core\util\niucloud\Response|object|ResponseInterface
+     * @throws GuzzleException
+     */
+    public function buildResultAnalysis(string $msg)
+    {
+        $params = [
+            'msg' => $msg,
+        ];
+        return $this->httpPost('build_error_analysis', $params)['data'] ?? [];
+    }
 }

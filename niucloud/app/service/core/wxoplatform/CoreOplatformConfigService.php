@@ -66,12 +66,18 @@ class CoreOplatformConfigService extends BaseCoreService
     public function getStaticInfo(){
         $wap_domain = (new CoreSysConfigService())->getSceneDomain(0)['wap_url'] ?? '';
 
+        $local_cloud_compile_config = (new CoreConfigService())->getConfig(0, 'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
+        $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
+        if (empty($baseUri)) $baseUri = 'oss.niucloud.com';
+        $baseUri = str_replace('http://', '', $baseUri);
+        $baseUri = str_replace('https://', '', $baseUri);
+
         return [
             'auth_serve_url' => (string)url('/adminapi/wxoplatform/server',[],'', true), // 授权事件接收配置
             'message_serve_url' => (string)url('/adminapi/wxoplatform/message/$APPID$', [],'',true), // 消息与事件接收配置
             'auth_launch_domain' => parse_url(request()->domain())['host'] ?? '', // 授权发起页域名
             'wechat_auth_domain' => parse_url($wap_domain)['host'] ?? '', // 公众号开发域名
-            'upload_ip' => gethostbyname('oss.niucloud.com')
+            'upload_ip' => gethostbyname($baseUri)
         ];
     }
 }

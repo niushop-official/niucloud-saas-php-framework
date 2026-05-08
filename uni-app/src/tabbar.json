@@ -1,2 +1,15 @@
 [
+    "/addon/tourism/pages/index",
+    "/addon/shop/pages/index",
+    "/addon/shop/pages/goods/category",
+    "/addon/shop/pages/goods/cart",
+    "/addon/shop/pages/member/index",
+    "/addon/o2o/pages/index",
+    "/addon/o2o/pages/goods/category",
+    "/addon/o2o/pages/technician/list",
+    "/addon/o2o/pages/member/index",
+    "/addon/shop_giftcard/pages/index",
+    "/addon/shop_giftcard/pages/list",
+    "/addon/shop_giftcard/pages/my_card_list",
+    "/addon/shop_giftcard/pages/member"
 ]

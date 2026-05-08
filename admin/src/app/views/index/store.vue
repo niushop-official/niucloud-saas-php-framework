@@ -36,7 +36,7 @@
 					</el-tab-pane>
 				</el-tabs>
 			</div>
-			
+
 			<el-form :inline="true" :model="searchParam" ref="searchFormRef" class="search-form" v-if="!loading && !isShowDetail && (activeName == 'installed' || activeName == 'all' || activeName == 'uninstalled')">
 				<el-form-item prop="type">
 					<el-select v-model="searchParam.type" clearable :placeholder="t('应用类型')" class="input-width">
@@ -83,7 +83,7 @@
 							</p>
 						</div>
 					</div>
-					
+
 					<el-button class="ml-[auto]" @click="updateInformationFn({ key: 'niucloud-admin' })">
 						<el-icon class="mr-[5px]">
 							<DocumentCopy />
@@ -139,7 +139,7 @@
 						</div>
 						<div class="flex-1 w-0">
 							<div class="flex items-center">
-								<p class="text-[16px] text-[#374151] truncate leading-[20px]" :title="row.title">{{ row.title }}</p>	
+								<p class="text-[16px] text-[#374151] truncate leading-[20px]" :title="row.title">{{ row.title }}</p>
 								<span :class="{'app-ident': row.type == 'app', 'addon-ident': row.type == 'addon'}">{{row.type == 'app' ? '应用' : '插件'}}</span>
 							</div>
 							<p class="text-xs text-[#4F516D] truncate mt-[2px] font-bold" :title="row.key">{{ row.key }}</p>
@@ -1442,6 +1442,24 @@ const handleCloudInstall = () => {
 		})
 		.catch((res) => {
 			cloudInstalling.value = false
+            if (res.code && res.code == 601) {
+                ElMessageBox.confirm(
+                    '云编译服务未启动，必须在启动后进行云编译！',
+                    '提示',
+                    {
+                        distinguishCancelAndClose: true,
+                        confirmButtonText: '重新检测',
+                        cancelButtonText: '查看操作手册',
+                        type: 'warning'
+                    }
+                ).then(() => {
+                    handleCloudInstall()
+                }).catch((action) => {
+                    action == 'cancel' && window.open('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html', '_blank')
+                })
+            } else {
+                ElMessage({ message: res.msg, type: 'error' })
+            }
 		})
 }
 

@@ -1,5 +1,5 @@
 {
-    "name" : "",
+    "name" : "商城",
     "appid" : "__UNI__9B03DBD",
     "description" : "",
     "versionName" : "1.0.0",
@@ -62,7 +62,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wxc106e776c693c9a7",
         "setting" : {
             "urlCheck" : false
         },
@@ -99,7 +99,7 @@
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {
-                    "key" : ""
+                    "key" : "6ZDBZ-CLSLX-66747-7MVM4-HLK47-XMBXU"
                 }
             }
         },

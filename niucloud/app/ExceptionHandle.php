@@ -108,7 +108,7 @@ class ExceptionHandle extends Handle
         } else if ($e instanceof RouteNotFoundException) {
             return fail('当前访问路由未定义或不匹配 路由地址：' . request()->baseUrl());
         } else if($e instanceof \RuntimeException){
-            return fail($e->getMessage(), $massageData);
+            return fail($e->getMessage(), $massageData, $e->getCode() ?: 0);
         } else {
             return $this->handleException($e);
         }

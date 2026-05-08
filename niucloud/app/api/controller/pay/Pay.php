@@ -30,6 +30,7 @@ class Pay extends BaseApiController
      */
     public function notify($site_id, $channel, $type, $action)
     {
+        $this->request->siteId($site_id);
         return (new PayService())->notify($channel, $type, $action);
     }
 

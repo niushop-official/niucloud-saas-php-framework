@@ -14,67 +14,67 @@
                         <el-button class="w-[98px] !h-[36px]" type="primary" @click="handleCloudBuild" :loading="cloudBuildRef?.loading">云编译</el-button>
                     </div>
                 </div>
-                <div class="panel-title bg-[#F4F5F7] border-[#E6E6E6] border-solid border-b-[1px] h-[40px] flex items-center p-[10px]">
-                    <span class="text-[16px] font-500 text-[#1D1F3A]">云编译</span>
-                    <span class="text-[12px] text-[#9699B6] ml-[10px]">云编译不需要本地安装node环境即可进行，针对使用者方便快捷</span>
-                </div>
-                <div class="mt-[20px] flex mb-[14px] items-center">
-                    <span class="flex ml-[20px] font-500 text-[16px] items-center text-[#1D1F3A]">
-                        <!-- <i class="w-[3px] h-[12px] bg-primary mr-[6px] block"></i> -->
-                        温馨提示
-                    </span>
-                    <span class="text-[12px] text-[#9699B6] ml-[10px]"> 以下情况可以进行云编译</span>
-                </div>
+<!--                <div class="panel-title bg-[#F4F5F7] border-[#E6E6E6] border-solid border-b-[1px] h-[40px] flex items-center p-[10px]">-->
+<!--                    <span class="text-[16px] font-500 text-[#1D1F3A]">云编译</span>-->
+<!--                    <span class="text-[12px] text-[#9699B6] ml-[10px]">云编译不需要本地安装node环境即可进行，针对使用者方便快捷</span>-->
+<!--                </div>-->
+<!--                <div class="mt-[20px] flex mb-[14px] items-center">-->
+<!--                    <span class="flex ml-[20px] font-500 text-[16px] items-center text-[#1D1F3A]">-->
+<!--                        &lt;!&ndash; <i class="w-[3px] h-[12px] bg-primary mr-[6px] block"></i> &ndash;&gt;-->
+<!--                        温馨提示-->
+<!--                    </span>-->
+<!--                    <span class="text-[12px] text-[#9699B6] ml-[10px]"> 以下情况可以进行云编译</span>-->
+<!--                </div>-->
 
-                <!-- <div class="text-[14px] text-[#606266] ml-[13px] mb-[18px]">云编译不需要本地安装node环境即可进行，针对使用者方便快捷</div> -->
-                <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">1、系统或插件，每次安装或升级完成后，需要云编译</div>
-                <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">2、开发者编写完前端代码之后，可以使用云编译进行源码编译</div>
-                <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">3、由于云编译不是针对某个插件进行编译，而是系统整体编译，因此如果同时需要安装多个插件时，往往需要安装到最后一个插件才整体进行云编译</div>
-                <div class="mt-[21px] flex mb-[21px] text-[16px] text-[#1D1F3A] font-500 items-center">
-                    <span class="flex ml-[20px] items-center">
-                        <!-- <i class="w-[3px] h-[12px] bg-primary mr-[6px] block"></i> -->
-                        云编译流程
-                    </span>
-                </div>
-                <div class="ml-[40px]">
-                    <el-timeline>
-                        <el-timeline-item :hollow="true">
-                            <!-- <template #dot>
-                                <div class="w-[15px] h-[15px] bg-primary rounded-[50%] text-[9px] text-[#fff] flex items-center justify-center">1</div>
-                            </template> -->
-                            <div class="text-[16px] text-[#1D1F3A]">编译admin代码</div>
-                            <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">
-                                <span>云编译会将admin端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud 下的</span>
-                                <span class="text-[#F09000] mx-[3px] font-bold">public/admin</span>
-                                <span>目录中。后台的访问路径将变为</span>
-                                <span class="text-primary ml-[3px] font-500">https://域名/admin</span>
-                            </div>
-                        </el-timeline-item>
-                        <el-timeline-item :hollow="true">
-                            <div class="text-[16px] text-[#1D1F3A]">编译uniapp代码</div>
-                            <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">
-                                <span>云编译会将uniapp端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>
-                                <span class="text-[#F09000] mx-[3px] font-bold">public/wap</span>
-                                <span>目录中，这样手机端网页的访问路径将变为</span>
-                                <span class="text-primary ml-[3px] font-500"> https://域名/wap</span>
-                            </div>
-                        </el-timeline-item>
-                        <el-timeline-item :hollow="true">
-                            <div class="text-[16px] text-[#1D1F3A]">编译web代码</div>
-                            <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">
-                                <span>云编译会将web端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>
-                                <span class="text-[#F09000] mx-[3px] font-bold">public/web</span>
-                                <span>目录中，这样电脑端网页的访问路径将变为</span>
-                                <span class="text-primary ml-[3px] font-500"> https://域名/web</span>
-                            </div>
-                        </el-timeline-item>
-                    </el-timeline>
-                </div>
+<!--                &lt;!&ndash; <div class="text-[14px] text-[#606266] ml-[13px] mb-[18px]">云编译不需要本地安装node环境即可进行，针对使用者方便快捷</div> &ndash;&gt;-->
+<!--                <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">1、系统或插件，每次安装或升级完成后，需要云编译</div>-->
+<!--                <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">2、开发者编写完前端代码之后，可以使用云编译进行源码编译</div>-->
+<!--                <div class="ml-[40px] text-[14px] text-[#4F516D] mb-[18px]">3、由于云编译不是针对某个插件进行编译，而是系统整体编译，因此如果同时需要安装多个插件时，往往需要安装到最后一个插件才整体进行云编译</div>-->
+<!--                <div class="mt-[21px] flex mb-[21px] text-[16px] text-[#1D1F3A] font-500 items-center">-->
+<!--                    <span class="flex ml-[20px] items-center">-->
+<!--                        &lt;!&ndash; <i class="w-[3px] h-[12px] bg-primary mr-[6px] block"></i> &ndash;&gt;-->
+<!--                        云编译流程-->
+<!--                    </span>-->
+<!--                </div>-->
+<!--                <div class="ml-[40px]">-->
+<!--                    <el-timeline>-->
+<!--                        <el-timeline-item :hollow="true">-->
+<!--                            &lt;!&ndash; <template #dot>-->
+<!--                                <div class="w-[15px] h-[15px] bg-primary rounded-[50%] text-[9px] text-[#fff] flex items-center justify-center">1</div>-->
+<!--                            </template> &ndash;&gt;-->
+<!--                            <div class="text-[16px] text-[#1D1F3A]">编译admin代码</div>-->
+<!--                            <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">-->
+<!--                                <span>云编译会将admin端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud 下的</span>-->
+<!--                                <span class="text-[#F09000] mx-[3px] font-bold">public/admin</span>-->
+<!--                                <span>目录中。后台的访问路径将变为</span>-->
+<!--                                <span class="text-primary ml-[3px] font-500">https://域名/admin</span>-->
+<!--                            </div>-->
+<!--                        </el-timeline-item>-->
+<!--                        <el-timeline-item :hollow="true">-->
+<!--                            <div class="text-[16px] text-[#1D1F3A]">编译uniapp代码</div>-->
+<!--                            <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">-->
+<!--                                <span>云编译会将uniapp端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>-->
+<!--                                <span class="text-[#F09000] mx-[3px] font-bold">public/wap</span>-->
+<!--                                <span>目录中，这样手机端网页的访问路径将变为</span>-->
+<!--                                <span class="text-primary ml-[3px] font-500"> https://域名/wap</span>-->
+<!--                            </div>-->
+<!--                        </el-timeline-item>-->
+<!--                        <el-timeline-item :hollow="true">-->
+<!--                            <div class="text-[16px] text-[#1D1F3A]">编译web代码</div>-->
+<!--                            <div class="p-[10px] bg-[#F9F9FB] mt-[10px] text-[#4F516D] text-[14px] w-[1085px] border-[#F1F1F8] border-solid border-[1px] h-[40px] flex items-center rounded-[4px]">-->
+<!--                                <span>云编译会将web端的vue代码编译为对应的html文件，同时将生成的代码下载到系统 niucloud下的</span>-->
+<!--                                <span class="text-[#F09000] mx-[3px] font-bold">public/web</span>-->
+<!--                                <span>目录中，这样电脑端网页的访问路径将变为</span>-->
+<!--                                <span class="text-primary ml-[3px] font-500"> https://域名/web</span>-->
+<!--                            </div>-->
+<!--                        </el-timeline-item>-->
+<!--                    </el-timeline>-->
+<!--                </div>-->
             </div>
             <div class="mt-[10px]">
                 <div class="panel-title bg-[#F4F5F7] border-[#E6E6E6] border-solid border-b-[1px] h-[40px] flex items-center p-[10px]">
                     <span class="text-[16px] font-500 text-[#1D1F3A]">第三方云编译</span>
-                     <el-switch v-model="isCloudCompilation" :active-value="1" :inactive-value="0" class="ml-[10px]" @change="confirm" />
+<!--                     <el-switch v-model="isCloudCompilation" :active-value="1" :inactive-value="0" class="ml-[10px]" @change="confirm" />-->
                      <span class="ml-[10px] text-[#9699B6] text-[12px]">自己搭建第三方云编译服务器，无需等待</span>
                 </div>
                 <div class="mt-[20px] flex mb-[14px] text-[16px] items-center text-[#1D1F3A]">

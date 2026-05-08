@@ -99,7 +99,7 @@ class NiucloudService extends BaseAdminService
 
         $data = [
             'baseUri' => $data['url'],
-            'isOpen' => $data['is_open'],
+            'isOpen' => 1,
         ];
         return $this->core_config_service->setConfig(0,'LOCAL_CLOUD_COMPILE_CONFIG', $data);
     }
@@ -113,7 +113,7 @@ class NiucloudService extends BaseAdminService
         $config = $this->core_config_service->getConfig(0,'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
         return [
             'baseUri' => $config['baseUri'] ?? '',
-            'isOpen' => $config['isOpen'] ?? 0,
+            'isOpen' => 1,
         ];
 
     }
