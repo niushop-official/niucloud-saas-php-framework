@@ -1,0 +1,1 @@
+const e="服务日期:",t="已支付",a="未支付",o="联系客户",c="服务码",n="没有更多内容啦~",d={serviceDate:e,havePaid:"已支付",notPaid:"未支付",contact:o,checkCode:"服务码",nothingMore:n};export{c as checkCode,o as contact,d as default,t as havePaid,a as notPaid,n as nothingMore,e as serviceDate};

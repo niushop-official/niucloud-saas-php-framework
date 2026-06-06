@@ -110,11 +110,11 @@
                         <el-form-item prop="code1">
                             <el-input v-model.number="form.code1"  class="!w-[70px]" :placeholder="t('codePlaceholder')" />
                         </el-form-item>
-                        <span class="mx-[10px]">.</span>
+                        <span class="mx-[10px]">{{ t('weappUpload.dot') }}</span>
                         <el-form-item prop="code2">
                             <el-input v-model.number="form.code2" class="!w-[70px]" :placeholder="t('codePlaceholder')"  />
                         </el-form-item>
-                        <span class="mx-[10px]">.</span>
+                        <span class="mx-[10px]">{{ t('weappUpload.dot') }}</span>
                         <el-form-item prop="code3">
                             <el-input v-model.number="form.code3" class="!w-[70px]" :placeholder="t('codePlaceholder')"  />
                         </el-form-item>
@@ -155,6 +155,8 @@
             </template>
         </el-dialog>
     </div>
+
+    <component :is="WeappUpload" ref="weappUploadRef" @success="getWeappVersionListFn" @error="getWeappVersionListFn" />
 </template>
 
 <script lang="ts" setup>
@@ -168,12 +170,17 @@ import { ElMessageBox } from 'element-plus'
 import { AnyObject } from '@/types/global'
 import Storage from '@/utils/storage'
 import { siteWeappCommit, undoAudit } from "@/app/api/wxoplatform";
+import WeappUpload from '@/app/components/weappupload/index.vue'
+// 使用导入的组件，避免未读取警告
+const WeappUploadComponent = WeappUpload
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
 const dialogVisible = ref(false)
 const loading = ref(true)
+const weappUploadRef = ref<any>(null)
+
 const weappTableData:{
     page: number,
     limit: number,
@@ -286,19 +293,24 @@ const formRules = reactive({
 /**
  * 获取版本列表
  */
-const getWeappVersionListFn = (page: number = 1) => {
+const getWeappVersionListFn = (page?: number) => {
     weappTableData.loading = true
-    weappTableData.page = page
+    if (page) weappTableData.page = page
 
-    getWeappVersionList({
+    return getWeappVersionList({
         page: weappTableData.page,
         limit: weappTableData.limit
     }).then(res => {
         weappTableData.loading = false
         weappTableData.data = res.data.data
         weappTableData.total = res.data.total
-        if (page == 1 && weappTableData.data.length && weappTableData.data[0].status == 0) getWeappUploadLogFn(weappTableData.data[0].task_key)
         weappTableData.version_info = res.data.version_info
+
+        const uploadingTask = res.data.data.find((d: any) => d.status == 0)
+        if (uploadingTask && weappUploadRef.value) {
+            weappUploadRef.value.setTask(uploadingTask)
+            weappUploadRef.value.open(uploadingTask.task_key, uploadingTask)
+        }
     }).catch(() => {
         weappTableData.loading = false
     })
@@ -367,15 +379,35 @@ const insert = () => {
         return
     }
 
-    if (uploading.value) return
+    if (uploading.value) {
+        const ref = weappUploadRef.value
+        if (ref && ref.cloudBuildTask && ref.cloudBuildTask.task_key) {
+            ref.open(ref.cloudBuildTask.task_key, ref.cloudBuildTask)
+        } else if (ref) {
+            ref.showDialog = true
+        }
+        return
+    }
     uploading.value = true
 
     previewContent.value = ''
 
     setWeappVersion(form.value).then(res => {
-        getWeappVersionListFn()
-        getWeappPreviewImage() 
-        uploading.value = false
+        const versionId = res.data
+
+        getWeappVersionListFn().then(() => {
+            const item = weappTableData.data.find((d: any) => d.id === versionId)
+            if (item && item.task_key) {
+                const ref = weappUploadRef.value
+                if (ref) {
+                    ref.open(item.task_key, item)
+                }
+            }
+            getWeappPreviewImage()
+            uploading.value = false
+        }).catch(() => {
+            uploading.value = false
+        })
     }).catch(() => {
         uploading.value = false
     })
@@ -388,6 +420,7 @@ const localInsert = () => {
 }
 
 const previewContent = ref('')
+
 const getWeappPreviewImage = () => {
     if (!authCode.value) return
     getWeappPreview().then(res => {
@@ -395,21 +428,55 @@ const getWeappPreviewImage = () => {
     }).catch()
 }
 
+const currentUploadKey = ref<string | null>(null)
+const uploadPollingCount = ref(0)
+const maxPollingCount = 150
+
 const getWeappUploadLogFn = (key: string) => {
+    if (!key) return
+
+    if (currentUploadKey.value !== key) {
+        currentUploadKey.value = key
+        uploadPollingCount.value = 0
+    }
+
+    uploadPollingCount.value++
+
+    if (uploadPollingCount.value > maxPollingCount) {
+        currentUploadKey.value = null
+        uploadPollingCount.value = 0
+        uploading.value = false
+        return
+    }
+
     getWeappUploadLog(key).then(res => {
-        const data = res.data.data ?? []
+        if (currentUploadKey.value !== key) return
+
+        const data = (res.data && res.data.data) ? res.data.data : []
         if (data[0] && data[0].length) {
             const last = data[0][data[0].length - 1]
             if (last.code == 0) {
+                currentUploadKey.value = null
+                uploadPollingCount.value = 0
                 getWeappVersionListFn()
                 return
             }
             if (last.code == 1 && last.percent == 100) {
+                currentUploadKey.value = null
+                uploadPollingCount.value = 0
                 getWeappVersionListFn()
                 getWeappPreviewImage()
                 !Storage.get('weappUploadTipsLock') && (uploadSuccessShowDialog.value = true)
                 return
             }
+        }
+        if (currentUploadKey.value === key) {
+            setTimeout(() => {
+                getWeappUploadLogFn(key)
+            }, 2000)
+        }
+    }).catch(() => {
+        if (currentUploadKey.value === key) {
             setTimeout(() => {
                 getWeappUploadLogFn(key)
             }, 2000)

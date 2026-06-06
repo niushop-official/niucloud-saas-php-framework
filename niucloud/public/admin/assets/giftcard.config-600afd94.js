@@ -1,0 +1,1 @@
+const a="礼品卡激活中心",e="顶部广告图",l="请上传广告图",t="建议尺寸：750*560像素",c="温馨提示",n={titleActivate:a,labelBalance:e,bannerPlaceholder:l,balanceTips:t,labelTips:c};export{t as balanceTips,l as bannerPlaceholder,n as default,e as labelBalance,c as labelTips,a as titleActivate};

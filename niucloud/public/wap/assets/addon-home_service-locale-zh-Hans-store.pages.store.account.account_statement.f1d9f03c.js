@@ -1,0 +1,1 @@
+const e="账户明细",t="收支统计",a="收入",s="支出",l="暂无账单数据",c="刷新",i="全部类型",n="全部日期",o="到账情况",p={accountDetails:e,receiptStatistics:t,income:"收入",expense:"支出",noBillData:l,refresh:"刷新",allTypes:i,allDates:n,paymentStatus:o};export{e as accountDetails,n as allDates,i as allTypes,p as default,s as expense,a as income,l as noBillData,o as paymentStatus,t as receiptStatistics,c as refresh};

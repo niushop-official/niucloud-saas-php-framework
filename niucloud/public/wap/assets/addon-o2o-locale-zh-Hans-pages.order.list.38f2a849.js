@@ -1,0 +1,1 @@
+const o="全部",e="未支付",n="实付金额：",t="订单金额：",a="未获取到订单信息",p="没有更多内容啦~",r={all:"全部",notPaid:"未支付",payMoney:n,orderMoney:t,emptyTips:a,nothingMore:p};export{o as all,r as default,a as emptyTips,e as notPaid,p as nothingMore,t as orderMoney,n as payMoney};

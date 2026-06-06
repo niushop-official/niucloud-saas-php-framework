@@ -1,0 +1,1 @@
+const e="退款方式",n="退款原因",r="退款编号",o="申请时间",u="退款说明",a="查看",c="退款金额",t="凭证",d="没有更多内容啦~",f={refundType:e,refundCause:n,refundNo:r,createTime:o,createExplain:u,check:"查看",refundMoney:c,voucher:"凭证",nothingMore:d};export{a as check,u as createExplain,o as createTime,f as default,d as nothingMore,n as refundCause,c as refundMoney,r as refundNo,e as refundType,t as voucher};

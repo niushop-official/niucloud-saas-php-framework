@@ -1,0 +1,1 @@
+const e="年",a="请输入搜索关键词",r="已服务",t="已离职",o="休息中",c="详情",h="没有更多内容啦~",l={year:"年",searchPlaceholder:a,service:"已服务",haveLeft:"已离职",takeBreak:"休息中",detail:"详情",nothingMore:h};export{l as default,c as detail,t as haveLeft,h as nothingMore,a as searchPlaceholder,r as service,o as takeBreak,e as year};

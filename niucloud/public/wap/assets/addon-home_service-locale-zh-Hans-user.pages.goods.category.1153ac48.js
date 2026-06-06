@@ -1,0 +1,1 @@
+const e="请输入搜索关键词",o="全部分类",r="预约",t="已售",a="没有更多内容啦~",l={searchKeywordPlaceholder:e,allCategory:o,reserveBtn:"预约",soldOut:"已售",nothingMore:a};export{o as allCategory,l as default,a as nothingMore,r as reserveBtn,e as searchKeywordPlaceholder,t as soldOut};

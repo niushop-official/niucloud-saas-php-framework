@@ -1,0 +1,1 @@
+const o="请输入详细地址",d="找朋友帮忙付",e="下载海报",r="下载二维码",s="复制链接",a={addressPlaceholder:o,friendPayTitle:d,downloadPoster:e,downloadQrcode:r,copy:s};export{o as addressPlaceholder,s as copy,a as default,e as downloadPoster,r as downloadQrcode,d as friendPayTitle};

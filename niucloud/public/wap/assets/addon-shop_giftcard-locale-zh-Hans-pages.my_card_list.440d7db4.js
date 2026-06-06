@@ -1,0 +1,1 @@
+const a="元",e="全部",d="去使用",n="已使用",s="已失效",t="张",i="赠送好友",l="查看卡包",r="暂无卡记录",u={yuan:"元",all:"全部",canUse:"去使用",used:"已使用",invalid:"已失效",unit:"张",giftToFriends:i,seeCardBag:l,cardEmpty:r};export{e as all,d as canUse,r as cardEmpty,u as default,i as giftToFriends,s as invalid,l as seeCardBag,t as unit,n as used,a as yuan};

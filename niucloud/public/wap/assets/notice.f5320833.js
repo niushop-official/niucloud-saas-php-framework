@@ -1,0 +1,1 @@
+import{an as e}from"./index-6911ef17.js";function n(n){return e.get("home_service/technician/notice/list",n)}function i(n){return e.get("home_service/technician/notice/source",n)}export{n as a,i as g};

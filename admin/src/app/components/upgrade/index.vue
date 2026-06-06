@@ -356,8 +356,14 @@ const getUpgradeTaskFn = () => {
 
         data.log.forEach((item) => {
             if (!upgradeLog.includes(item)) {
-                terminalRef.value.pushMessage({ content: `${item}` })
-                upgradeLog.push(item)
+                if (item.indexOf('云编译任务正在排队') != -1) {
+                    cloudQueue = item
+                    upgradeLog.push(item)
+                } else {
+                    cloudQueue = null
+                    terminalRef.value.pushMessage({ content: `${item}` })
+                    upgradeLog.push(item)
+                }
             }
         })
         // 安装失败
@@ -627,12 +633,18 @@ const open = (addonKey: string = '', callback = null, otherData: any = {}) => {
  */
 let flashInterval: any = null
 const terminalFlash = new TerminalFlash()
+let cloudQueue = null
+
 const onExecCmd = (key, command, success, failed, name) => {
     if (command == '开始升级') {
         success(terminalFlash)
         const frames = makeIterator(['/', '——', '\\', '|'])
         flashInterval = setInterval(() => {
-            terminalFlash.flush('> ' + frames.next().value)
+            if (cloudQueue) {
+                terminalFlash.flush(cloudQueue + '<br>> ' + frames.next().value)
+            } else {
+                terminalFlash.flush('> ' + frames.next().value)
+            }
         }, 150)
     }
 }

@@ -23,6 +23,7 @@ use core\exception\AuthException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
+use think\facade\Log;
 
 /**
  * 登录服务层
@@ -78,8 +79,14 @@ class RegisterService extends BaseApiService
             }
             $member_id = ( new MemberService() )->add($data);
             $data[ 'member_id' ] = $member_id;
-            event('MemberRegister', $data);
             SetMemberNoJob::dispatch([ 'site_id' => $this->site_id, 'member_id' => $member_id ]);
+
+            try {
+                event('MemberRegister', $data);
+            } catch (\Exception $e) {
+                Log::write('MemberRegister event error');
+                Log::write($e->getTrace());
+            }
         }
         $member_info = $member_service->findMemberInfo([ 'member_id' => $member_id, 'site_id' => $this->site_id ]);
         if ($member_info->isEmpty()) throw new AuthException('MEMBER_NOT_EXIST');//账号不存在

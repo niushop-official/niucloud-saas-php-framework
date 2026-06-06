@@ -46,5 +46,28 @@
 	"uploadWeapp": "上传小程序",
 	"undoAudit" : "撤回审核",
 	"undoAuditTips" : "撤回代码审核，单个账号每天审核撤回次数最多不超过 5 次（每天的额度从0点开始生效），一个月不超过 10 次。是否要继续撤回？",
-    "helpInfo": "查看帮助"
+    "helpInfo": "查看帮助",
+	"weappUpload": {
+		"title": "小程序上传",
+		"noTask": "暂无上传任务",
+		"uploadFailed": "上传失败",
+		"uploadSuccess": "上传成功",
+		"uploadSuccessDesc": "小程序上传成功，耗时",
+		"usedTime": "已用时",
+		"startUpload": "开始上传",
+		"uploadComplete": "上传完成",
+		"dialogCloseTips": "确定要关闭上传窗口吗？关闭后将停止当前上传任务",
+		"errorInfo": "错误信息",
+		"errorAnalysis": "错误分析",
+		"complete": "完成",
+		"return": "返回",
+		"nextStep": "下一步",
+		"waitingUpload": "等待上传任务...",
+		"minute": "分",
+		"second": "秒",
+		"dot": ".",
+		"defaultDesc": "默认为列表版本号递增，自定义则为手动输入版本号进行上传，首位必须大于1"
+	},
+	"minute": "分",
+	"second": "秒"
 }

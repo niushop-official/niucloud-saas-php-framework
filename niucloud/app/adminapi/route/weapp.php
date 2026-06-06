@@ -44,8 +44,10 @@ Route::group('weapp', function() {
     Route::get('version', 'weapp.Version/lists');
     //获取预览码
     Route::get('preview', 'weapp.Version/preview');
-    //获取小程序上传日志
+    //获取小程序上传日志（会更新状态）
     Route::get('upload/:key', 'weapp.Version/uploadLog');
+    //直接获取小程序上传日志（不更新状态）
+    Route::get('upload_log/:key', 'weapp.Version/getUploadLogOnly');
 
 
 

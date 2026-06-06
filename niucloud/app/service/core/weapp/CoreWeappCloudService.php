@@ -64,7 +64,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
      */
     public function uploadWeapp(array $data)
     {
-        if (strpos($this->config[ 'base_url' ], 'https://') === false) throw new CommonException('CURR_SITE_IS_NOT_OPEN_SSL');
+       // if (strpos($this->config[ 'base_url' ], 'https://') === false) throw new CommonException('CURR_SITE_IS_NOT_OPEN_SSL');
         $this->site_id = $data[ 'site_id' ] ?? 0;
 
         if (empty($this->config[ 'app_id' ])) throw new CommonException('WEAPP_APPID_EMPTY');
@@ -126,7 +126,8 @@ class CoreWeappCloudService extends CoreCloudBaseService
 
         if (isset($response[ 'code' ]) && $response[ 'code' ] == 0) throw new CommonException($response[ 'msg' ]);
 
-        return [ 'key' => $query[ 'timestamp' ] ];
+        $task_id = $response[ 'data' ][ 'task_id' ] ?? $query[ 'timestamp' ];
+        return [ 'key' => $task_id ];
     }
 
     /**
@@ -306,14 +307,13 @@ class CoreWeappCloudService extends CoreCloudBaseService
 
     /**
      * 获取小程序编译日志
-     * @param string $timestamp
+     * @param string $taskId 任务ID (格式: authorize_code_timestamp)
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getWeappCompileLog(string $timestamp)
+    public function getWeappCompileLog(string $taskId)
     {
         $query = [
-            'authorize_code' => $this->auth_code,
-            'timestamp' => $timestamp
+            'task_id' => $taskId
         ];
         return ( new CloudService(true) )->httpGet('cloud/get_weapp_logs?' . http_build_query($query));
     }
