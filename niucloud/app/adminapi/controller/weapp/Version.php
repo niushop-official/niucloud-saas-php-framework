@@ -89,4 +89,13 @@ class Version extends BaseAdminController
     public function uploadLog(string $key) {
         return success(data: (new WeappVersionService())->getUploadLog($key));
     }
+
+    /**
+     * 直接获取小程序上传日志（不更新状态）
+     * @param string $key
+     * @return Response
+     */
+    public function getUploadLogOnly(string $key) {
+        return success(data: (new WeappVersionService())->getUploadLogOnly($key));
+    }
 }

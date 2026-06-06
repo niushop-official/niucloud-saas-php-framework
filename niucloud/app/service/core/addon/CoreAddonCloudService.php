@@ -17,6 +17,7 @@ use core\exception\CommonException;
 use core\util\niucloud\BaseNiucloudClient;
 use core\util\niucloud\CloudService;
 use think\facade\Cache;
+use think\facade\Log;
 
 /**
  */
@@ -86,7 +87,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
                 'authorize_code' => $this->auth_code,
                 'timestamp' => $install_task['timestamp']
             ];
-            $response = (new CloudService())->httpPost('cloud/build?' . http_build_query($query), [
+            $response = (new CloudService(true))->httpPost('cloud/build?' . http_build_query($query), [
                 'multipart' => [
                     [
                         'name'     => 'file',
@@ -122,11 +123,11 @@ class CoreAddonCloudService extends CoreCloudBaseService
                 'authorize_code' => $this->auth_code,
                 'timestamp' => $install_task['timestamp']
             ];
-            $build_log = (new CloudService())->httpGet('cloud/get_build_logs?' . http_build_query($query));
+            $build_log = (new CloudService(true))->httpGet('cloud/get_build_logs?' . http_build_query($query));
 
             if (isset($build_log['data']) && isset($build_log['data'][0]) && is_array($build_log['data'][0])) {
                 $last = end($build_log['data'][0]);
-                if ($last['percent'] == 100 && $last['code'] == 0) {
+                if ((int) $last['code'] == 0) {
                     (new CoreAddonInstallService($addon))->installExceptionHandle();
                     $install_task['error'] = 'ADDON_INSTALL_FAIL';
                     Cache::set('install_task', $install_task, 10);
@@ -162,8 +163,8 @@ class CoreAddonCloudService extends CoreCloudBaseService
 
         $cache = Cache::get('build_success_' . $addon);
 
-        if (is_null($cache)) {
-            $response = (new CloudService())->request('HEAD','cloud/build_download?' . http_build_query($query), [
+        if (is_null($cache) || !isset($cache[ 'index' ])) {
+            $response = (new CloudService(true))->request('HEAD','cloud/build_download?' . http_build_query($query), [
                 'headers' => ['Range' => 'bytes=0-']
             ]);
             $length = $response->getHeader('Content-range');
@@ -187,7 +188,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
                 $end = ($cache['index'] + 1) * $chunk_size;
                 $end = min($end, $cache['length']);
 
-                $response = (new CloudService())->request('GET','cloud/build_download?' . http_build_query($query), [
+                $response = (new CloudService(true))->request('GET','cloud/build_download?' . http_build_query($query), [
                     'headers' => ['Range' => "bytes={$start}-{$end}"]
                 ]);
                 fwrite($zip_resource, $response->getBody());
@@ -225,10 +226,18 @@ class CoreAddonCloudService extends CoreCloudBaseService
 
                     Cache::set('build_success_' . $addon, null);
                 } else {
-                    Cache::set('build_success_' . $addon, null);
-                    // 调用插件安装异常处理
-                    (new CoreAddonInstallService($addon))->installExceptionHandle();
-                    throw new CommonException('Zip decompression failed');
+                    if (!isset($cache[ 'retry' ])) {
+                        unlink($zip_file);
+                        $cache['retry'] = 1;
+                        unset($cache['index']);
+                        Cache::set('build_success_' . $addon, $cache);
+                        $log[] = [ 'code' => 1, 'msg' => '编译包解压失败,尝试重新下载', 'action' => '编译包解压失败,尝试重新下载', 'percent' => '100' ];
+                    } else {
+                        Cache::set('build_success_' . $addon, null);
+                        // 调用插件安装异常处理
+                        (new CoreAddonInstallService($addon))->installExceptionHandle();
+                        throw new CommonException('Zip decompression failed');
+                    }
                 }
             }
         }
@@ -251,7 +260,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
             'token' => $action_token['data']['token'] ?? ''
         ];
         // 获取文件大小
-        $response = (new CloudService())->request('HEAD','cloud/download?' . http_build_query($query), [
+        $response = (new CloudService(false, 'http://oss.niucloud.com/'))->request('HEAD','cloud/download?' . http_build_query($query), [
             'headers' => ['Range' => 'bytes=0-']
         ]);
         $length = $response->getHeader('Content-range');
@@ -263,7 +272,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
         $zip_file = $temp_dir . $addon . '.zip';
         $zip_resource = fopen($zip_file, 'w');
 
-        $response = (new CloudService())->request('GET','cloud/download?' . http_build_query($query), [
+        $response = (new CloudService(false, 'http://oss.niucloud.com/'))->request('GET','cloud/download?' . http_build_query($query), [
             'headers' => ['Range' => "bytes=0-{$length}"]
         ]);
         fwrite($zip_resource, $response->getBody());
@@ -286,7 +295,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
             'token' => $action_token['data']['token'] ?? ''
         ];
         // 获取文件大小
-        $response = (new CloudService())->httpGet('cloud/upgrade?' . http_build_query($query));
+        $response = (new CloudService(false, 'http://oss.niucloud.com/'))->httpGet('cloud/upgrade?' . http_build_query($query));
         $response['token'] = $query['token'];
         return $response;
     }
@@ -309,7 +318,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
         $chunk_size = 1 * 1024 * 1024;
 
         if ($index == -1) {
-            $response = (new CloudService())->request('HEAD','cloud/upgrade/download?' . http_build_query($query), [
+            $response = (new CloudService(false, 'http://oss.niucloud.com/'))->request('HEAD','cloud/upgrade/download?' . http_build_query($query), [
                 'headers' => ['Range' => 'bytes=0-']
             ]);
             $length = $response->getHeader('Content-range');
@@ -327,7 +336,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
                 $end = ($index + 1) * $chunk_size;
                 $end = min($end, $length);
 
-                $response = (new CloudService())->request('GET','cloud/upgrade/download?' . http_build_query($query), [
+                $response = (new CloudService(false, 'http://oss.niucloud.com/'))->request('GET','cloud/upgrade/download?' . http_build_query($query), [
                     'headers' => ['Range' => "bytes={$start}-{$end}"]
                 ]);
                 fwrite($zip_resource, $response->getBody());

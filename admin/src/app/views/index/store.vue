@@ -1245,12 +1245,18 @@ const installCheckResult = ref({})
 
 let flashInterval = null
 const terminalFlash = new TerminalFlash()
+let cloudQueue = null
+
 const onExecCmd = (key, command, success, failed, name) => {
 	if (command == '开始安装插件') {
 		success(terminalFlash)
 		const frames = makeIterator(['/', '——', '\\', '|'])
 		flashInterval = setInterval(() => {
-			terminalFlash.flush('> ' + frames.next().value)
+            if (cloudQueue) {
+                terminalFlash.flush(cloudQueue + '<br>> ' + frames.next().value)
+            } else {
+                terminalFlash.flush('> ' + frames.next().value)
+            }
 		}, 150)
 	}
 }
@@ -1342,7 +1348,7 @@ const getInstallTask = (first: boolean = true) => {
 				}
 				setTimeout(() => {
 					getInstallTask(false)
-				}, 2000)
+				}, 5000)
 			} else {
 				if (!first) {
 					installStep.value = 2
@@ -1488,6 +1494,13 @@ const getCloudInstallLog = () => {
 			if (data[0] && data[0].length && installShowDialog.value == true) {
 				data[0].forEach((item) => {
 					if (!installLog.includes(item.action)) {
+                        if (item.action.indexOf('云编译任务正在排队') != -1) {
+                            cloudQueue = item.action
+                            installLog.push(item.action)
+                            return
+                        } else {
+                            cloudQueue = null
+                        }
 						terminalRef.value.pushMessage({ content: `${item.action}` })
 						installLog.push(item.action)
 

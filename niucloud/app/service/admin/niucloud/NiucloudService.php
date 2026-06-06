@@ -96,10 +96,9 @@ class NiucloudService extends BaseAdminService
      * @return \app\model\sys\SysConfig|bool|\think\Model
      */
     public function setLocalCloudCompileConfig($data){
-
         $data = [
             'baseUri' => $data['url'],
-            'isOpen' => 1,
+            'isOpen' => $data['is_open'],
         ];
         return $this->core_config_service->setConfig(0,'LOCAL_CLOUD_COMPILE_CONFIG', $data);
     }
@@ -113,7 +112,7 @@ class NiucloudService extends BaseAdminService
         $config = $this->core_config_service->getConfig(0,'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
         return [
             'baseUri' => $config['baseUri'] ?? '',
-            'isOpen' => 1,
+            'isOpen' => $config['isOpen'] ?? 0,
         ];
 
     }

@@ -1,0 +1,1 @@
+const e="退款金额",n="取消退款",t="详情",a="实付款",o="撤销之后本次申请将会关闭,如后续仍有问题可再次发起申请。",r="没有更多内容啦~",d={refundMoney:e,refundApply:n,orderDetail:"详情",actualPayment:"实付款",cancelRefundContent:o,nothingMore:r};export{a as actualPayment,o as cancelRefundContent,d as default,r as nothingMore,t as orderDetail,n as refundApply,e as refundMoney};

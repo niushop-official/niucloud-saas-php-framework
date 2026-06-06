@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <link rel="icon" type="image" href="../favicon.ico"/>
+    <title>地图选点</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        .page {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+        }
+
+        .map-wrap {
+            position: absolute;
+            inset: 0;
+            bottom: 400px;
+            overflow: hidden;
+            background: #f4f6fa;
+        }
+
+        .search-icon {
+            color: #a8adb8;
+            font-size: 25px;
+            line-height: 1;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            transform: rotateY(180deg);
+        }
+
+        #mapDiv {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .center-pin {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 28px;
+            height: 28px;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .center-pin::before {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231890ff"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .center-pin::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid #1890ff;
+            border-radius: 50%;
+            left: -6px;
+            top: -6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        .search-bar {
+            position: absolute;
+            top: calc(env(safe-area-inset-top, 0px) + 12px);
+            left: 20px;
+            right: 20px;
+            height: 36px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 1);
+            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 10;
+            box-sizing: border-box;
+        }
+
+        .search-input {
+            border: 0;
+            outline: 0;
+            width: 100%;
+            font-size: 15px;
+            color: #333;
+            background: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #a8adb8;
+        }
+
+        .panel {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 400px;
+            background: #fff;
+            border-top: 1px solid #eceef3;
+            box-sizing: border-box;
+        }
+
+        .panel-content {
+            padding: 0 14px;
+            box-sizing: border-box;
+            height: calc(100% - 18px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .location-title {
+            font-size: 14px;
+            line-height: 27px;
+            color: #333;
+            font-weight: 400;
+            display: block;
+            width: 92%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .empty-text {
+            text-align: center;
+            color: #b7bcc6;
+            font-size: 14px;
+            line-height: 22px;
+            margin-top: 12px;
+            margin-bottom: 8px;
+        }
+
+        .coord-text {
+            text-align: center;
+            color: #333;
+            font-size: 14px;
+            line-height: 22px;
+            margin: 0;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            border: 0;
+            border-radius: 8px;
+            background: #1a73e8;
+            color: #fff;
+            font-size: 16px;
+            line-height: 40px;
+            margin-top: 12px;
+        }
+
+        .nearby-list {
+            margin: 8px 0 0;
+            padding: 0;
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .nearby-item {
+            border-bottom: 1px solid #f0f2f5;
+            padding: 8px 0;
+        }
+
+        .nearby-name {
+            color: #333;
+            font-size: 14px;
+            line-height: 18px;
+            margin: 0;
+        }
+
+        .nearby-address {
+            color: #999;
+            font-size: 12px;
+            line-height: 16px;
+            margin: 2px 0 0;
+        }
+
+        .nearby-empty {
+            color: #b7bcc6;
+            font-size: 13px;
+            line-height: 20px;
+            text-align: center;
+            margin: 12px 0 0;
+        }
+
+        /* 搜索页面 */
+        .search-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #fff;
+            z-index: 10000;
+            display: none;
+        }
+
+        .search-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #fff;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .search-input-wrap {
+            flex: 1;
+            height: 36px;
+            background: #f5f5f5;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            margin-right: 12px;
+        }
+
+        .search-input-wrap .search-icon {
+            color: #999;
+            font-size: 27px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .search-input-wrap input {
+            border: 0;
+            outline: 0;
+            width: 100%;
+            font-size: 14px;
+            color: #333;
+            background: transparent;
+        }
+
+        .search-input-wrap input::placeholder {
+            color: #999;
+        }
+
+        .cancel-btn {
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: #1a73e8;
+            font-size: 14px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .search-result {
+            margin-top: 56px;
+            padding: 0 16px;
+            height: calc(100% - 56px);
+            overflow-y: auto;
+        }
+
+        .search-result-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .search-result-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f2f5;
+            cursor: pointer;
+        }
+
+        .search-result-item-name {
+            font-size: 14px;
+            color: #333;
+            line-height: 20px;
+            margin: 0;
+        }
+
+        .search-result-item-address {
+            font-size: 12px;
+            color: #999;
+            line-height: 16px;
+            margin: 4px 0 0;
+        }
+
+        .search-result-empty {
+            color: #999;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            margin-top: 32px;
+        }
+    </style>
+    <script>
+        var map;
+        var zoom = 18;
+        var mapApiKey = '';
+        var geocoderTimer = null;
+        var localsearch = null;
+        var geocoder = null;
+        var searchRadius = 5000;
+        var selectedLongitude = 116.391349;
+        var selectedLatitude = 39.907375;
+        var currentAddress = '';
+        var currentCity = '';
+        var currentProvince = '';
+
+        function loadTianDiTuScript(key) {
+            return new Promise(function (resolve, reject) {
+                if (window.T) {
+                    resolve();
+                    return;
+                }
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://api.tianditu.gov.cn/api?v=4.0&tk=' + key;
+                script.onload = function () {
+                    resolve();
+                };
+                script.onerror = function () {
+                    reject(new Error('load script error'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        function onLoad() {
+            // 从URL参数中获取地图key
+            var key = getQueryParam('key') || '';
+            if (!key) {
+                // alert('地图key为空');
+                return;
+            }
+            mapApiKey = key;
+            loadTianDiTuScript(key).then(function () {
+                map = new T.Map('mapDiv');
+                var query = getAllQueryParams()
+                // 默认定位当前位置
+                if (query.latng) {
+                    selectedLatitude = query.latng.split(',')[0]
+                    selectedLongitude = query.latng.split(',')[1]
+                }
+                map.centerAndZoom(new T.LngLat(selectedLongitude, selectedLatitude), zoom);
+                initLocalSearch();
+
+                initGeocoder();
+                bindSearchAction();
+                updateCenterPoint();
+                locateCurrentPosition();
+                requestCenterDetail();
+                map.addEventListener('moveend', function () {
+                    requestCenterDetail();
+                });
+                map.addEventListener('zoomend', function () {
+                    requestCenterDetail();
+                });
+
+                // 检查URL参数
+                checkUrlParams();
+            }).catch(function () {
+                // alert('地图加载失败');
+            });
+        }
+
+        function checkUrlParams() {
+            var params = getAllQueryParams();
+            if (params && Object.keys(params).length > 0) {
+                var paramStr = Object.keys(params).map(function (key) {
+                    return key + '=' + params[key];
+                }).join('  ');
+                // alert(paramStr);
+            }
+        }
+
+        function getAllQueryParams() {
+            var params = {};
+            var query = window.location.search.substring(1);
+            if (!query) return params;
+
+            var pairs = query.split('&');
+            for (var i = 0; i < pairs.length; i++) {
+                var pair = pairs[i].split('=');
+                if (pair.length === 2) {
+                    params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                }
+            }
+            return params;
+        }
+
+        function getQueryParam(name) {
+            var match = window.location.search.match(new RegExp('(?:\\?|&)' + name + '=([^&]*)'));
+            return match ? decodeURIComponent(match[1]) : '';
+        }
+
+        var isSearching = false; // 标记是否为搜索页面的搜索
+
+        function initLocalSearch() {
+            localsearch = new T.LocalSearch(map, {
+                pageCapacity: 20,
+                onSearchComplete: localSearchResult,
+                queryRadius: 5000
+            });
+        }
+
+        function initGeocoder() {
+            geocoder = new T.Geocoder();
+        }
+
+        function bindSearchAction() {
+            var inputEl = document.getElementById('searchInput');
+            var searchPage = document.getElementById('searchPage');
+            var searchPageInput = document.getElementById('searchPageInput');
+            var cancelBtn = document.getElementById('cancelBtn');
+            if (!inputEl) return;
+
+            // 更新按钮状态
+            function updateButtonState() {
+                if (!searchPageInput || !cancelBtn) return;
+                var value = (searchPageInput.value || '').trim();
+                if (value) {
+                    cancelBtn.textContent = '搜索';
+                } else {
+                    cancelBtn.textContent = '取消';
+                }
+            }
+
+            // 点击搜索框显示搜索页面
+            inputEl.addEventListener('focus', function () {
+                if (searchPage) {
+                    searchPage.style.display = 'block';
+                    if (searchPageInput) {
+                        searchPageInput.value = inputEl.value;
+                        searchPageInput.focus();
+                        // 更新按钮状态
+                        updateButtonState();
+                    }
+                }
+            });
+
+            // 监听输入框变化，更新按钮状态
+            if (searchPageInput) {
+                searchPageInput.addEventListener('input', updateButtonState);
+            }
+
+            // 搜索页面的按钮点击事件
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function () {
+                    if (!searchPageInput) return;
+                    var value = (searchPageInput.value || '').trim();
+
+                    if (value) {
+                        // 有内容时执行搜索
+                        searchByKeyword(value);
+                    } else {
+                        // 无内容时取消
+                        // 清空搜索结果列表
+                        var searchResultList = document.getElementById('searchResultList');
+                        if (searchResultList) {
+                            searchResultList.innerHTML = '';
+                        }
+
+                        if (searchPage) {
+                            searchPage.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            // 搜索页面的回车键搜索
+            if (searchPageInput) {
+                searchPageInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter') {
+                        var keyword = (searchPageInput.value || '').trim();
+                        if (keyword) {
+                            searchByKeyword(keyword);
+                        }
+                    }
+                });
+
+                // 搜索页面的keyup事件，实时搜索
+                searchPageInput.addEventListener('keyup', function (e) {
+                    var keyword = (searchPageInput.value || '').trim();
+                    if (keyword) {
+                        searchByKeyword(keyword);
+                    }
+                });
+            }
+        }
+
+        function searchByKeyword(keyword) {
+            if (!keyword) return;
+
+            // 设置为搜索页面的搜索
+            isSearching = true;
+
+            // 执行搜索
+            if (localsearch) {
+                localsearch.search(keyword, 7);
+            }
+        }
+
+        function localSearchResult(result) {
+            var pois = [];
+            if (result && result.getPois) {
+                try {
+                    var poisResult = result.getPois();
+                    // 确保pois是数组
+                    if (Array.isArray(poisResult)) {
+                        pois = poisResult;
+                    } else if (poisResult && typeof poisResult === 'object') {
+                        // 如果是对象，尝试将其转换为数组
+                        pois = Object.values(poisResult);
+                    }
+                } catch (e) {
+                    console.error('获取搜索结果失败:', e);
+                }
+            }
+
+            // 根据搜索类型渲染到不同的列表
+            if (isSearching) {
+                renderSearchResultList(pois);
+            } else {
+                renderNearbyList(pois);
+            }
+        }
+
+        function renderSearchResultList(list) {
+            var searchResultList = document.getElementById('searchResultList');
+            if (!searchResultList) return;
+
+            if (!list || !list.length) {
+                searchResultList.innerHTML = '<li class="search-result-empty">暂无搜索结果</li>';
+                return;
+            }
+
+            // 渲染搜索结果列表
+            var html = list.slice(0, 20).map(function (item) {
+                var name = item.name || item.poiName || item.title || '未知地点';
+                var address = item.address || item.poiAddress || item.addr || '';
+                var lonlat = '';
+                var lat = '';
+                var lng = '';
+
+                if (typeof item.lonlat === 'string') {
+                    lonlat = item.lonlat;
+                    var coords = item.lonlat.split(' ');
+                    if (coords.length === 2) {
+                        lng = coords[0];
+                        lat = coords[1];
+                    }
+                } else if (item.lat && item.lng) {
+                    lat = item.lat;
+                    lng = item.lng;
+                    lonlat = lng + ' ' + lat;
+                } else if (item.latLng) {
+                    // 处理latLng对象
+                    lat = item.latLng.lat || item.latLng.latitude || '';
+                    lng = item.latLng.lng || item.latLng.longitude || '';
+                    lonlat = lng + ' ' + lat;
+                } else if (item.location) {
+                    // 处理location对象
+                    lat = item.location.lat || item.location.latitude || '';
+                    lng = item.location.lng || item.location.longitude || '';
+                    lonlat = lng + ' ' + lat;
+                }
+
+                if (!address && lonlat) {
+                    address = lonlat;
+                }
+
+                var distanceText = formatDistanceByPoi(item);
+                if (distanceText) address = address ? address + ' · ' + distanceText : distanceText;
+
+                return '<li class="search-result-item" onclick="selectSearchResult(\'' + escapeHtml(name) + '\', \'' + lonlat + '\', \'' + escapeHtml(address) + '\')"><p class="search-result-item-name">' + escapeHtml(name) + '</p><p class="search-result-item-address">' + escapeHtml(address || ' ') + '</p></li>';
+            }).join('');
+
+            searchResultList.innerHTML = html;
+        }
+
+        function selectSearchResult(name, lonlat, address) {
+            // 清空搜索结果列表
+            var searchResultList = document.getElementById('searchResultList');
+            if (searchResultList) {
+                searchResultList.innerHTML = '';
+            }
+
+            // 隐藏搜索页面
+            // var searchPage = document.getElementById('searchPage');
+            // if (searchPage) {
+            //   searchPage.style.display = 'none';
+            // }
+
+            // 调用原有的显示地点信息函数
+            showItemInfo(name, lonlat, address);
+        }
+
+        function updateCenterPoint() {
+            if (!map) return;
+            var center = map.getCenter();
+            if (!center) return;
+            selectedLongitude = Number(center.getLng());
+            selectedLatitude = Number(center.getLat());
+        }
+
+
+        function locateCurrentPosition() {
+            if (!navigator.geolocation) return;
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = Number(position.coords.latitude || 0);
+                var lng = Number(position.coords.longitude || 0);
+                if (!lat || !lng) return;
+                map.centerAndZoom(new T.LngLat(lng, lat), zoom);
+                requestCenterDetail();
+            }, function () {
+            }, {
+                enableHighAccuracy: true,
+                timeout: 8000,
+                maximumAge: 30000
+            });
+        }
+
+        function requestCenterDetail() {
+            updateCenterPoint();
+            if (geocoderTimer) clearTimeout(geocoderTimer);
+            geocoderTimer = setTimeout(function () {
+                fetchCurrentAddress(selectedLongitude, selectedLatitude);
+                searchNearbyByCenter();
+            }, 220);
+        }
+
+
+        function fetchCurrentAddress(lng, lat) {
+            if (!geocoder) {
+                renderCurrentAddress('位置获取失败', '');
+                return;
+            }
+            geocoder.getLocation(new T.LngLat(lng, lat), function (result) {
+                if (result.getStatus() == 0) {
+
+                    var addressComponent = result.getAddressComponent();
+                    // 处理T.AddressComponent对象的结构
+                    var actualAddressComponent = addressComponent.addressComponent || addressComponent;
+                    var city = actualAddressComponent.city || '';
+                    var province = actualAddressComponent.province || '';
+                    var address = addressComponent.poi || actualAddressComponent.poi || '';
+
+                    // 保存当前城市和省份
+                    currentCity = city;
+                    currentProvince = province;
+
+                    renderCurrentAddress(address, city);
+                } else {
+                    renderCurrentAddress('位置获取失败', '');
+                }
+            });
+        }
+
+        function searchNearbyByCenter() {
+            if (!localsearch || !map) return;
+            var keyword = getSearchKeyword();
+
+            // 设置为附近地点搜索
+            isSearching = false;
+
+            localsearch.searchNearby(keyword, new T.LngLat(selectedLongitude, selectedLatitude), searchRadius);
+        }
+
+        function getSearchKeyword() {
+            var inputEl = document.getElementById('searchInput');
+            if (!inputEl) return '小区';
+            var value = (inputEl.value || '').trim();
+            if (value) {
+                return value;
+            }
+            // 如果搜索框为空，使用当前地址作为关键词
+            if (currentAddress) {
+                return currentAddress;
+            }
+            return '小区';
+        }
+
+        function renderCurrentAddress(address, city) {
+            var titleEl = document.getElementById('locationTitle');
+            if (titleEl) titleEl.textContent = address || '未知位置';
+            // 保存当前地址
+            currentAddress = address || '';
+        }
+
+        function formatDistanceByPoi(poi) {
+            var distance = poi && (poi.distance || poi.dis || poi.dist);
+            if (distance === undefined || distance === null || distance === '') return '';
+            var num = Number(distance);
+            if (Number.isNaN(num)) return '';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'km';
+            return Math.round(num) + 'm';
+        }
+
+        function renderNearbyList(list) {
+            var listEl = document.getElementById('nearbyList');
+            if (!listEl) return;
+            if (!list || !list.length) {
+                listEl.innerHTML = '<li class="nearby-empty">暂无附近地点</li>';
+                return;
+            }
+            var html = list.slice(0, 10).map(function (item) {
+                var name = item.name || item.poiName || '未知地点';
+                var address = item.address || item.poiAddress || '';
+                var lonlat = '';
+                var lat = '';
+                var lng = '';
+
+                if (typeof item.lonlat === 'string') {
+                    lonlat = item.lonlat;
+                    var coords = item.lonlat.split(' ');
+                    if (coords.length === 2) {
+                        lng = coords[0];
+                        lat = coords[1];
+                    }
+                } else if (item.lat && item.lng) {
+                    lat = item.lat;
+                    lng = item.lng;
+                    lonlat = lng + ' ' + lat;
+                }
+
+                if (!address && lonlat) {
+                    address = lonlat;
+                }
+
+                var distanceText = formatDistanceByPoi(item);
+                if (distanceText) address = address ? address + ' · ' + distanceText : distanceText;
+
+                return '<li class="nearby-item" onclick="showItemInfo(\'' + escapeHtml(name) + '\', \'' + lonlat + '\', \'' + escapeHtml(address) + '\')"><p class="nearby-name">' + escapeHtml(name) + '</p><p class="nearby-address">' + escapeHtml(address || ' ') + '</p></li>';
+            }).join('');
+            listEl.innerHTML = html;
+        }
+
+        function showItemInfo(name, lonlat, address) {
+            var lat = '';
+            var lng = '';
+
+            if (lonlat) {
+                // 尝试用空格分割
+                var coords = lonlat.split(' ');
+                if (coords.length === 2) {
+                    lng = coords[0];
+                    lat = coords[1];
+                } else {
+                    // 尝试用逗号分割
+                    coords = lonlat.split(',');
+                    if (coords.length === 2) {
+                        lng = coords[0];
+                        lat = coords[1];
+                    }
+                }
+            }
+
+            // 如果没有获取到坐标，使用当前地图中心的坐标
+            if (!lat || !lng) {
+                lat = selectedLatitude.toString();
+                lng = selectedLongitude.toString();
+            }
+
+            // 使用当前位置的city，如果city为空（直辖市情况），则使用province
+            var city = currentCity || currentProvince || '';
+
+            // 将地图定位到选择的地点
+            if (lng && lat) {
+                map.centerAndZoom(new T.LngLat(lng, lat), zoom);
+                selectedLongitude = Number(lng);
+                selectedLatitude = Number(lat);
+                requestCenterDetail();
+            }
+
+            // 构建返回参数
+            var payload = {
+                name: name,
+                latng: lat + ',' + lng,
+                addr: address,
+                city: city,
+                module: 'locationPicker'
+            };
+
+            // 检查是否有backurl参数
+            var backurl = getQueryParam('backurl');
+            if (backurl) {
+                // 跳转到backurl并携带参数
+                window.location.href = appendParams(backurl, payload);
+            } else {
+                // 没有backurl时，显示结果
+                var result = 'name=' + name + '&latng=' + lat + ',' + lng + '&addr=' + address + '&city=' + city + '&module=locationPicker';
+                // alert(result);
+            }
+        }
+
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function getQueryParam(name) {
+            var match = window.location.search.match(new RegExp('(?:\\?|&)' + name + '=([^&]*)'));
+            return match ? decodeURIComponent(match[1]) : '';
+        }
+
+        function appendParams(url, params) {
+            var hasQuery = url.indexOf('?') > -1;
+            var queryParts = [];
+            Object.keys(params).forEach(function (key) {
+                if (key === 'latng') {
+                    // latng 参数特殊处理，逗号不转义
+                    queryParts.push(key + '=' + params[key]);
+                } else {
+                    queryParts.push(encodeURIComponent(key) + '=' + encodeURIComponent(params[key]));
+                }
+            });
+            var query = queryParts.join('&');
+            return url + (hasQuery ? '&' : '?') + query;
+        }
+
+        function confirmLocation() {
+            if (!selectedLongitude || !selectedLatitude) return;
+            var payload = {
+                lng: selectedLongitude,
+                lat: selectedLatitude,
+                longitude: selectedLongitude,
+                latitude: selectedLatitude
+            };
+            var backurl = getQueryParam('backurl');
+            if (backurl) {
+                window.location.href = appendParams(backurl, payload);
+                return;
+            }
+            window.postMessage({ type: 'tianmap:select', data: payload }, '*');
+            // alert('已选择坐标：' + selectedLongitude.toFixed(6) + ',' + selectedLatitude.toFixed(6));
+        }
+    </script>
+</head>
+<body onLoad="onLoad()">
+<div class="page">
+    <div class="map-wrap">
+        <div id="mapDiv"></div>
+        <div class="center-pin"></div>
+    </div>
+    <div class="search-bar">
+
+        <input id="searchInput" class="search-input" placeholder="搜索地点"/>
+        <span class="search-icon">⌕</span>
+    </div>
+    <div class="panel">
+        <div class="panel-content">
+            <p id="locationTitle" class="location-title">我的位置</p>
+
+            <ul id="nearbyList" class="nearby-list">
+                <li class="nearby-empty">暂无附近地点</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 搜索页面 -->
+    <div class="search-page" id="searchPage">
+        <div class="search-header">
+            <div class="search-input-wrap">
+                <span class="search-icon">⌕</span>
+                <input id="searchPageInput" class="search-page-input" placeholder="搜索地点"/>
+            </div>
+            <button id="cancelBtn" class="cancel-btn">取消</button>
+        </div>
+        <div class="search-result">
+            <ul class="search-result-list" id="searchResultList">
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

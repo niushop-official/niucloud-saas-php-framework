@@ -1,0 +1,1 @@
+import{_ as o}from"./manjian-info.vue_vue_type_script_setup_true_lang-43880f24.js";import"./index-8eead49b.js";/* empty css                  *//* empty css                   *//* empty css                  *//* empty css                 *//* empty css                        */import"./goods_default-f482a1c1.js";export{o as default};

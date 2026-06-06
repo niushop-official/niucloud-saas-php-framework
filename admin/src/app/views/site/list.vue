@@ -87,7 +87,7 @@
                     <el-table-column :label="t('siteInfo')" width="300" align="left">
                         <template #default="{ row }">
                             <div class="flex items-center">
-                                <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-if="row.logo" :src="img(row.logo)" alt="">
+                                <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-if="row.icon" :src="img(row.icon)" alt="">
                                 <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-else src="@/app/assets/images/site_default.png" alt="">
                                 <div class="flex flex-col">
                                     <span>{{ row.site_name || '' }}</span>

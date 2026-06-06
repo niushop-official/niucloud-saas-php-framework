@@ -1,0 +1,1 @@
+import{an as r}from"./index-6911ef17.js";function t(t){return r.get("diy/form",t)}function n(t){return r.post("diy/form/record",t)}function o(t){return r.put("diy/form/record",t)}function e(t){return r.get("diy/form/result",t)}function i(t){return r.get("diy/form/record",t)}export{n as a,t as b,i as c,o as e,e as g};

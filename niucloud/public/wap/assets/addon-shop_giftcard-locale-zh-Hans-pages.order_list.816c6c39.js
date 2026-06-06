@@ -1,0 +1,1 @@
+const a="元储值卡",t="支付",e="全部",o="关闭订单",r="暂无购卡记录",d="提示",l="您确定要关闭该订单吗？",p={yuanStoredValueCard:a,topay:"支付",all:"全部",orderClose:o,cardEmpty:r,tips:"提示",tipsOne:l};export{e as all,r as cardEmpty,p as default,o as orderClose,d as tips,l as tipsOne,t as topay,a as yuanStoredValueCard};

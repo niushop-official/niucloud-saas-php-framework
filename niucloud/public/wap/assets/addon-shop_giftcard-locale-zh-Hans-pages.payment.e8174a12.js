@@ -1,0 +1,1 @@
+const e="元储值卡",a="订单留言",r="合计",d="提交订单",l="选填,建议先与商家协商一致",o={yuanStoredValueCard:e,orderMessage:a,total:"合计",placeOrder:d,remarkPlaceholder:l};export{o as default,a as orderMessage,d as placeOrder,l as remarkPlaceholder,r as total,e as yuanStoredValueCard};

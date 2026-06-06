@@ -1,0 +1,1 @@
+const e="购买须知",a="暂无购买须知",r="卡项详情",s="暂无卡项详情",t="立即购买",c="立即预约",o="首页",l="客服",d="收藏",i={purchaseNotes:e,noPurchaseNotes:a,cardDetail:r,noCardDetail:s,buy:t,reserve:c,index:"首页",service:"客服",collect:"收藏"};export{t as buy,r as cardDetail,d as collect,i as default,o as index,s as noCardDetail,a as noPurchaseNotes,e as purchaseNotes,c as reserve,l as service};

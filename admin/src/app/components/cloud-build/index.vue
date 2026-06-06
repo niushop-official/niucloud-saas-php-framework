@@ -167,7 +167,7 @@
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue'
 import { t } from '@/lang'
-import { getCloudBuildLog, getCloudBuildTask, cloudBuild, clearCloudBuildTask, preBuildCheck } from '@/app/api/cloud'
+import { getCloudBuildLog, getCloudBuildTask, cloudBuild, clearCloudBuildTask, preBuildCheck, getCloudBuildQueuePosition, getCloudBuildSseUrl, CLOUD_COMPILE_BASE_URL, startServerDownload, getSseBuildLog } from '@/app/api/cloud'
 import { getInstalledAddonList } from '@/app/api/addon'
 import { Terminal, TerminalFlash } from 'vue-web-terminal'
 import 'vue-web-terminal/lib/theme/dark.css'
@@ -196,8 +196,277 @@ const handleSelectionChange = (rows) => {
 }
 
 let cloudBuildLog = []
+let eventSource: EventSource | null = null
 
-// 计时器相关
+interface SSEMessage {
+    type: string
+    task_id?: string
+    percent?: number
+    action?: string
+    msg?: string
+    code?: string
+    time?: string
+    download_url?: string
+    download_percent?: number
+    downloaded_bytes?: number
+    total_bytes?: number
+    authorize_code?: string
+    timestamp?: string
+}
+
+const connectSSE = (taskId: string) => {
+    if (eventSource) {
+        eventSource.close()
+    }
+
+    const url = getCloudBuildSseUrl(taskId)
+    eventSource = new EventSource(url)
+
+    eventSource.onopen = () => {
+        console.log('SSE connected')
+    }
+
+    eventSource.onmessage = (event) => {
+        try {
+            const data: SSEMessage = JSON.parse(event.data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE parse error:', e)
+        }
+    }
+
+    eventSource.addEventListener('progress', (event) => {
+        try {
+            const data: SSEMessage = JSON.parse((event as MessageEvent).data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE progress parse error:', e)
+        }
+    })
+
+    eventSource.addEventListener('complete', (event) => {
+        try {
+            const data: SSEMessage = JSON.parse((event as MessageEvent).data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE complete parse error:', e)
+        }
+    })
+
+    eventSource.addEventListener('failed', (event) => {
+        try {
+            const data: SSEMessage = JSON.parse((event as MessageEvent).data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE failed parse error:', e)
+        }
+    })
+
+    eventSource.addEventListener('heartbeat', () => {
+        console.log('SSE heartbeat')
+    })
+
+    eventSource.addEventListener('download_start', (event) => {
+        try {
+            const data: SSEMessage = JSON.parse((event as MessageEvent).data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE download_start parse error:', e)
+        }
+    })
+
+    eventSource.addEventListener('download_progress', (event) => {
+        try {
+            const data: SSEMessage = JSON.parse((event as MessageEvent).data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE download_progress parse error:', e)
+        }
+    })
+
+    eventSource.addEventListener('download_complete', (event) => {
+        try {
+            const data: SSEMessage = JSON.parse((event as MessageEvent).data)
+            handleSSEMessage(data)
+        } catch (e) {
+            console.error('SSE download_complete parse error:', e)
+        }
+    })
+
+    eventSource.onerror = (error) => {
+        console.error('SSE error:', error)
+        setTimeout(() => {
+            if (showDialog.value && cloudBuildTask.value) {
+                getCloudBuildLogFn()
+            }
+        }, 5000)
+    }
+}
+
+const handleSSEMessage = (data: SSEMessage) => {
+    if (!showDialog.value) return
+
+    if (data.type === 'progress' && data.action) {
+        if (!cloudBuildLog.includes(data.action)) {
+            if (cloudBuildLog.length === 0) {
+                const storedTime = localStorage.getItem('cloud_build_start_time')
+                if (storedTime) {
+                    buildStartTime.value = Number(storedTime)
+                } else {
+                    const now = Date.now()
+                    buildStartTime.value = now
+                    localStorage.setItem('cloud_build_start_time', String(now))
+                }
+
+                buildDuration.value = Math.floor((Date.now() - buildStartTime.value) / 1000)
+                buildTimer && clearInterval(buildTimer)
+                buildTimer = setInterval(() => {
+                    if (buildStartTime.value) {
+                        buildDuration.value = Math.floor((Date.now() - buildStartTime.value) / 1000)
+                    }
+                }, 1000)
+                terminalRef.value.execute('clear')
+                terminalRef.value.execute('开始编译')
+            }
+
+            if (data.action.indexOf('云编译任务正在排队') != -1) {
+                cloudQueue = data.action
+                cloudBuildLog.push(data.action)
+                return
+            } else {
+                cloudQueue = null
+            }
+
+            terminalRef.value.pushMessage({ content: `${data.action}` })
+            cloudBuildLog.push(data.action)
+
+            if (data.code === '0' && data.msg) {
+                errorAnalysis.value = {}
+                errorInfo.value = data.msg
+                terminalRef.value.pushMessage({ content: data.msg, class: 'error' })
+                timeloading.value = false
+                active.value = 'error'
+                terminalRef.value.execute('clear')
+                clearCloudBuildTask()
+                buildTimer && clearInterval(buildTimer)
+                buildTimer = null
+                localStorage.removeItem('cloud_build_start_time')
+                localStorage.removeItem('cloud_build_task')
+                closeSSE()
+            }
+        }
+    } else if (data.type === 'complete') {
+        terminalRef.value.pushMessage({ content: '编译完成' })
+    } else if (data.type === 'failed') {
+        errorInfo.value = data.msg || '编译失败'
+        active.value = 'error'
+        terminalRef.value.execute('clear')
+        clearCloudBuildTask()
+        buildTimer && clearInterval(buildTimer)
+        buildTimer = null
+        localStorage.removeItem('cloud_build_start_time')
+        localStorage.removeItem('cloud_build_task')
+        closeSSE()
+    } else if (data.type === 'download_start') {
+        if (data.action && !cloudBuildLog.includes(data.action)) {
+            terminalRef.value.pushMessage({ content: data.action })
+            cloudBuildLog.push(data.action)
+        }
+    } else if (data.type === 'download_progress') {
+        const percent = data.download_percent || 0
+        const downloaded = data.downloaded_bytes || 0
+        const total = data.total_bytes || 0
+        const downloadedMB = (downloaded / 1024 / 1024).toFixed(2)
+        const totalMB = (total / 1024 / 1024).toFixed(2)
+        terminalRef.value.pushMessage({ content: `下载进度: ${percent}% (${downloadedMB}MB / ${totalMB}MB)` })
+    } else if (data.type === 'download_complete') {
+        if (data.action && !cloudBuildLog.includes(data.action)) {
+            terminalRef.value.pushMessage({ content: data.action })
+            cloudBuildLog.push(data.action)
+        }
+
+        if (data.download_url && data.task_id) {
+            startServerDownloadFn(data.task_id, data.download_url, data.authorize_code, data.timestamp)
+        }
+    }
+}
+
+let downloadPollingTimer: number | null = null
+
+const startServerDownloadFn = async (taskId: string, downloadUrl: string, authorizeCode: string, timestamp: string) => {
+    try {
+        terminalRef.value.pushMessage({ content: '正在启动后台下载...' })
+
+        const parseUrl = new URL(downloadUrl, CLOUD_COMPILE_BASE_URL)
+        const authorize_code = parseUrl.searchParams.get('authorize_code') || authorizeCode || ''
+        const ts = parseUrl.searchParams.get('timestamp') || timestamp || ''
+
+        await startServerDownload(taskId, downloadUrl, authorize_code, ts)
+
+        downloadPollingTimer = setTimeout(async () => {
+            if (!downloadPollingTimer) return
+
+            try {
+                const res = await getSseBuildLog(taskId)
+                if (res.code === 1) {
+                    const { status, percent, msg } = res.data
+
+                    if (status === 'downloading') {
+                        terminalRef.value.pushMessage({ content: `下载进度: ${percent}% - ${msg}` })
+                    } else if (status === 'unzipping') {
+                        terminalRef.value.pushMessage({ content: msg })
+                    } else if (status === 'completed') {
+                        terminalRef.value.pushMessage({ content: '部署完成!' })
+                        downloadPollingTimer && clearInterval(downloadPollingTimer)
+                        downloadPollingTimer = null
+                        active.value = 'complete'
+                        timeloading.value = false
+                        terminalRef.value.execute('clear')
+                        clearCloudBuildTask()
+                        buildTimer && clearInterval(buildTimer)
+                        buildTimer = null
+                        localStorage.removeItem('cloud_build_start_time')
+                        localStorage.removeItem('cloud_build_task')
+                        closeSSE()
+                        ElMessage.success('编译部署完成')
+                    } else if (status === 'error') {
+                        terminalRef.value.pushMessage({ content: `错误: ${msg}`, class: 'error' })
+                        downloadPollingTimer && clearInterval(downloadPollingTimer)
+                        downloadPollingTimer = null
+                        errorInfo.value = msg
+                        active.value = 'error'
+                        timeloading.value = false
+                        clearCloudBuildTask()
+                        closeSSE()
+                    }
+                } else {
+                    terminalRef.value.pushMessage({ content: '获取下载进度失败', class: 'error' })
+                    downloadPollingTimer && clearInterval(downloadPollingTimer)
+                    downloadPollingTimer = null
+                }
+            } catch (e) {
+                console.error('Polling error:', e)
+            }
+        }, 2000)
+    } catch (error) {
+        console.error('启动后台下载失败:', error)
+        terminalRef.value.pushMessage({ content: '启动后台下载失败', class: 'error' })
+        errorInfo.value = '启动后台下载失败'
+        active.value = 'error'
+    }
+}
+
+const closeSSE = () => {
+    if (eventSource) {
+        eventSource.close()
+        eventSource = null
+    }
+    if (downloadPollingTimer) {
+        clearInterval(downloadPollingTimer)
+        downloadPollingTimer = null
+    }
+}
+
 const buildStartTime = ref<number | null>(null)
 const buildDuration = ref<number>(0)
 let buildTimer: number | null = null
@@ -272,10 +541,17 @@ const getCloudBuildLogFn = () => {
 
             data[0].forEach(item => {
                 if (!cloudBuildLog.includes(item.action)) {
+                    if (item.action.indexOf('云编译任务正在排队') != -1) {
+                        cloudQueue = item.action
+                        cloudBuildLog.push(item.action)
+                        return
+                    } else {
+                        cloudQueue = null
+                    }
                     terminalRef.value.pushMessage({ content: `${item.action}` })
                     cloudBuildLog.push(item.action)
 
-                    if (item.code == 0) {
+                    if (item.code === '0') {
                         errorAnalysis.value = res.data.error_analysis || {}
                         error = item.msg
                         terminalRef.value.pushMessage({ content: item.msg, class: 'error' })
@@ -305,7 +581,7 @@ const getCloudBuildLogFn = () => {
 
         setTimeout(() => {
             getCloudBuildLogFn()
-        }, 2000)
+        }, 5000)
     }).catch()
 }
 
@@ -342,10 +618,17 @@ const open = async () => {
     loading.value = true
     active.value = 'build'
     closeType.value = 'normal'
+    cloudBuildLog = []
+
     if (cloudBuildTask.value) {
         showDialog.value = true
         loading.value = false
-        getCloudBuildLogFn()
+        const taskId = (cloudBuildTask.value as any).task_id
+        if (taskId) {
+            connectSSE(taskId)
+        } else {
+            getCloudBuildLogFn()
+        }
         return
     }
 
@@ -355,7 +638,12 @@ const open = async () => {
                 loading.value = false
                 cloudBuildTask.value = data
                 showDialog.value = true
-                getCloudBuildLogFn()
+                const taskId = data.task_id
+                if (taskId) {
+                    connectSSE(taskId)
+                } else {
+                    getCloudBuildLogFn()
+                }
             }).catch(() => {
                 showDialog.value = false
                 loading.value = false
@@ -399,15 +687,19 @@ const againBuild = () => {
         return
     }
     loading.value = true
-    cloudBuild({
-        addon: selectAddon.value
-    }).then(({ data }) => {
+    cloudBuildLog = []
+    cloudBuild().then(({ data }) => {
         active.value = 'build'
         loading.value = false
         cloudBuildTask.value = data
         showDialog.value = true
         localStorage.removeItem('cloud_build_start_time')
-        getCloudBuildLogFn()
+        const taskId = data.task_id
+        if (taskId) {
+            connectSSE(taskId)
+        } else {
+            getCloudBuildLogFn()
+        }
     }).catch(() => {
         showDialog.value = false
         loading.value = false
@@ -422,13 +714,19 @@ const selectable = (row: any) => {
  * 升级进度动画
  */
 let flashInterval: null | number = null
-const terminalFlash = new TerminalFlash()
+let terminalFlash = null
+let cloudQueue = null
 const onExecCmd = (key, command, success, failed, name) => {
     if (command == '开始编译') {
+        terminalFlash = new TerminalFlash()
         success(terminalFlash)
         const frames = makeIterator(['/', '——', '\\', '|'])
         flashInterval = setInterval(() => {
-            terminalFlash.flush('> ' + frames.next().value)
+            if (cloudQueue) {
+                terminalFlash.flush(cloudQueue + '<br>> ' + frames.next().value)
+            } else {
+                terminalFlash.flush('> ' + frames.next().value)
+            }
         }, 150)
     }
 }
@@ -446,6 +744,7 @@ const makeIterator = (array: string[]) => {
 }
 
 const dialogClose = (done: () => {}) => {
+    closeSSE()
     if (active.value == 'build' && cloudBuildTask.value && closeType.value == 'normal') {
         ElMessageBox.confirm(
             t('cloudbuild.showDialogCloseTips'),
@@ -471,6 +770,7 @@ const dialogClose = (done: () => {}) => {
 }
 
 const dialogCancel = () => {
+    closeSSE()
     if (active.value == 'build' && cloudBuildTask.value && closeType.value == 'normal') {
         ElMessageBox.confirm(
             t('cloudbuild.showDialogCloseTips'),
@@ -501,10 +801,12 @@ const cloudBuildCheckDirFn = () => {
 
 watch(() => showDialog.value, () => {
     if (!showDialog.value) {
+        closeSSE()
         cloudBuildTask.value = null
         active.value = 'build'
         cloudBuildLog = []
         flashInterval && clearInterval(flashInterval)
+        terminalFlash && terminalFlash.finish()
         buildTimer && clearInterval(buildTimer)
         buildStartTime.value = null
         buildDuration.value = 0

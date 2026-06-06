@@ -77,6 +77,15 @@ export function getWeappUploadLog(key: string) {
     return request.get(`weapp/upload/${ key }`)
 }
 
+/**
+ * 直接获取小程序上传日志（不更新状态）
+ * @param key
+ * @returns
+ */
+export function fetchWeappUploadLog(key: string) {
+    return request.get(`weapp/upload_log/${ key }`)
+}
+
 /***************************************************** 管理端 ****************************************************/
 
 /**

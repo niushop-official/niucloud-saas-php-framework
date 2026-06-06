@@ -1,0 +1,1 @@
+const o="自动关闭订单",e="提交订单",r="分钟未付款，自动关闭订单",c="订单关闭时间必须在10-1440分钟之间",n="请输入订单关闭时间",t={closeOrderInfo:o,closeOrderInfoLeft:e,closeOrderInfoRight:r,closeOrderInfoBottom:c,CloseLengthPlaceholder:n};export{n as CloseLengthPlaceholder,o as closeOrderInfo,c as closeOrderInfoBottom,e as closeOrderInfoLeft,r as closeOrderInfoRight,t as default};

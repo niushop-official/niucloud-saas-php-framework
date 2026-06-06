@@ -141,15 +141,28 @@ class WeappVersionService extends BaseAdminService
 
         if (isset($build_log['data']) && isset($build_log['data'][0]) && is_array($build_log['data'][0])) {
             $last = end($build_log['data'][0]);
+            file_put_contents(runtime_path() . 'debug_log.txt', date('Y-m-d H:i:s') . " | key: $key | last_code: {$last['code']} | last_percent: {$last['percent']}\n", FILE_APPEND);
             if ($last['code'] == 0) {
-                (new WeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_FAIL, 'fail_reason' => $last['msg'] ?? '', 'update_time' => time()], ['task_key' => $key]);
+                $res = (new WeappVersion())->where(['task_key' => $key])->update(['status' => CloudDict::APPLET_UPLOAD_FAIL, 'fail_reason' => $last['msg'] ?? '', 'update_time' => time()]);
+                file_put_contents(runtime_path() . 'debug_log.txt', date('Y-m-d H:i:s') . " | fail update result: $res\n", FILE_APPEND);
                 return $build_log;
             }
             if ($last['percent'] == 100) {
-                (new WeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS, 'update_time' => time()], ['task_key' => $key]);
+                $res = (new WeappVersion())->where(['task_key' => $key])->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS, 'update_time' => time()]);
+                file_put_contents(runtime_path() . 'debug_log.txt', date('Y-m-d H:i:s') . " | success update result: $res\n", FILE_APPEND);
             }
         }
         return $build_log;
+    }
+
+    /**
+     * 直接获取小程序上传日志（不更新状态）
+     * @param string $key
+     * @return null
+     */
+    public function getUploadLogOnly(string $key)
+    {
+        return (new CoreWeappCloudService())->getWeappCompileLog($key);
     }
 
     /**

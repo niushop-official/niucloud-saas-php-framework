@@ -1,0 +1,1 @@
+const e="订单号",r="起",s="星级",o="星",t="景点",a="线路",c="酒店",l="查看更多",d={orderNo:"订单号",rise:"起",starLevel:"星级",star:"星",scenic:"景点",way:"线路",hotel:"酒店",seeMore:l};export{d as default,c as hotel,e as orderNo,r as rise,t as scenic,l as seeMore,o as star,s as starLevel,a as way};

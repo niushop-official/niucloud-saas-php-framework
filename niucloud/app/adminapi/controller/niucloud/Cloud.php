@@ -94,6 +94,7 @@ class Cloud extends BaseAdminController
     public function setLocalCloudCompileConfig()
     {
         $data = $this->request->params([
+            [ 'is_open', 0],
             [ 'url', '' ],
         ]);
         return success('SUCCESS',(new NiucloudService())->setLocalCloudCompileConfig($data));
@@ -107,5 +108,37 @@ class Cloud extends BaseAdminController
     public function getLocalCloudCompileConfig()
     {
         return success('SUCCESS',(new NiucloudService())->getLocalCloudCompileConfig());
+    }
+
+    /**
+     * 启动后台下载（SSE编译完成后调用）
+     * @description 启动后台下载
+     * @return \think\Response
+     */
+    public function startServerDownload()
+    {
+        $data = $this->request->params([
+            [ 'task_id', '' ],
+            [ 'download_url', '' ],
+            [ 'authorize_code', '' ],
+            [ 'timestamp', '' ],
+        ]);
+        return success('操作成功', (new CoreCloudBuildService())->startServerDownload(
+            $data['task_id'],
+            $data['download_url'],
+            $data['authorize_code'],
+            $data['timestamp']
+        ));
+    }
+
+    /**
+     * 获取后台下载进度
+     * @description 获取后台下载进度
+     * @return \think\Response
+     */
+    public function getSseBuildLog()
+    {
+        $taskId = $this->request->param('task_id', '');
+        return success('操作成功', (new CoreCloudBuildService())->getSseBuildLog($taskId));
     }
 }

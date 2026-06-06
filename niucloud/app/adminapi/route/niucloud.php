@@ -61,6 +61,10 @@ Route::group('niucloud', function() {
     Route::post('build/set_local_url', 'niucloud.Cloud/setLocalCloudCompileConfig');
     //获取本地服务器地址
     Route::get('build/get_local_url', 'niucloud.Cloud/getLocalCloudCompileConfig');
+    //启动后台下载（SSE编译完成后）
+    Route::post('build/start_server_download', 'niucloud.Cloud/startServerDownload');
+    //获取后台下载进度
+    Route::get('build/get_sse_build_log', 'niucloud.Cloud/getSseBuildLog');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

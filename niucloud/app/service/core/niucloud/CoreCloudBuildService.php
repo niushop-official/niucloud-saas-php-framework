@@ -107,9 +107,6 @@ class CoreCloudBuildService extends BaseCoreService
         // 是否通过校验
         $data[ 'is_pass' ] = !in_array(false, $check_res);
 
-        // 校验云编译服务
-        (new CloudService())->checkLocal();
-
         return $data;
     }
 
@@ -199,10 +196,11 @@ class CoreCloudBuildService extends BaseCoreService
         $this->build_task = [
             'task_key' => $task_key,
             'timestamp' => $query[ 'timestamp' ],
-            'checkLocal' => $param['checkLocal']
+            'checkLocal' => $param['checkLocal'],
+            'task_id' => $response['data']['task_id'] ?? '',
+            'auth_code' => $this->auth_code
         ];
         Cache::set($this->cache_key, $this->build_task);
-
         return $this->build_task;
     }
 
@@ -402,6 +400,18 @@ class CoreCloudBuildService extends BaseCoreService
     public function clearTask()
     {
         if (!$this->build_task) return;
+
+        if (isset($this->build_task['task_id']) && !empty($this->build_task['task_id'])) {
+            try {
+                ( new CloudService($this->build_task['checkLocal'] ?? false) )->httpPost('cloud/cancel', [
+                    'json' => [
+                        'task_id' => $this->build_task['task_id']
+                    ]
+                ]);
+            } catch (\Throwable $e) {
+            }
+        }
+
         $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $this->build_task[ 'task_key' ] . DIRECTORY_SEPARATOR;
         @del_target_dir($temp_dir, true);
         Cache::set($this->cache_key, null);
@@ -415,5 +425,251 @@ class CoreCloudBuildService extends BaseCoreService
     public function geAddonPackagePath(string $addon)
     {
         return root_path() . 'addon' . DIRECTORY_SEPARATOR . $addon . DIRECTORY_SEPARATOR . 'package' . DIRECTORY_SEPARATOR;
+    }
+
+    /**
+     * SSE编译完成后，PHP后台执行下载解压部署
+     * @param string $taskId 任务ID
+     * @param string $downloadUrl 下载链接
+     * @param string $authorizeCode 授权码
+     * @param string $timestamp 时间戳
+     * @return array
+     */
+    public function startServerDownload(string $taskId, string $downloadUrl, string $authorizeCode, string $timestamp)
+    {
+        $taskKey = 'sse_build_' . $taskId;
+        $tempDir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $taskKey . DIRECTORY_SEPARATOR;
+        if (!is_dir($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        $downloadInfo = [
+            'task_id' => $taskId,
+            'task_key' => $taskKey,
+            'download_url' => $downloadUrl,
+            'authorize_code' => $authorizeCode,
+            'timestamp' => $timestamp,
+            'temp_dir' => $tempDir,
+            'zip_file' => $tempDir . 'download.zip',
+            'chunk_size' => 1 * 1024 * 1024,
+            'status' => 'downloading',
+            'msg' => '准备下载...'
+        ];
+
+        Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+        return ['code' => 1, 'msg' => '初始化成功', 'data' => [
+            'task_key' => $taskKey,
+            'cache_key' => 'cloud_build_' . $taskKey,
+            'cache_exists' => Cache::has('cloud_build_' . $taskKey)
+        ]];
+    }
+
+    /**
+     * 获取SSE编译后续操作的进度（参考 buildSuccess 逻辑）
+     * @param string $taskId 任务ID
+     * @return array
+     */
+    public function getSseBuildLog(string $taskId)
+    {
+        $taskKey = 'sse_build_' . $taskId;
+        $cacheKey = 'cloud_build_' . $taskKey;
+
+        $hasBefore = Cache::has($cacheKey);
+        $downloadInfo = Cache::get($cacheKey);
+
+        if (empty($downloadInfo)) {
+            return ['code' => 0, 'msg' => '任务不存在或已过期', 'status' => 'error', 'debug' => [
+                'task_id' => $taskId,
+                'task_key' => $taskKey,
+                'cache_key' => $cacheKey,
+                'cache_has_before' => $hasBefore
+            ]];
+        }
+
+        $query = [
+            'authorize_code' => $downloadInfo['authorize_code'],
+            'timestamp' => $downloadInfo['timestamp']
+        ];
+
+        try {
+            if (!isset($downloadInfo['index'])) {
+                $response = ( new CloudService(true) )->request('HEAD', 'cloud/build_download?' . http_build_query($query), [
+                    'headers' => ['Range' => 'bytes=0-']
+                ]);
+                $contentRange = $response->getHeader('Content-range');
+                $length = (int) explode("/", $contentRange[0])[1];
+                $chunkSize = $downloadInfo['chunk_size'];
+                $step = (int) ceil($length / $chunkSize);
+
+                $downloadInfo['index'] = 0;
+                $downloadInfo['length'] = $length;
+                $downloadInfo['step'] = $step;
+                $downloadInfo['downloaded_bytes'] = 0;
+                $downloadInfo['percent'] = 0;
+                $downloadInfo['msg'] = '开始下载...';
+
+                Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                return [
+                    'code' => 1,
+                    'status' => 'downloading',
+                    'percent' => 0,
+                    'downloaded_bytes' => 0,
+                    'total_bytes' => $length,
+                    'msg' => '开始下载...'
+                ];
+            } else {
+                $zipFile = $downloadInfo['zip_file'];
+                $zipResource = fopen($zipFile, 'a');
+
+                if (($downloadInfo['index'] + 1) <= $downloadInfo['step']) {
+                    $start = $downloadInfo['index'] * $downloadInfo['chunk_size'];
+                    $end = ($downloadInfo['index'] + 1) * $downloadInfo['chunk_size'];
+                    $end = min($end, $downloadInfo['length']);
+                    $expectedBytes = $end - $start;
+
+                    $response = ( new CloudService(true) )->request('GET', 'cloud/build_download?' . http_build_query($query), [
+                        'headers' => ['Range' => "bytes={$start}-{$end}"]
+                    ]);
+
+                    $body = $response->getBody();
+                    $actualBytes = strlen($body);
+                    $contentRange = $response->getHeader('Content-Range');
+                    $contentRangeStr = is_array($contentRange) ? ($contentRange[0] ?? '') : $contentRange;
+
+                    if ($actualBytes != $expectedBytes) {
+                        $downloadInfo['downloaded_bytes'] = filesize($zipFile);
+                        $downloadInfo['msg'] = "分片{$downloadInfo['index']}大小不符: 期望{$expectedBytes}, 实际{$actualBytes}";
+                        Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                        return [
+                            'code' => 1,
+                            'status' => 'downloading',
+                            'percent' => $downloadInfo['percent'],
+                            'downloaded_bytes' => $downloadInfo['downloaded_bytes'],
+                            'total_bytes' => $downloadInfo['length'],
+                            'msg' => $downloadInfo['msg'],
+                            'debug' => [
+                                'chunk_index' => $downloadInfo['index'],
+                                'expected_bytes' => $expectedBytes,
+                                'actual_bytes' => $actualBytes,
+                                'content_range' => $contentRangeStr
+                            ]
+                        ];
+                    }
+
+                    fwrite($zipResource, $body);
+                    fclose($zipResource);
+
+                    $downloadInfo['index'] += 1;
+                    $downloadInfo['downloaded_bytes'] = filesize($zipFile);
+                    $downloadInfo['percent'] = round($downloadInfo['index'] / $downloadInfo['step'] * 100);
+                    $downloadInfo['msg'] = '编译包下载中,已下载' . $downloadInfo['percent'] . '%';
+
+                    Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                    return [
+                        'code' => 1,
+                        'status' => 'downloading',
+                        'percent' => $downloadInfo['percent'],
+                        'downloaded_bytes' => $downloadInfo['downloaded_bytes'],
+                        'total_bytes' => $downloadInfo['length'],
+                        'msg' => $downloadInfo['msg']
+                    ];
+                } else {
+                    fclose($zipResource);
+
+                    $zip = new \ZipArchive();
+                    $zipOpenResult = $zip->open($zipFile);
+                    if ($zipOpenResult === true) {
+                        $extractDir = $downloadInfo['temp_dir'] . 'download' . DIRECTORY_SEPARATOR;
+                        dir_mkdir($extractDir);
+
+                        $zipContents = [];
+                        for ($i = 0; $i < $zip->numFiles; $i++) {
+                            $zipContents[] = $zip->getNameIndex($i);
+                        }
+
+                        $zip->extractTo($extractDir);
+                        $zip->close();
+
+                        $downloadInfo['msg'] = '解压成功,文件数:' . count($zipContents);
+                        Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                        $tempDir = $downloadInfo['temp_dir'];
+
+                        if (is_dir($tempDir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'admin')) {
+                            @del_target_dir(public_path() . 'admin', true);
+                        }
+                        if (is_dir($tempDir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'web')) {
+                            @del_target_dir(public_path() . 'web', true);
+                        }
+                        if (is_dir($tempDir . 'download' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'wap')) {
+                            @del_target_dir(public_path() . 'wap', true);
+                        }
+
+                        $excludeFiles = ['favicon.ico', 'niucloud.ico'];
+                        dir_copy($tempDir . 'download', root_path(), exclude_files: $excludeFiles);
+
+                        $this->buildResultAnalysis('success');
+
+                        $downloadInfo['status'] = 'completed';
+                        $downloadInfo['percent'] = 100;
+                        $downloadInfo['msg'] = '部署完成';
+                        Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                        return [
+                            'code' => 1,
+                            'status' => 'completed',
+                            'percent' => 100,
+                            'downloaded_bytes' => $downloadInfo['downloaded_bytes'],
+                            'total_bytes' => $downloadInfo['length'],
+                            'msg' => '部署完成'
+                        ];
+                    } else {
+                        if (!isset($downloadInfo['retry'])) {
+                            unlink($zipFile);
+                            $downloadInfo['retry'] = 1;
+                            unset($downloadInfo['index']);
+                            Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                            return [
+                                'code' => 1,
+                                'status' => 'downloading',
+                                'percent' => 0,
+                                'downloaded_bytes' => 0,
+                                'total_bytes' => $downloadInfo['length'] ?? 0,
+                                'msg' => '编译包解压失败,尝试重新下载',
+                                'debug' => [
+                                    'zip_file' => $zipFile,
+                                    'zip_size' => file_exists($zipFile) ? filesize($zipFile) : 'not exists',
+                                    'zip_open_result' => $zipOpenResult,
+                                    'extract_dir' => $downloadInfo['temp_dir'] . 'download' . DIRECTORY_SEPARATOR,
+                                    'temp_dir' => $downloadInfo['temp_dir']
+                                ]
+                            ];
+                        } else {
+                            $downloadInfo['status'] = 'error';
+                            $downloadInfo['msg'] = '编译包解压失败';
+                            Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+                            return [
+                                'code' => 0,
+                                'status' => 'error',
+                                'percent' => $downloadInfo['percent'] ?? 0,
+                                'msg' => '编译包解压失败'
+                            ];
+                        }
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $downloadInfo['status'] = 'error';
+            $downloadInfo['msg'] = $e->getMessage();
+            Cache::set('cloud_build_' . $taskKey, $downloadInfo, 7200);
+
+            return ['code' => 0, 'msg' => $e->getMessage(), 'status' => 'error'];
+        }
     }
 }

@@ -1,0 +1,1 @@
+const e="没有更多内容啦~",s="请搜索您想要的商品",a="综合",l="销量",o="价格",r="筛选",t="全部分类",n="已售",c="没有更多内容啦~",d={end:e,searchPlaceholder:s,synthesis:"综合",sales:"销量",price:"价格",screen:"筛选",allCategory:t,soldOut:"已售",nothingMore:c};export{t as allCategory,d as default,e as end,c as nothingMore,o as price,l as sales,r as screen,s as searchPlaceholder,n as soldOut,a as synthesis};

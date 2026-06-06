@@ -1,0 +1,1 @@
+const e="订单数",o="工龄",n="年",r="年龄",a="岁",i="岗位",t="基本信息",s="服务项目",g="没有更多内容啦~",c={orderNum:"订单数",workingAge:"工龄",year:"年",age:"年龄",annum:"岁",position:"岗位",basicInfo:t,serviceItem:s,nothingMore:g};export{r as age,a as annum,t as basicInfo,c as default,g as nothingMore,e as orderNum,i as position,s as serviceItem,o as workingAge,n as year};

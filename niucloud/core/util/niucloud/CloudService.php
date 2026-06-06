@@ -15,12 +15,12 @@ class CloudService
 {
     use HasHttpRequests;
 
-    private $baseUri = 'http://oss.niucloud.com/';
+    private $baseUri = 'http://go.site.niucloud.com/';
 
     public $is_connected = false;
 
     public function __construct($checkLocal = false, $local_cloud_compile = '') {
-        $this->baseUri = 'http://' . gethostbyname('oss.niucloud.com') . ':8000/';
+        if (!empty($local_cloud_compile)) $this->baseUri = $local_cloud_compile;
         if ($checkLocal) $this->is_connected = $this->checkLocal($local_cloud_compile);
     }
 
@@ -31,9 +31,10 @@ class CloudService
             $baseUri = $local_cloud_compile;
         } else {
             $local_cloud_compile_config = (new CoreConfigService())->getConfig(0, 'LOCAL_CLOUD_COMPILE_CONFIG')['value'] ?? [];
-            $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
-            if (empty($baseUri)){
-                throw new CommonException('CONNECT_FAIL', 601);
+            $isOpen = $local_cloud_compile_config['isOpen'] ?? 1;
+
+            if ($isOpen){
+                $baseUri = $local_cloud_compile_config['baseUri'] ?? '';
             }
         }
 
@@ -45,7 +46,6 @@ class CloudService
                 $is_connected = true;
             }
         } catch (\Throwable $e) {
-            throw new CommonException('CONNECT_FAIL', 601);
         }
         return $is_connected;
     }

@@ -1,0 +1,1 @@
+.layout-aside{background-color:var(--side-dark-color, var(--el-bg-color));border-right:1px solid var(--el-border-color-lighter)}.layout-aside.bright li.is-active:not(.is-opened){position:relative;color:var(--el-color-primary)}.aside-drawer .el-drawer__body{padding:0!important}
