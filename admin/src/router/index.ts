@@ -6,14 +6,17 @@ import { language } from '@/lang'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import { setWindowTitle, getAppType, urlToRouteRaw } from '@/utils/common'
+import { resolveRouteAddon, resolveRouteView } from '@/utils/addon-loader'
 
-// 加载插件中定义的router
-const ADDON_ROUTE = []
-const addonRoutes = import.meta.globEager('@/addon/**/router/index.ts')
-for (const key in addonRoutes) {
-    const addon: any = addonRoutes[key]
-    addon.ROUTE && ADDON_ROUTE.push(...addon.ROUTE)
-    addon.NO_LOGIN_ROUTES && NO_LOGIN_ROUTES.push(...addon.NO_LOGIN_ROUTES)
+// 加载插件中定义的router（仅开发环境从源码加载）
+const ADDON_ROUTE: any[] = []
+if (import.meta.env.DEV) {
+    const addonRoutes = import.meta.globEager('@/addon/**/router/index.ts')
+    for (const key in addonRoutes) {
+        const addon: any = addonRoutes[key]
+        addon.ROUTE && ADDON_ROUTE.push(...addon.ROUTE)
+        addon.NO_LOGIN_ROUTES && NO_LOGIN_ROUTES.push(...addon.NO_LOGIN_ROUTES)
+    }
 }
 
 const router = createRouter({
@@ -66,7 +69,11 @@ router.beforeEach(async (to: any, from, next) => {
     }
 
     // 加载语言包
-    await language.loadLocaleMessages(to.meta.addon || '', (to.meta.view || to.path), systemStore.lang);
+    await language.loadLocaleMessages(
+        resolveRouteAddon(to),
+        resolveRouteView(to),
+        systemStore.lang
+    );
 
     let matched: any = to.matched;
     if (matched && matched.length && matched[0].path != '/:pathMatch(.*)*') {

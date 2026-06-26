@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
-      <link rel="stylesheet" href="/wap/assets/uni.11a5b3c4.css">
+    <script type="importmap">
+{
+  "imports": {
+    "vue": "/wap/assets/shared/vue.js",
+    "pinia": "/wap/assets/shared/pinia.js",
+    "vue-i18n": "/wap/assets/shared/vue-i18n.js",
+    "@/locale": "/wap/assets/shared/wap-locale.js",
+    "@/app/stores/diy": "/wap/assets/shared/diy-core.js",
+    "@/utils/diy-decorate-bridge": "/wap/assets/shared/diy-core.js",
+    "@/hooks/useDiy": "/wap/assets/shared/diy-core.js",
+    "@/hooks/useDiyGroup": "/wap/assets/shared/diy-core.js"
+  }
+}
+</script>
+      <link rel="stylesheet" href="/wap/assets/uni.a811e00a.css">
 
         <meta charset="UTF-8" />
         <script>
@@ -14,11 +28,23 @@
         <title>商城</title>
         <!--preload-links-->
         <!--app-context-->
-      <script type="module" crossorigin src="/wap/assets/index-6911ef17.js"></script>
-      <link rel="stylesheet" href="/wap/assets/index-d718e290.css">
+      <script type="module" crossorigin src="/wap/assets/index-72b0f714.js"></script>
+      <link rel="stylesheet" href="/wap/assets/index-29a6e4fb.css">
     </head>
     <body>
         <div id="app"><!--app-html--></div>
+        <script>
+            window.__ENV__ = {
+                VITE_APP_BASE_URL: "",
+                VITE_IMG_DOMAIN: "",
+                VITE_SITE_ID: "",
+                VITE_REQUEST_STORAGE_TOKEN_KEY: "",
+                VITE_REQUEST_HEADER_TOKEN_KEY: "",
+                VITE_REQUEST_HEADER_SITEID_KEY: "",
+                VITE_REQUEST_HEADER_CHANNEL_KEY: "",
+                VITE_APP_VERSION: ""
+            };
+        </script>
         
     </body>
 </html>

@@ -1,0 +1,1 @@
+"use strict";const o=require("../common/vendor.js");exports.preloadMpDiySubPackages=function(n=[]){const t=void 0!==o.wx$1?o.wx$1:null;if(!t)return;const c=t.loadSubpackage||t.loadSubPackage;if("function"!=typeof c)return;const e=["app/components",...n];for(const o of e)o&&c.call(t,{root:o,name:o,fail(){}})};

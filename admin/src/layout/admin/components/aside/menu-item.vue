@@ -45,8 +45,8 @@ const props = defineProps({
 const meta = computed(() => props.routes.meta)
 </script>
 
-<style lang="scss">
-.el-sub-menu{
+<style lang="scss" scoped>
+:deep(.el-sub-menu){
     .el-icon{
         width: auto;
     }

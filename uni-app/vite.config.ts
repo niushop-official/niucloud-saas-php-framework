@@ -3,16 +3,19 @@ import uni from '@dcloudio/vite-plugin-uni'
 import WindiCSS from 'vite-plugin-windicss'
 import MiniProgramTailwind from '@dcasia/mini-program-tailwind-webpack-plugin/rollup'
 import UniLayouts from '@uni-helper/vite-plugin-uni-layouts'
+import { createRequire } from 'node:module'
+
+const require = createRequire(import.meta.url)
+const { createDiyGroupFixPlugin } = require('./scripts/vite-plugin-diy-group-fix.cjs')
+const { createDiyDynamicBridgeMpPlugin } = require('./scripts/vite-plugin-diy-dynamic-bridge-mp.cjs')
+const { createWindiPluginOptions } = require('./scripts/windi-vite-options.cjs')
 
 const plugins = [
     UniLayouts(),
     uni(),
-    WindiCSS({
-        scan: {
-            dirs: ['.'], // 当前目录下所有文件
-            fileExtensions: ['vue', 'js', 'ts'] // 同时启用扫描vue/js/ts
-        }
-    })
+    createDiyGroupFixPlugin(),
+    createDiyDynamicBridgeMpPlugin(),
+    WindiCSS(createWindiPluginOptions(['src']))
 ]
 
 process.env.UNI_PLATFORM == 'mp-weixin' && plugins.push(MiniProgramTailwind())

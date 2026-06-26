@@ -1,0 +1,7 @@
+{
+	"balanceDetail": "余额明细",
+	"commissionDetail": "佣金明细",
+	"balanceEmptyTip": "暂无余额明细",
+	"moneyEmptyTip": "暂无提现明细",
+	"commissionEmptyTip": "暂无佣金明细"
+}

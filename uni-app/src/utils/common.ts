@@ -4,12 +4,15 @@ import useMemberStore from '@/stores/member'
 import useSystemStore from '@/stores/system'
 import useConfigStore from '@/stores/config'
 import { getNeedLoginPages } from '@/utils/pages'
+import { getUni } from '@/utils/uni-runtime'
 import manifestJson from "@/manifest.json";
+import envConfig from '@/utils/config'
 
 /**
  * 跳转页面
  */
 export const redirect = (redirect: any) => {
+    const uniApi = getUni()
     // 装修模式禁止跳转
     if (useDiyStore().mode == 'decorate') return
 
@@ -43,7 +46,7 @@ export const redirect = (redirect: any) => {
             param = { type: 'username' }
             newLogin = true
         } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
-            uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
+            uniApi.showToast({ title: '商家未开启登录注册', icon: 'none' })
             return;
         } else {
             url = '/app/pages/auth/index'
@@ -59,7 +62,7 @@ export const redirect = (redirect: any) => {
                 param = { type: 'username' }
                 newLogin = true
             } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile && !config.login.is_auth_register) {
-                uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
+                uniApi.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 return;
             } else {
                 url = '/app/pages/auth/index'
@@ -72,7 +75,7 @@ export const redirect = (redirect: any) => {
                 param = { type: 'username' }
                 newLogin = true
             } else if (systemStore.initStatus == 'finish' && !config.login.is_username && !config.login.is_mobile) {
-                uni.showToast({ title: '商家未开启登录注册', icon: 'none' })
+                uniApi.showToast({ title: '商家未开启登录注册', icon: 'none' })
                 return;
             } else {
                 url = '/app/pages/auth/index'
@@ -86,14 +89,14 @@ export const redirect = (redirect: any) => {
     const tabBar = getTabbarPages()
     tabBar.includes(url) && (mode = 'switchTab')
 
-    mode != 'switchTab' && param && Object.keys(param).length && (url += uni.$u.queryParams(param))
+    mode != 'switchTab' && param && Object.keys(param).length && (url += uniApi.$u.queryParams(param))
 
     if (newLogin) {
-        uni.setStorage({ key: 'loginBack', data: { url: originalUrl } });
+        uniApi.setStorage({ key: 'loginBack', data: { url: originalUrl } });
     }
     switch (mode) {
         case 'switchTab':
-            uni.switchTab({
+            uniApi.switchTab({
                 url,
                 success: () => {
                     success && success()
@@ -107,7 +110,7 @@ export const redirect = (redirect: any) => {
             })
             break;
         case 'navigateTo':
-            uni.navigateTo({
+            uniApi.navigateTo({
                 url,
                 success: () => {
                     success && success()
@@ -121,7 +124,7 @@ export const redirect = (redirect: any) => {
             })
             break;
         case 'reLaunch':
-            uni.reLaunch({
+            uniApi.reLaunch({
                 url,
                 success: () => {
                     success && success()
@@ -135,7 +138,7 @@ export const redirect = (redirect: any) => {
             })
             break;
         case 'redirectTo':
-            uni.redirectTo({
+            uniApi.redirectTo({
                 url,
                 success: () => {
                     success && success()
@@ -255,7 +258,7 @@ export function getToken(): null | string {
  * @returns
  */
 export function setToken(token: string): void {
-    uni.setStorageSync(import.meta.env.VITE_REQUEST_STORAGE_TOKEN_KEY, token)
+    uni.setStorageSync(envConfig.VITE_REQUEST_STORAGE_TOKEN_KEY, token)
 }
 
 /**
@@ -263,7 +266,7 @@ export function setToken(token: string): void {
  * @returns
  */
 export function removeToken(): void {
-    uni.removeStorageSync(import.meta.env.VITE_REQUEST_STORAGE_TOKEN_KEY)
+    uni.removeStorageSync(envConfig.VITE_REQUEST_STORAGE_TOKEN_KEY)
 }
 
 /**
@@ -297,11 +300,11 @@ export function isUrl(str: string): boolean {
  */
 export function img(path: string): string {
     // #ifdef H5
-    let imgDomain = import.meta.env.VITE_IMG_DOMAIN || location.origin
+    let imgDomain = envConfig.VITE_IMG_DOMAIN || location.origin
     // #endif
 
     // #ifndef H5
-    let imgDomain = import.meta.env.VITE_IMG_DOMAIN
+    let imgDomain = envConfig.VITE_IMG_DOMAIN
     // #endif
 
     if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
@@ -316,11 +319,11 @@ export function img(path: string): string {
  */
 export function getUrl(path: string): string {
     // #ifdef H5
-    let urlDomain = import.meta.env.VITE_IMG_DOMAIN || location.origin
+    let urlDomain = envConfig.VITE_IMG_DOMAIN || location.origin
     // #endif
 
     // #ifndef H5
-    let urlDomain = import.meta.env.VITE_IMG_DOMAIN
+    let urlDomain = envConfig.VITE_IMG_DOMAIN
     // #endif
 
     if (typeof path == 'string' && path.startsWith('/')) path = path.replace(/^\//, '')
@@ -749,6 +752,22 @@ export function setThemeColor(path: string) {
     let index = !pathArr[0] ? 1 : 0;
     let route = pathArr[index] == 'addon' ? pathArr[(index + 1)] : 'app';
 
+    // 通用插件桥接页：桥接页 onMounted 替换了 URL，location.search 可能为空，
+    // 优先从 configStore 获取已存储的正确 addon
+    // #ifdef H5
+    if (route === 'app' && pathArr.includes('addon-universal')) {
+        const configStore = useConfigStore()
+        if (configStore.addon && configStore.addon !== 'app') {
+            route = configStore.addon as string
+        } else {
+            try {
+                const params = new URLSearchParams(location.search)
+                route = params.get('addon') || route
+            } catch {}
+        }
+    }
+    // #endif
+
     // 设置底部导航
     const configStore = useConfigStore()
     if (configStore.addon != route) {
@@ -864,7 +883,7 @@ export function openMapSelector(backurl: string, params = '') {
         }
         // 天地图的位置选择器URL
         // 注意：天地图的位置选择器API可能与腾讯地图不同，需要根据实际API文档调整
-        const baseUrl = (import.meta.env.VITE_APP_BASE_URL || `${ location.origin }`).replace(/\/api\/$/, '')
+        const baseUrl = (envConfig.VITE_APP_BASE_URL || `${ location.origin }`).replace(/\/api\/$/, '')
         const url = baseUrl + `/tianmap/index.html?search=1&type=0&backurl=${ encodeURIComponent(backurl) }&key=${ tiandituKey }` + (params ? '&' + params : '')
         window.location.href = url;
     }

@@ -9,6 +9,7 @@ import { computed, ref } from 'vue'
 import { getToken } from '@/utils/common'
 import storage from '@/utils/storage'
 import { ElMessage, UploadFile, UploadFiles } from 'element-plus'
+import envConfig from '@/utils/config'
 
 const prop = defineProps({
     type: {
@@ -23,11 +24,11 @@ const uploadRef = ref<Record<string, any> | null>(null)
 // 上传文件
 const upload = computed(() => {
     const headers: Record<string, any> = {}
-    headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-    headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+    headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+    headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
 
     return {
-        action: `${import.meta.env.VITE_APP_BASE_URL}/wechat/media/${prop.type}`,
+        action: `${envConfig.VITE_APP_BASE_URL}/wechat/media/${prop.type}`,
         multiple: true,
         headers,
         accept: prop.type == 'image' ? '.bmp,.png,.jpeg,.jpg,.gif' : '.mp4',

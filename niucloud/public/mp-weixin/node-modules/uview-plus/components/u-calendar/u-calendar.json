@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-header": "./header",
+    "u-month": "./month",
+    "u-button": "../u-button/u-button",
+    "u-popup": "../u-popup/u-popup"
+  }
+}

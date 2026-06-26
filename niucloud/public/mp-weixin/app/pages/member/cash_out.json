@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "提现记录",
+  "usingComponents": {
+    "mescroll-body": "../../../components/mescroll/mescroll-body/mescroll-body",
+    "mescroll-empty": "../../../components/mescroll/mescroll-empty/mescroll-empty"
+  }
+}

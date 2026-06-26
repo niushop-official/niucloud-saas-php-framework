@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "simple-firework": "./simple-firework",
+    "red-packet-rain": "./red-packet-rain"
+  }
+}

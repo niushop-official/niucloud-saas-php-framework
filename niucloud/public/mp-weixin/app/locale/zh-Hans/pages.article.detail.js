@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t="文章详情",e="正在加载",o={detail:t,abstract:"摘要",loadingText:e};exports.abstract="摘要",exports.default=o,exports.detail=t,exports.loadingText=e;

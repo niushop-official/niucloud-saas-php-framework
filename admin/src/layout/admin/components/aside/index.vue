@@ -138,7 +138,7 @@ getVersionsInfo()
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .one-menu{
     padding: 20px 10px 10px;
     width: 78px;
@@ -198,10 +198,10 @@ getVersionsInfo()
     &.expanded .menu-item .text-center {
         opacity: 1;
     }
-    .el-menu{
+    :deep(.el-menu){
         border: 0;
     }
-    .el-scrollbar{
+    :deep(.el-scrollbar){
         height: calc(100vh - 65px);
     }
 }
@@ -210,7 +210,7 @@ getVersionsInfo()
         width: 185px;
         border: 0;
         padding-top: 15px;
-        .el-menu-item{
+        :deep(.el-menu-item){
             height: 40px;
             margin: 4px 15px;
             padding: 0 8px !important;
@@ -232,11 +232,11 @@ getVersionsInfo()
                 // color: var(--el-color-primary);
             }
         }
-        .el-sub-menu{
+        :deep(.el-sub-menu){
             width: 185px;
             margin: 4px 0;
             // margin-bottom: 8px;
-            .el-sub-menu__title{
+            :deep(.el-sub-menu__title){
                 margin: 0 15px;
                 height: 40px;
                 padding-left: 8px;
@@ -253,11 +253,11 @@ getVersionsInfo()
                     // background-color: var(--el-color-primary-light-9) !important;
                     // color: var(--el-color-primary);
                 }
-                .el-icon.el-sub-menu__icon-arrow{
+                .el-icon:deep(.el-sub-menu__icon-arrow){
                     right: 5px;
                 }
             }
-            .el-menu-item{
+            :deep(.el-menu-item){
                 padding-left: 25px !important;
             }
         }
@@ -286,7 +286,7 @@ getVersionsInfo()
 // :deep(.el-scrollbar__bar){
 //     display: none !important;
 // }
-// .layout-aside .el-scrollbar__wrap--hidden-default, .layout-aside .el-scrollbar{
+// .layout-aside .el-scrollbar__wrap--hidden-default, .layout-aside :deep(.el-scrollbar){
 //     overflow: inherit !important;
 // }
 // 隐藏滚动条

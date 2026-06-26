@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "我的积分",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "loading-page": "../../../components/loading-page/loading-page"
+  }
+}

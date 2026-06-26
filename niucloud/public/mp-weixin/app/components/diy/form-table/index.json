@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-radio": "../../../../node-modules/uview-plus/components/u-radio/u-radio",
+    "u-radio-group": "../../../../node-modules/uview-plus/components/u-radio-group/u-radio-group",
+    "u-popup": "../../../../node-modules/uview-plus/components/u-popup/u-popup",
+    "u-action-sheet": "../../../../node-modules/uview-plus/components/u-action-sheet/u-action-sheet",
+    "area-select": "../../../../components/area-select/area-select",
+    "u-calendar": "../../../../node-modules/uview-plus/components/u-calendar/u-calendar",
+    "u-datetime-picker": "../../../../node-modules/uview-plus/components/u-datetime-picker/u-datetime-picker"
+  }
+}

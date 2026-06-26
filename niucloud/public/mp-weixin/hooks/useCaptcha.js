@@ -1,0 +1,1 @@
+"use strict";const a=require("../app/api/system.js"),e=require("../common/vendor.js");exports.useCaptcha=function(t){const c=e.ref("");return{image:c,refresh:async()=>{try{const e=await a.getCaptcha();t.captcha_key=e.data.captcha_key,t.captcha_code="",c.value=e.data.img.replace(/\r\n/g,"")}catch(e){}}}};

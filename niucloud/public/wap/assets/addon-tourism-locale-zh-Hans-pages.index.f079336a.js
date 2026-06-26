@@ -1,1 +1,0 @@
-const e="景点",r="线路",s="酒店",o="订单号",t="起",a="星级",c="星",l="查看更多",d={scenic:"景点",way:"线路",hotel:"酒店",orderNo:"订单号",rise:"起",starLevel:"星级",star:"星",seeMore:l};export{d as default,s as hotel,o as orderNo,t as rise,e as scenic,l as seeMore,c as star,a as starLevel,r as way};

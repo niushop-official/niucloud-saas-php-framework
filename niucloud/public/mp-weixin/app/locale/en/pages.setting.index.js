@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t="Personal settings",e="Switch language",o="Version",s="Log out",r={personalSettings:t,switchLang:e,version:o,logout:s};exports.default=r,exports.logout=s,exports.personalSettings=t,exports.switchLang=e,exports.version=o;

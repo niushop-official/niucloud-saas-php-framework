@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "u-input": "../../../node-modules/uview-plus/components/u-input/u-input",
+    "u-form-item": "../../../node-modules/uview-plus/components/u-form-item/u-form-item",
+    "u-form": "../../../node-modules/uview-plus/components/u-form/u-form",
+    "u-upload": "../../../node-modules/uview-plus/components/u-upload/u-upload",
+    "u-modal": "../../../node-modules/uview-plus/components/u-modal/u-modal"
+  }
+}

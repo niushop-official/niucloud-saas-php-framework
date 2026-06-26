@@ -1,1 +1,0 @@
-const e="新任务",r="筛选",t="刷新",c="重置",o="收入",s="服务类型",n="服务距离",a="确定",i="我要抢单",d={newJob:"新任务",sort:"筛选",calcation:"刷新",reset:"重置",money:"收入",serviceType:s,serviceDistance:n,confrim:"确定",getOrder:i};export{t as calcation,a as confrim,d as default,i as getOrder,o as money,e as newJob,c as reset,n as serviceDistance,s as serviceType,r as sort};

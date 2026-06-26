@@ -1,0 +1,1 @@
+import{r as o}from"./index-3c23140f.js";function s(t){return o.get("erp/stock/pages",t)}function e(t){return o.get(`erp/stock/info/${t}`)}function c(t){return o.post("erp/stock/stockIn",t)}function n(t){return o.post("erp/stock/stockOut",t)}export{s as a,n as b,e as g,c as s};

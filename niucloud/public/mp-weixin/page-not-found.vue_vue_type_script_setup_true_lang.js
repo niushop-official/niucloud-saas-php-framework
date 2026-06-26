@@ -1,0 +1,1 @@
+"use strict";const e=require("./common/vendor.js"),o=require("./utils/common.js"),n=require("./locale/index.js"),t=e.defineComponent({__name:"page-not-found",setup:t=>(t,r)=>({a:e.unref(o.img)("static/resource/images/empty.png"),b:e.t(e.unref(n.t)("pageNotFound")),c:e.s(t.themeColor())})});exports._sfc_main=t;

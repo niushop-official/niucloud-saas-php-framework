@@ -1,1 +1,0 @@
-const e="添加等级",t="等级",l="等级名称",o="一级分销比例",s="二级分销比例",a="升级条件",n="开始时间",d="结束时间",c="确定要删除该数据吗？",v={addLevel:e,levelNum:t,levelName:l,oneRate:o,twoRate:s,upgradeConditions:a,startDate:n,endDate:d,levelDeleteTips:c};export{e as addLevel,v as default,d as endDate,c as levelDeleteTips,l as levelName,t as levelNum,o as oneRate,n as startDate,s as twoRate,a as upgradeConditions};

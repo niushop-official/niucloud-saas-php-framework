@@ -14,7 +14,14 @@ import VueUeditorWrap from 'vue-ueditor-wrap'
 
 window.hl = hljs
 
+import { initAddonManifests } from '@/utils/addon-lang'
+import { language } from '@/lang'
+
 async function run() {
+    if (!import.meta.env.DEV) {
+        await initAddonManifests()
+        await language.preloadAddonLangs()
+    }
     const app = createApp(App)
     app.use(pinia)
     app.use(lang)

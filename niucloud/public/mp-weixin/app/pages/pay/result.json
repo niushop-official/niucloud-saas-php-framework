@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "u-loading-icon": "../../../node-modules/uview-plus/components/u-loading-icon/u-loading-icon",
+    "u-modal": "../../../node-modules/uview-plus/components/u-modal/u-modal"
+  }
+}

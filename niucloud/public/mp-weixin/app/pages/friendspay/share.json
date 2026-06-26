@@ -1,0 +1,12 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "找朋友帮忙付",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "u-avatar": "../../../node-modules/uview-plus/components/u-avatar/u-avatar",
+    "up-image": "../../../node-modules/uview-plus/components/u-image/u-image",
+    "loading-page": "../../../components/loading-page/loading-page",
+    "share-poster": "../../../components/share-poster/share-poster",
+    "message": "./components/message"
+  }
+}

@@ -1,1 +1,0 @@
-import{an as o}from"./index-6911ef17.js";function n(){return o.get("o2o/category")}function t(n){return o.get("o2o/goods",n)}function e(n){return o.get("o2o/goods/detail",n)}function r(n){return o.get("o2o/goods/components",n)}function s(){return o.get("o2o/config/reserve")}export{n as a,t as b,e as c,s as d,r as g};

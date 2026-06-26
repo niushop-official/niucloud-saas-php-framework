@@ -20,7 +20,7 @@ watch(route, () => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .layout-aside {
     background-color: var(--side-dark-color, var(--el-bg-color));
     border-right: 1px solid var(--el-border-color-lighter);

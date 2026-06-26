@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e="文章列表",t="~ 暂无数据 ~",o="-- 到底了 --",r="请输入搜索关键词",l={list:e,noData:t,all:"全部",end:o,searchPlaceholder:r};exports.all="全部",exports.default=l,exports.end=o,exports.list=e,exports.noData=t,exports.searchPlaceholder=r;

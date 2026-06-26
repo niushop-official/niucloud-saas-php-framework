@@ -1,0 +1,37 @@
+const e = "上级分类", t = "请输入上级分类", a = "分类标题", o = "请输入分类标题", c = "分类图标", s = "请输入分类图标", r = "状态", d = "请输入状态", n = "排序", l = "请输入排序", i = "", y = "新增分类", m = "编辑分类", g = "确定要删除该数据吗？", h = "请选择开始时间", D = "请选择结束时间", P = {
+  pid: e,
+  pidPlaceholder: t,
+  categoryName: a,
+  categoryNamePlaceholder: o,
+  image: c,
+  imagePlaceholder: s,
+  status: r,
+  statusPlaceholder: d,
+  sort: n,
+  sortPlaceholder: l,
+  createTime: i,
+  addDynamicCategory: y,
+  updateDynamicCategory: m,
+  dynamicCategoryDeleteTips: g,
+  startDate: h,
+  endDate: D
+};
+export {
+  y as addDynamicCategory,
+  a as categoryName,
+  o as categoryNamePlaceholder,
+  i as createTime,
+  P as default,
+  g as dynamicCategoryDeleteTips,
+  D as endDate,
+  c as image,
+  s as imagePlaceholder,
+  e as pid,
+  t as pidPlaceholder,
+  n as sort,
+  l as sortPlaceholder,
+  h as startDate,
+  r as status,
+  d as statusPlaceholder,
+  m as updateDynamicCategory
+};

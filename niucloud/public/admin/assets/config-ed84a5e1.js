@@ -1,1 +1,0 @@
-import{b5 as e}from"./index-8eead49b.js";function t(){return e.get("friend_help/config")}function i(n){return e.post("friend_help/config",n,{showSuccessMessage:!0})}function s(){return e.get("friend_help/share")}function o(){return e.get("friend_help/share_init")}export{t as a,s as b,o as g,i as s};

@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e="余额明细",t="佣金明细",o="暂无余额明细",i="暂无提现明细",p="暂无佣金明细",s={balanceDetail:e,commissionDetail:t,balanceEmptyTip:o,moneyEmptyTip:i,commissionEmptyTip:p};exports.balanceDetail=e,exports.balanceEmptyTip=o,exports.commissionDetail=t,exports.commissionEmptyTip=p,exports.default=s,exports.moneyEmptyTip=i;

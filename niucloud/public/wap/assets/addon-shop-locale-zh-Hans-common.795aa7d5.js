@@ -1,1 +1,0 @@
-const e="订单号",d="实付款",s="关闭订单",r="确认收货",o="优惠劵",t="暂无收货地址，请先创建地址",a="新增收货地址",c="选择地址",l={orderNo:"订单号",actualPayment:"实付款",orderClose:s,orderFinish:r,coupon:"优惠劵",emptyAddress:t,addAddress:a,selectAddress:c};export{d as actualPayment,a as addAddress,o as coupon,l as default,t as emptyAddress,s as orderClose,r as orderFinish,e as orderNo,c as selectAddress};

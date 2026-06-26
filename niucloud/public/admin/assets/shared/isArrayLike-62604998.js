@@ -1,0 +1,67 @@
+var b = typeof global == "object" && global && global.Object === Object && global;
+const f = b;
+var g = typeof self == "object" && self && self.Object === Object && self, j = f || g || Function("return this")();
+const y = j;
+var u = y.Symbol;
+const e = u;
+var i = Object.prototype, l = i.hasOwnProperty, T = i.toString, r = e ? e.toStringTag : void 0;
+function d(t) {
+  var n = l.call(t, r), o = t[r];
+  try {
+    t[r] = void 0;
+    var a = !0;
+  } catch {
+  }
+  var s = T.call(t);
+  return a && (n ? t[r] = o : delete t[r]), s;
+}
+var p = Object.prototype, S = p.toString;
+function O(t) {
+  return S.call(t);
+}
+var $ = "[object Null]", m = "[object Undefined]", c = e ? e.toStringTag : void 0;
+function F(t) {
+  return t == null ? t === void 0 ? m : $ : c && c in Object(t) ? d(t) : O(t);
+}
+function k(t) {
+  return t != null && typeof t == "object";
+}
+function A(t) {
+  var n = typeof t;
+  return t != null && (n == "object" || n == "function");
+}
+var E = "[object AsyncFunction]", G = "[object Function]", P = "[object GeneratorFunction]", w = "[object Proxy]";
+function x(t) {
+  if (!A(t))
+    return !1;
+  var n = F(t);
+  return n == G || n == P || n == E || n == w;
+}
+var I = 9007199254740991, _ = /^(?:0|[1-9]\d*)$/;
+function M(t, n) {
+  var o = typeof t;
+  return n = n ?? I, !!n && (o == "number" || o != "symbol" && _.test(t)) && t > -1 && t % 1 == 0 && t < n;
+}
+function U(t, n) {
+  return t === n || t !== t && n !== n;
+}
+var L = 9007199254740991;
+function N(t) {
+  return typeof t == "number" && t > -1 && t % 1 == 0 && t <= L;
+}
+function X(t) {
+  return t != null && N(t.length) && !x(t);
+}
+export {
+  e as S,
+  x as a,
+  k as b,
+  F as c,
+  N as d,
+  U as e,
+  f,
+  M as g,
+  X as h,
+  A as i,
+  y as r
+};

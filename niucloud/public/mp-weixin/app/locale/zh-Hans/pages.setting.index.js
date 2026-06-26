@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const t="个人设置",e="切换语言",o="退出登录",s={personalSettings:t,switchLang:e,version:"版本号",logout:o};exports.default=s,exports.logout=o,exports.personalSettings=t,exports.switchLang=e,exports.version="版本号";

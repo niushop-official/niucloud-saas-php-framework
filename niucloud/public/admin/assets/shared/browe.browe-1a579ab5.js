@@ -1,0 +1,35 @@
+const e = "ID", o = "请输入ID", d = "会员ID", c = "请输入会员ID", t = "技师ID", r = "请输入技师ID", s = "项目ID", a = "请输入项目ID", n = "浏览时间", l = "请输入浏览时间", I = "添加浏览足迹", i = "编辑浏览足迹", h = "确定要删除该数据吗？", D = "请选择开始时间", b = "请选择结束时间", m = {
+  id: e,
+  idPlaceholder: o,
+  memberId: d,
+  memberIdPlaceholder: c,
+  technicianId: t,
+  technicianIdPlaceholder: r,
+  goodsId: s,
+  goodsIdPlaceholder: a,
+  browseTime: n,
+  browseTimePlaceholder: l,
+  addBrowe: I,
+  updateBrowe: i,
+  broweDeleteTips: h,
+  startDate: D,
+  endDate: b
+};
+export {
+  I as addBrowe,
+  h as broweDeleteTips,
+  n as browseTime,
+  l as browseTimePlaceholder,
+  m as default,
+  b as endDate,
+  s as goodsId,
+  a as goodsIdPlaceholder,
+  e as id,
+  o as idPlaceholder,
+  d as memberId,
+  c as memberIdPlaceholder,
+  D as startDate,
+  t as technicianId,
+  r as technicianIdPlaceholder,
+  i as updateBrowe
+};

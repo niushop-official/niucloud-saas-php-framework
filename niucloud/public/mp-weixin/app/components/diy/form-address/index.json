@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "area-select": "../../../../components/area-select/area-select"
+  }
+}

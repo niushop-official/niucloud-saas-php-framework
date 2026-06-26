@@ -11,6 +11,7 @@ import { computed, ref } from 'vue'
 import { getToken, img } from '@/utils/common'
 import { VueUeditorWrap } from 'vue-ueditor-wrap'
 import storage from '@/utils/storage'
+import envConfig from '@/utils/config'
 
 const editorRef = ref()
 
@@ -46,9 +47,9 @@ const content = computed({
 let editorEl = null
 
 const serverHeaders = {}
-serverHeaders[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-serverHeaders[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
-const baseUrl = import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.meta.env.VITE_APP_BASE_URL : `${import.meta.env.VITE_APP_BASE_URL}/`
+serverHeaders[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+serverHeaders[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+const baseUrl = envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`
 
 const editorConfig = ref({
     debug: false,

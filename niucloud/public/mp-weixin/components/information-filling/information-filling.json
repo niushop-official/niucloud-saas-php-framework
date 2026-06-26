@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-image": "../../node-modules/uview-plus/components/u-image/u-image",
+    "u-icon": "../../node-modules/uview-plus/components/u-icon/u-icon",
+    "u-form-item": "../../node-modules/uview-plus/components/u-form-item/u-form-item",
+    "u-button": "../../node-modules/uview-plus/components/u-button/u-button",
+    "u-form": "../../node-modules/uview-plus/components/u-form/u-form",
+    "weixin-privacy-popup": "../wx-privacy-popup/wx-privacy-popup",
+    "u-popup": "../../node-modules/uview-plus/components/u-popup/u-popup"
+  }
+}

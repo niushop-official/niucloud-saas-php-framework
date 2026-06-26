@@ -1,1 +1,0 @@
-const o="顶部广告图",e="图片上传",t="请上传图片",i="跳转链接",n="请输入跳转链接",a="添加广告图",c={headTitle:o,image:e,imagePlaceholder:t,toLink:i,toLinkPlaceholder:n,addConfigList:a};export{a as addConfigList,c as default,o as headTitle,e as image,t as imagePlaceholder,i as toLink,n as toLinkPlaceholder};

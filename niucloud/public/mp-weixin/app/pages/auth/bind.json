@@ -1,0 +1,13 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "绑定手机号",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "u-input": "../../../node-modules/uview-plus/components/u-input/u-input",
+    "u-form-item": "../../../node-modules/uview-plus/components/u-form-item/u-form-item",
+    "sms-code": "../../../components/sms-code/sms-code",
+    "u-form": "../../../node-modules/uview-plus/components/u-form/u-form",
+    "u-checkbox": "../../../node-modules/uview-plus/components/u-checkbox/u-checkbox",
+    "u-checkbox-group": "../../../node-modules/uview-plus/components/u-checkbox-group/u-checkbox-group"
+  }
+}

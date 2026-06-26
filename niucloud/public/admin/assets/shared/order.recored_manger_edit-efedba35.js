@@ -1,0 +1,35 @@
+const e = "订单ID", o = "技师ID", c = "用户ID", d = "客户姓名", r = "客户电话", s = "客户地址", t = "请选择订单ID", a = "请选择技师ID", l = "请选择用户ID", n = "请选择客户姓名", m = "请选择客户电话", I = "请选择客户地址", h = "添加服务录音", i = "编辑服务录音", u = "确定要删除该服务录音吗？", P = {
+  orderId: e,
+  technicianId: o,
+  memberId: c,
+  customName: d,
+  customMobile: r,
+  customAddress: s,
+  orderIdPlaceholder: t,
+  technicianIdPlaceholder: a,
+  memberIdPlaceholder: l,
+  customNamePlaceholder: n,
+  customMobilePlaceholder: m,
+  customAddressPlaceholder: I,
+  addRecoredManger: h,
+  updateRecoredManger: i,
+  recoredMangerDeleteTips: u
+};
+export {
+  h as addRecoredManger,
+  s as customAddress,
+  I as customAddressPlaceholder,
+  r as customMobile,
+  m as customMobilePlaceholder,
+  d as customName,
+  n as customNamePlaceholder,
+  P as default,
+  c as memberId,
+  l as memberIdPlaceholder,
+  e as orderId,
+  t as orderIdPlaceholder,
+  u as recoredMangerDeleteTips,
+  o as technicianId,
+  a as technicianIdPlaceholder,
+  i as updateRecoredManger
+};

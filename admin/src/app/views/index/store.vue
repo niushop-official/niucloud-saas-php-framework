@@ -582,30 +582,9 @@
 				</div>
 				<!-- </el-scrollbar> -->
 				<div class="flex justify-end">
-					<el-tooltip effect="dark" placement="top">
-						<template #content>
-							<div class="w-[400px]">
-								{{ t('installTips') }}
-							</div>
-						</template>
-						<el-button :disabled="!installCheckResult.is_pass || cloudInstalling" :loading="localInstalling" @click="handleInstall"
-							>{{ t('localInstall') }}
-						</el-button>
-					</el-tooltip>
-					<el-tooltip effect="dark" placement="top">
-						<template #content>
-							<div class="w-[400px]">
-								{{ t('cloudInstallTips') }}
-							</div>
-						</template>
-						<el-button
-							type="primary"
-							:disabled="!installCheckResult.is_pass || localInstalling"
-							:loading="cloudInstalling"
-							@click="handleCloudInstall"
-							>{{ t('cloudInstall') }}
-						</el-button>
-					</el-tooltip>
+                    <el-button type="primary" class="!w-[140px]" :disabled="!installCheckResult.is_pass || cloudInstalling" :loading="localInstalling" @click="handleInstall"
+                        >{{ t('install') }}
+                    </el-button>
 				</div>
 			</div>
 			<div v-show="installStep == 1 && !errorDialog" class="h-[50vh] mt-[20px]">

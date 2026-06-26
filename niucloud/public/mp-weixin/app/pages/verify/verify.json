@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "核销",
+  "usingComponents": {
+    "loading-page": "../../../components/loading-page/loading-page"
+  }
+}

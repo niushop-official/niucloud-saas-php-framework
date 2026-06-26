@@ -3,6 +3,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { useCssVar, useTitle } from '@vueuse/core'
 import colorFunction from 'css-color-function'
 import storage from './storage'
+import envConfig from '@/utils/config'
 
 /**
  * 全局注册element-icon
@@ -65,7 +66,7 @@ export function getAppType() {
  */
 export function setWindowTitle(value: string = ''): void {
 	const title = useTitle()
-	title.value = value ? value : import.meta.env.VITE_DETAULT_TITLE
+	title.value = value ? value : envConfig.VITE_DETAULT_TITLE
 }
 
 /**
@@ -129,7 +130,7 @@ export function isUrl(str: string): boolean {
 export function img(path: string): string {
 	if (!path) return ''
 
-	let imgDomain = import.meta.env.VITE_IMG_DOMAIN || location.origin
+	let imgDomain = envConfig.VITE_IMG_DOMAIN || location.origin
 
 	if (path.startsWith('/')) path = path.replace(/^\//, '')
 	if (imgDomain.endsWith('/')) imgDomain = imgDomain.slice(0, -1)

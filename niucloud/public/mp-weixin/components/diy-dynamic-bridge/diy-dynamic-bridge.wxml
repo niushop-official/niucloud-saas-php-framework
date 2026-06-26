@@ -1,0 +1,14 @@
+<view wx:if="{{componentName}}">
+  <diy-dynamic-bridge-app
+    wx:if="{{routeBridge === 'app'}}"
+    id="bridge-app"
+    componentName="{{componentName}}"
+    component="{{component}}"
+    global="{{global}}"
+    index="{{index}}"
+    scrollBool="{{scrollBool}}"
+    bindupdateComponentIsShow="forwardShow"
+    bindloadingFn="forwardLoading"
+  />
+  <!-- MP_MERGE_ADDON_BRIDGES -->
+</view>

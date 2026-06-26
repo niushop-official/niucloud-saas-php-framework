@@ -285,10 +285,21 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
-.el-sub-menu{
-    .el-icon{
+<style lang="scss" scoped>
+:deep(.el-sub-menu) {
+    .el-icon {
         width: auto;
     }
+}
+:deep(.el-menu-item) {
+    height: 40px!important;
+    line-height: 40px!important;
+    &.is-active {
+        color: var(--el-color-primary);
+    }
+}
+:deep(.el-sub-menu__title) {
+    height: 40px!important;
+    line-height: 40px!important;
 }
 </style>

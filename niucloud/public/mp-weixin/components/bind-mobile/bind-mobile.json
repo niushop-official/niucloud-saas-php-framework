@@ -1,0 +1,11 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-form-item": "../../node-modules/uview-plus/components/u-form-item/u-form-item",
+    "sms-code": "../sms-code/sms-code",
+    "u-checkbox": "../../node-modules/uview-plus/components/u-checkbox/u-checkbox",
+    "u-checkbox-group": "../../node-modules/uview-plus/components/u-checkbox-group/u-checkbox-group",
+    "u-form": "../../node-modules/uview-plus/components/u-form/u-form",
+    "u-popup": "../../node-modules/uview-plus/components/u-popup/u-popup"
+  }
+}

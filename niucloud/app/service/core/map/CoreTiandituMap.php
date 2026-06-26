@@ -112,7 +112,9 @@ class CoreTiandituMap extends BaseService
         if (is_string($res)) {
             $res = json_decode($res, true);
         }
-        if ($res['status'] == 400) throw new CommonException($res['msg']);
+        if (!isset($res['status'])) throw new CommonException($res['message'] ?? ($res['msg'] ?? '请求参数非法或不合规'));
+        if ($res['status'] != 0) throw new CommonException($res['msg'] ?? '未解析到地址');
+        if (!isset($res['result']) || empty($res['result'])) throw new CommonException($res['msg'] ?? '未解析到地址');
 
         $t_result = $res['result'];
         $t_component = $t_result['addressComponent'] ?? [];

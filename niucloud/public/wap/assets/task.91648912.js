@@ -1,1 +1,0 @@
-import{an as t}from"./index-6911ef17.js";function n(){return t.get("shop_fenxiao/task/config")}function a(n){return t.get("shop_fenxiao/task/lists",n)}function s(n){return t.get(`shop_fenxiao/task/detail/${n}`)}function e(n){return t.get(`shop_fenxiao/task_reward_list/${n}`)}export{a,s as b,e as c,n as g};

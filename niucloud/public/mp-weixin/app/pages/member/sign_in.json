@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "我的签到",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "u-empty": "../../../node-modules/uview-plus/components/u-empty/u-empty",
+    "u-popup": "../../../node-modules/uview-plus/components/u-popup/u-popup",
+    "loading-page": "../../../components/loading-page/loading-page"
+  }
+}

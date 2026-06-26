@@ -1,0 +1,1 @@
+<simple-firework wx:if="{{b}}" class="r" u-r="simpleFireworkRef" u-i="6e61d1f4-0" bind:__l="__l" u-p="{{b}}"></simple-firework><red-packet-rain wx:if="{{d}}" class="r" u-r="redPacketRainRef" u-i="6e61d1f4-1" bind:__l="__l" u-p="{{d}}"></red-packet-rain>

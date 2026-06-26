@@ -152,8 +152,6 @@ class CoreCloudBuildService extends BaseCoreService
             if (!empty($exclude_addon)) {
                 // 处理pages.json
                 $this->handlePageCode($package_dir . 'uni-app' . DIRECTORY_SEPARATOR .'src' . DIRECTORY_SEPARATOR, $param['addon']);
-                // 处理diy-group
-                $this->compileDiyComponentsCode($package_dir . 'uni-app'. DIRECTORY_SEPARATOR .'src' . DIRECTORY_SEPARATOR, $exclude_addon[0]);
             }
         }
         // 拷贝admin端文件

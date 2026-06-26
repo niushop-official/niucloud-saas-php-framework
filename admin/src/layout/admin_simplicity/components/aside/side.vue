@@ -75,7 +75,7 @@ if (siteInfo?.apps.length > 1) {
 defaultOpeneds.value = menuData.value.map(item => item.name)
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .logo-wrap {
     // background: #1f2531;
     background: #fff;
@@ -91,22 +91,22 @@ defaultOpeneds.value = menuData.value.map(item => item.name)
     display: flex;
     flex-direction: column;
 
-    .el-menu {
+    :deep(.el-menu) {
         border-right: 0!important;
 
         &:not(.el-menu--collapse) {
             width: var(--aside-width);
         }
 
-        .el-menu-item, .el-sub-menu__title {
+        :deep(.el-menu-item), :deep(.el-sub-menu__title) {
             --el-menu-item-height: 40px;
         }
 
-        .el-sub-menu .el-menu-item {
+        :deep(.el-sub-menu) :deep(.el-menu-item) {
             --el-menu-sub-item-height: 40px;
         }
 
-        .el-menu-item.is-active {
+        :deep(.el-menu-item).is-active {
             background: var(--el-color-primary) !important;
             color: #fff !important;
         }
@@ -115,14 +115,14 @@ defaultOpeneds.value = menuData.value.map(item => item.name)
             // background: #282e3a;
             // background: #fff;
         }
-        .el-menu-item .el-menu-tooltip__trigger{
+        :deep(.el-menu-item) .el-menu-tooltip__trigger{
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         &.el-menu--collapse {
-            .el-menu-item, .el-sub-menu__title {
+            :deep(.el-menu-item), :deep(.el-sub-menu__title) {
                 --el-menu-item-height: 60px;
                 justify-content: center;
             }

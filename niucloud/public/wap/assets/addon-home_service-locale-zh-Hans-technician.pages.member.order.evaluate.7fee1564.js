@@ -1,1 +1,0 @@
-const e="已评价",a="综合",o="时间",t="暂无评价",n="发布于",i="服务信息",l="评价内容",d="加载失败",s={evaluated:"已评价",comprehensive:"综合",time:"时间",noEvaluation:t,published:"发布于",serviceInfo:i,evaluationContent:l,loadFailed:d};export{a as comprehensive,s as default,e as evaluated,l as evaluationContent,d as loadFailed,t as noEvaluation,n as published,i as serviceInfo,o as time};

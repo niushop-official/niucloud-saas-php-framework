@@ -6,6 +6,7 @@ import type { MessageParams } from 'element-plus'
 import { t } from '@/lang'
 import useUserStore from '@/stores/modules/user'
 import storage from '@/utils/storage'
+import envConfig from '@/utils/config'
 
 interface RequestConfig extends AxiosRequestConfig {
     showErrorMessage?: boolean
@@ -47,7 +48,7 @@ class Request {
 
     constructor() {
         this.instance = axios.create({
-            baseURL: import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.meta.env.VITE_APP_BASE_URL : `${import.meta.env.VITE_APP_BASE_URL}/`,
+            baseURL: envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`,
             timeout: 0,
             headers: {
                 'Content-Type': 'application/json',
@@ -60,9 +61,9 @@ class Request {
             (config: InternalRequestConfig) => {
                 // 携带token site-id
                 if (getToken()) {
-                    config.headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+                    config.headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
                 }
-                config.headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+                config.headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
                 return config
             },
             (err: any) => {

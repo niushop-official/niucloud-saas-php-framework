@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText": "个人资料",
+  "usingComponents": {
+    "u-avatar": "../../../node-modules/uview-plus/components/u-avatar/u-avatar",
+    "u-cell": "../../../node-modules/uview-plus/components/u-cell/u-cell",
+    "u-cell-group": "../../../node-modules/uview-plus/components/u-cell-group/u-cell-group",
+    "u-popup": "../../../node-modules/uview-plus/components/u-popup/u-popup",
+    "u-action-sheet": "../../../node-modules/uview-plus/components/u-action-sheet/u-action-sheet",
+    "u-datetime-picker": "../../../node-modules/uview-plus/components/u-datetime-picker/u-datetime-picker",
+    "weixin-privacy-popup": "../../../components/wx-privacy-popup/wx-privacy-popup",
+    "personal-form-detail": "./components/personal_form_detail"
+  }
+}

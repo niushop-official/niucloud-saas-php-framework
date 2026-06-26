@@ -226,16 +226,6 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $this->backupFrontend();
 
         $tips = [];
-        if ($mode != 'cloud') {
-            $tips[] = get_lang('dict_addon.install_after_update');
-        } else {
-            try {
-                (new CloudService())->checkLocal();
-            } catch (\Exception $e) {
-                Cache::set('install_task', null);
-                throw new CommonException($e->getMessage(), $e->getCode());
-            }
-        }
 
         foreach ($this->addon_list as $addon) {
             $this->install_task['addon'] = $addon;
@@ -287,6 +277,8 @@ class CoreAddonInstallService extends CoreAddonBaseService
         }
 
         $this->installWap();
+        $this->rebuildPublicAdminAddonIndexJson();
+        $this->rebuildPublicWapAddonIndexJson();
 
         if ($mode == 'cloud') {
             $this->install_task['tips'] = $tips;
@@ -343,15 +335,19 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $from_web_dir = $this->install_addon_path . 'web' . DIRECTORY_SEPARATOR;
         $from_wap_dir = $this->install_addon_path . 'uni-app' . DIRECTORY_SEPARATOR;
         $from_resource_dir = $this->install_addon_path . 'resource' . DIRECTORY_SEPARATOR;
+        $from_wap_dist_dir = $this->install_addon_path . 'dist' . DIRECTORY_SEPARATOR . 'wap' . DIRECTORY_SEPARATOR;
+        $from_admin_dist_dir = $this->install_addon_path . 'dist' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR;
 
         // 放入的文件
         $to_admin_dir = $this->root_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_wap_dist_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_admin_dist_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
 
         // 安装admin管理端
-        if (file_exists($from_admin_dir)) {
+        if (is_dir($from_admin_dir)) {
             dir_copy($from_admin_dir, $to_admin_dir, $this->files['admin'], exclude_dirs:['icon']);
             // 判断图标目录是否存在
             if (is_dir($from_admin_dir . 'icon')) {
@@ -363,7 +359,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
         }
 
         // 安装电脑端
-        if (file_exists($from_web_dir)) {
+        if (is_dir($from_web_dir)) {
             // 安装布局文件
             $layout = $from_web_dir . 'layouts';
             if (is_dir($layout)) {
@@ -374,13 +370,21 @@ class CoreAddonInstallService extends CoreAddonBaseService
         }
 
         // 安装手机端
-        if (file_exists($from_wap_dir)) {
+        if (is_dir($from_wap_dir)) {
             dir_copy($from_wap_dir, $to_wap_dir, $this->files['wap']);
         }
 
         //安装资源文件
-        if (file_exists($from_resource_dir)) {
+        if (is_dir($from_resource_dir)) {
             dir_copy($from_resource_dir, $to_resource_dir, $this->files['resource']);
+        }
+
+        if (is_dir($from_admin_dist_dir)) {
+            dir_copy($from_admin_dist_dir, $to_admin_dist_dir);
+        }
+
+        if (is_dir($from_wap_dist_dir)) {
+            dir_copy($from_wap_dist_dir, $to_wap_dist_dir);
         }
 
         return true;
@@ -681,6 +685,8 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $to_web_layouts = $this->root_path . 'web' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_wap_dist_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . $this->addon . DIRECTORY_SEPARATOR;
+        $to_admin_dist_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . $this->addon . DIRECTORY_SEPARATOR;
 
         // 卸载admin管理端
         if (is_dir($to_admin_dir)) del_target_dir($to_admin_dir, true);
@@ -700,6 +706,9 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
         //删除资源文件
         if (is_dir($to_resource_dir)) del_target_dir($to_resource_dir, true);
+
+        if (is_dir($to_wap_dist_dir)) del_target_dir($to_wap_dist_dir, true);
+        if (is_dir($to_admin_dist_dir)) del_target_dir($to_admin_dist_dir, true);
 
         //todo  卸载插件目录涉及到的空文件
         return true;
@@ -734,9 +743,6 @@ class CoreAddonInstallService extends CoreAddonBaseService
      */
     public function uninstallWap()
     {
-        // 编译 diy-group 自定义组件代码文件
-        $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon);
-
         // 编译 pages.json 页面路由代码文件
         $this->uninstallPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR);
 
@@ -762,16 +768,65 @@ class CoreAddonInstallService extends CoreAddonBaseService
      */
     public function installWap()
     {
-
-        // 编译 diy-group 自定义组件代码文件
-        $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon_list);
-
         // 编译 pages.json 页面路由代码文件
         $this->installPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon_list);
 
         // 编译 加载插件标题语言包
         $this->compileLocale($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $this->addon_list);
+    }
 
+    /**
+     * 重新构建 public/admin/assets/addons/index.json
+     * 读取 addons 目录下的所有插件子目录,重新配置 keys
+     * @return true
+     */
+    public function rebuildPublicAdminAddonIndexJson() {
+        $addons_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons';
+        $index_file = $addons_dir . DIRECTORY_SEPARATOR . 'index.json';
+
+        // 读取已有的 index.json,保留 sharedVersion 等字段
+        $index_data = $this->jsonFileToArray($index_file);
+
+        // 扫描 addons 目录下的所有子目录作为插件 keys
+        $keys = [];
+        if (is_dir($addons_dir)) {
+            $keys = get_files_by_dir($addons_dir);
+        }
+
+        // 更新 keys
+        $index_data['keys'] = $keys;
+
+        // 写入文件
+        $this->writeArrayToJsonFile($index_data, $index_file);
+
+        return true;
+    }
+
+    /**
+     * 重新构建 public/wap/assets/addons/index.json
+     * 读取 addons 目录下的所有插件子目录,重新配置 keys
+     * @return true
+     */
+    public function rebuildPublicWapAddonIndexJson() {
+        $addons_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons';
+        $index_file = $addons_dir . DIRECTORY_SEPARATOR . 'index.json';
+
+        // 读取已有的 index.json,保留 sharedVersion 等字段
+        $index_data = $this->jsonFileToArray($index_file);
+
+        // 扫描 addons 目录下的所有子目录作为插件 keys
+        $keys = [];
+        if (is_dir($addons_dir)) {
+            $keys = get_files_by_dir($addons_dir);
+        }
+
+        // 更新 keys
+        $index_data['keys'] = $keys;
+
+        // 写入文件
+        $this->writeArrayToJsonFile($index_data, $index_file);
+
+        return true;
     }
 
     public function download()

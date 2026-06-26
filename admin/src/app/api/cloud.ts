@@ -2,7 +2,7 @@ import axios from 'axios'
 import request from '@/utils/request'
 import storage from '@/utils/storage'
 
-export const CLOUD_COMPILE_BASE_URL = 'http://go.site.niucloud.com'
+export const CLOUD_COMPILE_BASE_URL =  location.protocol + '//go.site.niucloud.com'
 
 function createCloudCompileRequest() {
     const instance = axios.create({

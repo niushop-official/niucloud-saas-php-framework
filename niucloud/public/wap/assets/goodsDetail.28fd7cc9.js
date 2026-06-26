@@ -1,1 +1,0 @@
-import{bb as o}from"./index-6911ef17.js";const e=o("goodsDetail",{state:()=>({goodsDetail:{}}),actions:{setGoodsDetail(o){Object.assign(this.goodsDetail,o)},removeGoodsDetail(){this.goodsDetail={}},removePartGoodsDetail(o){Object.keys(o).forEach(o=>{delete this.goodsDetail[o]})}}});export{e as u};

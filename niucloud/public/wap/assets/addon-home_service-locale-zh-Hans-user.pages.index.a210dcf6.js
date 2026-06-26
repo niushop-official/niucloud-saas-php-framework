@@ -1,1 +1,0 @@
-const e="请输入搜索关键词",o="抢购",r="没有更多内容啦~",a="没有更多内容啦~",t="已售",d="订单号",s="实付款",l="详情",n={searchNamePlaceholder:e,reserveBtn:"抢购",nothingMore:r,noHomeAddress:a,soldOut:"已售",orderNo:"订单号",actualPayment:"实付款",orderDetail:"详情"};export{s as actualPayment,n as default,a as noHomeAddress,r as nothingMore,l as orderDetail,d as orderNo,o as reserveBtn,e as searchNamePlaceholder,t as soldOut};

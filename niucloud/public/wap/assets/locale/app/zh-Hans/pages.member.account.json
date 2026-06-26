@@ -1,0 +1,9 @@
+{
+    "alipayAccountNo": "支付宝收款码",
+    "wechatCode":"微信收款码",
+    "addBankCard": "添加银行卡",
+    "addWechatCode":"添加微信收款码",
+    "addAlipayAccount": "添加支付宝收款码",
+    "endNumber": "尾号",
+    "bankCard": "银行卡"
+}

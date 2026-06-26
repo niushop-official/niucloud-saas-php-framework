@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { launchInterceptor } from '@/utils/interceptor'
+import { initSplitBuildRuntime, isSplitBuildEnabled } from '@/utils/addon-loader'
 import { getToken, isWeixinBrowser, getSiteId, currRoute, deepClone, setThemeColor } from '@/utils/common'
 import useMemberStore from '@/stores/member'
 import useConfigStore from '@/stores/config'
@@ -8,9 +9,40 @@ import useSystemStore from '@/stores/system'
 import { useLogin } from '@/hooks/useLogin'
 import { useShare } from '@/hooks/useShare'
 import { useLocation } from '@/hooks/useLocation'
+import { ensureDiyDecorateBridge } from '@/utils/diy-decorate-bridge'
+import envConfig from '@/utils/config'
 
 const locationVal = useLocation(true);
 onLaunch((data: any) => {
+    // #ifdef H5
+    if (isSplitBuildEnabled()) {
+        void initSplitBuildRuntime()
+
+        // 处理未知插件直接 URL 访问
+        const launchPath = data.path || ''
+        // 编译时已知的插件列表（src/addon/ 中存在的插件，路由已在 pages.json 注册）
+        const knownAddonKeys = new Set<string>(['shop'])
+        const addonMatch = launchPath.match(/^\/?addon\/([^/]+)\/pages\/(.+)/)
+        if (addonMatch && !knownAddonKeys.has(addonMatch[1])) {
+                    const origPath = '/' + launchPath + (location.search || '')
+
+                    // 先把浏览器 URL 同步改成桥接页路径，消除闪烁
+                    // #ifdef H5
+                    const newPathname = location.pathname.replace(
+                        /\/addon\/([^/]+)\/pages\/(.+)$/,
+                        `/app/pages/addon-universal/index`
+                    )
+                    history.replaceState(null, '', newPathname)
+                    // #endif
+
+                    uni.reLaunch({
+                        url: `/app/pages/addon-universal/index?addon=${addonMatch[1]}&page=pages/${addonMatch[2]}&_orig=${encodeURIComponent(origPath)}`
+                    })
+                    // 不 return，让后续的 getInitFn 等初始化逻辑正常执行
+        }
+    }
+    // #endif
+
     // 添加初始化拦截器
     launchInterceptor()
     const systemStore = useSystemStore()
@@ -22,6 +54,10 @@ onLaunch((data: any) => {
     }
 
     initGlobalData()
+
+    // #ifdef H5
+    ensureDiyDecorateBridge()
+    // #endif
 
     // #ifdef H5
     systemStore.systemInfo.platform == 'ios' && (uni.setStorageSync('initUrl', location.href))
@@ -57,7 +93,7 @@ onLaunch((data: any) => {
     }, false);
 
     // 缺少站点id，拦截
-    if (process.env.NODE_ENV == 'development' && (getSiteId(uni.getStorageSync('wap_site_id') || import.meta.env.VITE_SITE_ID) === '')) return;
+    if (process.env.NODE_ENV == 'development' && (getSiteId(uni.getStorageSync('wap_site_id') || envConfig.VITE_SITE_ID) === '')) return;
 
     try {
         uni.hideTabBar() // 隐藏tabbar
@@ -95,7 +131,6 @@ onLaunch((data: any) => {
 
     // 获取初始化数据信息
     useSystemStore().getInitFn(async () => {
-
         const configStore = useConfigStore()
 
         let loginConfig = uni.getStorageSync('login_config')
@@ -210,7 +245,7 @@ onLaunch((data: any) => {
 
     // 控制弹窗展示
     uni.setStorageSync('isOnLoad', true); // 存储是页面是否加载完成的状态
-    
+
     // #ifdef APP-PLUS
     systemStore.getVersionInfoFn()
     // #endif

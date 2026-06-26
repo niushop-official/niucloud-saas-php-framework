@@ -1021,20 +1021,6 @@ return [
         ]
     ],
     [
-        'menu_name' => '云编译',
-        'menu_key' => 'cloud_compile',
-        'menu_short_name' => '云编译',
-        'menu_type' => '1',
-        'icon' => 'iconfont iconyunbianyi',
-        'api_url' => '',
-        'router_path' => 'tools/cloud_compile',
-        'view_path' => 'tools/cloud_compile',
-        'methods' => 'post',
-        'sort' => '0',
-        'status' => '1',
-        'is_show' => '1',
-    ],
-    [
         'menu_name' => '应用开发',
         'menu_key' => 'tool',
         'menu_short_name' => '开发',
@@ -1660,6 +1646,20 @@ return [
                 ]
             ],
             [
+                'menu_name' => '云编译',
+                'menu_key' => 'cloud_compile',
+                'menu_short_name' => '云编译',
+                'menu_type' => '1',
+                'icon' => 'iconfont iconyunbianyi',
+                'api_url' => '',
+                'router_path' => 'tools/cloud_compile',
+                'view_path' => 'tools/cloud_compile',
+                'methods' => 'post',
+                'sort' => '98',
+                'status' => '1',
+                'is_show' => '1',
+            ],
+            [
                 'menu_name' => '授权信息',
                 'menu_key' => 'app_auth',
                 'menu_short_name' => '授权信息',
@@ -1669,7 +1669,7 @@ return [
                 'router_path' => 'tools/authorize',
                 'view_path' => 'app/authorize',
                 'methods' => '',
-                'sort' => '98',
+                'sort' => '97',
                 'status' => '1',
                 'is_show' => '1',
                 'children' => [

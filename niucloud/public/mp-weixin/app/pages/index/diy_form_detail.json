@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "表单详情",
+  "usingComponents": {
+    "u-divider": "../../../node-modules/uview-plus/components/u-divider/u-divider",
+    "diy-form-detail": "../../../addon/components/diy-form-detail/index"
+  }
+}

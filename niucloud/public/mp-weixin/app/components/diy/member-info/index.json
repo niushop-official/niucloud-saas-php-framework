@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-avatar": "../../../../node-modules/uview-plus/components/u-avatar/u-avatar",
+    "information-filling": "../../../../components/information-filling/information-filling"
+  }
+}

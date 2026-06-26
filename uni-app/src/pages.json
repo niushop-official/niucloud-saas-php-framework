@@ -219,10 +219,2795 @@
                 // #endif
                 "navigationBarTitleText": "%pages.friendspay.money%"
             }
+        },
+        {
+            "path": "app/pages/addon-universal/index",
+            "style": {
+                "navigationBarTitleText": ""
+            }
         }
     ],
     "subPackages": [
         // {{ PAGE_BEGAIN }}
+        // FRIEND_HELP_PAGE_BEGIN
+        // *********************************** friend_help ***********************************
+        {
+            "root": "addon/friend_help",
+            "pages": [
+                {
+                    "path": "pages/index",
+                    "style": {
+                    // #ifndef H5
+                    "navigationStyle": "custom",
+                    // #endif
+                    "navigationBarTitleText": "%friend_help.pages.index%"
+                    }
+                },
+                {
+                "path": "pages/goods/list",
+                "style": {
+                    // #ifndef H5
+                    "navigationStyle": "custom",
+                    // #endif
+                    "navigationBarTitleText": "%friend_help.pages.goods.list%"
+                }
+                },
+                {
+                    "path": "pages/goods/share",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.goods.share%"
+                    },
+                    "needLogin": true
+                },
+                {
+                "path": "pages/goods/detail",
+                "style": {
+                    // #ifndef H5
+                    "navigationStyle": "custom",
+                    // #endif
+                    "navigationBarTitleText": "%friend_help.pages.goods.detail%"
+                }
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                         // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/apply",
+                    "style": {
+                        "navigationBarTitleText": "%friend_help.pages.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.refund.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/list",
+                    "style": {
+                        "navigationBarTitleText": "%friend_help.pages.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/edit_apply",
+                    "style": {
+                        "navigationBarTitleText": "%friend_help.pages.refund.edit_apply%"
+                    },
+                    "needLogin": true
+                }, {
+                    "path": "pages/refund/log",
+                    "style": {
+                        "navigationBarTitleText": "%friend_help.pages.refund.log%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/card_record",
+                    "style": {
+                        "navigationBarTitleText": "%friend_help.pages.order.card_record%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/my_help",
+                    "style": {
+                         // #ifndef H5
+                         "navigationStyle": "custom",
+                         // #endif
+                        "navigationBarTitleText": "%friend_help.pages.my_help%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/goods/bargain",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%friend_help.pages.goods.bargain%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // FRIEND_HELP_PAGE_END
+        // TOURISM_PAGE_BEGIN
+        {
+            "root": "addon/tourism",
+            "pages": [
+                // *********************************** 旅游 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%tourism.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/way/list",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.way.list%"
+                    }
+                },
+                {
+                    "path": "pages/way/detail",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.way.detail%"
+                    }
+                },
+                {
+                    "path": "pages/way/order",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.way.order%"
+                    }
+                },
+                {
+                    "path": "pages/hotel/list",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.hotel.list%"
+                    }
+                },
+                {
+                    "path": "pages/hotel/detail",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.hotel.detail%"
+                    }
+                },
+                {
+                    "path": "pages/hotel/order",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.hotel.order%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/scenic/list",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.scenic.list%"
+                    }
+                },
+                {
+                    "path": "pages/scenic/detail",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.scenic.detail%"
+                    }
+                },
+                {
+                    "path": "pages/scenic/order",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.scenic.order%"
+                    }
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.order.list%"
+                    }
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.order.detail%"
+                    }
+                },
+                {
+                    "path": "pages/order/hotel_detail",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.order.hotel_detail%"
+                    }
+                },
+                {
+                    "path": "pages/verify/index",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.verify.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/verify/record",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.verify.record%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/verify/detail",
+                    "style": {
+                        "navigationBarTitleText": "%tourism.pages.verify.detail%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // TOURISM_PAGE_END
+        // VIPCARD_PAGE_BEGIN
+        {
+            "root": "addon/vipcard",
+            "pages": [
+                // *********************************** 卡项 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%vipcard.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/card/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%vipcard.pages.card.list%"
+                    }
+                },
+                {
+                    "path": "pages/card/detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.card.detail%"
+                    }
+                },
+                {
+                    "path": "pages/service/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%vipcard.pages.service.list%"
+                    }
+                },
+                {
+                    "path": "pages/service/detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.service.detail%"
+                    }
+                },
+                {
+                    "path": "pages/service/reserve_detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.service.reserve_detail%"
+                    }
+                },
+                {
+                    "path": "pages/order/my_reserved",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.my_reserved%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/my_reserved_detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.my_reserved_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/my_card",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.my_card%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/card_record",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.card_record%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/my_card_detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.my_card_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/verify/index",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.verify.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/verify/record",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.verify.record%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/verify/detail",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.verify.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/reserve/result",
+                    "style": {
+                        "navigationBarTitleText": "%vipcard.pages.reserve.result%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // VIPCARD_PAGE_END
+        // RECHARGE_PAGE_BEGIN
+        {
+            "root": "addon/recharge",
+            "pages": [
+                {
+                    "path": "pages/recharge",
+                    "style": {
+                        "navigationBarTitleText": "%recharge.pages.recharge%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/recharge_record",
+                    "style": {
+                        "navigationBarTitleText": "%recharge.pages.recharge_record%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/recharge_record_detail",
+                    "style": {
+                        "navigationBarTitleText": "%recharge.pages.recharge_record_detail%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // RECHARGE_PAGE_END
+        // SHOP_PAGE_BEGIN
+        {
+            "root": "addon/shop",
+            "pages": [
+                // *********************************** 商城 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/coupon/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.coupon.list%"
+                    }
+                },
+                {
+                    "path": "pages/coupon/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.coupon.detail%"
+                    }
+                },
+                {
+                    "path": "pages/discount/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.discount.list%"
+                    }
+                },
+                {
+                    "path": "pages/evaluate/list",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.evaluate.list%"
+                    }
+                },
+                {
+                    "path": "pages/evaluate/order_evaluate",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.evaluate.order_evaluate%"
+                    }
+                },
+                {
+                    "path": "pages/evaluate/order_evaluate_view",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.evaluate.order_evaluate_view%"
+                    }
+                },
+                {
+                    "path": "pages/member/my_coupon",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.member.my_coupon%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/goods/search",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.goods.search%"
+                    }
+                },
+                {
+                    "path": "pages/goods/list",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.goods.list%"
+                    }
+                },
+                {
+                    "path": "pages/goods/rank",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.goods.rank%"
+                    }
+                },
+                {
+                    "path": "pages/newcomer/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.newcomer.list%"
+                    }
+                },
+                {
+                    "path": "pages/goods/detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.goods.detail%",
+                        "navigationStyle": "custom"
+                    }
+                },
+                {
+                    "path": "pages/goods/cart",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.goods.cart%"
+                    }
+                },
+                {
+                    "path": "pages/goods/collect",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.goods.collect%"
+                    },
+					"needLogin": true
+                },
+                {
+                    "path": "pages/goods/browse",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.goods.browse%"
+                    },
+					"needLogin": true
+                },
+                {
+                    "path": "pages/goods/category",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.goods.category%"
+                    }
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/apply",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/edit_apply",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.refund.edit_apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/list",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.refund.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/log",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.refund.log%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/point/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.point.index%"
+                    }
+                },
+                {
+                    "path": "pages/point/list",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.point.list%"
+                    }
+                },
+                {
+                    "path": "pages/point/detail",
+                    "style": {
+                        "navigationStyle": "custom",
+                        "navigationBarTitleText": "%shop.pages.point.detail%"
+                    }
+                },
+                {
+                    "path": "pages/point/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop.pages.point.payment%"
+                    }
+                },
+                {
+                    "path": "pages/point/order_list",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.point.order_list%"
+                    }
+                },
+                {
+                    "path": "pages/invoice/list",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.invoice.list%"
+                    }
+                },
+                {
+                    "path": "pages/invoice/detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.invoice.detail%"
+                    }
+                },
+                {
+                    "path": "pages/invoice/invoice",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.invoice.invoice%"
+                    }
+                },
+                {
+                    "path": "pages/invoice/invoice_edit",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.invoice.invoice_edit%"
+                    }
+                },
+                {
+                    "path": "pages/invoice/invoice_order",
+                    "style": {
+                        "navigationBarTitleText": "%shop.pages.invoice.invoice_order%"
+                    }
+                }
+            ]
+        },
+        // SHOP_PAGE_END
+        // CMS_PAGE_BEGIN
+        {
+            "root": "addon/cms",
+            "pages": [
+                {
+                    "path": "pages/list",
+                    "style": {
+                        "navigationBarTitleText": "%cms.pages.list%"
+                    }
+                },
+                {
+                    "path": "pages/detail",
+                    "style": {
+                        "navigationBarTitleText": "%cms.pages.detail%"
+                    }
+                }
+            ]
+        },
+        // CMS_PAGE_END
+        // SHOP_FENXIAO_PAGE_BEGIN
+        {
+            "root": "addon/shop_fenxiao",
+            "pages": [
+                // *********************************** 商城分销 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/zone",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.zone%"
+                    }
+                },
+                {
+                    "path": "pages/level",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.level%",
+                        "usingComponents": {
+                            "ns-goods-recommend": "../../../../addon/shop/components/ns-goods-recommend/ns-goods-recommend"
+                        },
+                        "componentPlaceholder": {
+                            "ns-goods-recommend": "view"
+                        }
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/child_fenxiao",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.child_fenxiao%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/goods",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.goods%"
+                    }
+                },
+                {
+                    "path": "pages/team",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.team%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/agent_list",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.agent_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/team_dividend",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.team_dividend%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.order%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/apply",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/task_rewards",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.task_rewards%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/task_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.task_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/task_rewards_detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.task_rewards_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/sale",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_fenxiao.pages.sale%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/sale_detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.sale_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/sale_ranking",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.sale_ranking%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/promote",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.promote%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/promote_code",
+                    "style": {
+                        "navigationBarTitleText": "%shop_fenxiao.pages.promote_code%"
+                    }
+                }
+            ]
+        },
+
+        // SHOP_FENXIAO_PAGE_END
+        // O2O_PAGE_BEGIN
+        {
+            "root": "addon/o2o",
+            "pages": [
+                // *********************************** 上门服务 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%o2o.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/goods/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%o2o.pages.goods.list%"
+                    }
+                },
+                {
+                    "path": "pages/goods/detail",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.goods.detail%"
+                    }
+                },
+                {
+                    "path": "pages/goods/category",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%o2o.pages.goods.category%"
+                    }
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%o2o.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/technician/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%o2o.pages.technician.list%"
+                    }
+                },
+                {
+                    "path": "pages/technician/detail",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.technician.detail%"
+                    }
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/apply",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/detail",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.refund.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/list",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/log",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.refund.log%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/address/index",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.address.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/address/address_edit",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.address.address_edit%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/master/task/list",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.master.task.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/master/task/detail",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.master.task.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/master/task/add",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.master.task.add%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/master/task/show",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.master.task.show%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/master/task/refund",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.master.task.refund%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/master/statistics/index",
+                    "style": {
+                        "navigationBarTitleText": "%o2o.pages.master.statistics.index%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // O2O_PAGE_END
+
+
+		// HOME_SERVICE_PAGE_BEGIN
+        {
+            "root": "addon/home_service/technician",
+            "pages": [
+                // *********************************** 技师端 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.index%"
+                    }
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.detail%"
+                    }
+                },
+                {
+                    "path": "pages/order/grabOrder",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.grabOrder%"
+                    }
+                },
+                {
+                    "path": "pages/order/additional",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.additional%"
+                    }
+                },
+                {
+                    "path": "pages/order/indent_order",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.indent_order%"
+                    }
+                },
+                {
+                    "path": "pages/order/indent_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.indent_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/indent_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.order.indent_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/notice/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.notice.index%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/member/account/account_statement",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.member.account.account_statement%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/account/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.member.account.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/order/statistics",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.member.order.statistics%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/rest/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.member.rest.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/ranking_list/ranking_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.ranking_list.ranking_list%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/member/help/help",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.help.help%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/help/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.help.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/feedback/feedback",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.feedback.feedback%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/account/withdraw",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.account.withdraw%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/account/withdraw_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.account.withdraw_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/account/withdraw_edit",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.account.withdraw_edit%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/store/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.store.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/order/evaluate",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.order.evaluate%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/cash/cash_out",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.cash.cash_out%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/cash/cash_out_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.cash.cash_out_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/auth/login",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.auth.login%"
+                    },
+                    "needLogin": false
+                },
+                {
+                    "path": "pages/auth/register",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.auth.register%"
+                    },
+                    "needLogin": false
+                },
+                {
+                    "path": "pages/member/fare/fare",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.member.fare.fare%"
+                    },
+                    "needLogin": false
+                }
+            ]
+        },
+        {
+            "root": "addon/home_service/store",
+            "pages": [
+                // *********************************** 门店端 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/settle",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.settle%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/submit_success",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.submit_success%"
+                    },
+                    "needLogin": true
+                },
+
+
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/technician/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.technician.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/technician/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.technician.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/technician/rest",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.technician.rest%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/evaluate",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.evaluate%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/store_info",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.store_info%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/account/account_statement",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.account.account_statement%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/account/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.account.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/account/order_statistics",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.account.order_statistics%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/store/account/withdraw",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.account.withdraw%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/account/withdraw_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.account.withdraw_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/store/account/withdraw_edit",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.store.account.withdraw_edit%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/store_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.store_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/indent",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.indent%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/indent_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.indent_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/indent_order",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.indent_order%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/indent_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.indent_detail%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/member/help/help",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.help.help%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/feedback/feedback",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.feedback.feedback%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/help/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.help.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/grapOrder",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.grapOrder%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/dispatchOrder",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.dispatchOrder%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/dispatchTechnician",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.dispatchTechnician%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/cash/cash_out",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.cash.cash_out%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/cash/cash_out_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.store.pages.member.cash.cash_out_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/auth/login",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.auth.login%"
+                    },
+                    "needLogin": false
+                },
+                {
+                    "path": "pages/auth/register",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.technician.pages.auth.register%"
+                    },
+                    "needLogin": false
+                },
+            ]
+        },
+
+
+        {
+            "root": "addon/home_service/user",
+            "pages": [
+                // *********************************** 会员端 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/goods/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.goods.list%"
+                    }
+                },
+                {
+                    "path": "pages/goods/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.goods.detail%"
+                    }
+                },
+                {
+                    "path": "pages/goods/category",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.goods.category%"
+                    }
+                },
+                {
+                    "path": "pages/goods/evaluate",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.goods.evaluate%"
+                    }
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/member/collect/goods",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.collect.goods%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/history",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.history%"
+                    }
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/evaluate/evaluate",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.evaluate.evaluate%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/evaluate/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.evaluate.list%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/order/refund/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/refund/apply",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/order/refund/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.refund.detail%"
+                    },
+                    "needLogin": true
+                },{
+                    "path": "pages/order/intent_order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.intent_order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/intent_order/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.intent_order.list%"
+                    },
+                    "needLogin": false
+                },
+                {
+                    "path": "pages/order/intent_order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.order.intent_order.detail%"
+                    },
+                    "needLogin": false
+                },
+                {
+                    "path": "pages/address/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.address.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/address/address_edit",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.address.address_edit%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/help/help",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.help.help%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/help/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.help.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/feedback/feedback",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.feedback.feedback%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/invoice/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.invoice.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/invoice/apply",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.member.invoice.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/settle/technician",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.settle.technician%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/settle/store",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.settle.store%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/settle/store_form",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.settle.store_form%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/settle/technician_form",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.settle.technician_form%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/settle/submit_success",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.settle.submit_success%"
+                    },
+                    "needLogin": true
+                },
+
+                {
+                    "path": "pages/coupon/coupon",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.coupon.coupon%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/coupon/member_coupon",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.coupon.member_coupon%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/card/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.card.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/card/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.card.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/card/my_card",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.card.my_card%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/card/use_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.card.use_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/card/use_card",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.card.use_card%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/map/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.map.index%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/map/technician_detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.map.technician_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/map/qualifications",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.map.qualifications%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/map/delivery_fee",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.map.delivery_fee%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/map/captcha",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%home_service.user.pages.map.captcha%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        {
+            "root": "addon/home_service/components",
+            "pages": []
+        },
+        {
+            "root": "addon/home_service/locale",
+            "pages": []
+        },
+		// HOME_SERVICE_PAGE_END
+
+
+        // SHOP_GIFTCARD_PAGE_BEGIN
+        {
+            "root": "addon/shop_giftcard",
+            "pages": [
+                // *********************************** 礼品卡 ***********************************
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_giftcard.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_giftcard.pages.list%"
+                    }
+                },
+                {
+                    "path": "pages/detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.detail%"
+                    }
+                },
+                {
+                    "path": "pages/order_list",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.order_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order_detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.order_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_giftcard.pages.member%"
+                    }
+                },
+                {
+                    "path": "pages/my_card_list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_giftcard.pages.my_card_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/card_bag",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.card_bag%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/activate",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%shop_giftcard.pages.activate%"
+                    }
+                },
+                {
+                    "path": "pages/receive_list",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.receive_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/give_list",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.give_list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/give_detail",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.give_detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/give",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.give%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/receive_info",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.receive_info%"
+                    }
+                },
+                {
+                    "path": "pages/use_card",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.use_card%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/use_goods_select",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.use_goods_select%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/payment",
+                    "style": {
+                        "navigationBarTitleText": "%shop_giftcard.pages.payment%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // SHOP_GIFTCARD_PAGE_END
+        // SOW_COMMUNITY_PAGE_BEGIN
+        {
+            "root": "addon/sow_community",
+            "pages": [
+                {
+                    "path": "pages/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%sow_community.pages.index%"
+                    }
+                },
+                {
+                    "path": "pages/search",
+                    "style": {
+                        "navigationBarTitleText": "%sow_community.pages.search%"
+                    }
+                },
+                {
+                    "path": "pages/image/detail",
+                    "style": {
+                        "navigationBarTitleText": "%sow_community.pages.image.detail%"
+                    }
+                },
+                {
+                    "path": "pages/video/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%sow_community.pages.video.detail%"
+                    }
+                },
+                {
+                    "path": "pages/member",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%sow_community.pages.member%"
+                    }
+                },
+                {
+                    "path": "pages/topic_list",
+                    "style": {
+                        "navigationBarTitleText": "%sow_community.pages.topic_list%"
+                    }
+                },
+                {
+                    "path": "pages/create",
+                    "style": {
+                        "navigationBarTitleText": "%sow_community.pages.create%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/follow",
+                    "style": {
+                        "navigationBarTitleText": "%sow_community.pages.follow%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/sow_show",
+                    "style": {
+                        "navigationBarTitleText": "%sow_community.pages.sow_show%"
+                    }
+                }
+            ]
+        },
+        // SOW_COMMUNITY_PAGE_END
+        // TEMPLATE_FLOWER_INDUSTRY_PAGE_BEGIN
+        {
+            "root": "addon/template_flower_industry",
+            "pages": [
+                // *********************************** 鲜花行业模板（适用于商城） ***********************************
+                {
+                    "path": "pages/goods/list",
+                    "style": {
+                        "navigationBarTitleText": "%template_flower_industry.pages.goods.list%"
+                    }
+                }
+            ]
+        },
+        // TEMPLATE_FLOWER_INDUSTRY_PAGE_END
+        // PINTUAN_PAGE_BEGIN
+        // *********************************** pintuan ***********************************
+        {
+            "root": "addon/pintuan",
+            "pages": [
+                {
+                    "path": "pages/index",
+                    "style": {
+                      // #ifndef H5
+                      "navigationStyle": "custom",
+                      // #endif
+                      "navigationBarTitleText": "%pintuan.pages.index%"
+                    }
+                },
+                {
+                  "path": "pages/goods/list",
+                  "style": {
+                      // #ifndef H5
+                      "navigationStyle": "custom",
+                      // #endif
+                    "navigationBarTitleText": "%pintuan.pages.goods.list%"
+                  }
+                },
+                {
+                  "path": "pages/goods/detail",
+                  "style": {
+                      // #ifndef H5
+                      "navigationStyle": "custom",
+                      // #endif
+                    "navigationBarTitleText": "%pintuan.pages.goods.detail%"
+                  }
+                },
+                {
+                    "path": "pages/my_spell",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintuan.pages.my_spell%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintaun.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/share",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintuan.pages.share%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintuan.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintuan.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintuan.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/apply",
+                    "style": {
+                        "navigationBarTitleText": "%pintuan.pages.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintuan.pages.refund.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/list",
+                    "style": {
+                        "navigationBarTitleText": "%pintuan.pages.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/edit_apply",
+                    "style": {
+                        "navigationBarTitleText": "%pintuan.pages.refund.edit_apply%"
+                    },
+                    "needLogin": true
+                }, {
+                    "path": "pages/refund/log",
+                    "style": {
+                        "navigationBarTitleText": "%pintuan.pages.refund.log%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/card_record",
+                    "style": {
+                        "navigationBarTitleText": "%pintuan.pages.order.card_record%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // PINTUAN_PAGE_END
+        // SECKILL_PAGE_BEGIN
+        // *********************************** seckill ***********************************
+        {
+            "root": "addon/seckill",
+            "pages": [
+              {
+                "path": "pages/index",
+                "style": {
+                  // #ifndef H5
+                  "navigationStyle": "custom",
+                  // #endif
+                  "navigationBarTitleText": "%seckill.pages.index%"
+                }
+              },
+                {
+                    "path": "pages/goods/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.goods.list%"
+                    }
+                },
+                {
+                    "path": "pages/goods/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.goods.detail%"
+                    }
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%seckill.pages.refund.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/list",
+                    "style": {
+                        "navigationBarTitleText": "%seckill.pages.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/log",
+                    "style": {
+                        "navigationBarTitleText": "%seckill.pages.refund.log%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/apply",
+                    "style": {
+                        "navigationBarTitleText": "%seckill.pages.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/edit_apply",
+                    "style": {
+                        "navigationBarTitleText": "%seckill.pages.refund.edit_apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/card_record",
+                    "style": {
+                        "navigationBarTitleText": "%seckill.pages.order.card_record%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // SECKILL_PAGE_END
+        // RELAY_PAGE_BEGIN
+        // *********************************** relay ***********************************
+        {
+            "root": "addon/relay",
+            "pages": [
+                {
+                    "path": "pages/index",
+                    "style": {
+                      // #ifndef H5
+                      "navigationStyle": "custom",
+                      // #endif
+                      "navigationBarTitleText": "%relay.pages.index%"
+                    }
+                },
+                {
+                  "path": "pages/goods/list",
+                  "style": {
+                      // #ifndef H5
+                      "navigationStyle": "custom",
+                      // #endif
+                    "navigationBarTitleText": "%relay.pages.goods.list%"
+                  }
+                },
+                {
+                  "path": "pages/goods/detail",
+                  "style": {
+                      // #ifndef H5
+                      "navigationStyle": "custom",
+                      // #endif
+                    "navigationBarTitleText": "%relay.pages.goods.detail%"
+                  }
+                },
+                {
+                    "path": "pages/my_spell",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.my_spell%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/member/index",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%pintaun.pages.member.index%"
+                    }
+                },
+                {
+                    "path": "pages/share",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.share%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.order.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/list",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.order.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/payment",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.order.payment%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/apply",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.refund.apply%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.refund.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/list",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.refund.list%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/refund/edit_apply",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.refund.edit_apply%"
+                    },
+                    "needLogin": true
+                }, {
+                    "path": "pages/refund/log",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.refund.log%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/order/card_record",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.order.card_record%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/active/list",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.active.list%"
+                    }
+                },
+                {
+                    "path": "pages/active/detail",
+                    "style": {
+                        "navigationBarTitleText": "%relay.pages.active.detail%"
+                    }
+                },
+                {
+                    "path": "pages/commission/detail",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.commission.detail%"
+                    },
+                    "needLogin": true
+                },
+                {
+                    "path": "pages/commission/store",
+                    "style": {
+                        // #ifndef H5
+                        "navigationStyle": "custom",
+                        // #endif
+                        "navigationBarTitleText": "%relay.pages.commission.store%"
+                    },
+                    "needLogin": true
+                }
+            ]
+        },
+        // RELAY_PAGE_END
         // {{ PAGE_END }}
         {
             "root": "app/components",
@@ -401,11 +3186,15 @@
     },
     "easycom": {
         "custom": {
+            "addon-page-bridge": "@/components/addon-page-bridge/addon-page-bridge.vue",
+            "addon-diy-bridge": "@/components/addon-diy-bridge/addon-diy-bridge.vue",
+            "diy-dynamic-bridge": "@/components/diy-dynamic-bridge/diy-dynamic-bridge.vue",
+            "diy-dynamic-bridge-app": "@/components/diy-dynamic-bridge-app/diy-dynamic-bridge-app.vue",
             "diy-group": "@/addon/components/diy/group/index.vue",
             "u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
             "up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
             "u-(.*)": "uview-plus/components/u-$1/u-$1.vue",
-            "diy-(\W.*)": "@/app/components/diy/$1/index.vue"
+            "diy-(.*)": "@/app/components/diy/$1/index.vue"
         }
     }
 }

@@ -1,0 +1,97 @@
+{
+  "pages": [
+    "app/pages/index/index",
+    "app/pages/auth/index",
+    "app/pages/auth/agreement",
+    "app/pages/auth/bind",
+    "app/pages/auth/login",
+    "app/pages/auth/register",
+    "app/pages/auth/resetpwd",
+    "app/pages/index/diy",
+    "app/pages/index/diy_form",
+    "app/pages/index/diy_form_result",
+    "app/pages/index/diy_form_detail",
+    "app/pages/index/close",
+    "app/pages/index/nosite",
+    "app/pages/pay/browser",
+    "app/pages/pay/result",
+    "app/pages/setting/index",
+    "app/pages/setting/authorization",
+    "app/pages/webview/index",
+    "app/pages/index/develop",
+    "app/pages/verify/index",
+    "app/pages/verify/verify",
+    "app/pages/verify/detail",
+    "app/pages/verify/record",
+    "app/pages/weapp/order_shipping",
+    "app/pages/friendspay/share",
+    "app/pages/friendspay/money",
+    "app/pages/addon-universal/index"
+  ],
+  "subPackages": [
+    {
+      "root": "app/components",
+      "pages": [
+        "pages/_mp_placeholder"
+      ]
+    },
+    {
+      "root": "app/pages/member",
+      "pages": [
+        "apply_cash_out",
+        "commission",
+        "balance",
+        "level",
+        "detailed_account",
+        "cash_out",
+        "cash_out_detail",
+        "index",
+        "personal",
+        "personal_form",
+        "point",
+        "point_detail",
+        "account",
+        "account_edit",
+        "address",
+        "address_edit",
+        "sign_in",
+        "contact"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "backgroundColor": "#F6F6F6",
+    "backgroundColorTop": "#F6F6F6",
+    "backgroundColorBottom": "#F6F6F6"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "app/pages/index/index"
+      },
+      {
+        "pagePath": "app/pages/index/nosite"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "为了更好地为您提供服务"
+    },
+    "scope.writePhotosAlbum": {
+      "desc": "为了更好地为您提供服务"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "getLocation",
+    "chooseAddress"
+  ],
+  "__usePrivacyCheck__": true,
+  "usingComponents": {
+    "layout-default-uni": "/layouts/default"
+  }
+}

@@ -85,22 +85,22 @@ watch(route, () => {
 }, { immediate: true })
 </script>
 
-<style lang="scss">
-.el-sub-menu{
+<style lang="scss" scoped>
+:deep(.el-sub-menu){
     .el-icon{
         // width: auto;
     }
 }
-.el-menu {
-    .el-sub-menu__title,
-    .el-menu-item {
+:deep(.el-menu) {
+    :deep(.el-sub-menu__title),
+    :deep(.el-menu-item) {
         &:hover {
             // background-color: #F1F5FF !important;
             color: var(--el-color-primary);
         }
     }
 
-    .el-icon.el-sub-menu__icon-arrow{
+    .el-icon:deep(.el-sub-menu__icon-arrow){
         font-size: 15px;
         top: 50%;
     }

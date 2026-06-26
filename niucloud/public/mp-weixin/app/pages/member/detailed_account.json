@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "流水明细",
+  "usingComponents": {
+    "mescroll-body": "../../../components/mescroll/mescroll-body/mescroll-body",
+    "mescroll-empty": "../../../components/mescroll/mescroll-empty/mescroll-empty",
+    "select-date": "../../../components/select-date/select-date"
+  }
+}

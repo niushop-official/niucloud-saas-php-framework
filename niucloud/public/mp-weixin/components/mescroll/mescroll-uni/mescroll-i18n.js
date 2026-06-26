@@ -1,0 +1,1 @@
+"use strict";const e=require("../../../common/vendor.js"),r={def:"zh",getType(){return e.index.getStorageSync("mescroll-i18n")||this.def},setType(r){e.index.setStorageSync("mescroll-i18n",r)}};exports.mescrollI18n=r;

@@ -1,0 +1,1 @@
+import{defineComponent as r,onMounted as n,openBlock as s,createElementBlock as u}from"vue";import{useRoute as c,useRouter as i}from"vue-router";const d=r({__name:"edit",setup(m){const t=c(),o=i();return n(()=>{const e=t.query.id;o.replace({path:"/site/sd_minsu/homestay",query:e?{id:e}:{}})}),(e,p)=>(s(),u("div"))}});export{d as default};

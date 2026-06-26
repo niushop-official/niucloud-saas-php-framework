@@ -1,0 +1,14 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "diy-group": "../../../addon/components/diy/group/index",
+    "loading-page": "../../../components/loading-page/loading-page",
+    "collect-tip": "../../../components/collect-tip/collect-tip",
+    "weixin-privacy-popup": "../../../components/wx-privacy-popup/wx-privacy-popup",
+    "tabbar": "../../../components/tabbar/tabbar"
+  },
+  "componentPlaceholder": {
+    "diy-group": "view"
+  }
+}

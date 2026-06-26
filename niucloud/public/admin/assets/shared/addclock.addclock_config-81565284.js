@@ -1,0 +1,37 @@
+const o = "ID", t = "是否开启", s = "请输入是否开启", c = "返佣金比例 首次加钟返佣比例", e = "请输入返佣金比例", i = "创建时间", n = "加钟设置", d = "编辑加钟设置", a = "确定要删除该数据吗？", p = "请选择开始时间", l = "请选择结束时间", m = "是", T = "否", r = "选择开启，将以以下设置的加钟返佣比例计算佣金，否则将以实际提成比例为准", f = "%", k = "若用户实际下单次数超过了后台设置的次数返佣比例，则超出的订单以最后一次设置的比例为准<br />例如：后台设置了首次加钟返佣75%，第二次加钟返佣比例80%，但是未设置第三次加钟的返佣比例<br />若用户已加钟2次，第三次加钟的返佣比例应按照80%", C = {
+  id: o,
+  isOpen: t,
+  isOpenPlaceholder: s,
+  commissionRatio: c,
+  commissionRatioPlaceholder: e,
+  createTime: i,
+  AddclockConfig: n,
+  updateAddclockConfig: d,
+  addclockConfigDeleteTips: a,
+  startDate: p,
+  endDate: l,
+  openTips: m,
+  closeTips: T,
+  is_openContentTips: r,
+  mitStips: f,
+  tipsText: k
+};
+export {
+  n as AddclockConfig,
+  a as addclockConfigDeleteTips,
+  T as closeTips,
+  c as commissionRatio,
+  e as commissionRatioPlaceholder,
+  i as createTime,
+  C as default,
+  l as endDate,
+  o as id,
+  t as isOpen,
+  s as isOpenPlaceholder,
+  r as is_openContentTips,
+  f as mitStips,
+  m as openTips,
+  p as startDate,
+  k as tipsText,
+  d as updateAddclockConfig
+};

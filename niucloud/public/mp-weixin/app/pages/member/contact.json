@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "客服",
+  "usingComponents": {
+    "nc-contact": "../../../components/nc-contact/nc-contact"
+  }
+}

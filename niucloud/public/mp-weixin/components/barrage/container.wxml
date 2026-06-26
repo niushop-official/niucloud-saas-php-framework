@@ -1,0 +1,1 @@
+<view class="danmu-container data-v-bf3a741f"><barrage-item wx:for="{{a}}" wx:for-item="item" wx:key="a" class="data-v-bf3a741f" u-i="{{item.b}}" bind:__l="__l" u-p="{{item.c}}" /></view>
