@@ -15,6 +15,18 @@
     </head>
     <body>
         <div id="app"><!--app-html--></div>
+        <script>
+            window.__ENV__ = {
+                VITE_APP_BASE_URL: "",
+                VITE_IMG_DOMAIN: "",
+                VITE_SITE_ID: "",
+                VITE_REQUEST_STORAGE_TOKEN_KEY: "",
+                VITE_REQUEST_HEADER_TOKEN_KEY: "",
+                VITE_REQUEST_HEADER_SITEID_KEY: "",
+                VITE_REQUEST_HEADER_CHANNEL_KEY: "",
+                VITE_APP_VERSION: ""
+            };
+        </script>
         <script type="module" src="/src/main.js"></script>
     </body>
 </html>

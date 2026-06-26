@@ -355,11 +355,11 @@ watch(route, () => {
 }, { immediate: true })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .one-menu{
     .aside-menu:not(.el-menu--collapse) {
         background-color: transparent;
-        .el-menu-item{
+        :deep(.el-menu-item){
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -395,10 +395,10 @@ watch(route, () => {
             }
         }
     }
-    .el-menu{
+    :deep(.el-menu){
         border: 0;
     }
-    .el-scrollbar{
+    :deep(.el-scrollbar){
         height: calc(100vh - 65px);
     }
 }
@@ -407,7 +407,7 @@ watch(route, () => {
         width: 190px;
         border: 0;
         padding-top: 10px;
-        .el-menu-item{
+        :deep(.el-menu-item){
             height: 40px;
             margin: 0 8px 2px;
             padding: 0 10px !important;
@@ -425,8 +425,8 @@ watch(route, () => {
                 color: var(--el-color-primary);
             }
         }
-        .el-sub-menu{
-            .el-sub-menu__title{
+        :deep(.el-sub-menu){
+            :deep(.el-sub-menu__title){
                 margin: 0 8px 2px;
                 height: 40px;
                 padding-left: 8px;
@@ -442,11 +442,11 @@ watch(route, () => {
                     color: var(--el-color-primary);
                 }
             }
-            .el-menu-item{
+            :deep(.el-menu-item){
                 padding-left: 20px !important;
             }
-            .el-sub-menu{
-                .el-sub-menu__title{
+            :deep(.el-sub-menu){
+                :deep(.el-sub-menu__title){
                     margin: 0 8px 2px;
                     height: 40px;
                     padding-left: 18px;
@@ -462,7 +462,7 @@ watch(route, () => {
                         color: var(--el-color-primary);
                     }
                 }
-                .el-menu-item{
+                :deep(.el-menu-item){
                     padding-left: 30px !important;
                 }
             }

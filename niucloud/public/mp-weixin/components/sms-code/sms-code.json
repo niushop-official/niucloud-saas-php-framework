@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-code": "../../node-modules/uview-plus/components/u-code/u-code",
+    "u-input": "../../node-modules/uview-plus/components/u-input/u-input",
+    "u-modal": "../../node-modules/uview-plus/components/u-modal/u-modal"
+  }
+}

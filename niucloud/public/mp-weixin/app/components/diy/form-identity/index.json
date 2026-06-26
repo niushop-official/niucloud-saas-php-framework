@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "form-privacy-pop": "../form-privacy-pop/index",
+    "form-identity-privacy": "../form-identity-privacy/index"
+  }
+}

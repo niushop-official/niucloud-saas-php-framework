@@ -1,1 +1,0 @@
-const o="关注",l="粉丝",n="请输入搜索关键词",s="取消关注",a="暂无关注",f="暂无粉丝",w="确定取消关注",e={follow:"关注",fans:"粉丝",searchTips:n,unFollow:s,noFollow:a,noFans:f,unfollowTips:w};export{e as default,l as fans,o as follow,f as noFans,a as noFollow,n as searchTips,s as unFollow,w as unfollowTips};

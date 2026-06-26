@@ -1,0 +1,1 @@
+<view ref="u-col" class="{{['u-col','data-v-c7ffda0b',a]}}" style="{{b}}" bindtap="{{c}}"><slot></slot></view>

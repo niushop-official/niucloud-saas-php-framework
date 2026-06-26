@@ -273,10 +273,18 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
-.el-sub-menu {
+<style lang="scss" scoped>
+:deep(.el-sub-menu) {
     .el-icon {
         width: auto;
     }
+}
+:deep(.el-menu-item) {
+    height: 40px!important;
+    line-height: 40px!important;
+}
+:deep(.el-sub-menu__title) {
+    height: 40px!important;
+    line-height: 40px!important;
 }
 </style>

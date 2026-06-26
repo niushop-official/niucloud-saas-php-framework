@@ -59,7 +59,7 @@ userStore.routers = userStore.routers.filter((item, index) => {
 // })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .logo-wrap {
     padding: 0;
     display: flex;
@@ -84,7 +84,7 @@ userStore.routers = userStore.routers.filter((item, index) => {
     flex: 1 !important;
     padding: 0 !important;
 
-    .el-menu {
+    :deep(.el-menu) {
         border-right: 0 !important;
     }
 }
@@ -100,15 +100,15 @@ userStore.routers = userStore.routers.filter((item, index) => {
         border-bottom: 2px solid #101117;
     }
 
-    .el-menu {
+    :deep(.el-menu) {
         background-color: #191a23;
 
-        .el-sub-menu {
+        :deep(.el-sub-menu) {
             background: transparent !important;
         }
 
-        .el-sub-menu__title,
-        .el-menu-item {
+        :deep(.el-sub-menu__title),
+        :deep(.el-menu-item) {
             background: transparent !important;
             color: #B7B7ba;
 
@@ -118,7 +118,7 @@ userStore.routers = userStore.routers.filter((item, index) => {
             }
         }
 
-        .el-menu-item.is-active {
+        :deep(.el-menu-item).is-active {
             color: #fff !important;
             background-color: var(--el-color-primary) !important;
         }

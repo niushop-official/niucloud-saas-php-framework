@@ -173,10 +173,7 @@ class CoreAppCloudService extends CoreCloudBaseService
 
                 $addon_dir = $dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $addon;
                 if (is_dir($addon_dir)) del_target_dir($addon_dir, true);
-
-                // 编译 diy-group 自定义组件代码文件
-                $this->compileDiyComponentsCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-
+                
                 // 编译 加载插件标题语言包
                 $this->compileLocale($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
 

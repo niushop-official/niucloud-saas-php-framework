@@ -4,6 +4,7 @@ import { getMemberInfo as getMemberInfoApi, bindMobile as bindMobileApi } from '
 import { logout } from '@/app/api/auth'
 import useConfigStore from '@/stores/config'
 import { useLogin } from '@/hooks/useLogin'
+import envConfig from '@/utils/config'
 
 interface Member {
     token: string | null
@@ -14,7 +15,7 @@ interface Member {
 const useMemberStore = defineStore('member', {
     state: (): Member => {
         return {
-            token: uni.getStorageSync(import.meta.env.VITE_REQUEST_STORAGE_TOKEN_KEY),
+            token: uni.getStorageSync(envConfig.VITE_REQUEST_STORAGE_TOKEN_KEY),
             info: null,
             levelList: null
         }

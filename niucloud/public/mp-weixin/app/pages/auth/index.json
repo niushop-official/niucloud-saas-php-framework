@@ -1,0 +1,13 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "登录",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "weixin-privacy-popup": "../../../components/wx-privacy-popup/wx-privacy-popup",
+    "u-checkbox": "../../../node-modules/uview-plus/components/u-checkbox/u-checkbox",
+    "u-checkbox-group": "../../../node-modules/uview-plus/components/u-checkbox-group/u-checkbox-group",
+    "uni-popup": "../../../uni_modules/uni-popup/components/uni-popup/uni-popup",
+    "information-filling": "../../../components/information-filling/information-filling",
+    "bind-mobile": "../../../components/bind-mobile/bind-mobile"
+  }
+}

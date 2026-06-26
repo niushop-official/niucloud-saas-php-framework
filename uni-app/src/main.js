@@ -2,7 +2,7 @@ import App from './App'
 
 import { createSSRApp } from 'vue'
 import * as Pinia from 'pinia'
-import locale from './locale'
+import locale from '@/locale'
 import uviewPlus from 'uview-plus'
 import '@/styles/index.scss'
 import 'virtual:windi.css'

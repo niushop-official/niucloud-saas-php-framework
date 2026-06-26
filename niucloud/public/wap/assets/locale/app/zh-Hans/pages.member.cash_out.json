@@ -1,0 +1,12 @@
+{
+	"applyTime": "申请时间",
+	"toBeReviewed": "审核中，请耐心等待...",
+	"toBeTransfer": "转账中，请耐心等待...",
+	"transfer": "已转账，请及时查收",
+	"cancelApply": "提现已取消",
+	"balanceDetail": "余额记录",
+	"commissionDetail": "佣金记录",
+	"emptyTip": "暂无提现记录",
+	"commissemptyTip": "暂无佣金记录",
+	"rechargeType":"提现方式："
+}

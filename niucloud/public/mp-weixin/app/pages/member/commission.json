@@ -1,0 +1,11 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "我的佣金",
+  "usingComponents": {
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar",
+    "loading-page": "../../../components/loading-page/loading-page",
+    "mescroll-body": "../../../components/mescroll/mescroll-body/mescroll-body",
+    "mescroll-empty": "../../../components/mescroll/mescroll-empty/mescroll-empty",
+    "select-date": "../../../components/select-date/select-date"
+  }
+}

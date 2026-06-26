@@ -1,0 +1,1 @@
+import{_ as o}from"./material-move.vue_vue_type_style_index_0_lang-3191e7fc.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./material-fd21ea27.js";import"./index-3c23140f.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

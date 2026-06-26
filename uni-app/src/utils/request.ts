@@ -2,6 +2,7 @@ import useMemberStore from '@/stores/member'
 import { t } from '@/locale'
 import { getToken, getAppChannel, getSiteId, redirect, currRoute, isUrl } from './common'
 import qs from 'qs'
+import envConfig from '@/utils/config'
 
 interface RequestConfig {
     showErrorMessage?: boolean
@@ -21,20 +22,20 @@ class Request {
 
     constructor() {
         // #ifdef H5
-        this.baseUrl = import.meta.env.VITE_APP_BASE_URL || `${ location.origin }/api/`
+        this.baseUrl = envConfig.VITE_APP_BASE_URL || `${ location.origin }/api/`
         // #endif
         // #ifndef H5
-        this.baseUrl = import.meta.env.VITE_APP_BASE_URL
+        this.baseUrl = envConfig.VITE_APP_BASE_URL
         // #endif
         this.baseUrl.substr(-1) != '/' && (this.baseUrl += '/')
 
         try {
             if (process.env.NODE_ENV == 'development') {
-                this.config.header[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(import.meta.env.VITE_SITE_ID || uni.getStorageSync('wap_site_id'))
+                this.config.header[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(envConfig.VITE_SITE_ID || uni.getStorageSync('wap_site_id'))
             } else {
-                this.config.header[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(import.meta.env.VITE_SITE_ID)
+                this.config.header[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(envConfig.VITE_SITE_ID)
             }
-            this.config.header[import.meta.env.VITE_REQUEST_HEADER_CHANNEL_KEY] = getAppChannel()
+            this.config.header[envConfig.VITE_REQUEST_HEADER_CHANNEL_KEY] = getAppChannel()
         } catch (e) {
         }
 
@@ -46,12 +47,12 @@ class Request {
     private requestInterceptors() {
         // 携带token site-id
         try {
-            getToken() && (this.config.header[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken())
-            this.config.header[import.meta.env.VITE_REQUEST_HEADER_CHANNEL_KEY] = getAppChannel()
+            getToken() && (this.config.header[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken())
+            this.config.header[envConfig.VITE_REQUEST_HEADER_CHANNEL_KEY] = getAppChannel()
             if (process.env.NODE_ENV == 'development') {
-                this.config.header[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(import.meta.env.VITE_SITE_ID || uni.getStorageSync('wap_site_id'))
+                this.config.header[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(envConfig.VITE_SITE_ID || uni.getStorageSync('wap_site_id'))
             } else {
-                this.config.header[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(import.meta.env.VITE_SITE_ID)
+                this.config.header[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = getSiteId(envConfig.VITE_SITE_ID)
             }
         } catch (e) {
         }

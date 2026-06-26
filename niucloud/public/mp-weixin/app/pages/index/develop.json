@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "开发环境配置",
+  "usingComponents": {
+    "u-input": "../../../node-modules/uview-plus/components/u-input/u-input"
+  }
+}

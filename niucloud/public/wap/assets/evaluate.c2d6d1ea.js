@@ -1,1 +1,0 @@
-import{an as e}from"./index-6911ef17.js";function r(r){return e.post("home_service/order/evaluate",r,{showErrorMessage:!0,showSuccessMessage:!0})}function s(r){return e.get("home_service/order/evaluate",r)}export{s as g,r as s};

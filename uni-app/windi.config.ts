@@ -4,7 +4,15 @@ export default defineConfig({
     prefixer: false,
     preflight: false,
     extract: {
-        exclude: ['node_modules', '.git', 'dist']
+        exclude: [
+            'node_modules',
+            '.git',
+            'dist',
+            '.build',
+            '.build/**',
+            '**/.build/**',
+            '**/addon-pages-backup/**'
+        ]
     },
     theme: {
         extend: {

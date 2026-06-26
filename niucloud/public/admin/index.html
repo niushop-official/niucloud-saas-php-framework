@@ -1,15 +1,52 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
   <head>
+    <script type="importmap">
+{
+  "imports": {
+    "vue": "/admin/assets/shared/vue.js",
+    "vue-router": "/admin/assets/shared/vue-router.js",
+    "pinia": "/admin/assets/shared/pinia.js",
+    "element-plus": "/admin/assets/shared/element-plus.js",
+    "element-plus/es": "/admin/assets/shared/element-plus.js",
+    "element-plus/dist/locale/zh-cn.mjs": "/admin/assets/shared/locale/zh-cn.mjs",
+    "element-plus/dist/locale/en.mjs": "/admin/assets/shared/locale/en.mjs",
+    "@element-plus/icons-vue": "/admin/assets/shared/icons-vue.js",
+    "axios": "/admin/assets/shared/axios.js",
+    "vue-i18n": "/admin/assets/shared/vue-i18n.js",
+    "@/lang": "/admin/assets/shared/admin-lang.js",
+    "@/utils/common": "/admin/assets/shared/core-shared.js",
+    "@/utils/request": "/admin/assets/shared/core-shared.js",
+    "@/app/api/diy": "/admin/assets/shared/core-shared.js",
+    "@/app/api/sys": "/admin/assets/shared/core-shared.js",
+    "@/app/api/member": "/admin/assets/shared/core-shared.js",
+    "@/app/api/site": "/admin/assets/shared/core-shared.js",
+    "@/components/upload-image": "/admin/assets/shared/core-shared.js",
+    "@/components/diy-page": "/admin/assets/shared/core-shared.js",
+    "@/components/map-selector": "/admin/assets/shared/core-shared.js",
+    "@/components/editor": "/admin/assets/shared/core-shared.js"
+  }
+}
+</script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image" href="/admin/niucloud.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <script type="module" crossorigin src="/admin/assets/index-8eead49b.js"></script>
-    <link rel="stylesheet" href="/admin/assets/index-d69752ab.css">
+    <script type="module" crossorigin src="/admin/assets/index-3c23140f.js"></script>
+    <link rel="stylesheet" href="/admin/assets/index-902ceaab.css">
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // 外挂配置 — 部署后可直接修改此处的值，无需重新编译
+      window.__ENV__ = {
+        VITE_APP_BASE_URL: "",
+        VITE_IMG_DOMAIN: "",
+        VITE_REQUEST_HEADER_TOKEN_KEY: "token",
+        VITE_REQUEST_HEADER_SITEID_KEY: "site-id",
+        VITE_DETAULT_TITLE: ""
+      };
+    </script>
     
   </body>
 </html>

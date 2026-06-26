@@ -29,7 +29,7 @@ watch(route, () => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .layout-aside {
     &.bright {
         background-color: #F5F7F9;

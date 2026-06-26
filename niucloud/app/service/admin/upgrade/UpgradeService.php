@@ -66,10 +66,9 @@ class UpgradeService extends BaseAdminService
         'backupSql' => [ 'step' => 'backupSql', 'title' => '' ],
         'coverCode' => [ 'step' => 'coverCode', 'title' => '合并更新文件' ],
         'handleUniapp' => [ 'step' => 'handleUniapp', 'title' => '处理uniapp' ],
+        'installDepend' => ['step' => 'installDepend', 'title' => '合并依赖'],
         'refreshMenu' => [ 'step' => 'refreshMenu', 'title' => '刷新菜单' ],
         'installSchedule' => [ 'step' => 'installSchedule', 'title' => '安装计划任务' ],
-        'cloudBuild' => [ 'step' => 'cloudBuild', 'title' => '开始云编译' ],
-        'gteCloudBuildLog' => [ 'step' => 'gteCloudBuildLog', 'title' => '' ],
         'upgradeComplete' => [ 'step' => 'upgradeComplete', 'title' => '升级完成' ]
     ];
 
@@ -211,21 +210,6 @@ class UpgradeService extends BaseAdminService
         $upgrade[ 'app_key' ] = $upgrade_content['content'][0]['app']['app_key'];
         $upgrade[ 'version' ] = $upgrade_content['content'][0]['version'];
 
-//        if (!$addon) {
-//            $upgrade[ 'app_key' ] = AddonDict::FRAMEWORK_KEY;
-//            $upgrade[ 'version' ] = config('version.version');
-//        } else {
-//            $upgrade[ 'app_key' ] = $addon;
-//            $upgrade[ 'version' ] = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('version');
-//            $upgrade_title = ( new Addon() )->where([ [ 'key', '=', $addon ] ])->value('title');
-//
-//            // 判断框架版本是否低于插件支持版本
-//            $last_version = $upgrade_content[ 'version_list' ][ count($upgrade_content[ 'version_list' ]) - 1 ];
-//            if (str_replace('.', '', config('version.version')) < str_replace('.', '', $last_version[ 'niucloud_version' ][ 'version_no' ])) {
-//                throw new CommonException('BEFORE_UPGRADING_NEED_UPGRADE_FRAMEWORK');
-//            }
-//        }
-
         $response = ( new CoreAddonCloudService() )->upgradeAddon($upgrade);
         if (isset($response[ 'code' ]) && $response[ 'code' ] == 0) throw new CommonException($response[ 'msg' ]);
 
@@ -241,16 +225,6 @@ class UpgradeService extends BaseAdminService
         if (!$is_need_backup) {
             unset($this->steps['backupCode']);
             unset($this->steps['backupSql']);
-        }
-
-        // 是否需要云编译
-        $is_need_cloudbuild = $data['is_need_cloudbuild'] ?? true;
-        if (!$is_need_cloudbuild) {
-            unset($this->steps['cloudBuild']);
-            unset($this->steps['gteCloudBuildLog']);
-        } else {
-            // 校验云编译服务
-            (new CloudService())->checkLocal();
         }
 
         try {
@@ -464,14 +438,12 @@ class UpgradeService extends BaseAdminService
                     @unlink($to_dir . $file);
                 }
             }
-            // 合并依赖
-            $this->installDepend($code_dir . $version_no, array_column($change, 2));
         }
 
         // 覆盖文件
         if (is_dir($code_dir . $version_no)) {
             // 忽略环境变量文件
-            $exclude_files = [ '.env.development', '.env.production', '.env', '.env.dev', '.env.product', 'favicon.ico', 'niucloud.ico' ];
+            $exclude_files = [ '.env.development', '.env.production', '.env', '.env.dev', '.env.product', 'favicon.ico', 'niucloud.ico', 'index.json' ];
             dir_copy($code_dir . $version_no, $to_dir, exclude_files: $exclude_files);
             if ($addon != AddonDict::FRAMEWORK_KEY) {
                 ( new CoreAddonInstallService($addon) )->installDir();
@@ -514,58 +486,54 @@ class UpgradeService extends BaseAdminService
      * @param string $version_no
      * @return void
      */
-    public function installDepend(string $dir, array $change_files)
+    public function installDepend()
     {
-        $addon = $this->upgrade_task[ 'upgrade' ][ 'app_key' ];
         $depend_service = new CoreDependService();
+        $addon_list = ( new CoreAddonService() )->getInstallAddonList();
 
-        if ($addon == AddonDict::FRAMEWORK_KEY) {
-            $composer = '/niucloud/composer.json';
-            $admin_package = '/admin/package.json';
-            $web_package = '/web/package.json';
-            $uniapp_package = '/uni-app/package.json';
-        } else {
-            $composer = "/niucloud/addon/{$addon}/package/composer.json";
-            $admin_package = "/niucloud/addon/{$addon}/package/admin-package.json";
-            $web_package = "/niucloud/addon/{$addon}/package/web-package.json";
-            $uniapp_package = "/niucloud/addon/{$addon}/package/uni-app-package.json";
-        }
+        $composer = 'niucloud'. DIRECTORY_SEPARATOR .'composer.json';
+        $admin_package = 'admin'. DIRECTORY_SEPARATOR .'package.json';
+        $web_package = 'web'. DIRECTORY_SEPARATOR .'package.json';
+        $uniapp_package = 'uni-app'. DIRECTORY_SEPARATOR .'package.json';
 
-        if (in_array($composer, $change_files)) {
-            $original = $depend_service->getComposerContent();
-            $new = $depend_service->jsonFileToArray($dir . $composer);
-            foreach ($new as $name => $value) {
-                $original[ $name ] = isset($original[ $name ]) && is_array($original[ $name ]) ? array_map('unserialize', array_unique(array_map('serialize', array_merge($original[ $name ], $new[ $name ])))) : $new[ $name ];
+        $composer_original = $depend_service->getComposerContent();
+        $admin_original = $depend_service->getNpmContent('admin');
+        $web_original = $depend_service->getNpmContent('web');
+        $uni_app_original = $depend_service->getNpmContent('uni-app');
+
+        foreach ($addon_list as $addon => $item) {
+            $new = $depend_service->jsonFileToArray($this->geAddonPackagePath($addon) . 'composer.json');
+            if (!empty($new)) {
+                foreach ($new as $name => $value) {
+                    $composer_original[ $name ] = isset($composer_original[ $name ]) && is_array($composer_original[ $name ]) ? array_map('unserialize', array_unique(array_map('serialize', array_merge($composer_original[ $name ], $new[ $name ])))) : $new[ $name ];
+                }
             }
-            $depend_service->writeArrayToJsonFile($original, $dir . $composer);
-        }
-        if (in_array($admin_package, $change_files)) {
-            $original = $depend_service->getNpmContent('admin');
-            $new = $depend_service->jsonFileToArray($dir . $admin_package);
 
-            foreach ($new as $name => $value) {
-                $original[ $name ] = isset($original[ $name ]) && is_array($original[ $name ]) ? array_merge($original[ $name ], $new[ $name ]) : $new[ $name ];
+            $new = $depend_service->jsonFileToArray($this->geAddonPackagePath($addon) . 'admin-package.json');
+            if (!empty($new)) {
+                foreach ($new as $name => $value) {
+                    $admin_original[ $name ] = isset($admin_original[ $name ]) && is_array($admin_original[ $name ]) ? array_merge($admin_original[ $name ], $new[ $name ]) : $new[ $name ];
+                }
             }
-            $depend_service->writeArrayToJsonFile($original, $dir . $admin_package);
-        }
-        if (in_array($web_package, $change_files)) {
-            $original = $depend_service->getNpmContent('web');
-            $new = $depend_service->jsonFileToArray($dir . $web_package);
 
-            foreach ($new as $name => $value) {
-                $original[ $name ] = isset($original[ $name ]) && is_array($original[ $name ]) ? array_merge($original[ $name ], $new[ $name ]) : $new[ $name ];
+            $new = $depend_service->jsonFileToArray($this->geAddonPackagePath($addon) . 'web-package.json');
+            if (!empty($new)) {
+                foreach ($new as $name => $value) {
+                    $web_original[ $name ] = isset($web_original[ $name ]) && is_array($web_original[ $name ]) ? array_merge($web_original[ $name ], $new[ $name ]) : $new[ $name ];
+                }
             }
-            $depend_service->writeArrayToJsonFile($original, $dir . $web_package);
-        }
-        if (in_array($uniapp_package, $change_files)) {
-            $original = $depend_service->getNpmContent('uni-app');
-            $new = $depend_service->jsonFileToArray($dir . $uniapp_package);
 
-            foreach ($new as $name => $value) {
-                $original[ $name ] = isset($original[ $name ]) && is_array($original[ $name ]) ? array_merge($original[ $name ], $new[ $name ]) : $new[ $name ];
+            $new = $depend_service->jsonFileToArray($this->geAddonPackagePath($addon) . 'uni-app-package.json');
+            if (!empty($new)) {
+                foreach ($new as $name => $value) {
+                    $uni_app_original[ $name ] = isset($uni_app_original[ $name ]) && is_array($uni_app_original[ $name ]) ? array_merge($uni_app_original[ $name ], $new[ $name ]) : $new[ $name ];
+                }
             }
-            $depend_service->writeArrayToJsonFile($original, $dir . $uniapp_package);
         }
+        $depend_service->writeArrayToJsonFile($composer_original, $this->root_path . $composer);
+        $depend_service->writeArrayToJsonFile($admin_original, $this->root_path . $admin_package);
+        $depend_service->writeArrayToJsonFile($web_original, $this->root_path . $web_package);
+        $depend_service->writeArrayToJsonFile($uni_app_original, $this->root_path . $uniapp_package);
     }
 
     /**
@@ -581,36 +549,17 @@ class UpgradeService extends BaseAdminService
         dir_copy($code_dir . 'uni-app', $this->root_path . 'uni-app', exclude_files: $exclude_files);
 
         $addon_list = ( new CoreAddonService() )->getInstallAddonList();
-        $depend_service = new CoreDependService();
 
         if (!empty($addon_list)) {
 
             foreach ($addon_list as $addon => $item) {
                 $this->addon = $addon;
 
-                // 编译 diy-group 自定义组件代码文件
-                $this->compileDiyComponentsCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-
                 // 编译 pages.json 页面路由代码文件
                 $this->installPageCode($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR);
 
                 // 编译 加载插件标题语言包
                 $this->compileLocale($this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-
-                // 合并插件依赖
-                $addon_uniapp_package = str_replace('/', DIRECTORY_SEPARATOR, project_path() . "niucloud/addon/{$addon}/package/uni-app-package.json");
-
-                if (file_exists($addon_uniapp_package)) {
-                    $original = $depend_service->getNpmContent('uni-app');
-                    $new = $depend_service->jsonFileToArray($addon_uniapp_package);
-
-                    foreach ($new as $name => $value) {
-                        $original[ $name ] = isset($original[ $name ]) && is_array($original[ $name ]) ? array_merge($original[ $name ], $new[ $name ]) : $new[ $name ];
-                    }
-
-                    $uniapp_package = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'package.json';
-                    $depend_service->writeArrayToJsonFile($original, $uniapp_package);
-                }
             }
         }
 

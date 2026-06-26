@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "会员等级",
+  "usingComponents": {
+    "loading-page": "../../../components/loading-page/loading-page",
+    "top-tabbar": "../../../components/top-tabbar/top-tabbar"
+  }
+}

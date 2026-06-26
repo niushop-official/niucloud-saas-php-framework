@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "设置",
+  "usingComponents": {
+    "u-cell": "../../../node-modules/uview-plus/components/u-cell/u-cell",
+    "u-cell-group": "../../../node-modules/uview-plus/components/u-cell-group/u-cell-group",
+    "u-action-sheet": "../../../node-modules/uview-plus/components/u-action-sheet/u-action-sheet"
+  }
+}

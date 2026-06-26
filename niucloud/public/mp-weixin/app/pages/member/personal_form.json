@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "navigationBarTitleText": "个人资料",
+  "usingComponents": {
+    "loading-page": "../../../components/loading-page/loading-page",
+    "weixin-privacy-popup": "../../../components/wx-privacy-popup/wx-privacy-popup",
+    "diy-group": "../../../addon/components/diy/group/index"
+  }
+}

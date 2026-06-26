@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "up-input": "../u-input/u-input",
+    "u-toolbar": "../u-toolbar/u-toolbar",
+    "u-loading-icon": "../u-loading-icon/u-loading-icon",
+    "u-popup": "../u-popup/u-popup"
+  }
+}

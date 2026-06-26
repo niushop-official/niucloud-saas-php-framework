@@ -1,1 +1,0 @@
-const t="添加照片",e="添加封面",o="添加标题",a="分享您的体验和心得...",d="话题",r="关联宝贝",c="社区分类",i="发布",n={addPhoto:t,addCover:e,addTitle:o,contentTips:a,topic:"话题",treasure:r,communityCategory:c,create:"发布"};export{e as addCover,t as addPhoto,o as addTitle,c as communityCategory,a as contentTips,i as create,n as default,d as topic,r as treasure};

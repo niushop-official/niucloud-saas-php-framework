@@ -377,13 +377,13 @@ watch(route, () => {
 }, { immediate: true })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .one-menu {
 
     .aside-menu:not(.el-menu--collapse) {
         background-color: transparent;
 
-        .el-menu-item {
+        :deep(.el-menu-item) {
             font-size: 14px;
             height: 40px;
             margin-bottom: 4px;
@@ -408,11 +408,11 @@ watch(route, () => {
         }
     }
 
-    .el-menu {
+    :deep(.el-menu) {
         border: 0;
     }
 
-    .el-scrollbar {
+    :deep(.el-scrollbar) {
         height: calc(100vh - 65px);
     }
 }
@@ -424,7 +424,7 @@ watch(route, () => {
         padding-top: 16px;
         border: 0;
 
-        .el-menu-item {
+        :deep(.el-menu-item) {
             height: 36px;
             margin: 0 12px 4px;
             padding: 0 !important;
@@ -445,10 +445,10 @@ watch(route, () => {
             }
         }
 
-        .el-sub-menu {
+        :deep(.el-sub-menu) {
             margin-bottom: 8px;
 
-            .el-sub-menu__title {
+            :deep(.el-sub-menu__title) {
                 height: 36px;
                 margin: 0 8px 4px;
                 padding-left: 0;
@@ -465,19 +465,19 @@ watch(route, () => {
                     color: var(--el-color-primary);
                     background-color: var(--el-color-primary-light-9) !important;
                 }
-                .el-icon.el-sub-menu__icon-arrow {
+                .el-icon:deep(.el-sub-menu__icon-arrow) {
                     right: 5px;
                 }
             }
 
-            .el-menu-item {
+            :deep(.el-menu-item) {
                 padding-left: 20px !important;
                 span{
                     margin-left: 0 !important;
                 }
             }
-            .el-sub-menu{
-                .el-sub-menu__title{
+            :deep(.el-sub-menu){
+                :deep(.el-sub-menu__title){
                     margin: 0 8px 2px;
                     height: 40px;
                     padding-left: 18px;
@@ -493,7 +493,7 @@ watch(route, () => {
                         color: var(--el-color-primary);
                     }
                 }
-                .el-menu-item{
+                :deep(.el-menu-item){
                     padding-left: 40px !important;
                     span{
                         margin-left: 0 !important;

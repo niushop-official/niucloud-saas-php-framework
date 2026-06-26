@@ -15,7 +15,7 @@
                 <div class="flex-1 h-0 flex justify-center items-center flex-col">
                     <el-result icon="success" title="上传成功">
                         <template #sub-title>
-                            <p class="text-[16px]">小程序上传成功，耗时 {{ formattedDuration }}</p>
+                            <p class="text-[16px]">小程序上传成功</p>
                         </template>
                         <template #extra>
                             <el-button type="primary" @click="handleComplete">完成</el-button>

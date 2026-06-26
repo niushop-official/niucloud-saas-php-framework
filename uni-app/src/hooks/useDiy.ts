@@ -1,13 +1,18 @@
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, inject, watch, type Ref } from 'vue';
 import { onLoad, onShow, onHide, onPageScroll, onUnload } from '@dcloudio/uni-app';
 import { img, handleOnloadParams } from '@/utils/common';
 import { getDiyInfo } from '@/app/api/diy';
 import useDiyStore from '@/app/stores/diy';
+import { getUni } from '@/utils/uni-runtime';
+import { ADDON_PAGE_QUERY_KEY } from '@/utils/addon-page-lifecycle';
+import { resolveDecorateMode } from '@/utils/diy-decorate-bridge';
+import { preloadMpDiySubPackages } from '@/utils/mp-diy-preload';
 
 export function useDiy(params: any = {}) {
 
     const loading = ref(true);
     const diyStore = useDiyStore();
+    const addonPageQuery = inject<Ref<Record<string, unknown>> | null>(ADDON_PAGE_QUERY_KEY, null);
 
     const id = ref(0)
     const name = ref(params.name || '')
@@ -59,19 +64,106 @@ export function useDiy(params: any = {}) {
         return style;
     };
 
+    function applyDiyResponse(res: any, afterApply?: (data: any) => void) {
+        Object.assign(requestData, res.data);
+        if (!requestData.value) {
+            loading.value = false
+            if (afterApply) afterApply(requestData)
+            return
+        }
+
+        diyData.pageMode = requestData.mode;
+        diyData.title = requestData.title;
+
+        const sources = JSON.parse(requestData.value);
+
+        diyData.global = sources.global;
+        diyData.global.id = requestData.id;
+        diyData.global.site_id = requestData.site_id;
+        diyData.global.type = requestData.type;
+
+        if (diyData.global.popWindow && diyData.global.popWindow.show) {
+            diyData.global.popWindow.id = requestData.id;
+        }
+
+        diyData.value = sources.value;
+        diyData.value.forEach((item: any) => {
+            item.pageStyle = '';
+            item.componentIsShow = true
+            if (item.pageStartBgColor) {
+                if (item.pageStartBgColor && item.pageEndBgColor) item.pageStyle += `background:linear-gradient(${ item.pageGradientAngle },${ item.pageStartBgColor },${ item.pageEndBgColor });`;
+                else item.pageStyle += 'background-color:' + item.pageStartBgColor + ';';
+            }
+
+            if (item.margin) {
+                if (item.margin.top > 0) {
+                    item.pageStyle += 'padding-top:' + item.margin.top * 2 + 'rpx' + ';';
+                }
+                item.pageStyle += 'padding-bottom:' + item.margin.bottom * 2 + 'rpx' + ';';
+                item.pageStyle += 'padding-right:' + item.margin.both * 2 + 'rpx' + ';';
+                item.pageStyle += 'padding-left:' + item.margin.both * 2 + 'rpx' + ';';
+            }
+        });
+
+        diyStore.global = diyData.global
+        diyStore.value = diyData.value
+
+        isShowTopTabbar.value = diyData.value.some((item: any) => {
+            return item && item.position && item.position == 'top_fixed'
+        });
+
+        getUni().setNavigationBarTitle({
+            title: diyData.title
+        });
+
+        loading.value = false;
+        if (afterApply) afterApply(requestData)
+    }
+
+    function fetchDiyInfo(callback: any = null) {
+        getDiyInfo({
+            id: id.value,
+            name: name.value,
+            template: template.value
+        }).then((res: any) => {
+            applyDiyResponse(res, callback)
+        }).catch(() => {
+            loading.value = false
+        })
+    }
+
+    function syncDecorateDataFromStore() {
+        if (diyStore.mode !== 'decorate') return
+        diyData.pageMode = diyStore.pageMode
+        diyData.global = diyStore.global
+        diyData.value = diyStore.value
+    }
+
+    // #ifdef H5
+    watch(
+        () => [diyStore.mode, diyStore.pageMode, diyStore.global, diyStore.value] as const,
+        () => syncDecorateDataFromStore(),
+        { deep: true, immediate: true }
+    )
+    // #endif
+
     // 监听页面加载
     const onLoadLifeCycle = () => {
         onLoad((option: any) => {
             // #ifdef MP-WEIXIN
             // 处理小程序场景值参数
             option = handleOnloadParams(option);
+            preloadMpDiySubPackages()
             // #endif
 
             // #ifdef H5
-            // 装修模式
-            diyStore.mode = option.mode || '';
+            if (!option.mode && addonPageQuery?.value?.mode) {
+                option.mode = addonPageQuery.value.mode
+            }
+            diyStore.mode = resolveDecorateMode(option);
             if (diyStore.mode == 'decorate') {
                 loading.value = false;
+                syncDecorateDataFromStore()
             }
             // #endif
 
@@ -98,70 +190,18 @@ export function useDiy(params: any = {}) {
             }
             /******** 解决跳转自定义页面空白问题-第二步-end **********/
 
-            // 装修模式
+            // #ifdef H5
+            if (!diyStore.mode) {
+                diyStore.mode = resolveDecorateMode({})
+            }
+            // #endif
+
+            // 装修模式：postMessage 与后台同步，数据由父页面推送
             if (diyStore.mode == 'decorate') {
                 diyStore.init();
+                syncDecorateDataFromStore()
             } else {
-                getDiyInfo({
-                    id: id.value,
-                    name: name.value,
-                    template: template.value
-                }).then((res: any) => {
-                    Object.assign(requestData, res.data);
-                    if (requestData.value) {
-                        diyData.pageMode = requestData.mode;
-                        diyData.title = requestData.title;
-
-                        let sources = JSON.parse(requestData.value); // todo diy的结构应该后台处理好，前端就不需要再转换了
-
-                        diyData.global = sources.global;
-
-                        diyData.global.id = requestData.id;
-                        diyData.global.site_id = requestData.site_id;
-                        diyData.global.type = requestData.type;
-
-                        // 用于区分微页面之间弹窗的id
-                        if (diyData.global.popWindow && diyData.global.popWindow.show) {
-                            diyData.global.popWindow.id = requestData.id;
-                        }
-                        
-                        diyData.value = sources.value;
-                        diyData.value.forEach((item: any, index) => {
-                            item.pageStyle = '';
-                            item.componentIsShow = true // 是否显示
-                            if (item.pageStartBgColor) {
-                                if (item.pageStartBgColor && item.pageEndBgColor) item.pageStyle += `background:linear-gradient(${ item.pageGradientAngle },${ item.pageStartBgColor },${ item.pageEndBgColor });`;
-                                else item.pageStyle += 'background-color:' + item.pageStartBgColor + ';';
-                            }
-
-                            if (item.margin) {
-                                if (item.margin.top > 0) {
-                                    item.pageStyle += 'padding-top:' + item.margin.top * 2 + 'rpx' + ';';
-                                }
-                                item.pageStyle += 'padding-bottom:' + item.margin.bottom * 2 + 'rpx' + ';';
-                                item.pageStyle += 'padding-right:' + item.margin.both * 2 + 'rpx' + ';';
-                                item.pageStyle += 'padding-left:' + item.margin.both * 2 + 'rpx' + ';';
-                            }
-                        });
-                        
-                        diyStore.global = diyData.global
-                        diyStore.value = diyData.value
-
-                        // 控制自定义头部是否出现 | 微信小程序
-                        isShowTopTabbar.value = diyData.value.some((item: any) => {
-                            return item && item.position && item.position == 'top_fixed'
-                        });
-
-                        uni.setNavigationBarTitle({
-                            title: diyData.title
-                        });
-                    }
-
-                    loading.value = false;
-
-                    if (callback) callback(requestData)
-
-                });
+                fetchDiyInfo(callback)
             }
         })
     }
@@ -215,7 +255,9 @@ export function useDiy(params: any = {}) {
 
     return {
         getLoading,
-        data: data.value,
+        get data() {
+            return data.value
+        },
         isShowTopTabbar,
         pageStyle,
         onLoad: onLoadLifeCycle,

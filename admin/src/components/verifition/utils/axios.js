@@ -1,6 +1,7 @@
 import axios from 'axios'
+import envConfig from '@/utils/config'
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_BASE_URL
+axios.defaults.baseURL = envConfig.VITE_APP_BASE_URL
 
 const service = axios.create({
     timeout: 40000,

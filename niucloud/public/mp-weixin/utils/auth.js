@@ -1,0 +1,1 @@
+"use strict";const e=require("../hooks/useLogin.js"),s=require("./common.js"),o=require("./pages.js"),i=e.useLogin();exports.checkNeedLogin=function(e){o.getNeedLoginPages().includes(e.path)&&!s.getToken()&&setTimeout(()=>{i.setLoginBack({url:e.path,param:e.query||{}})},100)};

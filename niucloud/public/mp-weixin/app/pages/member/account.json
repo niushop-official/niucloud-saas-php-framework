@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "会员账户",
+  "usingComponents": {
+    "u-swipe-action-item": "../../../node-modules/uview-plus/components/u-swipe-action-item/u-swipe-action-item",
+    "mescroll-body": "../../../components/mescroll/mescroll-body/mescroll-body"
+  }
+}

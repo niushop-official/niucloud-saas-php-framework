@@ -1,1 +1,0 @@
-const e="去抢购",o="没有更多内容啦~",r="已售",t="订单号",a="实付款",d="详情",s={reserveBtn:"去抢购",noHomeAddress:o,soldOut:"已售",orderNo:"订单号",actualPayment:"实付款",orderDetail:"详情"};export{a as actualPayment,s as default,o as noHomeAddress,d as orderDetail,t as orderNo,e as reserveBtn,r as soldOut};

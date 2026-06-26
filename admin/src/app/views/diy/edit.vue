@@ -213,7 +213,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRaw, watch, inject } from 'vue'
+import { ref, reactive, toRaw, watch, inject, defineAsyncComponent } from 'vue'
 import { t } from '@/lang'
 import { ArrowLeft } from "@element-plus/icons-vue"
 import { img } from '@/utils/common'
@@ -296,10 +296,14 @@ const goBack = () => {
 
 // 动态加载后台自定义组件编辑
 const modulesFiles = import.meta.glob('./components/*.vue', { eager: true })
-const addonModulesFiles = import.meta.glob('@/addon/**/views/diy/components/*.vue', { eager: true })
-addonModulesFiles && Object.assign(modulesFiles, addonModulesFiles)
 
-const modules = {}
+// 开发环境：直接 glob 插件源码
+if (import.meta.env.DEV) {
+    const addonModulesFiles = import.meta.glob('@/addon/**/views/diy/components/*.vue', { eager: true })
+    Object.assign(modulesFiles, addonModulesFiles)
+}
+
+const modules: Record<string, any> = {}
 for (const [key, value] of Object.entries(modulesFiles)) {
     const moduleName = key.split('/').pop()
     const name = moduleName.split('.')[0]
@@ -455,6 +459,33 @@ initPage({
             diyStore.components.push(com)
         }
     }
+
+    // 生产环境：通过编译产物异步加载插件 DIY 组件编辑器
+    if (!import.meta.env.DEV && component.value) {
+        const { loadAddonComponent, getInstalledAddonKeys } = await import('@/utils/addon-loader')
+        const addonKeys = getInstalledAddonKeys()
+        for (const type of Object.values(component.value) as any[]) {
+            if (!type.list) continue
+            for (const rawKey of Object.keys(type.list)) {
+                const compDef = type.list[rawKey]
+                const componentPath = compDef.value?.path || compDef.path || rawKey
+                if (modules[componentPath]) continue
+                modules[componentPath] = defineAsyncComponent(() =>
+                    (async () => {
+                        for (const addon of addonKeys) {
+                            const loader = loadAddonComponent(addon, 'diy/components', componentPath)
+                            try {
+                                const result = await loader()
+                                if (result?.default) return result.default
+                            } catch {}
+                        }
+                        throw new Error(`DIY component "${componentPath}" not found in any addon`)
+                    })()
+                )
+            }
+        }
+    }
+
 	console.log( component.value )
     loadDiyTemplatePages(data.type)
 
@@ -469,21 +500,18 @@ initPage({
     if (import.meta.env.MODE == 'development') {
 
         // env文件配置过wap域名
-        // if (wapDomain.value) {
-        //     wapUrl.value = wapDomain.value + '/wap'
-        //     repeat = false
-        //     setDomain()
-        // }
+        if (wapDomain.value) {
+            wapUrl.value = wapDomain.value + '/wap'
+            repeat = false
+            setDomain()
+        }
 
-        // let wap_domain_storage = storage.get('wap_domain')
-        // if (wap_domain_storage) {
-        //     wapUrl.value = wap_domain_storage
-        //     repeat = false
-        //     setDomain()
-        // }
-		wapUrl.value = 'http://localhost:5173/wap'
-		repeat = false
-		setDomain()
+        let wap_domain_storage = storage.get('wap_domain')
+        if (wap_domain_storage) {
+            wapUrl.value = wap_domain_storage
+            repeat = false
+            setDomain()
+        }
     }
 
     if (repeat) {

@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-calendar": "../../../../node-modules/uview-plus/components/u-calendar/u-calendar"
+  }
+}

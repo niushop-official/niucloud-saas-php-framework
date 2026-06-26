@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e="充值记录",r="暂无充值记录",t={rechargeRecord:e,emptyTip:r};exports.default=t,exports.emptyTip=r,exports.rechargeRecord=e;

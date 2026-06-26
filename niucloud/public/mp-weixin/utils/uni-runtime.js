@@ -1,0 +1,1 @@
+"use strict";const n=require("../common/vendor.js"),i=require("./split-build.js");exports.getUni=function(){if(!i.isSplitBuildEnabled())return n.index;const t=globalThis;return t.uni&&"function"==typeof t.uni.reLaunch?t.uni:new Proxy(t.uni||{},{get(n,i){const t=globalThis.uni;if(!t)return;const e=t[i];return"function"==typeof e?(...n)=>e.apply(t,n):e}})};

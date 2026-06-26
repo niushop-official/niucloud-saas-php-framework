@@ -202,7 +202,7 @@ const collectSpecialMenuNamesLevel1 = (menus: any[]) =>{
 }
 </script>
 
-<style>
+<style scoped>
 :root,
 body {
     --layout-side-hover-bg: #f7f8fa;
@@ -210,7 +210,7 @@ body {
     --layout-side-active-text: var(--el-color-primary);
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 .two-menu {
 
     .aside-menu:not(.el-menu--collapse) {
@@ -218,7 +218,7 @@ body {
         padding-top: 16px;
         border: 0;
 
-        .el-menu-item {
+        :deep(.el-menu-item) {
             height: 36px;
             margin: 0 8px 4px;
             padding: 0 !important;
@@ -242,10 +242,10 @@ body {
             }
         }
 
-        .el-sub-menu {
+        :deep(.el-sub-menu) {
             margin-bottom: 8px;
 
-            .el-sub-menu__title {
+            :deep(.el-sub-menu__title) {
                 height: 36px;
                 margin: 0 8px 4px;
                 padding-left: 0;
@@ -262,19 +262,19 @@ body {
                     color: var(--el-color-primary);
                     background-color: #fff !important;
                 }
-                .el-icon.el-sub-menu__icon-arrow {
+                .el-icon:deep(.el-sub-menu__icon-arrow) {
                     right: 5px;
                 }
             }
 
-            .el-menu-item {
+            :deep(.el-menu-item) {
                 padding-left: 25px !important;
                 span{
                     margin-left: 0 !important;
                 }
             }
-            .el-sub-menu{
-                .el-sub-menu__title{
+            :deep(.el-sub-menu){
+                :deep(.el-sub-menu__title){
                     margin: 0 8px 2px;
                     height: 40px;
                     padding-left: 18px;
@@ -290,7 +290,7 @@ body {
                         color: var(--el-color-primary);
                     }
                 }
-                .el-menu-item{
+                :deep(.el-menu-item){
                     padding-left: 40px !important;
                     span{
                         margin-left: 0 !important;
@@ -306,7 +306,7 @@ body {
         padding: 8px;
         min-width: auto;
     }
-    .el-menu-item, .el-sub-menu, .el-sub-menu{
+    :deep(.el-menu-item), :deep(.el-sub-menu), :deep(.el-sub-menu){
         height: auto!important;
         padding: 10px;
         line-height: 1;

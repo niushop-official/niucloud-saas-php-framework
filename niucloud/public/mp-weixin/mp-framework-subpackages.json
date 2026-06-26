@@ -1,0 +1,153 @@
+[
+  {
+    "root": "app/components",
+    "pages": [
+      {
+        "path": "pages/_mp_placeholder",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": ""
+        }
+      }
+    ]
+  },
+  {
+    "root": "app/pages/member",
+    "pages": [
+      {
+        "path": "apply_cash_out",
+        "style": {
+          "navigationBarTitleText": "%pages.member.apply_cash_out%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "commission",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.commission%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "balance",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.balance%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "level",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.level%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "detailed_account",
+        "style": {
+          "navigationBarTitleText": "%pages.member.detailed_account%"
+        }
+      },
+      {
+        "path": "cash_out",
+        "style": {
+          "navigationBarTitleText": "%pages.member.cash_out%"
+        }
+      },
+      {
+        "path": "cash_out_detail",
+        "style": {
+          "navigationBarTitleText": "%pages.member.cash_out_detail%"
+        }
+      },
+      {
+        "path": "index",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.index%",
+          "usingComponents": {
+            "diy-group": "../../../../addon/components/diy/group/index"
+          },
+          "componentPlaceholder": {
+            "diy-group": "view"
+          }
+        }
+      },
+      {
+        "path": "personal",
+        "style": {
+          "navigationBarTitleText": "%pages.member.personal%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "personal_form",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.personal_form%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "point",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.point%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "point_detail",
+        "style": {
+          "navigationBarTitleText": "%pages.member.point_detail%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "account",
+        "style": {
+          "navigationBarTitleText": "%pages.member.account%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "account_edit",
+        "style": {
+          "navigationBarTitleText": "%pages.member.account_edit%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "address",
+        "style": {
+          "navigationBarTitleText": "%pages.member.address%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "address_edit",
+        "style": {
+          "navigationBarTitleText": "%pages.member.address_edit%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "sign_in",
+        "style": {
+          "navigationStyle": "custom",
+          "navigationBarTitleText": "%pages.member.sign_in%"
+        },
+        "needLogin": true
+      },
+      {
+        "path": "contact",
+        "style": {
+          "navigationBarTitleText": "%pages.member.contact%"
+        }
+      }
+    ]
+  }
+]

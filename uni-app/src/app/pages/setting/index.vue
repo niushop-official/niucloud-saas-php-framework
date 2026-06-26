@@ -40,6 +40,7 @@ import useMemberStore from '@/stores/member'
 import { t, language } from '@/locale'
 import updateVersion from '@/components/update-version/update-version.vue'
 import useSystemStore from '@/stores/system';
+import envConfig from '@/utils/config'
 
 const memberStore = useMemberStore()
 
@@ -48,14 +49,14 @@ const versionInfo = computed(() => {
     return systemStore.versionInfo
 })
 
-const version = ref(import.meta.env.VITE_APP_VERSION)
+const version = ref(envConfig.VITE_APP_VERSION)
 // #ifdef APP
 plus.runtime.getProperty(plus.runtime.appid, (inf) => {
 	// 获取版本号
 	version.value = inf.version
 })
 // #endif
-// #ifndef APP 
+// #ifndef APP
 //获取当前app的版本
 const systemInfo = uni.getSystemInfoSync();
 version.value = systemInfo.appVersion;

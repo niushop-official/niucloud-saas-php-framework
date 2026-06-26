@@ -1,1 +1,0 @@
-const e="退款编号",n="退款金额",d="取消退款",f="退款进度",u="撤销之后本次申请将会关闭,如后续仍有问题可再次发起申请。",o={refundNo:e,refundMoney:n,refundApply:d,refund:f,cancelRefundContent:u};export{u as cancelRefundContent,o as default,f as refund,d as refundApply,n as refundMoney,e as refundNo};

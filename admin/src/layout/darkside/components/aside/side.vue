@@ -133,22 +133,22 @@ if (siteInfo?.apps.length > 1) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .menu-wrap {
     padding: 0!important;
 
-    .el-menu {
+    :deep(.el-menu) {
         border-right: 0!important;
 
-        .el-menu-item, .el-sub-menu__title {
+        :deep(.el-menu-item), :deep(.el-sub-menu__title) {
             --el-menu-item-height: 40px;
         }
 
-        .el-sub-menu .el-menu-item {
+        :deep(.el-sub-menu) :deep(.el-menu-item) {
             --el-menu-sub-item-height: 40px;
         }
 
-        .el-menu-item.is-active {
+        :deep(.el-menu-item).is-active {
             background-color: var(--el-color-primary)
         }
     }

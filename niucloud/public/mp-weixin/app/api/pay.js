@@ -1,0 +1,1 @@
+"use strict";const e=require("../../utils/request.js");exports.getPayInfo=function(r,s,t){return e.request.get(`pay/info/${r}/${s}`,t,{showErrorMessage:!0})},exports.pay=function(r){return e.request.post("pay",r,{showErrorMessage:!0})};

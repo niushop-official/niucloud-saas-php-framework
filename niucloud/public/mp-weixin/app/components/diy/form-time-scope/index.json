@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-datetime-picker": "../../../../node-modules/uview-plus/components/u-datetime-picker/u-datetime-picker"
+  }
+}

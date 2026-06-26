@@ -1,0 +1,16 @@
+import { defineComponent as t, openBlock as r, createElementBlock as n, renderSlot as s } from "vue";
+import { u as _ } from "./poster-ba7254e7.js";
+const c = { class: "content-wrap" }, a = /* @__PURE__ */ t({
+  __name: "edit-friendspay-message",
+  setup(l, { expose: e }) {
+    return _(), e({}), (o, p) => (r(), n("div", c, [
+      s(o.$slots, "common")
+    ]));
+  }
+}), d = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  default: a
+}, Symbol.toStringTag, { value: "Module" }));
+export {
+  d as _
+};

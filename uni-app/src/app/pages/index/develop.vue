@@ -21,11 +21,12 @@
 import { ref, reactive } from 'vue'
 import { t } from '@/locale'
 import manifestJson from '@/manifest.json'
+import envConfig from '@/utils/config'
 
 const formData = reactive({
     siteId: '',
-    baseUrl: import.meta.env.VITE_APP_BASE_URL || `${ location.origin }/api/`,
-    imgUrl: import.meta.env.VITE_IMG_DOMAIN
+    baseUrl: envConfig.VITE_APP_BASE_URL || `${ location.origin }/api/`,
+    imgUrl: envConfig.VITE_IMG_DOMAIN
 })
 
 const save = () => {

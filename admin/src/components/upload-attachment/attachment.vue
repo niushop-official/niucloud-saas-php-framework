@@ -199,6 +199,7 @@ import {
 import { debounce, img, getToken } from '@/utils/common'
 import { ElMessage, UploadFile, UploadFiles, ElMessageBox, MessageParams } from 'element-plus'
 import storage from '@/utils/storage'
+import envConfig from '@/utils/config'
 
 const attachmentCategoryName = ref('')
 const operate = ref(false)
@@ -446,9 +447,9 @@ const time = ref<any>(null)
 // 上传文件
 const upload = computed(() => {
     const headers: Record<string, any> = {}
-    headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-    headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
-    const baseURL = import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.meta.env.VITE_APP_BASE_URL : `${import.meta.env.VITE_APP_BASE_URL}/`
+    headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+    headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+    const baseURL = envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`
 
     return {
         action: `${baseURL}sys/${prop.type}`,

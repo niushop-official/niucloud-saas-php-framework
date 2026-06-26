@@ -29,7 +29,7 @@ watch(route, () => {
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .layout-aside {
     border-right: 1px solid var(--el-border-color-lighter);
 }

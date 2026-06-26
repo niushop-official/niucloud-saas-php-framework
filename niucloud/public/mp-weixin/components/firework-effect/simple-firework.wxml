@@ -1,0 +1,1 @@
+<view wx:if="{{a}}" class="firework-container data-v-e7219d82"><canvas class="firework-canvas data-v-e7219d82" canvas-id="simpleFirework" id="simpleFirework"></canvas></view>

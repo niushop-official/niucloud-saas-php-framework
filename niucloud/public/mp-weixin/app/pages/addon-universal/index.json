@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "addon-page-bridge": "../../../components/addon-page-bridge/addon-page-bridge",
+    "page-not-found": "../../../components/page-not-found/page-not-found"
+  }
+}

@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const i="输入手机号动态码绑定",e="一键绑定",o="手机号快捷登录",t={bind:"绑定",bindMobileTip:i,binding:"绑定中",weixinUserAuth:e,mobileQuickLogin:o};exports.bind="绑定",exports.bindMobileTip=i,exports.binding="绑定中",exports.default=t,exports.mobileQuickLogin=o,exports.weixinUserAuth=e;

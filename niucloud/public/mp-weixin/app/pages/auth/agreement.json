@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "协议",
+  "usingComponents": {
+    "u-parse": "../../../node-modules/uview-plus/components/u-parse/u-parse"
+  }
+}

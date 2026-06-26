@@ -397,7 +397,7 @@ const handleRouteSelect = (name:any) => {
 }
 
 </script>
-<style>
+<style scoped>
 :root,
 body {
     --layout-header-bg: #fff;

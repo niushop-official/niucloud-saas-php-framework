@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "提现详情",
+  "usingComponents": {
+    "u-steps-item": "../../../node-modules/uview-plus/components/u-steps-item/u-steps-item",
+    "u-steps": "../../../node-modules/uview-plus/components/u-steps/u-steps",
+    "u-avatar": "../../../node-modules/uview-plus/components/u-avatar/u-avatar",
+    "loading-page": "../../../components/loading-page/loading-page"
+  }
+}

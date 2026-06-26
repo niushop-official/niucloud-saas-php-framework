@@ -76,7 +76,17 @@
             }
         },
         "requiredPrivateInfos" : [ "chooseLocation", "getLocation", "chooseAddress" ],
-        "__usePrivacyCheck__" : true
+        "__usePrivacyCheck__" : true,
+        "packOptions": {
+            "ignore": [
+                { "type": "folder", "value": "lib" },
+                { "type": "folder", "value": "mp-addons" },
+                { "type": "file", "value": "merge-mp-addon.cjs" },
+                { "type": "file", "value": "mp-build-meta.json" },
+                { "type": "file", "value": "mp-merge-meta.json" },
+                { "type": "file", "value": "mp-framework-subpackages.json" }
+            ]
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

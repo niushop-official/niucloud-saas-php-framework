@@ -1,0 +1,1 @@
+<view class="{{['mescroll-empty','empty-page',h&&'empty-fixed']}}" style="{{'z-index:' + i + ';' + ('top:' + j)}}"><view><image wx:if="{{a}}" class="img" src="{{b}}" mode="aspectFit" /></view><view wx:if="{{c}}" class="desc">{{d}}</view><view wx:if="{{e}}" class="btn" bindtap="{{g}}">{{f}}</view></view>

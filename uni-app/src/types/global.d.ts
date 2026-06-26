@@ -19,3 +19,5 @@ declare interface responseResult {
     data : any,
     msg : string
 }
+
+declare const __WAP_SPLIT_BUILD__: boolean

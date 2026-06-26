@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const e="快递地址",s="同城配送地址",t="新建收货地址",r={address:e,locationAddress:s,createAddress:t,default:"默认"};exports.address=e,exports.createAddress=t,exports.default=r,exports.locationAddress=s;

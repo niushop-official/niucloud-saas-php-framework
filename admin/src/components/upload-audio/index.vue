@@ -12,6 +12,7 @@ import { t } from '@/lang'
 import { getToken } from '@/utils/common'
 import { UploadFile, ElMessage } from 'element-plus'
 import storage from '@/utils/storage'
+import envConfig from '@/utils/config'
 
 const prop = defineProps({
     modelValue: {
@@ -36,7 +37,7 @@ const value = computed({
 })
 
 const upload: Record<string, any> = {
-    action: `${import.meta.env.VITE_APP_BASE_URL}/${prop.api}`,
+    action: `${envConfig.VITE_APP_BASE_URL}/${prop.api}`,
     showFileList: false,
     headers: {},
     accept: 'audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac,.wma',
@@ -62,8 +63,8 @@ const upload: Record<string, any> = {
         ElMessage({ message: t('upload.success'), type: 'success' })
     }
 }
-upload.headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-upload.headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+upload.headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+upload.headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
 
 </script>
 

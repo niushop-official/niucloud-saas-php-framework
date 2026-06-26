@@ -1,0 +1,31 @@
+<wxs module="handler">
+
+// 行内标签列表
+var inlineTags = {
+  abbr: true,
+  b: true,
+  big: true,
+  code: true,
+  del: true,
+  em: true,
+  i: true,
+  ins: true,
+  label: true,
+  q: true,
+  small: true,
+  span: true,
+  strong: true,
+  sub: true,
+  sup: true
+}
+/**
+ * @description 判断是否为行内标签
+ */
+module.exports = {
+  isInline: function (tagName, style) {
+    return inlineTags[tagName] || (style || '').indexOf('display:inline') !== -1
+  }
+}
+
+</wxs>
+<view id="{{b}}" class="{{c}}" style="{{d}}"><block wx:for="{{a}}" wx:for-item="n" wx:key="aJ"><image wx:if="{{n.a}}" class="_img" style="{{n.b}}" src="{{n.c}}" mode="widthFix" /><rich-text wx:if="{{n.d}}" style="{{n.e}}" nodes="{{n.f}}" data-i="{{n.g}}" catchtap="{{n.h}}" /><image wx:elif="{{n.i}}" id="{{n.j}}" class="{{n.k}}" style="{{n.l}}" src="{{n.m}}" mode="{{n.n}}" lazy-load="{{n.o}}" webp="{{n.p}}" show-menu-by-longpress="{{n.q}}" image-menu-prevent="{{n.r}}" data-i="{{n.s}}" bindload="{{n.t}}" binderror="{{n.v}}" catchtap="{{n.w}}" bindlongpress="{{n.x}}" /><text wx:elif="{{n.y}}" user-select="{{n.A}}" decode>{{n.z}}</text><text wx:elif="{{n.B}}">{{n.C}}</text><view wx:elif="{{n.D}}" id="{{n.G}}" class="{{n.H}}" hover-class="_hover" style="{{n.I}}" data-i="{{n.J}}" catchtap="{{n.K}}"><node wx:if="{{n.F}}" style="display:inherit" u-i="{{n.E}}" bind:__l="__l" u-p="{{n.F}}" /></view><video wx:elif="{{n.L}}" id="{{n.M}}" class="{{n.N}}" style="{{n.O}}" autoplay="{{n.P}}" controls="{{n.Q}}" loop="{{n.R}}" muted="{{n.S}}" object-fit="{{n.T}}" poster="{{n.U}}" src="{{n.V}}" data-i="{{n.W}}" bindplay="{{n.X}}" binderror="{{n.Y}}" /><audio wx:elif="{{n.Z}}" id="{{n.aa}}" class="{{n.ab}}" style="{{n.ac}}" author="{{n.ad}}" controls="{{n.ae}}" loop="{{n.af}}" name="{{n.ag}}" poster="{{n.ah}}" src="{{n.ai}}" data-i="{{n.aj}}" bindplay="{{n.ak}}" binderror="{{n.al}}" /><view wx:elif="{{n.am}}" id="{{n.ar}}" class="{{n.as}}" style="{{n.at}}"><node wx:if="{{n.an}}" u-i="{{n.ao}}" bind:__l="__l" u-p="{{n.ap}}" /><block wx:else><view wx:for="{{n.aq}}" wx:for-item="tbody" wx:key="e" class="{{tbody.f}}" style="{{tbody.g}}"><node wx:if="{{tbody.a}}" u-i="{{tbody.b}}" bind:__l="__l" u-p="{{tbody.c}}" /><block wx:else><block wx:for="{{tbody.d}}" wx:for-item="tr" wx:key="i"><view wx:if="{{tr.a}}" class="{{tr.d}}" style="{{tr.e}}"><node wx:if="{{tr.c}}" u-i="{{tr.b}}" bind:__l="__l" u-p="{{tr.c}}" /></view><view wx:else class="{{tr.g}}" style="{{tr.h}}"><view wx:for="{{tr.f}}" wx:for-item="td" wx:key="c" class="{{td.d}}" style="{{td.e}}"><node wx:if="{{td.b}}" u-i="{{td.a}}" bind:__l="__l" u-p="{{td.b}}" /></view></view></block></block></view></block></view><rich-text wx:elif="{{n.av}}" id="{{n.aw}}" style="{{n.ax}}" preview="{{false}}" selectable="{{n.ay}}" user-select="{{n.az}}" nodes="{{n.aA}}" /><view wx:elif="{{n.aB}}" id="{{n.aD}}" class="{{n.aE}}" style="{{n.aF}}"><node wx:for="{{n.aC}}" wx:for-item="n2" wx:key="a" style="{{n2.b}}" u-i="{{n2.c}}" bind:__l="__l" u-p="{{n2.d}}" /></view><node wx:else style="{{n.aG}}" u-i="{{n.aH}}" bind:__l="__l" u-p="{{n.aI||''}}" /></block></view>

@@ -1,0 +1,434 @@
+import { defineComponent as O, ref as C, computed as T, watch as M, reactive as F, resolveComponent as u, openBlock as a, createElementBlock as r, createElementVNode as i, normalizeClass as f, createVNode as l, createTextVNode as v, createCommentVNode as x, withCtx as m, createBlock as S, toDisplayString as A, unref as W, pushScopeId as G, popScopeId as H } from "vue";
+import { t as J, az as y, _ as K } from "./core-shared-ca1fcae5.js";
+import { _ as P } from "./upload-media.vue_vue_type_script_setup_true_lang-c62f5274.js";
+import { _ as h } from "./select-wechat-media.vue_vue_type_script_setup_true_lang-560cb071.js";
+import { ElMessage as b } from "element-plus";
+import { _ as L } from "./news-card.vue_vue_type_script_setup_true_lang-07d28e5c.js";
+import "@element-plus/icons-vue";
+import "axios";
+import "vue-i18n";
+import "pinia";
+import "vue-router";
+const d = (p) => (G("data-v-0e730071"), p = p(), H(), p), Q = { class: "border border-br-light rounded" }, X = { class: "py-[10px] px-[30px] flex text-sm border-0 border-b border-br-light text-tx-regular" }, Y = { class: "py-[20px] px-[30px] h-[350px]" }, Z = { key: 0 }, ee = {
+  key: 1,
+  class: "flex w-full h-full justify-center items-center image-media"
+}, te = {
+  key: 0,
+  class: "w-full h-full"
+}, le = {
+  key: 1,
+  class: "flex w-full h-full justify-center items-center image-media"
+}, ie = { class: "flex flex-1 h-full border border-br-light cursor-pointer select-media" }, oe = { class: "flex items-center justify-center flex-col" }, se = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "leading-none text-xs mt-[10px] text-secondary" }, "从素材库选择", -1)), ae = { class: "flex flex-1 h-full ml-[20px] border border-br-light cursor-pointer" }, re = { class: "flex items-center justify-center flex-col" }, ne = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "leading-none text-xs mt-[10px] text-secondary" }, "上传图片", -1)), me = {
+  key: 2,
+  class: "flex w-full h-full justify-center items-center video-media"
+}, de = {
+  key: 0,
+  class: "w-full h-full"
+}, ue = {
+  key: 1,
+  class: "flex w-full h-full justify-center items-center video-media"
+}, pe = { class: "flex flex-1 h-full border border-br-light cursor-pointer select-media" }, ce = { class: "flex items-center justify-center flex-col" }, fe = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "leading-none text-xs mt-[10px] text-secondary" }, "从素材库选择", -1)), ve = { class: "flex flex-1 h-full ml-[20px] border border-br-light cursor-pointer" }, xe = { class: "flex items-center justify-center flex-col" }, _e = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "leading-none text-xs mt-[10px] text-secondary" }, "上传视频", -1)), ge = {
+  key: 3,
+  class: "flex w-full h-full justify-center items-center image-media"
+}, ye = {
+  key: 0,
+  class: "w-full h-full"
+}, he = {
+  key: 1,
+  class: "flex w-full h-full justify-center items-center image-media"
+}, be = { class: "flex flex-1 h-full border border-br-light cursor-pointer select-media" }, we = { class: "flex items-center justify-center flex-col" }, Ve = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "leading-none text-xs mt-[10px] text-secondary" }, "从素材库选择", -1)), ke = { key: 4 }, je = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "form-tip" }, "小程序需已经与公众号关联", -1)), ze = { class: "rounded cursor-pointer overflow-hidden relative border border-solid border-color image-wrap mr-[10px] w-[100px] h-[100px]" }, Ce = { class: "w-full h-full flex items-center justify-center flex-col content-wrap" }, Me = { class: "leading-none text-xs mt-[10px] text-secondary" }, Se = /* @__PURE__ */ d(() => /* @__PURE__ */ i("div", { class: "form-tip" }, "小程序卡片图片建议大小为520*416", -1)), Pe = /* @__PURE__ */ O({
+  __name: "reply-form",
+  props: {
+    modelValue: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+  emits: ["update:modelValue"],
+  setup(p, { expose: U, emit: $ }) {
+    const I = p, N = $, e = C({
+      msgtype: "text",
+      text: {
+        content: ""
+      },
+      image: {
+        media_id: "",
+        url: ""
+      },
+      video: {
+        media_id: "",
+        url: ""
+      },
+      miniprogrampage: {
+        appid: "",
+        title: "",
+        pagepath: "",
+        thumb_media_url: "",
+        thumb_media_id: ""
+      },
+      mpnewsarticle: null
+    }), w = T({
+      get() {
+        return I.modelValue;
+      },
+      set(o) {
+        N("update:modelValue", o);
+      }
+    });
+    M(() => w.value, (o, t) => {
+      (!t || !Object.keys(t).length) && Object.keys(o).length && (e.value = w.value);
+    }, { immediate: !0 }), M(() => e.value, () => {
+      w.value = e.value;
+    }, { deep: !0 });
+    const c = (o) => {
+      e.value.msgtype = o;
+    }, V = (o) => {
+      e.value.image.media_id = o.media_id, e.value.image.url = o.value;
+    }, k = (o) => {
+      e.value.video.media_id = o.media_id, e.value.video.url = o.value;
+    }, q = (o) => {
+      e.value.miniprogrampage.thumb_media_id = o.media_id, e.value.miniprogrampage.thumb_media_url = o.value;
+    }, R = (o) => {
+      e.value.mpnewsarticle = {
+        article_id: o.media_id,
+        value: o.value
+      };
+    }, j = C(), B = F({
+      appid: [
+        { required: !0, message: "请填写小程序appid", trigger: "blur" }
+      ],
+      title: [
+        { required: !0, message: "请填写小程序卡片标题", trigger: "blur" }
+      ],
+      pagepath: [
+        { required: !0, message: "请填写小程序卡片跳转页面", trigger: "blur" }
+      ],
+      thumb_media_url: [
+        { required: !0, message: "请上传小程序卡片封面", trigger: "blur" }
+      ]
+    });
+    return U({
+      verify: async () => {
+        let o = !0;
+        switch (e.value.msgtype) {
+          case "text":
+            y.empty(e.value.text.content) && (b({ message: "请输入回复内容", type: "warning" }), o = !1);
+            break;
+          case "image":
+            y.empty(e.value.image.url) && (b({ message: "请上传回复图片", type: "warning" }), o = !1);
+            break;
+          case "video":
+            y.empty(e.value.video.url) && (b({ message: "请上传回复视频", type: "warning" }), o = !1);
+            break;
+          case "miniprogrampage":
+            await j.value.validate(async (t) => {
+              o = t;
+            });
+            break;
+          case "mpnewsarticle":
+            y.empty(e.value.mpnewsarticle) && (b({ message: "请选择图文", type: "warning" }), o = !1);
+            break;
+        }
+        return o;
+      }
+    }), (o, t) => {
+      const n = u("icon"), _ = u("el-input"), z = u("upload-image"), D = u("upload-video"), g = u("el-form-item"), E = u("el-form");
+      return a(), r("div", Q, [
+        i("div", X, [
+          i("div", {
+            class: f(["pr-[25px] cursor-pointer flex items-center", { "text-primary": e.value.msgtype == "text" }]),
+            onClick: t[0] || (t[0] = (s) => c("text"))
+          }, [
+            l(n, {
+              name: "iconfont iconxingzhuang-wenzi",
+              size: "18",
+              class: "mr-[5px]"
+            }),
+            v(" 文本 ")
+          ], 2),
+          i("div", {
+            class: f(["pr-[25px] cursor-pointer flex items-center", { "text-primary": e.value.msgtype == "image" }]),
+            onClick: t[1] || (t[1] = (s) => c("image"))
+          }, [
+            l(n, {
+              name: "iconfont icontupian",
+              size: "18px",
+              class: "mr-[5px]"
+            }),
+            v(" 图片 ")
+          ], 2),
+          i("div", {
+            class: f(["pr-[25px] cursor-pointer flex items-center", { "text-primary": e.value.msgtype == "video" }]),
+            onClick: t[2] || (t[2] = (s) => c("video"))
+          }, [
+            l(n, {
+              name: "iconfont iconshipin1",
+              size: "18",
+              class: "mr-[5px]"
+            }),
+            v(" 视频 ")
+          ], 2),
+          i("div", {
+            class: f(["pr-[25px] cursor-pointer flex items-center", { "text-primary": e.value.msgtype == "mpnewsarticle" }]),
+            onClick: t[3] || (t[3] = (s) => c("mpnewsarticle"))
+          }, [
+            l(n, {
+              name: "iconfont icontuwendaohang2",
+              size: "13px",
+              class: "mr-[5px]"
+            }),
+            v(" 图文 ")
+          ], 2),
+          i("div", {
+            class: f(["pr-[25px] cursor-pointer flex items-center", { "text-primary": e.value.msgtype == "miniprogrampage" }]),
+            onClick: t[4] || (t[4] = (s) => c("miniprogrampage"))
+          }, [
+            l(n, {
+              name: "iconfont iconxiaochengxu",
+              size: "14px",
+              class: "mr-[5px]"
+            }),
+            v(" 小程序卡片 ")
+          ], 2)
+        ]),
+        i("div", Y, [
+          e.value.msgtype == "text" ? (a(), r("div", Z, [
+            l(_, {
+              modelValue: e.value.text.content,
+              "onUpdate:modelValue": t[5] || (t[5] = (s) => e.value.text.content = s),
+              modelModifiers: { trim: !0 },
+              rows: 5,
+              type: "textarea",
+              placeholder: "",
+              maxlength: "600",
+              "show-word-limit": !0,
+              resize: "none",
+              "input-style": "box-shadow: none;height:300px"
+            }, null, 8, ["modelValue"])
+          ])) : x("", !0),
+          e.value.msgtype == "image" ? (a(), r("div", ee, [
+            e.value.image.url ? (a(), r("div", te, [
+              l(z, {
+                limit: 1,
+                width: "150px",
+                height: "150px",
+                modelValue: e.value.image.url,
+                "onUpdate:modelValue": t[6] || (t[6] = (s) => e.value.image.url = s)
+              }, null, 8, ["modelValue"])
+            ])) : (a(), r("div", le, [
+              i("div", ie, [
+                l(h, {
+                  type: "image",
+                  onSuccess: V
+                }, {
+                  default: m(() => [
+                    i("div", oe, [
+                      l(n, {
+                        name: "element Plus",
+                        size: "20px",
+                        color: "var(--el-text-color-secondary)"
+                      }),
+                      se
+                    ])
+                  ]),
+                  _: 1
+                })
+              ]),
+              i("div", ae, [
+                l(P, {
+                  type: "image",
+                  class: "w-full h-full flex items-center justify-center",
+                  onSuccess: V
+                }, {
+                  default: m(() => [
+                    i("div", re, [
+                      l(n, {
+                        name: "element Plus",
+                        size: "20px",
+                        color: "var(--el-text-color-secondary)"
+                      }),
+                      ne
+                    ])
+                  ]),
+                  _: 1
+                })
+              ])
+            ]))
+          ])) : x("", !0),
+          e.value.msgtype == "video" ? (a(), r("div", me, [
+            e.value.video.url ? (a(), r("div", de, [
+              l(D, {
+                limit: 1,
+                width: "150px",
+                height: "150px",
+                modelValue: e.value.video.url,
+                "onUpdate:modelValue": t[7] || (t[7] = (s) => e.value.video.url = s)
+              }, null, 8, ["modelValue"])
+            ])) : (a(), r("div", ue, [
+              i("div", pe, [
+                l(h, {
+                  type: "video",
+                  onSuccess: k
+                }, {
+                  default: m(() => [
+                    i("div", ce, [
+                      l(n, {
+                        name: "element Plus",
+                        size: "20px",
+                        color: "var(--el-text-color-secondary)"
+                      }),
+                      fe
+                    ])
+                  ]),
+                  _: 1
+                })
+              ]),
+              i("div", ve, [
+                l(P, {
+                  type: "video",
+                  class: "w-full h-full flex items-center justify-center",
+                  onSuccess: k
+                }, {
+                  default: m(() => [
+                    i("div", xe, [
+                      l(n, {
+                        name: "element Plus",
+                        size: "20px",
+                        color: "var(--el-text-color-secondary)"
+                      }),
+                      _e
+                    ])
+                  ]),
+                  _: 1
+                })
+              ])
+            ]))
+          ])) : x("", !0),
+          e.value.msgtype == "mpnewsarticle" ? (a(), r("div", ge, [
+            e.value.mpnewsarticle ? (a(), r("div", ye, [
+              l(L, {
+                modelValue: e.value.mpnewsarticle,
+                "onUpdate:modelValue": t[8] || (t[8] = (s) => e.value.mpnewsarticle = s)
+              }, null, 8, ["modelValue"])
+            ])) : (a(), r("div", he, [
+              i("div", be, [
+                l(h, {
+                  type: "news",
+                  onSuccess: R
+                }, {
+                  default: m(() => [
+                    i("div", we, [
+                      l(n, {
+                        name: "element Plus",
+                        size: "20px",
+                        color: "var(--el-text-color-secondary)"
+                      }),
+                      Ve
+                    ])
+                  ]),
+                  _: 1
+                })
+              ])
+            ]))
+          ])) : x("", !0),
+          e.value.msgtype == "miniprogrampage" ? (a(), r("div", ke, [
+            l(E, {
+              model: e.value.miniprogrampage,
+              "label-width": "140px",
+              class: "page-form",
+              ref_key: "formRef",
+              ref: j,
+              rules: B
+            }, {
+              default: m(() => [
+                l(g, {
+                  label: "小程序APPID",
+                  prop: "appid"
+                }, {
+                  default: m(() => [
+                    l(_, {
+                      modelValue: e.value.miniprogrampage.appid,
+                      "onUpdate:modelValue": t[9] || (t[9] = (s) => e.value.miniprogrampage.appid = s),
+                      modelModifiers: { trim: !0 },
+                      class: "input-width"
+                    }, null, 8, ["modelValue"]),
+                    je
+                  ]),
+                  _: 1
+                }),
+                l(g, {
+                  label: "小程序卡片标题",
+                  prop: "title"
+                }, {
+                  default: m(() => [
+                    l(_, {
+                      modelValue: e.value.miniprogrampage.title,
+                      "onUpdate:modelValue": t[10] || (t[10] = (s) => e.value.miniprogrampage.title = s),
+                      modelModifiers: { trim: !0 },
+                      class: "input-width"
+                    }, null, 8, ["modelValue"])
+                  ]),
+                  _: 1
+                }),
+                l(g, {
+                  label: "小程序的页面路径",
+                  prop: "pagepath"
+                }, {
+                  default: m(() => [
+                    l(_, {
+                      modelValue: e.value.miniprogrampage.pagepath,
+                      "onUpdate:modelValue": t[11] || (t[11] = (s) => e.value.miniprogrampage.pagepath = s),
+                      modelModifiers: { trim: !0 },
+                      class: "input-width"
+                    }, null, 8, ["modelValue"])
+                  ]),
+                  _: 1
+                }),
+                l(g, {
+                  label: "小程序卡片图片",
+                  prop: "thumb_media_url"
+                }, {
+                  default: m(() => [
+                    e.value.miniprogrampage.thumb_media_url ? (a(), S(z, {
+                      key: 0,
+                      limit: 1,
+                      width: "100px",
+                      height: "100px",
+                      modelValue: e.value.miniprogrampage.thumb_media_url,
+                      "onUpdate:modelValue": t[12] || (t[12] = (s) => e.value.miniprogrampage.thumb_media_url = s)
+                    }, null, 8, ["modelValue"])) : (a(), S(h, {
+                      key: 1,
+                      type: "image",
+                      onSuccess: q
+                    }, {
+                      default: m(() => [
+                        i("div", ze, [
+                          i("div", Ce, [
+                            l(n, {
+                              name: "element Plus",
+                              size: "20px",
+                              color: "var(--el-text-color-secondary)"
+                            }),
+                            i("div", Me, A(W(J)("upload.root")), 1)
+                          ])
+                        ])
+                      ]),
+                      _: 1
+                    })),
+                    Se
+                  ]),
+                  _: 1
+                })
+              ]),
+              _: 1
+            }, 8, ["model", "rules"])
+          ])) : x("", !0)
+        ])
+      ]);
+    };
+  }
+});
+const Ae = /* @__PURE__ */ K(Pe, [["__scopeId", "data-v-0e730071"]]);
+export {
+  Ae as default
+};

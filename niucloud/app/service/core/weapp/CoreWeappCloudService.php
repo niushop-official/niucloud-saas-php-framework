@@ -83,18 +83,11 @@ class CoreWeappCloudService extends CoreCloudBaseService
         // uni
         $uni_dir = $package_dir . 'uni-app';
 
-        // 如果不存在编译版小程序
-        if ($compile_addon->isEmpty()) {
-            dir_copy($this->root_path . 'uni-app', $uni_dir, exclude_dirs: [ 'node_modules', 'unpackage', 'dist', '.git']);
-            $this->handleUniapp($uni_dir);
-            // 替换env文件
-            $this->weappEnvReplace($uni_dir . DIRECTORY_SEPARATOR . '.env.production');
-        } else {
-            $compile_dir = $this->addonPath($compile_addon->key) . 'compile' . DIRECTORY_SEPARATOR . 'weapp';
-            if (!is_dir($compile_dir)) throw new CommonException('CLOUD_WEAPP_COMPILE_NOT_EXIST');
-            dir_copy($compile_dir, $uni_dir);
-            $this->weappCompileReplace($uni_dir);
-        }
+        dir_copy(public_path() . 'mp-weixin', $uni_dir);
+        $this->handleUniapp($uni_dir);
+        // 替换env文件
+        $this->weappEnvReplace($uni_dir);
+
         file_put_contents($package_dir . 'private.key', file_get_contents($this->config[ 'upload_private_key' ]));
 
         // 将临时目录下文件生成压缩包
@@ -111,7 +104,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
             'timestamp' => time(),
             'token' => $action_token[ 'data' ][ 'token' ] ?? ''
         ];
-        $response = ( new CloudService(true) )->httpPost('cloud/weapp?' . http_build_query($query), [
+        $response = ( new CloudService(true) )->httpPost('cloud/weapp_v2?' . http_build_query($query), [
             'multipart' => [
                 [
                     'name' => 'file',
@@ -131,158 +124,43 @@ class CoreWeappCloudService extends CoreCloudBaseService
     }
 
     /**
-     * 处理uniapp 查询出站点没有的插件进行移除
      * @param string $dir
      * @return void
      */
     private function handleUniapp(string $dir)
     {
         $site_addon = $this->config[ 'addon' ];
-        $local_addon = ( new Addon() )->where([ [ 'status', '=', AddonDict::ON ] ])->column('key');
+        foreach ($site_addon as $addon) {
+            $src = root_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR . 'dist' . DIRECTORY_SEPARATOR . 'mp-weixin' . DIRECTORY_SEPARATOR;
+            if (!is_dir($src)) continue;
 
-        // 移除uniapp中该站点没有的插件
-        $diff_addon = array_filter(array_map(function ($key) use ($site_addon) {
-            if (!in_array($key, $site_addon)) return $key;
-        }, $local_addon));
-
-        $this->handlePageCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
-
-//        $this->handleTabbar($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $site_addon);
-
-        if (!empty($diff_addon)) {
-            foreach ($diff_addon as $addon) {
-                $this->addon = $addon;
-
-                $addon_dir = $dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $addon;
-                if (is_dir($addon_dir)) del_target_dir($addon_dir, true);
-
-                // 编译 diy-group 自定义组件代码文件
-                $this->compileDiyComponentsCode($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-
-                // 编译 加载插件标题语言包
-                $this->compileLocale($dir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR, $addon);
-
-                $manifest_json = root_path() . 'addon' . DIRECTORY_SEPARATOR . $addon . DIRECTORY_SEPARATOR . 'package' . DIRECTORY_SEPARATOR . 'manifest.json';
-                if (file_exists($manifest_json)) {
-                    $this->mergeManifestJson($dir . DIRECTORY_SEPARATOR, json_decode($manifest_json, true));
-                }
-            }
+            dir_copy($src, $dir . DIRECTORY_SEPARATOR . 'mp-addons' . DIRECTORY_SEPARATOR . $addon);
         }
-    }
-
-    private function handlePageCode($compile_path, $addon_arr)
-    {
-        $pages = [];
-        foreach ($addon_arr as $addon) {
-            if (!file_exists($this->geAddonPackagePath($addon) . 'uni-app-pages.php')) continue;
-            $uniapp_pages = require $this->geAddonPackagePath($addon) . 'uni-app-pages.php';
-            if (empty($uniapp_pages[ 'pages' ])) continue;
-
-            $page_begin = strtoupper($addon) . '_PAGE_BEGIN';
-            $page_end = strtoupper($addon) . '_PAGE_END';
-
-            // 对0.2.0之前的版本做处理
-            $uniapp_pages[ 'pages' ] = preg_replace_callback('/(.*)(\\r\\n.*\/\/ PAGE_END.*)/s', function ($match) {
-                return $match[ 1 ] . ( substr($match[ 1 ], -1) == ',' ? '' : ',' ) . $match[ 2 ];
-            }, $uniapp_pages[ 'pages' ]);
-
-            $uniapp_pages[ 'pages' ] = str_replace('PAGE_BEGIN', $page_begin, $uniapp_pages[ 'pages' ]);
-            $uniapp_pages[ 'pages' ] = str_replace('PAGE_END', $page_end, $uniapp_pages[ 'pages' ]);
-            $uniapp_pages[ 'pages' ] = str_replace('{{addon_name}}', $addon, $uniapp_pages[ 'pages' ]);
-
-            $pages[] = $uniapp_pages[ 'pages' ];
-        }
-
-        $content = @file_get_contents($compile_path . "pages.json");
-        $content = preg_replace_callback('/(.*\/\/ \{\{ PAGE_BEGAIN \}\})(.*)(\/\/ \{\{ PAGE_END \}\}.*)/s', function ($match) use ($pages) {
-            return $match[ 1 ] . PHP_EOL . implode(PHP_EOL, $pages) . PHP_EOL . $match[ 3 ];
-        }, $content);
-
-        // 找到页面路由文件 pages.json，写入内容
-        return file_put_contents($compile_path . "pages.json", $content);
-    }
-
-    /**
-     * 处理底部导航【暂时停止调用，存在小程序兼容性问题】
-     * @param $compile_path
-     * @param $addon_arr
-     * @return void
-     */
-    public function handleTabbar($compile_path, $addon_arr = [])
-    {
-        $bottomList = array_column(( new DiyConfigService() )->getBottomList(), null, 'key');
-        $tabbarList = [];
-        if (empty($addon_arr)) {
-            foreach ($bottomList as $app_item) {
-                array_push($tabbarList, ...$app_item[ 'value' ][ 'list' ]);
-            }
-        } else {
-            foreach ($addon_arr as $addon) {
-                if (isset($bottomList[ $addon ])) {
-                    array_push($tabbarList, ...$bottomList[ $addon ][ 'value' ][ 'list' ]);
-                }
-            }
-        }
-
-        $tabbarList = array_map(function ($item) {
-            if (strpos($item[ 'link' ][ 'url' ], '?') !== false) {
-                $item[ 'link' ][ 'url' ] = explode('?', $item[ 'link' ][ 'url' ])[0];
-            }
-            $link = array_filter(explode('/', $item[ 'link' ][ 'url' ]));
-            $item[ 'link' ] = $item[ 'link' ][ 'url' ];
-            $item[ 'component' ] = implode('-', $link);
-            $item[ 'name' ] = lcfirst(implode('', array_map(function ($str) {
-                return ucfirst($str);
-            }, $link)));
-            return $item;
-        }, $tabbarList);
-        $tabbarList = array_column($tabbarList, null, 'name');
-
-        if (isset($tabbarList[ 'appPagesIndexIndex' ])) unset($tabbarList[ 'appPagesIndexIndex' ]);
-        if (isset($tabbarList[ 'appPagesMemberIndex' ])) unset($tabbarList[ 'appPagesMemberIndex' ]);
-
-        // 处理vue文件
-        $tpl = str_replace('/', DIRECTORY_SEPARATOR, public_path() . 'static/tpl/tabbar.tpl');
-        $content = view($tpl, [ 'tabbarList' => $tabbarList ])->getContent();
-        file_put_contents(str_replace('/', DIRECTORY_SEPARATOR, $compile_path . 'app/pages/index/tabbar.vue'), $content);
-
-        // 处理tabbar.json
-        file_put_contents($compile_path . 'tabbar.json', json_encode(array_column($tabbarList, 'link'), JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     }
 
     /**
      * 小程序上传env文件处理
-     * @param string $env_file
+     * config.js 格式: "use strict";exports.envConfig={VITE_APP_BASE_URL:"",...};
+     * 使用正则替换配置项的值
+     * @param string $dir
      * @return void
      */
-    private function weappEnvReplace(string $env_file)
+    private function weappEnvReplace(string $dir)
     {
+        $env_file = $dir . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'config.js';
+
         $env = file_get_contents($env_file);
-        $env = str_replace("VITE_APP_BASE_URL=''", "VITE_APP_BASE_URL='" . $this->config[ 'base_url' ] . 'api/' . "'", $env);
-        $env = str_replace("VITE_IMG_DOMAIN=''", "VITE_IMG_DOMAIN='" . $this->config[ 'base_url' ] . "'", $env);
-        $env = str_replace("VITE_SITE_ID = ''", "VITE_SITE_ID='" . $this->site_id . "'", $env);
+
+        // 替换 VITE_APP_BASE_URL
+        $env = preg_replace('/VITE_APP_BASE_URL:"[^"]*"/', 'VITE_APP_BASE_URL:"' . $this->config['base_url'] . 'api/' . '"', $env);
+
+        // 替换 VITE_IMG_DOMAIN
+        $env = preg_replace('/VITE_IMG_DOMAIN:"[^"]*"/', 'VITE_IMG_DOMAIN:"' . $this->config['base_url'] . '"', $env);
+
+        // 替换 VITE_SITE_ID
+        $env = preg_replace('/VITE_SITE_ID:"[^"]*"/', 'VITE_SITE_ID:"' . $this->site_id . '"', $env);
+
         file_put_contents($env_file, $env);
-    }
-
-    /**
-     * 小程序上传vendor文件处理
-     * @param string $vendor_file
-     * @return void
-     */
-    private function weappCompileReplace(string $path)
-    {
-        // 替换request.js
-        $request_file = $path . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'request.js';
-        $content = file_get_contents($request_file);
-        $content = str_replace('{{$baseUrl}}', $this->config[ 'base_url' ] . 'api/', $content);
-        $content = str_replace('{{$siteId}}', $this->site_id, $content);
-        file_put_contents($request_file, $content);
-
-        // 替换common.js
-        $common_file = $path . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'common.js';
-        $content = file_get_contents($common_file);
-        $content = str_replace('{{$imgUrl}}', $this->config[ 'base_url' ], $content);
-        file_put_contents($common_file, $content);
     }
 
     /**

@@ -1,4 +1,5 @@
 import { language } from '@/locale'
+import { isSplitBuildEnabled } from '@/utils/split-build'
 import { checkNeedLogin } from '@/utils/auth'
 import { redirect, getToken, getSiteId,currRoute, setThemeColor } from '@/utils/common'
 import { memberLog } from '@/app/api/auth'
@@ -35,6 +36,12 @@ export const redirectInterceptor = (route: { path: string, query: object }) => {
     checkNeedLogin(route)
 
     loadShare()
+
+    // #ifdef H5
+    if (isSplitBuildEnabled()) {
+        language.loadLocaleMessages(route.path.replace(/^\//, ''), uni.getLocale())
+    }
+    // #endif
 
     // 添加会员访问日志
     if (getToken()) memberLog({
@@ -74,11 +81,14 @@ export const launchInterceptor = () => {
     setThemeColor(launch.path);
 
     // 加载语言包
-    language.loadAllLocaleMessages('app', uni.getLocale())
-
-    // #ifndef MP
-    language.loadAllLocaleMessages('addon', uni.getLocale())
-    // #endif
+    if (isSplitBuildEnabled()) {
+        language.loadLocaleMessages(launch.path.replace(/^\//, ''), uni.getLocale())
+    } else {
+        language.loadAllLocaleMessages('app', uni.getLocale())
+        // #ifndef MP
+        language.loadAllLocaleMessages('addon', uni.getLocale())
+        // #endif
+    }
 
     // 校验是否需要登录
     checkNeedLogin(launch)

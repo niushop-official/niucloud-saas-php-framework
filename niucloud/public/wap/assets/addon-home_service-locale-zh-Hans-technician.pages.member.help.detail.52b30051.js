@@ -1,1 +1,0 @@
-const e="帮助详情",t="加载中...",a="浏览次数",o="更新时间",i="暂无数据",n="缺少帮助文档ID",r="网络错误，请稍后重试",s={helpDetail:e,loading:t,viewsCount:a,updateTime:o,noData:i,missingId:n,networkError:r};export{s as default,e as helpDetail,t as loading,n as missingId,r as networkError,i as noData,o as updateTime,a as viewsCount};

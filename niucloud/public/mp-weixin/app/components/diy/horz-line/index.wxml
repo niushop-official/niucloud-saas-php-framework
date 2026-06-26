@@ -1,0 +1,1 @@
+<view class="horz-line-wrap"><view wx:if="{{a}}" class="h--30rpx-"></view><view style="{{b}}"></view><view wx:if="{{c}}" class="h--30rpx-"></view></view>

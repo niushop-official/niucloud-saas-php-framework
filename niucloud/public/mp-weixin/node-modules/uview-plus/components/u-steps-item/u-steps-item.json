@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "up-icon": "../u-icon/u-icon",
+    "up-text": "../u-text/u-text"
+  }
+}

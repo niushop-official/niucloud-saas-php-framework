@@ -13,9 +13,7 @@ const main = () => {
             break;
         case 'mp-weixin':
             if (mode == 'build') {
-                handleWeappAddonComponents(mode)
-                handleWeappLanguage(mode)
-                handleProjectConfig(mode)
+                handleWeappPostProcess(mode)
             } else if (mode == 'dev') {
                 listenWeappRunDev()
             }
@@ -51,35 +49,40 @@ const publish = () => {
     })
 }
 
+const { applyRouterBase } = require('./scripts/apply-router-base.cjs')
+
 const solve = () => {
-    const src = './dist/build/h5/assets'
-    const filemaps = fs.readdirSync(src)
-
-    filemaps.forEach(file => {
-        if (/^(index-)(\w{8})(.js)$/.test(file)) {
-            const path = `${src}/${file}`
-            let content = fs.readFileSync(path, 'utf-8')
-            const first = 'const match = location.href.match(/\\/wap\\/(\\d*)\\//);'
-
-            if (content.indexOf(first) == -1) {
-                content = first + content
-                const replace = 'router:{mode:"history",base: match ? `/wap/${match[1]}/` : "/wap/",assets:"assets",routerBase: match ? `/wap/${match[1]}/` : "/wap/"},darkmode'
-                content = content.replace(/router:{(.*?)},darkmode/s, replace)
-                fs.writeFileSync(path, content, 'utf8')
-            }
-        }
-    })
+    applyRouterBase('./dist/build/h5/assets')
 }
 
-const handleWeappAddonComponents = (mode) => {
-    const src = `./dist/${mode}/mp-weixin/addon/components/diy/group/index.json`
-    try {
-        const data = JSON.parse(fs.readFileSync(src, 'utf8'));
-        data.componentPlaceholder = {};
+const getMpWeixinDir = (mode) => path.join(__dirname, 'dist', mode, 'mp-weixin')
 
-        Object.keys(data.usingComponents).map(key => {
-            data.componentPlaceholder[key] = "view";
-        })
+const handleWeappDiyGroupInline = (mode) => {
+    const mpDir = getMpWeixinDir(mode)
+    if (!fs.existsSync(path.join(mpDir, 'addon/components/diy/group/index.wxml'))) {
+        return
+    }
+    try {
+        const { applyMpWeixinDiyGroupInline } = require('./scripts/mp-diy-group-inline.cjs')
+        const result = applyMpWeixinDiyGroupInline(mpDir)
+        if (!result.skipped) {
+            console.log(`[publish] diy-group inlined ${result.count} component(s) -> ${path.relative(__dirname, mpDir)}`)
+        }
+    } catch (err) {
+        console.error('[publish] diy-group inline failed:', err.message || err)
+    }
+}
+
+const handleWeappDiyDynamicBridge = (mode) => {
+    const src = `./dist/${mode}/mp-weixin/components/diy-dynamic-bridge/diy-dynamic-bridge.json`
+    try {
+        const data = JSON.parse(fs.readFileSync(src, 'utf8'))
+        data.componentPlaceholder = data.componentPlaceholder || {}
+        for (const key of Object.keys(data.usingComponents || {})) {
+            if (!data.componentPlaceholder[key]) {
+                data.componentPlaceholder[key] = 'view'
+            }
+        }
         fs.writeFileSync(src, JSON.stringify(data))
     } catch (err) {
     }
@@ -110,23 +113,34 @@ const handleProjectConfig = (mode) => {
     }
 }
 
+/** dev / build 编译完成后：内联 diy-group + 语言/bridge/工程配置 */
+const handleWeappPostProcess = (mode) => {
+    handleWeappLanguage(mode)
+    handleWeappProjectConfigSafe(mode)
+    handleWeappDiyGroupInline(mode)
+    handleWeappDiyDynamicBridge(mode)
+}
+
+const handleWeappProjectConfigSafe = (mode) => {
+    try {
+        handleProjectConfig(mode)
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 const listenWeappRunDev = () => {
     const devProcess = spawn('npm', ['run', 'dev:niu-mp-weixin'], {
         stdio: ['pipe', 'pipe', 'pipe'],
         shell: true
     });
 
-    let serverReady = false;
-
-    // 监听 stdout 输出
+    // 每次编译完成都内联 diy-group（watch 热更新会重新生成 bridge 版 wxml）
     devProcess.stdout.on('data', (data) => {
         const message = data.toString();
         console.log(message)
-        if (!serverReady && message.includes('DONE  Build complete')) {
-            serverReady = true;
-            handleWeappAddonComponents('dev')
-            handleWeappLanguage('dev')
-            handleProjectConfig('dev')
+        if (message.includes('DONE  Build complete')) {
+            handleWeappPostProcess('dev')
         }
     });
 

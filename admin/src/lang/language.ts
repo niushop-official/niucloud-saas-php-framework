@@ -1,4 +1,5 @@
 import { nextTick } from 'vue'
+import { loadAddonLang, preloadAllAddonLangs, resolveLangFile, inferAddonFromPath } from '@/utils/addon-lang'
 
 class Language {
     private i18n: any;
@@ -31,25 +32,42 @@ class Language {
      */
     public async loadLocaleMessages(app: string, path: string, locale: string) {
         try {
-            const file = path == '/' ? 'index' : path.replace(/^(\/admin\/|\/site\/|\/)/, '').replaceAll('/', '.')
+            if (!app) app = inferAddonFromPath(path)
+            const file = resolveLangFile(app, path)
 
-            // 引入语言包文件
-            const messages = await import(app ? `@/addon/${app}/lang/${locale}/${file}.json` : `@/app/lang/${locale}/${file}.json`)
+            let pageMessages: Record<string, string> = {}
+            if (app) {
+                if (import.meta.env.DEV) {
+                    const messages = await import(/* @vite-ignore */ `@/addon/${app}/lang/${locale}/${file}.json`)
+                    pageMessages = messages.default || {}
+                } else {
+                    pageMessages = await loadAddonLang(app, locale, file)
+                }
+            } else {
+                const messages = await import(`@/app/lang/${locale}/${file}.json`)
+                pageMessages = messages.default || {}
+            }
 
             let data: Record<string, string> = {}
-            Object.keys(messages.default).forEach(key => {
-                data[`${file}.${key}`] = messages.default[key]
+            Object.keys(pageMessages).forEach(key => {
+                data[`${file}.${key}`] = pageMessages[key]
             })
 
-            // 查询插件的公共语言包
+            // 查询插件的公共语言包（合并到根 key，与 dev 启动时 globEager 行为一致）
             if (app) {
                 try {
-                    const messagesCommon = await import( `@/${ app }/lang/${ locale }/common.json`);
-                    Object.keys(messagesCommon.default).forEach(key => {
-                        data[`${file}.${key}`] = messagesCommon.default[key]
+                    let commonMessages: Record<string, string> = {}
+                    if (import.meta.env.DEV) {
+                        const messagesCommon = await import(/* @vite-ignore */ `@/addon/${app}/lang/${locale}/common.json`)
+                        commonMessages = messagesCommon.default || {}
+                    } else {
+                        commonMessages = await loadAddonLang(app, locale, 'common')
+                    }
+                    Object.keys(commonMessages).forEach(key => {
+                        data[key] = commonMessages[key]
                     })
                 } catch (e) {
-                    // console.log('未找到插件公共语言包')
+                    // 未找到插件公共语言包
                 }
             }
 
@@ -60,6 +78,13 @@ class Language {
             this.setI18nLanguage(locale)
             return nextTick()
         }
+    }
+
+    /** 生产环境启动时预加载各插件全部语言包 */
+    public async preloadAddonLangs() {
+        await preloadAllAddonLangs((locale, messages) => {
+            this.i18n.global.mergeLocaleMessage(locale, messages)
+        })
     }
 }
 

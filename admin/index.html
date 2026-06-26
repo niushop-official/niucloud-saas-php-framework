@@ -8,6 +8,16 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // 外挂配置 — 部署后可直接修改此处的值，无需重新编译
+      window.__ENV__ = {
+        VITE_APP_BASE_URL: "",
+        VITE_IMG_DOMAIN: "",
+        VITE_REQUEST_HEADER_TOKEN_KEY: "token",
+        VITE_REQUEST_HEADER_SITEID_KEY: "site-id",
+        VITE_DETAULT_TITLE: ""
+      };
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

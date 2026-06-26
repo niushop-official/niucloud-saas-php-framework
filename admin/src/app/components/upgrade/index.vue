@@ -114,12 +114,6 @@
                     <div class="flex flex-col" v-show="active == 'backup'">
                         <el-scrollbar>
                             <div class="bg-[#fff] my-3">
-                                <div class="p-[20px] mt-[50px] mx-[10px] border-[1px] border-[#E6E6E6] rounded-[10px]">
-                                    <div class="flex justify-between items-center mt-[-9px]">
-                                        <el-checkbox v-model="upgradeOption.is_need_cloudbuild" :label="t('upgrade.isNeedCloudbuild')" :true-value="true" :false-value="false" size="large" ></el-checkbox>
-                                    </div>
-                                    <div class="text-[14px] text-[#374151] mb-[10px]">{{ t('upgrade.cloudbuildTips') }}</div>
-                                </div>
                                 <div class="p-[20px] mt-[20px] mx-[10px] border-[1px] border-[#E6E6E6] rounded-[10px]" v-if="upgradeContent.last_backup">
                                     <div class="flex justify-between items-center mt-[-9px]">
                                         <el-checkbox v-model="upgradeOption.is_need_backup" :label="t('upgrade.isNeedBackup')" :true-value="true" :false-value="false" size="large" ></el-checkbox>
@@ -198,8 +192,7 @@
                 <el-button v-if="step == 1 && upgradeContent.content.length && isAllowUpgrade" @click="step = 2" type="primary">{{ t("upgrade.upgradeButton") }}</el-button>
                 <el-button type="primary" v-show="step == 2 && showTerminal && upgradeTask && !errorDialog"  :loading="timeloading" class="!w-[140px]">已用时 {{ formatUpgradeDuration }}</el-button>
                 <template v-if="step == 2 && active != 'complete'">
-                <!--                <el-button v-if="active == 'content'" @click="showDialog = false">{{ t("return") }}</el-button>-->
-                    <el-button type="primary" :disabled="!is_pass" v-if="active == 'upgrade' && !upgradeTask" @click="() => { active = 'backup'; numberOfSteps = 1 }">{{ t("nextStep") }}</el-button>
+                    <el-button type="primary" :disabled="!is_pass" v-if="active == 'upgrade' && !upgradeTask" @click="showUpgradeOption">{{ t("nextStep") }}</el-button>
                     <el-button v-if="active == 'backup'" @click="() => { active = 'upgrade'; numberOfSteps = 1 } ">{{ t("prev") }}</el-button>
                     <el-button type="primary" v-if="active == 'backup'" :loading="loading" @click="() => { upgradeAddonFn() }">{{ t("nextStep") }}</el-button>
                     <el-button v-if="active == 'complete'" @click="showDialog = false">{{ t("complete") }}</el-button>
@@ -283,7 +276,7 @@ const retrySecond = ref(30)
 let retrySecondInterval: any = null
 const upgradeOption = ref({
     is_need_backup: true,
-    is_need_cloudbuild: true
+    is_need_cloudbuild: false
 })
 
 // 升级步骤排除，backupCode 备份代码，backupSql 备份数据库
@@ -541,6 +534,15 @@ const handleUpgrade = async () => {
         repeat.value = false
         readyLoading.value = false
     })
+}
+
+const showUpgradeOption = () => {
+    if (upgradeContent.value.last_backup) {
+        active.value = 'backup';
+        numberOfSteps.value = 1
+    } else {
+        upgradeAddonFn()
+    }
 }
 
 const upgradeAddonFn = () => {

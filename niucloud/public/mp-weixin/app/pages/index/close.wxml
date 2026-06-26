@@ -1,0 +1,1 @@
+<layout-default-uni u-s="{{['d']}}" u-i="f3c84f38-0" bind:__l="__l"><view class="min-h--100vh- bg--var---page-bg-color-- overflow-hidden" style="{{c}}"><view class="empty-page"><image class="img" src="{{a}}" model="aspectFit" /><view class="desc">{{b}}</view></view></view></layout-default-uni>

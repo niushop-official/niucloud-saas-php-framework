@@ -14,6 +14,7 @@ import { t } from '@/lang'
 import { getToken } from '@/utils/common'
 import { UploadFile, ElMessage } from 'element-plus'
 import storage from '@/utils/storage'
+import envConfig from '@/utils/config'
 
 const prop = defineProps({
     modelValue: {
@@ -43,9 +44,9 @@ const value = computed({
 
 const upload = computed(() => {
     const headers: Record<string, any> = {}
-    headers[import.meta.env.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
-    headers[import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
-    const baseURL = import.meta.env.VITE_APP_BASE_URL.substr(-1) == '/' ? import.meta.env.VITE_APP_BASE_URL : `${import.meta.env.VITE_APP_BASE_URL}/`
+    headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
+    headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
+    const baseURL = envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`
 
     return {
         action: `${baseURL}${prop.api}`,

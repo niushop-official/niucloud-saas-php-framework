@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "编辑收货地址",
+  "usingComponents": {
+    "u-input": "../../../node-modules/uview-plus/components/u-input/u-input",
+    "u-form-item": "../../../node-modules/uview-plus/components/u-form-item/u-form-item",
+    "u-switch": "../../../node-modules/uview-plus/components/u-switch/u-switch",
+    "u-form": "../../../node-modules/uview-plus/components/u-form/u-form",
+    "area-select": "../../../components/area-select/area-select",
+    "weixin-privacy-popup": "../../../components/wx-privacy-popup/wx-privacy-popup"
+  }
+}

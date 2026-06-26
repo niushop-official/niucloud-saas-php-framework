@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "up-input": "../u-input/u-input",
+    "u-picker": "../u-picker/u-picker"
+  }
+}

@@ -1,6 +1,7 @@
 import { RouteRecordRaw, RouterView } from 'vue-router'
 import Default from '@/layout/index.vue'
 import Decorate from '@/layout/decorate/index.vue'
+import { loadAddonView } from '@/utils/addon-loader'
 
 // 静态路由
 export const STATIC_ROUTES: Array<RouteRecordRaw> = [
@@ -104,8 +105,9 @@ export const DECORATE_ROUTER: RouteRecordRaw = {
     children: []
 }
 
-const modules = import.meta.glob('@/app/views/**/*.vue')
-const addonModules = import.meta.glob('@/addon/**/views/**/*.vue')
+const modules = import.meta.glob('../app/views/**/*.vue')
+// 开发环境：直接用 import.meta.glob 从源码加载所有插件视图（无需 manifest）
+const addonModules = import.meta.glob('../addon/**/views/**/*.vue')
 
 interface Route {
     menu_name: string,
@@ -151,7 +153,26 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
         }
     }
     if (route.menu_type == 1) {
-        record.component = route.addon ? addonModules[`/src/addon/${ route.addon }/views/${ route.view_path }.vue`] : modules[`/src/app/views/${ route.view_path }.vue`]
+        if (route.addon) {
+            // view_path 优先，为空时 fallback 用 router_path
+            let viewPath = route.view_path
+            if (!viewPath && route.router_path) {
+                viewPath = route.router_path
+            }
+            if (viewPath) {
+                if (import.meta.env.DEV) {
+                    // 开发环境：直接用 import.meta.glob 从源码加载（无需 addon-loader/manifest）
+                    record.component = addonModules[`../addon/${route.addon}/views/${viewPath}.vue`]
+                } else {
+                    // 生产环境：通过编译产物的 addon-loader 加载
+                    record.component = loadAddonView(route.addon, viewPath)
+                }
+            }
+            // 无 viewPath 且无 router_path → 不设 component，作为容器路由，
+            // 其 children（由 formatRouters 递归创建）通过父级 <RouterView> 渲染
+        } else {
+            record.component = modules[`../app/views/${ route.view_path }.vue`]
+        }
     }
     return record
 }

@@ -1,0 +1,1 @@
+<view class="min-h--100vh- bg--var---page-bg-color-- overflow-hidden" style="{{c}}"><view class="empty-page"><image class="img" src="{{a}}" mode="aspectFit" /><view class="desc">{{b}}</view></view></view>

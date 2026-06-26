@@ -1,0 +1,1 @@
+"use strict";const e=require("../../utils/request.js");exports.getDiyInfo=function(r){return e.request.get("diy/diy",r)},exports.getMemberFormRecord=function(){return e.request.get("diy/form/member_record")},exports.getShareInfo=function(r){return e.request.get("diy/share",r)};

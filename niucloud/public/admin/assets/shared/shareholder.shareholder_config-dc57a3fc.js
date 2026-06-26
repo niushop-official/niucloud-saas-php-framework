@@ -1,0 +1,37 @@
+const o = "提成比例", s = "请输入股东分红比例", t = "该比例为每个订单成交后，佣金计算标准", e = "推广海报", n = "请上传绑定技师背景", a = "状态", i = "开启", c = "关闭", d = "%", r = "请输入", l = "新增股东", h = "编辑股东", m = "确定要删除该数据吗？", g = "请选择开始时间", p = "请选择结束时间", u = "关闭后股东将不再享受分红", f = {
+  commissionRatio: o,
+  commissionRatioPlaceholder: s,
+  commissionRatioContent: t,
+  bindBg: e,
+  bindBgPlaceholder: n,
+  status: a,
+  is_open: i,
+  is_close: c,
+  ration: d,
+  statusPlaceholder: r,
+  addShareholderConfig: l,
+  updateShareholderConfig: h,
+  shareholderConfigDeleteTips: m,
+  startDate: g,
+  endDate: p,
+  statusTips: u
+};
+export {
+  l as addShareholderConfig,
+  e as bindBg,
+  n as bindBgPlaceholder,
+  o as commissionRatio,
+  t as commissionRatioContent,
+  s as commissionRatioPlaceholder,
+  f as default,
+  p as endDate,
+  c as is_close,
+  i as is_open,
+  d as ration,
+  m as shareholderConfigDeleteTips,
+  g as startDate,
+  a as status,
+  r as statusPlaceholder,
+  u as statusTips,
+  h as updateShareholderConfig
+};
