@@ -1,17 +1,9 @@
 !revision
 branches: {
   }
-fileChange:
-  /niucloud:
-    newFile: !uuid '38b728c53ccb821f1db8a8edd86a1cd1d2c229f4'
-    oldFile: !uuid '7a84dec1d64bb9b80dcd473fc9a05cdbf57bf931'
-  /niucloud/addon:
-    newFile: !uuid '239ec593c6a2192e76c005435f748b2ad28be832'
-    oldFile: null
-  /niucloud/addon/readme.md:
-    newFile: !uuid 'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391'
-    oldFile: null
-gitCommitId: !uuid '3b5eca4a0fe8592f2b98992993d0a1e3d1156f18'
+fileChange: {
+  }
+gitCommitId: !uuid '5cf8f306250e75c340b95a437cb56b083d29e653'
 renames: {
   }
-revisionId: 420
+revisionId: 421
