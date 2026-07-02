@@ -46,7 +46,8 @@ const upload = computed(() => {
     const headers: Record<string, any> = {}
     headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
     headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
-    const baseURL = envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`
+    const appBaseUrl = envConfig.VITE_APP_BASE_URL || '/adminapi/'
+    const baseURL = appBaseUrl.endsWith('/') ? appBaseUrl : `${appBaseUrl}/`
 
     return {
         action: `${baseURL}${prop.api}`,

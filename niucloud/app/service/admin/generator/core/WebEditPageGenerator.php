@@ -105,12 +105,15 @@ class WebEditPageGenerator extends BaseGenerator
     public function getDictList()
     {
         $content = '';
+        $isExist = [];
         foreach ($this->tableColumn as $column)
         {
             if(empty($column['dict_type']))
             {
                 continue;
             }
+            if (in_array($column['dict_type'], $isExist)) continue; // 去重
+            $isExist[] = $column['dict_type'];
             $content.= 'let '.$column['column_name'].'List = ref([])'.PHP_EOL.'const '.$column['column_name'].'DictList = async () => {'.PHP_EOL.$column['column_name'].'List.value = await (await useDictionary(' ."'".$column['dict_type']."'".')).data.dictionary'.PHP_EOL.'}'.PHP_EOL. $column['column_name'].'DictList();'.PHP_EOL;
             if ($column['view_type'] == 'radio' || $column['view_type'] == 'select') {
                 $content .= 'watch(() => '.$column['column_name'].'List.value, () => { formData.'.$column['column_name'].' = '.$column['column_name'].'List.value[0].value })'.PHP_EOL;
@@ -510,6 +513,7 @@ class WebEditPageGenerator extends BaseGenerator
     public function getModelData()
     {
         $content = '';
+        $isExist = [];
         foreach ($this->tableColumn as $column)
         {
             if(empty($column['model']))
@@ -517,7 +521,10 @@ class WebEditPageGenerator extends BaseGenerator
                 continue;
             }
             $str = strripos($column['model'],'\\');
-            $with = Str::camel(substr($column['model'],$str+1));
+            $modelName = substr($column['model'], $str + 1);
+            if (in_array($modelName, $isExist)) continue; // 去重
+            $isExist[] = $modelName;
+            $with = Str::camel($modelName);
             $content.= PHP_EOL.'const '. Str::camel($column['column_name']).'List = ref([] as any[])'.PHP_EOL;
             $content.= 'const set'.Str::studly($column['column_name']).'List = async () => {'.PHP_EOL.Str::camel($column['column_name']).'List.value = await (await getWith'.Str::studly($with).'List({})).data' .PHP_EOL.'}'
                 .PHP_EOL.'set'.Str::studly($column['column_name']).'List()';
@@ -533,10 +540,14 @@ class WebEditPageGenerator extends BaseGenerator
     public function getEditWithApiPath()
     {
         $content = '';
+        $isExist = [];
         foreach ($this->tableColumn as $column) {
             if (!empty($column['model'])) {
                 $str = strripos($column['model'],'\\');
-                $with = Str::camel(substr($column['model'],$str+1));
+                $modelName = substr($column['model'], $str + 1);
+                if (in_array($modelName, $isExist)) continue; // 去重
+                $isExist[] = $modelName;
+                $with = Str::camel($modelName);
                 $content.= ', getWith'.Str::studly($with).'List';
             }
         }

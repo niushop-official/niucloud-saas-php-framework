@@ -88,7 +88,7 @@ function packageAddonBuild(key, buildDir, buildId) {
         copyDir(nodeModulesSrc, path.join(dest, 'node-modules'))
     }
 
-    const scan = scanSubPackageRequires(buildDir, roots)
+    const scan = scanSubPackageRequires(buildDir, roots, key)
     const depFiles = copyMpRelativeFiles(buildDir, dest, scan.requirePaths, roots)
     if (depFiles) {
         console.log(`[build-mp-addon] packaged ${depFiles} main-package dep file(s)`)

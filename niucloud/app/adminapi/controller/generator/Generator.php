@@ -123,9 +123,12 @@ class Generator extends BaseController
      */
     public function del(int $id)
     {
-        (new GenerateService())->del($id);
+        $removeCode = $this->request->param('remove_code', 0);
+        (new GenerateService())->del($id, (bool)$removeCode);
         return success('DELETE_SUCCESS');
     }
+
+
 
     /**
      * 生成代码

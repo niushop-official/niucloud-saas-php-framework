@@ -61,7 +61,9 @@ export default defineConfig({
             fileName: () => `${outName}.js`
         },
         rollupOptions: {
-            external: sharedExternalForBuild(pkgKey)
+            external: sharedExternalForBuild(pkgKey),
+            // core-shared 是共享包，addon 依赖其全部导出，禁止 tree-shaking
+            treeshake: pkgKey !== 'core-shared'
         }
     }
 })

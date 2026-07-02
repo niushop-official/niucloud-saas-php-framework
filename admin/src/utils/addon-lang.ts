@@ -156,6 +156,13 @@ export async function initAddonManifests(keys?: string[]) {
                 if (res.ok) {
                     const data = await res.json()
                     addonKeys = Array.isArray(data.keys) ? data.keys : []
+                    // 读取合并后的 manifests（PHP 端已打包进 index.json），避免 N 次 manifest.json 请求
+                    const bundled = data.manifests as Record<string, AddonManifest> | undefined
+                    if (bundled) {
+                        for (const [k, m] of Object.entries(bundled)) {
+                            prodManifests[k] = m
+                        }
+                    }
                 }
             } catch {
                 addonKeys = []
@@ -163,6 +170,16 @@ export async function initAddonManifests(keys?: string[]) {
         }
         const verifiedKeys: string[] = []
         for (const key of addonKeys || []) {
+            // 如果 manifest 已从 index.json 获取，直接验证
+            if (prodManifests[key]) {
+                if (await isAddonEntryAvailable(key)) {
+                    verifiedKeys.push(key)
+                } else {
+                    delete prodManifests[key]
+                }
+                continue
+            }
+            // 兼容旧版：单独请求 manifest.json
             if (!(await isAddonEntryAvailable(key))) continue
             verifiedKeys.push(key)
             try {

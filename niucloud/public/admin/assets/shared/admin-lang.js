@@ -1,32 +1,32 @@
-var F = Object.defineProperty;
-var H = (o, n, e) => n in o ? F(o, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[n] = e;
-var T = (o, n, e) => (H(o, typeof n != "symbol" ? n + "" : n, e), e);
-import { createI18n as V } from "vue-i18n";
-import { nextTick as C, getCurrentInstance as K } from "vue";
-import { defineStore as Q } from "pinia";
-import { useRoute as G } from "vue-router";
-const X = (o, n) => {
+var H = Object.defineProperty;
+var V = (o, n, e) => n in o ? H(o, n, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[n] = e;
+var x = (o, n, e) => (V(o, typeof n != "symbol" ? n + "" : n, e), e);
+import { createI18n as K } from "vue-i18n";
+import { nextTick as N, getCurrentInstance as Q } from "vue";
+import { defineStore as G } from "pinia";
+import { useRoute as X } from "vue-router";
+const Y = (o, n) => {
   const e = o[n];
   return e ? typeof e == "function" ? e() : Promise.resolve(e) : new Promise((s, i) => {
     (typeof queueMicrotask == "function" ? queueMicrotask : setTimeout)(i.bind(null, new Error("Unknown variable dynamic import: " + n)));
   });
 };
-let N = {}, P = [], A = !1, b = null;
-const x = {}, v = "/admin";
-function k(o) {
-  return !o || o.startsWith("http") || o.startsWith("/admin/") ? o : o.startsWith("/assets/") ? `${v}${o}` : o.startsWith("./") ? `${v}/assets/addons/${o.slice(2)}` : `${v}/${o.replace(/^\//, "")}`;
+let z = {}, k = [], A = !1, v = null;
+const C = {}, P = "/admin";
+function S(o) {
+  return !o || o.startsWith("http") || o.startsWith("/admin/") ? o : o.startsWith("/assets/") ? `${P}${o}` : o.startsWith("./") ? `${P}/assets/addons/${o.slice(2)}` : `${P}/${o.replace(/^\//, "")}`;
 }
-function Y(o, ...n) {
+function J(o, ...n) {
   const e = ["assets", "addons", o, ...n].join("/").replace(/\/+/g, "/");
-  return `${v}/${e}`;
+  return `${P}/${e}`;
 }
-function R(o, n) {
+function D(o, n) {
   if (n === "/")
     return "index";
   let e = n.replace(/^(\/admin\/|\/site\/|\/)/, "").replace(/\.vue$/, "");
   return e.startsWith("views/") && (e = e.slice(6)), o && (e.startsWith(`${o}/`) ? e = e.slice(o.length + 1) : e === o && (e = "index")), e.replaceAll("/", ".");
 }
-function J(o) {
+function Z(o) {
   if (o.meta.addon)
     return String(o.meta.addon);
   for (let n = o.matched.length - 1; n >= 0; n--) {
@@ -36,7 +36,7 @@ function J(o) {
   }
   return "";
 }
-function Z(o) {
+function ee(o) {
   if (o.meta.view)
     return String(o.meta.view);
   for (let n = o.matched.length - 1; n >= 0; n--) {
@@ -57,95 +57,104 @@ function E(o) {
     s === "default" || s === "__esModule" || typeof i == "string" && (e[s] = i);
   return Object.keys(e).length ? e : n;
 }
-function ee(o, n) {
+function ne(o, n) {
   const e = {};
   for (const [s, i] of Object.entries(n))
     typeof i == "string" && (e[`${o}.${s}`] = i, o === "common" && (e[s] = i));
   return e;
 }
-function D(o, n) {
+function W(o, n) {
   const s = o.replace(/^(\/admin\/|\/site\/|\/)/, "").split("/").filter(Boolean)[0];
-  return s && (n != null && n.length ? n : q()).includes(s) ? s : "";
+  return s && (n != null && n.length ? n : F()).includes(s) ? s : "";
 }
-async function ne(o) {
+async function U(o) {
   try {
-    const n = await fetch(k(`/assets/addons/${o}/index.js`), { method: "HEAD" });
+    const n = await fetch(S(`/assets/addons/${o}/index.js`), { method: "HEAD" });
     return n.ok ? !(n.headers.get("content-type") || "").toLowerCase().includes("text/html") : !1;
   } catch {
     return !1;
   }
 }
-async function W(o) {
-  return o in x || (x[o] = (async () => {
+async function B(o) {
+  return o in C || (C[o] = (async () => {
     try {
-      return await import(k(`/assets/addons/${o}/index.js`));
+      return await import(S(`/assets/addons/${o}/index.js`));
     } catch {
       return null;
     }
-  })()), x[o];
+  })()), C[o];
 }
-async function B(o) {
-  return b || (b = (async () => {
-    N = {}, P = [];
+async function q(o) {
+  return v || (v = (async () => {
+    z = {}, k = [];
     let n = o;
     if (!(n != null && n.length))
       try {
-        const s = k("/assets/addons/index.json"), i = await fetch(s);
+        const s = S("/assets/addons/index.json"), i = await fetch(s);
         if (i.ok) {
           const c = await i.json();
           n = Array.isArray(c.keys) ? c.keys : [];
+          const d = c.manifests;
+          if (d)
+            for (const [m, u] of Object.entries(d))
+              z[m] = u;
         }
       } catch {
         n = [];
       }
     const e = [];
-    for (const s of n || [])
-      if (await ne(s)) {
+    for (const s of n || []) {
+      if (z[s]) {
+        await U(s) ? e.push(s) : delete z[s];
+        continue;
+      }
+      if (await U(s)) {
         e.push(s);
         try {
-          const i = k(`/assets/addons/${s}/manifest.json`), c = await fetch(i);
-          c.ok && (N[s] = await c.json());
+          const i = S(`/assets/addons/${s}/manifest.json`), c = await fetch(i);
+          c.ok && (z[s] = await c.json());
         } catch {
         }
       }
-    P = e, A = !0;
-  })(), b);
+    }
+    k = e, A = !0;
+  })(), v);
 }
-function q() {
-  return P.length ? P : Object.keys(N);
+function F() {
+  return k.length ? k : Object.keys(z);
 }
 async function te(o) {
-  A || await B();
-  for (const n of q())
+  A || await q();
+  for (const n of F())
     try {
-      const e = await W(n);
+      const e = await B(n);
       if (!e)
         continue;
       const s = e.langs;
       if (!s)
         continue;
       for (const [i, c] of Object.entries(s)) {
-        const m = {};
-        for (const [d, u] of Object.entries(c || {}))
-          Object.assign(m, ee(d, E(u)));
-        Object.keys(m).length && o(i, m);
+        const d = {};
+        for (const [m, u] of Object.entries(c || {}))
+          Object.assign(d, ne(m, E(u)));
+        Object.keys(d).length && o(i, d);
       }
     } catch {
     }
 }
-async function U(o, n, e) {
+async function O(o, n, e) {
   var i;
-  A || await B();
+  A || await q();
   try {
-    const c = await W(o);
+    const c = await B(o);
     if (c) {
-      const m = c.langs, d = (i = m == null ? void 0 : m[n]) == null ? void 0 : i[e], u = E(d);
+      const d = c.langs, m = (i = d == null ? void 0 : d[n]) == null ? void 0 : i[e], u = E(m);
       if (Object.keys(u).length)
         return u;
     }
   } catch {
   }
-  const s = Y(o, "lang", n, `${e}.json`);
+  const s = J(o, "lang", n, `${e}.json`);
   try {
     const c = await fetch(s);
     if (c.ok)
@@ -157,8 +166,8 @@ async function U(o, n, e) {
 class oe {
   //已加载的语言
   constructor(n) {
-    T(this, "i18n");
-    T(this, "loadLocale", []);
+    x(this, "i18n");
+    x(this, "loadLocale", []);
     this.i18n = n;
   }
   /**
@@ -179,24 +188,24 @@ class oe {
    */
   async loadLocaleMessages(n, e, s) {
     try {
-      n || (n = D(e));
-      const i = R(n, e);
+      n || (n = W(e));
+      const i = D(n, e);
       let c = {};
-      n ? c = await U(n, s, i) : c = (await X(/* @__PURE__ */ Object.assign({ "../app/lang/en/403.json": () => import("./403-4bc122af.js"), "../app/lang/en/auth.menu.json": () => import("./auth.menu-f5062c22.js"), "../app/lang/en/index.json": () => import("./index-c33bb386.js"), "../app/lang/en/login.json": () => import("./login-8bac8312.js"), "../app/lang/en/member.member.json": () => import("./member.member-64cd29d1.js"), "../app/lang/en/user.center.json": () => import("./user.center-78470141.js"), "../app/lang/zh-cn/403.json": () => import("./403-afb5f475.js"), "../app/lang/zh-cn/app.authorize.json": () => import("./app.authorize-7701e564.js"), "../app/lang/zh-cn/app.index.json": () => import("./app.index-ffd57c14.js"), "../app/lang/zh-cn/app.store.json": () => import("./app.store-82fccf8d.js"), "../app/lang/zh-cn/app.upgrade.json": () => import("./app.upgrade-a5fc793d.js"), "../app/lang/zh-cn/auth.log.json": () => import("./auth.log-7ab49365.js"), "../app/lang/zh-cn/auth.menu.json": () => import("./auth.menu-11f8c5be.js"), "../app/lang/zh-cn/auth.role.json": () => import("./auth.role-c93ddff5.js"), "../app/lang/zh-cn/auth.site_menu.json": () => import("./auth.site_menu-8547ef11.js"), "../app/lang/zh-cn/auth.user.json": () => import("./auth.user-4b72de7c.js"), "../app/lang/zh-cn/channel.aliapp.access.json": () => import("./channel.aliapp.access-345ff291.js"), "../app/lang/zh-cn/channel.aliapp.config.json": () => import("./channel.aliapp.config-8ba784b4.js"), "../app/lang/zh-cn/channel.aliapp.course.json": () => import("./channel.aliapp.course-11a03e9a.js"), "../app/lang/zh-cn/channel.app.access.json": () => import("./channel.app.access-4967216b.js"), "../app/lang/zh-cn/channel.app.config.json": () => import("./channel.app.config-f92838ee.js"), "../app/lang/zh-cn/channel.app.version.json": () => import("./channel.app.version-801d7c33.js"), "../app/lang/zh-cn/channel.h5.config.json": () => import("./channel.h5.config-bb100e55.js"), "../app/lang/zh-cn/channel.pc.config.json": () => import("./channel.pc.config-bbe7313f.js"), "../app/lang/zh-cn/channel.weapp.access.json": () => import("./channel.weapp.access-f5b56b8d.js"), "../app/lang/zh-cn/channel.weapp.code.json": () => import("./channel.weapp.code-1597a17b.js"), "../app/lang/zh-cn/channel.weapp.config.json": () => import("./channel.weapp.config-62316f27.js"), "../app/lang/zh-cn/channel.weapp.course.json": () => import("./channel.weapp.course-46cdef05.js"), "../app/lang/zh-cn/channel.weapp.template.json": () => import("./channel.weapp.template-60f607e4.js"), "../app/lang/zh-cn/channel.wechat.access.json": () => import("./channel.wechat.access-3198d859.js"), "../app/lang/zh-cn/channel.wechat.config.json": () => import("./channel.wechat.config-149fe86d.js"), "../app/lang/zh-cn/channel.wechat.course.json": () => import("./channel.wechat.course-717abfc8.js"), "../app/lang/zh-cn/channel.wechat.keyword_reply_edit.json": () => import("./channel.wechat.keyword_reply_edit-736dea19.js"), "../app/lang/zh-cn/channel.wechat.menu.json": () => import("./channel.wechat.menu-08c01b06.js"), "../app/lang/zh-cn/channel.wechat.reply.json": () => import("./channel.wechat.reply-371557b9.js"), "../app/lang/zh-cn/channel.wechat.template.json": () => import("./channel.wechat.template-c7e0e856.js"), "../app/lang/zh-cn/decorate.preview.json": () => import("./decorate.preview-5f2765ef.js"), "../app/lang/zh-cn/dict.list.json": () => import("./dict.list-fdd911c6.js"), "../app/lang/zh-cn/diy.edit.json": () => import("./diy.edit-f5d8c6b1.js"), "../app/lang/zh-cn/diy.index.json": () => import("./diy.index-7d6c7cb2.js"), "../app/lang/zh-cn/diy.list.json": () => import("./diy.list-fb8d7f12.js"), "../app/lang/zh-cn/diy.member.json": () => import("./diy.member-7204bf61.js"), "../app/lang/zh-cn/diy.preview.json": () => import("./diy.preview-f8b42901.js"), "../app/lang/zh-cn/diy.route.json": () => import("./diy.route-51d664e7.js"), "../app/lang/zh-cn/diy.tabbar.json": () => import("./diy.tabbar-5a78137b.js"), "../app/lang/zh-cn/diy.tabbar_edit.json": () => import("./diy.tabbar_edit-1b67bdec.js"), "../app/lang/zh-cn/diy_form.edit.json": () => import("./diy_form.edit-5e849551.js"), "../app/lang/zh-cn/diy_form.list.json": () => import("./diy_form.list-8cc96e72.js"), "../app/lang/zh-cn/finance.account.json": () => import("./finance.account-3ebadbbb.js"), "../app/lang/zh-cn/finance.cash_out.json": () => import("./finance.cash_out-a5fc92d4.js"), "../app/lang/zh-cn/finance.offlinepay.json": () => import("./finance.offlinepay-5e4097af.js"), "../app/lang/zh-cn/finance.pay_detail.json": () => import("./finance.pay_detail-03e8534d.js"), "../app/lang/zh-cn/finance.pay_refund.json": () => import("./finance.pay_refund-33befe92.js"), "../app/lang/zh-cn/finance.refund_detail.json": () => import("./finance.refund_detail-4952f106.js"), "../app/lang/zh-cn/index.app_manage.json": () => import("./index.app_manage-8bfaebc1.js"), "../app/lang/zh-cn/index.index.json": () => import("./index.index-1daecdce.js"), "../app/lang/zh-cn/index.preview.json": () => import("./index.preview-969e67dd.js"), "../app/lang/zh-cn/index.store.json": () => import("./index.store-e2f6d3f6.js"), "../app/lang/zh-cn/login.json": () => import("./login-00d7722b.js"), "../app/lang/zh-cn/marketing.sign_config.json": () => import("./marketing.sign_config-62bde278.js"), "../app/lang/zh-cn/marketing.sign_list.json": () => import("./marketing.sign_list-2d527eb9.js"), "../app/lang/zh-cn/marketing.verifier.json": () => import("./marketing.verifier-fb68001b.js"), "../app/lang/zh-cn/marketing.verify.json": () => import("./marketing.verify-a01b4161.js"), "../app/lang/zh-cn/member.balance.json": () => import("./member.balance-7b831fb2.js"), "../app/lang/zh-cn/member.commission.json": () => import("./member.commission-6f09b642.js"), "../app/lang/zh-cn/member.growth.json": () => import("./member.growth-b8b132a4.js"), "../app/lang/zh-cn/member.label.edit.json": () => import("./member.label.edit-32f3c791.js"), "../app/lang/zh-cn/member.label.json": () => import("./member.label-d042fc75.js"), "../app/lang/zh-cn/member.level.json": () => import("./member.level-9883e926.js"), "../app/lang/zh-cn/member.level_edit.json": () => import("./member.level_edit-63ebdbf3.js"), "../app/lang/zh-cn/member.member.json": () => import("./member.member-2cc54a64.js"), "../app/lang/zh-cn/member.member_detail.json": () => import("./member.member_detail-49ebc798.js"), "../app/lang/zh-cn/member.point.json": () => import("./member.point-b9f9143f.js"), "../app/lang/zh-cn/poster.edit.json": () => import("./poster.edit-c0d45927.js"), "../app/lang/zh-cn/poster.list.json": () => import("./poster.list-6a917fd4.js"), "../app/lang/zh-cn/printer.edit.json": () => import("./printer.edit-03e2be08.js"), "../app/lang/zh-cn/printer.list.json": () => import("./printer.list-1cf7202e.js"), "../app/lang/zh-cn/printer.template_edit.json": () => import("./printer.template_edit-3092b283.js"), "../app/lang/zh-cn/printer.template_list.json": () => import("./printer.template_list-679ce0fb.js"), "../app/lang/zh-cn/setting.adminlogin.json": () => import("./setting.adminlogin-763acc1d.js"), "../app/lang/zh-cn/setting.agreement.json": () => import("./setting.agreement-ef53ab4e.js"), "../app/lang/zh-cn/setting.agreement_edit.json": () => import("./setting.agreement_edit-42ca6920.js"), "../app/lang/zh-cn/setting.cash_out.json": () => import("./setting.cash_out-b3a40561.js"), "../app/lang/zh-cn/setting.copyright.json": () => import("./setting.copyright-703776c8.js"), "../app/lang/zh-cn/setting.developer_token.json": () => import("./setting.developer_token-df8cac95.js"), "../app/lang/zh-cn/setting.export.json": () => import("./setting.export-6bcb66d7.js"), "../app/lang/zh-cn/setting.growth_rule.json": () => import("./setting.growth_rule-4682f358.js"), "../app/lang/zh-cn/setting.layout.json": () => import("./setting.layout-2d2ef354.js"), "../app/lang/zh-cn/setting.login.json": () => import("./setting.login-0e20a204.js"), "../app/lang/zh-cn/setting.map.json": () => import("./setting.map-a018c17d.js"), "../app/lang/zh-cn/setting.member.json": () => import("./setting.member-3c18afe5.js"), "../app/lang/zh-cn/setting.notice.json": () => import("./setting.notice-b12781da.js"), "../app/lang/zh-cn/setting.notice_records.json": () => import("./setting.notice_records-8b5d12a2.js"), "../app/lang/zh-cn/setting.oplatform.json": () => import("./setting.oplatform-ceddec97.js"), "../app/lang/zh-cn/setting.pay.json": () => import("./setting.pay-9d3502d5.js"), "../app/lang/zh-cn/setting.sms.json": () => import("./setting.sms-38c6ea20.js"), "../app/lang/zh-cn/setting.sms_records.json": () => import("./setting.sms_records-f32dcf96.js"), "../app/lang/zh-cn/setting.storage.json": () => import("./setting.storage-33557c9e.js"), "../app/lang/zh-cn/setting.system.json": () => import("./setting.system-533a107a.js"), "../app/lang/zh-cn/setting.transfer.json": () => import("./setting.transfer-dd7288e1.js"), "../app/lang/zh-cn/setting.transfer_scene.json": () => import("./setting.transfer_scene-a1236971.js"), "../app/lang/zh-cn/setting.weapp.json": () => import("./setting.weapp-38d65415.js"), "../app/lang/zh-cn/site.group.json": () => import("./site.group-79d11eb3.js"), "../app/lang/zh-cn/site.group_edit.json": () => import("./site.group_edit-ad4054d9.js"), "../app/lang/zh-cn/site.info.json": () => import("./site.info-3cdf0707.js"), "../app/lang/zh-cn/site.list.json": () => import("./site.list-f879a4a9.js"), "../app/lang/zh-cn/site.manage.json": () => import("./site.manage-d384cce7.js"), "../app/lang/zh-cn/site.user.json": () => import("./site.user-298548ec.js"), "../app/lang/zh-cn/site.user_info.json": () => import("./site.user_info-8949966a.js"), "../app/lang/zh-cn/tools.addon.edit.json": () => import("./tools.addon.edit-67fed17b.js"), "../app/lang/zh-cn/tools.addon.index.json": () => import("./tools.addon.index-64a332f0.js"), "../app/lang/zh-cn/tools.addon.list.json": () => import("./tools.addon.list-066ffe3b.js"), "../app/lang/zh-cn/tools.backup_records.json": () => import("./tools.backup_records-3ee06c5e.js"), "../app/lang/zh-cn/tools.code.edit.json": () => import("./tools.code.edit-ce482f8a.js"), "../app/lang/zh-cn/tools.code.index.json": () => import("./tools.code.index-2f01b5e9.js"), "../app/lang/zh-cn/tools.code.list.json": () => import("./tools.code.list-b3d1ec18.js"), "../app/lang/zh-cn/tools.detection.json": () => import("./tools.detection-2d1c5fc5.js"), "../app/lang/zh-cn/tools.schedule.json": () => import("./tools.schedule-3013f2ba.js"), "../app/lang/zh-cn/tools.schedule_log.json": () => import("./tools.schedule_log-c332642a.js"), "../app/lang/zh-cn/tools.updatecache.json": () => import("./tools.updatecache-c28011ba.js"), "../app/lang/zh-cn/tools.upgrade_records.json": () => import("./tools.upgrade_records-948f5c6a.js"), "../app/lang/zh-cn/user.center.json": () => import("./user.center-f848e53b.js"), "../app/lang/zh-cn/user.edit_center.json": () => import("./user.edit_center-86828913.js"), "../app/lang/zh-cn/wxoplatform.setting.json": () => import("./wxoplatform.setting-e351af9d.js"), "../app/lang/zh-cn/wxoplatform.weapp_version.json": () => import("./wxoplatform.weapp_version-cb21e15c.js") }), `../app/lang/${s}/${i}.json`)).default || {};
-      let m = {};
-      if (Object.keys(c).forEach((d) => {
-        m[`${i}.${d}`] = c[d];
+      n ? c = await O(n, s, i) : c = (await Y(/* @__PURE__ */ Object.assign({ "../app/lang/en/403.json": () => import("./403-4bc122af.js"), "../app/lang/en/auth.menu.json": () => import("./auth.menu-f5062c22.js"), "../app/lang/en/index.json": () => import("./index-c33bb386.js"), "../app/lang/en/login.json": () => import("./login-8bac8312.js"), "../app/lang/en/member.member.json": () => import("./member.member-64cd29d1.js"), "../app/lang/en/user.center.json": () => import("./user.center-78470141.js"), "../app/lang/zh-cn/403.json": () => import("./403-afb5f475.js"), "../app/lang/zh-cn/app.authorize.json": () => import("./app.authorize-7701e564.js"), "../app/lang/zh-cn/app.index.json": () => import("./app.index-ffd57c14.js"), "../app/lang/zh-cn/app.store.json": () => import("./app.store-82fccf8d.js"), "../app/lang/zh-cn/app.upgrade.json": () => import("./app.upgrade-a5fc793d.js"), "../app/lang/zh-cn/auth.log.json": () => import("./auth.log-7ab49365.js"), "../app/lang/zh-cn/auth.menu.json": () => import("./auth.menu-11f8c5be.js"), "../app/lang/zh-cn/auth.role.json": () => import("./auth.role-c93ddff5.js"), "../app/lang/zh-cn/auth.site_menu.json": () => import("./auth.site_menu-8547ef11.js"), "../app/lang/zh-cn/auth.user.json": () => import("./auth.user-4b72de7c.js"), "../app/lang/zh-cn/channel.aliapp.access.json": () => import("./channel.aliapp.access-345ff291.js"), "../app/lang/zh-cn/channel.aliapp.config.json": () => import("./channel.aliapp.config-8ba784b4.js"), "../app/lang/zh-cn/channel.aliapp.course.json": () => import("./channel.aliapp.course-11a03e9a.js"), "../app/lang/zh-cn/channel.app.access.json": () => import("./channel.app.access-4967216b.js"), "../app/lang/zh-cn/channel.app.config.json": () => import("./channel.app.config-f92838ee.js"), "../app/lang/zh-cn/channel.app.version.json": () => import("./channel.app.version-801d7c33.js"), "../app/lang/zh-cn/channel.h5.config.json": () => import("./channel.h5.config-bb100e55.js"), "../app/lang/zh-cn/channel.pc.config.json": () => import("./channel.pc.config-bbe7313f.js"), "../app/lang/zh-cn/channel.weapp.access.json": () => import("./channel.weapp.access-f5b56b8d.js"), "../app/lang/zh-cn/channel.weapp.code.json": () => import("./channel.weapp.code-1597a17b.js"), "../app/lang/zh-cn/channel.weapp.config.json": () => import("./channel.weapp.config-62316f27.js"), "../app/lang/zh-cn/channel.weapp.course.json": () => import("./channel.weapp.course-46cdef05.js"), "../app/lang/zh-cn/channel.weapp.template.json": () => import("./channel.weapp.template-60f607e4.js"), "../app/lang/zh-cn/channel.wechat.access.json": () => import("./channel.wechat.access-3198d859.js"), "../app/lang/zh-cn/channel.wechat.config.json": () => import("./channel.wechat.config-149fe86d.js"), "../app/lang/zh-cn/channel.wechat.course.json": () => import("./channel.wechat.course-717abfc8.js"), "../app/lang/zh-cn/channel.wechat.keyword_reply_edit.json": () => import("./channel.wechat.keyword_reply_edit-736dea19.js"), "../app/lang/zh-cn/channel.wechat.menu.json": () => import("./channel.wechat.menu-08c01b06.js"), "../app/lang/zh-cn/channel.wechat.reply.json": () => import("./channel.wechat.reply-371557b9.js"), "../app/lang/zh-cn/channel.wechat.template.json": () => import("./channel.wechat.template-c7e0e856.js"), "../app/lang/zh-cn/decorate.preview.json": () => import("./decorate.preview-5f2765ef.js"), "../app/lang/zh-cn/dict.list.json": () => import("./dict.list-fdd911c6.js"), "../app/lang/zh-cn/diy.edit.json": () => import("./diy.edit-f5d8c6b1.js"), "../app/lang/zh-cn/diy.index.json": () => import("./diy.index-7d6c7cb2.js"), "../app/lang/zh-cn/diy.list.json": () => import("./diy.list-fb8d7f12.js"), "../app/lang/zh-cn/diy.member.json": () => import("./diy.member-7204bf61.js"), "../app/lang/zh-cn/diy.preview.json": () => import("./diy.preview-f8b42901.js"), "../app/lang/zh-cn/diy.route.json": () => import("./diy.route-51d664e7.js"), "../app/lang/zh-cn/diy.tabbar.json": () => import("./diy.tabbar-5a78137b.js"), "../app/lang/zh-cn/diy.tabbar_edit.json": () => import("./diy.tabbar_edit-1b67bdec.js"), "../app/lang/zh-cn/diy_form.edit.json": () => import("./diy_form.edit-5e849551.js"), "../app/lang/zh-cn/diy_form.list.json": () => import("./diy_form.list-8cc96e72.js"), "../app/lang/zh-cn/finance.account.json": () => import("./finance.account-3ebadbbb.js"), "../app/lang/zh-cn/finance.cash_out.json": () => import("./finance.cash_out-a5fc92d4.js"), "../app/lang/zh-cn/finance.offlinepay.json": () => import("./finance.offlinepay-5e4097af.js"), "../app/lang/zh-cn/finance.pay_detail.json": () => import("./finance.pay_detail-03e8534d.js"), "../app/lang/zh-cn/finance.pay_refund.json": () => import("./finance.pay_refund-33befe92.js"), "../app/lang/zh-cn/finance.refund_detail.json": () => import("./finance.refund_detail-4952f106.js"), "../app/lang/zh-cn/index.app_manage.json": () => import("./index.app_manage-8bfaebc1.js"), "../app/lang/zh-cn/index.index.json": () => import("./index.index-1daecdce.js"), "../app/lang/zh-cn/index.preview.json": () => import("./index.preview-969e67dd.js"), "../app/lang/zh-cn/index.store.json": () => import("./index.store-e2f6d3f6.js"), "../app/lang/zh-cn/login.json": () => import("./login-00d7722b.js"), "../app/lang/zh-cn/marketing.sign_config.json": () => import("./marketing.sign_config-62bde278.js"), "../app/lang/zh-cn/marketing.sign_list.json": () => import("./marketing.sign_list-2d527eb9.js"), "../app/lang/zh-cn/marketing.verifier.json": () => import("./marketing.verifier-fb68001b.js"), "../app/lang/zh-cn/marketing.verify.json": () => import("./marketing.verify-a01b4161.js"), "../app/lang/zh-cn/member.balance.json": () => import("./member.balance-7b831fb2.js"), "../app/lang/zh-cn/member.commission.json": () => import("./member.commission-6f09b642.js"), "../app/lang/zh-cn/member.growth.json": () => import("./member.growth-b8b132a4.js"), "../app/lang/zh-cn/member.label.edit.json": () => import("./member.label.edit-32f3c791.js"), "../app/lang/zh-cn/member.label.json": () => import("./member.label-d042fc75.js"), "../app/lang/zh-cn/member.level.json": () => import("./member.level-9883e926.js"), "../app/lang/zh-cn/member.level_edit.json": () => import("./member.level_edit-63ebdbf3.js"), "../app/lang/zh-cn/member.member.json": () => import("./member.member-2cc54a64.js"), "../app/lang/zh-cn/member.member_detail.json": () => import("./member.member_detail-49ebc798.js"), "../app/lang/zh-cn/member.point.json": () => import("./member.point-b9f9143f.js"), "../app/lang/zh-cn/poster.edit.json": () => import("./poster.edit-c0d45927.js"), "../app/lang/zh-cn/poster.list.json": () => import("./poster.list-6a917fd4.js"), "../app/lang/zh-cn/printer.edit.json": () => import("./printer.edit-03e2be08.js"), "../app/lang/zh-cn/printer.list.json": () => import("./printer.list-1cf7202e.js"), "../app/lang/zh-cn/printer.template_edit.json": () => import("./printer.template_edit-3092b283.js"), "../app/lang/zh-cn/printer.template_list.json": () => import("./printer.template_list-679ce0fb.js"), "../app/lang/zh-cn/setting.adminlogin.json": () => import("./setting.adminlogin-763acc1d.js"), "../app/lang/zh-cn/setting.agreement.json": () => import("./setting.agreement-ef53ab4e.js"), "../app/lang/zh-cn/setting.agreement_edit.json": () => import("./setting.agreement_edit-42ca6920.js"), "../app/lang/zh-cn/setting.cash_out.json": () => import("./setting.cash_out-b3a40561.js"), "../app/lang/zh-cn/setting.copyright.json": () => import("./setting.copyright-703776c8.js"), "../app/lang/zh-cn/setting.developer_token.json": () => import("./setting.developer_token-df8cac95.js"), "../app/lang/zh-cn/setting.export.json": () => import("./setting.export-6bcb66d7.js"), "../app/lang/zh-cn/setting.growth_rule.json": () => import("./setting.growth_rule-4682f358.js"), "../app/lang/zh-cn/setting.layout.json": () => import("./setting.layout-2d2ef354.js"), "../app/lang/zh-cn/setting.login.json": () => import("./setting.login-0e20a204.js"), "../app/lang/zh-cn/setting.map.json": () => import("./setting.map-a018c17d.js"), "../app/lang/zh-cn/setting.member.json": () => import("./setting.member-3c18afe5.js"), "../app/lang/zh-cn/setting.notice.json": () => import("./setting.notice-b12781da.js"), "../app/lang/zh-cn/setting.notice_records.json": () => import("./setting.notice_records-8b5d12a2.js"), "../app/lang/zh-cn/setting.oplatform.json": () => import("./setting.oplatform-ceddec97.js"), "../app/lang/zh-cn/setting.pay.json": () => import("./setting.pay-9d3502d5.js"), "../app/lang/zh-cn/setting.sms.json": () => import("./setting.sms-38c6ea20.js"), "../app/lang/zh-cn/setting.sms_records.json": () => import("./setting.sms_records-f32dcf96.js"), "../app/lang/zh-cn/setting.storage.json": () => import("./setting.storage-33557c9e.js"), "../app/lang/zh-cn/setting.system.json": () => import("./setting.system-533a107a.js"), "../app/lang/zh-cn/setting.transfer.json": () => import("./setting.transfer-dd7288e1.js"), "../app/lang/zh-cn/setting.transfer_scene.json": () => import("./setting.transfer_scene-a1236971.js"), "../app/lang/zh-cn/setting.weapp.json": () => import("./setting.weapp-38d65415.js"), "../app/lang/zh-cn/site.group.json": () => import("./site.group-79d11eb3.js"), "../app/lang/zh-cn/site.group_edit.json": () => import("./site.group_edit-ad4054d9.js"), "../app/lang/zh-cn/site.info.json": () => import("./site.info-3cdf0707.js"), "../app/lang/zh-cn/site.list.json": () => import("./site.list-f879a4a9.js"), "../app/lang/zh-cn/site.manage.json": () => import("./site.manage-d384cce7.js"), "../app/lang/zh-cn/site.user.json": () => import("./site.user-298548ec.js"), "../app/lang/zh-cn/site.user_info.json": () => import("./site.user_info-8949966a.js"), "../app/lang/zh-cn/tools.addon.edit.json": () => import("./tools.addon.edit-67fed17b.js"), "../app/lang/zh-cn/tools.addon.index.json": () => import("./tools.addon.index-64a332f0.js"), "../app/lang/zh-cn/tools.addon.list.json": () => import("./tools.addon.list-066ffe3b.js"), "../app/lang/zh-cn/tools.backup_records.json": () => import("./tools.backup_records-3ee06c5e.js"), "../app/lang/zh-cn/tools.code.edit.json": () => import("./tools.code.edit-ce482f8a.js"), "../app/lang/zh-cn/tools.code.index.json": () => import("./tools.code.index-2f01b5e9.js"), "../app/lang/zh-cn/tools.code.list.json": () => import("./tools.code.list-b3d1ec18.js"), "../app/lang/zh-cn/tools.detection.json": () => import("./tools.detection-2d1c5fc5.js"), "../app/lang/zh-cn/tools.schedule.json": () => import("./tools.schedule-3013f2ba.js"), "../app/lang/zh-cn/tools.schedule_log.json": () => import("./tools.schedule_log-c332642a.js"), "../app/lang/zh-cn/tools.updatecache.json": () => import("./tools.updatecache-c28011ba.js"), "../app/lang/zh-cn/tools.upgrade_records.json": () => import("./tools.upgrade_records-948f5c6a.js"), "../app/lang/zh-cn/user.center.json": () => import("./user.center-f848e53b.js"), "../app/lang/zh-cn/user.edit_center.json": () => import("./user.edit_center-86828913.js"), "../app/lang/zh-cn/wxoplatform.setting.json": () => import("./wxoplatform.setting-e351af9d.js"), "../app/lang/zh-cn/wxoplatform.weapp_version.json": () => import("./wxoplatform.weapp_version-cb21e15c.js") }), `../app/lang/${s}/${i}.json`)).default || {};
+      let d = {};
+      if (Object.keys(c).forEach((m) => {
+        d[`${i}.${m}`] = c[m];
       }), n)
         try {
-          let d = {};
-          d = await U(n, s, "common"), Object.keys(d).forEach((u) => {
-            m[u] = d[u];
+          let m = {};
+          m = await O(n, s, "common"), Object.keys(m).forEach((u) => {
+            d[u] = m[u];
           });
         } catch {
         }
-      return this.i18n.global.mergeLocaleMessage(s, m), this.setI18nLanguage(s), C();
+      return this.i18n.global.mergeLocaleMessage(s, d), this.setI18nLanguage(s), N();
     } catch {
-      return this.setI18nLanguage(s), C();
+      return this.setI18nLanguage(s), N();
     }
   }
   /** 生产环境启动时预加载各插件全部语言包 */
@@ -471,7 +480,7 @@ const se = "编辑", ae = "详情", re = "创建时间", ie = "排序", ce = "�
   layout: qt,
   axios: Ft
 };
-let z = V({
+let b = K({
   locale: "zh-cn",
   fallbackLocale: "zh-cn",
   datetimeFormats: {},
@@ -485,7 +494,7 @@ let z = V({
   },
   silentFallbackWarn: !0
 });
-const no = new oe(z);
+const no = new oe(b);
 var Vt = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, L = {}, Kt = {
   get exports() {
     return L;
@@ -525,8 +534,8 @@ var Vt = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : t
       var a = e.isStarted();
       t = i(t, s.minimum, 1), e.status = t === 1 ? null : t;
       var r = e.render(!a), l = r.querySelector(s.barSelector), g = s.speed, y = s.easing;
-      return r.offsetWidth, d(function(p) {
-        s.positionUsing === "" && (s.positionUsing = e.getPositioningCSS()), u(l, m(t, g, y)), t === 1 ? (u(r, {
+      return r.offsetWidth, m(function(p) {
+        s.positionUsing === "" && (s.positionUsing = e.getPositioningCSS()), u(l, d(t, g, y)), t === 1 ? (u(r, {
           transition: "none",
           opacity: 1
         }), r.offsetWidth, setTimeout(function() {
@@ -589,11 +598,11 @@ var Vt = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : t
     function c(t) {
       return (-1 + t) * 100;
     }
-    function m(t, a, r) {
+    function d(t, a, r) {
       var l;
       return s.positionUsing === "translate3d" ? l = { transform: "translate3d(" + c(t) + "%,0,0)" } : s.positionUsing === "translate" ? l = { transform: "translate(" + c(t) + "%,0)" } : l = { "margin-left": c(t) + "%" }, l.transition = "all " + a + "ms " + r, l;
     }
-    var d = function() {
+    var m = function() {
       var t = [];
       function a() {
         var r = t.shift();
@@ -634,18 +643,18 @@ var Vt = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : t
       };
     }();
     function _(t, a) {
-      var r = typeof t == "string" ? t : S(t);
+      var r = typeof t == "string" ? t : T(t);
       return r.indexOf(" " + a + " ") >= 0;
     }
     function $(t, a) {
-      var r = S(t), l = r + a;
+      var r = T(t), l = r + a;
       _(r, a) || (t.className = l.substring(1));
     }
     function I(t, a) {
-      var r = S(t), l;
+      var r = T(t), l;
       _(t, a) && (l = r.replace(" " + a + " ", " "), t.className = l.substring(1, l.length - 1));
     }
-    function S(t) {
+    function T(t) {
       return (" " + (t.className || "") + " ").replace(/\s+/gi, " ");
     }
     function M(t) {
@@ -654,7 +663,7 @@ var Vt = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : t
     return e;
   });
 })(Kt);
-const O = L, Qt = Q("app", {
+const R = L, Qt = G("app", {
   state: () => ({
     route: {},
     routeRefreshTag: !0,
@@ -662,25 +671,25 @@ const O = L, Qt = Q("app", {
   }),
   actions: {
     refreshRouterView() {
-      this.routeRefreshTag = !1, O.start(), C(() => {
-        this.routeRefreshTag = !0, O.done();
+      this.routeRefreshTag = !1, R.start(), N(() => {
+        this.routeRefreshTag = !0, R.done();
       });
     }
   }
 });
 function Gt() {
-  return K() ? G() : Qt().route;
+  return Q() ? X() : Qt().route;
 }
 const to = (o) => {
   const n = Gt();
-  let e = J(n);
-  const s = Z(n);
-  e || (e = D(s));
-  const c = `${R(e, s)}.${o}`;
-  return z.global.t(c) != c ? z.global.t(c) : z.global.t(o);
+  let e = Z(n);
+  const s = ee(n);
+  e || (e = W(s));
+  const c = `${D(e, s)}.${o}`;
+  return b.global.t(c) != c ? b.global.t(c) : b.global.t(o);
 }, oo = {
   install(o) {
-    o.use(z);
+    o.use(b);
   }
 };
 export {

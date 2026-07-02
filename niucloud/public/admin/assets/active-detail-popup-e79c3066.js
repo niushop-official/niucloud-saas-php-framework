@@ -1,1 +1,0 @@
-import{_ as o}from"./active-detail-popup.vue_vue_type_script_setup_true_lang-879f8009.js";import"vue";import"./goods_default-87959339.js";import"/admin/assets/shared/admin-lang.js";import"./active-05c515e6.js";import"./index-3c23140f.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

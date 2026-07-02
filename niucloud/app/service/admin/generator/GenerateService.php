@@ -59,6 +59,9 @@ class GenerateService extends BaseAdminService
 
         $info = (new GenerateTable())->field($field)->where([['id', '=', $id]])->findOrEmpty()->toArray();
 
+        // 自动同步数据库表结构：合并实际字段与已存配置
+        $this->syncTableColumns($id);
+
         $info['table_column'] = (new GenerateColumn())->where([['table_id', '=', $id]])->select()->toArray();
 
         $column = (new GenerateColumn())->where([['table_id', '=', $id],['is_delete','=',1]])->find();
@@ -364,10 +367,19 @@ class GenerateService extends BaseAdminService
     /**
      * 删除代码生成
      * @param int $id
+     * @param bool $removeCode 是否同时删除已同步到项目中的生成代码文件
      * @return bool
      */
-    public function del(int $id)
+    public function del(int $id, bool $removeCode = false)
     {
+        if ($removeCode) {
+            // 删除前先获取表信息，以确定需要清理的文件路径
+            $table_info = (new GenerateTable())->where([['id', '=', $id]])->field('*')->findOrEmpty();
+            if (!$table_info->isEmpty()) {
+                $this->delSyncCode($id, $table_info->toArray());
+            }
+        }
+
         Db::startTrans();
         try {
             (new GenerateTable())->where([['id', '=', $id]])->delete();
@@ -377,6 +389,97 @@ class GenerateService extends BaseAdminService
         } catch ( Exception $e) {
             Db::rollback();
             throw new AdminException($e->getMessage());
+        }
+    }
+
+    /**
+     * 删除已同步到项目中的代码文件
+     * @param int $id
+     * @param array $tableInfo
+     */
+    private function delSyncCode(int $id, array $tableInfo)
+    {
+        $tableInfo['fields'] = (new GenerateColumn())->where([['table_id', '=', $id]])->field('*')->select()->toArray();
+        $generator = new Generate();
+        // 传入 generate_type=4 表示删除模式，生成器根据此值决定删除文件而非创建
+        $tableInfo['generate_type'] = 4;
+        $generator->generate($tableInfo);
+    }
+
+    /**
+     * 自动同步数据库表结构到列配置（在 info 接口中调用）
+     * 新增数据库字段 / 删除已不存在的字段 / 更新类型注释
+     * @param int $id
+     */
+    private function syncTableColumns(int $id)
+    {
+        $table_info = (new GenerateTable())->where([['id', '=', $id]])->field('table_name')->findOrEmpty();
+        if ($table_info->isEmpty()) return;
+
+        $table_name = $table_info['table_name'];
+        try {
+            $fields = Db::name($table_name)->getFields();
+        } catch (\Exception $e) {
+            return; // 表不存在则跳过
+        }
+        if (empty($fields)) return;
+
+        $existing_columns = (new GenerateColumn())->where([['table_id', '=', $id]])->column('*', 'column_name');
+        $default_column = ['id', 'create_time', 'update_time', 'site_id', 'delete_time'];
+
+        foreach ($fields as $k => $v) {
+            $required = 0;
+            if ($v['notnull'] && !$v['primary'] && !in_array($v['name'], $default_column)) {
+                $required = 1;
+            }
+
+            $column_data = [
+                'table_id' => $id,
+                'column_name' => $v['name'],
+                'column_comment' => $v['comment'],
+                'column_type' => self::getDbFieldType($v['type']),
+                'is_required' => $required,
+                'is_pk' => $v['primary'] ? 1 : 0,
+                'is_insert' => !in_array($v['name'], $default_column) ? 1 : 0,
+                'is_update' => !in_array($v['name'], $default_column) ? 1 : 0,
+                'is_lists' => !in_array($v['name'], $default_column) ? 1 : 0,
+                'update_time' => time(),
+            ];
+
+            if (isset($existing_columns[$v['name']])) {
+                // 已有字段：保留用户前端配置，仅更新基础信息
+                $old = $existing_columns[$v['name']];
+                $column_data['view_type'] = $old['view_type'] ?? 'input';
+                $column_data['query_type'] = $old['query_type'] ?? '=';
+                $column_data['dict_type'] = $old['dict_type'] ?? '';
+                $column_data['model'] = $old['model'] ?? '';
+                $column_data['label_key'] = $old['label_key'] ?? '';
+                $column_data['value_key'] = $old['value_key'] ?? '';
+                $column_data['is_search'] = $old['is_search'] ?? 0;
+                $column_data['is_order'] = $old['is_order'] ?? 0;
+                $column_data['is_delete'] = $old['is_delete'] ?? 0;
+                $column_data['create_time'] = $old['create_time'];
+                unset($existing_columns[$v['name']]);
+
+                (new GenerateColumn())->where([
+                    ['table_id', '=', $id],
+                    ['column_name', '=', $v['name']]
+                ])->save($column_data);
+            } else {
+                // 新字段
+                $column_data['view_type'] = 'input';
+                $column_data['query_type'] = '=';
+                $column_data['create_time'] = time();
+                (new GenerateColumn())->create($column_data);
+            }
+        }
+
+        // 移除数据库中已不存在的字段
+        $removed = array_keys($existing_columns);
+        if (!empty($removed)) {
+            (new GenerateColumn())->where([['table_id', '=', $id]])
+                ->whereIn('column_name', $removed)
+                ->delete();
         }
     }
 

@@ -37,7 +37,7 @@ const value = computed({
 })
 
 const upload: Record<string, any> = {
-    action: `${envConfig.VITE_APP_BASE_URL}/${prop.api}`,
+    action: `${envConfig.VITE_APP_BASE_URL || '/adminapi/'}${prop.api}`,
     showFileList: false,
     headers: {},
     accept: 'audio/*,.mp3,.wav,.ogg,.m4a,.flac,.aac,.wma',

@@ -1281,7 +1281,7 @@ CREATE TABLE `weapp_version`
     `status`      tinyint(4) NOT NULL DEFAULT 0 COMMENT '状态',
     `update_time` int(11) NOT NULL DEFAULT 0,
     `fail_reason` text                  DEFAULT NULL,
-    `task_key`    varchar(20)  NOT NULL DEFAULT '' COMMENT '上传任务key',
+    `task_key`    varchar(255)  NOT NULL DEFAULT '' COMMENT '上传任务key',
     `from_type`   VARCHAR(255) NOT NULL DEFAULT 'cloud_build',
     `auditid`     VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`id`) USING BTREE

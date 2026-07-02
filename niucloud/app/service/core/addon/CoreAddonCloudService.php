@@ -251,7 +251,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
      * @return void
      */
     public function downloadAddon(string $addon, string $version) {
-        $action_token = (new CoreModuleService())->getActionToken('download', ['data' => ['app_key' => $addon, 'version' => $version, 'product_key' => BaseNiucloudClient::PRODUCT ]]);
+        $action_token = (new CoreModuleService())->getActionToken('download', ['data' => ['app_key' => $addon, 'framework_version' => config('version.version'), 'version' => $version, 'product_key' => BaseNiucloudClient::PRODUCT ]]);
 
         $query = [
             'authorize_code' => $this->auth_code,

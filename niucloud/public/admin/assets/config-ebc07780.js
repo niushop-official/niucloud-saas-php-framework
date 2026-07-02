@@ -1,1 +1,0 @@
-import{r as e}from"./index-3c23140f.js";function a(){return e.get("relay/config")}function n(r){return e.post("relay/config",r,{showSuccessMessage:!0})}function s(){return e.get("relay/share")}function o(){return e.get("relay/share_init")}export{a,s as b,o as g,n as s};

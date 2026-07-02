@@ -17,8 +17,11 @@ const SKIP_ADDON_DIRS = new Set(['components'])
 function stripJsonComments(text) {
     return text
         .replace(/\/\*[\s\S]*?\*\//g, '')
-        .replace(/^\s*\/\/.*$/gm, '')
-        .replace(/,\s*([}\]])/g, '$1')
+        .replace(/^(\s*)\/\/.*$/gm, '$1')   // 移除行首注释（保留缩进）
+        .replace(/^(\s*),\s*$/gm, '$1')     // 移除孤立逗号行（保留缩进）
+        .replace(/,\s*\/\/.*$/gm, ',')      // 移除行内注释 "val", // comment → "val",
+        .replace(/,\s*([}\]])/g, '$1')      // 移除尾部逗号
+        .replace(/,\s*,/g, ',')             // 合并连续逗号
 }
 
 function parsePagesJson() {

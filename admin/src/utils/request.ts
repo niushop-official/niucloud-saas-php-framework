@@ -47,8 +47,9 @@ class Request {
     private instance: AxiosInstance;
 
     constructor() {
+        const appBaseUrl = envConfig.VITE_APP_BASE_URL || '/adminapi/'
         this.instance = axios.create({
-            baseURL: envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`,
+            baseURL: appBaseUrl.endsWith('/') ? appBaseUrl : `${appBaseUrl}/`,
             timeout: 0,
             headers: {
                 'Content-Type': 'application/json',

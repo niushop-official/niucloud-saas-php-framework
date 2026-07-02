@@ -30,6 +30,7 @@ class WebApiGenerator extends BaseGenerator
      */
     public function replaceText()
     {
+        $existingContent = $this->getImport();
 
         $old = [
             '{NOTES}',
@@ -55,9 +56,9 @@ class WebApiGenerator extends BaseGenerator
             $this->getUCaseClassName(),
             $this->moduleName,
             $this->getRouteGroupName(),
-            $this->getImport(),
+            $existingContent,
             $this->getBegin(),
-            $this->getWithRouteApi(),
+            $this->getWithRouteApi($existingContent),
             $this->getEnd(),
         ];
         $vmPath = $this->getvmPath('web_api');
@@ -113,12 +114,13 @@ class WebApiGenerator extends BaseGenerator
         {
 
             $content = file_get_contents($file);
-            $code_begin = 'USER_CODE_BEGIN -- '.$this->getTableName() . PHP_EOL;
-            $code_end = 'USER_CODE_END -- '.$this->getTableName() . PHP_EOL;
-            if(strpos($content,$code_begin) !== false && strpos($content,$code_end) !== false)
+            $code_begin = 'USER_CODE_BEGIN -- '.$this->getTableName();
+            $code_end = 'USER_CODE_END -- '.$this->getTableName();
+            // 使用 \r?\n 替代 PHP_EOL，兼容不同系统的换行符
+            $pattern = '/\/\/\s+' . preg_quote($code_begin, '/') . '\r?\n[\S\s]+?\/\/\s+' . preg_quote($code_end, '/') . '\r?\n?/';
+            if(preg_match($pattern, $content))
             {
-                // 清除相应对应代码块
-                $pattern = "/\/\/\s+{$code_begin}[\S\s]+{$code_end}?/";
+                // 非贪婪匹配 [?] 精确清除当前代码块，避免跨块误删
                 $import = preg_replace($pattern, '', $content);
             }else{
                 $import = $content;
@@ -240,7 +242,7 @@ class WebApiGenerator extends BaseGenerator
         }
     }
 
-    public function getWithRouteApi()
+    public function getWithRouteApi(string $existingContent = '')
     {
         if(!empty($this->addonName))
         {
@@ -256,11 +258,17 @@ class WebApiGenerator extends BaseGenerator
                 $with[] = Str::snake(substr($column['model'],$str+1));
             }
         }
+        $with = array_unique($with); // 单表内去重
         if(!empty($with))
         {
             foreach ($with as $value)
             {
-                $content.= 'export function getWith'.Str::studly($value).'List(params: Record<string,any>){'.PHP_EOL."    return request.get('".$moduleName.'/'.$value."_all', {params})".PHP_EOL.'}';
+                // 跨表去重：检查已有文件内容中是否已定义该函数，避免不同表共用同一模块时重复生成
+                $funcName = 'getWith'.Str::studly($value).'List';
+                if (!empty($existingContent) && preg_match('/\b' . preg_quote($funcName, '/') . '\b/', $existingContent)) {
+                    continue;
+                }
+                $content.= 'export function '.$funcName.'(params: Record<string,any>){'.PHP_EOL."    return request.get('".$moduleName.'/'.$value."_all', {params})".PHP_EOL.'}';
             }
         }
         return $content;

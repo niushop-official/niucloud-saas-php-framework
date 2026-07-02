@@ -1237,7 +1237,7 @@ return [
                 'router_path' => 'tools/update_cache',
                 'view_path' => 'tools/updatecache',
                 'methods' => 'post',
-                'sort' => '108',
+                'sort' => '97',
                 'status' => '1',
                 'is_show' => '1',
             ],

@@ -20,7 +20,6 @@ import { language } from '@/lang'
 async function run() {
     if (!import.meta.env.DEV) {
         await initAddonManifests()
-        await language.preloadAddonLangs()
     }
     const app = createApp(App)
     app.use(pinia)
@@ -32,6 +31,12 @@ async function run() {
     app.use(VueUeditorWrap)
     useElementIcon(app)
     app.mount('#app')
+
+    // 插件语言包延迟加载：挂载后异步预加载，不阻塞首屏渲染
+    // 路由守卫会按需补加载当前页面缺失的语言包
+    if (!import.meta.env.DEV) {
+        language.preloadAddonLangs()
+    }
 }
 
 run()

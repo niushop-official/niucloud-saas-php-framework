@@ -49,8 +49,8 @@ function writeEntries() {
     const utilsExports = []
     if (fs.existsSync(utilsDir)) {
         for (const f of fs.readdirSync(utilsDir)) {
-            // common 和 request 单独处理，其余全量重导出
-            if (f.endsWith('.ts') && f !== 'common.ts' && f !== 'request.ts' && f !== 'addon-loader.ts' && f !== 'addon-lang.ts') {
+            // common, request, storage, config 单独处理，其余全量重导出
+            if (f.endsWith('.ts') && f !== 'common.ts' && f !== 'request.ts' && f !== 'storage.ts' && f !== 'config.ts' && f !== 'test.ts' && f !== 'directives.ts' && f !== 'tianditu.ts' && f !== 'qqmap.ts' && f !== 'addon-loader.ts' && f !== 'addon-lang.ts') {
                 const mod = f.replace('.ts', '')
                 utilsExports.push(`export * from '../../src/utils/${mod}'`)
             }
@@ -60,8 +60,16 @@ function writeEntries() {
     ENTRY_CONTENT['core-shared'] = [
         "export * from '../../src/utils/common'",
         "import _request from '../../src/utils/request'",
+        "import _storage from '../../src/utils/storage'",
+        "import _config from '../../src/utils/config'",
+        "import _test from '../../src/utils/test'",
         "export { _request as request }",
+        "export { _storage as storage }",
+        "export { _config as config }",
+        "export { _test as test }",
         "export default _request",
+        // qqmap 独立导出（与 tianditu 同名冲突，tianditu 由 addon 直接打包）
+        "export * from '../../src/utils/qqmap'",
         ...utilsExports,
         ...apiExports,
         "export { default as UploadImage } from '../../src/components/upload-image/index.vue'",

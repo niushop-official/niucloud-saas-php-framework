@@ -31,6 +31,35 @@ class CoreAddonService extends CoreAddonBaseService
         $this->model = new Addon();
     }
 
+    /**
+     * 将插件图标/封面拷贝到 public/addon/{key}/ 并返回公网 URL
+     * 替代原来 image_to_base64 的做法，避免 base64 编码导致接口响应过大
+     * @param string $sourcePath 源文件绝对路径
+     * @param string $key 插件标识
+     * @param string $type icon | cover
+     * @return string 公网路径，如 /addon/shop/icon.png
+     */
+    private function getAddonImagePublicUrl(string $sourcePath, string $key, string $type = 'icon'): string
+    {
+        $filename = $type === 'cover' ? 'cover.png' : 'icon.png';
+        $targetDir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $key;
+        $targetFile = $targetDir . DIRECTORY_SEPARATOR . $filename;
+
+        if (is_file($targetFile)) {
+            return "/addon/{$key}/{$filename}";
+        }
+
+        if (is_file($sourcePath)) {
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0777, true);
+            }
+            copy($sourcePath, $targetFile);
+            return "/addon/{$key}/{$filename}";
+        }
+
+        return '';
+    }
+
     public function getInitList()
     {
         return [
@@ -84,8 +113,8 @@ class CoreAddonService extends CoreAddonBaseService
             foreach ($files as $path) {
                 $data = $this->getAddonConfig($path);
                 if (isset($data['key'])) {
-                    $data['icon'] = is_file($data['icon']) ? image_to_base64($data['icon']) : '';
-                    $data['cover'] = is_file($data['cover']) ? image_to_base64($data['cover']) : '';
+                    $data['icon'] = $this->getAddonImagePublicUrl($data['icon'], $data['key'], 'icon');
+                    $data['cover'] = $this->getAddonImagePublicUrl($data['cover'], $data['key'], 'cover');
                     $key = $data['key'];
                     $data['install_info'] = $install_addon_list[$key] ?? [];
                     $data['is_download'] = true;
@@ -230,7 +259,8 @@ class CoreAddonService extends CoreAddonBaseService
         $addon_list = $this->model->where([['status', '=', AddonDict::ON]])->append(['status_name'])->column('title, icon, key, desc, status, type, support_app', 'key');
         if (!empty($addon_list)) {
             foreach ($addon_list as &$data) {
-                $data['icon'] = is_file($data['icon']) ? image_to_base64($data['icon']) : '';
+                // DB 存储的相对路径 addon/{key}/icon.png 已在 public 下，直接返回公网 URL
+                $data['icon'] = $this->getAddonImagePublicUrl(public_path() . $data['icon'], $data['key'], 'icon');
             }
         }
         return $addon_list;
@@ -253,8 +283,8 @@ class CoreAddonService extends CoreAddonBaseService
                 if (isset($data['key'])) {
                     $key = $data['key'];
                     $data['install_info'] = $install_addon_list[$key] ?? [];
-                    $data['icon'] = is_file($data['icon']) ? image_to_base64($data['icon']) : '';
-                    $data['cover'] = is_file($data['cover']) ? image_to_base64($data['cover']) : '';
+                    $data['icon'] = $this->getAddonImagePublicUrl($data['icon'], $data['key'], 'icon');
+                    $data['cover'] = $this->getAddonImagePublicUrl($data['cover'], $data['key'], 'cover');
                     $data['is_download'] = true;
                     $data['type_name'] = empty($data['type']) ? '' : AddonDict::getType()[$data['type']] ?? '';
                     $list[$key] = $data;
@@ -283,8 +313,8 @@ class CoreAddonService extends CoreAddonBaseService
 
         $data = $core_addon_service->getAddonConfig($key);
         if (isset($data['key'])) {
-            $data['icon'] = is_file($data['icon']) ? image_to_base64($data['icon']) : '';
-            $data['cover'] = is_file($data['cover']) ? image_to_base64($data['cover']) : '';
+            $data['icon'] = $this->getAddonImagePublicUrl($data['icon'], $data['key'], 'icon');
+            $data['cover'] = $this->getAddonImagePublicUrl($data['cover'], $data['key'], 'cover');
             $data['type_name'] = empty($data['type']) ? '' : AddonDict::getType()[$data['type']] ?? '';
         }
         if (isset($data['support_app']) && !empty($data['support_app'])) {

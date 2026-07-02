@@ -273,7 +273,19 @@ function runAssemble() {
         for (const name of fs.readdirSync(SHARED_DIR)) {
             copyTree(path.join(SHARED_DIR, name), path.join(sharedDest, name))
         }
-        console.log('[assemble] shared -> assets/shared/')
+
+        // 生成 SFC 组件 wrapper：同时提供 named 和 default 导出
+        // addon 的 Components() 插件生成 import { X } (命名)，默认导入 import X from 也同样支持
+        const { SFC_WRAPPERS } = require('./shared-external.cjs')
+        for (const [fileName, exportName] of Object.entries(SFC_WRAPPERS)) {
+            const wrapperPath = path.join(sharedDest, fileName)
+            fs.writeFileSync(
+                wrapperPath,
+                `export { ${exportName} as default, ${exportName} } from './core-shared.js'\n`,
+                'utf-8'
+            )
+        }
+        console.log(`[assemble] shared -> assets/shared/ (${Object.keys(SFC_WRAPPERS).length} SFC wrappers generated)`)
     } else {
         console.warn('[assemble] missing dist/.shared — run build-shared first')
     }

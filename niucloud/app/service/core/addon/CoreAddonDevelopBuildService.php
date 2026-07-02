@@ -29,10 +29,11 @@ class CoreAddonDevelopBuildService extends BaseCoreService
     protected $addon;
     protected $build_path;
 
-    public function __construct()
+    public function __construct($scene = 'build')
     {
         parent::__construct();
         $this->root_path = project_path();
+        $this->scene = $scene;
     }
 
     /**
@@ -205,9 +206,10 @@ class CoreAddonDevelopBuildService extends BaseCoreService
 
     public function adminDist() {
         $admin_path = str_replace('/', DIRECTORY_SEPARATOR, $this->root_path . 'admin/dist/assets/addons/' . $this->addon . '/');
-        if (!is_dir($admin_path) || !is_readable($admin_path)) throw new CommonException("请先在admin目录下执行 npm run build:addon {$this->addon}命令编译插件admin端");
-
-        if (count(scandir($admin_path)) === 2) throw new CommonException("请先在admin目录下执行 npm run build:addon {$this->addon}命令编译插件admin端");
+        if (!is_dir($admin_path) || !is_readable($admin_path) || count(scandir($admin_path)) === 2) {
+            if ($this->scene = 'build') throw new CommonException("请先在admin目录下执行 npm run build:addon {$this->addon}命令编译插件admin端");
+            return;
+        }
 
         $addon_admin_path = $this->addon_path . 'dist' . DIRECTORY_SEPARATOR . 'admin' . DIRECTORY_SEPARATOR;
         if (is_dir($addon_admin_path)) del_target_dir($addon_admin_path, true);
@@ -235,9 +237,10 @@ class CoreAddonDevelopBuildService extends BaseCoreService
         if (!is_dir($uniapp_path)) return true;
 
         $uniapp_path = str_replace('/', DIRECTORY_SEPARATOR, $this->root_path . 'uni-app/dist/build/h5/assets/addons/' . $this->addon . '/');
-        if (!is_dir($uniapp_path) || !is_readable($uniapp_path)) throw new CommonException("请先在uni-app目录下执行 npm run build:h5:addon {$this->addon}命令编译插件wap端");
-
-        if (count(scandir($uniapp_path)) === 2) throw new CommonException("请先在uni-app目录下执行 npm run build:h5:addon {$this->addon}命令编译插件wap端");
+        if (!is_dir($uniapp_path) || !is_readable($uniapp_path) || count(scandir($uniapp_path)) === 2) {
+            if ($this->scene = 'build') throw new CommonException("请先在uni-app目录下执行 npm run build:h5:addon {$this->addon}命令编译插件wap端");
+            return;
+        }
 
         $addon_uniapp_path = $this->addon_path . 'dist' . DIRECTORY_SEPARATOR . 'wap' . DIRECTORY_SEPARATOR;
         if (is_dir($addon_uniapp_path)) del_target_dir($addon_uniapp_path, true);
@@ -249,9 +252,7 @@ class CoreAddonDevelopBuildService extends BaseCoreService
         if (!is_dir($uniapp_path)) return true;
 
         $uniapp_path = str_replace('/', DIRECTORY_SEPARATOR, $this->root_path . 'uni-app/dist/mp-weixin-addons/' . $this->addon . '/');
-        if (!is_dir($uniapp_path) || !is_readable($uniapp_path)) throw new CommonException("请先在uni-app目录下执行 npm run build:mp-weixin:addon {$this->addon}命令编译插件微信小程序");
-
-        if (count(scandir($uniapp_path)) === 2) throw new CommonException("请先在uni-app目录下执行 npm run build:mp-weixin:addon {$this->addon}命令编译插件微信小程序");
+        if (!is_dir($uniapp_path) || !is_readable($uniapp_path) || count(scandir($uniapp_path)) === 2) return;
 
         $addon_uniapp_path = $this->addon_path . 'dist' . DIRECTORY_SEPARATOR . 'mp-weixin' . DIRECTORY_SEPARATOR;
         if (is_dir($addon_uniapp_path)) del_target_dir($addon_uniapp_path, true);

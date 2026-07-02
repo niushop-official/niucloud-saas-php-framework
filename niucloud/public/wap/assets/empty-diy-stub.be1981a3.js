@@ -1,0 +1,1 @@
+import{_ as s,i as r}from"./index-0bf3736e.js";import{openBlock as e,createBlock as o}from"/wap/assets/shared/vue.js";const t=s({},[["render",function(s,t){const n=r;return e(),o(n)}]]);export{t as _};

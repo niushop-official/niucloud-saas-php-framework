@@ -26,6 +26,8 @@ class AdminApiRouteGenerator extends BaseGenerator
      */
     public function replaceText()
     {
+        $routeContent = $this->getRoute();
+
         $old = [
             '{ROUTE_GROUP_NAME}',
             '{CLASS_COMMENT}',
@@ -51,8 +53,8 @@ class AdminApiRouteGenerator extends BaseGenerator
             $this->moduleName,
             $this->getRouteName(),
             $this->getRoutePath(),
-            $this->getWithRoute(),
-            $this->getRoute(),
+            $this->getWithRoute($routeContent),
+            $routeContent,
             $this->getBegin(),
             $this->getEnd(),
         ];
@@ -93,12 +95,13 @@ class AdminApiRouteGenerator extends BaseGenerator
         if(file_exists($file))
         {
             $content = file_get_contents($file);
-            $code_begin = 'USER_CODE_BEGIN -- '.$this->getTableName() . PHP_EOL;
-            $code_end = 'USER_CODE_END -- '.$this->getTableName() . PHP_EOL;
-            if(strpos($content,$code_begin) !== false && strpos($content,$code_end) !== false)
+            $code_begin = 'USER_CODE_BEGIN -- '.$this->getTableName();
+            $code_end = 'USER_CODE_END -- '.$this->getTableName();
+            // 使用 \r?\n 替代 PHP_EOL，兼容不同系统的换行符
+            $pattern = '/\/\/\s+' . preg_quote($code_begin, '/') . '\r?\n[\S\s]+?\/\/\s+' . preg_quote($code_end, '/') . '\r?\n?/';
+            if(preg_match($pattern, $content))
             {
-                // 清除相应对应代码块
-                $pattern = "/\/\/\s+{$code_begin}[\S\s]+{$code_end}?/";
+                // 非贪婪匹配 [?] 精确清除当前代码块，避免跨块误删
                 $route = preg_replace($pattern, '', $content);
             }else{
                 $route = $content;
@@ -302,7 +305,7 @@ use app\adminapi\middleware\AdminLog;";
      * 远程下拉Route
      * @return string
      */
-    public function getWithRoute()
+    public function getWithRoute(string $existingContent = '')
     {
         if(!empty($this->addonName))
         {
@@ -312,10 +315,19 @@ use app\adminapi\middleware\AdminLog;";
         }
 
         $content = '';
+        $exists = [];
         foreach ($this->tableColumn as $column) {
             if (!empty($column['model'])) {
                 $str = strripos($column['model'],'\\');
-                $with = Str::snake(substr($column['model'],$str+1)) . '_all';
+                $modelName = substr($column['model'], $str + 1);
+                if (in_array($modelName, $exists)) continue; // 单表内去重
+                $exists[] = $modelName;
+                $with = Str::snake($modelName) . '_all';
+                // 跨表去重：检查已有路由文件中是否已定义该路由
+                $routeLine = "Route::get('".$with."'";
+                if (!empty($existingContent) && strpos($existingContent, $routeLine) !== false) {
+                    continue;
+                }
                 $content.= PHP_EOL.'    Route::get('."'".$with."'".','."'".$route_path.'get'.Str::studly($with)."'".');'.PHP_EOL;
             }
         }

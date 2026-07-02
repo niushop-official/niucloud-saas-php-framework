@@ -449,7 +449,8 @@ const upload = computed(() => {
     const headers: Record<string, any> = {}
     headers[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
     headers[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
-    const baseURL = envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`
+    const apiBase = envConfig.VITE_APP_BASE_URL || ''
+    const baseURL = apiBase.endsWith('/') ? apiBase : `${apiBase}/`
 
     return {
         action: `${baseURL}sys/${prop.type}`,

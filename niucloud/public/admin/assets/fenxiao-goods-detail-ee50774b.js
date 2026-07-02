@@ -1,1 +1,0 @@
-import{_ as o}from"./fenxiao-goods-detail.vue_vue_type_script_setup_true_lang-07966333.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./index-3c23140f.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";import"./goods-6d82c51d.js";export{o as default};

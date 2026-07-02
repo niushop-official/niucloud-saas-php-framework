@@ -26,6 +26,10 @@ const ADDON_COMPONENT_IMPORT_RE = /@\/addon\/components\/([^/'"\s]+)(?:\/([^/'"\
 const MAIN_COMPONENT_IMPORT_RE = /@\/components\/([^/'"\s]+(?:\/[^/'"\s]+)*)/g
 /** 仅组件、无页面的分包 root（微信 app.json 允许 pages: []） */
 const COMPONENT_ONLY_SUBPACKAGE_ROOTS = new Set(['app/components'])
+/** 判断是否 addon 的 components/locale 等无页面分包 */
+function isAddonComponentOnlyRoot(root) {
+    return /^addon\/[^/]+\/(components|locale)$/.test(root)
+}
 /** 仅组件分包占位页（相对 app/components；微信产物为 app/components/pages/_mp_placeholder.wxml） */
 const MP_COMPONENT_SUBPACKAGE_PLACEHOLDER = 'pages/_mp_placeholder'
 /** 主包 diy-dynamic-bridge（插件编译含 addon 微页面组件，合并时需覆盖框架 appOnly 版本） */
@@ -249,7 +253,7 @@ function normalizeSubPackageEntry(sub) {
     const pages = (sub.pages || [])
         .map((p) => (typeof p === 'string' ? p : p?.path))
         .filter(Boolean)
-    if (!pages.length && !COMPONENT_ONLY_SUBPACKAGE_ROOTS.has(sub.root)) return null
+    if (!pages.length && !COMPONENT_ONLY_SUBPACKAGE_ROOTS.has(sub.root) && !isAddonComponentOnlyRoot(sub.root)) return null
     const out = { root: sub.root, pages }
     if (sub.name != null) out.name = sub.name
     if (sub.independent != null) out.independent = sub.independent
@@ -545,7 +549,7 @@ function applyDiyPreloadRules(mpDir, options = {}) {
     return appJson
 }
 
-function mergeOverlayDir(targetMpDir, sourceDir, destName) {
+function mergeOverlayDir(targetMpDir, sourceDir, destName, patchedFiles) {
     if (!fs.existsSync(sourceDir)) return 0
     const destDir = path.join(targetMpDir, destName)
     fs.mkdirSync(destDir, { recursive: true })
@@ -558,7 +562,12 @@ function mergeOverlayDir(targetMpDir, sourceDir, destName) {
                 fs.mkdirSync(d, { recursive: true })
                 walkCopy(s, d)
             } else {
+                // node-modules JS：框架已有组件保留不动（使用框架完整 vendor）；
+                // 仅 addon 特有的新增组件由 mergeNodeModulesDir 进行 vendor 重定向
+                if (destName === 'node-modules' && name.endsWith('.js') && fs.existsSync(d)) continue
+                const existed = fs.existsSync(d)
                 fs.copyFileSync(s, d)
+                if (!existed && patchedFiles && name.endsWith('.js')) patchedFiles.push(d)
                 count++
             }
         }
@@ -568,7 +577,18 @@ function mergeOverlayDir(targetMpDir, sourceDir, destName) {
 }
 
 function mergeCommonDir(targetMpDir, sourceCommonDir) {
-    return mergeOverlayDir(targetMpDir, sourceCommonDir, 'common')
+    // 保存框架 vendor.js（addon 版本的 vendor 不完整，不能覆盖框架版本）
+    const frameworkVendor = path.join(targetMpDir, 'common', 'vendor.js')
+    let vendorBackup = null
+    if (fs.existsSync(frameworkVendor)) {
+        vendorBackup = fs.readFileSync(frameworkVendor)
+    }
+    const count = mergeOverlayDir(targetMpDir, sourceCommonDir, 'common')
+    // 恢复框架 vendor.js
+    if (vendorBackup) {
+        fs.writeFileSync(frameworkVendor, vendorBackup)
+    }
+    return count
 }
 
 function mergeNodeModulesDir(targetMpDir, sourceNodeModulesDir) {
@@ -958,6 +978,27 @@ function packageSharedAddonComponents(buildDir, destDir, components) {
     return count
 }
 
+/**
+ * 在 vendor.js 中为缺失的 props$N 注入空占位 {}，防止 addon 组件崩溃。
+ * 组件若用到了框架未编译的 props，至少不报错，以默认值渲染。
+ */
+function patchVendorPropsStubs(mpDir, maxProps = 70) {
+    const vendorPath = path.join(mpDir, 'common', 'vendor.js')
+    if (!fs.existsSync(vendorPath)) return 0
+    let content = fs.readFileSync(vendorPath, 'utf8')
+    const missing = []
+    for (let i = 1; i <= maxProps; i++) {
+        if (!content.includes('exports.props$' + i)) {
+            missing.push(i)
+        }
+    }
+    if (!missing.length) return 0
+    const stubs = '\n// === auto props stubs (prevents addon component crashes) ===\n' +
+        missing.map(i => 'exports.props$' + i + '=exports.props$' + i + '||{};').join('') + '\n'
+    fs.writeFileSync(vendorPath, content + stubs, 'utf8')
+    return missing.length
+}
+
 module.exports = {
     ROOT,
     BUILD_DIR,
@@ -1012,6 +1053,7 @@ module.exports = {
     mergeOverlayDir,
     mergeCommonDir,
     mergeNodeModulesDir,
+    patchVendorPropsStubs,
     packageDiyDynamicBridge,
     packageAddonDiyBridge,
     mergeDiyDynamicBridge,

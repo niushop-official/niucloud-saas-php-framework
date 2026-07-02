@@ -28,7 +28,8 @@ class CoreModuleService extends BaseNiucloudClient
         $params = [
             'code' => $this->code,
             'secret' => $this->secret,
-            'product_key' => self::PRODUCT
+            'product_key' => self::PRODUCT,
+            'framework_version' => config('version.version')
         ];
         return $this->httpGet('member_app_all', $params);
     }

@@ -3,6 +3,7 @@
     <upload-attachment type="video" ref="videoRef" @confirm="videoSelect" />
     <vue-ueditor-wrap v-model="content" :config="editorConfig"
         :editorDependencies="['ueditor.config.js', 'ueditor.all.js']" ref="editorRef"
+        mode="observer"
         @ready="handleEditorReady"></vue-ueditor-wrap>
 </template>
 
@@ -49,7 +50,8 @@ let editorEl = null
 const serverHeaders = {}
 serverHeaders[envConfig.VITE_REQUEST_HEADER_TOKEN_KEY] = getToken()
 serverHeaders[envConfig.VITE_REQUEST_HEADER_SITEID_KEY] = storage.get('siteId') || 0
-const baseUrl = envConfig.VITE_APP_BASE_URL.substr(-1) == '/' ? envConfig.VITE_APP_BASE_URL : `${envConfig.VITE_APP_BASE_URL}/`
+const appBaseUrl = envConfig.VITE_APP_BASE_URL || '/adminapi/'
+const baseUrl = appBaseUrl.endsWith('/') ? appBaseUrl : `${appBaseUrl}/`
 
 const editorConfig = ref({
     debug: false,
@@ -89,7 +91,9 @@ const handleEditorReady = (editor) => {
     // console.log('扩展原型链', editor)
     editor.addListener('blur', () => {
         // console.log('失焦了')
-        emit('handleBlur', editor.getContent()) // 把内容传出去
+        const content = editor.getContent()
+        emit('update:modelValue', content) // 确保 v-model 同步
+        emit('handleBlur', content) // 把内容传出去
     })
 
     // 全屏切换监听

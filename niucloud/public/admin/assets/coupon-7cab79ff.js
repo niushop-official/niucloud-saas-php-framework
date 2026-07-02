@@ -1,0 +1,1 @@
+import{r as o}from"./index-9941e00a.js";function r(e){return o.get("higohome/coupon",{params:e})}function t(e){return o.post("higohome/coupon",e,{showErrorMessage:!0,showSuccessMessage:!0})}function u(e){return o.delete(`higohome/coupon/${e}`,{showErrorMessage:!0,showSuccessMessage:!0})}export{t as a,u as d,r as g};

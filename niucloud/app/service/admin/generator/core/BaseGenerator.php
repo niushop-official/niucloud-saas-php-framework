@@ -156,6 +156,7 @@ abstract class BaseGenerator
 
     /**
      * 生成文件到模块或runtime目录
+     * generate_type: 2=下载ZIP, 3=同步到项目, 4=删除已同步的文件
      */
     public function generate()
     {
@@ -169,16 +170,61 @@ abstract class BaseGenerator
             $paths[] = $this->getObjectOutDir() . $this->getFileName();
             // 生成到插件中
             if ($this->addonName && method_exists($this, 'getAddonObjectOutDir'))  $paths[] = $this->getAddonObjectOutDir() . $this->getFileName();
+        }else if($this->table['generate_type'] == 4){
+            // 删除模式下：对已存在且包含 USER_CODE_BEGIN 标记的文件，移除对应代码块后保存
+            // 对只包含生成代码的新建文件（如 .vue / .ts），直接删除
+            $paths[] = $this->getObjectOutDir() . $this->getFileName();
+            if ($this->addonName && method_exists($this, 'getAddonObjectOutDir'))  $paths[] = $this->getAddonObjectOutDir() . $this->getFileName();
         }
 
-        // 写入内容
+        // 写入内容或删除
         if(!empty($this->getFileName()))
         {
             foreach ($paths as $path) {
-                file_put_contents($path, $this->text);
+                if($this->table['generate_type'] == 4) {
+                    // 删除已同步的代码
+                    $this->removeGeneratedFile($path);
+                } else {
+                    file_put_contents($path, $this->text);
+                }
             }
         }
 
+    }
+
+    /**
+     * 删除生成器产出的文件。
+     * 如果文件仅包含 USER_CODE_BEGIN/END 代码块且无其他业务逻辑，则直接删除文件；
+     * 否则仅移除 USER_CODE_BEGIN...USER_CODE_END 之间的代码块内容。
+     */
+    protected function removeGeneratedFile(string $path)
+    {
+        if (!file_exists($path)) return;
+
+        $content = file_get_contents($path);
+        $code_begin = 'USER_CODE_BEGIN -- ';
+        $code_end = 'USER_CODE_END -- ';
+
+        if (strpos($content, $code_begin) === false || strpos($content, $code_end) === false) {
+            // 没有标记 → 可能是独立生成的文件，直接删除
+            @unlink($path);
+            return;
+        }
+
+        // 移除所有 USER_CODE_BEGIN...USER_CODE_END 代码块
+        $pattern = '/\/\/\s+' . preg_quote($code_begin, '/') . '.*?\r?\n[\S\s]+?\/\/\s+' . preg_quote($code_end, '/') . '.*?\r?\n?/';
+        $content = preg_replace($pattern, '', $content);
+
+        // 去除多余空行
+        $content = preg_replace("/(\r?\n){3,}/", "\n\n", $content);
+        $content = trim($content);
+
+        if ($content === '' || preg_match('/^<\?php\s*$/', $content)) {
+            // 文件内容为空或只剩PHP开头标记 → 直接删除
+            @unlink($path);
+        } else {
+            file_put_contents($path, $content);
+        }
     }
 
 

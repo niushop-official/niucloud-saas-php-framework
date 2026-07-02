@@ -1,1 +1,0 @@
-import{r as o}from"./index-3c23140f.js";function n(){return o.get("higohome/getAddonInfo")}function r(t){return o.get("higohome/getContractList",{params:t})}function g(t){return o.get("higohome/getFormList",{params:t})}export{g as a,r as b,n as g};

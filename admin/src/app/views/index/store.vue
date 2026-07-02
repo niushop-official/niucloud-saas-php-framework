@@ -128,7 +128,7 @@
 					<div class="flex items-start flex-1 w-0">
 						<div class="w-[42px] h-[42px] bg-purple-100 rounded flex items-center justify-center mr-2 relative">
 							<div class="w-full h-full overflow-hidden rounded">
-								<el-image class="w-full h-full overflow-hidden rounded" :src="row.icon" fit="contain">
+								<el-image class="w-full h-full overflow-hidden rounded" :src="img(row.icon)" fit="contain">
 									<template #error>
 										<div class="flex items-center w-full h-full">
 											<img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
@@ -220,7 +220,7 @@
 				<el-table-column :label="t('appName')" align="left" width="300">
 					<template #default="{ row }">
 						<div class="flex items-center cursor-pointer relative left-[-10px]" @click="openDetail(row)">
-							<el-image class="w-[54px] h-[54px] rounded-[5px]" :src="row.icon" fit="contain">
+							<el-image class="w-[54px] h-[54px] rounded-[5px]" :src="img(row.icon)" fit="contain">
 								<template #error>
 									<div class="flex items-center w-full h-full rounded-[5px]">
 										<img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
@@ -734,7 +734,7 @@
 				<div class="flex items-center justify-between">
 					<div class="flex items-center">
 						<div class="w-[42px] h-[42px] rounded-[6px] flex items-center justify-center mr-[10px] overflow-hidden">
-							<el-image class="w-full h-full" :src="detailAddon?.icon" fit="contain">
+							<el-image class="w-full h-full" :src="img(detailAddon?.icon)" fit="contain">
 								<template #error>
 									<div class="flex items-center w-full h-full">
 										<img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
@@ -938,7 +938,7 @@ import useUserStore from '@/stores/modules/user'
 import Upgrade from '@/app/components/upgrade/index.vue'
 import CloudBuild from '@/app/components/cloud-build/index.vue'
 import UpgradeLog from '@/app/components/upgrade-log/index.vue'
-import { deepClone } from '@/utils/common'
+import { deepClone, img } from '@/utils/common'
 
 const tableRef = ref(null)
 const router = useRouter()

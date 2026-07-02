@@ -1,9 +1,0 @@
-import { _ as e } from "./virtual_addon-empty-c6937308.js";
-import { _ as o } from "./core-shared-ca1fcae5.js";
-const _ = /* @__PURE__ */ o(e, [["__scopeId", "data-v-1b0af28e"]]), a = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
-  __proto__: null,
-  default: _
-}, Symbol.toStringTag, { value: "Module" }));
-export {
-  a as _
-};

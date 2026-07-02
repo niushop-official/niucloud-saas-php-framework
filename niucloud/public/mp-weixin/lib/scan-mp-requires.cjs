@@ -10,7 +10,7 @@ const REQUIRE_RE = /\brequire(?:\.async)?\(\s*['"]([^'"]+)['"]\s*\)/g
  * @param {string} mpRoot dist/build/mp-weixin 根目录
  * @param {string[]} subPackageRoots 如 ['addon/shop']
  */
-function scanSubPackageRequires(mpRoot, subPackageRoots) {
+function scanSubPackageRequires(mpRoot, subPackageRoots, addonKey) {
     const requirePaths = new Set()
     const forbiddenPaths = new Set()
     const scannedFiles = []
@@ -31,7 +31,7 @@ function scanSubPackageRequires(mpRoot, subPackageRoots) {
                 const resolved = resolveRequire(mpRoot, absFile, spec)
                 if (!resolved) continue
 
-                if (isOtherAddonPath(resolved, subPackageRoots)) {
+                if (isOtherAddonPath(resolved, subPackageRoots, addonKey)) {
                     forbiddenPaths.add(resolved)
                     continue
                 }
@@ -75,8 +75,10 @@ function resolveRequire(mpRoot, fromFile, spec) {
     return path.relative(mpRoot, resolved).replace(/\\/g, '/')
 }
 
-function isOtherAddonPath(resolvedPath, allowedRoots) {
+function isOtherAddonPath(resolvedPath, allowedRoots, addonKey) {
     if (!resolvedPath.startsWith('addon/')) return false
+    // 同插件目录下的文件（如 api/、hooks/ 等不属于子包的公共目录）不视为跨插件
+    if (addonKey && resolvedPath.startsWith(`addon/${addonKey}/`)) return false
     for (const root of allowedRoots) {
         if (resolvedPath === root || resolvedPath.startsWith(`${root}/`)) {
             return false

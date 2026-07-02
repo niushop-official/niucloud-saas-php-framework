@@ -299,6 +299,11 @@ function syncMergedDiyBridgeRouter(frameworkDir, pkgRoot, mergedAddonKeys, optio
         }
 
         if (!count) {
+            // 无 DIY 组件的插件不需要 bridge，跳过
+            if (registry && !Object.keys(registry).length) {
+                console.log(`[mp-diy-bridge-merge] skip "${key}" (no diy components)`)
+                continue
+            }
             throw new Error(
                 `[mp-diy-bridge-merge] missing bridge for "${key}" (package or framework ${getAddonBridgeRel(key)})`
             )

@@ -24,7 +24,7 @@
                                         <div class="w-full">
                                             <div class="flex">
                                                 <div class="w-[60px] h-[60px] mr-[10px] rounded-md overflow-hidden">
-                                                    <el-image :src="item.icon" v-if="item.icon" class="w-full h-full" />
+                                                    <el-image :src="img(item.icon)" v-if="item.icon" class="w-full h-full" />
                                                     <el-image v-else class="w-full h-full">
                                                         <template #error>
                                                             <div class="image-error">
@@ -58,7 +58,7 @@
                                         <div class="w-full">
                                             <div class="flex">
                                                 <div class="w-[60px] h-[60px] mr-[10px] rounded-md overflow-hidden">
-                                                    <el-image :src="item.icon" v-if="item.icon" class="w-full h-full" />
+                                                    <el-image :src="img(item.icon)" v-if="item.icon" class="w-full h-full" />
                                                     <el-image v-else class="w-full h-full">
                                                         <template #error>
                                                             <div class="image-error">
@@ -100,7 +100,7 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 import { menuRefresh } from '@/app/api/sys'
 import { addSiteGroup, editSiteGroup, getSiteGroupInfo } from '@/app/api/site'
 import { getInstalledAddonList } from '@/app/api/addon'
-import { deepClone } from '@/utils/common'
+import { deepClone, img } from '@/utils/common'
 import { useRouter, useRoute } from 'vue-router'
 
 const loading = ref(true)

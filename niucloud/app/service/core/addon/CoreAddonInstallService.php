@@ -629,7 +629,7 @@ class CoreAddonInstallService extends CoreAddonBaseService
             if ($site_num) throw new CommonException('APP_NOT_ALLOW_UNINSTALL');
         }
 
-        (new CoreAddonDevelopBuildService())->build($this->addon);
+        (new CoreAddonDevelopBuildService('uninstall'))->build($this->addon);
 
         //执行插件卸载方法
         $class = "addon\\" . $this->addon . "\\" . 'Addon';
@@ -641,6 +641,9 @@ class CoreAddonInstallService extends CoreAddonBaseService
         if (empty($addon_info)) throw new AddonException('NOT_UNINSTALL');
         if (!$this->uninstallSql()) throw new AddonException('ADDON_SQL_FAIL');
         if (!$this->uninstallDir()) throw new AddonException('ADDON_DIR_FAIL');
+
+        $this->rebuildPublicAdminAddonIndexJson();
+        $this->rebuildPublicWapAddonIndexJson();
 
         // 卸载菜单
         $this->uninstallMenu();
@@ -789,15 +792,34 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
         // 扫描 addons 目录下的所有子目录作为插件 keys
         $keys = [];
+        $manifests = [];
         if (is_dir($addons_dir)) {
             $keys = get_files_by_dir($addons_dir);
+            // 合并各插件的 manifest.json 到 index.json，减少前端 N 次 HTTP 请求
+            foreach ($keys as $key) {
+                $manifest_file = $addons_dir . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'manifest.json';
+                if (is_file($manifest_file)) {
+                    $manifest_data = $this->jsonFileToArray($manifest_file);
+                    if (!empty($manifest_data)) {
+                        $manifests[$key] = $manifest_data;
+                    }
+                }
+            }
         }
 
-        // 更新 keys
+        // 更新 keys 和生成时间戳（强制浏览器刷新缓存）
         $index_data['keys'] = $keys;
+        $index_data['manifests'] = $manifests;
+        $index_data['generatedAt'] = time();
 
         // 写入文件
         $this->writeArrayToJsonFile($index_data, $index_file);
+
+        // 同时更新 public/admin 下的 index.html 时间戳，触发页面级缓存刷新
+        $indexHtml = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'index.html';
+        if (is_file($indexHtml)) {
+            touch($indexHtml);
+        }
 
         return true;
     }
@@ -816,15 +838,33 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
         // 扫描 addons 目录下的所有子目录作为插件 keys
         $keys = [];
+        $manifests = [];
         if (is_dir($addons_dir)) {
             $keys = get_files_by_dir($addons_dir);
+            foreach ($keys as $key) {
+                $manifest_file = $addons_dir . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'manifest.json';
+                if (is_file($manifest_file)) {
+                    $manifest_data = $this->jsonFileToArray($manifest_file);
+                    if (!empty($manifest_data)) {
+                        $manifests[$key] = $manifest_data;
+                    }
+                }
+            }
         }
 
-        // 更新 keys
+        // 更新 keys 和生成时间戳（强制浏览器刷新缓存）
         $index_data['keys'] = $keys;
+        $index_data['manifests'] = $manifests;
+        $index_data['generatedAt'] = time();
 
         // 写入文件
         $this->writeArrayToJsonFile($index_data, $index_file);
+
+        // 同时更新 public/wap 下的 index.html 时间戳，触发页面级缓存刷新
+        $indexHtml = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'index.html';
+        if (is_file($indexHtml)) {
+            touch($indexHtml);
+        }
 
         return true;
     }

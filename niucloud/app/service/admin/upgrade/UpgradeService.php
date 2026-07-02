@@ -534,6 +534,9 @@ class UpgradeService extends BaseAdminService
         $depend_service->writeArrayToJsonFile($admin_original, $this->root_path . $admin_package);
         $depend_service->writeArrayToJsonFile($web_original, $this->root_path . $web_package);
         $depend_service->writeArrayToJsonFile($uni_app_original, $this->root_path . $uniapp_package);
+
+        (new CoreAddonInstallService(''))->rebuildPublicAdminAddonIndexJson();
+        (new CoreAddonInstallService(''))->rebuildPublicWapAddonIndexJson();
     }
 
     /**
@@ -684,6 +687,7 @@ class UpgradeService extends BaseAdminService
      */
     public function cloudBuild()
     {
+        return true;
         try {
             ( new CoreCloudBuildService() )->cloudBuild();
         } catch (CommonException $e) {
@@ -701,6 +705,7 @@ class UpgradeService extends BaseAdminService
      */
     public function gteCloudBuildLog()
     {
+        return true;
         $log = ( new CoreCloudBuildService() )->getBuildLog();
         if (empty($log)) return true;
 
@@ -856,7 +861,8 @@ class UpgradeService extends BaseAdminService
         ];
 
         $upgrade = [
-            'product_key' => BaseNiucloudClient::PRODUCT
+            'product_key' => BaseNiucloudClient::PRODUCT,
+            'framework_version' => config('version.version')
         ];
         $apps = [];
         if (!$addon) {

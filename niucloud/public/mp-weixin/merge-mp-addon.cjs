@@ -94,6 +94,7 @@ function main() {
         mergeCommonDir,
         mergeNodeModulesDir,
         mergeOverlayDir,
+        patchVendorPropsStubs,
         copyMpRelativeFiles,
         getAppSubPackages,
         loadFrameworkNonAddonSubPackages,
@@ -246,6 +247,11 @@ function main() {
         process.exit(1)
     }
     console.log('[merge-mp-addon] require validation OK')
+
+    const propsStubCount = patchVendorPropsStubs(frameworkDir)
+    if (propsStubCount) {
+        console.log(`[merge-mp-addon] injected ${propsStubCount} props stubs (prevents addon component crashes)`)
+    }
 
     const mergedAddonKeys = listMergedAddonKeysFromFramework(frameworkDir)
     try {

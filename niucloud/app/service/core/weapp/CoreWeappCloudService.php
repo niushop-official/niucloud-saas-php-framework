@@ -64,7 +64,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
      */
     public function uploadWeapp(array $data)
     {
-       // if (strpos($this->config[ 'base_url' ], 'https://') === false) throw new CommonException('CURR_SITE_IS_NOT_OPEN_SSL');
+        if (strpos($this->config[ 'base_url' ], 'https://') === false) throw new CommonException('CURR_SITE_IS_NOT_OPEN_SSL');
         $this->site_id = $data[ 'site_id' ] ?? 0;
 
         if (empty($this->config[ 'app_id' ])) throw new CommonException('WEAPP_APPID_EMPTY');
@@ -131,7 +131,7 @@ class CoreWeappCloudService extends CoreCloudBaseService
     {
         $site_addon = $this->config[ 'addon' ];
         foreach ($site_addon as $addon) {
-            $src = root_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR . 'dist' . DIRECTORY_SEPARATOR . 'mp-weixin' . DIRECTORY_SEPARATOR;
+            $src = root_path() . 'addon' . DIRECTORY_SEPARATOR . $addon . DIRECTORY_SEPARATOR . 'dist' . DIRECTORY_SEPARATOR . 'mp-weixin' . DIRECTORY_SEPARATOR;
             if (!is_dir($src)) continue;
 
             dir_copy($src, $dir . DIRECTORY_SEPARATOR . 'mp-addons' . DIRECTORY_SEPARATOR . $addon);

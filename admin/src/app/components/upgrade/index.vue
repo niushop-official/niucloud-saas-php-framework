@@ -136,7 +136,6 @@
                             <img src="@/app/assets/images/success_icon.png" alt="">
                         </template>
                         <template #extra>
-                            <div class="text-[16px] text-[#4F516D] mt-[-5px]" v-show="upgradeTask && upgradeTask.executed && !upgradeTask.executed.includes('cloudBuild')">{{ t('upgrade.upgradeCompleteTips') }}</div>
                             <!-- <div class="text-[16px] text-[#9699B6] mt-[10px]">本次升级用时{{ formatUpgradeDuration }}</div> -->
                             <div class="w-[750px]" v-if="upgradeTask.cloud_build_error">
                                 <el-alert class="!w-[750px] border-warning !border-[1px] !rounded-[0px] border-solid" type="warning" :closable="false">
