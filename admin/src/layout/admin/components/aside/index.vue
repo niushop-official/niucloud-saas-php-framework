@@ -1,7 +1,7 @@
 <template>
     <div :class="['layout-aside ease-in duration-200 flex box-border', { 'bright': !dark}]">
         <div class="flex flex-col border-0 border-r-[1px] border-solid border-[var(--el-color-info-light-8)] box-border overflow-hidden">
-        
+
             <div :class="['w-[150px] one-menu hide-scrollbar', { 'expanded': systemStore.menuIsCollapse  }]" >
                 <!-- <div class="flex items-center justify-center bg-primary text-white h-[40px] text-[16px] rounded-[4px] mb-[10px]"><span  class="text-[20px]">+</span><span v-if="systemStore.menuIsCollapse" class="ml-[10px]">应用市场</span></div> -->
                 <div class="flex flex-col items-center">
@@ -14,14 +14,14 @@
                                 </template>
                                 <icon v-else :name="'iconfont iconshezhi1'" color="#1D1F3A" />
                             </div>
-                            
-                            <div v-if="systemStore.menuIsCollapse" class="text-left text-[14px] mt-[3px] w-[75px] using-hidden ml-[10px]">{{ item.meta.title || item.meta.short_title }}</div> 
-                            <div v-else class="text-center text-[12px] using-hidden mt-1">{{ item.meta.short_title || item.meta.title }}</div> 
+
+                            <div v-if="systemStore.menuIsCollapse" class="text-left text-[14px] mt-[3px] w-[75px] using-hidden ml-[10px]">{{ item.meta.title || item.meta.short_title }}</div>
+                            <div v-else class="text-center text-[12px] using-hidden mt-1">{{ item.meta.short_title || item.meta.title }}</div>
                             <div v-if="systemStore.menuIsCollapse && item.name=='app_store' && (recentlyUpdated.length>0 || isNewVersion)" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
                             <div v-if="!systemStore.menuIsCollapse && item.name=='app_store' && (recentlyUpdated.length>0 || isNewVersion)" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
                             <!-- <div v-if="systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
                             <div v-if="!systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div> -->
-                        
+
                         </div>
                     </template>
                 </div>
@@ -40,7 +40,7 @@
 
     </div>
 </template>
- 
+
 <script lang="ts" setup>
 import { watch, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -86,6 +86,11 @@ watch(route, () => {
     defaultOpeneds.value = twoMenuData.value.map(item => item.name)
 }, { immediate: true })
 
+const isNeedUpgrade = (currVersion: string, onlineVersion: string) => {
+    if (isNaN(parseInt(onlineVersion.replaceAll('.', ''))) || isNaN(parseInt(currVersion.replaceAll('.', '')))) return false
+    return parseInt(onlineVersion.replaceAll('.', '')) > parseInt(currVersion.replaceAll('.', ''))
+}
+
 const recentlyUpdated = ref([])
 const localListFn = () => {
     getAddonLocal({}).then((res) => {
@@ -93,7 +98,7 @@ const localListFn = () => {
         recentlyUpdated.value = []
         for (const i in data) {
             if (data[i].install_info && Object.keys(data[i].install_info)?.length) {
-                if (data[i].install_info.version != data[i].version) {
+                if (data[i].install_info.version != data[i].version && isNeedUpgrade(data[i].install_info.version, data[i].version)) {
                     recentlyUpdated.value.push(data[i])
                 }
             }
@@ -105,16 +110,9 @@ localListFn()
 const frameworkVersionList = ref([])
 const isNewVersion = computed(() => {
     if (!newVersion.value || newVersion.value.version_no === version.value) {
-        return false;
+        return false
     }
-
-    // 将版本号转为字符串再处理
-    const currentVersionStr = String(version.value);
-    const latestVersionStr = String(newVersion.value.version_no);
-    // 移除点号并转为数字比较
-    const currentVersionNum = parseInt(currentVersionStr.replace(/\./g, ''), 10);
-    const latestVersionNum = parseInt(latestVersionStr.replace(/\./g, ''), 10);
-    return latestVersionNum > currentVersionNum;
+    return isNeedUpgrade(version.value, newVersion.value.version_no)
 })
 
 const getFrameworkVersionListFn = () => {

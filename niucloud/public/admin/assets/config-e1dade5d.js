@@ -1,0 +1,1 @@
+import{r as n}from"./index-92a85145.js";function i(){return n.get("pintuan/config")}function a(t){return n.post("pintuan/config",t,{showSuccessMessage:!0})}function r(){return n.get("pintuan/share")}function u(){return n.get("pintuan/share_init")}export{i as a,r as b,u as g,a as s};

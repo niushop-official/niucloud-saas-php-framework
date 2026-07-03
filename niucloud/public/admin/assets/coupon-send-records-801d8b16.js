@@ -1,1 +1,0 @@
-import{_ as o}from"./coupon-send-records.vue_vue_type_style_index_0_lang-e32640e5.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./marketing-a1a53db1.js";import"./index-9941e00a.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

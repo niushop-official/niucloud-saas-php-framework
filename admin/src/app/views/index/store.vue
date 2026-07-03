@@ -61,12 +61,12 @@
 						<div class="w-[42px] h-[42px] bg-purple-100 rounded flex items-center justify-center mr-2 relative">
 							<img class="max-w-full max-h-full" src="@/app/assets/images/app_store/system_version.png" alt="" />
 							<div
-								v-if="frameworkVersion != frameworkNewVersion"
+								v-if="frameworkVersion != frameworkNewVersion && isNeedUpgrade(frameworkVersion, frameworkNewVersion)"
 								class="w-[8px] h-[8px] bg-[red] rounded-[8px] z-1 absolute top-[-2px] right-[-2px]"
 							></div>
 						</div>
 						<div>
-							<p class="flex items-center" v-if="frameworkNewVersion != frameworkVersion">
+							<p class="flex items-center" v-if="frameworkNewVersion != frameworkVersion && isNeedUpgrade(frameworkVersion, frameworkNewVersion)">
 								<span class="text-[16px] font-[500] text-[#1D1F3A]">框架更新</span>
 								<span class="text-[12px] text-[#9699B6] ml-[10px]">必须优先更新</span>
 							</p>
@@ -74,10 +74,12 @@
 								<span class="text-[16px] font-[500] text-[#1D1F3A]">当前框架为最新版 V{{frameworkVersion}}</span>
 							</p>
 							<p class="text-[14px] text-[#374151]">
-								<span v-if="frameworkNewVersion != frameworkVersion" class="">框架 V{{ frameworkVersion }}</span>
-								<span v-if="frameworkNewVersion != frameworkVersion" class="iconfont iconjiang-right text-[#F09000] mx-[2px]"></span>
-								<span v-if="frameworkNewVersion != frameworkVersion" class="text-[#F09000] mr-[4px]">{{ frameworkNewVersion }}</span>
-								<span v-if="frameworkNewVersion != frameworkVersion" class="mr-[4px]">和</span>
+                                <template v-if="frameworkNewVersion != frameworkVersion && isNeedUpgrade(frameworkVersion, frameworkNewVersion)">
+                                    <span class="">框架 V{{ frameworkVersion }}</span>
+                                    <span class="iconfont iconjiang-right text-[#F09000] mx-[2px]"></span>
+                                    <span class="text-[#F09000] mr-[4px]">{{ frameworkNewVersion }}</span>
+                                    <span class="mr-[4px]">和</span>
+                                </template>
 								<span class="text-[#F09000] mr-[4px]">{{batchUpgradeApp.length}}</span>
 								<span>个应用可更新</span>
 							</p>
@@ -174,7 +176,7 @@
 							<el-button
 								class="!text-[#008C1E] mt-[auto] !p-0 !border-[0] !bg-transparent !text-[12px] !h-[20px]"
 								@click.stop="upgradeAddonFn(row)"
-								v-if="row.install_info.version != row.version"
+								v-if="row.install_info.version != row.version && isNeedUpgrade(row.install_info.version, row.version)"
 							>
 								升级
 							</el-button>
@@ -1136,7 +1138,7 @@ const localListFn = () => {
 
 				if (data[i].install_info && Object.keys(data[i].install_info)?.length) {
 					localList.value.installed.push(data[i])
-					if (data[i].install_info.version != data[i].version) {
+					if (data[i].install_info.version != data[i].version && isNeedUpgrade(data[i].install_info.version, data[i].version)) {
 						localList.value.recentlyUpdated.push(data[i])
 					}
 				} else {
@@ -1721,7 +1723,7 @@ const appKeySingleSelect = (event: any, key: string) => {
 
 const batchUpgrade = () => {
 	const appKeys = deepClone(batchUpgradeApp.value)
-	if (frameworkVersion.value != frameworkNewVersion.value) {
+	if (frameworkVersion.value != frameworkNewVersion.value && isNeedUpgrade(frameworkVersion.value, frameworkNewVersion.value)) {
 		appKeys.unshift('niucloud-admin')
 	}
 	if (!appKeys.length) {
@@ -1805,6 +1807,11 @@ const toLink = (type)=>{
 	}else{
 		window.open(`https://wap.niucloud.com/pages/product/detail?id=${detailAddon.value.app_id}`)
 	}
+}
+
+const isNeedUpgrade = (currVersion: string, onlineVersion: string) => {
+    if (isNaN(parseInt(onlineVersion.replaceAll('.', ''))) || isNaN(parseInt(currVersion.replaceAll('.', '')))) return false
+    return parseInt(onlineVersion.replaceAll('.', '')) > parseInt(currVersion.replaceAll('.', ''))
 }
 </script>
 

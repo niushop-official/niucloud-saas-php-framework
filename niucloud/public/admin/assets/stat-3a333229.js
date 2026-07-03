@@ -1,0 +1,1 @@
+import{r as t}from"./index-92a85145.js";function e(){return t.get("higohome/stat/total")}function r(){return t.get("higohome/stat/today")}function a(){return t.get("higohome/stat/yesterday")}function n(){return t.get("higohome/stat")}function s(){return t.get("higohome/stat/order")}function g(){return t.get("higohome/stat/goods")}export{e as a,r as b,a as c,s as d,n as e,g};

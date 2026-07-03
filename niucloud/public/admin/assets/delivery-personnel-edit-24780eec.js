@@ -1,0 +1,1 @@
+import{_ as o}from"./delivery-personnel-edit.vue_vue_type_style_index_0_lang-3b23edfe.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./delivery-f42b77aa.js";import"./index-92a85145.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

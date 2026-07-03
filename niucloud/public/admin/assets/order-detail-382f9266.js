@@ -1,1 +1,0 @@
-import{_ as o}from"./order-detail.vue_vue_type_script_setup_true_lang-1cc4c2c4.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./order-notes.vue_vue_type_style_index_0_lang-5c0fad45.js";import"./index-9941e00a.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

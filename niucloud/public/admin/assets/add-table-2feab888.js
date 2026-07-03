@@ -1,1 +1,0 @@
-import{_ as o}from"./add-table.vue_vue_type_script_setup_true_lang-c7846426.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./tools-33c739e5.js";import"./index-9941e00a.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

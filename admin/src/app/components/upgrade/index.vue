@@ -575,6 +575,12 @@ const upgradeAddonFn = () => {
         }
     })
 }
+
+const isNeedUpgrade = (currVersion: string, onlineVersion: string) => {
+    if (isNaN(parseInt(onlineVersion.replaceAll('.', ''))) || isNaN(parseInt(currVersion.replaceAll('.', '')))) return false
+    return parseInt(onlineVersion.replaceAll('.', '')) > parseInt(currVersion.replaceAll('.', ''))
+}
+
 const dialogUpgradePrompt = ref(false)
 const applicationVersion = ref('')
 const newApplicationVersion = ref('')
@@ -589,7 +595,7 @@ const open = (addonKey: string = '', callback = null, otherData: any = {}) => {
         active.value = 'upgrade'
         if (callback) callback()
     } else {
-        if (addonKey && addonKey.indexOf('niucloud-admin') == -1 && frameworkVersion.value != newFrameworkVersion.value) {
+        if (addonKey && addonKey.indexOf('niucloud-admin') == -1 && frameworkVersion.value != newFrameworkVersion.value && isNeedUpgrade(frameworkVersion.value, newFrameworkVersion.value)) {
             applicationVersion.value = otherData.install_info.version
             newApplicationVersion.value = otherData.version
             applicationType.value = otherData.type
