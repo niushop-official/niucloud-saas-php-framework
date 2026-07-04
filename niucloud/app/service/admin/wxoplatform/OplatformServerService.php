@@ -52,7 +52,8 @@ class OplatformServerService extends BaseAdminService
 
             return $next($message);
         });
-
+        event('WxOplatformServer', ['appid' => $appid ?? null, 'message' => $server->getDecryptedMessage()->toArray()]);
+      
         return $server->serve();
     }
 
@@ -83,7 +84,8 @@ class OplatformServerService extends BaseAdminService
             }
             return $next($message);
         });
-
+        event('WxOplatformMessage', ['appid' => $appid ?? null, 'message' => $server->getDecryptedMessage()->toArray()]);
+      
         return $server->serve();
     }
 
