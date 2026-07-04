@@ -29,6 +29,8 @@ class CoreAddonDevelopBuildService extends BaseCoreService
     protected $addon;
     protected $build_path;
 
+    protected $scene;
+
     public function __construct($scene = 'build')
     {
         parent::__construct();
@@ -207,7 +209,7 @@ class CoreAddonDevelopBuildService extends BaseCoreService
     public function adminDist() {
         $admin_path = str_replace('/', DIRECTORY_SEPARATOR, $this->root_path . 'admin/dist/assets/addons/' . $this->addon . '/');
         if (!is_dir($admin_path) || !is_readable($admin_path) || count(scandir($admin_path)) === 2) {
-            if ($this->scene = 'build') throw new CommonException("请先在admin目录下执行 npm run build:addon {$this->addon}命令编译插件admin端");
+            if ($this->scene == 'build') throw new CommonException("请先在admin目录下执行 npm run build:addon {$this->addon}命令编译插件admin端");
             return;
         }
 
@@ -238,7 +240,7 @@ class CoreAddonDevelopBuildService extends BaseCoreService
 
         $uniapp_path = str_replace('/', DIRECTORY_SEPARATOR, $this->root_path . 'uni-app/dist/build/h5/assets/addons/' . $this->addon . '/');
         if (!is_dir($uniapp_path) || !is_readable($uniapp_path) || count(scandir($uniapp_path)) === 2) {
-            if ($this->scene = 'build') throw new CommonException("请先在uni-app目录下执行 npm run build:h5:addon {$this->addon}命令编译插件wap端");
+            if ($this->scene == 'build') throw new CommonException("请先在uni-app目录下执行 npm run build:h5:addon {$this->addon}命令编译插件wap端");
             return;
         }
 
