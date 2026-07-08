@@ -1,0 +1,1 @@
+import{_ as o}from"./detail.vue_vue_type_style_index_0_lang-e9ed87bd.js";import"./index-f755d42f.js";import"vue";import"pinia";import"@element-plus/icons-vue";import"axios";import"/admin/assets/shared/admin-lang.js";import"vue-router";import"/admin/assets/shared/admin-lang.js";import"./recharge-d68490b8.js";export{o as default};

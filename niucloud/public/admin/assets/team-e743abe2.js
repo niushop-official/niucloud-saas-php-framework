@@ -1,1 +1,0 @@
-import{r as t}from"./index-92a85145.js";function n(){return t.get("shop_fenxiao/team_config")}function r(e){return t.put("shop_fenxiao/team_config",e,{showSuccessMessage:!0})}function s(e){return t.get("shop_fenxiao/team_order",{params:e})}export{s as a,n as g,r as s};
