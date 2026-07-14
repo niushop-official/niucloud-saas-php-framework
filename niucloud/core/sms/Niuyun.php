@@ -97,23 +97,53 @@ class Niuyun extends BaseSms
         $params_type_arr = NoticeTypeDict::getApiParamsType();
         $type_arr = array_column($params_type_arr, null, 'type');
         $return = [];
+
         foreach ($params_json as $param => $validate) {
-            $value = $data[$param];
-            $pattern = $type_arr[$validate]['rule'] ?? '';
-            $max = $type_arr[$validate]['max'] ?? 1;
-            $min = $type_arr[$validate]['max'] ?? mb_strlen($value);
-            if (!empty($pattern) && in_array($validate, [NoticeTypeDict::PARAMS_TYPE_CHINESE, NoticeTypeDict::PARAMS_TYPE_OTHERS])) {
-                $value = str_replace(' ', '', $value);
-                $value = str_replace('.', '', $value);
-                $filtered = preg_replace($pattern, '', $value);
-                $value = (mb_strlen($filtered, 'UTF-8') >= $min && mb_strlen($filtered, 'UTF-8') <= 35)
-                    ? $filtered  // 长度合法，保留过滤后的字符串
-                    : mb_substr($filtered, 0, $max);        // 长度非法，返回空字符串
+            // 1. 兜底：参数不存在直接抛出异常
+            if (!isset($data[$param])) {
+                Log::write("SEND_NY_SMS 参数缺失 param:" . $param);
+                throw new \Exception('NY:参数【' . $param . '】缺失，无法发送');
             }
-            if (empty($value)) {
-                Log::write("SEND_NY_SMS 参数异常，无法发送 param:" . $param);
-                throw new \Exception('NY:参数异常，无法发送');
+            $origin_value = $data[$param];
+            $value = trim($origin_value);
+
+            // 2. 获取当前参数类型配置，不存在则拦截
+            $type_config = $type_arr[$validate] ?? [];
+            if (empty($type_config)) {
+                Log::write("SEND_NY_SMS 未知校验类型 param:{$param}, type:{$validate}");
+                throw new \Exception('NY:参数【' . $param . '】校验类型配置不存在');
             }
+            $pattern = $type_config['rule'] ?? '';
+            $max = $type_config['max'] ?? 20;
+            $min = $type_config['min'] ?? 1;
+
+            // 3. 仅中文、其他类型 清除空格与小数点（其余类型保留.空格，如金额、号码）
+            if (in_array($validate, [NoticeTypeDict::PARAMS_TYPE_CHINESE, NoticeTypeDict::PARAMS_TYPE_OTHERS])) {
+                $value = str_replace([' ', '.'], '', $value);
+            }
+
+            // 4. 有正则规则：先整体校验是否符合格式，不通过直接抛异常
+            if (!empty($pattern)) {
+                if (!preg_match($pattern, $value)) {
+                    Log::write("SEND_NY_SMS 参数格式不合法 param:{$param} 原始值:{$origin_value} 规则:{$pattern}");
+                    throw new \Exception('NY:参数【' . $param . '】格式不符合要求');
+                }
+            }
+
+            // 5. 校验通过后，按最大长度截断
+            $value = mb_substr($value, 0, $max);
+            $real_len = mb_strlen($value, 'UTF-8');
+
+            if($param == NoticeTypeDict::PARAMS_TYPE_OTHER_NUMBER && mb_strlen($value, 'UTF-8') > 20){
+                $value = mb_substr($value, 0, 17) . '---';
+            }
+
+            // 6. 最小长度校验，截断后过短直接拦截
+            if ($real_len < $min) {
+                Log::write("SEND_NY_SMS 参数长度不足 param:{$param} 处理后值:{$value} 最小长度:{$min}");
+                throw new \Exception('NY:参数【' . $param . '】长度不满足最低要求');
+            }
+
             $return[$param] = $value;
         }
         return $return;

@@ -60,6 +60,30 @@ export default defineConfig({
                     /import\s+(\w+)\s+from\s+['"]@\/utils\/test['"]/g,
                     "import { test as $1 } from '@/utils/test'"
                 )
+                // 处理导出同名冲突：import { X } from '@/app/api/mod' / '@/utils/mod'
+                // 优先 export-conflicts.json，兼容旧版 api-conflicts.json
+                let conflicts = {}
+                const sources = [
+                    fileURLToPath(new URL('./.build/export-conflicts.json', import.meta.url)),
+                    fileURLToPath(new URL('./.build/api-conflicts.json', import.meta.url))
+                ]
+                for (const p of sources) { try { conflicts = { ...conflicts, ...require(p) } } catch (_) {} }
+                if (Object.keys(conflicts).length) {
+                    code = code.replace(
+                        /import\s+\{([^}]+)\}\s+from\s+['"]@\/(?:app\/api|utils)\/(\w+)['"]/g,
+                        (match: string, names: string, mod: string) => {
+                            const remapped = names.split(',').map(n => {
+                                const trimmed = n.trim()
+                                const [name, alias] = trimmed.includes(' as ') ? trimmed.split(' as ').map(s => s.trim()) : [trimmed, trimmed]
+                                const key = mod + ':' + name
+                                if (conflicts[key]) return conflicts[key] + ' as ' + alias
+                                return trimmed
+                            })
+                            const ns = match.includes('@/app/api') ? '@/app/api' : '@/utils'
+                            return 'import { ' + remapped.join(', ') + ' } from \'' + ns + '/' + mod + '\''
+                        }
+                    )
+                }
                 // 处理 export { default as ... } from '@/utils/storage|config|test'
                 code = code.replace(
                     /export\s+\{\s*default\s+as\s+(\w+)\s*\}\s+from\s+['"]@\/utils\/(storage|config|test)['"]/g,

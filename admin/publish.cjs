@@ -25,9 +25,7 @@ function publish() {
     fixIndexHtml()
 
     if (!fs.existsSync(dest)) {
-        console.error(`[publish] target not found: ${dest}`)
-        console.error('[publish] set PUBLISH_DEST to your web admin directory')
-        process.exit(1)
+        return
     }
 
     fs.rmSync(dest, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 })

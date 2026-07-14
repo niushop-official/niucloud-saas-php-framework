@@ -63,18 +63,25 @@ class SiteService extends BaseAdminService
      */
     public function getPage(array $where = [])
     {
-
+        $admin_site_info = $this->model->where([['site_id', '=', 0]])->field('logo, icon')->findOrEmpty()->toArray();
         $field = 'site_id, site_name, front_end_name, front_end_logo, front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, 
         district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain';
         $condition = [
             ['app_type', '<>', 'admin']
         ];
         $search_model = $this->model->where($condition)->withSearch(['create_time', 'expire_time', 'keywords', 'status', 'group_id', 'app', 'site_domain'], $where)->with(['groupName'])->field($field)->append(['status_name'])->order('create_time desc');
-        return $this->pageQuery($search_model, function ($item) {
+        return $this->pageQuery($search_model, function ($item) use ($admin_site_info) {
             $item['admin'] = (new SysUserRole())->where([['site_id', '=', $item['site_id']], ['is_admin', '=', 1]])
                 ->field('uid')
                 ->with(['userinfo'])
                 ->findOrempty()->toArray();
+
+            if (empty($item['logo'])) {
+                $item['logo'] = $admin_site_info['logo'] ?? 'static/resource/images/site/logo.png';
+            }
+            if (empty($item['icon'])) {
+                $item['icon'] = $admin_site_info['icon'] ?? 'static/resource/images/site/icon.jpg';
+            }
         });
     }
 
@@ -93,11 +100,15 @@ class SiteService extends BaseAdminService
             $info['site_addons'] = (new Addon())->where([['key', 'in', $site_addons]])->field('key,title,desc,icon,type')->select()->toArray();
             $info['uid'] = (new SysUserRole())->where([['site_id', '=', $site_id], ['is_admin', '=', 1]])->value('uid');
         }
+        
+        if(empty($info['logo']) || empty($info['icon'])){
+            $admin_site_info = $this->model->where([['site_id', '=', 0]])->field('logo, icon')->findOrEmpty()->toArray();
+        }
         if (empty($info['logo'])) {
-            $info['logo'] = 'static/resource/images/site/logo.png';
+            $info['logo'] = $admin_site_info['logo'] ?? 'static/resource/images/site/logo.png';
         }
         if (empty($info['icon'])) {
-            $info['icon'] = 'static/resource/images/site/icon.png';
+            $info['icon'] = $admin_site_info['icon'] ?? 'static/resource/images/site/icon.png';
         }
         return $info;
     }
@@ -115,6 +126,8 @@ class SiteService extends BaseAdminService
         if ($site_group->isEmpty()) throw new CommonException('SITE_GROUP_NOT_EXIST');
 
         $data['app_type'] = 'site';
+        $admin_site_info = $this->model->where([['site_id', '=', 0]])->field('logo, icon')->findOrEmpty()->toArray();
+
         //添加站点
         $data_site = [
             'site_domain' => $data['site_domain'] ?? '',
@@ -126,7 +139,8 @@ class SiteService extends BaseAdminService
             'app' => $site_group['app'],
             'addons' => '',
             'status' => strtotime($data['expire_time']) > time() ? SiteDict::ON : SiteDict::EXPIRE,
-            'icon' => 'static/resource/images/site/site_icon.jpg'
+            'icon' => $admin_site_info['icon'] ?? 'static/resource/images/site/icon.jpg',
+            'logo' => $admin_site_info['logo'] ?? 'static/resource/images/site/logo.png',
         ];
         Db::startTrans();
         try {

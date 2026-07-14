@@ -46,7 +46,7 @@ class TokenAuth
         ];
 
         $params['jti'] = $id . "_" . $type;
-        $token = JWT::encode($params, Env::get('app.app_key', 'niucloud456$%^'));
+        $token = JWT::encode($params, Env::get('app.auth_key', 'niucloud456$%^'));
         $cache_token = Cache::store("jwt")->get("token_" . $params['jti']) ?: Cache::get("token_" . $params['jti']);
         $cache_token_arr = $cache_token ?: [];
 //        if(!empty($cache_token))
@@ -67,7 +67,7 @@ class TokenAuth
      */
     public static function parseToken(string $token, string $type): array
     {
-        $payload = JWT::decode($token, Env::get('app.app_key', 'niucloud456$%^'), ['HS256']);
+        $payload = JWT::decode($token, Env::get('app.auth_key', 'niucloud456$%^'), ['HS256']);
         if (!empty($payload)) {
             $token_info = json_decode(json_encode($payload), true, 512, JSON_THROW_ON_ERROR);
 

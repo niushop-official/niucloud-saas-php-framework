@@ -58,6 +58,16 @@ class CoreSiteService extends BaseCoreService
                 ];
                 $info = $this->model->where($where)->field('site_id, site_name, front_end_name, front_end_logo,front_end_icon, app_type, keywords, logo, icon, `desc`, status, latitude, longitude, province_id, city_id, district_id, address, full_address, phone, business_hours, create_time, expire_time, group_id, app, addons, site_domain, meta_title, meta_desc, meta_keyword')->append([ 'status_name' ])->findOrEmpty()->toArray();
                 if (!empty($info)) {
+                    if($site_id == 0){
+                        $info['icon'] = !empty($info['icon']) ? $info['icon'] : 'static/resource/images/site/icon.jpg';
+                        $info['logo'] = !empty($info['logo']) ? $info['logo'] : 'static/resource/images/site/logo.png'; 
+                    }else {
+                        if (empty($info['logo']) || empty($info['icon'])){
+                            $admin_site_info = $this->model->where($where)->field('logo, icon')->findOrEmpty()->toArray();
+                            $info['icon'] = empty($info['icon']) ? $admin_site_info['icon'] : $info['icon'];
+                            $info['logo'] = empty($info['logo']) ? $admin_site_info['logo'] : $info['logo'];
+                        }
+                    }
                     $site_addons = ( new CoreSiteService() )->getAddonKeysBySiteId((int) $site_id);
                     $info[ 'apps' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::APP ] ])->field('key,title,desc,icon,type,support_app')->select()->toArray();
                     $info[ 'site_addons' ] = ( new Addon() )->where([ [ 'key', 'in', $site_addons ], [ 'type', '=', AddonDict::ADDON ] ])->field('key,title,desc,icon,type,support_app')->select()->toArray();

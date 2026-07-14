@@ -22,7 +22,7 @@ function ensureBridgePage(row) {
     const content = `<template>
     <addon-page-bridge :addon-key="addonKey" :page-path="pagePath" :full-route="fullRoute" />
 </template>
-<script setup>
+<script setup lang="ts">
 const addonKey = '${row.addonKey}'
 const pagePath = '${pagePath.replace(/'/g, "\\'")}'
 const fullRoute = '${row.fullRoute}'

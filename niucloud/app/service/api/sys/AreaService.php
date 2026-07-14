@@ -101,6 +101,46 @@ class AreaService extends BaseApiService
     }
 
     /**
+     * 通过地址查询经纬度（地理编码）
+     * @param $params
+     * @return array
+     */
+    public function getLatlngByAddress($params)
+    {
+        $map = ( new ConfigService() )->getMap();
+        $map_type = $map['map_type'] ?? 'tianditu';
+
+        if ($map_type == 'tencent') {
+            $map_service = new \app\service\core\map\CoreQqMap($this->site_id);
+            $res = $map_service->addressToDetail(['address' => $params['address']]);
+        } else {
+            $map_service = new \app\service\core\map\CoreTiandituMap($this->site_id);
+            $res = $map_service->addressToDetail(['address' => $params['address']]);
+        }
+
+        if (is_string($res)) {
+            $res = json_decode($res, true);
+        }
+
+        if ($res) {
+            if ($res['status'] == 0) {
+                $location = $res['result']['location'] ?? [];
+                return [
+                    'lat' => $location['lat'] ?? 0,
+                    'lng' => $location['lng'] ?? 0,
+                    'province' => $res['result']['address_component']['province'] ?? '',
+                    'city' => $res['result']['address_component']['city'] ?? '',
+                    'district' => $res['result']['address_component']['district'] ?? '',
+                ];
+            } else {
+                throw new ApiException('请检查地图配置：'.$res['message']);
+            }
+        } else {
+            throw new ApiException('地图接口请求失败');
+        }
+    }
+
+    /**
      * 通过经纬度查询地址
      * @param $params
      * @return array

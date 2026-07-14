@@ -128,6 +128,7 @@ Route::group(function () {
 
     // 通过经纬度查询地址
     Route::get('area/address_by_latlng', 'sys.Area/getAddressByLatlng');
+    Route::get('area/latlng_by_address', 'sys.Area/getLatlngByAddress');
 
     /***************************************************** 海报管理 ****************************************************/
     //获取海报

@@ -1,0 +1,1 @@
+import{_ as o}from"./giftcard-detail.vue_vue_type_script_setup_true_lang-6d929225.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"vue-router";import"./index-eed023fb.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"/admin/assets/shared/admin-lang.js";import"./giftcard-d5a6fa1b.js";import"./card-e325e0b6.js";export{o as default};

@@ -141,6 +141,7 @@ class NoticeTypeDict
     }
 
     const PARAMS_TYPE_VALID_CODE = 'valid_code';
+    const PARAMS_TYPE_MOBILE_NUMBER = 'mobile_number';
     const PARAMS_TYPE_OTHER_NUMBER = 'other_number';
     const PARAMS_TYPE_AMOUNT = 'amount';
     const PARAMS_TYPE_DATE = 'date';
@@ -153,16 +154,24 @@ class NoticeTypeDict
             [
                 'name' => '验证码',
                 'type' => self::PARAMS_TYPE_VALID_CODE,
-                'desc' => '4-6位纯数字',
-                'rule' => '/^\d$/',
+                'desc' => '4-6位纯数字/纯英文，或数字英文组合，英文支持大小写',
+                'rule' => '/^[a-zA-Z0-9]+$/',
                 'min'=>4,
                 'max'=>6
             ],
             [
-                'name' => '其他号码（手机号）',
+                'name' => '电话号码',
+                'type' => self::PARAMS_TYPE_MOBILE_NUMBER,
+                'desc' => '1-15位纯数字',
+                'rule'=>'/^\d+$/',
+                'min'=>1,
+                'max'=>15
+            ],
+            [
+                'name' => '其他号码',
                 'type' => self::PARAMS_TYPE_OTHER_NUMBER,
-                'desc' => '1-20位字母+数字组合',
-                'rule'=>'/^[a-zA-Z0-9]$/',
+                'desc' => '1-20位英文+数字组合,支持中划线-',
+                'rule'=>'/^[a-zA-Z0-9-]+$/',
                 'min'=>1,
                 'max'=>20
             ],
@@ -170,18 +179,20 @@ class NoticeTypeDict
                 'name' => '金额',
                 'type' => self::PARAMS_TYPE_AMOUNT,
                 'desc' => '支持数字或数字的中文 （壹贰叁肆伍陆柒捌玖拾佰仟万亿 圆元整角分厘毫）',
-                'rule' => "/^(?:\d+|(?:[零壹贰叁肆伍陆柒捌玖拾佰仟万亿圆角分厘毫]+|圆|元|整)+)$/u"
+                'rule' => "/^(?:\d+(?:\.\d+)?|[零壹贰叁肆伍陆柒捌玖拾佰仟万亿圆角分厘毫圆元整]+)$/u"
             ],
             [
                 'name' => '日期',
                 'type' => self::PARAMS_TYPE_DATE,
-                'desc' => '符合时间的表达方式 也支持中文：2019年9月3日16时24分35秒',
-                'rule' => ''
+                'desc' => '符合时间的表达方式 也支持中文：2019年9月3日16时24分35秒，最多20位',
+                'rule' => '',
+                'min'=>1,
+                'max'=>20
             ],
             [
                 'name' => '中文',
                 'type' => self::PARAMS_TYPE_CHINESE,
-                'desc' => '1-15中文，支持中文圆括号()',
+                'desc' => '1-15个中文，支持中文圆括号()',
                 'rule' => '/^[\p{Han}（）]+$/u',
                 'min'=>1,
                 'max'=>15
@@ -189,18 +200,18 @@ class NoticeTypeDict
             [
                 'name' => '纯数字',
                 'type' => self::PARAMS_TYPE_INT_NUMBER,
-                'desc' => ' 1-10个数字',
-                'rule' => '/^\d$/',
+                'desc' => '1-10个数字',
+                'rule' => '/^\d+$/',
                 'min'=>1,
                 'max'=>10
             ],
             [
                 'name' => '其他',
                 'type' => self::PARAMS_TYPE_OTHERS,
-                'desc' => ' 1-30个中文数字字母组合,支持中文符号。',
-                'rule' => '/^[\p{Han}\p{N}\p{L}\p{P}\p{S}\s]$/u',
+                'desc' => '1-20个中文英文数字组合,支持中文符号和空格',
+                'rule' => '/^[\p{Han}\p{N}\p{L}\p{P}\p{S}\s]+$/u',
                 'min'=>1,
-                'max'=>30
+                'max'=>20
             ],
         ];
     }

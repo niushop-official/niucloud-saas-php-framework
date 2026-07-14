@@ -598,12 +598,15 @@ export function copy(value: any, callback: any) {
             if (res.errMsg && res.errno) {
                 if (res.errno == 104) {
                     let msg = '用户未授权隐私权限，设置剪贴板数据失败';
-                    uni.showToast({ title: msg, icon: 'none' })
+                    console.log(msg);
+                    // uni.showToast({ title: msg, icon: 'none' })
                 } else if (res.errno == 112) {
                     let msg = '隐私协议中未声明，设置剪贴板数据失败';
-                    uni.showToast({ title: msg, icon: 'none' })
+                    console.log(msg);
+                    // uni.showToast({ title: msg, icon: 'none' })
                 } else {
-                    uni.showToast({ title: res.errMsg, icon: 'none' })
+                    console.log(res.errMsg);
+                    // uni.showToast({ title: res.errMsg, icon: 'none' })
                 }
             }
         }

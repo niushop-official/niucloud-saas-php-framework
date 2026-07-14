@@ -1,0 +1,1 @@
+import{O as r}from"./index-eed023fb.js";function t(e){return r.get("erp/sales/order/list",e)}function a(e){return r.get(`erp/sales/order/detail/${e}`)}function o(e){return r.put(`erp/sales/order/approve/${e}`)}function n(e){return r.put(`erp/sales/order/cancel/${e}`)}function l(e){return r.post("erp/sales/order/outstock",e)}export{o as a,t as b,n as c,a as g,l as s};

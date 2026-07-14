@@ -96,7 +96,7 @@ class CoreAppCloudService extends CoreCloudBaseService
         dir_copy($this->root_path . 'uni-app', $uni_dir, exclude_dirs: [ 'node_modules', 'unpackage', 'dist', '.git' ]);
         $this->handleUniapp($uni_dir);
         // 替换env文件
-        $this->weappEnvReplace($uni_dir . DIRECTORY_SEPARATOR . '.env.production');
+        $this->uniappEnvReplace($uni_dir . DIRECTORY_SEPARATOR . '.env.production');
 
         // 拷贝证书文件
         if ($data['cert']['type'] == 'private') {
@@ -266,16 +266,28 @@ class CoreAppCloudService extends CoreCloudBaseService
     }
 
     /**
-     * 小程序上传env文件处理
+     * env文件处理
      * @param string $env_file
      * @return void
      */
-    private function weappEnvReplace(string $env_file)
+    private function uniappEnvReplace(string $env_file)
     {
         $env = file_get_contents($env_file);
-        $env = str_replace("VITE_APP_BASE_URL=''", "VITE_APP_BASE_URL='" . (string) url('/', [], '', true) . 'api/' . "'", $env);
-        $env = str_replace("VITE_IMG_DOMAIN=''", "VITE_IMG_DOMAIN='" . (string) url('/', [], '', true) . "'", $env);
-        $env = str_replace("VITE_SITE_ID = ''", "VITE_SITE_ID='" . $this->site_id . "'", $env);
+        $base_url = (string) url('/', [], '', true);
+        $site_id = $this->site_id;
+
+        $env = preg_replace_callback(
+            "/(VITE_APP_BASE_URL|VITE_IMG_DOMAIN|VITE_SITE_ID)\s*=\s*''/",
+            function ($matches) use ($base_url, $site_id) {
+                return match ($matches[1]) {
+                    'VITE_APP_BASE_URL' => "VITE_APP_BASE_URL='{$base_url}api/'",
+                    'VITE_IMG_DOMAIN'  => "VITE_IMG_DOMAIN='{$base_url}'",
+                    'VITE_SITE_ID'     => "VITE_SITE_ID='{$site_id}'",
+                };
+            },
+            $env
+        );
+
         file_put_contents($env_file, $env);
     }
 

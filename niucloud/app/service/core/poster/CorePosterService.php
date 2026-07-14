@@ -152,9 +152,13 @@ class CorePosterService extends BaseCoreService
                 'param' => $param,
                 'channel' => $channel
             ])));
+
             // 合并模版数据
             foreach ($poster_data_arr as $k => $v) {
                 $poster_data = array_merge($poster_data, $v);
+            }
+            if( isset($poster_data['goods_img']) && !empty($poster_data['goods_img']) ) {         
+                $poster_data['goods_img'] = get_file_url($poster_data['goods_img']);
             }
 
             $dir = 'upload/poster/' . $site_id;
@@ -166,7 +170,7 @@ class CorePosterService extends BaseCoreService
             //判断当前海报是否存在,存在直接返回地址,不存在的话则创建
 
             if (is_file($path)) {
-                return $path;
+                return get_file_url($path);
             } else {
                 return $this->create($site_id, $poster, $poster_data, $dir, $file_path, $channel);
             }
@@ -195,7 +199,7 @@ class CorePosterService extends BaseCoreService
         //将模版中的部分待填充值替换
         $core_upload_service = new CoreFetchService();
         if ($poster['global']['bgType'] == 'url') {
-            if (!empty($poster['global']['bgUrl']) && str_contains($poster['global']['bgUrl'], 'http://') || str_contains($poster['global']['bgUrl'], 'https://')) {
+            if (!empty($poster['global']['bgUrl']) && (str_contains($poster['global']['bgUrl'], 'http://') || str_contains($poster['global']['bgUrl'], 'https://'))) {
                 //判断是否是是远程图片,远程图片需要本地化
                 $temp_dir = 'file/' . 'image' . '/' . $site_id . '/' . date('Ym') . '/' . date('d');
                 try {

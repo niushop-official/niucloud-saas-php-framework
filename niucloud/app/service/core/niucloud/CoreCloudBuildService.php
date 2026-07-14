@@ -372,7 +372,7 @@ class CoreCloudBuildService extends BaseCoreService
                     } else {
                         // 压缩包解压失败 尝试重新下载
                         if (!isset($this->build_task[ 'retry' ])) {
-                            unlink($zip_resource);
+                            unlink($zipFile);
                             $this->build_task['retry'] = 1;
                             unset($this->build_task['index']);
                             Cache::set($this->cache_key, $this->build_task);

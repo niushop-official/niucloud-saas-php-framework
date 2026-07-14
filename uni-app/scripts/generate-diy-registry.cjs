@@ -9,6 +9,11 @@ const { scanAllDiyComponents } = require('./diy-component-scan.cjs')
 const OUT_JSON = path.join(BUILD_DIR, 'diy-component-registry.json')
 const OUT_TS = path.join(BUILD_DIR, 'diy-component-registry.generated.ts')
 
+// App 构建替换文件（消除 import.meta.glob，避免 IIFE code-splitting 冲突）
+const OUT_APP_REGISTRY = path.join(BUILD_DIR, 'diy-component-registry.dev.app.ts')
+const OUT_APP_GLOBS_APP = path.join(BUILD_DIR, 'diy-component-globs.app.ts')
+const OUT_APP_GLOBS_DEV = path.join(BUILD_DIR, 'diy-component-globs.dev.ts')
+
 function generateDiyRegistry(options = {}) {
     const addonKeys = options.addonKeys || listAddonKeys()
     const { app, addon, all } = scanAllDiyComponents({ addonKeys })
@@ -45,10 +50,107 @@ ${all.map((e) => `    '${e.vueComponentName}': ${JSON.stringify(e)}`).join(',\n'
     console.log(
         `[generate-diy-registry] ${all.length} components (app ${app.length}, addon ${addon.length}) -> ${path.relative(ROOT, OUT_JSON)}`
     )
+
+    // ===== 生成 App 构建替换文件（用静态 import 替代 import.meta.glob） =====
+
+    // 1) diy-component-registry.dev 替换 → 直接读取 generated 文件
+    const registryAppReplacement = `/* AUTO-GENERATED — App 构建替换，不使用 import.meta.glob */
+import '../src/utils/pinia-preinit'
+import type { DiyComponentMeta } from '../src/utils/diy-component-types'
+import { DIY_COMPONENT_MAP } from './diy-component-registry.generated'
+
+export function resolveDiyMeta(componentName: string): DiyComponentMeta | null {
+    if (!componentName) return null
+    return DIY_COMPONENT_MAP[componentName] ?? null
+}
+
+export function listDiyComponentNames() {
+    return Object.keys(DIY_COMPONENT_MAP)
+}
+`
+    fs.writeFileSync(OUT_APP_REGISTRY, registryAppReplacement, 'utf-8')
+    console.log(`[generate-diy-registry] App registry -> ${path.relative(ROOT, OUT_APP_REGISTRY)}`)
+
+    // 2) diy-component-globs.app 替换 → 静态 import 所有 app 级组件
+    const appCompImports = app
+        .map(
+            (c) =>
+                `import _${c.vueComponentName} from '../src/app/components/diy/${c.folder}/index.vue'`
+        )
+        .join('\n')
+    const appCompLoaders = app
+        .map(
+            (c) =>
+                `    '../app/components/diy/${c.folder}/index.vue': () => Promise.resolve({ default: _${c.vueComponentName} })`
+        )
+        .join(',\n')
+
+    const appGlobsReplacement = `/* AUTO-GENERATED — App 构建替换，用静态 import 替代 import.meta.glob */
+import '../src/utils/pinia-preinit'
+import type { Component } from 'vue'
+
+type DiyModuleLoader = () => Promise<{ default: Component }>
+
+${appCompImports}
+
+export const appDiyLoaders: Record<string, DiyModuleLoader> = {
+${appCompLoaders}
+}
+
+export function appDiyGlobKey(folder: string) {
+    return \`../app/components/diy/\${folder}/index.vue\`
+}
+
+export function getAppDiyLoader(folder: string) {
+    return appDiyLoaders[appDiyGlobKey(folder)]
+}
+`
+    fs.writeFileSync(OUT_APP_GLOBS_APP, appGlobsReplacement, 'utf-8')
+    console.log(`[generate-diy-registry] App globs.app -> ${path.relative(ROOT, OUT_APP_GLOBS_APP)}`)
+
+    // 3) diy-component-globs.dev 替换 → 静态 import 所有 addon 级组件 + re-export app globs
+    const addonCompImports = addon
+        .map(
+            (c) =>
+                `import _${c.vueComponentName} from '../src/addon/${c.addonKey}/components/diy/${c.folder}/index.vue'`
+        )
+        .join('\n')
+    const addonCompLoaders = addon
+        .map(
+            (c) =>
+                `    '../addon/${c.addonKey}/components/diy/${c.folder}/index.vue': () => Promise.resolve({ default: _${c.vueComponentName} })`
+        )
+        .join(',\n')
+
+    const devGlobsReplacement = `/* AUTO-GENERATED — App 构建替换，用静态 import 替代 import.meta.glob */
+import '../src/utils/pinia-preinit'
+import type { Component } from 'vue'
+import { appDiyLoaders, getAppDiyLoader } from './diy-component-globs.app'
+
+export { appDiyLoaders, getAppDiyLoader }
+
+type DiyModuleLoader = () => Promise<{ default: Component }>
+
+${addonCompImports}
+
+export const addonDiyLoaders: Record<string, DiyModuleLoader> = {
+${addonCompLoaders}
+}
+
+export function addonDiyGlobKey(addonKey: string, folder: string) {
+    return \`../addon/\${addonKey}/components/diy/\${folder}/index.vue\`
+}
+
+export function getAddonDiyLoader(addonKey: string, folder: string) {
+    return addonDiyLoaders[addonDiyGlobKey(addonKey, folder)]
+}
+`
+    fs.writeFileSync(OUT_APP_GLOBS_DEV, devGlobsReplacement, 'utf-8')
+    console.log(`[generate-diy-registry] App globs.dev -> ${path.relative(ROOT, OUT_APP_GLOBS_DEV)}`)
 }
 
 if (require.main === module) {
     generateDiyRegistry()
 }
 
-module.exports = { generateDiyRegistry, OUT_JSON, OUT_TS }
+module.exports = { generateDiyRegistry, OUT_JSON, OUT_TS, OUT_APP_REGISTRY, OUT_APP_GLOBS_APP, OUT_APP_GLOBS_DEV }

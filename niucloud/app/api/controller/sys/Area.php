@@ -59,4 +59,16 @@ class Area extends BaseApiController
         ]);
         return success((new AreaService())->getAddressByLatlng($data));
     }
+
+    /**
+     * 通过地址查询经纬度（地理编码）
+     * @return Response
+     */
+    public function getLatlngByAddress()
+    {
+        $data = $this->request->params([
+            ['address', '']
+        ]);
+        return success((new AreaService())->getLatlngByAddress($data));
+    }
 }

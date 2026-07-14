@@ -11,6 +11,7 @@ const path = require('path')
 const { spawnSync } = require('child_process')
 const { ROOT } = require('./addon-utils.cjs')
 const { SHARED_BUILD_ORDER } = require('./shared-external.cjs')
+const { scanDirExports, resolveConflicts, buildReExportStatements } = require('./scan-exports.cjs')
 
 /** 临时入口目录，每次构建前重写 */
 const SHARED_SRC = path.join(ROOT, '.build', 'shared')
@@ -33,30 +34,26 @@ const ENTRY_CONTENT = {
 function writeEntries() {
     fs.mkdirSync(SHARED_SRC, { recursive: true })
 
-    // 动态生成 core-shared：全量重导出所有 @/app/api/* + @/utils/* 模块
+    // 通用冲突映射：{ "module:name" -> "module_name" }
+    const allConflicts = {}
+
+    // 1a. 扫描 app/api 目录（排除 addon.ts / module.ts）
     const apiDir = path.join(ROOT, 'src', 'app', 'api')
-    const apiExports = []
-    if (fs.existsSync(apiDir)) {
-        for (const f of fs.readdirSync(apiDir)) {
-            if (f.endsWith('.ts') && f !== 'addon.ts' && f !== 'module.ts') {
-                const mod = f.replace('.ts', '')
-                apiExports.push(`export * from '../../src/app/api/${mod}'`)
-            }
-        }
-    }
+    const apiFiles = scanDirExports(apiDir, { exclude: ['addon.ts', 'module.ts'] })
+    const { resolved: apiResolved, conflicts: apiConflicts } = resolveConflicts(apiFiles)
+    Object.assign(allConflicts, apiConflicts)
+    const apiExports = buildReExportStatements(apiResolved, '../../src/app/api')
 
+    // 1b. 扫描 utils 目录中被重导出的文件
     const utilsDir = path.join(ROOT, 'src', 'utils')
-    const utilsExports = []
-    if (fs.existsSync(utilsDir)) {
-        for (const f of fs.readdirSync(utilsDir)) {
-            // common, request, storage, config 单独处理，其余全量重导出
-            if (f.endsWith('.ts') && f !== 'common.ts' && f !== 'request.ts' && f !== 'storage.ts' && f !== 'config.ts' && f !== 'test.ts' && f !== 'directives.ts' && f !== 'tianditu.ts' && f !== 'qqmap.ts' && f !== 'addon-loader.ts' && f !== 'addon-lang.ts') {
-                const mod = f.replace('.ts', '')
-                utilsExports.push(`export * from '../../src/utils/${mod}'`)
-            }
-        }
-    }
+    const utilsExclude = ['common.ts', 'request.ts', 'storage.ts', 'config.ts', 'test.ts',
+        'directives.ts', 'addon-loader.ts', 'addon-lang.ts', 'tianditu.ts', 'qqmap.ts']
+    const utilsFiles = scanDirExports(utilsDir, { exclude: utilsExclude })
+    const { resolved: utilsResolved, conflicts: utilsConflicts } = resolveConflicts(utilsFiles)
+    Object.assign(allConflicts, utilsConflicts)
+    const utilsExports = buildReExportStatements(utilsResolved, '../../src/utils')
 
+    // 2. 生成 core-shared 入口
     ENTRY_CONTENT['core-shared'] = [
         "export * from '../../src/utils/common'",
         "import _request from '../../src/utils/request'",
@@ -68,7 +65,6 @@ function writeEntries() {
         "export { _config as config }",
         "export { _test as test }",
         "export default _request",
-        // qqmap 独立导出（与 tianditu 同名冲突，tianditu 由 addon 直接打包）
         "export * from '../../src/utils/qqmap'",
         ...utilsExports,
         ...apiExports,
@@ -80,6 +76,15 @@ function writeEntries() {
 
     for (const [key, content] of Object.entries(ENTRY_CONTENT)) {
         fs.writeFileSync(path.join(SHARED_SRC, `${key}.ts`), content, 'utf-8')
+    }
+
+    // 3. 保存冲突映射
+    if (Object.keys(allConflicts).length) {
+        fs.writeFileSync(path.join(ROOT, '.build', 'export-conflicts.json'), JSON.stringify(allConflicts, null, 2), 'utf-8')
+        console.log(`[build-shared] conflicts: ${Object.keys(allConflicts).length} entries`)
+    }
+    if (Object.keys(apiConflicts).length) {
+        fs.writeFileSync(path.join(ROOT, '.build', 'api-conflicts.json'), JSON.stringify(apiConflicts, null, 2), 'utf-8')
     }
 }
 

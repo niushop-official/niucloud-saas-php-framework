@@ -12,6 +12,7 @@
 const fs = require('fs')
 const path = require('path')
 const { ROOT, ADDON_DIR, scanAddonViews, scanAddonLang } = require('./addon-utils.cjs')
+const { scanRecursive, resolveConflicts } = require('./scan-exports.cjs')
 
 const key = process.argv[2] || process.env.ADDON_KEY
 if (!key) {
@@ -94,6 +95,24 @@ const langsBlock = Object.keys(langByLocale).length
     : 'export const langs: Record<string, Record<string, Record<string, string>>> = {}\n'
 
 const langCount = Object.values(langMap).reduce((n, files) => n + files.length, 0)
+
+// 插件内部导出冲突检测：扫描 ts/js，告警同名导出及入口保留名冲突
+const addonSrcDir = path.join(ADDON_DIR, key)
+const addonFiles = scanRecursive(addonSrcDir, { exclude: ['lang', 'views', 'components'], extensions: ['.ts', '.js'] })
+const { conflicts: addonConflicts, resolved: addonResolved } = resolveConflicts(addonFiles)
+const entryReserved = new Set(['addonKey', 'sharedVersion', 'views', 'components', 'langs', 'ROUTE', 'NO_LOGIN_ROUTES'])
+const routerFileKey = 'router_index'
+const reservedConflicts = addonResolved.filter(r =>
+    r.normal.some(n => entryReserved.has(n) && r.module !== routerFileKey)
+)
+if (reservedConflicts.length) {
+    console.warn(`[addon-entry] ${key}: exports conflicting with entry reserved names:`)
+    reservedConflicts.forEach(r => r.normal.filter(n => entryReserved.has(n)).forEach(n =>
+        console.warn(`  ${r.module} exports "${n}" which is reserved`)))
+}
+if (Object.keys(addonConflicts).length) {
+    console.warn(`[addon-entry] ${key}: ${Object.keys(addonConflicts).length} internal export conflict(s)`)
+}
 
 const content = `/* AUTO-GENERATED entry for addon "${key}" */
 ${langImports.join('\n')}

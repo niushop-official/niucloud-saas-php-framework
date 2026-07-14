@@ -1,0 +1,1 @@
+import{_ as o}from"./form-detail.vue_vue_type_script_setup_true_lang-160f544a.js";import"./index-eed023fb.js";import"vue";import"pinia";import"@element-plus/icons-vue";import"axios";import"/admin/assets/shared/admin-lang.js";import"vue-router";import"/admin/assets/shared/admin-lang.js";import"./diy_form-3a8d17c1.js";export{o as default};

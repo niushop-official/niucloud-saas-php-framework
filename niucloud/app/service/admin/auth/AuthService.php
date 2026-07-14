@@ -120,7 +120,7 @@ class AuthService extends BaseAdminService
         if (!$this->isCheckDomain()) return;
 
         $site_address = $authinfo['site_address'] ?? '';
-        $domain = request()->domain();
+        $domain = str_replace(['http://', 'https://'], '', request()->domain());
 
         // 如果是站点域名不进行验证
         $site_id = (new CoreSiteService())->getSiteIdByDomain($domain);
