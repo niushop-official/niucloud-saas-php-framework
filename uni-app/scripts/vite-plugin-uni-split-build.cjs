@@ -60,22 +60,11 @@ function createUniBuildPlugin() {
             }
             if (!pagesOverride) return patch
 
-            const bridgeAliases = []
-            for (const root of listAddonSubPackageRoots()) {
-                const rel = root.replace(/^addon\//, '')
-                const fromAbs = path.join(ROOT, 'src', root, 'pages')
-                const toAbs = path.join(BRIDGE_ROUTE_PREFIX, rel, 'pages')
-                if (!fs.existsSync(toAbs)) continue
-                bridgeAliases.push(
-                    { find: fromAbs, replacement: toAbs },
-                    { find: `@/addon/${rel}/pages`, replacement: toAbs },
-                    { find: `@/addon/${rel}/pages/`, replacement: toAbs + path.sep }
-                )
-            }
+            // addon 页面由 swap-addon-pages.cjs 物理替换到 src/addon/ 下，
+            // 不再通过 alias 重定向，避免与 @vitejs/plugin-vue 的子请求冲突
             patch.resolve = {
                 alias: [
                     ...(Array.isArray(config.resolve?.alias) ? config.resolve.alias : []),
-                    ...bridgeAliases,
                     { find: pagesJsonAbs, replacement: pagesOverride },
                     { find: '@/pages.json', replacement: pagesOverride },
                     { find: /src\/pages\.json$/, replacement: pagesOverride }
@@ -85,6 +74,7 @@ function createUniBuildPlugin() {
         },
         resolveId(source) {
             if (source.includes('*')) return null
+            if (source.includes('?vue&type=')) return null
             const norm = source.replace(/\\/g, '/')
 
             if (pagesOverride && (norm.endsWith('pages.json') || source === pagesJsonAbs)) {
@@ -94,11 +84,8 @@ function createUniBuildPlugin() {
             if (!isAddonPath(norm)) return null
             if (isAllowedAddonPath(norm)) return null
 
-            if (norm.includes('/pages/') && norm.includes('.vue')) {
-                const bridgePath = resolveBridgePageVue(norm)
-                if (bridgePath) return bridgePath
-                return null
-            }
+            // addon 页面：由 swap-addon-pages.cjs 物理替换，不在此处重定向
+            if (norm.includes('/pages/') && norm.includes('.vue')) return null
 
             if (isAddonPath(norm) && (norm.includes('.vue') || norm.endsWith('.vue'))) {
                 const matched = norm.match(/(?:@\/addon\/|\/src\/addon\/)(.+?)(?:\?.*)?$/i)

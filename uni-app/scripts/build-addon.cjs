@@ -8,7 +8,7 @@ const { spawnSync } = require('child_process')
 
 const path = require('path')
 
-const { ROOT } = require('./addon-utils.cjs')
+const { ROOT, listAddonKeys } = require('./addon-utils.cjs')
 
 const { stripAddonStyleImport } = require('./inject-addon-style-import.cjs')
 
@@ -169,14 +169,17 @@ spawnSync('node', [path.join(__dirname, 'patch-addon-uni-h5.cjs'), key], {
 })
 
 // 清理其他插件的 locale chunk（uni-app i18n 自动收集导致其他插件 locale 也被 Vite 打包）
+// 使用已知插件 key 精确匹配，避免误删 addon-page-lifecycle 等工具 chunk
 const _fs = require('fs')
 const _assetsDir = path.join(stagingDir, 'assets')
 if (_fs.existsSync(_assetsDir)) {
-    const _re = new RegExp(`^addon-(?!${key}-)[^-]+-`)
+    const _allKeys = listAddonKeys()
+    const _otherKeys = _allKeys.filter(k => k !== key)
     const _appRe = /^app-locale-/
     let _removed = 0
     for (const _name of _fs.readdirSync(_assetsDir)) {
-        if (_re.test(_name) || _appRe.test(_name)) {
+        const _isOtherAddonChunk = _otherKeys.some(k => _name.startsWith(`addon-${k}-`))
+        if (_isOtherAddonChunk || _appRe.test(_name)) {
             _fs.unlinkSync(path.join(_assetsDir, _name))
             _removed++
         }

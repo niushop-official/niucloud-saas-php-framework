@@ -1,1 +1,1 @@
-<view style="{{d}}"><view hidden="{{!c}}" class="diy-template-wrap"><diy-group wx:if="{{b}}" class="r" u-r="diyGroupRef" u-i="315391f0-0" bind:__l="__l" u-p="{{b}}" /></view></view>
+<view style="{{d}}"><view hidden="{{!c}}" class="diy-template-wrap"><diy-group wx:if="{{b}}" class="r" u-r="diyGroupRef" u-i="19c10a68-0" bind:__l="__l" u-p="{{b}}" /></view></view>

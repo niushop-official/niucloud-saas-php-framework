@@ -453,11 +453,14 @@ function buildDiyPreloadRules(packageIds, extraPagePaths = []) {
     return rules
 }
 
-/** pages.framework.json：为 app/components 注入占位页 */
+/** pages.framework.json：为 app/components 及 addon/{key}/components 注入占位页 */
 function ensureComponentSubpackagePlaceholderPagesSubPackages(subPackages) {
     if (!Array.isArray(subPackages)) return
+    const addonComponentRe = /^addon\/([^/]+)\/components$/
     for (const sub of subPackages) {
-        if (sub?.root !== 'app/components') continue
+        const root = String(sub?.root || '')
+        const isTarget = root === 'app/components' || addonComponentRe.test(root)
+        if (!isTarget) continue
         const pages = sub.pages || []
         const has = pages.some(
             (p) => (typeof p === 'string' ? p : p?.path) === MP_COMPONENT_SUBPACKAGE_PLACEHOLDER
@@ -473,14 +476,8 @@ function ensureComponentSubpackagePlaceholderPagesSubPackages(subPackages) {
     }
 }
 
-/** 编译产物：写入占位页四件套（扁平 path.wxml）并 patch app.json subPackages */
-function ensureComponentSubpackagePlaceholderMp(mpDir) {
-    const legacyDir = path.join(mpDir, 'app/components/_mp_placeholder')
-    if (fs.existsSync(legacyDir)) {
-        rmDir(legacyDir)
-    }
-
-    const pageBase = path.join(mpDir, 'app/components', MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)
+/** 写入一组占位页四件套到指定目录 */
+function writePlaceholderPage(pageBase) {
     fs.mkdirSync(path.dirname(pageBase), { recursive: true })
     fs.writeFileSync(`${pageBase}.js`, 'Page({})\n', 'utf-8')
     fs.writeFileSync(
@@ -490,18 +487,71 @@ function ensureComponentSubpackagePlaceholderMp(mpDir) {
     )
     fs.writeFileSync(`${pageBase}.wxml`, '<view></view>\n', 'utf-8')
     fs.writeFileSync(`${pageBase}.wxss`, '\n', 'utf-8')
+}
+
+/** 编译产物：写入占位页四件套（扁平 path.wxml）并 patch app.json subPackages */
+function ensureComponentSubpackagePlaceholderMp(mpDir) {
+    const legacyDir = path.join(mpDir, 'app/components/_mp_placeholder')
+    if (fs.existsSync(legacyDir)) {
+        rmDir(legacyDir)
+    }
+
+    // app/components 占位页
+    writePlaceholderPage(path.join(mpDir, 'app/components', MP_COMPONENT_SUBPACKAGE_PLACEHOLDER))
 
     const appPath = path.join(mpDir, 'app.json')
     if (!fs.existsSync(appPath)) return false
     const appJson = readAppJson(mpDir)
     const subs = getAppSubPackages(appJson)
-    const sub = subs.find((s) => s.root === 'app/components')
-    if (!sub) return false
-    if (!Array.isArray(sub.pages)) sub.pages = []
-    sub.pages = sub.pages.filter((p) => p !== '_mp_placeholder')
-    if (!sub.pages.includes(MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)) {
-        sub.pages.push(MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)
+
+    // 1) 处理 app/components
+    const appSub = subs.find((s) => s.root === 'app/components')
+    if (!appSub) return false
+    if (!Array.isArray(appSub.pages)) appSub.pages = []
+    appSub.pages = appSub.pages.filter((p) => p !== '_mp_placeholder')
+    if (!appSub.pages.includes(MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)) {
+        appSub.pages.push(MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)
     }
+
+    // 2) 处理 addon/{key}/components（无页面分包需注入占位页，否则 componentPlaceholder view 不会替换为真实组件）
+    const addonComponentRe = /^addon\/([^/]+)\/components$/
+    const patched = []
+    for (const sub of subs) {
+        const root = String(sub.root || '')
+        const match = root.match(addonComponentRe)
+        if (!match) continue
+        const addonKey = match[1]
+        if (!Array.isArray(sub.pages)) sub.pages = []
+        // 清理旧版扁平占位
+        sub.pages = sub.pages.filter((p) => p !== '_mp_placeholder')
+        if (!sub.pages.includes(MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)) {
+            const placeholderBase = path.join(mpDir, root, MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)
+            writePlaceholderPage(placeholderBase)
+            sub.pages.push(MP_COMPONENT_SUBPACKAGE_PLACEHOLDER)
+            patched.push(addonKey)
+        }
+    }
+    if (patched.length) {
+        console.log(`[mp-utils] addon component placeholder pages: ${patched.join(', ')}`)
+    }
+
+    // 3) 为 diy 微页面注入 preloadRule，确保 addon 组件分包提前加载
+    //    （否则 componentPlaceholder view 不会替换为真实组件，refs 访问 .properties 报错）
+    const addonComponentRoots = subs
+        .filter(s => addonComponentRe.test(String(s.root || '')))
+        .map(s => String(s.root))
+    if (addonComponentRoots.length) {
+        const preloadPackages = resolvePreloadPackageIds(
+            appJson,
+            ['app/components', ...addonComponentRoots]
+        )
+        if (preloadPackages.length) {
+            const rules = buildDiyPreloadRules(preloadPackages, [])
+            mergePreloadRules(appJson, rules)
+            console.log(`[mp-utils] diy preloadRule packages: ${preloadPackages.join(', ')}`)
+        }
+    }
+
     writeJson(appPath, appJson)
     return true
 }
@@ -591,8 +641,61 @@ function mergeCommonDir(targetMpDir, sourceCommonDir) {
     return count
 }
 
-function mergeNodeModulesDir(targetMpDir, sourceNodeModulesDir) {
-    return mergeOverlayDir(targetMpDir, sourceNodeModulesDir, 'node-modules')
+function mergeNodeModulesDir(targetMpDir, sourceNodeModulesDir, addonKey) {
+    const count = mergeOverlayDir(targetMpDir, sourceNodeModulesDir, 'node-modules')
+    // 框架 vendor.js 不含完整的 uview-plus Rf 配置 / props$XX / t$1 等导出。
+    // 从 addon vendor 提取变量定义（重命名避免与框架已有变量冲突）注入框架 vendor。
+    if (addonKey && count > 0) {
+        const frameworkVendor = path.join(targetMpDir, 'common', 'vendor.js')
+        const addonVendorPath = path.join(targetMpDir, 'mp-addons', addonKey, 'common', 'vendor.js')
+        if (fs.existsSync(frameworkVendor) && fs.existsSync(addonVendorPath)) {
+            let fw = fs.readFileSync(frameworkVendor, 'utf-8')
+            if (!fw.includes('exports.props$51') || !fw.includes('exports.t$1')) {
+                const addon = fs.readFileSync(addonVendorPath, 'utf-8')
+                // 提取顶层 {…} 对象定义（跳过嵌套对象）
+                function extract(code, name) {
+                    const pats = [',' + name + '={', '\n' + name + '={', name + '={']
+                    let idx = -1, len = 0
+                    for (const p of pats) { idx = code.indexOf(p); len = p.length; if (idx >= 0) break }
+                    if (idx < 0) return null
+                    let depth = 1
+                    for (let i = idx + len - 1 + 1; i < code.length; i++) {
+                        if (code[i] === '{') depth++
+                        if (code[i] === '}') { depth--; if (depth === 0) return code.slice(idx + 1, i + 1) }
+                    }
+                    return null
+                }
+                // 注入 Rf（uview-plus 配置），重命名避免与框架已有变量冲突
+                const rf = extract(addon, 'Rf')
+                const uvRf = rf ? ('var uvRf={'.repeat(1) + rf.slice(rf.indexOf('={') + 2)) : null
+                // 提取 props 对象
+                const propNames = ['Lx','Fx','_x','Ax','Tx','Bx','Ix','Ox','Ex','Nx','jx']
+                const propNums  = [51, 52, 41, 42, 43, 44, 45, 46, 48, 49, 50]
+                let code = '', exports = []
+                for (let i = 0; i < propNames.length; i++) {
+                    const raw = extract(addon, propNames[i])
+                    if (!raw) continue
+                    code += 'var ' + raw.replace(/\bRf\b/g, 'uvRf') + ';\n'
+                    exports.push('exports.props$' + propNums[i] + '=' + raw.split('=')[0])
+                }
+                // 提取 t$1（从 addon vendor 的 exports 中直接取）
+                const t1Match = addon.match(/exports\.t\$1=(.+?)(?:,exports\.|$)/)
+                if (t1Match) {
+                    code += 'var uvT1=' + t1Match[1] + ';\n'
+                    exports.push('exports.t$1=uvT1')
+                } else {
+                    code += 'exports.t$1=function(e){return null==e?"":String(e)};\n'
+                }
+                if (exports.length) {
+                    fw = fw.replace(/\nexports\.(?:props\$\d+|t\$1)[^\n]*/g, '')
+                    fw += '\n' + (uvRf ? uvRf + ';\n' : '') + code + exports.join(',') + ';\n'
+                    fs.writeFileSync(frameworkVendor, fw, 'utf-8')
+                    console.log(`[mp-utils] injected ${exports.length} uview-plus exports into vendor.js`)
+                }
+            }
+        }
+    }
+    return count
 }
 
 function readDiyBridgeComponentCount(bridgeDir) {

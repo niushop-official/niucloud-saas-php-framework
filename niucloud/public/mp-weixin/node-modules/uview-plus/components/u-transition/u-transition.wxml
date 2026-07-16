@@ -1,1 +1,1 @@
-<view wx:if="{{a}}" ref="u-transition" bindtap="{{b}}" class="{{['u-transition','data-v-66823e3c',c]}}" style="{{d}}" bindtouchmove="{{e}}"><slot /></view>
+<view wx:if="{{a}}" ref="u-transition" bindtap="{{b}}" class="{{['u-transition','data-v-6a21edd6',c]}}" style="{{d}}" bindtouchmove="{{e}}"><slot /></view>

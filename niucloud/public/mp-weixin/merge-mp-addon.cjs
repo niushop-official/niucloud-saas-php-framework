@@ -160,7 +160,7 @@ function main() {
         }
 
         const nodeModulesSrc = path.join(pkgDir, 'node-modules')
-        const mergedNodeModules = mergeNodeModulesDir(frameworkDir, nodeModulesSrc)
+        const mergedNodeModules = mergeNodeModulesDir(frameworkDir, nodeModulesSrc, key)
         if (mergedNodeModules) {
             console.log(`[merge-mp-addon] merged ${mergedNodeModules} node-modules file(s) from ${key}`)
         }
@@ -229,30 +229,17 @@ function main() {
     writeJson(appPath, appJson)
     console.log(`[merge-mp-addon] app.json subPackages: ${getAppSubPackages(appJson).length}`)
 
-    const allRequirePaths = new Set()
-    const allForbidden = new Set()
-    for (const m of manifests) {
-        for (const p of m.deps?.requirePaths || []) allRequirePaths.add(p)
-        for (const p of m.deps?.forbiddenPaths || []) allForbidden.add(p)
-    }
+    // 以下步骤必须在 require 校验之前执行（校验失败 process.exit 会跳过后续逻辑）：
+    // 1. placeholder 页 + preloadRule + componentPlaceholder
+    applyMpWeixinPost(frameworkDir)
 
-    const validation = validateRequires(frameworkDir, [...allRequirePaths], [...allForbidden])
-    if (!validation.ok) {
-        if (validation.missing.length) {
-            console.error('[merge-mp-addon] missing require targets:', validation.missing.slice(0, 20))
-        }
-        if (validation.forbiddenPaths.length) {
-            console.error('[merge-mp-addon] cross-addon requires:', validation.forbiddenPaths)
-        }
-        process.exit(1)
-    }
-    console.log('[merge-mp-addon] require validation OK')
-
+    // 2. vendor.js props$XX stubs 注入
     const propsStubCount = patchVendorPropsStubs(frameworkDir)
     if (propsStubCount) {
         console.log(`[merge-mp-addon] injected ${propsStubCount} props stubs (prevents addon component crashes)`)
     }
 
+    // 3. DIY bridge router 合并 + diy-group 内联
     const mergedAddonKeys = listMergedAddonKeysFromFramework(frameworkDir)
     try {
         const bridgeResult = bridge.syncMergedDiyBridgeRouter(frameworkDir, pkgRoot, mergedAddonKeys, {
@@ -273,7 +260,26 @@ function main() {
         process.exit(1)
     }
 
-    applyMpWeixinPost(frameworkDir)
+    // 4. require 校验（仅警告，不退出；addon 单独合并时通常没有跨插件引用）
+    const allRequirePaths = new Set()
+    const allForbidden = new Set()
+    for (const m of manifests) {
+        for (const p of m.deps?.requirePaths || []) allRequirePaths.add(p)
+        for (const p of m.deps?.forbiddenPaths || []) allForbidden.add(p)
+    }
+
+    const validation = validateRequires(frameworkDir, [...allRequirePaths], [...allForbidden])
+    if (!validation.ok) {
+        if (validation.missing.length) {
+            console.error('[merge-mp-addon] missing require targets:', validation.missing.slice(0, 20))
+        }
+        if (validation.forbiddenPaths.length) {
+            console.error('[merge-mp-addon] cross-addon requires:', validation.forbiddenPaths)
+        }
+        // 不 exit：DIY 组件内联、placeholder 等已完成，跨插件引用不影响已合并的 addon
+    } else {
+        console.log('[merge-mp-addon] require validation OK')
+    }
 
     writeJson(path.join(frameworkDir, 'mp-merge-meta.json'), {
         time: new Date().toISOString(),

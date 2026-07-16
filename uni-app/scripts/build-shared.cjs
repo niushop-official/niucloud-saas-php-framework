@@ -22,6 +22,7 @@ const ENTRY_CONTENT = {
         "export * from '../../src/utils/diy-decorate-bridge.ts'",
         "export { useDiy } from '../../src/hooks/useDiy.ts'",
         "export { useDiyGroup } from '../../src/hooks/useDiyGroup.ts'",
+        "export { getShareInfo, getDiyInfo, getTabbarList, getMemberFormRecord } from '../../src/app/api/diy.ts'",
         ''
     ].join('\n')
 }

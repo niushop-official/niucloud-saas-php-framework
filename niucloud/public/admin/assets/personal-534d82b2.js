@@ -1,0 +1,1 @@
+import{O as e}from"./index-43cf66e3.js";function r(){return e.get("auth/get")}function u(t){return e.put("auth/edit",t,{showSuccessMessage:!0})}export{r as g,u as s};

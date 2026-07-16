@@ -14,8 +14,14 @@ const DIY_INLINE_BLOCK_RE =
 
 const USE_DIY_CHUNK_RE = /^import[\s\S]*?function useDiy\(/
 
-function collectUseDiyExportNames(assetsDir, useDiyFileName) {
-    const names = new Set()
+/**
+ * 收集 useDiy chunk 中所有被消费者引用的导出名。
+ * 返回 Map<localName, sourceName>：
+ *   - localName:  消费者 import 时使用的名字（Rollup 短名，如 u、g）
+ *   - sourceName: 原始导出名（如 useDiy、getShareInfo）
+ */
+function collectUseDiyExportMap(assetsDir, useDiyFileName) {
+    const exportMap = new Map() // localName -> sourceName
     const escaped = useDiyFileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const re = new RegExp(
         `import\\s*\\{([^}]+)\\}\\s*from\\s*["']\\./${escaped}["']`,
@@ -27,20 +33,33 @@ function collectUseDiyExportNames(assetsDir, useDiyFileName) {
         let m
         while ((m = re.exec(code))) {
             const spec = m[1]
-            const asMatch = spec.match(/(\w+)\s+as\s+useDiy/)
-            if (asMatch) {
-                names.add(asMatch[1])
-            } else if (/\buseDiy\b/.test(spec)) {
-                names.add('useDiy')
+            for (const part of spec.split(',')) {
+                const trimmed = part.trim()
+                if (!trimmed) continue
+                const asMatch = trimmed.match(/^(\w+)\s+as\s+(\w+)$/)
+                if (asMatch) {
+                    // "{ localName as sourceName }" → export { sourceName as localName }
+                    exportMap.set(asMatch[1], asMatch[2])
+                } else {
+                    // "{ name }" → export { name as name }
+                    exportMap.set(trimmed, trimmed)
+                }
             }
         }
     }
-    if (names.size === 0) names.add('useDiy')
-    return [...names]
+    if (exportMap.size === 0) exportMap.set('useDiy', 'useDiy')
+    return exportMap
 }
 
-function buildUseDiyReExport(exportNames) {
-    const parts = exportNames.map((n) => (n === 'useDiy' ? 'useDiy' : `useDiy as ${n}`))
+function buildUseDiyReExport(exportMap) {
+    const parts = []
+    for (const [localName, sourceName] of exportMap) {
+        if (localName === sourceName) {
+            parts.push(sourceName)
+        } else {
+            parts.push(`${sourceName} as ${localName}`)
+        }
+    }
     return `export { ${parts.join(', ')} } from "${DIY_CORE_URL}";\n`
 }
 
@@ -52,8 +71,8 @@ function isUseDiyChunk(fileName, code) {
 
 function patchUseDiyChunk(code, fileName, assetsDir) {
     if (!isUseDiyChunk(fileName, code)) return null
-    const names = collectUseDiyExportNames(assetsDir, fileName)
-    return buildUseDiyReExport(names)
+    const exportMap = collectUseDiyExportMap(assetsDir, fileName)
+    return buildUseDiyReExport(exportMap)
 }
 
 function patchCommonDiyLeak(code) {
@@ -121,7 +140,8 @@ module.exports = {
     patchUseDiyChunk,
     patchAddonDir,
     buildUseDiyReExport,
-    collectUseDiyExportNames
+    collectUseDiyExportMap,
+    collectUseDiyExportNames: collectUseDiyExportMap
 }
 
 if (require.main === module) {

@@ -1,1 +1,0 @@
-import{O as o}from"./index-eed023fb.js";function r(t){return o.get("erp/stock/pages",t)}function e(t){return o.get(`erp/stock/info/${t}`)}function c(t){return o.post("erp/stock/stockIn",t)}function n(t){return o.post("erp/stock/stockOut",t)}export{r as a,n as b,e as g,c as s};

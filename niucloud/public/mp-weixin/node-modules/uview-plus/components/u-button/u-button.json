@@ -2,6 +2,6 @@
   "component": true,
   "usingComponents": {
     "u-loading-icon": "../u-loading-icon/u-loading-icon",
-    "up-icon": "../u-icon/u-icon"
+    "u-icon": "../u-icon/u-icon"
   }
 }

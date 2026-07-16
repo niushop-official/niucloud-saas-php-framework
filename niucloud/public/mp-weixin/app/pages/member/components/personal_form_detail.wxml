@@ -1,1 +1,1 @@
-<view style="{{d}}" class="my--var---top-m-- sidebar-margin overflow-hidden card-template py--12rpx- px--26rpx-"><view hidden="{{!c}}" class="diy-template-wrap"><diy-group wx:if="{{b}}" class="r" u-r="diyGroupRef" u-i="0217f138-0" bind:__l="__l" u-p="{{b}}" /></view></view>
+<view style="{{d}}" class="my--var---top-m-- sidebar-margin overflow-hidden card-template py--12rpx- px--26rpx-"><view hidden="{{!c}}" class="diy-template-wrap"><diy-group wx:if="{{b}}" class="r" u-r="diyGroupRef" u-i="fefb6008-0" bind:__l="__l" u-p="{{b}}" /></view></view>
