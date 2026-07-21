@@ -443,7 +443,7 @@ class UpgradeService extends BaseAdminService
         // 覆盖文件
         if (is_dir($code_dir . $version_no)) {
             // 忽略环境变量文件
-            $exclude_files = [ '.env.development', '.env.production', '.env', '.env.dev', '.env.product', 'favicon.ico', 'niucloud.ico', 'index.json' ];
+            $exclude_files = [ '.env.development', '.env.production', '.env', '.env.dev', '.env.product', 'favicon.ico', 'niucloud.ico' ];
             dir_copy($code_dir . $version_no, $to_dir, exclude_files: $exclude_files);
             if ($addon != AddonDict::FRAMEWORK_KEY) {
                 ( new CoreAddonInstallService($addon) )->installDir();
