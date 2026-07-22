@@ -2,25 +2,16 @@
 branches: {
   }
 fileChange:
-  /niucloud:
-    newFile: !uuid 'ded707a0d910beaf2cace73938114fda764d921d'
-    oldFile: !uuid 'a204812d048556209ae6ca9e77a585ca7ac73e17'
-  /niucloud/app:
-    newFile: !uuid 'd50bf9155852c6c37b6bc3d3e5cb885d05d4ffcd'
-    oldFile: !uuid '41b7522432392f346c4d51e9c9b2f34afac04b69'
-  /niucloud/app/service:
-    newFile: !uuid 'f1618451a03876e1107151a4b5b4399ed251f91b'
-    oldFile: !uuid '50af3dd12f73223a25bd2ed662bfbf4d8bbefad4'
-  /niucloud/app/service/admin:
-    newFile: !uuid 'ef1b4695b5c67a1a62c8d3c478763a416f33f66a'
-    oldFile: !uuid '1e3e31078119cde384f4c604d87a9b7ffbc77386'
-  /niucloud/app/service/admin/upgrade:
-    newFile: !uuid 'd5856981bad6f76666b93887a65a92d078d4b2d3'
-    oldFile: !uuid 'f7b5c85230b51aee5dec483e46fa9e86fb8f6c0c'
-  /niucloud/app/service/admin/upgrade/UpgradeService.php:
-    newFile: !uuid '529ef5e1911b03fa2b273aeb369770599f49833f'
-    oldFile: !uuid '3437ad333acffc0a5efa6fde108769f5b409d0ae'
-gitCommitId: !uuid '241b0c8d32bd8d1b0f7e829dac523b4a7444cd2f'
+  /.gitignore:
+    newFile: !uuid '7d1dd6dc7411b027ce178b9abe32ce554fe39a85'
+    oldFile: !uuid 'ee3e1a4785d8f7a51a7b3da08e2edb1b8c774f62'
+  /upgrade:
+    newFile: !uuid '724945023b96a824d4fc678cf3c42744d5fc6f66'
+    oldFile: null
+  /upgrade/README.md:
+    newFile: !uuid 'd29937d1fdb7eec9896864127d00008c93e62888'
+    oldFile: null
+gitCommitId: !uuid 'c3a2829114febb1499af734685a3577a62789106'
 renames: {
   }
-revisionId: 429
+revisionId: 430
