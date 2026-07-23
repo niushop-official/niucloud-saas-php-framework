@@ -2,16 +2,10 @@
 branches: {
   }
 fileChange:
-  /.gitignore:
-    newFile: !uuid '7d1dd6dc7411b027ce178b9abe32ce554fe39a85'
-    oldFile: !uuid 'ee3e1a4785d8f7a51a7b3da08e2edb1b8c774f62'
-  /upgrade:
-    newFile: !uuid '724945023b96a824d4fc678cf3c42744d5fc6f66'
-    oldFile: null
-  /upgrade/README.md:
-    newFile: !uuid 'd29937d1fdb7eec9896864127d00008c93e62888'
-    oldFile: null
-gitCommitId: !uuid 'c3a2829114febb1499af734685a3577a62789106'
+  /upgrade.md:
+    newFile: null
+    oldFile: !uuid 'eab6ccdde28c10415b68bab7cc3b1cba63482847'
+gitCommitId: !uuid '89b57da660471e342baa39a2605fdc3ac63b22b1'
 renames: {
   }
-revisionId: 430
+revisionId: 431
