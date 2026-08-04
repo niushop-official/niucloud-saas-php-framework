@@ -247,8 +247,12 @@ export async function initAddonManifests(keys?: string[]) {
             }
         }
         const installedAddonKeys = getInstalledKeysStore()
+        // 合并而非覆盖：保留模块初始化时由 DIY_COMPONENT_MAP 预登记的“内置插件” key。
+        // 运行期 index.json 拉取失败时（verified 为空），内置插件的装修组件仍可正常加载，
+        // 否则 installedAddonKeys 会被清空，导致所有插件装修组件（依赖 isAddonInstalled 判定）全部空白。
+        const merged = Array.from(new Set([...installedAddonKeys, ...verified]))
         installedAddonKeys.length = 0
-        installedAddonKeys.push(...verified)
+        installedAddonKeys.push(...merged)
         setProdReady(true)
     })()
 
@@ -258,6 +262,14 @@ export async function initAddonManifests(keys?: string[]) {
 
 export function getInstalledAddonKeys(): string[] {
     return getInstalledKeysStore()
+}
+
+/** 预登记一个已安装插件（如由静态装修组件表 DIY_COMPONENT_MAP 推导出内置插件 key）。
+ *  使装修组件无需依赖运行期 index.json 清单即可判定为已安装。 */
+export function markAddonInstalled(key: string) {
+    if (!key) return
+    const store = getInstalledKeysStore()
+    if (!store.includes(key)) store.push(key)
 }
 
 function unwrapLocalePack(pack: unknown): Record<string, string> {

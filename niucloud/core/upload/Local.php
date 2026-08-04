@@ -52,9 +52,25 @@ class Local extends BaseUpload
     public function fetch(string $url, ?string $key)
     {
         try {
+            // SSRF防护：仅允许 http/https 协议
+            $scheme = parse_url($url, PHP_URL_SCHEME);
+            if ($scheme === null || !in_array(strtolower($scheme), ['http', 'https'])) {
+                throw new UploadFileException('FETCH_URL_SCHEME_NOT_ALLOWED');
+            }
+            // 禁止解析到内网IP
+            $host = parse_url($url, PHP_URL_HOST);
+            if (!empty($host)) {
+                $resolvedIp = gethostbyname($host);
+                if ($resolvedIp !== $host && filter_var($resolvedIp, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+                    throw new UploadFileException('FETCH_URL_INTRANET_DENIED');
+                }
+            }
+
             mkdirs_or_notexist(dirname($key), 0777);
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
+            curl_setopt($ch, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
             $content = curl_exec($ch);
             curl_close($ch);
             // $content = @file_get_contents($url);//file_get_contents下载网络图片慢，更换为curl下载
@@ -112,9 +128,22 @@ class Local extends BaseUpload
      */
     public function base64(string $content, ?string $key = null)
     {
+        $decoded = base64_decode($content, true);
+        if ($decoded === false) {
+            throw new UploadFileException('BASE64_DECODE_FAILED');
+        }
+        // 校验解码后内容是否为真实图片，防止写入非图片恶意内容
+        $imageInfo = @getimagesizefromstring($decoded);
+        if ($imageInfo === false) {
+            throw new UploadFileException('BASE64_NOT_VALID_IMAGE');
+        }
+        // 限制 Base64 图片最大 10MB
+        if (strlen($decoded) > 10 * 1024 * 1024) {
+            throw new UploadFileException('BASE64_IMAGE_TOO_LARGE');
+        }
 
         mkdirs_or_notexist(dirname($key));
-        file_put_contents(url_to_path($key), base64_decode($content));
+        file_put_contents(url_to_path($key), $decoded);
         return true;
     }
 

@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-number-keyboard": "../u-number-keyboard/u-number-keyboard",
+    "u-car-keyboard": "../u-car-keyboard/u-car-keyboard",
+    "u-popup": "../u-popup/u-popup"
+  }
+}

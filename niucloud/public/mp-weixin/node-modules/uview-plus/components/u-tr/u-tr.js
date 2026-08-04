@@ -1,0 +1,1 @@
+"use strict";const n=require("../../../../common/vendor.js"),e={name:"u-tr",mixins:[n.mpMixin,n.mixin,n.props$91],data:()=>({})};const r=n._export_sfc(e,[["render",function(n,e,r,t,o,c){return{}}],["__scopeId","data-v-1f63f82c"]]);wx.createComponent(r);

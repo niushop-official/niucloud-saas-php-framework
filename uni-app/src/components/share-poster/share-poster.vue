@@ -205,15 +205,18 @@ const savePoster = () => {
                     fail: (err) => {
                         if (err.errno == 104) {
                             let msg = '用户未授权隐私权限，将图像保存到相册失败';
-                            uni.showToast({ title: msg, icon: 'none' })
+                            console.log(msg)
+                            // uni.showToast({ title: msg, icon: 'none' })
                         } else if (err.errMsg == "saveImageToPhotosAlbum:fail auth deny" ||
                             err.errMsg == "saveImageToPhotosAlbum:fail:auth denied") {
                             show.value = true;
                         } else if (err.errMsg == "saveImageToPhotosAlbum:fail cancel") {
                             let msg = '用户取消将图片保存到相册';
-                            uni.showToast({ title: msg, icon: 'none' })
+                            console.log(msg)
+                            // uni.showToast({ title: msg, icon: 'none' })
                         } else {
-                            uni.showToast({ title: err.errMsg, icon: 'none' })
+                            // uni.showToast({ title: err.errMsg, icon: 'none' })
+                            console.log(err.errMsg)
                         }
                     }
                 });

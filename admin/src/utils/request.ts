@@ -90,7 +90,7 @@ class Request {
             },
             (err: any) => {
                 this.handleNetworkError(err)
-                return Promise.reject(new ErrorResponse(0, err.message, err.response))
+                return Promise.reject(new ErrorResponse(0, err.message, err.response || { status: 500, message: err.message }))
             }
         )
     }
@@ -194,7 +194,7 @@ class Request {
             const baseURL = isUrl(err.config.baseURL) ? err.config.baseURL : `${location.origin}${err.config.baseURL}`
             errMessage = baseURL + t('axios.baseUrlError')
         }
-        errMessage && this.showElMessage({ dangerouslyUseHTMLString: true, duration: 5000, message: errMessage, type: 'error' })
+        err.config.showErrorMessage !== false && errMessage && this.showElMessage({ dangerouslyUseHTMLString: true, duration: 5000, message: errMessage, type: 'error' })
     }
 
     private handleAuthError(code: number) {

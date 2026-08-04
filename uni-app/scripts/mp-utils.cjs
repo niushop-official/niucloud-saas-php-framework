@@ -815,27 +815,125 @@ const FRAMEWORK_PATH_PREFIXES = [
     'node-modules/',
     'app/api/',
     'app/stores/',
-    'hooks/',
     'locale/',
     'stores/',
     'utils/'
 ]
 
+/**
+ * 需要做「导出并集」合并的框架共享业务模块。框架构建会把仅插件才用的导出
+ * 摇掉(如 system.getWeappTemplateId)，导致合并后插件报 is not a function。
+ * 这些目录的框架副本与插件副本需做并集，补回 addon-only 导出。
+ * common/node-modules/locale 是框架核心(vendor/语言包)，插件副本不应覆盖，保持跳过。
+ */
+const FRAMEWORK_UNION_MERGE_PREFIXES = ['app/api/', 'app/stores/', 'stores/', 'utils/']
+
 function isFrameworkDep(relPath) {
     return FRAMEWORK_PATH_PREFIXES.some((p) => relPath === p || relPath.startsWith(p))
+}
+
+/** 框架依赖中、需要按「导出并集」合并(而非直接跳过)的业务模块 */
+function isUnionMergeDep(relPath) {
+    return FRAMEWORK_UNION_MERGE_PREFIXES.some((p) => relPath === p || relPath.startsWith(p))
+}
+
+/** 收集 CommonJS 模块的顶层导出名（exports.NAME = ...） */
+const CJT_EXPORT_RE = /exports\.([A-Za-z_$][\w$]*)\s*=/g
+function collectCjsExportNames(code) {
+    const names = new Set()
+    let m
+    CJT_EXPORT_RE.lastIndex = 0
+    while ((m = CJT_EXPORT_RE.exec(code))) names.add(m[1])
+    return names
+}
+
+/**
+ * 框架共享业务模块的导出并集合并（方案 B）。
+ * 框架构建会摇掉「仅插件才用」的导出(如 system.getWeappTemplateId)，合并后插件报
+ * is not a function。这里不跳过插件副本，而是把框架当前副本与插件副本做导出并集。
+ *
+ * 实现：两份副本各自存为「内容哈希桩文件」，生成一个 require 两者的包装模块，
+ * 导出两者并集(插件副本同名导出优先，但实现通常一致)。该方式对「多插件依次合并」
+ * 也递归正确——再次合并时上一次的包装模块会作为框架副本继续并集。
+ *
+ * 仅当插件副本带来框架副本没有的导出时才改写；否则保持框架原样。
+ *
+ * @returns {string} 合并后的模块源码
+ */
+function mergeFrameworkDepExportUnion(frameworkFile, addonFile) {
+    const fw = fs.readFileSync(frameworkFile, 'utf-8')
+    const ad = fs.readFileSync(addonFile, 'utf-8')
+    const fNames = collectCjsExportNames(fw)
+    const aNames = collectCjsExportNames(ad)
+    // 插件副本的所有导出框架都已具备：无需并集，保持框架原样
+    if ([...aNames].every((n) => fNames.has(n))) return fw
+
+    const dir = path.dirname(frameworkFile)
+    const base = path.basename(frameworkFile) // e.g. system.js
+    const fwHash = crypto.createHash('md5').update(fw).digest('hex').slice(0, 10)
+    const adHash = crypto.createHash('md5').update(ad).digest('hex').slice(0, 10)
+    const fwStub = path.join(dir, `${base}.__fw.${fwHash}.js`)
+    const adStub = path.join(dir, `${base}.__ad.${adHash}.js`)
+    fs.writeFileSync(fwStub, fw, 'utf-8')
+    fs.writeFileSync(adStub, ad, 'utf-8')
+
+    // 包装模块：同时加载框架副本与插件副本，导出两者并集
+    const wrapper =
+        '"use strict";\n' +
+        `var __fw = require('./${base}.__fw.${fwHash}.js');\n` +
+        `var __ad = require('./${base}.__ad.${adHash}.js');\n` +
+        'var __union = Object.assign({}, __fw, __ad);\n' +
+        'for (var __k in __union) { exports[__k] = __union[__k]; }\n'
+    return wrapper
 }
 
 function isUnderMpRoots(relPath, roots) {
     return roots.some((root) => relPath === root || relPath.startsWith(`${root}/`))
 }
 
-/** 将 mp 根目录下的相对路径文件复制到目标目录（保留相对结构），跳过框架级依赖 */
-function copyMpRelativeFiles(srcMpDir, destMpDir, relPaths, skipUnderRoots = []) {
+/**
+ * 将 mp 根目录下的相对路径文件复制到目标目录（保留相对结构），跳过框架级依赖。
+ *
+ * unionMerge（默认 true，用于「合并」阶段）：
+ *   - 业务共享模块(app/api、stores、utils)不跳过，而是把目标(框架)当前副本与源
+ *     (插件)副本做「导出并集」，补回仅插件才用的导出(如 system.getWeappTemplateId)。
+ *   - 其余框架依赖(common/node-modules/locale)仍跳过。
+ *
+ * unionMerge=false（用于「构建插件包」阶段）：
+ *   - 业务共享模块直接复制进插件包(作为后续合并并集的源，含插件专用导出)；
+ *   - 其余框架依赖仍跳过。
+ */
+function copyMpRelativeFiles(srcMpDir, destMpDir, relPaths, skipUnderRoots = [], unionMerge = true) {
     let count = 0
     let frameworkSkipped = 0
+    let unionMerged = 0
+    let unionCopied = 0
     for (const rel of relPaths) {
         if (skipUnderRoots.length && isUnderMpRoots(rel, skipUnderRoots)) continue
-        if (isFrameworkDep(rel)) { frameworkSkipped++; continue }
+        if (isFrameworkDep(rel)) {
+            // 框架级依赖默认跳过(框架已提供)；但业务共享模块(app/api、stores、utils)
+            // 需保留插件专用导出，不能跳过(方案 B)。
+            const src = path.join(srcMpDir, rel)
+            if (!fs.existsSync(src) || !isUnionMergeDep(rel)) { frameworkSkipped++; continue }
+            const dest = path.join(destMpDir, rel)
+            fs.mkdirSync(path.dirname(dest), { recursive: true })
+            if (unionMerge) {
+                if (!fs.existsSync(dest)) {
+                    // 框架未产出该文件(罕见)：直接采用插件副本
+                    fs.copyFileSync(src, dest)
+                } else {
+                    // 框架当前副本与插件副本做导出并集，补回 addon-only 导出
+                    fs.writeFileSync(dest, mergeFrameworkDepExportUnion(dest, src), 'utf-8')
+                }
+                unionMerged++
+            } else {
+                // 构建插件包：直接复制业务共享模块(含插件专用导出)，供合并时做并集
+                fs.copyFileSync(src, dest)
+                unionCopied++
+            }
+            count++
+            continue
+        }
         const src = path.join(srcMpDir, rel)
         if (!fs.existsSync(src)) continue
         const dest = path.join(destMpDir, rel)
@@ -844,6 +942,8 @@ function copyMpRelativeFiles(srcMpDir, destMpDir, relPaths, skipUnderRoots = [])
         count++
     }
     if (frameworkSkipped) console.log(`[mp-utils] skipped ${frameworkSkipped} framework deps (already in framework)`)
+    if (unionMerged) console.log(`[mp-utils] union-merged ${unionMerged} framework dep(s) (addon-only exports retained)`)
+    if (unionCopied) console.log(`[mp-utils] copied ${unionCopied} business module(s) into addon package (union source)`)
     return count
 }
 

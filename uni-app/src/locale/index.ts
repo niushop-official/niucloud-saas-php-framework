@@ -13,7 +13,14 @@ const t = (message: string) => {
     const file = language.getFileKey(route)
     const key = `${ file.fileKey }.${ message }`
     if (i18n.global.t(message) != message) return i18n.global.t(message)
-    return i18n.global.t(key) != key ? i18n.global.t(key) : ''
+    if (i18n.global.t(key) != key) return i18n.global.t(key)
+
+    // 命名空间未命中：按需加载当前插件页语言包（兜底，避免整块命名空间漏加载导致空白）
+    if (route.startsWith('/addon/')) {
+        language.loadLocaleMessages(route.replace(/^\//, ''), uni.getLocale())
+    }
+    // 缺词时返回 key 本身，便于排查（而非静默空白）
+    return message
 }
 
 export { language, t }

@@ -1,0 +1,1 @@
+"use strict";const n=require("../../../../common/vendor.js"),e={name:"u-tabs-item",mixins:[n.mpMixin,n.mixin,n.props$84],data:()=>({})};const t=n._export_sfc(e,[["render",function(n,e,t,r,i,o){return{}}]]);wx.createComponent(t);

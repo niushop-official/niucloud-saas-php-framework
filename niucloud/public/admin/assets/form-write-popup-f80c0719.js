@@ -1,0 +1,1 @@
+import{_ as e}from"./form-write-popup.vue_vue_type_style_index_0_lang-42d2acc0.js";const o=Object.freeze(Object.defineProperty({__proto__:null,default:e},Symbol.toStringTag,{value:"Module"}));export{o as _};

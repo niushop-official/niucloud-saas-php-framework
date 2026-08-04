@@ -6,6 +6,7 @@
 export {
     isSplitBuildEnabled,
     initSplitBuildRuntime,
+    resolveAddonBridgeUrl,
     registerUniversalAddonRoutes,
     loadAddonPage,
     loadAddonDiyComponent,

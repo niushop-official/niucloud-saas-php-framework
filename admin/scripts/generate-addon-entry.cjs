@@ -114,7 +114,14 @@ if (Object.keys(addonConflicts).length) {
     console.warn(`[addon-entry] ${key}: ${Object.keys(addonConflicts).length} internal export conflict(s)`)
 }
 
+// 生成插件专用 Tailwind 入口 CSS：插件以 lib 模式独立打包，主后台 core 构建不会生成
+// 插件特有的 Tailwind 工具类，因此在此让插件构建自己产出（随 style.css 运行时注入）。
+// 仅含 utilities（preflight 已在 tailwind.addon.config.cjs 关闭），避免污染主后台全局样式。
+const addonCssPath = path.join(outDir, 'addon.css')
+fs.writeFileSync(addonCssPath, '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n', 'utf-8')
+
 const content = `/* AUTO-GENERATED entry for addon "${key}" */
+import './addon.css'
 ${langImports.join('\n')}
 
 export const addonKey = '${key}'

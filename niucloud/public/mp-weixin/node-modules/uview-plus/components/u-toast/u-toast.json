@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-loading-icon": "../u-loading-icon/u-loading-icon",
+    "u-icon": "../u-icon/u-icon",
+    "u-gap": "../u-gap/u-gap",
+    "u-overlay": "../u-overlay/u-overlay"
+  }
+}

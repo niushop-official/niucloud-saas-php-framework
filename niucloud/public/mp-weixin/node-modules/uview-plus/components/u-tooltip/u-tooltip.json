@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-overlay": "../u-overlay/u-overlay",
+    "u-line": "../u-line/u-line",
+    "u-transition": "../u-transition/u-transition"
+  }
+}

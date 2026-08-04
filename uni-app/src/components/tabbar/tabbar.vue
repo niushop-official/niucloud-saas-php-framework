@@ -1,11 +1,11 @@
 <template>
     <template v-if="tabbar && Object.keys(tabbar).length">
-        <u-tabbar :value="value" zIndex="9999" :fixed="true" :placeholder="true" :safeAreaInsetBottom="false" :inactive-color="tabbar.value.textColor" :active-color="tabbar.value.textHoverColor" :border="props.border" class="custom-tabbar">
+        <u-tabbar :value="normalizedValue" zIndex="9999" :fixed="true" :placeholder="true" :safeAreaInsetBottom="false" :inactive-color="tabbar.value.textColor" :active-color="tabbar.value.textHoverColor" :border="props.border" class="custom-tabbar">
             <view class="safe-area flex bg-white" :style="{'background-color': tabbar.value.backgroundColor}">
                 <template v-for="item in tabbar.value.list">
-                    <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :text="item.text" :icon="img(value == item.link.url ? item.iconSelectPath : item.iconPath)" :name="item.link.url" v-if="tabbar.value.type == 1" @click="itemBtn(item.link.url)"></u-tabbar-item>
-                    <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :icon="img(value == item.link.url ? item.iconSelectPath : item.iconPath)" :name="item.link.url" v-if="tabbar.value.type == 2" @click="itemBtn(item.link.url)"></u-tabbar-item>
-                    <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :text="item.text" :name="item.link.url" v-if="tabbar.value.type == 3" @click="itemBtn(item.link.url)"></u-tabbar-item>
+                    <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :text="item.text" :icon="img(normalizedValue == normalizeRoute(item.link.url) ? item.iconSelectPath : item.iconPath)" :name="normalizeRoute(item.link.url)" v-if="tabbar.value.type == 1" @click="itemBtn(item.link.url)"></u-tabbar-item>
+                    <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :icon="img(normalizedValue == normalizeRoute(item.link.url) ? item.iconSelectPath : item.iconPath)" :name="normalizeRoute(item.link.url)" v-if="tabbar.value.type == 2" @click="itemBtn(item.link.url)"></u-tabbar-item>
+                    <u-tabbar-item class="py-[5rpx]" :custom-style="{'background-color': tabbar.value.backgroundColor}" :text="item.text" :name="normalizeRoute(item.link.url)" v-if="tabbar.value.type == 3" @click="itemBtn(item.link.url)"></u-tabbar-item>
                 </template>
             </view>
         </u-tabbar>
@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import { reactive, computed, watch, nextTick, getCurrentInstance } from 'vue'
 import { redirect, currRoute, currShareRoute, img } from '@/utils/common'
+import { getActiveAddonPageRoute } from '@/utils/addon-page-route'
 import useConfigStore from '@/stores/config'
 import { cloneDeep } from 'lodash-es'
 
@@ -153,6 +154,10 @@ watch(
 )
 
 const value = computed(() => {
+    // 桥接进来的插件页：真实栈路由是 app/pages/addon-universal/index，无法与 tabbar.link.url 匹配，
+    // 需使用 addon 桥接登记的逻辑路由（/addon/xxx/pages/yyy），否则当前项无法选中、图标始终用未选中态
+    const activeRoute = getActiveAddonPageRoute()
+    if (activeRoute) return activeRoute
     let query: any = currShareRoute().params;
     let str = [];
     for (let key in query) {
@@ -160,6 +165,20 @@ const value = computed(() => {
     }
     return '/' + currRoute() + (str.length > 0 ? '?' + str.join('&') : '')
 })
+
+// 归一化路由用于匹配：去前导斜杠、去 query、去末尾多余的 /index（装修配置可能用短路径 /addon/xxx/pages/index）
+const normalizeRoute = (r: string): string => {
+    if (!r) return ''
+    let s = r.split('?')[0]
+    s = s.replace(/\/+/g, '/')
+    if (s.startsWith('/')) s = s.slice(1)
+    if (s.endsWith('/')) s = s.slice(0, -1)
+    while (s.endsWith('/index')) s = s.slice(0, -('/index'.length))
+    return s
+}
+
+// 用于高亮/图标判断的归一化当前路由
+const normalizedValue = computed(() => normalizeRoute(value.value))
 
 const itemBtn = (url: any) => {
     if (url.indexOf('http') != -1 || url.indexOf('http') != -1) {

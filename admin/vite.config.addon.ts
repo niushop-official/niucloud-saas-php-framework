@@ -35,6 +35,16 @@ export default defineConfig({
         'import.meta.env.VITE_REQUEST_HEADER_SITEID_KEY': JSON.stringify('site-id'),
         'import.meta.env.VITE_DETAULT_TITLE': JSON.stringify('')
     },
+    css: {
+        // 插件独立打包时，让 Tailwind 扫描插件源码并生成用到的工具类，
+        // 随 style.css 一起运行时注入，避免主后台未生成插件特有的 Tailwind 类导致样式丢失。
+        postcss: {
+            plugins: [
+                require('tailwindcss')(require('./tailwind.addon.config.cjs')),
+                require('autoprefixer')()
+            ]
+        }
+    },
     plugins: [
         // 修复：addon 中 import X from '@/utils/storage' / '@/utils/config' 的 default import
         // 会被错误地 external 到 core-shared.js 的 default 导出（即 request 实例）。
@@ -114,7 +124,7 @@ export default defineConfig({
                     // 移除逗号分隔的全局选择器中的 body/html（如 :root,body{...}）
                     rawCss = rawCss.replace(/,\s*(?:body|html)\s*(?=\{)/g, '/* removed-global */')
                     const css = JSON.stringify(rawCss)
-                    entry.code = `(function(){var s=document.createElement('style');s.textContent=${css};s.setAttribute('data-addon-style','${addonKey}');document.head.insertBefore(s,document.head.firstChild)})();\n${entry.code}`
+                    entry.code = `(function(){var s=document.createElement('style');s.textContent=${css};s.setAttribute('data-addon-style','${addonKey}');document.head.appendChild(s)})();\n${entry.code}`
                     delete bundle['style.css']
                 }
             }

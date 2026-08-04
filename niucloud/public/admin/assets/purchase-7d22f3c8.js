@@ -1,0 +1,1 @@
+import{O as e}from"./index-e730ce9b.js";function a(r){return e.get("erp/purchase/order/list",r)}function u(r){return e.get(`erp/purchase/order/detail/${r}`)}function c(r){return e.put(`erp/purchase/order/approve/${r}`)}function s(r){return e.put(`erp/purchase/order/cancel/${r}`)}function p(r){return e.post("erp/purchase/order/instock",r)}export{c as a,a as b,s as c,u as g,p};

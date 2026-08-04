@@ -20,7 +20,8 @@ const {
     stripOrphanAddonSubpackages,
     installMergeScriptToFramework,
     applyFrameworkAppJsonSubPackages,
-    loadFrameworkNonAddonSubPackages
+    loadFrameworkNonAddonSubPackages,
+    rmDir
 } = require('./mp-utils.cjs')
 const { patchDiyGroupInlineComponents } = require('./mp-diy-group-inline.cjs')
 const {
@@ -45,6 +46,112 @@ function swapPagesJson(useFramework, rawBackup) {
     }
 }
 
+const UV_BARREL_PAGE_PATH = 'app/pages/_uv_barrel/index'
+
+/**
+ * 构建期专用：在主包插入一个临时页面，模板里用上全部 uview-plus 组件，
+ * 强制 uni 把组件文件(node-modules/uview-plus/components/*)与各自 props(NN)
+ * 全部打进框架 common/vendor.js；构建完成后该页面会从 app.json 与产物中移除。
+ * 这样框架自带完整 uview-plus，插件合并时无需再处理 uview-plus 组件。
+ */
+// 判断某个 pages 条目是否为本脚本注入的临时 barrel 页面（兼容历史遗留的不同路径/格式）
+function isBarrelPageEntry(p) {
+    const entryPath = typeof p === 'string' ? p : p && p.path
+    return typeof entryPath === 'string' && entryPath.includes('_uv_barrel')
+}
+
+function injectUviewBarrelPage() {
+    if (process.env.SKIP_UV_BARREL) {
+        console.log('[build-mp-framework] SKIP_UV_BARREL set, skip barrel page')
+        return false
+    }
+    const compRoot = path.join(ROOT, 'node_modules', 'uview-plus', 'components')
+    if (!fs.existsSync(compRoot)) {
+        console.warn('[build-mp-framework] uview-plus not found, skip barrel page')
+        return false
+    }
+    const names = fs
+        .readdirSync(compRoot)
+        .filter((n) => {
+            const d = path.join(compRoot, n)
+            if (!fs.statSync(d).isDirectory()) return false
+            if (n.includes('--')) return false // u--xxx 为内部别名标签，双连字符在模板中无法解析
+            return fs.existsSync(path.join(d, `${n}.vue`))
+        })
+        .sort()
+    if (!names.length) return false
+
+    const tags = names.map((n) => `    <${n} />`).join('\n')
+    const pageVue =
+        `<template>\n` +
+        `  <view class="uv-barrel">\n` +
+        `${tags}\n` +
+        `  </view>\n` +
+        `</template>\n\n` +
+        `<script setup>\n` +
+        `// 构建期专用：强制打包全部 uview-plus 组件，产物中会被移除\n` +
+        `</script>\n`
+    const srcDir = path.join(ROOT, 'src', 'app', 'pages', '_uv_barrel')
+    fs.mkdirSync(srcDir, { recursive: true })
+    fs.writeFileSync(path.join(srcDir, 'index.vue'), pageVue, 'utf-8')
+
+    const fw = readJson(PAGES_FRAMEWORK)
+    if (!Array.isArray(fw.pages)) fw.pages = []
+    // 先清除任何历史残留的 barrel 条目（可能格式/路径不同），避免重复或非法 page
+    fw.pages = fw.pages.filter((p) => !isBarrelPageEntry(p))
+    fw.pages.push({ path: UV_BARREL_PAGE_PATH, style: {} })
+    writeJson(PAGES_FRAMEWORK, fw)
+    console.log(`[build-mp-framework] injected uview barrel page (${names.length} components)`)
+    return true
+}
+
+/** 从 mp-core/app.json 移除临时页面入口并删除其编译产物文件 */
+function stripUviewBarrelFromCore() {
+    const appPath = path.join(MP_CORE_DIR, 'app.json')
+    if (fs.existsSync(appPath)) {
+        const appJson = readJson(appPath)
+        if (Array.isArray(appJson.pages)) {
+            const len = appJson.pages.length
+            appJson.pages = appJson.pages.filter((p) => !isBarrelPageEntry(p))
+            if (appJson.pages.length !== len) {
+                writeJson(appPath, appJson)
+                console.log('[build-mp-framework] removed barrel page entry from app.json')
+            }
+        }
+    }
+    const outDirs = [
+        path.join(MP_CORE_DIR, 'app', 'pages', '_uv_barrel'),
+        path.join(MP_CORE_DIR, 'pages', '_uv_barrel'),
+        path.join(MP_OUT_BUILD, 'app', 'pages', '_uv_barrel'),
+        path.join(MP_OUT_BUILD, 'pages', '_uv_barrel')
+    ]
+    outDirs.forEach((outDir) => {
+        if (fs.existsSync(outDir)) {
+            rmDir(outDir)
+            console.log('[build-mp-framework] removed barrel page files from mp-core:', outDir)
+        }
+    })
+}
+
+/** 清理构建期临时文件：src 临时页面 + pages.framework.json 中的注入项 */
+function removeUviewBarrelTemp() {
+    const srcDirs = [
+        path.join(ROOT, 'src', 'app', 'pages', '_uv_barrel'),
+        path.join(ROOT, 'src', 'pages', '_uv_barrel')
+    ]
+    srcDirs.forEach((srcDir) => {
+        if (fs.existsSync(srcDir)) rmDir(srcDir)
+    })
+    if (fs.existsSync(PAGES_FRAMEWORK)) {
+        const fw = readJson(PAGES_FRAMEWORK)
+        if (Array.isArray(fw.pages)) {
+            const len = fw.pages.length
+            fw.pages = fw.pages.filter((p) => !isBarrelPageEntry(p))
+            if (fw.pages.length !== len) writeJson(PAGES_FRAMEWORK, fw)
+        }
+    }
+}
+
 function main() {
     const buildId = makeBuildId('mp-framework')
 
@@ -53,6 +160,8 @@ function main() {
     const { generateDiyDynamicBridgeMp } = require('./generate-diy-dynamic-bridge-mp.cjs')
     generateDiyDynamicBridgeMp({ target: 'app' })
     generateDiyDynamicBridgeMp({ target: 'router' })
+
+    injectUviewBarrelPage()
 
     const pagesBackup = swapPagesJson(true)
     let code = 0
@@ -78,6 +187,7 @@ function main() {
             commonManifest: collectCommonManifest(MP_OUT_BUILD)
         })
         applyFrameworkAppJsonSubPackages(MP_CORE_DIR)
+        stripUviewBarrelFromCore()
         writeJson(
             path.join(MP_CORE_DIR, 'mp-framework-subpackages.json'),
             loadFrameworkNonAddonSubPackages()
@@ -110,6 +220,7 @@ function main() {
         buildOk = true
     } finally {
         swapPagesJson(false, pagesBackup)
+        removeUviewBarrelTemp()
         if (buildOk) {
             require('./cleanup-diy-dynamic-bridge-src.cjs').cleanupAddonDiyBridgeSrc()
         }

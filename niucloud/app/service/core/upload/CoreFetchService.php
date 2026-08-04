@@ -36,9 +36,44 @@ class CoreFetchService extends CoreFileService
      * @return array
      * @throws Exception
      */
+    /**
+     * 校验远程图片URL合法性，防止SSRF攻击
+     * @param string $url
+     * @throws UploadFileException
+     */
+    private function validateImageUrl(string $url): void
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if ($scheme === null || !in_array(strtolower($scheme), ['http', 'https'])) {
+            throw new UploadFileException('INVALID_IMAGE_URL_SCHEME');
+        }
+        $host = parse_url($url, PHP_URL_HOST);
+        if (empty($host)) {
+            throw new UploadFileException('INVALID_IMAGE_URL_HOST');
+        }
+        // 禁止内网地址
+        $forbiddenHosts = [
+            'localhost', '127.0.0.1', '0.0.0.0',
+            '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16',
+            '169.254.0.0/16', '100.64.0.0/10', '::1', '0:0:0:0:0:0:0:1'
+        ];
+        // 禁止解析到内网IP的域名
+        $resolvedIp = gethostbyname($host);
+        if ($resolvedIp === $host) {
+            // DNS解析失败，检查host是否为IP
+            if (filter_var($host, FILTER_VALIDATE_IP)) {
+                $resolvedIp = $host;
+            }
+        }
+        if (filter_var($resolvedIp, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            throw new UploadFileException('INVALID_IMAGE_URL_INTRANET');
+        }
+    }
+
     public function image(string $url, int $site_id, string $file_dir, $storage_type = '')
     {
         if(empty($url)) throw new UploadFileException('OSS_FILE_URL_NOT_EXIST');
+        $this->validateImageUrl($url);
         $this->upload_driver = $this->driver($site_id, $storage_type);
         [$ext, $link] = explode('.', strrev($url));
         $ext = empty($ext) ? strrev($ext) : 'jpg';

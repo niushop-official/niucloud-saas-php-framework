@@ -100,8 +100,11 @@ class Qiniu extends BaseUpload
         // 初始化 UploadManager 对象并进行文件的上传。
         $upload_mgr = new UploadManager();
         //将 base64 编码的图片数据解码
-        $base64_file = base64_decode($base64_data);
-        if (!$base64_file) throw new UploadFileException('FILE_ERROR');
+        $base64_file = base64_decode($base64_data, true);
+        if ($base64_file === false) throw new UploadFileException('BASE64_DECODE_FAILED');
+        // 校验解码后内容是否为真实图片
+        $imageInfo = @getimagesizefromstring($base64_file);
+        if ($imageInfo === false) throw new UploadFileException('BASE64_NOT_VALID_IMAGE');
         // 初始化 UpLoadManager 对象并进行文件的上传
         list($ret, $err) = $upload_mgr->put($up_token, $key, $base64_file);
         if ($err !== null) throw new UploadFileException($err->message);

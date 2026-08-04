@@ -17,6 +17,8 @@ const DIY_GROUP_INLINE_BLOCK_RE =
 /** 新版：仅 component.q 内联行（无 resolveDiyMeta 门闩） */
 const DIY_GROUP_INLINE_LINES_RE =
     /(  <[a-z0-9-]+ wx:if="\{\{component\.q==='[^']+'\}\}"[\s\S]*?\/>\n?)+/
+/** 内联块唯一标记：用于重复 merge 时幂等替换（避免同名组件被累积渲染多次） */
+const DIY_GROUP_INLINE_WRAP_RE = /<!--\s*DIY_INLINE_START\s*-->[\s\S]*?<!--\s*DIY_INLINE_END\s*-->/
 
 const DIY_GROUP_BASE_USING = {
     'copy-right': '../../../../components/copy-right/copy-right',
@@ -58,18 +60,32 @@ function buildInlineWxmlBlock(registryMap, scopeId = 'data-v-ddfdffaf') {
         return `  <${tag} wx:if="{{component.${nameKey}==='${vueName}'}}" class="r-i-f ${scopeId}" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />`
     })
     if (!lines.length) return ''
-    return `${lines.join('\n')}\n`
+    return `<!-- DIY_INLINE_START -->\n${lines.join('\n')}\n<!-- DIY_INLINE_END -->`
 }
 
 function replaceInlineWxmlBlock(wxml, inlineBlock) {
+    // 首次：替换 <diy-dynamic-bridge /> 占位符，并用标记包裹内联块
     if (DIY_GROUP_BRIDGE_TAG.test(wxml)) {
-        return { wxml: wxml.replace(DIY_GROUP_BRIDGE_TAG, inlineBlock), patched: true }
+        return { wxml: wxml.replace(DIY_GROUP_BRIDGE_TAG, `\n${inlineBlock}\n`), patched: true }
     }
-    if (DIY_GROUP_INLINE_BLOCK_RE.test(wxml)) {
-        return { wxml: wxml.replace(DIY_GROUP_INLINE_BLOCK_RE, inlineBlock), patched: true }
+    // 已内联（带标记）：直接替换标记区间，保证重复 merge 幂等、不累积
+    if (DIY_GROUP_INLINE_WRAP_RE.test(wxml)) {
+        return { wxml: wxml.replace(DIY_GROUP_INLINE_WRAP_RE, inlineBlock), patched: true }
     }
-    if (DIY_GROUP_INLINE_LINES_RE.test(wxml)) {
-        return { wxml: wxml.replace(DIY_GROUP_INLINE_LINES_RE, inlineBlock), patched: true }
+    // 旧版产物（无标记，可能因历史重复 merge 累积）：清除全部历史内联行后重新写入
+    if (
+        DIY_GROUP_INLINE_BLOCK_RE.test(wxml) ||
+        wxml.includes(`component.${DIY_GROUP_INLINE_NAME_KEY}===`)
+    ) {
+        let cleaned = wxml
+            .replace(DIY_GROUP_INLINE_BLOCK_RE, '')
+            .replace(/<[a-zA-Z0-9_-]+ wx:if="\{\{component\.q==='[^']+'\}\}"[^>]*\/>\n?/g, '')
+        // 在 diy-group 浮层视图（component.a）之后插入内联块
+        cleaned = cleaned.replace(
+            /(<view\s+wx:if="\{\{component\.a\}\}"[^>]*><\/view>)/,
+            `$1\n${inlineBlock}`
+        )
+        return { wxml: cleaned, patched: true }
     }
     if (
         wxml.includes('component.i.componentName===') ||

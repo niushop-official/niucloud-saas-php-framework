@@ -1,0 +1,1 @@
+"use strict";const e=require("../../../../common/vendor.js"),n={name:"u-table",mixins:[e.mpMixin,e.mixin,e.props$82],data:()=>({})};const t=e._export_sfc(n,[["render",function(e,n,t,o,r,i){return{}}],["__scopeId","data-v-70199183"]]);wx.createComponent(t);

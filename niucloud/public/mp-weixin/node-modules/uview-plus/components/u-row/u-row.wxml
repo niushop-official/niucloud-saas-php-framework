@@ -1,0 +1,1 @@
+<view class="u-row data-v-60eba671" ref="u-row" style="{{a}}" bindtap="{{b}}"><slot /></view>

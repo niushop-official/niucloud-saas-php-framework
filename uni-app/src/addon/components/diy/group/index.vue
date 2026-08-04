@@ -17,7 +17,7 @@
                           @click.stop="diyGroup.placeholderEvent"></view>
 
                     <diy-dynamic-bridge
-                        v-if="resolveDiyMeta(component.componentName)"
+                        v-if="component.componentName"
                         :ref="(el) => bindDiyRef(component.componentName, el)"
                         :componentName="component.componentName"
                         :scrollBool="getScrollBool(component.componentName)"
@@ -48,6 +48,7 @@ import { useDiyGroup } from './useDiyGroup'
 import useDiyStore from '@/app/stores/diy';
 import { getCurrentInstance } from 'vue';
 import { resolveDiyMeta } from '@/utils/diy-component-registry'
+import { ensureRuntimeDiyRegistry } from '@/utils/diy-component-runtime-registry'
 
 const props = defineProps(['data']);
 const instance: any = getCurrentInstance();
@@ -97,6 +98,11 @@ function bindDiyRef(componentName: string, bridgeEl: any) {
 
 diyGroup.onMounted()
 diyGroup.onPageScroll()
+
+// 主动触发运行时装修组件注册表扫描：项目部署模式（外部打包）插件的装修组件不在构建期
+// 静态表 DIY_COMPONENT_MAP 中，需异步 import 插件入口并写入响应式 runtimeDiyMap 后才能解析。
+// 若不在 diy-group 层主动触发，桥接组件会因 v-if 闸门为 false 而不挂载，导致内部重试永不执行、组件空白。
+ensureRuntimeDiyRegistry().catch(() => {})
 
 defineExpose({
     refresh: diyGroup.refresh,

@@ -1,0 +1,1 @@
+<view bindtap="{{a}}"><block wx:if="{{$slots.d}}"><slot></slot></block><block wx:else>复制</block></view>

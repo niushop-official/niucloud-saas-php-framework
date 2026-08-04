@@ -1,0 +1,13 @@
+import { _ as o } from "./virtual_addon-empty-c6937308.js";
+import { _ as r } from "./core-shared-5b3bfa35.js";
+import "@element-plus/icons-vue";
+import "vue";
+import "axios";
+import "element-plus";
+import "vue-i18n";
+import "pinia";
+import "vue-router";
+const c = /* @__PURE__ */ r(o, [["__scopeId", "data-v-72b1989a"]]);
+export {
+  c as default
+};

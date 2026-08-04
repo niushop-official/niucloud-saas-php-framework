@@ -89,7 +89,9 @@ function packageAddonBuild(key, buildDir, buildId) {
     }
 
     const scan = scanSubPackageRequires(buildDir, roots, key)
-    const depFiles = copyMpRelativeFiles(buildDir, dest, scan.requirePaths, roots)
+    // unionMerge=false: 构建期直接把业务共享模块复制进插件包(含插件专用导出)，
+    // 作为后续合并做「导出并集」的源；其余框架依赖仍跳过。
+    const depFiles = copyMpRelativeFiles(buildDir, dest, scan.requirePaths, roots, false)
     if (depFiles) {
         console.log(`[build-mp-addon] packaged ${depFiles} main-package dep file(s)`)
     }

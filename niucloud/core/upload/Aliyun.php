@@ -61,8 +61,11 @@ class Aliyun extends BaseUpload
     {
         $bucket = $this->config['bucket'];
         try {
-            $base64_file = base64_decode($base64_data);
-            if (!$base64_file) throw new UploadFileException('FILE_ERROR');
+            $base64_file = base64_decode($base64_data, true);
+            if ($base64_file === false) throw new UploadFileException('BASE64_DECODE_FAILED');
+            // 校验解码后内容是否为真实图片
+            $imageInfo = @getimagesizefromstring($base64_file);
+            if ($imageInfo === false) throw new UploadFileException('BASE64_NOT_VALID_IMAGE');
             $this->client()->putObject(
                 $bucket,
                 $key,
@@ -83,6 +86,11 @@ class Aliyun extends BaseUpload
     {
         $bucket = $this->config['bucket'];
         try {
+            // SSRF防护：仅允许 http/https 协议
+            $scheme = parse_url($url, PHP_URL_SCHEME);
+            if ($scheme === null || !in_array(strtolower($scheme), ['http', 'https'])) {
+                throw new UploadFileException('FETCH_URL_SCHEME_NOT_ALLOWED');
+            }
             $content = file_get_contents($url);
             $this->client()->putObject(
                 $bucket,

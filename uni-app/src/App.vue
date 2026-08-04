@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { launchInterceptor } from '@/utils/interceptor'
-import { initSplitBuildRuntime, isSplitBuildEnabled } from '@/utils/addon-loader'
+import { initSplitBuildRuntime, isSplitBuildEnabled, resolveAddonBridgeUrl } from '@/utils/addon-loader'
 import { getToken, isWeixinBrowser, getSiteId, currRoute, deepClone, setThemeColor } from '@/utils/common'
 import useMemberStore from '@/stores/member'
 import useConfigStore from '@/stores/config'
@@ -13,47 +13,46 @@ import { ensureDiyDecorateBridge } from '@/utils/diy-decorate-bridge'
 import envConfig from '@/utils/config'
 
 const locationVal = useLocation(true);
-onLaunch((data: any) => {
-    // #ifdef H5
-    if (isSplitBuildEnabled()) {
-        void initSplitBuildRuntime()
-
-        // 处理未知插件直接 URL 访问
-        const launchPath = data.path || ''
-        // 编译时已知的插件列表（src/addon/ 中存在的插件，路由已在 pages.json 注册）
-        const knownAddonKeys = new Set<string>(['shop'])
-        const addonMatch = launchPath.match(/^\/?addon\/([^/]+)\/pages\/(.+)/)
-        if (addonMatch && !knownAddonKeys.has(addonMatch[1])) {
-                    const origPath = '/' + launchPath + (location.search || '')
-
-                    // 先把浏览器 URL 同步改成桥接页路径，消除闪烁
-                    // #ifdef H5
-                    const newPathname = location.pathname.replace(
-                        /\/addon\/([^/]+)\/pages\/(.+)$/,
-                        `/app/pages/addon-universal/index`
-                    )
-                    history.replaceState(null, '', newPathname)
-                    // #endif
-
-                    uni.reLaunch({
-                        url: `/app/pages/addon-universal/index?addon=${addonMatch[1]}&page=pages/${addonMatch[2]}&_orig=${encodeURIComponent(origPath)}`
-                    })
-                    // 不 return，让后续的 getInitFn 等初始化逻辑正常执行
-        }
-    }
-    // #endif
-
-    // 添加初始化拦截器
-    launchInterceptor()
+onLaunch(async (data: any) => {
+    // 初始化全局数据：必须同步执行，且放在首个 await 之前。
+    // 否则 onLaunch 在 await initSplitBuildRuntime() 让出微任务期间，
+    // 页面组件（如 top-tabbar）的 setup 已执行，此时 systemStore.systemInfo 仍为 null
+    // 会抛出 “Cannot read properties of null (reading 'platform')”。
     const systemStore = useSystemStore()
-
-    // 初始化全局数据
     const initGlobalData = () => {
         systemStore.systemInfo = uni.getSystemInfoSync();
         systemStore.getMenuButtonInfoFn()
     }
-
     initGlobalData()
+
+    // 添加初始化拦截器
+    launchInterceptor()
+
+    // #ifdef H5
+    if (isSplitBuildEnabled()) {
+        // 必须 await：确保运行期安装清单（assets/addons/index.json）加载完成，
+        // 否则 onLaunch 阶段无法可靠区分“内置插件（不桥接）”与“外部部署插件（桥接）”
+        await initSplitBuildRuntime()
+
+        // 处理未知插件直接 URL 访问：动态判定是否需要桥接（基于 router.resolve，不写死插件名）
+        const launchPath = data.path || ''
+        const addonMatch = launchPath.match(/^\/?addon\/([^/]+)\/pages\/(.+)/)
+        if (addonMatch) {
+            const bridgeUrl = resolveAddonBridgeUrl(launchPath)
+            if (bridgeUrl) {
+                // 先把浏览器 URL 同步改成桥接页路径，消除闪烁
+                const newPathname = location.pathname.replace(
+                    /\/addon\/([^/]+)\/pages\/(.+)$/,
+                    `/app/pages/addon-universal/index`
+                )
+                history.replaceState(null, '', newPathname)
+
+                uni.reLaunch({ url: bridgeUrl })
+                // 不 return，让后续的 getInitFn 等初始化逻辑正常执行
+            }
+        }
+    }
+    // #endif
 
     // #ifdef H5
     ensureDiyDecorateBridge()

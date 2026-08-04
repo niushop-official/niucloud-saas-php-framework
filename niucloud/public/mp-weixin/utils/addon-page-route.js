@@ -1,1 +1,1 @@
-"use strict";let e="";exports.clearActiveAddonPageRoute=function(){e=""},exports.getActiveAddonPageRoute=function(){return e},exports.setActiveAddonPageRoute=function(t){e=t||""};
+"use strict";const e=require("../common/vendor.js"),t="__NIUCLOUD_ACTIVE_ADDON_ROUTE__";function o(){const o=globalThis;return o[t]||(o[t]=e.ref("")),o[t]}exports.clearActiveAddonPageRoute=function(){o().value=""},exports.getActiveAddonPageRoute=function(){const e=o().value;return e||""},exports.setActiveAddonPageRoute=function(e){o().value=e||""};

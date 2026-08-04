@@ -78,9 +78,11 @@ const SFC_WRAPPERS = {}
 
 /** 插件中 auto-import 的组件/模块，不 external，直接打进插件 */
 const PACK_INTO_ADDON = new Set([
-    'utils/config',   // export default → core-shared 的 export * 不会转发
-    'utils/storage',  // export default → core-shared 的 export * 不会转发
-    'utils/tianditu'  // 与 qqmap 同名导出冲突，由 addon 直接打包
+    'utils/config',       // export default → core-shared 的 export * 不会转发
+    'utils/storage',      // export default → core-shared 的 export * 不会转发
+    'utils/tianditu',     // 与 qqmap 同名导出冲突，由 addon 直接打包
+    'utils/addon-loader', // core-shared build-shared.cjs 排除了此文件
+    'utils/addon-lang'   // core-shared build-shared.cjs 排除了此文件
 ])
 
 function isSfcBundleComponent(id) {
@@ -121,6 +123,9 @@ function isCoreExternal(id) {
     if (/\/src\/components\//.test(norm)) return false
     // utils/config 默认导出 → 不 external（core-shared 的 named export 不会转发 default）
     if (norm === '@/utils/config' || norm === '@/utils/config.ts' || norm.endsWith('/src/utils/config.ts')) return false
+    // addon-loader / addon-lang 被 build-shared 排除，插件自行携带
+    if (norm === '@/utils/addon-loader' || norm === '@/utils/addon-loader.ts' || norm.includes('/src/utils/addon-loader')) return false
+    if (norm === '@/utils/addon-lang' || norm === '@/utils/addon-lang.ts' || norm.includes('/src/utils/addon-lang')) return false
     if (isSfcBundleComponent(norm)) return false
     // 直接匹配 @/ 别名形式（Vite resolveId 前的 source）
     if (CORE_EXTERNAL_PATHS.some(p => norm === p || norm.startsWith(p + '/'))) return true

@@ -38,8 +38,9 @@ export function resolveLangFile(app: string, path: string): string {
     let view = path.replace(/^(\/admin\/|\/site\/|\/)/, '').replace(/\.vue$/, '')
     if (view.startsWith('views/')) view = view.slice('views/'.length)
     if (app) {
-        if (view.startsWith(`${app}/`)) view = view.slice(app.length + 1)
-        else if (view === app) view = 'index'
+        if (view === app) view = 'index'
+        // addon 语言包文件名自带 addon 前缀（如 spdr.goods.json），此处不再剥离
+        // 空值：当 view 首段不等于 app 时不处理（如 app="spdr" view="goods"）
     }
     return view.replaceAll('/', '.')
 }
@@ -113,7 +114,7 @@ export async function loadAddonModule(addon: string): Promise<Record<string, unk
     if (!(addon in addonModuleCache)) {
         addonModuleCache[addon] = (async () => {
             try {
-                const url = adminUrl(`/assets/addons/${addon}/index.js`)
+                const url = adminUrl(`/assets/addons/${addon}/index.js?_t=${Date.now()}`)
                 return await import(/* @vite-ignore */ url) as Record<string, unknown>
             } catch {
                 return null
@@ -151,7 +152,7 @@ export async function initAddonManifests(keys?: string[]) {
         let addonKeys = keys
         if (!addonKeys?.length) {
             try {
-                const indexUrl = adminUrl('/assets/addons/index.json')
+                const indexUrl = adminUrl(`/assets/addons/index.json?_t=${Date.now()}`)
                 const res = await fetch(indexUrl)
                 if (res.ok) {
                     const data = await res.json()
@@ -183,7 +184,7 @@ export async function initAddonManifests(keys?: string[]) {
             if (!(await isAddonEntryAvailable(key))) continue
             verifiedKeys.push(key)
             try {
-                const url = adminUrl(`/assets/addons/${key}/manifest.json`)
+                const url = adminUrl(`/assets/addons/${key}/manifest.json?_t=${Date.now()}`)
                 const res = await fetch(url)
                 if (res.ok) {
                     prodManifests[key] = await res.json()

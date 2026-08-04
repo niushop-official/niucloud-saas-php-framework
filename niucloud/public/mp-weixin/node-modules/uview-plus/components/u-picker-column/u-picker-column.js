@@ -1,0 +1,1 @@
+"use strict";const n=require("../../../../common/vendor.js"),e={name:"u-picker-column",mixins:[n.mpMixin,n.mixin,n.props$57]};const o=n._export_sfc(e,[["render",function(n,e,o,r,c,i){return{}}],["__scopeId","data-v-a7d529fa"]]);wx.createComponent(o);

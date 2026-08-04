@@ -29,6 +29,39 @@ const loadPageNotFound = (): Promise<{ default: Component }> =>
 
 export { isSplitBuildEnabled }
 
+/**
+ * 通用桥接判定（App.vue onLaunch 与导航守卫共用）：
+ * - 内置插件页：其路由已注册进 vue-router，直接渲染，返回 null（不桥接）。
+ * - 外部/未知插件：路由未注册，返回桥接页 URL（含 _orig 用于 URL 还原）。
+ *
+ * 关键：识别完全基于 router.resolve，因此对“哪些是内置插件”的判断是动态的，
+ * 跟随当前 core 构建实际打入的插件，不写死任何插件名。
+ */
+export function resolveAddonBridgeUrl(rawPath: string): string | null {
+    const match = rawPath.replace(/^\//, '').match(/^addon\/([^/]+)\/pages\/(.+)$/)
+    if (!match) return null
+    const addonKey = match[1]
+    const pagePath = match[2].split('?')[0] // 去掉可能附带的 query
+    // 1) vue-router 已就绪时（导航守卫 / 运行时导航）：直接看该路由是否注册。
+    //    内置插件页（编译进 core 的真实组件）已注册 -> 不桥接；
+    //    外部部署插件（不在 pages.json）无注册 -> 桥接。
+    try {
+        const app = getApp() as any
+        const router = app?.$router || (uni as any)?.$router
+        if (router) {
+            const resolved = router.resolve('/' + match[0])
+            if (resolved && resolved.matched && resolved.matched.length > 0) return null
+        }
+    } catch {}
+    // 注意：不能用 getInstalledAddonKeys()/index.json 来区分内置/外部插件，
+    // 因为“项目部署模式”安装的外部插件其 key 不一定写入 index.json，
+    // 误判为“内置不桥接”会导致外部插件的页面与装修组件全部空白。
+    // router 未就绪（onLaunch 极早期）时，保守返回桥接 URL（内置插件同样可经 loadAddonModule 加载，不影响渲染）。
+    // 构建 _orig 保留原始 path + 当前 location.search（装修参数等）
+    const origPath = '/' + rawPath.replace(/^\//, '') + (typeof location !== 'undefined' ? (location.search || '') : '')
+    return `/app/pages/addon-universal/index?addon=${addonKey}&page=pages/${pagePath}&_orig=${encodeURIComponent(origPath)}`
+}
+
 export async function initSplitBuildRuntime() {
     if (!isSplitBuildEnabled()) return
     // addInterceptor 必须同步注册，不能等 await，否则插件页内的导航拦截会遗漏
@@ -37,6 +70,9 @@ export async function initSplitBuildRuntime() {
     await preloadAllAddonLocales((locale, messages) => {
         i18n.global.mergeLocaleMessage(locale, messages)
     })
+    // 部署安装的外部打包插件不在构建期静态注册表中，需运行时补充解析其 diy 组件
+    const { ensureRuntimeDiyRegistry } = await import('./diy-component-runtime-registry')
+    await ensureRuntimeDiyRegistry()
 }
 
 /**
@@ -53,25 +89,6 @@ export function registerUniversalAddonRoutes() {
     // #ifdef H5
     if (!isSplitBuildEnabled()) return
 
-    // 辅助函数：检查路径是否为未知插件路由，是则返回桥接页 URL（含 _orig 用于 URL 还原）
-    function bridgeUrl(rawPath: string): string | null {
-        const match = rawPath.replace(/^\//, '').match(/^addon\/([^/]+)\/pages\/(.+)$/)
-        if (!match) return null
-        const pagePath = match[2].split('?')[0] // 去掉可能附带的 query
-        // 检查是否已知插件路由
-        try {
-            const app = getApp() as any
-            const router = app?.$router
-            if (router) {
-                const resolved = router.resolve('/' + match[0])
-                if (resolved && resolved.matched && resolved.matched.length > 0) return null
-            }
-        } catch {}
-        // 构建 _orig 保留原始 path + 当前 location.search（装修参数等）
-        const origPath = '/' + rawPath.replace(/^\//, '') + (location.search || '')
-        return `/app/pages/addon-universal/index?addon=${match[1]}&page=pages/${pagePath}&_orig=${encodeURIComponent(origPath)}`
-    }
-
     // 1. vue-router beforeEach（处理浏览器前进后退等）
     try {
         let router: any = null
@@ -82,7 +99,7 @@ export function registerUniversalAddonRoutes() {
         if (router) {
             router.beforeEach((to: any, _from: any, next: any) => {
                 if (to.matched && to.matched.length > 0) { next(); return }
-                const url = bridgeUrl(to.path)
+                const url = resolveAddonBridgeUrl(to.path)
                 if (url) {
                     next({ path: '/app/pages/addon-universal/index', query: urlToQuery(url) })
                 } else {
@@ -111,7 +128,7 @@ export function registerUniversalAddonRoutes() {
                 }
             } catch (e) { console.log('[addon-loader] diyStore check error:', e) }
             // #endif
-            const resolved = bridgeUrl(url)
+            const resolved = resolveAddonBridgeUrl(url)
             if (resolved) {
                 const diyMode = (() => { try { return useDiyStore().mode } catch { return '' } })()
                 console.log('[addon-loader] intercept ' + name + ': ' + url + ' (diy=' + diyMode + ')')

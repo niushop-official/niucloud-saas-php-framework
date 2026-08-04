@@ -1,6 +1,7 @@
 import { watch } from 'vue'
 import { currRoute } from './common'
 import { redirectInterceptor } from './interceptor'
+import { clearActiveAddonPageRoute } from '@/utils/addon-page-route'
 import useConfigStore from "@/stores/config";
 import useSystemStore from '@/stores/system'
 import { useShare } from '@/hooks/useShare'
@@ -27,6 +28,12 @@ export default {
             },
             onShow: () => {
                 const route = currRoute() || ''
+
+                // 离开桥接插件页（app/pages/addon-universal）时清空登记的逻辑路由，
+                // 避免残留值污染后续非桥接页（如登录页）的语言包 fileKey 与底部导航选中态
+                if (!route.includes('/app/pages/addon-universal')) {
+                    clearActiveAddonPageRoute()
+                }
 
                 useSystemStore().$patch((state) => {
                     state.currRoute = route

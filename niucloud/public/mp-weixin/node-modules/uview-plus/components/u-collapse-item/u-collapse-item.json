@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "u-icon": "../u-icon/u-icon",
+    "u-cell": "../u-cell/u-cell",
+    "u-line": "../u-line/u-line"
+  }
+}
