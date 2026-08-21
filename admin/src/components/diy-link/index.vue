@@ -113,10 +113,11 @@
 
 <script lang="ts" setup>
 import { t } from '@/lang'
-import { ref, computed, defineAsyncComponent } from 'vue'
+import { ref, computed } from 'vue'
 import { cloneDeep } from 'lodash-es'
 import { getLink } from '@/app/api/diy'
 import { ElMessage } from 'element-plus'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const prop = defineProps({
     modelValue: {
@@ -158,8 +159,6 @@ const dynamicComponentName: any = ref('') // 动态组件名称
 const dynamicComponentRefs: any = ref(null) // 动态组件ref
 
 const selectLink: any = ref([])
-
-const modules: any = import.meta.glob('@/**/*.vue')
 
 const show = () => {
     getLinkFn(() => {
@@ -259,8 +258,7 @@ const changeParentLink = (item: any) => {
     parentLinkName.value = item.name
     childList.value = item.child_list
     if (item.component) {
-        dynamicComponentName.value = item.component
-        dynamicComponentName.value = defineAsyncComponent(modules[dynamicComponentName.value])
+        dynamicComponentName.value = resolveAsyncComponent(item.component)
     } else {
         dynamicComponentName.value = ''
     }
