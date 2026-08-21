@@ -412,6 +412,7 @@
             "diy-dynamic-bridge": "@/components/diy-dynamic-bridge/diy-dynamic-bridge.vue",
             "diy-dynamic-bridge-app": "@/components/diy-dynamic-bridge-app/diy-dynamic-bridge-app.vue",
             "diy-group": "@/addon/components/diy/group/index.vue",
+			"ns-toast": "@/components/ns-toast/ns-toast.vue",
             "u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
             "up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
             "u-(.*)": "uview-plus/components/u-$1/u-$1.vue",

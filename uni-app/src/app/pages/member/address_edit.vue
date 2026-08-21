@@ -80,7 +80,7 @@ import { deepClone, redirect,openMapSelector } from '@/utils/common'
 import { t } from '@/locale'
 import { addAddress, editAddress, getAddressInfo } from '@/app/api/member'
 import manifestJson from '@/manifest.json'
-import { getAddressByLatlng,getAreatree } from '@/app/api/system'
+import { getAddressByLatlng, getLatlngByAddress, getAreatree } from '@/app/api/system'
 import useSystemStore from '@/stores/system';
 import { useLocation } from '@/hooks/useLocation'
 
@@ -195,15 +195,24 @@ const selectArea = () => {
 }
 
 const areaSelectComplete = (event: any) => {
-    if (isSelectAddress.value && (formData.value.province_id == event.province?.id || formData.value.city_id != event.city?.id || formData.value.district_id != event.district?.id)) {
-        formData.value.lat = '';
-        formData.value.lng = '';
-    }
     formData.value.province_id = event.province?.id || 0
     formData.value.city_id = event.city?.id || 0
     formData.value.district_id = event.district?.id || 0
     formData.value.area = `${ event.province?.name || '' }${ event.city?.name || '' }${ event.district?.name || '' }`
     isSelectAddress.value = false;
+
+    // 如果没有经纬度，尝试通过地址解析获取经纬度
+    if (!formData.value.lat && !formData.value.lng && formData.value.area) {
+        const fullAddress = formData.value.area + (formData.value.address || '');
+        getLatlngByAddress({ address: fullAddress }).then((res: any) => {
+            if (res.data && res.data.lat && res.data.lng) {
+                formData.value.lat = res.data.lat;
+                formData.value.lng = res.data.lng;
+            }
+        }).catch(() => {
+            // 解析失败不做处理，用户可以手动定位
+        });
+    }
 }
 
 const operateLoading = ref(false)
@@ -260,13 +269,13 @@ const save = () => {
 
 // 选择地址
 const chooseLocation = () => {
-    let latitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.latitude : '';
-    let longitude = systemStore.diyAddressInfo ? systemStore.diyAddressInfo.longitude : '';
+    let latitude = formData.value.lat || (systemStore.diyAddressInfo ? systemStore.diyAddressInfo.latitude : undefined);
+    let longitude = formData.value.lng || (systemStore.diyAddressInfo ? systemStore.diyAddressInfo.longitude : undefined);
 
     // #ifndef H5
     uni.chooseLocation({
-        latitude,
-        longitude,
+        latitude: latitude ? Number(latitude) : undefined,
+        longitude: longitude ? Number(longitude) : undefined,
         success: (res) => {
             res.latitude && (formData.value.lat = res.latitude)
             res.longitude && (formData.value.lng = res.longitude)
@@ -283,12 +292,15 @@ const chooseLocation = () => {
             if (res.errMsg && res.errno) {
                 if (res.errno == 104) {
                     let msg = '用户未授权隐私权限，选择位置失败';
-                    uni.showToast({ title: msg, icon: 'none' })
+                    console.log(msg)
+                    // uni.showToast({ title: msg, icon: 'none' })
                 } else if (res.errno == 112) {
                     let msg = '隐私协议中未声明，打开地图选择位置失败';
-                    uni.showToast({ title: msg, icon: 'none' })
+                    console.log(msg)
+                    // uni.showToast({ title: msg, icon: 'none' })
                 } else {
-                    uni.showToast({ title: res.errMsg, icon: 'none' })
+                    console.log(res.errMsg)
+                    // uni.showToast({ title: res.errMsg, icon: 'none' })
                 }
             }
         }

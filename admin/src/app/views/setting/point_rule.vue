@@ -54,11 +54,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { t } from '@/lang'
 import { getPointRuleConfig, setPointRuleConfig, getPointRuleDict } from '@/app/api/member'
 import Test from '@/utils/test'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -71,13 +72,12 @@ const formData = ref({
 const ruleRefs = ref(null)
 const loading = ref(true)
 
-const modules: any = import.meta.glob('@/**/*.vue')
 getPointRuleDict().then(({ data }) => {
     Object.keys(data.grant).forEach((key : string) => {
-        data.grant[key].component && (data.grant[key].component = defineAsyncComponent(modules[data.grant[key].component]))
+        data.grant[key].component && (data.grant[key].component = resolveAsyncComponent(data.grant[key].component))
     })
     Object.keys(data.consume).forEach((key : string) => {
-        data.consume[key].component && (data.consume[key].component = defineAsyncComponent(modules[data.consume[key].component]))
+        data.consume[key].component && (data.consume[key].component = resolveAsyncComponent(data.consume[key].component))
     })
     rules.value = data
 })

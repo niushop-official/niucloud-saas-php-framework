@@ -2,6 +2,7 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { launchInterceptor } from '@/utils/interceptor'
 import { initSplitBuildRuntime, isSplitBuildEnabled, resolveAddonBridgeUrl } from '@/utils/addon-loader'
+import { setActiveAddonPageRoute } from '@/utils/addon-page-route'
 import { getToken, isWeixinBrowser, getSiteId, currRoute, deepClone, setThemeColor } from '@/utils/common'
 import useMemberStore from '@/stores/member'
 import useConfigStore from '@/stores/config'
@@ -30,14 +31,13 @@ onLaunch(async (data: any) => {
 
     // #ifdef H5
     if (isSplitBuildEnabled()) {
-        // 必须 await：确保运行期安装清单（assets/addons/index.json）加载完成，
-        // 否则 onLaunch 阶段无法可靠区分“内置插件（不桥接）”与“外部部署插件（桥接）”
-        await initSplitBuildRuntime()
-
         // 处理未知插件直接 URL 访问：动态判定是否需要桥接（基于 router.resolve，不写死插件名）
         const launchPath = data.path || ''
         const addonMatch = launchPath.match(/^\/?addon\/([^/]+)\/pages\/(.+)/)
         if (addonMatch) {
+            // 预登记当前插件路由，使 initSplitBuildRuntime 首屏只预热该插件，而非全量插件
+            setActiveAddonPageRoute(launchPath)
+
             const bridgeUrl = resolveAddonBridgeUrl(launchPath)
             if (bridgeUrl) {
                 // 先把浏览器 URL 同步改成桥接页路径，消除闪烁
@@ -51,6 +51,10 @@ onLaunch(async (data: any) => {
                 // 不 return，让后续的 getInitFn 等初始化逻辑正常执行
             }
         }
+
+        // 必须 await：确保运行期安装清单（assets/addons/index.json）加载完成，
+        // 否则 onLaunch 阶段无法可靠区分“内置插件（不桥接）”与“外部部署插件（桥接）”
+        await initSplitBuildRuntime()
     }
     // #endif
 

@@ -1,0 +1,1 @@
+<view wx:if="{{a}}" class="{{['ns-toast','data-v-2db19456',c&&'ns-toast--mask']}}" catchtouchmove="{{d}}"><view class="ns-toast__box data-v-2db19456"><text class="ns-toast__text data-v-2db19456">{{b}}</text></view></view>

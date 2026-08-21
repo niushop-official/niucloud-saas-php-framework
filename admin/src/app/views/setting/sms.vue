@@ -37,10 +37,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { getSmsList, getAccountIsLogin } from '@/app/api/notice'
 import { useRoute, useRouter } from 'vue-router'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const router = useRouter()
 const route = useRoute()
@@ -52,7 +53,6 @@ const smsTableData = reactive({
     data: []
 })
 
-const modules: any = import.meta.glob('@/**/*.vue')
 /**
  * 获取配置信息
  */
@@ -60,7 +60,7 @@ const loadSmsList = () => {
     smsTableData.loading = true
     getSmsList().then(({ data }) => {
         Object.keys(data).forEach((key: string) => {
-            data[key].component && (data[key].component = defineAsyncComponent(modules[data[key].component]))
+            data[key].component && (data[key].component = resolveAsyncComponent(data[key].component))
         })
         smsTableData.data = data
         smsTableData.loading = false

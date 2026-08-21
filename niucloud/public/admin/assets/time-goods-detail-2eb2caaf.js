@@ -1,1 +1,0 @@
-import{_ as o}from"./time-goods-detail.vue_vue_type_script_setup_true_lang-a4a30042.js";import"vue";import"./goods_default-f475acf5.js";import"/admin/assets/shared/admin-lang.js";import"./goods-4f642f1c.js";import"./index-e730ce9b.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

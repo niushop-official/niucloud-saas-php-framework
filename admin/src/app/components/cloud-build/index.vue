@@ -403,7 +403,7 @@ const startServerDownloadFn = async (taskId: string, downloadUrl: string, author
 
         await startServerDownload(taskId, downloadUrl, authorize_code, ts)
 
-        downloadPollingTimer = setTimeout(async () => {
+        downloadPollingTimer = setInterval(async () => {
             if (!downloadPollingTimer) return
 
             try {
@@ -447,7 +447,7 @@ const startServerDownloadFn = async (taskId: string, downloadUrl: string, author
             } catch (e) {
                 console.error('Polling error:', e)
             }
-        }, 2000)
+        }, 5000)
     } catch (error) {
         console.error('启动后台下载失败:', error)
         terminalRef.value.pushMessage({ content: '启动后台下载失败', class: 'error' })

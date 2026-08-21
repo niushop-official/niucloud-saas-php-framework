@@ -84,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, watch, computed } from 'vue'
+import { reactive, ref, watch, computed, nextTick, onUnmounted } from 'vue'
 import { t } from '@/lang'
 import { img } from '@/utils/common'
 import { useRouter } from 'vue-router'
@@ -147,6 +147,7 @@ const refreshData = () => {
             page.loadingDev = false // 加载开发环境配置
             page.isDisabledPop = false // 是否禁止打开遮罩层
             page.difference = 0 // 检测页面加载差异，小于1000毫秒，则配置wap端域名
+            uniAppLoadStatus.value = false
 
             wapDomain.value = page.domain_url.wap_domain
             page.wapUrl = page.domain_url.wap_url
@@ -176,18 +177,33 @@ const refreshData = () => {
 
 refreshData()
 
-const uniAppLoadStatus = ref(false) // uni-app 加载状态，true：加粗完成，false：未完成
+const uniAppLoadStatus = ref(false) // uni-app 加载状态，true：加载完成，false：未完成
+let timeInterVal: ReturnType<typeof setInterval> | null = null
+let loadTimeout: ReturnType<typeof setTimeout> | null = null
+
+const clearLoadTimers = () => {
+    if (timeInterVal) {
+        clearInterval(timeInterVal)
+        timeInterVal = null
+    }
+    if (loadTimeout) {
+        clearTimeout(loadTimeout)
+        loadTimeout = null
+    }
+}
 
 // 监听 uni-app 端 是否加载完成
-window.addEventListener('message', (event) => {
+const onPreviewMessage = (event: MessageEvent) => {
     try {
-        let data = {
+        let data: { type?: string } = {
             type: ''
-        };
-        if(typeof event.data == 'string') {
+        }
+        if (typeof event.data == 'string') {
             data = JSON.parse(event.data)
-        }else if(typeof event.data == 'object') {
+        } else if (event.data && typeof event.data == 'object') {
             data = event.data
+        } else {
+            return
         }
 
         if (data.type && ['appOnLaunch', 'appOnReady'].indexOf(data.type) != -1) {
@@ -197,12 +213,18 @@ window.addEventListener('message', (event) => {
             page.difference = loadTime - page.timeIframe
             page.isDisabledPop = false // 是否禁止打开遮罩层
             uniAppLoadStatus.value = true // 加载完成
+            clearLoadTimers()
         }
     } catch (e) {
-        initLoad()
         console.log('diy member 后台接受数据错误', e)
     }
-}, false)
+}
+window.addEventListener('message', onPreviewMessage, false)
+
+onUnmounted(() => {
+    window.removeEventListener('message', onPreviewMessage, false)
+    clearLoadTimers()
+})
 
 // 将数据发送到uniapp
 const postMessage = () => {
@@ -245,7 +267,7 @@ const saveDomain = () => {
 }
 
 const settingTips = () => {
-    window.open('https://www.kancloud.cn/niucloud/niucloud-admin-develop/3213393')
+    window.open('https://doc.press.niucloud.com/php/saas-framework/dev/pluginDev/configLocalDevEnv.html')
 }
 
 const setDomain = () => {
@@ -260,26 +282,33 @@ const setDomain = () => {
         postMessage()
     }
 
-    // 同步发送一次消息
-    send()
+    clearLoadTimers()
 
-    // 如果同步发送消息的 uni-app没有接收到回应，则定时发送消息
-    let sendCount = 0;
-    let timeInterVal = setInterval(()=>{
-        // 接收 uni-app 发送的消息 或者 发送50次后未响应，则停止发送
-        if(uniAppLoadStatus.value || sendCount >= 50){
-            clearInterval(timeInterVal)
-            return
-        }
-
+    nextTick(() => {
+        // iframe 挂上 DOM 后再同步发送一次消息
         send()
-        sendCount++;
-    },200)
 
-    // 如果10秒内加载不出来，则需要配置域名
-    setTimeout(() => {
-        if (page.difference == 0) initLoad()
-    }, 1000 * 10)
+        // 如果同步发送消息的 uni-app没有接收到回应，则定时发送消息
+        let sendCount = 0;
+        timeInterVal = setInterval(()=>{
+            // 接收 uni-app 发送的消息 或者 发送50次后未响应，则停止发送
+            if(uniAppLoadStatus.value || sendCount >= 50){
+                if (timeInterVal) {
+                    clearInterval(timeInterVal)
+                    timeInterVal = null
+                }
+                return
+            }
+
+            send()
+            sendCount++;
+        },200)
+
+        // 如果10秒内加载不出来，则需要配置域名
+        loadTimeout = setTimeout(() => {
+            if (page.difference == 0 && !uniAppLoadStatus.value) initLoad()
+        }, 1000 * 10)
+    })
 }
 
 // 跳转去装修

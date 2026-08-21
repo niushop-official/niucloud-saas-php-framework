@@ -16,7 +16,8 @@
                 class="sidebar-margin pt-[50rpx] pb-[40rpx] bg-[#fff] rounded-[var(--rounded-big)] px-[40rpx] box-border mt-[-112rpx]">
                 <view class="flex flex-col items-center w-full"
                       @click="redirect({ url: '/app/pages/member/detailed_account', param: { type : 'money' } })"
-                      :class="{'pt12': !Object.keys(cashOutConfigObj).length || (Object.keys(cashOutConfigObj).length && !systemStore.siteAddons.includes('recharge') && cashOutConfigObj.is_open != 1)}">
+                      :class="{'pt12': !Object.keys(cashOutConfigObj).length || (Object.keys(cashOutConfigObj).length && !systemStore.siteAddons.includes('recharge') && cashOutConfigObj.is_open != 1)}"
+                      v-if="cashOutConfigObj.is_open == 1">
                     <view class=" text-[var(--text-color-light9)] text-[26rpx] leading-[34rpx] mb-[12rpx]">{{ t('money') }}</view>
                     <view class="text-[#333] inline-block">
                         <text class="text-[36rpx] mr-[6rpx] price-font">￥</text>
@@ -177,12 +178,18 @@ const calculateMescrollTop = () => {
 };
 
 //获取数据来源类型
-const accountTypeList = ref([
-    { name: '全部', key: '' },
-    { name: '收入', key: 'income' },
-    { name: '支出', key: 'disburse' },
-    { name: '提现', key: 'cash_out' },
-])
+const accountTypeList = computed(() => {
+    const list = [
+        { name: '全部', key: '' },
+        { name: '收入', key: 'income' },
+        { name: '支出', key: 'disburse' },
+    ]
+    // 提现功能开启时才显示提现选项
+    if (cashOutConfigObj.is_open == 1) {
+        list.push({ name: '提现', key: 'cash_out' })
+    }
+    return list
+})
 const fromType = ref('')
 const create_time = ref([])
 //来源类型

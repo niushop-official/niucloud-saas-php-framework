@@ -377,6 +377,13 @@ export function setPayConfig(params: Record<string, any>) {
     return request.put(`pay/config/${ params.type }`, params, { showSuccessMessage: true });
 }
 
+/**
+ * 获取支付列表
+ * @returns
+ */
+export function getPayList() {
+    return request.get(`pay/lists`)
+}
 
 /***************************************************** 打款设置 ****************************************************/
 /**

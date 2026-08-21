@@ -1,4 +1,6 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "ns-toast": "../components/ns-toast/ns-toast"
+  }
 }

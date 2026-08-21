@@ -8255,14 +8255,31 @@ const ps = "Personal settings", us = "Switch language", ms = "Version", _s = "Lo
 function ule() {
   return !0;
 }
-const _ = "/wap";
-function mle(t) {
+const _ = "__NIUCLOUD_ACTIVE_ADDON_ROUTE__";
+function mle() {
+  const t = globalThis;
+  return t[_] || (t[_] = gne("")), t[_];
+}
+function _le() {
+  const t = mle().value;
+  if (t)
+    return t;
+  const e = globalThis.location;
+  if (e && typeof e.pathname == "string") {
+    const o = e.pathname.indexOf("/addon/");
+    if (o !== -1)
+      return e.pathname.slice(o);
+  }
+  return "";
+}
+const g = "/wap";
+function gle(t) {
   return t.replace(/^\/wap\/\d+\//, "/wap/");
 }
 function ls(t) {
-  return !t || t.startsWith("http") ? t : t.startsWith("/wap/") ? mle(t) : t.startsWith("/assets/") ? `${_}${t}` : t.startsWith("./") ? `${_}/assets/addons/${t.slice(2)}` : `${_}/${t.replace(/^\//, "")}`;
+  return !t || t.startsWith("http") ? t : t.startsWith("/wap/") ? gle(t) : t.startsWith("/assets/") ? `${g}${t}` : t.startsWith("./") ? `${g}/assets/addons/${t.slice(2)}` : `${g}/${t.replace(/^\//, "")}`;
 }
-function _le() {
+function hle() {
   const t = globalThis;
   return t.uni && typeof t.uni.reLaunch == "function" ? t.uni : new Proxy(t.uni || {}, {
     get(e, o) {
@@ -8273,23 +8290,6 @@ function _le() {
       return typeof n == "function" ? (...a) => n.apply(s, a) : n;
     }
   });
-}
-const g = "__NIUCLOUD_ACTIVE_ADDON_ROUTE__";
-function gle() {
-  const t = globalThis;
-  return t[g] || (t[g] = gne("")), t[g];
-}
-function hle() {
-  const t = gle().value;
-  if (t)
-    return t;
-  const e = globalThis.location;
-  if (e && typeof e.pathname == "string") {
-    const o = e.pathname.indexOf("/addon/");
-    if (o !== -1)
-      return e.pathname.slice(o);
-  }
-  return "";
 }
 function m(t) {
   let e = (t || "").trim();
@@ -8306,7 +8306,7 @@ function yle() {
 }
 function fle() {
   var c, r;
-  const t = hle(), e = yle(), o = typeof window < "u" && ((c = window.location) != null && c.pathname) ? m(window.location.pathname) : "", s = !!e && e.includes("/app/pages/addon-universal");
+  const t = _le(), e = yle(), o = typeof window < "u" && ((c = window.location) != null && c.pathname) ? m(window.location.pathname) : "", s = !!e && e.includes("/app/pages/addon-universal");
   if (t && s)
     return m(t);
   if (e)
@@ -8349,7 +8349,7 @@ class $le {
    * @param locale 设置语言
    */
   setI18nLanguage(e, o = "") {
-    this.i18n.global.locale != e && (this.i18n.global.locale = e, o && (this.path = o), _le().setLocale(e));
+    this.i18n.global.locale != e && (this.i18n.global.locale = e, o && (this.path = o), hle().setLocale(e));
   }
   loadAllLocaleMessages(e, o) {
   }

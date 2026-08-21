@@ -42,6 +42,8 @@ Route::group('weapp', function() {
     Route::post('version', 'weapp.Version/add');
     //版本列表
     Route::get('version', 'weapp.Version/lists');
+    //删除版本
+    Route::delete('version/:id', 'weapp.Version/del');
     //获取预览码
     Route::get('preview', 'weapp.Version/preview');
     //获取小程序上传日志（会更新状态）

@@ -167,12 +167,13 @@ function del_target_dir($path, $delDir)
     //打开目录句柄
     $handle = opendir($path);
     if ($handle) {
-        while (false !== ($item = readdir($handle))) {
-            if ($item != "." && $item != "..") {
-                if (is_dir("$path/$item")) {
-                    del_target_dir("$path/$item", $delDir);
+        while (false !== ( $item = readdir($handle) )) {
+            if ($item != '.' && $item != '..') {
+                $itemPath = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $item;
+                if (is_dir($itemPath)) {
+                    del_target_dir($itemPath, $delDir);
                 } else {
-                    unlink("$path/$item");
+                    unlink($itemPath);
                 }
             }
         }
@@ -444,7 +445,7 @@ function rmdirs($dir)
     $dh = opendir($dir);
     while ($file = readdir($dh)) {
         if ($file != "." && $file != "..") {
-            $fullpath = $dir . "/" . $file;
+            $fullpath = rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
             if (is_dir($fullpath)) {
                 rmdirs($fullpath);
             } else {
@@ -556,15 +557,17 @@ function dir_copy(string $src = '', string $dst = '', &$files = [], $exclude_dir
     dir_mkdir($dst);
     while (false !== ($file = readdir($dir))) {
         if (($file != '.') && ($file != '..')) {
-            if (is_dir($src . '/' . $file)) {
+            $srcPath = rtrim($src, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+            $dstPath = rtrim($dst, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+            if (is_dir($srcPath)) {
                 // 排除目录
                 if (count($exclude_dirs) && in_array($file, $exclude_dirs)) continue;
-                dir_copy($src . '/' . $file, $dst . '/' . $file, $files, $exclude_dirs, $exclude_files);
+                dir_copy($srcPath, $dstPath, $files, $exclude_dirs, $exclude_files);
             } else {
                 // 排除文件
                 if (count($exclude_files) && in_array($file, $exclude_files)) continue;
-                $copyResult = copy($src . '/' . $file, $dst . '/' . $file);
-                $files[] = $dst . '/' . $file;
+                $copyResult = copy($srcPath, $dstPath);
+                $files[] = $dstPath;
                 if (!$copyResult) {
                     closedir($dir);
                     throw new \core\exception\CommonException("文件{$file}拷贝失败请检查是否有足够的权限");
@@ -697,7 +700,7 @@ function parse_sql($content = '', $string = false, $replace = [])
 function search_dir($path, &$data, $search = '')
 {
     if (is_dir($path)) {
-        $path .= DIRECTORY_SEPARATOR;
+        $path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         $fp = dir($path);
         while ($file = $fp->read()) {
             if ($file != '.' && $file != '..') {
@@ -729,12 +732,12 @@ function getFileMap($path, $arr = [])
         $dir = scandir($path);
         foreach ($dir as $file_path) {
             if ($file_path != '.' && $file_path != '..') {
-                $temp_path = $path . '/' . $file_path;
+                $temp_path = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file_path;
                 if (is_dir($temp_path)) {
-                    $arr[$temp_path] = $file_path;
+                    $arr[ $temp_path ] = $file_path;
                     $arr = getFileMap($temp_path, $arr);
                 } else {
-                    $arr[$temp_path] = $file_path;
+                    $arr[ $temp_path ] = $file_path;
                 }
             }
         }
@@ -1096,7 +1099,7 @@ function checkDirPermissions($dir, $data = [], $exclude_dir = [])
                 if ($file === '.' || $file === '..') {
                     continue;
                 }
-                $fullPath = $dir . DIRECTORY_SEPARATOR . $file;
+                $fullPath = rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
 
                 // 忽略指定目录
                 $is_exclude = false;

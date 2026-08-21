@@ -45,12 +45,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { t } from '@/lang'
 import { getGrowthRuleConfig, setGrowthRuleConfig, getGrowthRuleDict } from '@/app/api/member'
 import Test from '@/utils/test'
 import { cloneDeep } from 'lodash-es'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -60,10 +61,9 @@ const formData = ref<any>({})
 const ruleRefs = ref(null)
 const loading = ref(true)
 
-const modules: any = import.meta.glob('@/**/*.vue')
 getGrowthRuleDict().then(({ data }) => {
     Object.keys(data).forEach((key: string) => {
-        data[key].component && (data[key].component = defineAsyncComponent(modules[data[key].component]))
+        data[key].component && (data[key].component = resolveAsyncComponent(data[key].component))
     })
     rules.value = data
 })

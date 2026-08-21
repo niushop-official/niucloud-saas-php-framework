@@ -50,23 +50,13 @@ const jt = (o, e) => {
 function Ine() {
   return !1;
 }
-const Lo = "/wap";
-function Nne(o) {
-  return o.replace(/^\/wap\/\d+\//, "/wap/");
-}
-function kt(o) {
-  return !o || o.startsWith("http") ? o : o.startsWith("/wap/") ? Nne(o) : o.startsWith("/assets/") ? `${Lo}${o}` : o.startsWith("./") ? `${Lo}/assets/addons/${o.slice(2)}` : `${Lo}/${o.replace(/^\//, "")}`;
-}
-function pt() {
-  return uni;
-}
-const Ho = "__NIUCLOUD_ACTIVE_ADDON_ROUTE__";
-function Dne() {
+const Lo = "__NIUCLOUD_ACTIVE_ADDON_ROUTE__";
+function Nne() {
   const o = globalThis;
-  return o[Ho] || (o[Ho] = K("")), o[Ho];
+  return o[Lo] || (o[Lo] = K("")), o[Lo];
 }
-function Ene() {
-  const o = Dne().value;
+function Dne() {
+  const o = Nne().value;
   if (o)
     return o;
   const e = globalThis.location;
@@ -76,6 +66,16 @@ function Ene() {
       return e.pathname.slice(t);
   }
   return "";
+}
+const Ho = "/wap";
+function Ene(o) {
+  return o.replace(/^\/wap\/\d+\//, "/wap/");
+}
+function kt(o) {
+  return !o || o.startsWith("http") ? o : o.startsWith("/wap/") ? Ene(o) : o.startsWith("/assets/") ? `${Ho}${o}` : o.startsWith("./") ? `${Ho}/assets/addons/${o.slice(2)}` : `${Ho}/${o.replace(/^\//, "")}`;
+}
+function pt() {
+  return uni;
 }
 function eo(o) {
   let e = (o || "").trim();
@@ -92,7 +92,7 @@ function xne() {
 }
 function Rne() {
   var c, a;
-  const o = Ene(), e = xne(), t = typeof window < "u" && ((c = window.location) != null && c.pathname) ? eo(window.location.pathname) : "", n = !!e && e.includes("/app/pages/addon-universal");
+  const o = Dne(), e = xne(), t = typeof window < "u" && ((c = window.location) != null && c.pathname) ? eo(window.location.pathname) : "", n = !!e && e.includes("/app/pages/addon-universal");
   if (o && n)
     return eo(o);
   if (e)

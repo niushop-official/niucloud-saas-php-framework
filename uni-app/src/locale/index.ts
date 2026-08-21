@@ -19,8 +19,11 @@ const t = (message: string) => {
     if (route.startsWith('/addon/')) {
         language.loadLocaleMessages(route.replace(/^\//, ''), uni.getLocale())
     }
-    // 缺词时返回 key 本身，便于排查（而非静默空白）
-    return message
+    // 关键修复：返回【响应式】的 i18n.global.t(key)，而非静态的 message。
+    // 语言包是异步 fetch 的，切换页面时往往尚未加载完成即已渲染，
+    // 此前的 return message 是静态字符串，mergeLocaleMessage 后不会重算 → 永久输出 key。
+    // 改为返回 i18n.global.t(key) 后，vue-i18n 会基于 messages 的响应式依赖在加载完成后自动重新求值。
+    return i18n.global.t(key)
 }
 
 export { language, t }

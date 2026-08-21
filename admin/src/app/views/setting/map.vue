@@ -141,7 +141,7 @@ const save = async (formEl: FormInstance | undefined) => {
  * 点击访问教程
  */
 const tutorialFn = () => {
-    window.open('https://www.kancloud.cn/niucloud/niucloud-admin-develop/3214217')
+    window.open('https://doc.press.niucloud.com/php/saas-framework/use/configFAQ/tencentMapKey.html')
 }
 
 /**

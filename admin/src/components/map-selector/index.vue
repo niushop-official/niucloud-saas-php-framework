@@ -111,8 +111,6 @@ const initTencentMap = () => {
                 const lat = props.latitude ? Number(props.latitude) : 39.909187
                 const center = new TMap.LatLng(lat, lng)
                 map = new TMap.Map(props.containerId, { center, zoom: props.zoom })
-                map.on('tilesloaded', () => loading.value = false)
-
                 marker = createMarker(map)
                 if(!props.disabledClickMarker) {
                     map.on('click', (evt: any) => {
@@ -135,6 +133,12 @@ const initTencentMap = () => {
                 if (props.latitude && props.longitude) {
                     handleLocationChange(lat, lng)
                 }
+
+                // ========== 关键：瓦片加载完成再标记加载成功、触发渲染 ==========
+                map.on('tilesloaded', () => {
+                    loading.value = false
+                    emit('mapReady') // 瓦片完全加载后通知父组件绘制区域
+                })
             } else {
                 loading.value = false
                 ElMessage.error(t('腾讯地图加载失败'))
@@ -350,24 +354,29 @@ const searchAddress = (address: string): Promise<{ lat: number, lng: number }> =
     })
 }
 // 添加圆
+// index.vue addCircle 方法
 const addCircle = (center?: { lat: number; lng: number }, radius = 1000, options?: any) => {
     if (!map) return null
     const key = options?.key || `circle_${Date.now()}`
     let circle = null
-
-    // 创建geometriesData对象
     const geometriesData = { key, center, radius, ...options }
 
     if (mapType.value === 'tencent') {
+        // 新增第二个参数onChange，把完整图形数据抛给父组件
         createCircle(map, geometriesData, (selectedKey) => {
-            // 触发selectChange事件
             emit('selectChange', selectedKey)
+        }, (fullAreaData) => {
+            // 完整抛给父组件 areaChange
+            emit('areaChange', {
+                key: fullAreaData.key,
+                type: 'circle',
+                path: fullAreaData
+            })
         })
-        // 腾讯地图的createCircle不返回值，创建一个包含key的对象添加到overlays
         circle = { key, geometriesData }
     } else {
+        // 天地图原有逻辑不变
         circle = tdCreateCircle(map, geometriesData, (data) => {
-            // 触发areaChange事件，确保path数据干净，不包含循环引用
             emit('areaChange', {
                 key: data.key,
                 type: 'circle',
@@ -378,38 +387,39 @@ const addCircle = (center?: { lat: number; lng: number }, radius = 1000, options
                 }
             })
         }, (selectedKey) => {
-            // 触发selectChange事件
             emit('selectChange', selectedKey)
         })
-        // 为天地图添加geometriesData引用
-        if (circle) {
-            circle.geometriesData = geometriesData
-        }
+        if (circle) circle.geometriesData = geometriesData
     }
-
     if (circle) overlays.value.push(circle)
     return circle
 }
 
+// 添加多边形
 // 添加多边形
 const addPolygon = (paths: any[], options?: any) => {
     if (!map) return null
     const key = options?.key || `poly_${Date.now()}`
     let poly = null
 
-    // 创建geometriesData对象
     const geometriesData = { key, paths, ...options }
 
     if (mapType.value === 'tencent') {
+        // 传入第二个onSelect、第三个onChange回调
         createPolygon(map, geometriesData, (selectedKey) => {
-            // 触发selectChange事件
             emit('selectChange', selectedKey)
+        }, (fullAreaData) => {
+            // 完整抛给父组件 areaChange
+            emit('areaChange', {
+                key: fullAreaData.key,
+                type: 'polygon',
+                path: fullAreaData
+            })
         })
-        // 腾讯地图的createPolygon不返回值，创建一个包含key的对象添加到overlays
         poly = { key, geometriesData }
     } else {
+        // 天地图原有逻辑保持不变
         poly = tdCreatePolygon(map, geometriesData, (data) => {
-            // 触发areaChange事件，确保path数据干净，不包含循环引用
             emit('areaChange', {
                 key: data.key,
                 type: 'polygon',
@@ -422,13 +432,9 @@ const addPolygon = (paths: any[], options?: any) => {
                 }
             })
         }, (selectedKey) => {
-            // 触发selectChange事件
             emit('selectChange', selectedKey)
         })
-        // 为天地图添加geometriesData引用
-        if (poly) {
-            poly.geometriesData = geometriesData
-        }
+        if (poly) poly.geometriesData = geometriesData
     }
 
     if (poly) overlays.value.push(poly)

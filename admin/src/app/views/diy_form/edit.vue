@@ -368,7 +368,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRaw, watch, inject, computed } from 'vue'
+import { ref, reactive, toRaw, watch, inject, computed, defineAsyncComponent } from 'vue'
 import { t } from '@/lang'
 import { ArrowLeft } from "@element-plus/icons-vue"
 import { img } from '@/utils/common'
@@ -604,6 +604,32 @@ initPage({
         }
     }
 
+    // 生产环境：通过编译产物异步加载插件 DIY 组件编辑器
+    if (!import.meta.env.DEV && component.value) {
+        const { loadAddonComponent, getInstalledAddonKeys } = await import('@/utils/addon-loader')
+        const addonKeys = getInstalledAddonKeys()
+        for (const type of Object.values(component.value) as any[]) {
+            if (!type.list) continue
+            for (const rawKey of Object.keys(type.list)) {
+                const compDef = type.list[rawKey]
+                const componentPath = compDef.value?.path || compDef.path || rawKey
+                if (modules[componentPath]) continue
+                modules[componentPath] = defineAsyncComponent(() =>
+                    (async () => {
+                        for (const addon of addonKeys) {
+                            const loader = loadAddonComponent(addon, 'diy/components', componentPath)
+                            try {
+                                const result = await loader()
+                                if (result?.default) return result.default
+                            } catch {}
+                        }
+                        throw new Error(`DIY component "${componentPath}" not found in any addon`)
+                    })()
+                )
+            }
+        }
+    }
+
     loadDiyTemplatePages(data.type);
 
     // 加载预览
@@ -834,7 +860,7 @@ const completeLayoutChange = (e)=>{
 }
 
 const settingTips = () => {
-    window.open('https://www.kancloud.cn/niucloud/niucloud-admin-develop/3213393')
+    window.open('https://doc.press.niucloud.com/php/saas-framework/dev/pluginDev/configLocalDevEnv.html')
 }
 </script>
 

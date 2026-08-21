@@ -32,21 +32,33 @@ function getUniPageRoute(): string {
     }
 }
 
-/** t() 使用的当前路由（优先 addon 桥接页登记的 fullRoute） */
+/** t() 使用的当前路由（仅在确实处于桥接插件页时优先用 addon 桥接登记的 fullRoute） */
 export function resolveLocaleRoutePath(): string {
     const fromAddon = getActiveAddonPageRoute()
-    if (fromAddon) return normalizeRoutePath(fromAddon)
+
+    // 当前真实路由（优先页面栈，其次浏览器地址）
+    const stackRoute = getUniPageRoute()
+    const locRoute = (typeof window !== 'undefined' && window.location?.pathname)
+        ? normalizeRoutePath(window.location.pathname)
+        : ''
+
+    // 关键修复：只有【页面栈真实路由】本身是桥接页 app/pages/addon-universal/* 时，
+    // 才采用 getActiveAddonPageRoute 登记的逻辑路由。因为桥接页的真实栈是
+    // app/pages/addon-universal/index，无法从栈路由得到 /addon/xxx，必须靠登记值。
+    //
+    // 内置插件页（如 /addon/shop/pages/member/index）是【真实路由】，栈路由已经正确，
+    // 必须直接用它，绝不能再走 fromAddon —— 否则会沿用上一个桥接插件残留的登记值，
+    // 导致命名空间错乱（例如登录页误用 shop.pages.member.index）。
+    const isBridgeStack = !!stackRoute && stackRoute.includes('/app/pages/addon-universal')
+
+    if (fromAddon && isBridgeStack) return normalizeRoutePath(fromAddon)
+
+    if (stackRoute) return stackRoute
+    if (locRoute) return locRoute
 
     const inst = getCurrentInstance()
     const fromRouter = inst?.appContext.config.globalProperties.$route?.path as string | undefined
     if (fromRouter) return normalizeRoutePath(fromRouter)
-
-    const fromUni = getUniPageRoute()
-    if (fromUni && fromUni !== '/') return fromUni
-
-    if (typeof window !== 'undefined' && window.location?.pathname) {
-        return normalizeRoutePath(window.location.pathname)
-    }
 
     return '/'
 }

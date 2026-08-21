@@ -46,7 +46,9 @@
 	"uploadWeapp": "上传小程序",
 	"undoAudit" : "撤回审核",
 	"undoAuditTips" : "撤回代码审核，单个账号每天审核撤回次数最多不超过 5 次（每天的额度从0点开始生效），一个月不超过 10 次。是否要继续撤回？",
+	"versionDeleteTips" : "删除后该版本将不可恢复，是否确定删除？",
     "helpInfo": "查看帮助",
+	"weappUploadDot": ".",
 	"weappUpload": {
 		"title": "小程序上传",
 		"noTask": "暂无上传任务",

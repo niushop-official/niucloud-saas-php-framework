@@ -116,7 +116,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, defineAsyncComponent } from 'vue'
 import { t } from '@/lang'
 import { ArrowLeft } from "@element-plus/icons-vue"
 import { FormInstance, ElMessage } from 'element-plus'
@@ -175,6 +175,30 @@ const init = async() => {
     await getPrinterType({}).then((res: any) => {
         if (res.data && res.data.length) {
             printerType.value = res.data;
+
+            // 生产环境：通过编译产物异步加载插件打印组件编辑器
+            if (!import.meta.env.DEV && printerType.value.length) {
+                import('@/utils/addon-loader').then(({ loadAddonComponent, getInstalledAddonKeys }) => {
+                    const addonKeys = getInstalledAddonKeys()
+                    for (const item of printerType.value) {
+                        const componentPath = item.path
+                        if (!componentPath || modules[componentPath]) continue
+                        modules[componentPath] = defineAsyncComponent(() =>
+                            (async () => {
+                                for (const addon of addonKeys) {
+                                    const loader = loadAddonComponent(addon, 'printer/components', componentPath)
+                                    try {
+                                        const result = await loader()
+                                        if (result?.default) return result.default
+                                    } catch {}
+                                }
+                                throw new Error(`Printer component "${componentPath}" not found in any addon`)
+                            })()
+                        )
+                    }
+                })
+            }
+
             handlePrintType(printerType.value[0].key, Boolean(parseInt(formData.template_id)));
         }
         if (!formData.template_id) {

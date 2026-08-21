@@ -37,12 +37,10 @@ class Language {
 
             let pageMessages: Record<string, string> = {}
             if (app) {
-                if (import.meta.env.DEV) {
-                    const messages = await import(/* @vite-ignore */ `@/addon/${app}/lang/${locale}/${file}.json`)
-                    pageMessages = messages.default || {}
-                } else {
-                    pageMessages = await loadAddonLang(app, locale, file)
-                }
+                // dev/prod 统一走 loadAddonLang：
+                // - 部署插件：从 dist/assets/addons/{key}/index.js 的 langs 解析
+                // - 内置插件（随 core 打包，无独立 index.js）：回退到编译期 glob 源码 json
+                pageMessages = await loadAddonLang(app, locale, file)
             } else {
                 const messages = await import(`@/app/lang/${locale}/${file}.json`)
                 pageMessages = messages.default || {}
@@ -56,13 +54,7 @@ class Language {
             // 查询插件的公共语言包（合并到根 key，与 dev 启动时 globEager 行为一致）
             if (app) {
                 try {
-                    let commonMessages: Record<string, string> = {}
-                    if (import.meta.env.DEV) {
-                        const messagesCommon = await import(/* @vite-ignore */ `@/addon/${app}/lang/${locale}/common.json`)
-                        commonMessages = messagesCommon.default || {}
-                    } else {
-                        commonMessages = await loadAddonLang(app, locale, 'common')
-                    }
+                    const commonMessages = await loadAddonLang(app, locale, 'common')
                     Object.keys(commonMessages).forEach(key => {
                         data[key] = commonMessages[key]
                     })

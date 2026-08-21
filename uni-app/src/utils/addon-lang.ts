@@ -22,6 +22,7 @@ type GlobalWapRuntime = typeof globalThis & {
 const WAP_PREFIX = '/wap'
 
 import { getRegisteredAddonModule } from '@/utils/addon-module-registry'
+import { getActiveAddonPageRoute } from '@/utils/addon-page-route'
 
 function wapRuntime(): GlobalWapRuntime {
     return globalThis as GlobalWapRuntime
@@ -223,7 +224,7 @@ export async function initAddonManifests(keys?: string[]) {
         let addonKeys = keys
         if (!addonKeys?.length) {
             try {
-                const res = await fetch(wapUrl('/assets/addons/index.json'))
+                const res = await fetch(wapUrl(`/assets/addons/index.json?_t=${Date.now()}`))
                 if (res.ok) {
                     const data = await res.json()
                     addonKeys = Array.isArray(data.keys) ? data.keys : []
@@ -232,25 +233,14 @@ export async function initAddonManifests(keys?: string[]) {
                 addonKeys = []
             }
         }
-        const verified: string[] = []
-        for (const key of addonKeys || []) {
-            const available = await isAddonEntryAvailable(key)
-            if (!available) {
-                console.warn('[addon-lang] entry probe failed, trusting index.json:', key)
-            }
-            verified.push(key)
-            try {
-                const res = await fetch(addonAssetUrl(key, 'manifest.json'))
-                if (res.ok) getProdManifests()[key] = await res.json()
-            } catch {
-                // skip
-            }
-        }
+        // 首屏仅登记“已安装清单”（来自 index.json），【不】逐个 fetch manifest.json / probe index.js，
+        // 避免插件多时一次性请求所有插件的 index.js，造成首屏空白久、请求风暴。
+        // 真正的 manifest.json / index.js 拉取推迟到 loadAddonModule（首次进入某插件页才按需请求）。
         const installedAddonKeys = getInstalledKeysStore()
         // 合并而非覆盖：保留模块初始化时由 DIY_COMPONENT_MAP 预登记的“内置插件” key。
-        // 运行期 index.json 拉取失败时（verified 为空），内置插件的装修组件仍可正常加载，
+        // 运行期 index.json 拉取失败时（addonKeys 为空），内置插件的装修组件仍可正常加载，
         // 否则 installedAddonKeys 会被清空，导致所有插件装修组件（依赖 isAddonInstalled 判定）全部空白。
-        const merged = Array.from(new Set([...installedAddonKeys, ...verified]))
+        const merged = Array.from(new Set([...installedAddonKeys, ...(addonKeys || [])]))
         installedAddonKeys.length = 0
         installedAddonKeys.push(...merged)
         setProdReady(true)
@@ -325,11 +315,64 @@ export async function preloadAllAddonLocales(
 
     if (!isProdReady()) await initAddonManifests()
     registerAddonLocaleMerger(merge)
-    for (const addon of getInstalledAddonKeys()) {
+    // 首屏仅预热当前路由对应的插件语言包，其余插件惰性加载（避免插件多时 index.js 请求风暴、首屏空白久）
+    const addon = resolveRouteAddonKey()
+    if (addon && isAddonInstalled(addon)) {
         try {
             await loadAddonModule(addon)
         } catch {
             // skip broken addon
         }
+    }
+}
+
+/**
+ * 解析当前路由对应的插件 key（仅 H5 运行期有意义）。
+ * 优先取桥接页登记的真实路由（globalThis 共享），兜底从浏览器地址 /addon/{key}/pages/... 还原。
+ */
+export function resolveRouteAddonKey(): string {
+    // #ifndef H5
+    return ''
+    // #endif
+    // #ifdef H5
+    try {
+        const route = getActiveAddonPageRoute()
+        if (route) {
+            const m = route.match(/^\/?addon\/([^/]+)\//)
+            if (m) return m[1]
+        }
+    } catch {}
+    const loc = (globalThis as any).location
+    if (loc && typeof loc.pathname === 'string') {
+        const idx = loc.pathname.indexOf('/addon/')
+        if (idx !== -1) {
+            const m = loc.pathname.slice(idx).match(/^\/?addon\/([^/]+)\//)
+            if (m) return m[1]
+        }
+    }
+    return ''
+    // #endif
+}
+
+/**
+ * 预热指定插件（供导航守卫在路由切换时按需懒加载其余插件）。
+ */
+export async function preloadRouteAddon(
+    addon: string,
+    merge?: (locale: string, messages: Record<string, string>) => void
+) {
+    // #ifdef H5
+    if (import.meta.env.DEV) return
+    // #endif
+    // #ifndef H5
+    return
+    // #endif
+    if (!addon || !isAddonInstalled(addon)) return
+    if (merge) registerAddonLocaleMerger(merge)
+    if (!isProdReady()) await initAddonManifests()
+    try {
+        await loadAddonModule(addon)
+    } catch {
+        // skip broken addon
     }
 }

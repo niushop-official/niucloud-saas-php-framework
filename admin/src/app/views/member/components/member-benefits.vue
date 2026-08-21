@@ -5,9 +5,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineAsyncComponent, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { t } from '@/lang'
 import { getBenefitsDict } from '@/app/api/member'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const benefits = ref({})
 const props = defineProps({
@@ -40,10 +41,9 @@ watch(() => formData.value, () => {
     value.value = formData.value
 }, { deep: true })
 
-const modules: any = import.meta.glob('@/**/*.vue')
 getBenefitsDict().then(({ data }) => {
     Object.keys(data).forEach((key: string) => {
-        data[key].component && (data[key].component = defineAsyncComponent(modules[data[key].component]))
+        data[key].component && (data[key].component = resolveAsyncComponent(data[key].component))
     })
     benefits.value = data
 })

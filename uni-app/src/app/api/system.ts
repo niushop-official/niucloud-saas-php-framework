@@ -140,6 +140,14 @@ export function getAddressByLatlng(params: Record<string, any>) {
 }
 
 /**
+ * 通过地址查询经纬度（地理编码）
+ * @param params
+ */
+export function getLatlngByAddress(params: Record<string, any>) {
+    return request.get(`area/latlng_by_address`, params, { showErrorMessage: true })
+}
+
+/**
  * 获取海报
  * @returns
  */

@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "node scripts/build-all.cjs",
+        "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 node scripts/build-all.cjs",
         "build:core": "node scripts/build-shared.cjs && node scripts/clean-core.cjs && node node_modules/vite/bin/vite.js build --config vite.config.core.ts --force && node scripts/verify-core-lang.cjs && node scripts/assemble-admin.cjs",
         "build:shared": "node scripts/build-shared.cjs",
         "build:addon": "node scripts/build-addon.cjs",

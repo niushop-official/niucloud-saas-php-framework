@@ -24,22 +24,22 @@ Route::rule('/', function () {
 // 管理后台
 Route::rule('admin', function () {
     return view(app()->getRootPath() . 'public/admin/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 // 站点端
 Route::rule('site', function () {
     return view(app()->getRootPath() . 'public/admin/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 // 站点管理端
 Route::rule('home', function () {
     return view(app()->getRootPath() . 'public/admin/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 // 装修端
 Route::rule('decorate/:any', function () {
     return view(app()->getRootPath() . 'public/admin/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 //用于公众号授权证书
 Route::any('MP_verify_<name>.txt', function ($name) {
@@ -57,17 +57,17 @@ Route::any('wap/<id>/MP_verify_<name>.txt', function ($name) {
 // 手机端
 Route::rule('wap', function () {
     return view(app()->getRootPath() . 'public/wap/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 // 电脑端
 Route::rule('web', function () {
     return view(app()->getRootPath() . 'public/web/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 // 天地图
 Route::rule('tianmap', function () {
     return view(app()->getRootPath() . 'public/tianmap/index.html');
-})->pattern([ 'any' => '\w+' ]);
+})->pattern([ 'any' => '[\w/]+' ]);
 
 // 加载插件的route
 $addon_dir = root_path() . 'addon';

@@ -17,8 +17,20 @@ let installedAddonKeys: string[] = []
 let prodReady = false
 let prodInitPromise: Promise<void> | null = null
 const addonModuleCache: Record<string, Promise<Record<string, unknown> | null>> = {}
+// 跨 chunk 共享：vite 会把 addon-lang.ts 同时打进主 chunk 与 admin-lang shared chunk，
+// 两个 chunk 各自有一份模块级变量，会重复执行 initAddonManifests IIFE 并重复 fetch index.json。
+// 提升到 window 上做去重，IIFE 全局只跑一次。getter/setter 保证两路读写都看到同一份。
+const __getInit = (): Promise<void> | null =>
+    ((globalThis as any).__addonInitPromise__ as Promise<void> | null | undefined) ?? null
+const __setInit = (p: Promise<void> | null) => {
+    prodInitPromise = p
+    ;(globalThis as any).__addonInitPromise__ = p
+}
 
 const ADMIN_PREFIX = '/admin'
+
+// 系统支持的语言（与 i18n.ts 中 zhCn / en 对应）
+const supportedLocales = ['zh-cn', 'en']
 
 export function adminUrl(relative: string) {
     if (!relative) return relative
@@ -30,6 +42,13 @@ export function adminUrl(relative: string) {
 
 function addonAssetUrl(addon: string, ...segments: string[]) {
     const rel = ['assets', 'addons', addon, ...segments].join('/').replace(/\/+/g, '/')
+    return `${ADMIN_PREFIX}/${rel}`
+}
+
+// 语言包资产路径：尊重 manifest.langBase（默认 ./lang/），兼容其他项目编译时自定义语言目录
+function addonLangAssetUrl(addon: string, locale: string, file: string) {
+    const base = (getProdManifests()[addon]?.langBase || './lang/').replace(/^\.\//, '').replace(/\/+$/, '')
+    const rel = ['assets', 'addons', addon, base, locale, `${file}.json`].join('/').replace(/\/+/g, '/')
     return `${ADMIN_PREFIX}/${rel}`
 }
 
@@ -144,9 +163,10 @@ export async function initAddonManifests(keys?: string[]) {
         prodReady = true
         return
     }
-    if (prodInitPromise) return prodInitPromise
+    const shared = __getInit()
+    if (shared) return shared
 
-    prodInitPromise = (async () => {
+    __setInit((async () => {
         prodManifests = {}
         installedAddonKeys = []
         let addonKeys = keys
@@ -171,16 +191,12 @@ export async function initAddonManifests(keys?: string[]) {
         }
         const verifiedKeys: string[] = []
         for (const key of addonKeys || []) {
-            // 如果 manifest 已从 index.json 获取，直接验证
+            // index.json 已打包 manifests 的插件，直接视为可用（无需 N 次 HEAD 探测）
             if (prodManifests[key]) {
-                if (await isAddonEntryAvailable(key)) {
-                    verifiedKeys.push(key)
-                } else {
-                    delete prodManifests[key]
-                }
+                verifiedKeys.push(key)
                 continue
             }
-            // 兼容旧版：单独请求 manifest.json
+            // 兼容旧版：单独请求 manifest.json（仍做一次探测）
             if (!(await isAddonEntryAvailable(key))) continue
             verifiedKeys.push(key)
             try {
@@ -195,9 +211,20 @@ export async function initAddonManifests(keys?: string[]) {
         }
         installedAddonKeys = verifiedKeys
         prodReady = true
-    })()
+    })())
 
     return prodInitPromise
+}
+
+/**
+ * 预热指定路由对应的插件模块（首屏/切换时调用）。
+ * 仅加载当前路由相关插件，其余插件在访问对应页面时由 loadAddonModule 惰性加载（已带缓存去重），
+ * 避免首屏按插件总数并行拉取 index.js 造成空白与请求风暴。
+ */
+export async function preloadRouteAddon(route: { meta: Record<string, unknown>; matched: Array<{ meta: Record<string, unknown> }>; path: string }) {
+    const addon = resolveRouteAddon(route)
+    if (!addon || !isAddonInstalled(addon)) return
+    loadAddonModule(addon)
 }
 
 export function getInstalledAddonKeys(): string[] {
@@ -209,6 +236,23 @@ export function getProdManifests(): Record<string, AddonManifest> {
     return prodManifests
 }
 
+// 内置插件（admin/src/addon 下，随 core 一起打包，部署模式下没有独立 dist/assets/addons/{key}/index.js）
+// 的语言包不会被打进任何部署插件的 index.js，也不存在 /admin/assets/addons/{key}/lang/ 资源，
+// 必须通过编译期 glob 直接解析源码 json。这里用懒 glob（按需加载，不膨胀 bundle）。
+const builtinAddonLangFiles = import.meta.glob('@/addon/**/lang/**/*.json', { eager: false })
+
+export async function loadBuiltinAddonLangFile(addon: string, locale: string, file: string): Promise<Record<string, string>> {
+    const key = `@/addon/${addon}/lang/${locale}/${file}.json`
+    const loader = (builtinAddonLangFiles as Record<string, () => Promise<{ default: Record<string, string> }>>)[key]
+    if (!loader) return {}
+    try {
+        const mod = await loader()
+        return (mod.default || {}) as Record<string, string>
+    } catch {
+        return {}
+    }
+}
+
 export async function preloadAllAddonLangs(
     merge: (locale: string, messages: Record<string, string>) => void
 ) {
@@ -218,15 +262,22 @@ export async function preloadAllAddonLangs(
     for (const addon of getInstalledAddonKeys()) {
         try {
             const mod = await loadAddonModule(addon)
-            if (!mod) continue
-            const langs = mod.langs as Record<string, Record<string, unknown>> | undefined
-            if (!langs) continue
-            for (const [locale, files] of Object.entries(langs)) {
-                const merged: Record<string, string> = {}
-                for (const [file, pack] of Object.entries(files || {})) {
-                    Object.assign(merged, flattenLangPack(file, unwrapLangPack(pack)))
+            const langs = mod?.langs as Record<string, Record<string, unknown>> | undefined
+            if (langs) {
+                for (const [locale, files] of Object.entries(langs)) {
+                    const merged: Record<string, string> = {}
+                    for (const [file, pack] of Object.entries(files || {})) {
+                        Object.assign(merged, flattenLangPack(file, unwrapLangPack(pack)))
+                    }
+                    if (Object.keys(merged).length) merge(locale, merged)
                 }
-                if (Object.keys(merged).length) merge(locale, merged)
+            } else {
+                // index.js 未内联 langs（如其他项目编译的插件包未打包语言），
+                // 从资产目录拉取 common 语言包作为兜底
+                for (const locale of supportedLocales) {
+                    const common = await loadAddonLang(addon, locale, 'common')
+                    if (Object.keys(common).length) merge(locale, common)
+                }
             }
         } catch {
             // skip broken addon module
@@ -259,10 +310,14 @@ export async function loadAddonLang(addon: string, locale: string, file: string)
             if (Object.keys(messages).length) return messages
         }
     } catch {
-        // fallback to static lang files
+        // fallback to builtin glob / static lang files
     }
 
-    const url = addonAssetUrl(addon, 'lang', locale, `${file}.json`)
+    // 内置插件（随 core 打包，无独立部署 index.js）回退到源码 glob 解析
+    const builtin = await loadBuiltinAddonLangFile(addon, locale, file)
+    if (Object.keys(builtin).length) return builtin
+
+    const url = addonLangAssetUrl(addon, locale, file)
     try {
         const res = await fetch(url)
         if (res.ok) return await res.json()

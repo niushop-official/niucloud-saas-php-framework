@@ -179,12 +179,13 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, defineAsyncComponent } from 'vue'
+import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { getDiyFormFieldsList, getDiyFormFieldStat, getFormRecords, getFormRecordsInfo, deleteFormRecords, getFormRecordsMember } from '@/app/api/diy_form'
 import { useRouter } from 'vue-router'
 import { img } from '@/utils/common'
 import { ElMessageBox, FormInstance } from 'element-plus'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const router = useRouter()
 const showDialog = ref(false)
@@ -234,7 +235,6 @@ const getDiyFormFieldStatFn = (form_id: any) => {
     })
 }
 
-const modules: any = import.meta.glob('@/**/*.vue')
 const formDetail = ref([])
 
 const formDetailEvent = (row: any) => {
@@ -285,8 +285,9 @@ const loadFormRecordsListFn = (page: number = 1) => {
         formData.data = res.data.data
         formData.data.forEach((item: any) => {
             for (const key: any in item.recordsFieldList) {
-                if (modules[item.recordsFieldList[key].detailComponent]) {
-                    item.recordsFieldList[key].detailComponent && (item.recordsFieldList[key].detailComponent = defineAsyncComponent(modules[item.recordsFieldList[key].detailComponent]))
+                const compPath = item.recordsFieldList[key].detailComponent
+                if (compPath) {
+                    item.recordsFieldList[key].detailComponent = resolveAsyncComponent(compPath)
                 }
             }
         })

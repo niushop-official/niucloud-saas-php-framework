@@ -26,7 +26,7 @@ export const useShare = () => {
     }
 
     const getQuery = () => {
-        let query: any = currShareRoute().params;
+        let query: any = resolveShareRoute().params;
         let wap_member_id = uni.getStorageSync('wap_member_id');
         if (wap_member_id) {
             query.mid = wap_member_id;
@@ -41,9 +41,32 @@ export const useShare = () => {
 
     }
 
+    // 桥接页（app/pages/addon-universal）是壳页面，真实插件路由在 _orig 参数里。
+    // 分享接口需要按真实插件路由查询分享配置，故桥接场景下需还原为原始 route + params。
+    const resolveShareRoute = () => {
+        const route = '/' + currRoute()
+        const params = currShareRoute().params
+        if (route.indexOf('/app/pages/addon-universal') != -1 && params._orig) {
+            const orig: string = decodeURIComponent(params._orig)
+            const [origPath, origQuery] = orig.split('?')
+            const origParams: any = {}
+            if (origQuery) {
+                origQuery.split('&').forEach((kv: string) => {
+                    if (!kv) return
+                    const idx = kv.indexOf('=')
+                    if (idx == -1) origParams[kv] = ''
+                    else origParams[kv.slice(0, idx)] = decodeURIComponent(kv.slice(idx + 1))
+                })
+            }
+            return { route: origPath, params: origParams }
+        }
+        return { route, params }
+    }
+
     const setShare = (options: any = {}) => {
         if (currRoute() == '' || currRoute().indexOf('app/pages/index/close') != -1 || currRoute().indexOf('app/pages/index/nosite') != -1) return;
 
+        const shareRoute = resolveShareRoute()
         let queryStr = getQuery();
         let h5Link = '';
         // #ifdef H5
@@ -54,14 +77,14 @@ export const useShare = () => {
         // #endif
         
         // #ifdef APP-PLUS
-        h5Link = systemStore.site.wap_url + currShareRoute().path + (queryStr.length > 0 ? '?' + queryStr.join('&') : '');
+        h5Link = systemStore.site.wap_url + shareRoute.route + (queryStr.length > 0 ? '?' + queryStr.join('&') : '');
         wechatOptions = {
             link: h5Link
         }
         // #endif
 
         weappOptions = {
-            path: '/' + currRoute() + (queryStr.length > 0 ? '?' + queryStr.join('&') : ''),
+            path: shareRoute.route + (queryStr.length > 0 ? '?' + queryStr.join('&') : ''),
             query: queryStr.join('&'),
         }
         
@@ -101,8 +124,8 @@ export const useShare = () => {
             }
         } 
         getShareInfo({
-               route: '/' + currRoute(),
-               params: JSON.stringify(currShareRoute().params)
+               route: shareRoute.route,
+               params: JSON.stringify(shareRoute.params)
            }).then((res: any) => {
             let data = res.data;
 

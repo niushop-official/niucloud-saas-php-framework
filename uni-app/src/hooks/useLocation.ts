@@ -52,23 +52,27 @@ export function useLocation(isOpenLocation: any) {
                         getAddressByLatlngFn(latlng);
                     },
                     fail: (res) => {
-                        uni.showToast({ title: res.errMsg, icon: 'none', duration: 15000 })
+                        // uni.showToast({ title: res.errMsg, icon: 'none', duration: 15000 })
                         systemStore.defaultPositionAddress = '定位失败';
                         if (res.errno) {
                             if (res.errno == 104) {
                                 let msg = '用户未授权隐私权限，获取位置失败';
-                                uni.showToast({ title: msg, icon: 'none' })
+                                console.log(msg)
+                                // uni.showToast({ title: msg, icon: 'none' })
                             } else if (res.errno == 112) {
                                 let msg = '隐私协议中未声明，获取位置失败';
-                                uni.showToast({ title: msg, icon: 'none' })
+                                console.log(msg)
+                                // uni.showToast({ title: msg, icon: 'none' })
                             }
                         }
                         if (res.errMsg) {
                             if (res.errMsg.indexOf('getLocation:fail') != -1 || res.errMsg.indexOf('deny') != -1 || res.errMsg.indexOf('denied') != -1) {
                                 let msg = '用户未授权获取位置权限，将无法提供服务';
-                                uni.showToast({ title: msg, icon: 'none' })
+                                console.log(msg)
+                                // uni.showToast({ title: msg, icon: 'none' })
                             } else {
-                                uni.showToast({ title: res.errMsg, icon: 'none' })
+                                // uni.showToast({ title: res.errMsg, icon: 'none' })
+                                console.log(res.errMsg)
                             }
                         }
                     }
@@ -161,12 +165,15 @@ export function useLocation(isOpenLocation: any) {
                 if (res.errMsg && res.errno) {
                     if (res.errno == 104) {
                         let msg = '用户未授权隐私权限，选择位置失败';
-                        uni.showToast({ title: msg, icon: 'none' })
+                        console.log(msg)
+                        // uni.showToast({ title: msg, icon: 'none' })
                     } else if (res.errno == 112) {
                         let msg = '隐私协议中未声明，打开地图选择位置失败';
-                        uni.showToast({ title: msg, icon: 'none' })
+                        console.log(msg)
+                        // uni.showToast({ title: msg, icon: 'none' })
                     } else {
                         uni.showToast({ title: res.errMsg, icon: 'none' })
+                        console.log(res.errMsg)
                     }
                 }
             }

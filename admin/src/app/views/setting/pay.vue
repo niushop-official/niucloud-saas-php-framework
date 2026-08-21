@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, nextTick, defineAsyncComponent } from 'vue'
+import { ref, watch, nextTick } from 'vue'
 import { t } from '@/lang'
 import { getPayConfigList, setPatConfig } from '@/app/api/sys'
 import { getAllPayType } from '@/app/api/pay'
@@ -69,23 +69,24 @@ import { ElMessage } from 'element-plus'
 import Sortable, { SortableEvent } from 'sortablejs'
 import { useRoute } from 'vue-router'
 import { cloneDeep } from 'lodash-es'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const route = useRoute()
 const pageName = route.meta.title
 
 const payTypeList = ref([])
 const payTypeRefs = ref({})
-const modules: any = import.meta.glob('@/**/*.vue')
 
 getAllPayType().then(({ data }) => {
     Object.keys(data).forEach((key: string) => {
-        data[key].setting_component && (data[key].setting_component = defineAsyncComponent(modules[data[key].setting_component]))
+        data[key].setting_component && (data[key].setting_component = resolveAsyncComponent(data[key].setting_component))
     })
     payTypeList.value = data
 })
 
 const setPayTypeRefs = (el: any, index: string) => {
-    payTypeRefs.value[index] = (el)
+    // 异步组件加载完成前 el 可能为 undefined，仅在其存在时记录，避免覆盖已就绪实例
+    if (el) payTypeRefs.value[index] = el
 }
 
 const payLoading = ref(true)
@@ -137,8 +138,13 @@ const setConfigInfo = (data:any) => {
 
 // 初始化配置信息
 const configPayFn = (data:any) => {
-    payTypeRefs.value[data.key].setFormData(data)
-    payTypeRefs.value[data.key].showDialog = true
+    const comp = payTypeRefs.value[data.key]
+    if (!comp) {
+        ElMessage.warning('支付配置组件加载中，请稍后再试')
+        return
+    }
+    comp.setFormData(data)
+    comp.showDialog = true
 }
 
 // 开启支付方式

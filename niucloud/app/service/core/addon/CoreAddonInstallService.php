@@ -688,8 +688,8 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $to_web_layouts = $this->root_path . 'web' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
-        $to_wap_dist_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . $this->addon . DIRECTORY_SEPARATOR;
-        $to_admin_dist_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . $this->addon . DIRECTORY_SEPARATOR;
+        $to_wap_dist_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_admin_dist_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
 
         // 卸载admin管理端
         if (is_dir($to_admin_dir)) del_target_dir($to_admin_dir, true);

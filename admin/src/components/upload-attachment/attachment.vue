@@ -370,7 +370,7 @@ const getAttachmentList = debounce((page: number = 1) => {
         }
     }).catch((err) => {
         if (prop.type == 'image' && err.response.status == 500) {
-            showElMessage({ message: 'php脚本内存不足请加大php配置中memory_limit的数值, <a style="text-decoration: underline;" href="https://www.kancloud.cn/niucloud/niucloud-admin-develop/3249216" target="blank">点击查看相关手册</a>', type: 'error', dangerouslyUseHTMLString: true })
+            showElMessage({ message: 'php脚本内存不足请加大php配置中memory_limit的数值, <a style="text-decoration: underline;" href="https://doc.press.niucloud.com/php/saas-framework/use/installFAQ/memorySizeExhausted.html" target="blank">点击查看相关手册</a>', type: 'error', dangerouslyUseHTMLString: true })
         }
         attachment.loading = false
     })

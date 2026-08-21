@@ -139,7 +139,7 @@ export function editVersion(params: Record<string, any>) {
  * @returns
  */
 export function deleteVersion(id: string) {
-    return request.delete(`applet/version/${ id }`)
+    return request.delete(`weapp/version/${ id }`)
 }
 
 /**

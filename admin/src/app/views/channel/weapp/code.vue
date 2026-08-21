@@ -62,6 +62,7 @@
                         <el-button type="primary" link v-if="row.status == -1 || row.status == -2" @click="handleFailReason(row)">{{ t('failReason') }}</el-button>
                         <el-button type="primary" link v-if="row.status == -2" @click="againUpload(row)" :loading="uploading">{{ t('againUpload') }}</el-button>
                         <el-button type="primary" link v-if="row.status == 2" @click="undoAuditFn(row)">{{ t('undoAudit') }}</el-button>
+                        <el-button type="danger" link @click="delVersion(row)">{{ t('delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -110,11 +111,11 @@
                         <el-form-item prop="code1">
                             <el-input v-model.number="form.code1"  class="!w-[70px]" :placeholder="t('codePlaceholder')" />
                         </el-form-item>
-                        <span class="mx-[10px]">{{ t('weappUpload.dot') }}</span>
+                        <span class="mx-[10px]">{{ t('weappUploadDot') }}</span>
                         <el-form-item prop="code2">
                             <el-input v-model.number="form.code2" class="!w-[70px]" :placeholder="t('codePlaceholder')"  />
                         </el-form-item>
-                        <span class="mx-[10px]">{{ t('weappUpload.dot') }}</span>
+                        <span class="mx-[10px]">{{ t('weappUploadDot') }}</span>
                         <el-form-item prop="code3">
                             <el-input v-model.number="form.code3" class="!w-[70px]" :placeholder="t('codePlaceholder')"  />
                         </el-form-item>
@@ -161,7 +162,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
-import { setWeappVersion, getWeappPreview, getWeappVersionList, getWeappUploadLog, getWeappConfig } from '@/app/api/weapp'
+import { setWeappVersion, getWeappPreview, getWeappVersionList, getWeappUploadLog, getWeappConfig, deleteVersion } from '@/app/api/weapp'
 import { t } from '@/lang'
 import { useRoute, useRouter } from 'vue-router'
 import { getAuthInfo } from '@/app/api/module'
@@ -536,6 +537,25 @@ const undoAuditFn = (data: any) => {
             getWeappVersionListFn()
         })
     })
+}
+
+/**
+ * 删除版本
+ * @param data
+ */
+const delVersion = (data: any) => {
+    ElMessageBox.confirm(
+        t('versionDeleteTips'),
+        t('warning'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel')
+        }
+    ).then(() => {
+        deleteVersion(data.id).then(() => {
+            getWeappVersionListFn()
+        })
+    }).catch(() => {})
 }
 
 const failReason = ref('')

@@ -483,6 +483,32 @@ initPoster({
         }
     }
 
+    // 生产环境：通过编译产物异步加载插件海报组件编辑器
+    if (!import.meta.env.DEV && component.value) {
+        const { loadAddonComponent, getInstalledAddonKeys } = await import('@/utils/addon-loader')
+        const addonKeys = getInstalledAddonKeys()
+        for (const type of Object.values(component.value) as any[]) {
+            if (!type.list) continue
+            for (const rawKey of Object.keys(type.list)) {
+                const compDef = type.list[rawKey]
+                const componentPath = compDef.value?.path || compDef.path || rawKey
+                if (modules[componentPath]) continue
+                modules[componentPath] = defineAsyncComponent(() =>
+                    (async () => {
+                        for (const addon of addonKeys) {
+                            const loader = loadAddonComponent(addon, 'poster/components', componentPath)
+                            try {
+                                const result = await loader()
+                                if (result?.default) return result.default
+                            } catch {}
+                        }
+                        throw new Error(`Poster component "${componentPath}" not found in any addon`)
+                    })()
+                )
+            }
+        }
+    }
+
     loadPosterTemplate()
 
 })

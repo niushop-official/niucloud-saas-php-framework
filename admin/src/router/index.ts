@@ -7,6 +7,7 @@ import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import { setWindowTitle, getAppType, urlToRouteRaw } from '@/utils/common'
 import { resolveRouteAddon, resolveRouteView } from '@/utils/addon-loader'
+import { preloadRouteAddon } from '@/utils/addon-lang'
 
 // 加载插件中定义的router（仅开发环境从源码加载）
 const ADDON_ROUTE: any[] = []
@@ -74,6 +75,9 @@ router.beforeEach(async (to: any, from, next) => {
         resolveRouteView(to),
         systemStore.lang
     );
+
+    // 预热当前路由对应的插件模块（仅加载相关插件，其余惰性）
+    await preloadRouteAddon(to)
 
     let matched: any = to.matched;
     if (matched && matched.length && matched[0].path != '/:pathMatch(.*)*') {

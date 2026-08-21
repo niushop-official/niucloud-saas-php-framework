@@ -38,10 +38,11 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { getStorageList } from '@/app/api/sys'
 import { useRoute } from 'vue-router'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const route = useRoute()
 const pageName = route.meta.title
@@ -52,7 +53,6 @@ const storageTableData = reactive({
 })
 const loading = ref(true)
 
-const modules: any = import.meta.glob('@/**/*.vue')
 /**
  * 获取配置信息
  */
@@ -60,7 +60,7 @@ const loadStorageList = () => {
     loading.value = true
     getStorageList().then(({ data }) => {
         Object.keys(data).forEach((key: string) => {
-            data[key].component && (data[key].component = defineAsyncComponent(modules[data[key].component]))
+            data[key].component && (data[key].component = resolveAsyncComponent(data[key].component))
         })
         storageTableData.data = data
         loading.value = false

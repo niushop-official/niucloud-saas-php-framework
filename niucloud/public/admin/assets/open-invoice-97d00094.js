@@ -1,1 +1,0 @@
-import{_ as o}from"./open-invoice.vue_vue_type_script_setup_true_lang-cef7a1b8.js";import"vue";import"/admin/assets/shared/admin-lang.js";import"./order-1ff5e68b.js";import"./index-e730ce9b.js";import"pinia";import"@element-plus/icons-vue";import"axios";import"vue-router";import"/admin/assets/shared/admin-lang.js";export{o as default};

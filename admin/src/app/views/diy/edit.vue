@@ -685,7 +685,7 @@ const preview = () => {
 }
 
 const settingTips = () => {
-    window.open('https://www.kancloud.cn/niucloud/niucloud-admin-develop/3213393')
+    window.open('https://doc.press.niucloud.com/php/saas-framework/dev/pluginDev/configLocalDevEnv.html')
 }
 </script>
 

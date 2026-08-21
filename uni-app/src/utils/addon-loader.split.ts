@@ -8,6 +8,7 @@ import {
     isAddonInstalled,
     loadAddonModule,
     preloadAllAddonLocales,
+    preloadRouteAddon,
     ensureAddonStyles,
     wapUrl
 } from '@/utils/addon-lang'
@@ -67,12 +68,42 @@ export async function initSplitBuildRuntime() {
     // addInterceptor 必须同步注册，不能等 await，否则插件页内的导航拦截会遗漏
     registerUniversalAddonRoutes()
     await initAddonManifests()
+    // 首屏仅预热当前路由对应的插件语言包，其余插件惰性加载（避免插件多时 index.js 请求风暴、首屏空白久）
     await preloadAllAddonLocales((locale, messages) => {
         i18n.global.mergeLocaleMessage(locale, messages)
     })
+    // 导航守卫内对切换到的新插件做按需懒加载（不阻塞导航）
+    hookRouteAddonPreload()
     // 部署安装的外部打包插件不在构建期静态注册表中，需运行时补充解析其 diy 组件
     const { ensureRuntimeDiyRegistry } = await import('./diy-component-runtime-registry')
     await ensureRuntimeDiyRegistry()
+}
+
+/**
+ * 在 vue-router 导航守卫中对目标路由所属插件做懒加载，
+ * 使首次进入某插件页时才去拉取该插件的 index.js / 语言包，其余插件保持未加载。
+ */
+function hookRouteAddonPreload() {
+    // #ifdef H5
+    try {
+        let router: any = null
+        try { router = (getApp() as any)?.$router } catch { /* ignore */ }
+        if (!router) {
+            try { router = (uni as any)?.$router } catch { /* ignore */ }
+        }
+        if (!router || typeof router.afterEach !== 'function') return
+        router.afterEach((to: any) => {
+            const path: string = to?.path || ''
+            const m = path.match(/^\/?addon\/([^/]+)\//)
+            if (!m) return
+            const addon = m[1]
+            // 不阻塞导航，后台懒加载
+            preloadRouteAddon(addon, (locale, messages) => {
+                i18n.global.mergeLocaleMessage(locale, messages)
+            }).catch(() => {})
+        })
+    } catch {}
+    // #endif
 }
 
 /**

@@ -100,17 +100,30 @@ const handleWeappLanguage = (mode) => {
     }
 }
 
-const handleProjectConfig = (mode) => {
-    const src = `./dist/${mode}/mp-weixin/project.config.json`
+const handleProjectConfig = (mpDir) => {
+    const src = path.join(mpDir, 'project.config.json')
 
     try {
         let content = fs.readFileSync(src, 'utf8');
         const config = JSON.parse(content)
         config.setting.minifyWXML = false
+        config.setting.minified = true
+        config.setting.minifyWXSS = true
+        config.setting.ignoreUploadUnusedFiles = true
         fs.writeFileSync(src, JSON.stringify(config))
+        console.log(`[publish] project.config.json patched -> ${path.relative(__dirname, src)}`)
     } catch (err) {
         console.log(err)
     }
+}
+
+/** 根据构建模式返回 mp 产物目录：
+ *  - build（框架包 / 全量合并）：dist/build/mp-core
+ *  - dev：dist/dev/mp-weixin
+ */
+const resolveMpOutDir = (mode) => {
+    if (mode === 'build') return path.join(__dirname, 'dist', 'build', 'mp-core')
+    return path.join(__dirname, 'dist', mode, 'mp-weixin')
 }
 
 /** dev / build 编译完成后：内联 diy-group + 语言/bridge/工程配置 */
@@ -123,7 +136,7 @@ const handleWeappPostProcess = (mode) => {
 
 const handleWeappProjectConfigSafe = (mode) => {
     try {
-        handleProjectConfig(mode)
+        handleProjectConfig(resolveMpOutDir(mode))
     } catch (err) {
         console.log(err)
     }

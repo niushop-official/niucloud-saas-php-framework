@@ -175,7 +175,7 @@
                     <template #description>
                         <span class="text-[#999]">{{ t("describe3") }}</span>
                         <div class="mt-[20px] mb-[40px] h-[32px]">
-                            <el-button type="primary" plain @click="linkEvent('https://www.kancloud.cn/niucloud/niucloud-admin-develop/3225439')">{{t("btn3") }}</el-button>
+                            <el-button type="primary" plain @click="linkEvent('https://doc.press.niucloud.com/php/saas-framework/dev/pluginDev/introduction.html')">{{t("btn3") }}</el-button>
                         </div>
                     </template>
                 </el-step>

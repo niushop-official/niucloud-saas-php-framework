@@ -25,11 +25,12 @@
 
 <script lang="ts" setup>
 import { t } from '@/lang'
-import { ref, reactive, defineAsyncComponent, computed, watch } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { FormRules } from 'element-plus'
 import { getGiftDict } from '@/app/api/member'
 import { guid, filterNumber } from '@/utils/common'
 import Test from '@/utils/test'
+import { resolveAsyncComponent } from '@/utils/core-component-resolver'
 
 const gifts = ref({})
 const props = defineProps({
@@ -72,10 +73,9 @@ watch(() => formData.value, () => {
     value.value = formData.value
 }, { deep: true })
 
-const modules: any = import.meta.glob('@/**/*.vue')
 getGiftDict().then(({ data }) => {
     Object.keys(data).forEach((key: string) => {
-        data[key].component && (data[key].component = defineAsyncComponent(modules[data[key].component]))
+        data[key].component && (data[key].component = resolveAsyncComponent(data[key].component))
     })
     gifts.value = data
 })

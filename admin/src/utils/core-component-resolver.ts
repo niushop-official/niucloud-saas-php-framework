@@ -3,6 +3,7 @@
  */
 import type { Component } from 'vue'
 import { defineAsyncComponent } from 'vue'
+import { loadAddonModule } from '@/utils/addon-loader'
 
 export const coreVueModules = {
     ...import.meta.glob('../app/**/*.vue'),
@@ -43,13 +44,19 @@ const allAddonVueModules = import.meta.glob('../addon/**/views/**/*.vue')
 export async function loadCoreVueModule(componentPath: string) {
     const loader = findCoreModuleLoader(componentPath)
     if (loader) return loader()
-    if (import.meta.env.DEV) {
-        if (componentPath.includes('/addon/')) {
-            const m = componentPath.match(/\/addon\/([^/]+)\/views\/(.+)\.vue$/)
-            if (m) {
-                const [, addon, rest] = m
+    // 插件组件：/src/addon/{addon}/views/{rest}.vue
+    if (componentPath.includes('/addon/')) {
+        const m = componentPath.match(/\/addon\/([^/]+)\/views\/(.+)\.vue$/)
+        if (m) {
+            const [, addon, rest] = m
+            if (import.meta.env.DEV) {
                 const viewLoader = (allAddonVueModules as Record<string, ViewLoader>)[`../addon/${addon}/views/${rest}.vue`]
                 if (viewLoader) return viewLoader()
+            } else {
+                // 部署模式：插件独立打包，views 中存的是组件 loader 函数（generate-addon-entry 生成）
+                const mod = await loadAddonModule(addon)
+                const loader = (mod?.views as Record<string, ViewLoader> | undefined)?.[rest]
+                if (loader) return await loader()
             }
         }
     }
