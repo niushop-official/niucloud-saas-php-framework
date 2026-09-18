@@ -61,18 +61,6 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 * [API接口手册](https://api.niucloud.com/apidoc.html?target_id=001)
 * [论坛地址](https://niucloud.com/bbs)
 
-### 二次开发视频教程
-
-* [开发准备工作与创建插件](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F1-1.mp4)
-
-* [插件目录整体说明](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F2-1.mp4)
-* [插件安装与打包原理](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F8-1.mp4)
-* [消息队列](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F9-1.mp4)
-* [计划任务](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F10-1.mp4)
-* [DIY自定义小组件和页面装修开发](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F11-1.mp4)
-* [支付接口开发](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F12-1.mp4)
-* [插件升级包打包流程以及云编译](https://gitee.com/link?target=https%3A%2F%2Fniucloud-document-video.oss-cn-beijing.aliyuncs.com%2Fvideo%2F13-1.mp4)
-
 ### 演示地址
 
 - 平台后台演示网址：[<a href='http://demo-saas.site.niucloud.com/admin' target="_blank"> 查看 </a>]
