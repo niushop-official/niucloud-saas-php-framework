@@ -26,26 +26,26 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 ### NIUCLOUD 框架截图
 
 ![](https://doc.press.niucloud.com/assets/%E9%A6%96%E9%A1%B5.DTs6CwoX.png)
-![](images/简介图片/应用.png)
-![](images/简介图片/开发.png)
-![](images/简介图片/所有应用.png)
+![](https://doc.press.niucloud.com/assets/%E5%BA%94%E7%94%A8.DTjKnokp.png)
+![](https://doc.press.niucloud.com/assets/%E5%BC%80%E5%8F%91.D-EIbu1a.png)
 
 ### 商城插件SHOP
-![](images/简介图片/商城系统.png)
+![](https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%B3%BB%E7%BB%9F.Ocyd9U5x.png)
 <table>
     <tbody>
     <tr>
-        <td><img src="images/简介图片/商城界面1.jpg"></td>
-        <td><img src="images/简介图片/商城界面2.jpg"></td>
-        <td><img src="images/简介图片/商城界面3.jpg"></td>
-        <td><img src="images/简介图片/商城界面4.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A27.Bll5k5Oi.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A28.CWYJfJc4.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A24.BL9nyNIW.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A26.D_LsTXAd.jpg"></td>
     </tr>
     <tr>
-        <td><img src="images/简介图片/商城界面5.jpg"></td>
-        <td><img src="images/简介图片/商城界面6.jpg"></td>
-        <td><img src="images/简介图片/商城界面7.jpg"></td>
-        <td><img src="images/简介图片/商城界面8.jpg"></td>
-    </tr>	 
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A21.DG4KeG7m.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A22.DUOosIBy.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A23.DqUGqBi6.jpg"></td>
+        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A25.kD9xOpcL.jpg"></td>
+    </tr>
+    	 
 </tbody></table>
 
 
@@ -119,9 +119,8 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 6.一切事物有个人喜好的标准，本开源代码意在分享，不喜勿喷。
 
 ### 版权信息
-版权所有Copyright © 2015-2025 niucloud-admin 版权所有
+版权所有Copyright © 2015-2026 niucloud-admin 版权所有
 
-All rights reserved。
 
 杭州数字云动科技有限公司
 杭州牛之云科技有限公司
