@@ -96,13 +96,13 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 加入企业微信群技术交流，请扫描下面二维码:
 
-<img src="images/简介图片/企业微信二维码.jpg" alt="企业微信二维码" style="max-width: 200px; border: 1px solid #eee; padding: 10px;">
+<img src="https://doc.press.niucloud.com/assets/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81.2X1GoZf1.jpg" alt="企业微信二维码" style="max-width: 200px; border: 1px solid #eee; padding: 10px;">
 
 ### 产品LOGO
 
-<img src="images/简介图片/产品logo.png" alt="产品logo" style="max-width: 200px; display: block; margin-bottom: 20px;">
+<img src="https://doc.press.niucloud.com/assets/%E4%BA%A7%E5%93%81logo.BSKlM-Op.png" alt="产品logo" style="max-width: 200px; display: block; margin-bottom: 20px;">
 
-<img src="images/简介图片/产品logo2.png" alt="产品logo2" style="max-width: 200px; display: block;">
+<img src="https://doc.press.niucloud.com/assets/%E4%BA%A7%E5%93%81logo2.Cm3hxmfq.png" style="max-width: 200px; display: block;">
 
 ### 开源使用须知
 
