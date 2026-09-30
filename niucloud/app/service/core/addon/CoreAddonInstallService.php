@@ -655,7 +655,8 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $this->uninstallWap();
 
         // 还原备份
-        if (!empty($addon_info['compile'])) (new CoreAddonCompileHandleService())->revertBackup();
+        // TODO: CoreAddonCompileHandleService 类不存在，需要官方修复
+        // if (!empty($addon_info['compile'])) (new CoreAddonCompileHandleService())->revertBackup();
 
         $core_addon_service = new CoreAddonService();
         $core_addon_service->delByKey($this->addon);
