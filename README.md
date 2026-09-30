@@ -4,7 +4,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 目前NIUCLOUD生态开发者入驻近千人，各行业应用插件正在陆续上线中...
 
-请到官方网站了解更多[http://www.niucloud.com](https://gitee.com/link?target=http%3A%2F%2Fwww.niucloud.com)
+请到官方网站了解更多[https://www.niucloud.com](https://gitee.com/link?target=https%3A%2F%2Fwww.niucloud.com)
 
 ### NIUCLOUD-ADMIN 技术特点
 
