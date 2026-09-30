@@ -13,6 +13,7 @@ return  [
         'sort' => 100,
         'status' => 1,
         'is_show' => 1,
+        'is_blank' => 0,
         'children' => [
             [
                 'menu_name' => '{title}',
@@ -26,6 +27,7 @@ return  [
                 'sort' => 100,
                 'status' => 1,
                 'is_show' => 1,
+                'is_blank' => 0,
                 'children' => []
             ],
         ]

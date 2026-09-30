@@ -109,6 +109,8 @@ Route::group(function () {
     Route::get('scene_domain', 'sys.Config/getSceneDomain');
     // 获取手机端首页列表
     Route::get('wap_index', 'sys.Config/getWapIndexList');
+    // 获取渠道设置(客服)
+    Route::get('channel', 'sys.Config/getChannelSetting');
 
     // 获取地图设置
     Route::get('map', 'sys.Config/getMap');

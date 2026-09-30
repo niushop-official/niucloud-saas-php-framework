@@ -66,4 +66,23 @@ function scanAddonLang(key) {
     return out
 }
 
-module.exports = { ROOT, ADDON_DIR, listAddonKeys, walkFiles, scanAddonViews, scanAddonLang }
+module.exports = { ROOT, ADDON_DIR, listAddonKeys, walkFiles, scanAddonViews, scanAddonLang, resolveAddonEntry }
+
+/**
+ * 解析 addon 入口文件名：默认 index.js；启用内容哈希后为 index-[hash].js
+ * @param {string} addonDir addon 产物目录（含入口脚本）
+ * @returns {string} 形如 ./index.js 或 ./index-[hash].js 的相对路径
+ */
+function resolveAddonEntry(addonDir) {
+    // 入口文件名来自构建期写入的 manifest.json（generateBundle 按 chunk.isEntry 精确记录 entry 字段），
+    // 直接读取即可，无需扫描目录：shop 等大插件的懒加载 chunk（components/xxx/index.vue）
+    // basename 也叫 index，目录里会同时存在多个 index-[hash].js，扫描文件名无法区分入口。
+    // 兼容未生成 manifest.json 的旧产物（入口固定为 index.js）
+    try {
+        const m = JSON.parse(fs.readFileSync(path.join(addonDir, 'manifest.json'), 'utf-8'))
+        if (m && typeof m.entry === 'string' && m.entry) {
+            return './' + m.entry.replace(/\\/g, '/')
+        }
+    } catch { /* 无 manifest.json（旧构建）：入口固定为 index.js */ }
+    return './index.js'
+}

@@ -10,7 +10,7 @@
             <el-table-column :label="t('dataValue')" prop="value" />
             <el-table-column :label="t('sort')" align="center" min-width="100px" prop="sort" />
             <el-table-column :label="t('memo')" prop="memo" />
-            <el-table-column :label="t('operation')" align="right" fixed="right" width="120">
+            <el-table-column :label="t('operation')" align="right" fixed="right" width="140">
                 <template #default="{ row, $index }">
                     <el-button type="primary" link @click="editEvent(row, $index)">{{ t('edit') }}</el-button>
                     <el-button type="primary" link @click="deleteEvent($index)">{{ t('delete') }}</el-button>

@@ -29,6 +29,13 @@ export function getAgreementInfo(key: string) {
 }
 
 /**
+ * 获取渠道设置(客服)
+ */
+export function getChannelSetting() {
+    return request.get('channel', {}, { showErrorMessage: false })
+}
+
+/**
  * 重置密码
  */
 export function resetPassword(data: AnyObject) {

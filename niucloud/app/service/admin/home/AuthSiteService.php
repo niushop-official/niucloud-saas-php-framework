@@ -13,15 +13,19 @@ namespace app\service\admin\home;
 
 
 use app\dict\addon\AddonDict;
+use app\dict\common\ChannelDict;
+use app\dict\sys\ConfigKeyDict;
 use app\model\addon\Addon;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
+use app\model\sys\SysConfig;
 use app\model\sys\SysUserRole;
 use app\model\sys\UserCreateSiteLimit;
 use app\service\admin\auth\AuthService;
 use app\service\admin\site\SiteGroupService;
 use app\service\admin\site\SiteService;
 use app\service\admin\sys\ConfigService;
+use app\service\core\sys\CoreSysConfigService;
 use core\base\BaseAdminService;
 use core\exception\CommonException;
 use core\exception\HomeException;
@@ -83,13 +87,144 @@ class AuthSiteService extends BaseAdminService
 
         $theme_color = (new ConfigService())->getThemeColor();
 
-        return $this->pageQuery($search_model, function ($item) use ($theme_color) {
+        $list = $this->pageQuery($search_model);
+
+        $site_ids = array_column($list['data'], 'site_id');
+        // 当前站点已开启的端口渠道集合
+        $channel_map = $this->getSiteOpenChannelMap($site_ids);
+        // 站点应用名称集合
+        $app_name_map = $this->getSiteAppNameMap($list['data']);
+
+        foreach ($list['data'] as &$item) {
             if (is_array($item['app']) && count($item['app']) == 1) {
                 $item['theme_color'] = $theme_color[ $item['app'][0] ] ?? '';
             } else {
                 $item['theme_color'] = $theme_color['system'] ?? '';
             }
-        });
+            $item['channels'] = $channel_map[ $item['site_id'] ] ?? [];
+            $item['app_name'] = $app_name_map[ $item['site_id'] ] ?? [];
+        }
+        unset($item);
+
+        return $list;
+    }
+
+    /**
+     * 批量获取站点已开启的端口渠道集合
+     * 判定规则：
+     * - PC / H5：读取各渠道配置的 is_open，无配置默认开启（与 CorePcService / CoreH5Service 保持一致）
+     * - APP：存在 app 配置记录即视为开启
+     * - 微信公众号 / 微信小程序：配置存在且已授权或 app_id、app_secret 均已配置视为开启
+     * - H5 / PC：额外返回访问地址 url（H5 取 wap_url，PC 取 web_url）
+     * @param array $site_ids
+     * @return array [site_id => [ ['key' => 渠道标识, 'name' => 渠道名称, 'url' => H5/PC 访问地址], ... ]]
+     * @throws DbException
+     */
+    public function getSiteOpenChannelMap(array $site_ids)
+    {
+        $map = [];
+        if (empty($site_ids)) return $map;
+
+        // 渠道标识 => 配置键（微信公众号配置键为大写 WECHAT，其余与渠道标识一致）
+        $channel_config_keys = [
+            ChannelDict::PC => ChannelDict::PC,
+            ChannelDict::H5 => ConfigKeyDict::H5,
+            ChannelDict::APP => ConfigKeyDict::APP,
+            ChannelDict::WECHAT => ConfigKeyDict::WECHAT,
+            ChannelDict::WEAPP => ConfigKeyDict::WEAPP,
+        ];
+        $channel_names = ChannelDict::getType();
+
+        $config_list = (new SysConfig())->whereIn('site_id', $site_ids)
+            ->whereIn('config_key', array_values($channel_config_keys))
+            ->field('site_id, config_key, value')->select()->toArray();
+        $config_map = [];
+        foreach ($config_list as $config) {
+            $config_map[ $config['site_id'] ][ $config['config_key'] ] = $config['value'];
+        }
+
+        foreach ($site_ids as $site_id) {
+            $site_config = $config_map[ $site_id ] ?? [];
+            $channels = [];
+            $scene_domain = [];
+            foreach ($channel_config_keys as $channel_key => $config_key) {
+                $config = $site_config[ $config_key ] ?? [];
+                if (!is_array($config)) $config = [];
+                if (!$this->checkChannelOpen($channel_key, $config)) continue;
+
+                $channel = [
+                    'key' => $channel_key,
+                    'name' => $channel_names[ $channel_key ] ?? $channel_key,
+                ];
+                // H5 / PC 补充该端口的访问地址（H5 取 wap_url，PC 取 web_url），地址末尾统一以 / 结尾
+                if (in_array($channel_key, [ ChannelDict::H5, ChannelDict::PC ])) {
+                    if (empty($scene_domain)) $scene_domain = (new CoreSysConfigService())->getSceneDomain($site_id);
+                    $url = $channel_key === ChannelDict::H5
+                        ? ( $scene_domain['wap_url'] ?? '' )
+                        : ( $scene_domain['web_url'] ?? '' );
+                    $channel['url'] = $url === '' ? '' : rtrim($url, '/') . '/';
+                }
+                $channels[] = $channel;
+            }
+            $map[ $site_id ] = $channels;
+        }
+        return $map;
+    }
+
+    /**
+     * 判定单个渠道是否开启
+     * @param string $channel_key 渠道标识
+     * @param array $config 渠道配置
+     * @return bool
+     */
+    private function checkChannelOpen(string $channel_key, array $config)
+    {
+        switch ($channel_key) {
+            case ChannelDict::PC:
+            case ChannelDict::H5:
+                // 无配置时默认开启
+                return (int) ( $config['is_open'] ?? 1 ) === 1;
+            case ChannelDict::APP:
+                return !empty($config);
+            case ChannelDict::WECHAT:
+            case ChannelDict::WEAPP:
+                if (empty($config)) return false;
+                if ((int) ( $config['is_authorization'] ?? 0 ) === 1) return true;
+                return !empty($config['app_id']) && !empty($config['app_secret']);
+        }
+        return false;
+    }
+
+    /**
+     * 批量获取站点应用名称集合（由站点 app 集合查询 addon.title，保留站点自身应用顺序）
+     * @param array $site_list 站点列表
+     * @return array [site_id => [应用名称, ...]]
+     * @throws DbException
+     */
+    public function getSiteAppNameMap(array $site_list)
+    {
+        $app_keys = [];
+        foreach ($site_list as $site) {
+            if (is_array($site['app'] ?? null)) $app_keys = array_merge($app_keys, $site['app']);
+        }
+        $app_keys = array_unique($app_keys);
+
+        $title_map = [];
+        if (!empty($app_keys)) {
+            $title_map = (new Addon())->whereIn('key', $app_keys)->column('title', 'key');
+        }
+
+        $map = [];
+        foreach ($site_list as $site) {
+            $names = [];
+            if (is_array($site['app'] ?? null)) {
+                foreach ($site['app'] as $key) {
+                    if (isset($title_map[ $key ])) $names[] = $title_map[ $key ];
+                }
+            }
+            $map[ $site['site_id'] ] = $names;
+        }
+        return $map;
     }
 
     /**
@@ -210,7 +345,7 @@ class AuthSiteService extends BaseAdminService
     /**
      * 创建站点
      * @param array $data
-     * @return true
+     * @return array
      */
     public function createSite(array $data) {
 
@@ -225,13 +360,19 @@ class AuthSiteService extends BaseAdminService
             $limit = ['month' => 1];
         }
 
-        (new SiteService())->add([
+        $expire_time = date('Y-m-d H:i:s', strtotime("+ {$limit['month']} month"));
+
+        $site_id =(new SiteService())->add([
             'site_name' => $data['site_name'],
             'uid' => $this->uid,
             'group_id' => $data['group_id'],
-            'expire_time' => date('Y-m-d H:i:s', strtotime("+ {$limit['month']} month"))
+            'expire_time' => $expire_time,
+            'desc' => $data['desc'] ?? ''
         ]);
 
-        return true;
+        return [
+            'site_id' => $site_id,
+            'expire_time' => $expire_time
+        ];
     }
 }

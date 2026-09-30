@@ -1,6 +1,6 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-lg">{{pageName}}</span>
@@ -25,8 +25,9 @@
                 <el-button type="primary" @click="addEvent" :disabled="loading">{{ t('addAppVersion') }}</el-button>
             </div>
 
-            <div class="mt-[10px]">
-                <el-table :data="appVersionTable.data" size="large" v-loading="appVersionTable.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="appVersionTable.data" size="large" v-loading="appVersionTable.loading">
                     <template #empty>
                         <span>{{ !appVersionTable.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -63,7 +64,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column :label="t('operation')" fixed="right" align="right" min-width="200px">
+                    <el-table-column :label="t('operation')" fixed="right" align="right" min-width="280">
                         <template #default="{ row }">
                             <el-button type="primary" link v-if="row.release_time == 0" @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button type="primary" link v-if="row.status == 'upload_success'" @click="releaseEvent(row)">{{ t('release') }}</el-button>
@@ -74,6 +75,7 @@
                     </el-table-column>
 
                 </el-table>
+                </div>
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="appVersionTable.page" v-model:page-size="appVersionTable.limit"
                                    layout="total, sizes, prev, pager, next, jumper" :total="appVersionTable.total"
@@ -109,10 +111,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { Terminal, TerminalFlash } from 'vue-web-terminal'
 import 'vue-web-terminal/lib/theme/dark.css'
 import { getAuthInfo } from '@/app/api/module'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
+
 const activeName = ref('/channel/app/version')
 const terminalRef: any = ref(null)
 const appVersionTable = reactive({

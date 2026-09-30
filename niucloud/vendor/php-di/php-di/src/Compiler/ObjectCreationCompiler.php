@@ -57,10 +57,10 @@ class ObjectCreationCompiler
 
                 $propertyClassName = $propertyInjection->getClassName() ?: $className;
                 $property = new ReflectionProperty($propertyClassName, $propertyInjection->getPropertyName());
-                if ($property->isPublic()) {
+                if ($property->isPublic() && !(\PHP_VERSION_ID >= 80100 && $property->isReadOnly())) {
                     $code[] = sprintf('$object->%s = %s;', $propertyInjection->getPropertyName(), $value);
                 } else {
-                    // Private/protected property
+                    // Private/protected/readonly property
                     $code[] = sprintf(
                         '\DI\Definition\Resolver\ObjectCreator::setPrivatePropertyValue(%s, $object, \'%s\', %s);',
                         var_export($propertyInjection->getClassName(), true),
@@ -142,10 +142,8 @@ class ObjectCreationCompiler
         return <<<STR
                     \$object = \$this->proxyFactory->createProxy(
                         '{$definition->getClassName()}',
-                        function (&\$wrappedObject, \$proxy, \$method, \$params, &\$initializer) {
-                            \$wrappedObject = $subDefinition;
-                            \$initializer = null; // turning off further lazy initialization
-                            return true;
+                        function () {
+                            return $subDefinition;
                         }
                     );
             STR;

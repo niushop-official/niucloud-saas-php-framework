@@ -42,7 +42,7 @@
                     <div>{{ row.audit_info?.audit_status_name }} <span v-if="row.audit_info?.error_status_name" class="text-red-600">（{{row.audit_info?.error_status_name}}）</span> </div>
                 </template>
             </el-table-column>
-            <el-table-column :label="t('operation')" fixed="right" align="right" min-width="120">
+            <el-table-column :label="t('operation')" fixed="right" align="right" min-width="190">
                 <template #default="{ row }">
                     <el-button type="primary" v-if="row.audit_info.audit_status!=2" link @click="reportEvent(row)">{{ row.audit_info.audit_status!=1 && row.audit_info.audit_status!=2? t("报备") : t("修改") }}</el-button>
                     <el-button type="primary" v-if="row.audit_info.audit_status==2" link @click="clearEvent(row)">{{ t('清除报备信息') }}</el-button>

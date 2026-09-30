@@ -1,13 +1,9 @@
 <template>
     <!--角色管理-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-
-            <div class="flex justify-between items-center mt-[20px]">
+            <div class="table-search-wrap table-search-wrap--panel flex justify-between items-center">
                 <el-form :inline="true" :model="roleTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('roleName')" prop="search">
                         <el-input v-model.trim="roleTableData.searchParam.search" class="w-[240px]" :placeholder="t('roleNamePlaceholder')" />
@@ -17,11 +13,16 @@
                         <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
                     </el-form-item>
                 </el-form>
-                <el-button type="primary" class="w-[100px] self-start" @click="addEvent">{{ t('addRole') }}</el-button>
             </div>
 
-            <div>
-                <el-table :data="roleTableData.data" size="large" v-loading="roleTableData.loading">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false">
+                    <template #actions>
+                        <el-button type="primary" @click="addEvent">{{ t('addRole') }}</el-button>
+                    </template>
+                </table-toolbar>
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="roleTableData.data" size="large" v-loading="roleTableData.loading">
                     <template #empty>
                         <span>{{ !roleTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -40,14 +41,19 @@
                         </template>
                     </el-table-column>
                 </el-table>
-
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="roleTableData.page" v-model:page-size="roleTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="roleTableData.total" @size-change="loadRoleList()" @current-change="loadRoleList" />
                 </div>
+
+                <table-pagination
+                    v-model:current-page="roleTableData.page"
+                    v-model:page-size="roleTableData.limit"
+                    :total="roleTableData.total"
+                    @size-change="loadRoleList()"
+                    @current-change="loadRoleList"
+                />
             </div>
 
             <edit-role ref="editRoleDialog" @complete="loadRoleList()" />
-        </el-card>
+        </div>
     </div>
 </template>
 
@@ -57,10 +63,16 @@ import { t } from '@/lang'
 import { getRoleList, deleteRole, modifyRoleStatus } from '@/app/api/sys'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import EditRole from '@/app/views/auth/components/edit-role.vue'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const roleTableData = reactive({
     page: 1,
     limit: 10,

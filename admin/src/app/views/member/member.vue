@@ -1,14 +1,14 @@
 <template>
     <!--会员列表-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" @click="addEvent">{{ t('addMember') }}</el-button>
             </div>
 
-            <el-card class="box-card !border-none my-[20px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[20px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="memberTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('memberInfo')" prop="keyword">
                         <el-input v-model.trim="memberTableData.searchParam.keyword" class="!w-[200px]" :placeholder="t('memberInfoPlaceholder')" />
@@ -46,7 +46,7 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
+            <div class="mt-[10px] table-fill-page__panel">
                 <div class="mb-[10px] flex items-center">
                     <el-dropdown class="mr-[20px] !text-primary w-[125px]">
                         <span class="el-dropdown-link">
@@ -65,7 +65,8 @@
                     <el-button @click="batchSetLabel" size="small">{{ t('标签') }}</el-button>
                     <el-button @click="batchSetLevel" size="small">{{ t('等级') }}</el-button>
                 </div>
-                <el-table :data="memberTableData.data" size="large" ref="memberListTableRef" v-loading="memberTableData.loading" :row-key="row => row.member_id" :default-selection="defaultSelection" @selection-change="handleSelectionChange">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="memberTableData.data" size="large" ref="memberListTableRef" v-loading="memberTableData.loading" :row-key="row => row.member_id" :default-selection="defaultSelection" @selection-change="handleSelectionChange">
                     <template #empty>
                         <span>{{ !memberTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -121,7 +122,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="100">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
                         <template #default="{ row }">
                             <div class="flex items-center">
                                 <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
@@ -132,6 +133,7 @@
                     </el-table-column>
 
                 </el-table>
+                </div>
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="memberTableData.page" v-model:page-size="memberTableData.limit"
                         layout="total, sizes, prev, pager, next, jumper" :total="memberTableData.total"
@@ -153,12 +155,16 @@ import { img } from '@/utils/common'
 import { getRegisterChannelType, getMemberList, getMemberLabelAll, editMemberStatus, deleteMember, getMemberLevelAll } from '@/app/api/member'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import AddMember from '@/app/views/member/components/add-member.vue'
 import detailMember from '@/app/views/member/components/detail-member.vue'
 import EditMember from '@/app/views/member/components/edit-member.vue'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const memberTableData = reactive({
     page: 1,

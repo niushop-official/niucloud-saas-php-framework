@@ -72,6 +72,14 @@
                 </el-radio-group>
             </el-form-item>
 
+            <el-form-item :label="t('isBlank')" v-show="formData.menu_type == 1">
+                <el-radio-group v-model="formData.is_blank">
+                    <el-radio :label="1">{{ t('blankYes') }}</el-radio>
+                    <el-radio :label="0">{{ t('blankNo') }}</el-radio>
+                </el-radio-group>
+                <div class="w-full text-[12px] leading-[18px] mt-[4px] text-[var(--el-text-color-secondary)]">{{ t('isBlankTip') }}</div>
+            </el-form-item>
+
             <el-form-item :label="t('menuShortName')">
                 <el-input v-model.trim="formData.menu_short_name" :placeholder="t('menuShortNamePlaceholder')" class="input-width" />
             </el-form-item>
@@ -117,6 +125,7 @@ const initialFormData = {
     sort: '',
     status: 1,
     is_show: 1,
+    is_blank: 0,
     menu_key: '',
     app_type: '',
     addon: '',
@@ -239,7 +248,8 @@ const confirm = async (formEl: FormInstance | undefined) => {
         if (valid) {
             loading.value = true
 
-            const data = formData
+            // 仅菜单类型（menu_type=1）支持新窗口打开，目录/按钮统一归零
+            const data = { ...formData, is_blank: formData.menu_type == 1 ? formData.is_blank : 0 }
 
             save(data).then(res => {
                 loading.value = false

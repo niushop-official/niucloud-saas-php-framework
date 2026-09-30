@@ -1,6 +1,6 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
@@ -13,7 +13,7 @@
                     </template>
                 </el-alert>
             </div>
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="posterTableData.searchParam" ref="searchFormDiyPosterRef">
                     <el-form-item :label="t('posterName')" prop="name">
                         <el-input v-model.trim="posterTableData.searchParam.name" :placeholder="t('posterNamePlaceholder')" />
@@ -31,7 +31,9 @@
                 </el-form>
             </el-card>
 
-            <el-table :data="posterTableData.data" size="large" v-loading="posterTableData.loading">
+            <div class="table-fill-page__panel">
+            <div class="table-fill-page__table">
+            <el-table height="100%" :data="posterTableData.data" size="large" v-loading="posterTableData.loading">
 
                 <template #empty>
                     <span>{{ !posterTableData.loading ? t('emptyData') : '' }}</span>
@@ -53,7 +55,7 @@
                 </el-table-column>
                 <el-table-column prop="update_time" :label="t('updateTime')" min-width="120" />
 
-                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="160">
+                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="250">
                     <template #default="{ row }">
                         <el-button type="primary" link @click="previewPoster(row)">{{ t('preview') }}</el-button>
                         <el-button v-if="row.is_default == 0" type="primary" link @click="modifyPosterDefaultFn(row.id)">{{ t('modifyDefault') }}</el-button>
@@ -63,10 +65,12 @@
                 </el-table-column>
 
             </el-table>
+            </div>
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="posterTableData.page" v-model:page-size="posterTableData.limit"
                     layout="total, sizes, prev, pager, next, jumper" :total="posterTableData.total"
                     @size-change="loadPosterPageList()" @current-change="loadPosterPageList" />
+            </div>
             </div>
 
         </el-card>
@@ -109,12 +113,16 @@ import { reactive, ref, computed } from 'vue'
 import { t } from '@/lang'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import { getPosterPageList, getPosterType, modifyPosterStatus, modifyPosterDefault, deletePoster, getPreviewPoster ,checkImagick} from '@/app/api/poster'
 import { img, setTablePageStorage, getTablePageStorage } from '@/utils/common'
 
 const router = useRouter()
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const posterType: any = reactive({}) // 自定义海报类型
 

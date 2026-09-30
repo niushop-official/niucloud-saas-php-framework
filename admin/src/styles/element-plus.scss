@@ -7,17 +7,147 @@
 
 /** 卡片面板 **/
 .el-card {
+    // site/home 默认使用卡片表面色（亮色模式为白色）
+    // 必须 !important：dev 下 element-plus 按需引入的 theme-chalk/el-card.css 晚于本文件注入，普通声明会被覆盖
+    --el-card-bg-color: var(--cmp-card-bg) !important;
     border-radius: 0 !important;
 }
 
+// admin 端卡片透明，露出布局页面底色；共享页面模板无需增加类名。
+.app-type-admin .el-card {
+    --el-card-bg-color: transparent !important;
+}
+
 /** 表格 **/
+.table-panel {
+    --cmp-table-pagination-margin-top: 0;
+
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: var(--cmp-table-panel-padding-block) var(--cmp-table-panel-padding-inline);
+    background-color: var(--cmp-table-panel-bg);
+    border: 1px solid var(--cmp-table-panel-border);
+    border-radius: var(--cmp-table-panel-radius);
+}
+
 .el-table {
-    --el-table-header-bg-color: #f5f7f9 !important;
-    --el-table-header-text-color: #333333 !important;
+    --el-table-bg-color: var(--cmp-table-bg);
+    --el-table-tr-bg-color: var(--cmp-table-row-bg);
+    --el-table-text-color: var(--cmp-table-text);
+    --el-table-header-bg-color: var(--cmp-table-header-bg);
+    --el-table-header-text-color: var(--cmp-table-header-text);
+    --el-table-border-color: var(--cmp-table-border);
+    --el-table-row-hover-bg-color: var(--cmp-table-row-hover-bg);
+    --el-table-current-row-bg-color: var(--cmp-table-row-current-bg);
+    --el-table-fixed-left-column: var(--cmp-table-fixed-left-shadow);
+    --el-table-fixed-right-column: var(--cmp-table-fixed-right-shadow);
+
+    background-color: var(--cmp-table-bg);
+    color: var(--cmp-table-text);
+    font-size: var(--cmp-table-font-size);
+    font-weight: var(--cmp-table-font-weight);
 
     thead,
     thead th {
-        font-weight: normal !important;
+        font-size: var(--cmp-table-header-font-size);
+        font-weight: var(--cmp-table-header-font-weight);
+    }
+
+    .el-table__header-wrapper th.el-table__cell {
+        height: var(--cmp-table-header-height);
+        padding-block: 0;
+        border-bottom-color: var(--cmp-table-header-border);
+    }
+
+    .el-table__body-wrapper td.el-table__cell {
+        height: var(--cmp-table-row-min-height);
+        padding-block: var(--cmp-table-cell-padding-block);
+    }
+
+    /**
+     * 去掉最后一行的横线
+     *
+     * 表格底部有两条重合的 1px 线：最后一行的 td 下边框，以及
+     * .el-table__inner-wrapper::before（Element Plus 自带的表格底部伪边框，始终存在）。
+     * 只去掉其中一条仍会看到横线，所以两条一起处理。
+     *
+     * 排除带边框 / 多级表头 / 合计行的表格：它们依赖这两条线构成外框底线，
+     * 去掉后表格底边会缺口。
+     */
+    &:not(.el-table--border):not(.el-table--group):not(.has-footer) {
+        .el-table__body > tbody > tr:last-child > td.el-table__cell {
+            border-bottom-color: transparent;
+        }
+
+        .el-table__inner-wrapper::before {
+            content: none;
+        }
+    }
+
+    .cell {
+        padding-inline: var(--cmp-table-cell-padding-inline);
+        line-height: var(--cmp-table-line-height);
+    }
+
+    .el-table__header-wrapper .cell {
+        padding-inline: var(--cmp-table-header-padding-inline);
+    }
+
+    .el-table__empty-block {
+        min-height: var(--cmp-table-empty-min-height);
+    }
+
+    .el-table__empty-text {
+        color: var(--cmp-table-empty-text);
+        font-size: var(--cmp-table-empty-font-size);
+    }
+
+    .el-scrollbar {
+        --el-scrollbar-bg-color: var(--cmp-table-scrollbar-thumb-bg);
+        --el-scrollbar-hover-bg-color: var(--cmp-table-scrollbar-thumb-hover-bg);
+    }
+
+    .el-scrollbar__bar {
+        border-radius: var(--cmp-table-scrollbar-radius);
+        background-color: var(--cmp-table-scrollbar-track-bg);
+
+        &.is-horizontal {
+            height: var(--cmp-table-scrollbar-size);
+        }
+    }
+
+    /**
+     * 固定右侧的末列通常是「操作」列，它 sticky 在表格右边缘，
+     * 会与表格纵向滚动条（el-scrollbar 默认贴右 2px、宽 6px）重叠，
+     * 导致右对齐的操作按钮看起来贴边、被滚动条压住。
+     * 仅在表格出现纵向滚动条时（el-table--scrollable-y）为其补上滚动条等宽的右侧内边距。
+     */
+    &.el-table--scrollable-y {
+        th.el-table-fixed-column--right > .cell,
+        td.el-table-fixed-column--right > .cell {
+            padding-right: var(--cmp-table-fixed-right-padding-inline);
+        }
+    }
+
+    .el-button.is-link {
+        min-height: var(--cmp-table-more-size);
+        padding: 0;
+        font-size: var(--cmp-table-action-font-size);
+        font-weight: var(--cmp-table-action-font-weight);
+
+        // Tab 聚焦时去掉描边；未悬停时保持默认文字色，不跟悬停色
+        &:focus,
+        &:focus-visible {
+            outline: none;
+        }
+
+        &:focus:not(:hover):not(.is-disabled):not(.table-delete) {
+            color: var(--el-button-text-color);
+        }
+    }
+
+    .el-button + .el-button {
+        margin-left: var(--cmp-table-action-gap);
     }
 
     // 修改表格中上传图片样式冲突的问题
@@ -26,9 +156,49 @@
     }
 }
 
+// 列表删除：正文色，不使用危险红。工具栏批量删除在表格外，所以不写进 .el-table。
+.el-button.table-delete.is-link:not(.is-disabled) {
+    color: var(--cmp-table-action-danger-text);
+
+    &:hover,
+    &:focus {
+        color: var(--cmp-table-action-danger-text);
+    }
+}
+
 /** 文本框 **/
-.el-input__wrapper, .el-input-group__append, .el-textarea__inner {
-    border-radius: 0 !important;
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select__wrapper {
+    border-radius: var(--cmp-control-radius) !important;
+}
+
+/**
+ * 带前后缀的输入框：连接处圆角必须为 0，否则会被上面的全局圆角 !important 盖掉，
+ * 输入框与 append/prepend 拼接处会出现双边圆角缝。
+ */
+ .el-input-group--append .el-input__wrapper {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.el-input-group--prepend .el-input__wrapper {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.el-input-group__append {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-right-radius: var(--cmp-control-radius) !important;
+    border-bottom-right-radius: var(--cmp-control-radius) !important;
+}
+
+.el-input-group__prepend {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: var(--cmp-control-radius) !important;
+    border-bottom-left-radius: var(--cmp-control-radius) !important;
 }
 
 .el-textarea__inner {
@@ -56,24 +226,45 @@
     background-color: var(--el-button-bg-color, var(--el-color-white));
 }
 
-.el-button:not(.is-round) {
-    border-radius: 2px !important;
+.el-button:not(.is-round):not(.is-circle) {
+    border-radius: var(--cmp-control-radius) !important;
 }
 .el-slider {
     --el-slider-button-size: 15px !important;
 }
 
-/** 下拉框 **/
-.el-select__wrapper {
-    border-radius: 0 !important;
-}
-
 .el-form-item {
     & > .el-input, .el-cascader, .el-select, .el-date-editor, .el-autocomplete {
-        width: 214px;
+        width: var(--cmp-control-default-width);
     }
+}
+
+/**
+ * 日期选择器外框跟输入框一样走控件高度。
+ * 区间内部的 .el-range-input 在 Element Plus 里按默认 32px 编译成 30px，改 --el-component-size 不会跟着变。
+ */
+.el-date-editor.el-input:not(.el-input--small):not(.el-input--large),
+.el-range-editor.el-input__wrapper:not(.el-range-editor--small):not(.el-range-editor--large) {
+    height: var(--cmp-control-height);
+}
+
+.el-date-editor:not(.el-range-editor--small):not(.el-range-editor--large) .el-range-input {
+    height: calc(var(--cmp-control-height) - 2px);
+    line-height: calc(var(--cmp-control-height) - 2px);
+}
+
+/**
+ * 默认下拉框的触发器高度在 Element Plus 里写死为 32px，不跟随 --el-component-size。
+ * 只抬最小高度，多选时仍可以随标签增高。
+ */
+.el-select:not(.el-select--small):not(.el-select--large) .el-select__wrapper {
+    min-height: var(--cmp-control-height);
 }
 
 .el-dropdown .el-tooltip__trigger {
     outline: none!important;
+}
+
+.el-tabs__content {
+    order: 1;
 }

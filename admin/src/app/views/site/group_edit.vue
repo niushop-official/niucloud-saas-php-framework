@@ -1,12 +1,12 @@
 <template>
     <!--站点套餐编辑-->
-    <div class="main-container" >
+    <div class="main-container form-sections">
 
         <el-card class="box-card !border-none" shadow="never">
             <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
-        <el-card class="box-card mt-[15px] !border-none" shadow="never">
+        <el-card class="box-card !border-none" shadow="never">
             <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
                 <el-form-item :label="t('groupName')" prop="group_name">
                     <el-input v-model.trim="formData.group_name" :placeholder="t('groupNamePlaceholder')" clearable :disabled="formData.uid" class="input-width" maxlength="20" :show-word-limit="true" />

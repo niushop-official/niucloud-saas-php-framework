@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <el-dropdown @command="clickEvent" :tabindex="1">
-            <div class="userinfo flex h-full items-center">
+    <div class="user-info-root">
+        <el-dropdown ref="dropdownRef" class="user-info-dropdown" @command="clickEvent" :tabindex="1">
+            <div class="userinfo navbar-hit flex h-full items-center">
                 <el-avatar v-if="userStore.userInfo.head_img" :size="25" :icon="UserFilled" :src="img(userStore.userInfo.head_img)"/>
                 <img v-else src="@/app/assets/images/member_head.png" class="w-[25px] rounded-full" />
                 <div class="user-name pl-[8px]">{{ userStore.userInfo.username }}</div>
@@ -85,6 +85,11 @@ import userInfoEdit from '@/app/components/user-info-edit/index.vue'
 
 const isAllowChange = localStorage.getItem('isAllowChange') === 'true';
 const userStore = useUserStore()
+const dropdownRef = ref()
+const open = () => {
+    dropdownRef.value?.handleOpen()
+}
+defineExpose({ open })
 const router = useRouter()
 const clickEvent = (command: string) => {
     switch (command) {

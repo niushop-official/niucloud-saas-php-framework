@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 const { spawnSync } = require('child_process')
-const { ROOT, listAddonKeys } = require('./addon-utils.cjs')
+const { ROOT, listAddonKeys, resolveAddonEntry } = require('./addon-utils.cjs')
 const { IMPORT_MAP, SHARED_BUILD_ORDER } = require('./shared-external.cjs')
 const { fixDir } = require('./wap-locale-import-utils.cjs')
 const { applyRouterBase } = require('./apply-router-base.cjs')
@@ -122,7 +122,9 @@ function writeAddonManifest(key, destAddonDir) {
         key,
         version: '1.0.0',
         sharedVersion: 'wap-core-1.0.0',
-        entry: './index.js',
+        // entry 保持相对路径（./index-[hash].js），与旧插件 ./index.js 兼容；
+        // 真正拼带 key 的 URL 由运行时 loader 用 addon key 重建，避免 wapUrl 丢 key
+        entry: resolveAddonEntry(destAddonDir),
         localeBase: './locale/'
     }
     fs.writeFileSync(path.join(destAddonDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf-8')
@@ -161,14 +163,21 @@ function runAssemble() {
 
     const successKeys = report.success || []
     const installedKeys = []
+    let indexJson = null
     let staleAssets = null
 
-    staleAssets = cleanCoreAssetsOutput()
+    // build:h5:core 场景（SKIP_ADDONS=1）：不承担插件打包，dist/build/h5/assets/addons 留空，
+    // 不把已编译的插件内容整理进该目录、也不生成 index.json（插件在 SaaS 侧独立构建/部署）。
+    // 仅 build:h5（build-all）/ build:h5:assemble 会整理插件并生成 index.json。
+    const skipAddons = process.env.SKIP_ADDONS === '1'
+
+    // 全量清空历史产物，避免历次编译残留文件（如已下线的页面/资源）在 dist/build/h5 累积
+    rmDir(OUT_DIR)
     mergeCoreOutput()
     patchCoreLocaleExternal(OUT_DIR)
     copyAppLocale()
 
-    for (const key of successKeys) {
+    if (!skipAddons) for (const key of successKeys) {
         const src = path.join(ADDONS_STAGING, key)
         if (!fs.existsSync(src)) continue
         const dest = path.join(OUT_DIR, 'assets', 'addons', key)
@@ -192,28 +201,46 @@ function runAssemble() {
         })
         if (windi.status !== 0) process.exit(windi.status ?? 1)
         injectChunkWindiCss(dest)
-        if (!fs.existsSync(path.join(dest, 'index.js'))) {
-            console.error(`[assemble-wap] missing ${key}/index.js`)
+        const entryRel = resolveAddonEntry(dest)
+        if (!fs.existsSync(path.join(dest, entryRel.replace(/^\.\//, '')))) {
+            console.error(`[assemble-wap] missing ${key}/${entryRel}`)
             process.exit(1)
         }
         installedKeys.push(key)
         console.log(`[assemble-wap] addon "${key}" -> assets/addons/${key}/`)
     }
 
-    const indexJson = { keys: installedKeys, sharedVersion: 'wap-core-1.0.0' }
-    fs.mkdirSync(path.join(OUT_DIR, 'assets', 'addons'), { recursive: true })
-    fs.writeFileSync(
-        path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
-        JSON.stringify(indexJson, null, 2) + '\n',
-        'utf-8'
-    )
+    // 合并各插件 manifest.json 到 index.json.manifests，减少前端 N 次 HTTP 请求
+    // （与后端 rebuildPublicWapAddonIndexJson 行为一致）；仅 build/build:h5:assemble 产出
+    if (!skipAddons) {
+        const manifests = {}
+        for (const key of installedKeys) {
+            const manifestFile = path.join(OUT_DIR, 'assets', 'addons', key, 'manifest.json')
+            if (fs.existsSync(manifestFile)) {
+                try {
+                    const data = JSON.parse(fs.readFileSync(manifestFile, 'utf-8'))
+                    if (data && Object.keys(data).length) manifests[key] = data
+                } catch { /* 忽略损坏的 manifest，保持构建不中断 */ }
+            }
+        }
+
+        indexJson = { keys: installedKeys, sharedVersion: 'wap-core-1.0.0', manifests }
+        fs.mkdirSync(path.join(OUT_DIR, 'assets', 'addons'), { recursive: true })
+        fs.writeFileSync(
+            path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
+            JSON.stringify(indexJson, null, 2) + '\n',
+            'utf-8'
+        )
+    }
 
     const addonsRoot = path.join(OUT_DIR, 'assets', 'addons')
-    for (const name of fs.readdirSync(addonsRoot)) {
-        if (name === 'index.json') continue
-        if (!installedKeys.includes(name)) {
-            rmDir(path.join(addonsRoot, name))
-            console.log(`[assemble-wap] removed stale addon "${name}"`)
+    if (!skipAddons && fs.existsSync(addonsRoot)) {
+        for (const name of fs.readdirSync(addonsRoot)) {
+            if (name === 'index.json') continue
+            if (!installedKeys.includes(name)) {
+                rmDir(path.join(addonsRoot, name))
+                console.log(`[assemble-wap] removed stale addon "${name}"`)
+            }
         }
     }
 
@@ -244,13 +271,15 @@ function runAssemble() {
     injectImportMap()
     applyRouterBase(path.join(OUT_DIR, 'assets'))
 
-    fs.writeFileSync(
-        path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
-        JSON.stringify(indexJson, null, 2) + '\n',
-        'utf-8'
-    )
-    for (const key of installedKeys) {
-        writeAddonManifest(key, path.join(OUT_DIR, 'assets', 'addons', key))
+    if (!skipAddons) {
+        fs.writeFileSync(
+            path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
+            JSON.stringify(indexJson, null, 2) + '\n',
+            'utf-8'
+        )
+        for (const key of installedKeys) {
+            writeAddonManifest(key, path.join(OUT_DIR, 'assets', 'addons', key))
+        }
     }
 
     cleanupAssembleArtifacts(staleAssets)

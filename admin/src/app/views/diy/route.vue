@@ -1,12 +1,12 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{pageName}}</span>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="diyRouteTableData.searchParam" ref="searchFormDiyRouteRef">
                     <el-form-item :label="t('title')" prop="title">
                         <el-input v-model.trim="diyRouteTableData.searchParam.title" :placeholder="t('titlePlaceholder')" />
@@ -24,7 +24,8 @@
                 </el-form>
             </el-card>
 
-            <el-table :data="diyRouteTableData.data" size="large" v-loading="diyRouteTableData.loading">
+            <div class="table-fill-page__table">
+            <el-table height="100%" :data="diyRouteTableData.data" size="large" v-loading="diyRouteTableData.loading">
                 <template #empty>
                     <span>{{ !diyRouteTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -53,6 +54,7 @@
                     </template>
                 </el-table-column>
             </el-table>
+            </div>
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="diyRouteTableData.page" v-model:page-size="diyRouteTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="diyRouteTableData.total" @size-change="getDiyRouteListFn" @current-change="loadDiyRouteList" />
             </div>
@@ -100,10 +102,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { getUrl } from '@/app/api/sys'
 import { cloneDeep } from 'lodash-es'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const pageTemplate: any = reactive({})
 

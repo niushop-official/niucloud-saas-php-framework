@@ -88,4 +88,9 @@ interface CoroutineInterface
      * Check if a coroutine exists or not.
      */
     public static function exists(int $id): bool;
+
+    /**
+     * @return iterable<int> returns all coroutine IDs
+     */
+    public static function list(): iterable;
 }

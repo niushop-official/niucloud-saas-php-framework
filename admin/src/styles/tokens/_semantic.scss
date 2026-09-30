@@ -1,0 +1,124 @@
+/**
+ * L2：语义 Token
+ *
+ * 页面与通用业务组件优先使用本层变量；不要直接引用 L1 基础值。
+ */
+:root {
+    // 品牌色与状态色
+    // 主色仍以 Element Plus 的运行时主题变量为来源，避免与 setThemeColor() 形成循环。
+    --sys-color-primary: var(--el-color-primary, var(--ref-color-brand-primary));
+    --sys-color-primary-hover: var(--el-color-primary-light-3, var(--sys-color-primary));
+    --sys-color-primary-border: var(--el-color-primary-light-7, var(--sys-color-primary));
+    --sys-color-primary-muted: var(--el-color-primary-light-8, var(--sys-color-primary));
+    --sys-color-primary-soft: var(--el-color-primary-light-9, var(--sys-color-primary));
+    --sys-color-success: var(--el-color-success, var(--ref-color-success));
+    --sys-color-warning: var(--el-color-warning, var(--ref-color-warning));
+    --sys-color-danger: var(--el-color-danger, var(--ref-color-danger));
+    --sys-color-danger-soft: var(--el-color-danger-light-9, var(--sys-color-fill-light));
+    --sys-color-info: var(--el-color-info, var(--ref-color-info));
+
+    // 背景
+    --sys-color-bg-page: var(--ref-color-bg-page);
+    --sys-color-bg-surface: var(--ref-color-bg-surface);
+    --sys-color-bg-overlay: var(--ref-color-bg-overlay);
+
+    // 文字
+    --sys-color-text-primary: var(--ref-color-text-strong);
+    --sys-color-text-regular: var(--ref-color-text-regular);
+    --sys-color-text-secondary: var(--ref-color-text-muted);
+    --sys-color-text-placeholder: var(--ref-color-text-placeholder);
+    --sys-color-text-disabled: var(--ref-color-text-disabled);
+    --sys-color-text-on-primary: var(--ref-color-text-on-primary);
+
+    // 边框
+    --sys-color-border-default: var(--ref-color-border-default);
+    --sys-color-border-light: var(--ref-color-border-light);
+    --sys-color-border-lighter: var(--ref-color-border-lighter);
+    --sys-color-border-extra-light: var(--ref-color-border-extra-light);
+    --sys-color-border-dark: var(--ref-color-border-dark);
+    --sys-color-border-darker: var(--ref-color-border-darker);
+
+    // 填充
+    --sys-color-fill-default: var(--ref-color-fill-default);
+    --sys-color-fill-light: var(--ref-color-fill-light);
+    --sys-color-fill-lighter: var(--ref-color-fill-lighter);
+    --sys-color-fill-extra-light: var(--ref-color-fill-extra-light);
+    --sys-color-fill-dark: var(--ref-color-fill-dark);
+    --sys-color-fill-darker: var(--ref-color-fill-darker);
+    --sys-color-fill-blank: var(--ref-color-fill-blank);
+
+    // 字体
+    --sys-font-family-base: var(--ref-font-family-base);
+    --sys-font-size-xs: var(--ref-font-size-xs);
+    --sys-font-size-sm: var(--ref-font-size-sm);
+    --sys-font-size-base: var(--ref-font-size-base);
+    --sys-font-size-md: var(--ref-font-size-md);
+    --sys-font-size-lg: var(--ref-font-size-lg);
+    --sys-font-size-xl: var(--ref-font-size-xl);
+    --sys-font-weight-regular: var(--ref-font-weight-regular);
+    --sys-font-weight-medium: var(--ref-font-weight-medium);
+    --sys-font-weight-semibold: var(--ref-font-weight-semibold);
+
+    // 圆角与阴影
+    --sys-radius-sm: var(--ref-radius-sm);
+    --sys-radius-md: var(--ref-radius-md);
+    --sys-radius-lg: var(--ref-radius-lg);
+    --sys-radius-full: var(--ref-radius-full);
+    --sys-shadow-sm: var(--ref-shadow-sm);
+    --sys-shadow-md: var(--ref-shadow-md);
+
+    // 间距
+    --sys-space-1: var(--ref-space-1);
+    --sys-space-2: var(--ref-space-2);
+    --sys-space-3: var(--ref-space-3);
+    --sys-space-4: var(--ref-space-4);
+    --sys-space-5: var(--ref-space-5);
+    --sys-space-6: var(--ref-space-6);
+    --sys-space-8: var(--ref-space-8);
+    --sys-space-10: var(--ref-space-10);
+
+    // 兼容之前已声明的变量名，已有或进行中的页面无需立即修改。
+    --color-bg-page: var(--sys-color-bg-page);
+    --color-bg-surface: var(--sys-color-bg-surface);
+    --color-text-primary: var(--sys-color-text-primary);
+    --color-text-secondary: var(--sys-color-text-secondary);
+    --color-text-placeholder: var(--sys-color-text-placeholder);
+    --color-text-disabled: var(--sys-color-text-disabled);
+    --color-border-default: var(--sys-color-border-default);
+    --color-border-light: var(--sys-color-border-light);
+    --color-primary: var(--sys-color-primary);
+    --color-success: var(--sys-color-success);
+    --color-warning: var(--sys-color-warning);
+    --color-danger: var(--sys-color-danger);
+    --color-info: var(--sys-color-info);
+
+    --font-family-base: var(--sys-font-family-base);
+    --font-size-xs: var(--sys-font-size-xs);
+    --font-size-sm: var(--sys-font-size-sm);
+    --font-size-base: var(--sys-font-size-base);
+    --font-size-lg: var(--sys-font-size-md);
+    --font-size-xl: var(--sys-font-size-xl);
+    --font-weight-regular: var(--sys-font-weight-regular);
+    --font-weight-medium: var(--sys-font-weight-medium);
+    --font-weight-semibold: var(--sys-font-weight-semibold);
+
+    --radius-sm: var(--sys-radius-sm);
+    --radius-md: var(--sys-radius-md);
+    --radius-lg: var(--sys-radius-lg);
+    --radius-full: var(--sys-radius-full);
+
+    --border-width: 1px;
+    --border-default: var(--border-width) solid var(--sys-color-border-default);
+    --border-light: var(--border-width) solid var(--sys-color-border-light);
+    --shadow-sm: var(--sys-shadow-sm);
+    --shadow-md: var(--sys-shadow-md);
+
+    --space-1: var(--sys-space-1);
+    --space-2: var(--sys-space-2);
+    --space-3: var(--sys-space-3);
+    --space-4: var(--sys-space-4);
+    --space-5: var(--sys-space-5);
+    --space-6: var(--sys-space-6);
+    --space-8: var(--sys-space-8);
+    --space-10: var(--sys-space-10);
+}

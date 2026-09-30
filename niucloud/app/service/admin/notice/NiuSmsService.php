@@ -243,6 +243,8 @@ class NiuSmsService extends BaseAdminService
         $params['telecomAppstoreUrl'] = $this->formatImageUrl($params['telecomAppstoreUrl']);
         $params['idcardFrontUrl'] = $this->formatImageUrl($params['idcardFrontUrl']);
         $params['idcardBackUrl'] = $this->formatImageUrl($params['idcardBackUrl']);
+        $params['commitmentLetterUrl'] = $this->formatImageUrl($params['commitmentLetterUrl']);
+
         if (empty($params['idcardFrontUrl'])) {
             throw new ApiException('身份证正面不能为空');
         }
@@ -250,7 +252,10 @@ class NiuSmsService extends BaseAdminService
             throw new ApiException('身份证反面不能为空');
         }
         if (empty($params['bizLicenseUrl'])) {
-            throw new ApiException('营业执照');
+            throw new ApiException('营业执照不能为空');
+        }
+        if (empty($params['commitmentLetterUrl'])) {
+            throw new ApiException('签名主体公司承诺函不能为空');
         }
         if (in_array($params['signSource'], [4, 5]) && empty($params['telecomAppstoreUrl'])) {
             throw new ApiException('应用商店/小程序页面开发者截图不能为空');

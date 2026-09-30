@@ -39,20 +39,16 @@ class CoreImageService extends CoreFileService
         $scheme = $file_parse['scheme'] ?? '';
         $host = $file_parse['host'] ?? '';
         $file_domain = $scheme . '://' . $host;
-        //判断是哪个云上传的实例
-        $storage_type_list = (new CoreStorageService())->getStorageConfigList();
-        foreach($storage_type_list as $k => $v){
-            $item_params = $v['params'] ?? [];
-            $item_domain = $item_params['domain'] ?? '';
-            $item_storage_type = $v['storage_type'];
-            if(str_contains($file_path, '_'.$item_storage_type)){
-                $this->upload_driver = $this->driver($site_id, $item_storage_type);
-            }else{
-                if($item_domain == $file_domain){
-                    $this->upload_driver = $this->driver($site_id, $item_storage_type);
-                }
-            }
-
+        //判断是哪个云上传的实例（同一存储方式可能维护多套配置，优先按域名精确匹配，其次按文件名的存储方式标识兜底）
+        $matched_config = $this->matchStorageConfig($site_id, $file_path, $file_domain);
+        //站点配置匹配不到时，尝试匹配平台端配置（兼容平台端上传的素材）
+        if(empty($matched_config) && $site_id != 0){
+            $matched_config = $this->matchStorageConfig(0, $file_path, $file_domain);
+        }
+        if(!empty($matched_config)){
+            $driver_config = $matched_config['params'] ?? [];
+            $driver_config['storage_type'] = $matched_config['storage_type'];
+            $this->upload_driver = $this->driverByConfig($driver_config);
         }
         //没有云上传就用本地上传
         if(empty($this->upload_driver)){
@@ -73,5 +69,31 @@ class CoreImageService extends CoreFileService
         return $thumb_data;
     }
 
+    /**
+     * 匹配文件所属的存储配置（优先按域名精确匹配，其次按文件名的存储方式标识兜底）
+     * @param int $site_id
+     * @param string $file_path
+     * @param string $file_domain
+     * @return array|null
+     */
+    private function matchStorageConfig(int $site_id, string $file_path, string $file_domain)
+    {
+        $storage_config_list = (new CoreStorageService())->getStorageConfigList($site_id);
+        if (empty($storage_config_list)) return null;
+        //按域名精确匹配（同一存储方式可能有多套不同域名的配置）
+        foreach ($storage_config_list as $v) {
+            $item_domain = $v['params']['domain'] ?? '';
+            if (!empty($item_domain) && !empty($file_domain) && rtrim($item_domain, '/') == rtrim($file_domain, '/')) {
+                return $v;
+            }
+        }
+        //按文件名的存储方式标识兜底
+        foreach ($storage_config_list as $v) {
+            if (str_contains($file_path, '_' . $v['storage_type'])) {
+                return $v;
+            }
+        }
+        return null;
+    }
 
 }

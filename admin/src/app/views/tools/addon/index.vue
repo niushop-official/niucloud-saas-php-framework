@@ -82,9 +82,9 @@
                     </el-steps>
                 </el-tab-pane>
 
-                <el-tab-pane :label="t('pluginList')" name="pluginList">
+                <el-tab-pane :label="t('pluginList')" name="pluginList" class="page-sections">
 
-                    <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
+                    <el-card class="box-card !border-none table-search-wrap table-search-wrap--panel" shadow="never">
                         <div class="flex justify-between">
                             <el-form :inline="true" :model="params" ref="searchFormRef">
                                 <el-form-item :label="t('title')" prop="search">
@@ -98,7 +98,7 @@
                         </div>
                     </el-card>
 
-                    <el-table :data="data" size="large" v-loading="loading" class="pt-[5px]">
+                    <el-table :data="data" size="large" v-loading="loading">
                         <template #empty>
                             <span>{{ t('emptyData') }}</span>
                         </template>

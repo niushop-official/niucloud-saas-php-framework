@@ -154,6 +154,9 @@ function removeUviewBarrelTemp() {
 
 function main() {
     const buildId = makeBuildId('mp-framework')
+    // build:mp-weixin:core 场景（SKIP_ADDONS=1）：框架包不携带已编译插件包与合并元数据
+    // （插件在 SaaS 侧经 build:mp-weixin:addon + merge-mp-addon 独立合并/部署）。
+    const skipAddons = process.env.SKIP_ADDONS === '1'
 
     require('./generate-mp-framework-pages.cjs')
     require('./generate-diy-registry.cjs').generateDiyRegistry()
@@ -211,6 +214,22 @@ function main() {
         }
         writeJson(MP_LOCK_PATH, lock)
         installMergeScriptToFramework(MP_CORE_DIR)
+        if (skipAddons) {
+            // 框架包不携带已编译插件包与合并元数据（防止历史 build:mp-weixin:addon
+            // 写入的 mp-addons/ 或 merge-mp-addon 的 mp-merge-meta.json 残留进 core 产物）
+            const addonPkgDir = path.join(MP_CORE_DIR, 'mp-addons')
+            if (fs.existsSync(addonPkgDir)) {
+                rmDir(addonPkgDir)
+                console.log('[build-mp-framework] SKIP_ADDONS: removed mp-addons/ from core output')
+            }
+            for (const f of ['mp-merge-meta.json', 'index.json']) {
+                const fp = path.join(MP_CORE_DIR, f)
+                if (fs.existsSync(fp)) {
+                    fs.rmSync(fp, { force: true })
+                    console.log(`[build-mp-framework] SKIP_ADDONS: removed ${f} from core output`)
+                }
+            }
+        }
         console.log(`[build-mp-framework] OK -> ${path.relative(ROOT, MP_CORE_DIR)}/ (${buildId})`)
         console.log('[build-mp-framework] 框架包可直接导入开发者工具（仅主包，无插件分包）')
         console.log('[build-mp-framework] 添加插件后合并：')

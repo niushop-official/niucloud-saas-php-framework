@@ -388,7 +388,13 @@ const Lne = "请求失败", Hne = "不在request 合法域名列表中", Bne = "
   "shop_giftcard.orderClose": "关闭订单",
   "shop_giftcard.orderNo": "订单号",
   onceCard: hse,
-  cardUnit: _se
+  cardUnit: _se,
+  "home_service.reserveBtn": "去抢购",
+  "home_service.noHomeAddress": "没有更多内容啦~",
+  "home_service.soldOut": "已售",
+  "home_service.orderNo": "订单号",
+  "home_service.actualPayment": "实付款",
+  "home_service.orderDetail": "详情"
 }, $se = "Index", vse = {
   index: $se
 };
@@ -475,13 +481,21 @@ const Co = Eo("config", {
     // 获取主色调
     getThemeColor() {
       let o = uni.getStorageSync("current_theme_color");
-      if (!this.themeColor && o && (this.themeColor = JSON.parse(o)), this.themeColor) {
-        let e = "";
-        for (let t in this.themeColor)
-          e += `${t}:${this.themeColor[t]};`;
-        return e;
+      !this.themeColor && o && (this.themeColor = JSON.parse(o));
+      let e = this.themeColor;
+      for (; typeof e == "string"; )
+        try {
+          e = JSON.parse(e);
+        } catch {
+          break;
+        }
+      if (e && typeof e == "object") {
+        let t = "";
+        for (let n in e)
+          t += `${n}:${e[n]};`;
+        return t;
       }
-      return "";
+      return typeof e == "string" ? e : "";
     }
   }
 });

@@ -1,10 +1,7 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none setting-card" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center p-[20px]">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
             <el-tabs v-model="activeName">
                 <el-tab-pane :label="t('小程序同步')" name="xcx">
                     <weappVersion></weappVersion>
@@ -13,8 +10,10 @@
                     <setting></setting>
                 </el-tab-pane>
                 <el-tab-pane :label="t('授权记录')" name="auth_record">
-                    <el-card class="box-card !border-none p-[20px]" shadow="never">
-                        <el-table :data="authRecordTableData.data" size="large" v-loading="authRecordTableData.loading">
+                    <div class="table-panel table-fill-page__panel">
+                        <table-toolbar :title="t('授权记录')" :selectable="false" />
+                        <div class="table-fill-page__table">
+                        <el-table height="100%" :data="authRecordTableData.data" size="large" v-loading="authRecordTableData.loading">
                             <template #empty>
                                 <span>{{ !authRecordTableData.loading ? t('emptyData') : '' }}</span>
                             </template>
@@ -68,14 +67,19 @@
                             </el-table-column>
                             <el-table-column prop="create_time" :label="t('authTime')"></el-table-column>
                         </el-table>
-
-                        <div class="mt-[16px] flex justify-end">
-                            <el-pagination v-model:current-page="authRecordTableData.page" v-model:page-size="authRecordTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="authRecordTableData.total" @size-change="loadAuthRecordList()" @current-change="loadAuthRecordList" />
                         </div>
-                    </el-card>
+
+                        <table-pagination
+                            v-model:current-page="authRecordTableData.page"
+                            v-model:page-size="authRecordTableData.limit"
+                            :total="authRecordTableData.total"
+                            @size-change="loadAuthRecordList()"
+                            @current-change="loadAuthRecordList"
+                        />
+                    </div>
                 </el-tab-pane>
             </el-tabs>
-        </el-card>
+        </div>
     </div>
 </template>
 
@@ -83,13 +87,19 @@
 import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import weappVersion from '@/app/views/wxoplatform/weapp_version.vue'
 import setting from '@/app/views/wxoplatform/setting.vue'
 import { getAuthRecord } from '@/app/api/wxoplatform'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { img } from '@/utils/common'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const activeName = ref('xcx')
 
 const authRecordTableData = reactive({
@@ -121,9 +131,6 @@ loadAuthRecordList()
 </script>
 
 <style lang="scss" scoped>
-:deep(.setting-card .el-card__body){
-    padding: 0 !important;
-}
 :deep(.el-tabs__header){
     padding: 0 20px;
 }

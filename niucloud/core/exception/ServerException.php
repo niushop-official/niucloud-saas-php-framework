@@ -10,7 +10,7 @@ use Throwable;
  */
 class ServerException extends RuntimeException
 {
-    public function __construct($message = "", $code = 409, Throwable $previous = null)
+    public function __construct($message = "", $code = 409, ?Throwable $previous = null)
     {
 
         parent::__construct($message, $code, $previous);

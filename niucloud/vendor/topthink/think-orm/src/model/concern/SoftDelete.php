@@ -3,18 +3,20 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace think\model\concern;
 
+use Closure;
 use think\db\BaseQuery as Query;
 use think\Model;
+use think\model\Collection;
 
 /**
  * 数据软删除
@@ -26,7 +28,13 @@ use think\Model;
  */
 trait SoftDelete
 {
-    public function db($scope = []): Query
+    /**
+     * 获取查询对象
+     *
+     * @param array|null $scope 设置不使用的全局查询范围
+     * @return Query
+     */
+    public function db(array | null $scope = []): Query
     {
         $query = parent::db($scope);
         $this->withNoTrashed($query);
@@ -71,7 +79,7 @@ trait SoftDelete
      */
     protected function getWithTrashedExp(): array
     {
-        return is_null($this->defaultSoftDelete) ? ['notnull', ''] : ['<>', $this->defaultSoftDelete];
+        return is_null($this->getOption('defaultSoftDelete')) ? ['notnull', ''] : ['<>', $this->getOption('defaultSoftDelete')];
     }
 
     /**
@@ -81,41 +89,33 @@ trait SoftDelete
      */
     public function delete(): bool
     {
-        if (!$this->isExists() || $this->isEmpty() || false === $this->trigger('BeforeDelete')) {
+        if ($this->isEmpty() || false === $this->trigger('BeforeDelete')) {
             return false;
         }
 
-        $name = $this->getDeleteTimeField();
+        $name  = $this->getDeleteTimeField();
         $force = $this->isForce();
 
         if ($name && !$force) {
+            foreach ($this->getData() as $key => $val) {
+                if ($val instanceof Model || $val instanceof Collection) {
+                    $relations[$key] = $val;
+                }
+            }
             // 软删除
-            $this->set($name, $this->autoWriteTimestamp());
-
-            $this->exists()->withEvent(false)->save();
+            $this->exists()->withEvent(false)->save([$name => $this->getDateTime($name)]);
 
             $this->withEvent(true);
-        } else {
-            // 读取更新条件
-            $where = $this->getWhere();
-
-            // 删除当前模型数据
-            $this->db()
-                ->where($where)
-                ->removeOption('soft_delete')
-                ->delete();
-        }
-
-        // 关联删除
-        if (!empty($this->relationWrite)) {
-            $this->autoRelationDelete($force);
-        }
-
-        $this->trigger('AfterDelete');
-
-        $this->exists(false);
-
-        return true;
+            if (!empty($relations)) {
+                // 删除关联数据
+                $this->relationDelete($relations);
+            }
+            $this->trigger('AfterDelete');
+            $this->exists(false);
+            $this->clear();
+            return true;
+        } 
+        return parent::delete();
     }
 
     /**
@@ -123,20 +123,18 @@ trait SoftDelete
      *
      * @param mixed $data  主键列表 支持闭包查询条件
      * @param bool  $force 是否强制删除
+     * @param array $together 关联删除
      *
      * @return bool
      */
-    public static function destroy($data, bool $force = false): bool
+    public static function destroy($data, bool $force = false, array $together = []): bool
     {
         // 传入空值（包括空字符串和空数组）的时候不会做任何的数据删除操作，但传入0则是有效的
         if (empty($data) && 0 !== $data) {
             return false;
         }
-        $model = (new static());
+        $query = (new static())->db();
 
-        $query = $model->db(false);
-
-        // 仅当强制删除时包含软删除数据
         if ($force) {
             $query->removeOption('soft_delete');
         }
@@ -144,8 +142,8 @@ trait SoftDelete
         if (is_array($data) && key($data) !== 0) {
             $query->where($data);
             $data = [];
-        } elseif ($data instanceof \Closure) {
-            call_user_func_array($data, [&$query]);
+        } elseif ($data instanceof Closure) {
+            $data($query);
             $data = [];
         }
 
@@ -153,7 +151,7 @@ trait SoftDelete
 
         foreach ($resultSet as $result) {
             /** @var Model $result */
-            $result->force($force)->delete();
+            $result->force($force)->together($together)->delete();
         }
 
         return true;
@@ -174,18 +172,11 @@ trait SoftDelete
             return false;
         }
 
-        if (empty($where)) {
-            $pk = $this->getPk();
-            if (is_string($pk)) {
-                $where[] = [$pk, '=', $this->getData($pk)];
-            }
-        }
+        $db = $this->getDbWhere($where);
 
         // 恢复删除
-        $this->db(false)
-            ->where($where)
-            ->useSoftDelete($name, $this->getWithTrashedExp())
-            ->update([$name => $this->defaultSoftDelete]);
+        $db->useSoftDelete($name, $this->getWithTrashedExp())
+            ->update([$name => $this->getOption('defaultSoftDelete')]);
 
         $this->trigger('AfterRestore');
 
@@ -199,9 +190,9 @@ trait SoftDelete
      *
      * @return string|false
      */
-    public function getDeleteTimeField(bool $read = false): bool|string
+    public function getDeleteTimeField(bool $read = false): bool | string
     {
-        $field = property_exists($this, 'deleteTime') && isset($this->deleteTime) ? $this->deleteTime : 'delete_time';
+        $field = $this->getOption('deleteTime', 'delete_time');
 
         if (false === $field) {
             return false;
@@ -231,7 +222,7 @@ trait SoftDelete
         $field = $this->getDeleteTimeField(true);
 
         if ($field) {
-            $condition = is_null($this->defaultSoftDelete) ? ['null', ''] : ['=', $this->defaultSoftDelete];
+            $condition = is_null($this->getOption('defaultSoftDelete')) ? ['null', ''] : ['=', $this->getOption('defaultSoftDelete')];
             $query->useSoftDelete($field, $condition);
         }
     }

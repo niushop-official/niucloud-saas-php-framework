@@ -2,9 +2,13 @@
 
 namespace EasyWeChat\Kernel;
 
-use JetBrains\PhpStorm\Pure;
+use const PHP_OUTPUT_HANDLER_CLEANABLE;
+use const PHP_OUTPUT_HANDLER_FLUSHABLE;
+use const PHP_OUTPUT_HANDLER_REMOVABLE;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+
 use function array_keys;
 use function array_map;
 use function count;
@@ -12,9 +16,6 @@ use function header;
 use function max;
 use function sprintf;
 use function ucwords;
-use const PHP_OUTPUT_HANDLER_CLEANABLE;
-use const PHP_OUTPUT_HANDLER_FLUSHABLE;
-use const PHP_OUTPUT_HANDLER_REMOVABLE;
 
 class ServerResponse implements ResponseInterface
 {
@@ -23,7 +24,6 @@ class ServerResponse implements ResponseInterface
         $this->response->getBody()->rewind();
     }
 
-    #[Pure]
     public static function make(ResponseInterface $response): ServerResponse
     {
         if ($response instanceof ServerResponse) {
@@ -117,7 +117,7 @@ class ServerResponse implements ResponseInterface
             \fastcgi_finish_request();
         } elseif (\function_exists('litespeed_finish_request')) {
             \litespeed_finish_request();
-        } elseif (!\in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
+        } elseif (! \in_array(\PHP_SAPI, ['cli', 'phpdbg'], true)) {
             static::closeOutputBuffers(0, true);
         }
 
@@ -132,7 +132,7 @@ class ServerResponse implements ResponseInterface
         }
 
         foreach ($this->getHeaders() as $name => $values) {
-            $replace = 0 === \strcasecmp($name, 'Content-Type');
+            $replace = \strcasecmp($name, 'Content-Type') === 0;
 
             foreach ($values as $value) {
                 header($name.': '.$value, $replace, $this->getStatusCode());
@@ -166,6 +166,7 @@ class ServerResponse implements ResponseInterface
      * Resulting level can be greater than target level if a non-removable buffer has been encountered.
      *
      * @link https://github.com/symfony/http-foundation/blob/6.1/Response.php
+     *
      * @final
      */
     public static function closeOutputBuffers(int $targetLevel, bool $flush): void
@@ -174,7 +175,7 @@ class ServerResponse implements ResponseInterface
         $level = count($status);
         $flags = PHP_OUTPUT_HANDLER_REMOVABLE | ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE);
 
-        while ($level-- > $targetLevel && ($s = $status[$level]) && (!isset($s['del']) ? !isset($s['flags']) || ($s['flags'] & $flags) === $flags : $s['del'])) {
+        while ($level-- > $targetLevel && ($s = $status[$level]) && (! isset($s['del']) ? ! isset($s['flags']) || ($s['flags'] & $flags) === $flags : $s['del'])) {
             if ($flush) {
                 ob_end_flush();
             } else {
@@ -186,16 +187,18 @@ class ServerResponse implements ResponseInterface
     public function __toString(): string
     {
         $headers = $this->getHeaders();
-
-        ksort($headers);
-
-        $max = max(array_map('strlen', array_keys($headers))) + 1;
         $headersString = '';
 
-        foreach ($headers as $name => $values) {
-            $name = ucwords($name, '-');
-            foreach ($values as $value) {
-                $headersString .= sprintf("%-{$max}s %s\r\n", $name.':', $value);
+        if (! empty($headers)) {
+            ksort($headers);
+
+            $max = max(array_map('strlen', array_keys($headers))) + 1;
+
+            foreach ($headers as $name => $values) {
+                $name = ucwords($name, '-');
+                foreach ($values as $value) {
+                    $headersString .= sprintf("%-{$max}s %s\r\n", $name.':', $value);
+                }
             }
         }
 

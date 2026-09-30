@@ -325,6 +325,9 @@ class Client
         $context = isset($this->_options['context']) ? $this->_options['context'] : [];
         $this->_connection = new AsyncTcpConnection($this->_address, $context);
         $this->_connection->protocol = Redis::class;
+        if (stripos($this->_address, 'unix://') === 0) {
+            $this->_connection->transport = 'unix';
+        }
         if(!empty($this->_options['ssl'])){
             $this->_connection->transport = 'ssl';
         }
@@ -336,12 +339,12 @@ class Client
                 Timer::del($this->_reconnectTimer);
                 $this->_reconnectTimer = null;
             }
-
-            if ($this->_db) {
+          
+            if ($this->_db && ($this->_queue[0][0][0] ?? '') !== 'SELECT' && ($this->_queue[0][0][0] ?? '') !== 'AUTH' && ($this->_queue[1][0][0] ?? '') !== 'SELECT') {
                 $this->_queue = \array_merge([[['SELECT', $this->_db], time(), null]], $this->_queue);
             }
 
-            if ($this->_auth) {
+            if ($this->_auth && ($this->_queue[0][0][0] ?? '') !== 'AUTH') {
                 $this->_queue = \array_merge([[['AUTH', $this->_auth], time(), null]],  $this->_queue);
             }
 
@@ -541,6 +544,8 @@ class Client
         if ($need_suspend) {
             [$suspension, $cb] = $this->suspenstion();
         }
+        $cb = $cb ?: function () {
+        };
         $this->_queue[] = [['SELECT', $db], time(), $cb, $format];
         $this->process();
         if ($need_suspend) {
@@ -566,6 +571,8 @@ class Client
         if ($need_suspend) {
             [$suspension, $cb] = $this->suspenstion();
         }
+        $cb = $cb ?: function () {
+        };
         $this->_queue[] = [['AUTH', $auth], time(), $cb, $format];
         $this->process();
         if ($need_suspend) {

@@ -1,14 +1,14 @@
 <template>
     <!--会员标签-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{pageName}}</span>
                 <el-button type="primary" @click="addEvent">{{ t('addMemberLabel') }}</el-button>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="memberLabelTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('labelName')" prop="label_name">
                         <el-input v-model.trim="memberLabelTableData.searchParam.label_name" :placeholder="t('labelNamePlaceholder')" />
@@ -20,8 +20,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="memberLabelTableData.data" size="large" v-loading="memberLabelTableData.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="memberLabelTableData.data" size="large" v-loading="memberLabelTableData.loading">
 
                     <template #empty>
                         <span>{{ !memberLabelTableData.loading ? t('emptyData') : '' }}</span>
@@ -40,6 +41,7 @@
                     </el-table-column>
 
                 </el-table>
+                </div>
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="memberLabelTableData.page" v-model:page-size="memberLabelTableData.limit"
                         layout="total, sizes, prev, pager, next, jumper" :total="memberLabelTableData.total"
@@ -59,9 +61,13 @@ import { getMemberLabelList, deleteMemberLabel } from '@/app/api/member'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import EditMemberLabel from '@/app/views/member/components/edit-label.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const memberLabelTableData = reactive({
     page: 1,

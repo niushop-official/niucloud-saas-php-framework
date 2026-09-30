@@ -99,6 +99,9 @@ Route::group('site', function () {
     // 获取应用列表
     Route::get('showCustomer', 'site.Site/showCustomer');
     Route::get('special_menu', 'site.Site/getSpecialMenuList');
+    /***************************************************** 站点创建流程 ***********************************************/
+    // 站点创建流程（主流程 + 子流程）
+    Route::get('create_flow', 'site.SiteCreateFlow/lists');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

@@ -19,6 +19,8 @@ class NoticeTypeDict
     public const WECHAT = 'wechat';
     //微信小程序
     public const WEAPP = 'weapp';
+    //站内信
+    public const MESSAGE = 'message';
 
     public const TEMPLATE_NEED_PULL = -4;
     public const TEMPLATE_AUDIT_STATUS_NEED_AGAIN_REPORT = -3;
@@ -50,6 +52,7 @@ class NoticeTypeDict
             self::SMS => get_lang('dict_notice.type_sms'),//短信
             self::WECHAT => get_lang('dict_notice.type_wechat'),//微信公众号
             self::WEAPP => get_lang('dict_notice.type_weapp'),//微信小程序
+            self::MESSAGE => get_lang('dict_notice.type_message'),//站内信
         ];
     }
 

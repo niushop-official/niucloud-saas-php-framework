@@ -76,7 +76,19 @@ return [
         ],
         'class' => 'app\job\upgrade\AutoClearUpgradeRecords',
         'function' => ''
-    ], [
+    ],     [
+        'key' => 'framework_patch_check',
+        'name' => '检测框架补丁',
+        'desc' => '每小时请求云端 patch 接口，发现新补丁时向平台端推送消息',
+        'time' => [
+            'type' => 'hour',
+            'hour' => 1,
+            'min' => 0
+        ],
+        'class' => 'app\job\schedule\CheckFrameworkPatch',
+        'function' => ''
+    ],
+    [
         'key' => 'auto_clear_user_log',
         'name' => '定时清理用户操作日志',
         'desc' => '',

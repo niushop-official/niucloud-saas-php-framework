@@ -30,6 +30,7 @@ use app\service\admin\user\UserService;
 use app\service\api\captcha\CaptchaService;
 use app\service\core\site\CoreSiteService;
 use app\service\core\sys\CoreConfigService;
+use app\service\core\upload\CoreStorageService;
 use core\base\BaseAdminService;
 use core\exception\AdminException;
 use core\exception\CommonException;
@@ -134,9 +135,10 @@ class SiteService extends BaseAdminService
             'site_name' => $data['site_name'],
             'app_type' => $data['app_type'],
             'group_id' => $data['group_id'],
+            'desc' => $data['desc'] ?? '',
             'create_time' => time(),
             'expire_time' => $data['expire_time'],
-            'app' => $site_group['app'],
+            'app' => json_encode($site_group['app']),
             'addons' => '',
             'status' => strtotime($data['expire_time']) > time() ? SiteDict::ON : SiteDict::EXPIRE,
             'icon' => $admin_site_info['icon'] ?? 'static/resource/images/site/icon.jpg',
@@ -165,6 +167,9 @@ class SiteService extends BaseAdminService
 
             //添加站点成功事件
             event("AddSiteAfter", ['site_id' => $site_id, 'main_app' => $site_group['app'], 'site_addons' => $site_group['addon']]);
+
+            // 初始化站点默认存储配置（本地存储默认启用，各云存储方式预置一条空配置）
+            (new CoreStorageService())->initStorageConfig($site_id);
 
             // 更新微页面数据
             $diy_service = new DiyService();
@@ -574,6 +579,7 @@ class SiteService extends BaseAdminService
                 'sort' => $item['sort'],
                 'status' => '1',
                 'is_show' => '1',
+                'is_blank' => '0',
             ];
             $children = [];
             if (!empty($auth_menu_list)) {

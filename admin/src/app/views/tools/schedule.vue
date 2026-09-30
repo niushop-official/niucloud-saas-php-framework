@@ -1,34 +1,21 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center mb-[20px]">
-                <span class="text-page-title">{{ pageName }}</span>
-                <div>
-                    <el-button type="primary" @click="showEvent">{{ t('addCron') }}</el-button>
-                    <el-button type="primary" @click="resetCronFn">{{ t('重置计划任务') }}</el-button>
-                </div>
-               
-            </div>
+            <!-- 计划任务说明：原 el-alert 自带关闭功能，保留关闭按钮 -->
+            <tip-notice closable>
+                <p>{{ t('cronTipsOne') }}</p>
+                <p>{{ t('cronTipsTwo') }}</p>
+            </tip-notice>
 
-            <el-alert type="info">
-                <template #default>
-                    <div class="flex items-center">
-                        <div>
-                            <p>{{ t('cronTipsOne') }}</p>
-                            <p class="mt-2">{{ t('cronTipsTwo') }}</p>
-                        </div>
-                    </div>
-                </template>
-            </el-alert>
-
-            <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none table-search-wrap table-search-wrap--panel table-fill-page__search" shadow="never">
                 <div class="flex justify-between">
                     <el-form :inline="true" :model="cronTableData.searchParam" ref="searchFormRef">
                         <el-form-item :label="t('title')" prop="key">
-                            <el-select v-model="cronTableData.searchParam.key" placeholder="全部" filterable remote clearable>
-                                <el-option label="全部" value="all" />
-                                <el-option v-for="item in templateList" :key="item.key" :label="item.name" :value="item.key" />
+                            <el-select v-model="cronTableData.searchParam.key" placeholder="全部" filterable clearable popper-class="schedule-name-select">
+                                <el-option-group v-for="group in templateGroupList" :key="group.addon" :label="group.label">
+                                    <el-option v-for="item in group.list" :key="item.key" :label="item.name" :value="item.key" />
+                                </el-option-group>
                             </el-select>
                         </el-form-item>
                         <el-form-item :label="t('status')" prop="status">
@@ -46,49 +33,46 @@
                 </div>
             </el-card>
 
-            <div class="mt-[20px]">
-                <el-table :data="cronTableData.data" size="large" v-loading="cronTableData.loading">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false">
+                    <template #actions>
+                        <el-button type="primary" @click="showEvent">{{ t('addCron') }}</el-button>
+                        <el-button type="primary" @click="resetCronFn">{{ t('重置计划任务') }}</el-button>
+                    </template>
+                </table-toolbar>
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="cronTableData.data" size="large" v-loading="cronTableData.loading">
                     <template #empty>
                         <span>{{ !cronTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
 
-                    <el-table-column prop="key" :label="t('key')" min-width="150" />
                     <el-table-column prop="name" :label="t('title')" min-width="150" />
+                    <el-table-column prop="key" :label="t('key')" min-width="150" />
                     <el-table-column :label="t('crondType')" min-width="150">
                         <template #default="{ row }">
                             {{ row.crontab_content }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="status_name" :label="t('openStatus')" min-width="100" />
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="180">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="200">
                         <template #default="{ row }">
-                            <div class="flex items-center">
-                                <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                                <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
-                                <el-dropdown class="ml-[12px]">
-                                    <span class="el-dropdown-link text-primary">
-                                        {{ t('more') }}
-                                    </span>
-                                    <template #dropdown>
-                                    <el-dropdown-menu>
-                                        <el-dropdown-item @click="doEvent(row)">{{ t('doOne') }}</el-dropdown-item>
-                                        <el-dropdown-item @click="toLogList(row.id)">{{ t('cronLog') }}</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                    </template>
-                                </el-dropdown>
-                            </div>
+                            <table-actions :actions="rowActions(row)" />
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="cronTableData.page" v-model:page-size="cronTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="cronTableData.total"
-                        @size-change="loadCronList()" @current-change="loadCronList" />
                 </div>
+                <table-pagination
+                    v-model:current-page="cronTableData.page"
+                    v-model:page-size="cronTableData.limit"
+                    :total="cronTableData.total"
+                    @size-change="loadCronList()"
+                    @current-change="loadCronList"
+                />
             </div>
-        </el-card>
+        </div>
 
         <cron-info ref="cronDialog" @complete="loadCronList" />
+        <schedule-log ref="scheduleLogRef" />
 
         <el-dialog v-model="showDialog" :title="t('editCron')" width="750px" :destroy-on-close="true">
             <el-form :model="formData" label-width="110px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
@@ -150,11 +134,30 @@ import {
     resetCron
 } from '@/app/api/sys'
 import { ElMessageBox, FormInstance } from 'element-plus'
-import { useRouter, useRoute } from 'vue-router'
+import TableActions from '@/components/table-actions/index.vue'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
+import TipNotice from '@/components/tip-notice/index.vue'
+import { useRoute } from 'vue-router'
+import ScheduleLog from '@/app/views/tools/schedule_log.vue'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import CronInfo from '@/app/views/setting/components/cron-info.vue'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
+
+/**
+ * 表格行内操作：超过 2 个自动收进「更多」
+ */
+const rowActions = (row: any) => [
+    { label: t('edit'), onClick: () => editEvent(row) },
+    { label: t('cronLog'), onClick: () => toLogList(row.id) },
+    { label: t('doOne'), onClick: () => doEvent(row) },
+    { label: t('delete'), type: 'danger', onClick: () => deleteEvent(row.id) }
+]
 
 const cronTableData = reactive({
     page: 1,
@@ -167,7 +170,24 @@ const cronTableData = reactive({
         status: 'all'
     }
 })
-const templateList = ref([])
+const templateList = ref<any[]>([])
+const templateGroupList = computed(() => {
+    const groups: { addon: string, label: string, list: any[] }[] = []
+    const indexMap: Record<string, number> = {}
+    templateList.value.forEach((item) => {
+        const addon = item.addon || ''
+        if (indexMap[addon] === undefined) {
+            indexMap[addon] = groups.length
+            groups.push({
+                addon,
+                label: item.addon_name || addon,
+                list: []
+            })
+        }
+        groups[indexMap[addon]].list.push(item)
+    })
+    return groups
+})
 const date_type = ref([])
 const week_list = ref([])
 const searchFormRef = ref<FormInstance>()
@@ -205,8 +225,6 @@ const loadCronList = (page: number = 1) => {
     })
 }
 loadCronList()
-
-const router = useRouter()
 
 const showDialog = ref(false)
 const initialFormData = {
@@ -354,10 +372,15 @@ const infoEvent = (data: any) => {
     cronDialog.value.showDialog = true
 }
 
+const scheduleLogRef = ref<any>(null)
 const toLogList = (id: number) => {
-    router.push({ path: '/tools/schedule_log', query: { id: id } })
+    scheduleLogRef.value?.open(id)
 }
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.schedule-name-select .el-select-group .el-select-dropdown__item {
+    padding-left: 25px;
+}
+</style>

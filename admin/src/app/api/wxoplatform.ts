@@ -68,6 +68,14 @@ export function delVersion(id: number) {
 }
 
 /**
+ * 直接同步模板库（已上传成功、无模板ID 的记录补跑，不创建任务）
+ * @param id 小程序版本记录 id
+ */
+export function syncTemplate(id: number) {
+    return request.post('wxoplatform/weapp/version/syncTemplate', { id }, { showSuccessMessage: true })
+}
+
+/**
  * 小程序代码提交
  * @returns
  */

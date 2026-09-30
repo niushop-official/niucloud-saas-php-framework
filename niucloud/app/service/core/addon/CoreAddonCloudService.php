@@ -32,7 +32,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
         // 上传任务key
         $task_key = uniqid();
         // 此次上传任务临时目录
-        $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $task_key . DIRECTORY_SEPARATOR;
+        $temp_dir = task_runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $task_key . DIRECTORY_SEPARATOR;
         $package_dir = $temp_dir . 'package' . DIRECTORY_SEPARATOR;
         dir_mkdir($package_dir);
 
@@ -80,7 +80,9 @@ class CoreAddonCloudService extends CoreCloudBaseService
         if ($need_build) {
             // 将临时目录下文件生成压缩包
             $zip_file = $temp_dir . DIRECTORY_SEPARATOR . 'build.zip';
-            (new CoreAddonDevelopDownloadService(''))->compressToZip($package_dir, $zip_file);
+            if (!( new CoreAddonDevelopDownloadService('') )->compressToZip($package_dir, $zip_file)) {
+                throw new CommonException('源码压缩包生成失败，请检查磁盘空间与目录权限');
+            }
 
             $install_task = Cache::get('install_task');
             $query = [
@@ -174,12 +176,12 @@ class CoreAddonCloudService extends CoreCloudBaseService
             // 下载任务key
             $task_key = uniqid();
             // 此次下载任务临时目录
-            $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $task_key . DIRECTORY_SEPARATOR;
+            $temp_dir = task_runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $task_key . DIRECTORY_SEPARATOR;
             dir_mkdir($temp_dir);
 
             Cache::set('build_success_' . $addon, ['step' => $step, 'index' => 0, 'length' => $length, 'task_key' => $task_key]);
         } else {
-            $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $cache['task_key'] . DIRECTORY_SEPARATOR;
+            $temp_dir = task_runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'cloud_build' . DIRECTORY_SEPARATOR . $cache['task_key'] . DIRECTORY_SEPARATOR;
             $zip_file = $temp_dir . 'build.zip';
             $zip_resource = fopen($zip_file, 'a');
 
@@ -266,7 +268,7 @@ class CoreAddonCloudService extends CoreCloudBaseService
         $length = $response->getHeader('Content-range');
         $length = (int)explode("/", $length[0])[1];
 
-        $temp_dir = runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'addon_download' . DIRECTORY_SEPARATOR . uniqid() . DIRECTORY_SEPARATOR;
+        $temp_dir = task_runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'addon_download' . DIRECTORY_SEPARATOR . uniqid() . DIRECTORY_SEPARATOR;
         dir_mkdir($temp_dir);
 
         $zip_file = $temp_dir . $addon . '.zip';

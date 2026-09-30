@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
 const { spawnSync } = require('child_process')
-const { ROOT, BUILD_DIR, PAGES_JSON, parsePagesJson, listAddonKeys, walkFiles } = require('./addon-utils.cjs')
+const { ROOT, BUILD_DIR, PAGES_JSON, parsePagesJson, listAddonKeys, parseAddonBoundaries, walkFiles } = require('./addon-utils.cjs')
 
 const MP_OUT_BUILD = path.join(ROOT, 'dist', 'build', 'mp-weixin')
 /** 框架小程序源码（可直接导入开发者工具，无插件分包） */
@@ -119,8 +119,17 @@ function resolveFullPagesJson() {
     return parsePagesJson()
 }
 
-/** 按插件 key 收集 pages.json 中的分包 root（含 home_service 等多 root） */
+/**
+ * 按插件 key 收集 pages.json 中的分包 root（含 home_service 等多 root）。
+ * 归属来源统一为 pages.json 的 // {KEY}_PAGE_BEGIN ... {KEY}_PAGE_END 注释区块，
+ * 不依赖 root 命名，通用支持多分包插件（含子分包目录）同区块归属。
+ */
 function getSubPackageRootsForKey(addonKey, pagesJson = resolveFullPagesJson()) {
+    const boundaries = parseAddonBoundaries()
+    if (boundaries[addonKey]) {
+        return [...new Set(boundaries[addonKey])].sort()
+    }
+    // 回退：无注释区块时用 root 前缀匹配（兼容旧约定）
     const prefix = `addon/${addonKey}`
     const roots = []
     for (const sub of pagesJson.subPackages || []) {
@@ -133,7 +142,19 @@ function getSubPackageRootsForKey(addonKey, pagesJson = resolveFullPagesJson()) 
     return [...new Set(roots)].sort()
 }
 
+/**
+ * 所有插件的分包 root 映射（以注释区块归属为准）。
+ */
 function getAllAddonSubPackageRoots(pagesJson = resolveFullPagesJson()) {
+    const boundaries = parseAddonBoundaries()
+    if (Object.keys(boundaries).length) {
+        const map = {}
+        for (const key of Object.keys(boundaries)) {
+            map[key] = [...new Set(boundaries[key])].sort()
+        }
+        return map
+    }
+    // 回退：按 root 第二段归组
     const map = {}
     for (const sub of pagesJson.subPackages || []) {
         const root = sub.root

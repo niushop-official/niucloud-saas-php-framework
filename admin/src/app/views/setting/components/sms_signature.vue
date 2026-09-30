@@ -53,9 +53,7 @@
 									状态标识说明：<br />未实名状态显示为灰色；<br />实名通过状态显示为绿色；<br />实名失败状态显示为红色。<br />
 									短信接收条件：仅当手机号在对应运营商处实名通过后，才可接收短信。
 								</template>
-								<el-icon color="#666">
-									<QuestionFilled />
-								</el-icon>
+								<span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
 							</el-tooltip>
 						</div>
 					</template>
@@ -210,6 +208,9 @@
 					<el-form-item :label="t('营业执照')" prop="bizLicenseUrl">
 						<upload-image v-model="formData.bizLicenseUrl" :limit="1" />
 					</el-form-item>
+					<el-form-item :label="t('签名主体公司承诺函')" prop="commitmentLetterUrl">
+						<upload-image v-model="formData.commitmentLetterUrl" :limit="1" />
+					</el-form-item>
 					<el-form-item :label="t('企查查唯一性截图')" prop="qccUrl">
 						<upload-image v-model="formData.qccUrl" :limit="1" />
 					</el-form-item>
@@ -262,6 +263,7 @@ const initialFormData = {
 	defaultSign: 0,
 	imgUrl: '',
 	bizLicenseUrl: '',
+	commitmentLetterUrl: '',
 	qccUrl: '',
 	tmnetUrl: '',
 	mobileIcpUrl: '',
@@ -362,6 +364,7 @@ const formRules = computed(() => {
 			},
 		],
 		bizLicenseUrl: [{ required: true, message: '请输入营业执照', trigger: 'blur' }],
+		commitmentLetterUrl: [{ required: true, message: '请上传签名主体公司承诺函', trigger: 'blur' }],
 		qccUrl: [
 			{
 				validator: (rule, value, callback) => {

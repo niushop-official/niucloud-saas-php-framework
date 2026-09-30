@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <el-dropdown @command="clickEvent" :tabindex="1">
-            <div class="userinfo flex h-full items-center">
+    <div class="user-info-root">
+        <el-dropdown ref="dropdownRef" class="user-info-dropdown" @command="clickEvent" :tabindex="1">
+            <div class="userinfo navbar-hit flex h-full items-center">
                 <el-avatar :size="25" :icon="UserFilled" :src="info && info.head_img ? img(info.head_img) : ''"/>
                 <div class="user-name pl-[8px] text-[#333]">{{ userStore.userInfo.username }}</div>
                 <icon name="element ArrowDown" color="#333" class="ml-[5px]" />
@@ -111,6 +111,11 @@ import { getHomeSite } from '@/app/api/home'
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 const userStore = useUserStore()
+const dropdownRef = ref()
+const open = () => {
+    dropdownRef.value?.handleOpen()
+}
+defineExpose({ open })
 
 const siteInfo = userStore.siteInfo
 const router = useRouter()

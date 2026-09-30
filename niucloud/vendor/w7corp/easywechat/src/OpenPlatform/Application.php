@@ -8,7 +8,6 @@ use Closure;
 use EasyWeChat\Kernel\Contracts\AccessToken as AccessTokenInterface;
 use EasyWeChat\Kernel\Contracts\Server as ServerInterface;
 use EasyWeChat\Kernel\Encryptor;
-use EasyWeChat\Kernel\Exceptions\BadResponseException;
 use EasyWeChat\Kernel\Exceptions\HttpException;
 use EasyWeChat\Kernel\HttpClient\AccessTokenAwareClient;
 use EasyWeChat\Kernel\HttpClient\Response;
@@ -26,12 +25,8 @@ use EasyWeChat\OpenPlatform\Contracts\Application as ApplicationInterface;
 use EasyWeChat\OpenPlatform\Contracts\VerifyTicket as VerifyTicketInterface;
 use Overtrue\Socialite\Contracts\ProviderInterface as SocialiteProviderInterface;
 use Overtrue\Socialite\Providers\WeChat;
-use Psr\SimpleCache\InvalidArgumentException;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Psr\Log\LoggerAwareTrait;
+
 use function array_merge;
 use function is_string;
 use function md5;
@@ -40,20 +35,25 @@ use function sprintf;
 class Application implements ApplicationInterface
 {
     use InteractWithCache;
-    use InteractWithConfig;
     use InteractWithClient;
+    use InteractWithConfig;
     use InteractWithHttpClient;
     use InteractWithServerRequest;
+    use LoggerAwareTrait;
 
     protected ?Encryptor $encryptor = null;
+
     protected ?ServerInterface $server = null;
+
     protected ?AccountInterface $account = null;
+
     protected ?AccessTokenInterface $componentAccessToken = null;
+
     protected ?VerifyTicketInterface $verifyTicket = null;
 
     public function getAccount(): AccountInterface
     {
-        if (!$this->account) {
+        if (! $this->account) {
             $this->account = new Account(
                 appId: (string) $this->config->get('app_id'), /** @phpstan-ignore-line */
                 secret: (string) $this->config->get('secret'), /** @phpstan-ignore-line */
@@ -74,7 +74,7 @@ class Application implements ApplicationInterface
 
     public function getVerifyTicket(): VerifyTicketInterface
     {
-        if (!$this->verifyTicket) {
+        if (! $this->verifyTicket) {
             $this->verifyTicket = new VerifyTicket(
                 appId: $this->getAccount()->getAppId(),
                 cache: $this->getCache(),
@@ -93,7 +93,7 @@ class Application implements ApplicationInterface
 
     public function getEncryptor(): Encryptor
     {
-        if (!$this->encryptor) {
+        if (! $this->encryptor) {
             $this->encryptor = new Encryptor(
                 appId: $this->getAccount()->getAppId(),
                 token: $this->getAccount()->getToken(),
@@ -112,14 +112,9 @@ class Application implements ApplicationInterface
         return $this;
     }
 
-    /**
-     * @throws \ReflectionException
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws \Throwable
-     */
     public function getServer(): Server|ServerInterface
     {
-        if (!$this->server) {
+        if (! $this->server) {
             $this->server = new Server(
                 encryptor: $this->getEncryptor(),
                 request: $this->getRequest()
@@ -130,9 +125,8 @@ class Application implements ApplicationInterface
             $this->server->withDefaultVerifyTicketHandler(
                 function (Message $message, Closure $next): mixed {
                     $ticket = $this->getVerifyTicket();
-                    if (\is_callable([$ticket, 'setTicket'])) {
-                        $ticket->setTicket($message->ComponentVerifyTicket);
-                    }
+                    $ticket->setTicket($message->ComponentVerifyTicket);
+
                     return $next($message);
                 }
             );
@@ -155,7 +149,7 @@ class Application implements ApplicationInterface
 
     public function getComponentAccessToken(): AccessTokenInterface
     {
-        if (!$this->componentAccessToken) {
+        if (! $this->componentAccessToken) {
             $this->componentAccessToken = new ComponentAccessToken(
                 appId: $this->getAccount()->getAppId(),
                 secret: $this->getAccount()->getSecret(),
@@ -177,12 +171,6 @@ class Application implements ApplicationInterface
 
     /**
      * @throws HttpException
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws BadResponseException
      */
     public function getAuthorization(string $authorizationCode): Authorization
     {
@@ -208,13 +196,7 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * @throws TransportExceptionInterface
      * @throws HttpException
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws BadResponseException
      */
     public function refreshAuthorizerToken(string $authorizerAppId, string $authorizerRefreshToken): array
     {
@@ -242,12 +224,6 @@ class Application implements ApplicationInterface
 
     /**
      * @throws HttpException
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws BadResponseException
      */
     public function createPreAuthorizationCode(): array
     {
@@ -271,14 +247,6 @@ class Application implements ApplicationInterface
         return $response;
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     * @throws HttpException
-     * @throws ServerExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     */
     public function createPreAuthorizationUrl(string $callbackUrl, array|string $optional = []): string
     {
         // 兼容旧版 API 设计
@@ -301,9 +269,6 @@ class Application implements ApplicationInterface
         return 'https://mp.weixin.qq.com/cgi-bin/componentloginpage?'.http_build_query($queries);
     }
 
-    /**
-     * @throws \Overtrue\Socialite\Exceptions\InvalidArgumentException
-     */
     public function getOAuth(): SocialiteProviderInterface
     {
         return (new WeChat(
@@ -315,17 +280,6 @@ class Application implements ApplicationInterface
         ))->scopes((array) $this->config->get('oauth.scopes', ['snsapi_userinfo']));
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws ClientExceptionInterface
-     * @throws HttpException
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws BadResponseException
-     */
     public function getOfficialAccountWithRefreshToken(
         string $appId,
         string $refreshToken,
@@ -338,9 +292,6 @@ class Application implements ApplicationInterface
         );
     }
 
-    /**
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     */
     public function getOfficialAccountWithAccessToken(
         string $appId,
         string $accessToken,
@@ -349,9 +300,6 @@ class Application implements ApplicationInterface
         return $this->getOfficialAccount(new AuthorizerAccessToken($appId, $accessToken), $config);
     }
 
-    /**
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     */
     public function getOfficialAccount(
         AuthorizerAccessToken $authorizerAccessToken,
         array $config = []
@@ -363,7 +311,7 @@ class Application implements ApplicationInterface
                     'token' => $this->config->get('token'),
                     'aes_key' => $this->config->get('aes_key'),
                     'logging' => $this->config->get('logging'),
-                    'http' => $this->config->get('http'),
+                    'http' => $this->config->get('http', []),
                 ],
                 $config
             )
@@ -378,17 +326,6 @@ class Application implements ApplicationInterface
         return $app;
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws ClientExceptionInterface
-     * @throws HttpException
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws BadResponseException
-     */
     public function getMiniAppWithRefreshToken(
         string $appId,
         string $refreshToken,
@@ -401,9 +338,6 @@ class Application implements ApplicationInterface
         );
     }
 
-    /**
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     */
     public function getMiniAppWithAccessToken(
         string $appId,
         string $accessToken,
@@ -412,9 +346,6 @@ class Application implements ApplicationInterface
         return $this->getMiniApp(new AuthorizerAccessToken($appId, $accessToken), $config);
     }
 
-    /**
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     */
     public function getMiniApp(AuthorizerAccessToken $authorizerAccessToken, array $config = []): MiniAppApplication
     {
         $app = new MiniAppApplication(
@@ -457,21 +388,11 @@ class Application implements ApplicationInterface
         return (new AccessTokenAwareClient(
             client: $this->getHttpClient(),
             accessToken: $this->getComponentAccessToken(),
-            failureJudge: fn (Response $response) => !!($response->toArray()['errcode'] ?? 0),
-            throw: !!$this->config->get('http.throw', true),
+            failureJudge: fn (Response $response) => (bool) ($response->toArray()['errcode'] ?? 0),
+            throw: (bool) $this->config->get('http.throw', true),
         ))->setPresets($this->config->all());
     }
 
-    /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws TransportExceptionInterface
-     * @throws HttpException
-     * @throws ServerExceptionInterface
-     * @throws BadResponseException
-     */
     public function getAuthorizerAccessToken(string $appId, string $refreshToken): string
     {
         $cacheKey = sprintf('open-platform.authorizer_access_token.%s.%s', $appId, md5($refreshToken));
@@ -479,7 +400,7 @@ class Application implements ApplicationInterface
         /** @phpstan-ignore-next-line */
         $authorizerAccessToken = (string) $this->getCache()->get($cacheKey);
 
-        if (!$authorizerAccessToken) {
+        if (! $authorizerAccessToken) {
             $response = $this->refreshAuthorizerToken($appId, $refreshToken);
             $authorizerAccessToken = (string) $response['authorizer_access_token'];
             $this->getCache()->set($cacheKey, $authorizerAccessToken, intval($response['expires_in'] ?? 7200) - 500);
@@ -494,7 +415,7 @@ class Application implements ApplicationInterface
     protected function getHttpClientDefaultOptions(): array
     {
         return array_merge(
-            ['base_uri' => 'https://api.weixin.qq.com/',],
+            ['base_uri' => 'https://api.weixin.qq.com/'],
             (array) $this->config->get('http', [])
         );
     }

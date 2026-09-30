@@ -1,20 +1,26 @@
 <template>
     <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
-            <el-form class="page-form" :model="formData" label-width="0" ref="formRef" :rules="formRules" v-loading="loading">
-                <h3 class="panel-title !text-sm">{{ t('developerTokenEdit') }}</h3>
+        <el-form class="page-form page-form--stacked form-page form-page--narrow" :model="formData" label-position="top" ref="formRef" :rules="formRules" v-loading="loading">
+            <section class="form-section form-section--has-header">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('developerTokenEdit') }}</h3>
+                </div>
+                <div class="form-section__body">
+                    <el-form-item prop="token" class="form-item--wide">
+                        <el-input v-model.trim="formData.token" :placeholder="t('tokenPlaceholder')" clearable maxlength="30" />
+                        <div class="form-tip">{{ t('tokenTips') }}</div>
+                    </el-form-item>
+                </div>
+            </section>
+        </el-form>
 
-                <el-form-item label="" prop="token">
-                    <div>
-                        <el-input v-model.trim="formData.token" :placeholder="t('tokenPlaceholder')" class="input-width" clearable maxlength="30"/>
-                    </div>
-                    <div class="text-[14px] text-[#a9a9a9] leading-tight mt-[10px]">{{ t('tokenTips') }}</div>
-                </el-form-item>
-                <el-form-item label="">
+        <div class="fixed-footer-wrap">
+            <div class="fixed-footer fixed-footer--form">
+                <div class="fixed-footer__inner fixed-footer__inner--narrow">
                     <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

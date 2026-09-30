@@ -6,20 +6,32 @@ export interface AddonManifest {
     key: string
     version?: string
     sharedVersion?: string
+    /** 入口脚本文件名：index.js 或 index-[contenthash:8].js（内容哈希命名，重编即失效） */
+    entry?: string
     views?: Record<string, string>
     components?: Record<string, string>
     layout?: string
     langBase?: string
 }
 
-let prodManifests: Record<string, AddonManifest> = {}
-let installedAddonKeys: string[] = []
-let prodReady = false
+// 跨 chunk 共享：vite 会把 addon-lang.ts 同时打进主 chunk、admin-lang shared chunk 和每个 addon 包，
+// 各拷贝的模块级变量互不相通。除 init promise 外，清单结果也必须挂在 window 上共享——
+// 否则 addon 包内拷贝 await 了别处已 resolve 的共享 promise 后本地清单仍为空，
+// isAddonInstalled() 永远 false（表现为插件页面/动态面板加载成 404，Installed: []）。
+interface AddonSharedState {
+    manifests: Record<string, AddonManifest>
+    installedKeys: string[]
+    ready: boolean
+}
+function sharedState(): AddonSharedState {
+    const g = globalThis as any
+    if (!g.__addonSharedState__) {
+        g.__addonSharedState__ = { manifests: {}, installedKeys: [], ready: false } as AddonSharedState
+    }
+    return g.__addonSharedState__ as AddonSharedState
+}
+// init promise 也去重，避免多拷贝重复 fetch index.json（本地变量仅为同拷贝同步调用兜底）
 let prodInitPromise: Promise<void> | null = null
-const addonModuleCache: Record<string, Promise<Record<string, unknown> | null>> = {}
-// 跨 chunk 共享：vite 会把 addon-lang.ts 同时打进主 chunk 与 admin-lang shared chunk，
-// 两个 chunk 各自有一份模块级变量，会重复执行 initAddonManifests IIFE 并重复 fetch index.json。
-// 提升到 window 上做去重，IIFE 全局只跑一次。getter/setter 保证两路读写都看到同一份。
 const __getInit = (): Promise<void> | null =>
     ((globalThis as any).__addonInitPromise__ as Promise<void> | null | undefined) ?? null
 const __setInit = (p: Promise<void> | null) => {
@@ -115,8 +127,9 @@ export function inferAddonFromPath(path: string, knownAddons?: string[]): string
 }
 
 async function isAddonEntryAvailable(key: string): Promise<boolean> {
+    // 探测插件 manifest.json 是否存在（与入口文件名解耦，兼容内容哈希命名的 index-[hash].js）
     try {
-        const res = await fetch(adminUrl(`/assets/addons/${key}/index.js`), { method: 'HEAD' })
+        const res = await fetch(adminUrl(`/assets/addons/${key}/manifest.json`), { method: 'HEAD' })
         if (!res.ok) return false
         const ct = (res.headers.get('content-type') || '').toLowerCase()
         return !ct.includes('text/html')
@@ -125,15 +138,39 @@ async function isAddonEntryAvailable(key: string): Promise<boolean> {
     }
 }
 
+const addonModuleCacheStore = (): Record<string, Promise<Record<string, unknown> | null>> => {
+    const g = globalThis as any
+    if (!g.__addonModuleCaches__) g.__addonModuleCaches__ = {}
+    return g.__addonModuleCaches__
+}
+
+/**
+ * 插件包缓存版本：来自部署清单 index.json 的 buildTime（assemble-admin 写入）。
+ * 插件包体积大（含内联语言包，单个 1MB+），URL 用它拼 ?v= 参数——
+ * 同一构建内 URL 稳定 → 浏览器长期缓存，刷新页面不再全量重下；
+ * 重新部署后 index.json 的 buildTime 变化 → URL 变化 → 缓存自动失效。
+ */
+function buildVersion(): string {
+    const v = (globalThis as any).__addonBuildVersion__
+    return v ? String(v) : '0'
+}
+
 export function isAddonInstalled(addon: string): boolean {
     return !!addon && getInstalledAddonKeys().includes(addon)
 }
 
 export async function loadAddonModule(addon: string): Promise<Record<string, unknown> | null> {
+    const addonModuleCache = addonModuleCacheStore()
     if (!(addon in addonModuleCache)) {
         addonModuleCache[addon] = (async () => {
             try {
-                const url = adminUrl(`/assets/addons/${addon}/index.js?_t=${Date.now()}`)
+                // 部署模式先确保清单就绪（拿到 buildTime 作为缓存版本），再按版本拼 URL
+                if (!import.meta.env.DEV) await initAddonManifests()
+                // entry 可能是相对路径（./index.js / ./index-[hash].js）或历史绝对路径（/assets/addons/{key}/index.js），
+                // 统一抽取文件名后按 /assets/addons/{addon}/ 重建 URL，兼容旧插件（固定 index.js）与新内容哈希入口
+                const entry = getProdManifests()[addon]?.entry || './index.js'
+                const entryFile = entry.split('/').pop() || 'index.js'
+                const url = adminUrl(`/assets/addons/${addon}/${entryFile}?v=${buildVersion()}`)
                 return await import(/* @vite-ignore */ url) as Record<string, unknown>
             } catch {
                 return null
@@ -145,30 +182,37 @@ export async function loadAddonModule(addon: string): Promise<Record<string, unk
 
 /** 清除插件模块缓存（布局切换时调用，确保样式重新注入） */
 export function clearAddonModuleCache() {
+    const addonModuleCache = addonModuleCacheStore()
     for (const key of Object.keys(addonModuleCache)) {
         delete addonModuleCache[key]
     }
 }
 
 export function isAddonProdReady() {
-    return prodReady
+    return sharedState().ready
 }
 
 export async function ensureAddonProdReady() {
-    if (!prodReady) await initAddonManifests()
+    if (!sharedState().ready) await initAddonManifests()
 }
 
 export async function initAddonManifests(keys?: string[]) {
     if (import.meta.env.DEV) {
-        prodReady = true
+        sharedState().ready = true
         return
     }
     const shared = __getInit()
-    if (shared) return shared
+    if (shared) {
+        await shared
+        // 共享 promise 可能来自旧版本拷贝（只写了它自己的私有状态、未写共享状态），
+        // 此时本拷贝自己拉一次清单填充共享状态，保证混合部署下也能工作
+        if (sharedState().ready) return
+    }
 
+    const state = sharedState()
     __setInit((async () => {
-        prodManifests = {}
-        installedAddonKeys = []
+        state.manifests = {}
+        state.installedKeys = []
         let addonKeys = keys
         if (!addonKeys?.length) {
             try {
@@ -177,11 +221,15 @@ export async function initAddonManifests(keys?: string[]) {
                 if (res.ok) {
                     const data = await res.json()
                     addonKeys = Array.isArray(data.keys) ? data.keys : []
+                    // 记录构建版本：插件包/manifest 的 ?v= 缓存参数据此生成
+                    if (data.buildTime) {
+                        ;(globalThis as any).__addonBuildVersion__ = data.buildTime
+                    }
                     // 读取合并后的 manifests（PHP 端已打包进 index.json），避免 N 次 manifest.json 请求
                     const bundled = data.manifests as Record<string, AddonManifest> | undefined
                     if (bundled) {
                         for (const [k, m] of Object.entries(bundled)) {
-                            prodManifests[k] = m
+                            state.manifests[k] = m
                         }
                     }
                 }
@@ -192,7 +240,7 @@ export async function initAddonManifests(keys?: string[]) {
         const verifiedKeys: string[] = []
         for (const key of addonKeys || []) {
             // index.json 已打包 manifests 的插件，直接视为可用（无需 N 次 HEAD 探测）
-            if (prodManifests[key]) {
+            if (state.manifests[key]) {
                 verifiedKeys.push(key)
                 continue
             }
@@ -200,17 +248,17 @@ export async function initAddonManifests(keys?: string[]) {
             if (!(await isAddonEntryAvailable(key))) continue
             verifiedKeys.push(key)
             try {
-                const url = adminUrl(`/assets/addons/${key}/manifest.json?_t=${Date.now()}`)
+                const url = adminUrl(`/assets/addons/${key}/manifest.json?v=${buildVersion()}`)
                 const res = await fetch(url)
                 if (res.ok) {
-                    prodManifests[key] = await res.json()
+                    state.manifests[key] = await res.json()
                 }
             } catch {
                 // skip missing manifest
             }
         }
-        installedAddonKeys = verifiedKeys
-        prodReady = true
+        state.installedKeys = verifiedKeys
+        state.ready = true
     })())
 
     return prodInitPromise
@@ -228,12 +276,13 @@ export async function preloadRouteAddon(route: { meta: Record<string, unknown>; 
 }
 
 export function getInstalledAddonKeys(): string[] {
-    if (installedAddonKeys.length) return installedAddonKeys
-    return Object.keys(prodManifests)
+    const state = sharedState()
+    if (state.installedKeys.length) return state.installedKeys
+    return Object.keys(state.manifests)
 }
 
 export function getProdManifests(): Record<string, AddonManifest> {
-    return prodManifests
+    return sharedState().manifests
 }
 
 // 内置插件（admin/src/addon 下，随 core 一起打包，部署模式下没有独立 dist/assets/addons/{key}/index.js）
@@ -257,7 +306,7 @@ export async function preloadAllAddonLangs(
     merge: (locale: string, messages: Record<string, string>) => void
 ) {
     if (import.meta.env.DEV) return
-    if (!prodReady) await initAddonManifests()
+    if (!sharedState().ready) await initAddonManifests()
 
     for (const addon of getInstalledAddonKeys()) {
         try {
@@ -286,8 +335,9 @@ export async function preloadAllAddonLangs(
 }
 
 export function registerAddonManifest(manifest: AddonManifest) {
-    prodManifests[manifest.key] = manifest
-    prodReady = true
+    const state = sharedState()
+    state.manifests[manifest.key] = manifest
+    state.ready = true
 }
 
 export async function loadAddonLang(addon: string, locale: string, file: string): Promise<Record<string, string>> {
@@ -299,7 +349,7 @@ export async function loadAddonLang(addon: string, locale: string, file: string)
             return {}
         }
     }
-    if (!prodReady) await initAddonManifests()
+    if (!sharedState().ready) await initAddonManifests()
 
     try {
         const mod = await loadAddonModule(addon)

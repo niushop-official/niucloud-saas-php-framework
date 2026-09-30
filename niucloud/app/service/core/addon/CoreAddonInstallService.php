@@ -237,25 +237,18 @@ class CoreAddonInstallService extends CoreAddonBaseService
 
             $install_step = ['installDir','installDepend'];
 
-            // 检测插件是否存在编译内容
-            if (!empty($install_data['compile'])) {
-                $install_step[] = 'coverCompile';
-            }
+            // 配置文件
+            $package_path = $this->install_addon_path . 'package' . DIRECTORY_SEPARATOR;
+            $package_file = [];
+            search_dir($package_path, $package_file);
+            $package_file = array_map(function ($file) use ($package_path) {
+                return str_replace($package_path . DIRECTORY_SEPARATOR, '', $file);
+            }, $package_file);
 
-            if ($mode != 'cloud') {
-                // 配置文件
-                $package_path = $this->install_addon_path . 'package' . DIRECTORY_SEPARATOR;
-                $package_file = [];
-                search_dir($package_path, $package_file);
-                $package_file = array_map(function ($file) use ($package_path) {
-                    return str_replace($package_path . DIRECTORY_SEPARATOR, '', $file);
-                }, $package_file);
-
-                if (in_array('admin-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_admin_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_admin_update');
-                if (in_array('composer.json', $package_file) && !in_array(get_lang('dict_addon.install_after_composer_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_composer_update');
-                if (in_array('uni-app-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_wap_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_wap_update');
-                if (in_array('web-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_web_update'), $tips) ) $tips[] = get_lang('dict_addon.install_after_web_update');
-            }
+            if (in_array('admin-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_admin_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_admin_update');
+            if (in_array('composer.json', $package_file) && !in_array(get_lang('dict_addon.install_after_composer_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_composer_update');
+            if (in_array('uni-app-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_wap_update'), $tips)) $tips[] = get_lang('dict_addon.install_after_wap_update');
+            if (in_array('web-package.json', $package_file) && !in_array(get_lang('dict_addon.install_after_web_update'), $tips) ) $tips[] = get_lang('dict_addon.install_after_web_update');
 
             try {
                 $this->install_task['step'] = [];
@@ -268,6 +261,8 @@ class CoreAddonInstallService extends CoreAddonBaseService
                 $this->install_task['fail_addon'] = $this->addon;
                 $this->installExceptionHandle($addon);
                 if (count($this->addon_list) == 1) {
+                    $this->install_task = null;
+                    Cache::set('install_task', null);
                     throw new CommonException($e->getMessage());
                 }
                 Log::write($install_data['title'] . '插件安装失败');
@@ -280,13 +275,17 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $this->rebuildPublicAdminAddonIndexJson();
         $this->rebuildPublicWapAddonIndexJson();
 
-        if ($mode == 'cloud') {
-            $this->install_task['tips'] = $tips;
-            Cache::set('install_task', $this->install_task);
-            $this->cloudInstall();
-        } else {
+        Db::startTrans();
+        try {
             $this->handleAddonInstall();
+            Db::commit();
+        } catch (\Exception $e) {
+            $this->install_task = null;
+            Cache::set('install_task', null);
+            Db::rollback();
+            throw $e;
         }
+
         return empty($tips) ? true : $tips;
     }
 
@@ -405,8 +404,9 @@ class CoreAddonInstallService extends CoreAddonBaseService
         if (!empty($file_arr)) {
             foreach ($file_arr as $ck => $cv) {
                 if (str_contains($cv, '.css')) {
-                    $path = str_replace($root_path . '/', '', $ck);
-                    $path = str_replace('/.css', '', $path);
+                    $path = str_replace($root_path . DIRECTORY_SEPARATOR, '', $ck);
+                    $path = str_replace(DIRECTORY_SEPARATOR . '.css', '', $path);
+                    $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
                     $content .= "@import \"addon/{$path}\";\n";
                 }
             }
@@ -550,7 +550,10 @@ class CoreAddonInstallService extends CoreAddonBaseService
         search_dir($backup_dir, $backup_file);
 
         if (!empty($backup_file)) {
-            dir_copy(public_path(), $backup_dir);
+            // 按端口把备份还原回 public（覆盖式，不影响备份中没有的新文件）
+            foreach ([ 'admin', 'wap', 'web' ] as $port) {
+                if (is_dir($backup_dir . $port)) dir_copy($backup_dir . $port, public_path() . $port);
+            }
             @del_target_dir($backup_dir, true);
         }
     }
@@ -596,20 +599,43 @@ class CoreAddonInstallService extends CoreAddonBaseService
             ]
         ];
 
-        // 将要删除的根目录
-        $to_admin_dir = $this->root_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
-        $to_web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
-        $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        // 将要删除的根目录（与 uninstallDir() 的实际删除目标保持一致，原目录路径缺少 addon 段导致权限检测形同虚设）
+        $to_admin_dir = $this->root_path . 'admin' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_web_dir = $this->root_path . 'web' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_wap_dir = $this->root_path . 'uni-app' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
         $to_resource_dir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_wap_dist_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
+        $to_admin_dist_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons' . DIRECTORY_SEPARATOR . $this->addon . DIRECTORY_SEPARATOR;
 
         if (is_dir($to_admin_dir)) $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_admin_dir), 'status' => is_write($to_admin_dir)];
         if (is_dir($to_web_dir)) $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_web_dir), 'status' => is_write($to_web_dir)];
         if (is_dir($to_wap_dir)) $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_wap_dir), 'status' => is_write($to_wap_dir)];
         if (is_dir($to_resource_dir)) $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_resource_dir), 'status' => is_write($to_resource_dir)];
+        if (is_dir($to_wap_dist_dir)) $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_wap_dist_dir), 'status' => is_write($to_wap_dist_dir)];
+        if (is_dir($to_admin_dist_dir)) $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $to_admin_dist_dir), 'status' => is_write($to_admin_dist_dir)];
+
+        // 卸载前会先打包备份插件（CoreAddonDevelopBuildService::build），runtime 暂存目录必须可写
+        $runtime_dir = task_runtime_path();
+        $data['dir']['is_write'][] = ['dir' => str_replace(project_path(), '', $runtime_dir), 'status' => is_dir($runtime_dir) ? is_write($runtime_dir) : @mkdir($runtime_dir, 0777, true)];
+
+        // 卸载会执行插件源码打包，zip 扩展必须可用
+        $data['addon_check'] = [];
+        if (!class_exists('ZipArchive')) {
+            $data['addon_check'][] = ['msg' => '缺少 ZipArchive 扩展，无法完成卸载前插件打包（在 php.ini 中启用 zip 扩展）', 'status' => false];
+        }
+        // 插件源码目录必须存在（打包依赖）
+        if (!is_dir($this->addon_path . $this->addon)) {
+            $data['addon_check'][] = ['msg' => "未找到插件{$this->addon}的源码目录（niucloud/addon/），无法完成卸载前打包备份", 'status' => false];
+        }
+        // 卸载互斥：安装/卸载任务进行中时不允许卸载
+        if (Cache::get('install_task') || Cache::get('addon_uninstall_lock')) {
+            $data['addon_check'][] = ['msg' => '存在进行中的插件安装/卸载任务，请稍后再试', 'status' => false];
+        }
 
         $check_res = array_merge(
             array_column($data['dir']['is_readable'], 'status'),
-            array_column($data['dir']['is_write'], 'status')
+            array_column($data['dir']['is_write'], 'status'),
+            array_column($data['addon_check'], 'status')
         );
 
         // 是否通过校验
@@ -622,6 +648,24 @@ class CoreAddonInstallService extends CoreAddonBaseService
      * @return true
      */
     public function uninstall()
+    {
+        // 防重入：并发/重复卸载会同时操作 runtime 暂存目录与打包文件，
+        // 导致 unlink 文件不存在、ZipArchive::close 文件被删等异常
+        if (Cache::get('addon_uninstall_lock')) throw new CommonException('ADDON_UNINSTALLING');
+        Cache::set('addon_uninstall_lock', $this->addon, 600);
+
+        try {
+            return $this->doUninstall();
+        } finally {
+            Cache::delete('addon_uninstall_lock');
+        }
+    }
+
+    /**
+     * 卸载插件（实际执行体）
+     * @return true
+     */
+    protected function doUninstall()
     {
         $site_groups = (new SiteGroup())->where([ ['app|addon', 'like', "%\"$this->addon\"%"] ])->column("group_id");
         if (!empty($site_groups)) {
@@ -654,8 +698,11 @@ class CoreAddonInstallService extends CoreAddonBaseService
         // 卸载wap
         $this->uninstallWap();
 
-        // 还原备份
-        if (!empty($addon_info['compile'])) (new CoreAddonCompileHandleService())->revertBackup();
+        // 还原备份（仅还原该插件覆盖过的端口）
+        if (!empty($addon_info['compile'])) {
+            $ports = is_array($addon_info['compile']) ? $addon_info['compile'] : [];
+            (new CoreAddonCompileHandleService())->revertBackup($ports);
+        }
 
         $core_addon_service = new CoreAddonService();
         $core_addon_service->delByKey($this->addon);
@@ -787,33 +834,33 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $addons_dir = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons';
         $index_file = $addons_dir . DIRECTORY_SEPARATOR . 'index.json';
 
-        // 读取已有的 index.json,保留 sharedVersion 等字段
-        $index_data = $this->jsonFileToArray($index_file);
-
-        // 扫描 addons 目录下的所有子目录作为插件 keys
-        $keys = [];
+        // 扫描插件子目录（目录不存在则视为无插件，仍生成空清单，保证 index.json 始终存在）
+        $keys = is_dir($addons_dir) ? get_files_by_dir($addons_dir) : [];
         $manifests = [];
-        if (is_dir($addons_dir)) {
-            $keys = get_files_by_dir($addons_dir);
-            // 合并各插件的 manifest.json 到 index.json，减少前端 N 次 HTTP 请求
-            foreach ($keys as $key) {
-                $manifest_file = $addons_dir . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'manifest.json';
-                if (is_file($manifest_file)) {
-                    $manifest_data = $this->jsonFileToArray($manifest_file);
-                    if (!empty($manifest_data)) {
-                        $manifests[$key] = $manifest_data;
-                    }
+        foreach ($keys as $key) {
+            $manifest_file = $addons_dir . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'manifest.json';
+            if (is_file($manifest_file)) {
+                $manifest_data = $this->jsonFileToArray($manifest_file);
+                if (!empty($manifest_data)) {
+                    $manifests[$key] = $manifest_data;
                 }
             }
         }
+
+        // 读取已有的 index.json 以保留 sharedVersion 等字段；
+        // 文件缺失或解析失败（如队列部署场景整目录被删除/未还原）时回退为空数组，
+        // 不再提前 return，确保 index.json 一定被重新生成写入
+        $index_data = file_exists($index_file) ? $this->jsonFileToArray($index_file) : [];
+        if (!is_array($index_data)) $index_data = [];
 
         // 更新 keys 和生成时间戳（强制浏览器刷新缓存）
         $index_data['keys'] = $keys;
         $index_data['manifests'] = $manifests;
         $index_data['generatedAt'] = time();
 
-        // 写入文件
+        // 写入文件（文件不存在时自动创建）
         $this->writeArrayToJsonFile($index_data, $index_file);
+        Log::write("rebuildPublicAdminAddonIndexJson done, keys=" . count($keys));
 
         // 同时更新 public/admin 下的 index.html 时间戳，触发页面级缓存刷新
         $indexHtml = public_path() . 'admin' . DIRECTORY_SEPARATOR . 'index.html';
@@ -833,32 +880,33 @@ class CoreAddonInstallService extends CoreAddonBaseService
         $addons_dir = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'addons';
         $index_file = $addons_dir . DIRECTORY_SEPARATOR . 'index.json';
 
-        // 读取已有的 index.json,保留 sharedVersion 等字段
-        $index_data = $this->jsonFileToArray($index_file);
-
-        // 扫描 addons 目录下的所有子目录作为插件 keys
-        $keys = [];
+        // 扫描插件子目录（目录不存在则视为无插件，仍生成空清单，保证 index.json 始终存在）
+        $keys = is_dir($addons_dir) ? get_files_by_dir($addons_dir) : [];
         $manifests = [];
-        if (is_dir($addons_dir)) {
-            $keys = get_files_by_dir($addons_dir);
-            foreach ($keys as $key) {
-                $manifest_file = $addons_dir . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'manifest.json';
-                if (is_file($manifest_file)) {
-                    $manifest_data = $this->jsonFileToArray($manifest_file);
-                    if (!empty($manifest_data)) {
-                        $manifests[$key] = $manifest_data;
-                    }
+        foreach ($keys as $key) {
+            $manifest_file = $addons_dir . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . 'manifest.json';
+            if (is_file($manifest_file)) {
+                $manifest_data = $this->jsonFileToArray($manifest_file);
+                if (!empty($manifest_data)) {
+                    $manifests[$key] = $manifest_data;
                 }
             }
         }
+
+        // 读取已有的 index.json 以保留 sharedVersion 等字段；
+        // 文件缺失或解析失败（如队列部署场景整目录被删除/未还原）时回退为空数组，
+        // 不再提前 return，确保 index.json 一定被重新生成写入
+        $index_data = file_exists($index_file) ? $this->jsonFileToArray($index_file) : [];
+        if (!is_array($index_data)) $index_data = [];
 
         // 更新 keys 和生成时间戳（强制浏览器刷新缓存）
         $index_data['keys'] = $keys;
         $index_data['manifests'] = $manifests;
         $index_data['generatedAt'] = time();
 
-        // 写入文件
+        // 写入文件（文件不存在时自动创建）
         $this->writeArrayToJsonFile($index_data, $index_file);
+        Log::write("rebuildPublicWapAddonIndexJson done, keys=" . count($keys));
 
         // 同时更新 public/wap 下的 index.html 时间戳，触发页面级缓存刷新
         $indexHtml = public_path() . 'wap' . DIRECTORY_SEPARATOR . 'index.html';

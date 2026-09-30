@@ -160,9 +160,7 @@
                                                                 <p class="ml-[10px]">{{ t('arrangeSideBySideTipsOne') }}</p>
                                                                 <p class="ml-[10px]">{{ t('arrangeSideBySideTipsTwo') }}</p>
                                                             </template>
-                                                            <el-icon>
-                                                                <QuestionFilled color="#999999" />
-                                                            </el-icon>
+                                                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                                                         </el-tooltip>
                                                     </div>
                                                 </template>
@@ -249,9 +247,7 @@
                                                                 <p>{{ t('hideControlTipsOne') }}</p>
                                                                 <p>{{ t('hideControlTipsTwo') }}</p>
                                                             </template>
-                                                            <el-icon>
-                                                                <QuestionFilled color="#999999" />
-                                                            </el-icon>
+                                                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                                                         </el-tooltip>
                                                     </div>
                                                 </template>

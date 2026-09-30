@@ -50,13 +50,17 @@ if (!addon && configStore.addon) {
 
 const tabbar: any = reactive({})
 const setTabbar = () => {
+    // 实时取最新 addon：优先使用 props.addon(装修设计的插件 key)，
+    // 否则回退到 configStore.addon(当前路由所属插件)。
+    // 不能用 setup 时定死的局部 addon 变量，否则装修数据异步填充后 props.addon 变化不会生效。
+    const currentAddon = props.addon || configStore.addon || addon || ''
     let list = cloneDeep(useConfigStore().tabbarList);
     if (list.length == 1) {
         Object.assign(tabbar, list[0]);
     } else {
         let isExist = false;
         for (let i = 0; i < list.length; i++) {
-            if (list[i].key == addon) {
+            if (list[i].key == currentAddon) {
                 Object.assign(tabbar, list[i]);
                 isExist = true;
                 break;
@@ -114,7 +118,9 @@ watch(
 watch(
     () => props.addon,
     (newValue, oldValue) => {
-        if (newValue && oldValue && newValue != oldValue) {
+        // 只要 props.addon 有值(包括从空变为真实 key 的首次异步填充)就重算，
+        // 不要用 oldValue 非空才执行，否则装修数据异步加载后首次进入不会切换导航
+        if (newValue) {
             setTabbar()
         }
     }

@@ -190,9 +190,9 @@ watch(copied, () => {
     .fixed-footer {
         position: absolute;
         z-index: 4;
-        right: -15px;
+        right: 0;
         bottom: 0;
-        left: -15px;
+        left: 0;
         display: flex;
         height: inherit;
         background: var(--el-bg-color-overlay);

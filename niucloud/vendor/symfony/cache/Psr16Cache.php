@@ -18,6 +18,7 @@ use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 use Symfony\Component\Cache\Traits\ProxyTrait;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * Turns a PSR-6 cache into a PSR-16 one.
@@ -28,10 +29,9 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
 {
     use ProxyTrait;
 
-    private const METADATA_EXPIRY_OFFSET = 1527506807;
-
     private ?\Closure $createCacheItem = null;
-    private $cacheItemPrototype = null;
+    private ?CacheItem $cacheItemPrototype = null;
+    private static \Closure $packCacheItem;
 
     public function __construct(CacheItemPoolInterface $pool)
     {
@@ -67,11 +67,21 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
 
             return $createCacheItem($key, null, $allowInt)->set($value);
         };
+        self::$packCacheItem ??= \Closure::bind(
+            static function (CacheItem $item) {
+                if (!isset($item->metadata[ItemInterface::METADATA_CTIME])) {
+                    return $item->value;
+                }
+
+                $item->newMetadata = $item->metadata;
+
+                return $item->pack();
+            },
+            null,
+            CacheItem::class
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($key, $default = null): mixed
     {
         try {
@@ -89,9 +99,6 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
         return $item->isHit() ? $item->get() : $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set($key, $value, $ttl = null): bool
     {
         try {
@@ -112,9 +119,6 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
         return $this->pool->save($item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($key): bool
     {
         try {
@@ -126,23 +130,17 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clear(): bool
     {
         return $this->pool->clear();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMultiple($keys, $default = null): iterable
     {
         if ($keys instanceof \Traversable) {
             $keys = iterator_to_array($keys, false);
         } elseif (!\is_array($keys)) {
-            throw new InvalidArgumentException(sprintf('Cache keys must be array or Traversable, "%s" given.', get_debug_type($keys)));
+            throw new InvalidArgumentException(\sprintf('Cache keys must be array or Traversable, "%s" given.', get_debug_type($keys)));
         }
 
         try {
@@ -159,37 +157,21 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
                 $values[$key] = $item->isHit() ? $item->get() : $default;
             }
 
-            return $values;
+            return $this->withRequestedKeys($keys, $values);
         }
 
         foreach ($items as $key => $item) {
-            if (!$item->isHit()) {
-                $values[$key] = $default;
-                continue;
-            }
-            $values[$key] = $item->get();
-
-            if (!$metadata = $item->getMetadata()) {
-                continue;
-            }
-            unset($metadata[CacheItem::METADATA_TAGS]);
-
-            if ($metadata) {
-                $values[$key] = ["\x9D".pack('VN', (int) (0.1 + $metadata[CacheItem::METADATA_EXPIRY] - self::METADATA_EXPIRY_OFFSET), $metadata[CacheItem::METADATA_CTIME])."\x5F" => $values[$key]];
-            }
+            $values[$key] = $item->isHit() ? (self::$packCacheItem)($item) : $default;
         }
 
-        return $values;
+        return $this->withRequestedKeys($keys, $values);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMultiple($values, $ttl = null): bool
     {
         $valuesIsArray = \is_array($values);
         if (!$valuesIsArray && !$values instanceof \Traversable) {
-            throw new InvalidArgumentException(sprintf('Cache values must be array or Traversable, "%s" given.', get_debug_type($values)));
+            throw new InvalidArgumentException(\sprintf('Cache values must be array or Traversable, "%s" given.', get_debug_type($values)));
         }
         $items = [];
 
@@ -233,15 +215,12 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
         return $this->pool->commit() && $ok;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteMultiple($keys): bool
     {
         if ($keys instanceof \Traversable) {
             $keys = iterator_to_array($keys, false);
         } elseif (!\is_array($keys)) {
-            throw new InvalidArgumentException(sprintf('Cache keys must be array or Traversable, "%s" given.', get_debug_type($keys)));
+            throw new InvalidArgumentException(\sprintf('Cache keys must be array or Traversable, "%s" given.', get_debug_type($keys)));
         }
 
         try {
@@ -253,9 +232,6 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($key): bool
     {
         try {
@@ -264,6 +240,27 @@ class Psr16Cache implements CacheInterface, PruneableInterface, ResettableInterf
             throw $e;
         } catch (Psr6CacheException $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    private function withRequestedKeys(array $keys, array $values): iterable
+    {
+        foreach ($keys as $key) {
+            // PHP casts numeric strings to integers when they are used as array keys
+            if (\is_string($key) && $key === (string) (int) $key) {
+                return $this->yieldRequestedKeys($keys, $values);
+            }
+        }
+
+        return $values;
+    }
+
+    private function yieldRequestedKeys(array $keys, array $values): \Generator
+    {
+        $keys = array_combine($keys, $keys);
+
+        foreach ($values as $key => $value) {
+            yield ($keys[$key] ?? $key) => $value;
         }
     }
 }

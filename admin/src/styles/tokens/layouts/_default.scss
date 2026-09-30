@@ -1,0 +1,65 @@
+/**
+ * Default 布局 Token
+ *
+ * 本文件只声明 default 布局相对公共组件 Token 的差异。
+ * Element Plus 的抽屉会传送到 body，因此抽屉根节点也会附加 layout-default 类以继承这些变量。
+ */
+.layout-default {
+    // 布局结构
+    --cmp-layout-content-padding: 15px;
+    --cmp-header-height: 55px;
+    --cmp-sidebar-width: 240px;
+
+    // 顶部区域
+    --cmp-default-header-padding-inline: 10px;
+    --cmp-default-header-action-size: 36px;
+    --cmp-default-header-action-radius: var(--sys-radius-md);
+    --cmp-default-header-action-hover-bg: var(--sys-color-fill-light);
+    --cmp-default-header-control-height: 30px;
+    --cmp-default-header-control-padding-inline: 12px;
+    --cmp-default-header-control-radius: 4px;
+    --cmp-default-header-control-bg: var(--sys-color-fill-light);
+    --cmp-default-header-control-hover-bg: var(--sys-color-fill-default);
+    --cmp-default-header-divider-width: 1px;
+    --cmp-default-header-divider-height: 16px;
+    --cmp-default-header-divider-margin-inline: 8px;
+    --cmp-default-header-search-width: 175px;
+    --cmp-default-site-status-dot-size: 8px;
+    --cmp-default-breadcrumb-text: var(--sys-color-text-secondary);
+    --cmp-default-breadcrumb-active-text: var(--sys-color-text-primary);
+    // 顶部使用下边框线区分，不再使用阴影
+    --cmp-header-border: var(--sys-color-border-default);
+
+    // 侧栏
+    --cmp-sidebar-bg: var(--sys-color-bg-surface);
+    --cmp-sidebar-border: var(--sys-color-border-light);
+    --cmp-default-sidebar-decoration: linear-gradient(180deg, rgb(120 97 250 / 10%) 0%, rgb(120 97 250 / 0%) 140px);
+    --cmp-default-sidebar-scrollbar-thumb: var(--sys-color-text-placeholder);
+    --cmp-default-sidebar-content-padding-inline: 15px;
+
+    // 菜单
+    --cmp-default-menu-group-gap: 12px;
+    --cmp-default-menu-group-title-gap: 6px;
+    --cmp-default-menu-group-text: var(--sys-color-text-secondary);
+    --cmp-default-menu-divider: var(--sys-color-border-light);
+    --cmp-default-menu-item-height: 36px;
+    --cmp-default-menu-leaf-height: 32px;
+    --cmp-default-menu-item-radius: var(--sys-radius-md);
+    --cmp-default-menu-leaf-radius: 6px;
+    --cmp-default-menu-level-padding: 18px;
+    --cmp-default-menu-base-padding: 16px;
+    --cmp-default-menu-text: var(--sys-color-text-primary);
+    --cmp-default-menu-text-secondary: var(--sys-color-text-regular);
+    --cmp-default-menu-text-tertiary: var(--sys-color-text-secondary);
+    --cmp-default-menu-hover-bg: var(--sys-color-primary-soft);
+    --cmp-default-menu-active-bg: var(--sys-color-primary-muted);
+    --cmp-default-menu-leaf-hover-bg: var(--sys-color-primary-soft);
+    --cmp-default-menu-icon: var(--sys-color-text-regular);
+    --cmp-default-menu-icon-secondary: var(--sys-color-text-secondary);
+    --cmp-default-menu-dot: var(--sys-color-border-darker);
+    --cmp-default-menu-arrow: var(--sys-color-text-placeholder);
+}
+
+html.dark .layout-default {
+    --cmp-default-sidebar-decoration: linear-gradient(180deg, rgb(120 97 250 / 8%) 0%, rgb(120 97 250 / 0%) 140px);
+}

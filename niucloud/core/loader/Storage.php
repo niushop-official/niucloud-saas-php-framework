@@ -30,7 +30,7 @@ abstract class Storage
      * @param array $config 其他配置
      * @param string|null $config_file 驱动配置名
      */
-    public function __construct(string $name, array $config = [], string $config_file = null)
+    public function __construct(string $name, array $config = [], ?string $config_file = null)
     {
         $this->name = $name;
         $this->config_file = $config_file;

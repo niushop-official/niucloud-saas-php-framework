@@ -22,7 +22,7 @@ class Wechat extends BaseOauth
         parent::initialize($config);
     }
 
-    public function getFansInfo(string $openid = null)
+    public function getFansInfo(?string $openid = null)
     {
         // TODO: Implement getFansInfo() method.
     }
@@ -32,7 +32,7 @@ class Wechat extends BaseOauth
         return CoreWechatService::app($this->site_id)->oauth;
     }
 
-    public function oauth(string $code = null, array $options = [])
+    public function oauth(?string $code = null, array $options = [])
     {
 //        $this->instance()->
         // TODO: Implement oauth() method.

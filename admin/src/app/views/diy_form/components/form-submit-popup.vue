@@ -68,9 +68,7 @@
                                     <template #content>
                                         <p>{{ t('displayTextMessagesTips') }}</p>
                                     </template>
-                                    <el-icon>
-                                        <QuestionFilled color="#999999" />
-                                    </el-icon>
+                                    <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                                 </el-tooltip>
                             </el-radio>
                             <!--  todo 后续完善 -->
@@ -116,9 +114,7 @@
                                             <template #content>
                                                 <p>{{ t('specifyTimeTips') }}</p>
                                             </template>
-                                            <el-icon>
-                                                <QuestionFilled color="#999999" />
-                                            </el-icon>
+                                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                                         </el-tooltip>
                                     </el-radio>
                                     <el-radio label="submission_time" class="!block">
@@ -127,9 +123,7 @@
                                             <template #content>
                                                 <p class="w-[250px]">{{ t('submissionTimeTips') }}</p>
                                             </template>
-                                            <el-icon>
-                                                <QuestionFilled color="#999999" />
-                                            </el-icon>
+                                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                                         </el-tooltip>
                                     </el-radio>
                                 </el-radio-group>

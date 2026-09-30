@@ -142,25 +142,8 @@ function packageAddonBuild(key, buildDir, buildId) {
     return manifest
 }
 
-function main() {
-    const key = process.argv[2]
-    if (!key) {
-        console.error('Usage: node build-mp-addon.cjs <addon-key>')
-        process.exit(1)
-    }
-
+function buildOneKey(key) {
     const buildId = makeBuildId(`mp-addon-${key}`)
-
-    // 自动生成 pages.core.json（确保所有插件的分包信息最新）
-    const genSplitResult = require('child_process').spawnSync(
-        'node',
-        [path.join(__dirname, 'generate-split-pages.cjs')],
-        { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' }
-    )
-    if (genSplitResult.status !== 0) {
-        console.error('[build-mp-addon] generate-split-pages failed')
-        process.exit(genSplitResult.status || 1)
-    }
 
     spawnSyncGenerate(key)
     require('./generate-diy-registry.cjs').generateDiyRegistry({ addonKeys: [key] })
@@ -244,6 +227,30 @@ function spawnSyncGenerate(key) {
     if (result.status !== 0) {
         process.exit(result.status || 1)
     }
+}
+
+function main() {
+    // 支持一次编译多个插件：node scripts/build-mp-addon.cjs shop cms pintuan
+    const argvKeys = process.argv.slice(2).filter(Boolean)
+    const keys = [...new Set(argvKeys.length ? argvKeys : process.env.ADDON_KEY ? [process.env.ADDON_KEY] : [])]
+    if (!keys.length) {
+        console.error('Usage: node build-mp-addon.cjs <addon-key> [addon-key ...]')
+        process.exit(1)
+    }
+
+    // 自动生成 pages.core.json（确保所有插件的分包信息最新）
+    const genSplitResult = require('child_process').spawnSync(
+        'node',
+        [path.join(__dirname, 'generate-split-pages.cjs')],
+        { cwd: ROOT, stdio: 'inherit', shell: process.platform === 'win32' }
+    )
+    if (genSplitResult.status !== 0) {
+        console.error('[build-mp-addon] generate-split-pages failed')
+        process.exit(genSplitResult.status || 1)
+    }
+
+    keys.forEach(buildOneKey)
+    console.log(`\n[build-mp-addon] ALL DONE: ${keys.join(', ')}`)
 }
 
 main()

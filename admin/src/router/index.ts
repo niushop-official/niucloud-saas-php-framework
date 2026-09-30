@@ -52,7 +52,17 @@ router.resolve = (to: RouteLocationRaw, currentLocation?: RouteLocationNormalize
 }
 
 // 全局前置守卫
-router.beforeEach(async (to: any, from, next) => {
+router.beforeEach(async (to: any, from: any, next) => {
+    // 新窗口打开菜单：menu_attr 配置为 "new_window:URL" 时，
+    // 点击菜单导航被拦截并改为 window.open（须在任何 await 之前执行，
+    // 以保持在用户点击事件调用栈内，避免被浏览器弹窗拦截）；
+    // 直接以 URL 访问该路由时 from 无匹配记录，正常放行进入内嵌页面
+    if (typeof to.meta?.attr == 'string' && to.meta.attr.startsWith('new_window:') && from.matched.length > 0) {
+        window.open(to.meta.attr.slice('new_window:'.length), '_blank')
+        next(false)
+        return
+    }
+
     NProgress.configure({ showSpinner: false })
     NProgress.start()
 
@@ -131,15 +141,22 @@ router.beforeEach(async (to: any, from, next) => {
                         }
                     }
 
-                    ROOT_ROUTER.redirect = { name: firstRoute }
+                    // 设置首页路由（无有效菜单时不覆盖，避免重定向到空路由）
+                    if (firstRoute) {
+                        ROOT_ROUTER.redirect = { name: firstRoute }
+                    }
                     router.addRoute(ROOT_ROUTER)
 
                     // 设置应用首页路由
                     if (getAppType() == 'admin') {
-                        ADMIN_ROUTE.children[0].redirect = { name: firstRoute }
+                        if (firstRoute) {
+                            ADMIN_ROUTE.children[0].redirect = { name: firstRoute }
+                        }
                         router.addRoute(ADMIN_ROUTE)
                     } else {
-                        SITE_ROUTE.children[0].redirect = { name: firstRoute }
+                        if (firstRoute) {
+                            SITE_ROUTE.children[0].redirect = { name: firstRoute }
+                        }
                         router.addRoute(SITE_ROUTE)
                     }
 

@@ -1,17 +1,19 @@
 <template>
-    <div>
-        <el-dropdown @command="clickEvent" :tabindex="1">
-            <div class="userinfo flex h-full items-center">
-                <el-avatar v-if="userStore.userInfo.head_img" :size="25" :icon="UserFilled" :src="img(userStore.userInfo.head_img)"/>
-                <img v-else src="@/app/assets/images/member_head.png" class="w-[25px] rounded-full" />
-                <div class="user-name pl-[8px]">{{ userStore.userInfo.username }}</div>
-                <icon name="element ArrowDown" class="ml-[5px]" />
+    <div class="user-info-root">
+        <el-dropdown ref="dropdownRef" class="user-info-dropdown" @command="clickEvent" :tabindex="1" popper-class="layout-admin-user-menu">
+            <div class="userinfo navbar-hit flex h-full items-center">
+                <div class="userinfo-avatar">
+                    <img v-if="userStore.userInfo.head_img" :src="img(userStore.userInfo.head_img)" alt="">
+                    <span v-else>{{ userInitial }}</span>
+                </div>
             </div>
             <template #dropdown>
                 <div class="p-[10px]">
                     <div class="userinfo flex h-full items-center pb-[10px] border-b-[1px] border-solid border-[#e5e5e5]">
-                        <el-avatar v-if="userStore.userInfo.head_img" :size="45" :icon="UserFilled" :src="img(userStore.userInfo.head_img)"/>
-                        <img v-else src="@/app/assets/images/member_head.png" class="w-[45px] rounded-full" />
+                        <div class="userinfo-avatar is-lg">
+                            <img v-if="userStore.userInfo.head_img" :src="img(userStore.userInfo.head_img)" alt="">
+                            <span v-else>{{ userInitial }}</span>
+                        </div>
                         <div>
                             <div class="user-name pl-[8px] text-[14px]">{{ userStore.userInfo.username }}</div>
                             <div class="pl-[8px] text-[13px] text-[#9699B6]">个人中心</div>
@@ -40,7 +42,7 @@
                                 <span class="text-[14px]">修改密码</span>
                             </div>
                         </el-dropdown-item>
-                        <el-dropdown-item @click="logout" class="rounded-[4px]">
+                        <el-dropdown-item @click="logout" class="is-danger rounded-[4px]">
                             <div class="flex items-center leading-[1] py-[5px]">
                                 <span class="iconfont icontuichudenglu ml-[4px] !text-[14px] mr-[10px]"></span>
                                 <span class="text-[14px]">退出登录</span>
@@ -77,8 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import { UserFilled } from '@element-plus/icons-vue'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import type { FormInstance, FormRules, ElNotification } from 'element-plus'
 import useUserStore from '@/stores/modules/user'
 import { setUserInfo } from '@/app/api/personal'
@@ -87,6 +88,12 @@ import { img } from '@/utils/common'
 import userInfoEdit from '@/app/components/user-info-edit/index.vue'
 
 const userStore = useUserStore()
+const dropdownRef = ref()
+const open = () => {
+    dropdownRef.value?.handleOpen()
+}
+defineExpose({ open })
+const userInitial = computed(() => String(userStore.userInfo?.username || 'U').slice(0, 1).toUpperCase())
 
 const clickEvent = (command: string) => {
     switch (command) {
@@ -156,4 +163,46 @@ const submitForm = (formEl: FormInstance | undefined) => {
     width: 150px;
 }
 
+.userinfo-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    overflow: hidden;
+    border: 2px solid var(--sys-color-bg-surface);
+    border-radius: var(--sys-radius-full);
+    background-color: var(--sys-color-primary);
+    box-shadow: 0 0 0 1px var(--sys-color-border-default);
+    color: var(--el-color-white);
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-semibold);
+    line-height: 1;
+    transition: transform .2s, box-shadow .2s;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &.is-lg {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.userinfo:hover .userinfo-avatar {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 2px var(--el-color-primary-light-7);
+}
+</style>
+
+<style lang="scss">
+.layout-admin-user-menu .el-dropdown-menu__item.is-danger:hover,
+.layout-admin-user-menu .el-dropdown-menu__item.is-danger:focus {
+    background-color: var(--sys-color-danger-soft);
+    color: var(--sys-color-danger);
+}
 </style>

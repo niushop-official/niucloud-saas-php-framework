@@ -237,4 +237,29 @@ class Config extends BaseAdminController
     {
         return success(data: ( new ConfigService() )->getThemeColor());
     }
+
+    /**
+     * 获取渠道设置
+     * @description 获取渠道设置
+     * @return Response
+     */
+    public function getChannelSetting()
+    {
+        return success(data: ( new ConfigService() )->getChannelSetting());
+    }
+
+    /**
+     * 设置渠道设置
+     * @description 设置渠道设置
+     * @return Response
+     */
+    public function setChannelSetting()
+    {
+        $data = $this->request->params([
+            [ 'h5', [] ],
+            [ 'weapp', [] ],
+        ]);
+        ( new ConfigService() )->setChannelSetting($data);
+        return success();
+    }
 }

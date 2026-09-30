@@ -1,0 +1,1 @@
+import{r as t}from"./index-e87d8368.js";function o(e){return t.get("home/site",{params:e})}function i(){return t.get("home/site/group")}function n(e){return t.post("home/site/create",e)}export{o as a,n as c,i as g};

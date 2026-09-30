@@ -16,6 +16,7 @@ use core\exception\CommonException;
 use EasyWeChat\Kernel\Exceptions\BadRequestException;
 use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
+use EasyWeChat\OfficialAccount\Application;
 use Overtrue\Socialite\Contracts\UserInterface;
 use ReflectionException;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +88,19 @@ class CoreWechatServeService extends BaseCoreService
      */
     public function serve(int $site_id)
     {
-        $app = CoreWechatService::app($site_id);
+        //原先的写法
+        //$app = CoreWechatService::app($site_id);
+
+        // 授权公众号调用接口时需要复用开放平台实例，但公众号后台直连的消息回调
+        // 是使用公众号自身的 AppID、Token 和 EncodingAESKey 加密的。不能使用
+        // CoreWechatService::app() 返回实例中的开放平台 Encryptor，否则会以组件 AppID
+        // 校验回调中的公众号 AppID，进而抛出 Invalid appId。
+        $wechat_config = (new CoreWechatConfigService())->getWechatConfig($site_id);
+        $app = new Application([
+            'app_id' => $wechat_config['app_id'],
+            'token' => $wechat_config['token'],
+            'aes_key' => $wechat_config['encryption_type'] === 'not_encrypt' ? '' : $wechat_config['encoding_aes_key'],
+        ]);
         $server = $app->getServer();
         $server->with(function($message, \Closure $next) use ($site_id) {
             // 你的自定义逻辑

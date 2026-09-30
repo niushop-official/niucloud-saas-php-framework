@@ -1,7 +1,7 @@
 <template>
     <!--财务流水-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
@@ -42,7 +42,7 @@
                 </el-row>
             </el-card>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="siteAccountLogTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('type')" class="items-center" prop="type">
                         <el-select v-model="siteAccountLogTable.searchParam.type" class="m-2" :placeholder="t('accountType')">
@@ -65,8 +65,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="siteAccountLogTable.data" size="large" v-loading="siteAccountLogTable.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="siteAccountLogTable.data" size="large" v-loading="siteAccountLogTable.loading">
                     <template #empty>
                         <span>{{ !siteAccountLogTable.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -85,6 +86,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                </div>
 
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="siteAccountLogTable.page"
@@ -172,9 +174,13 @@ import { t } from '@/lang'
 import { getAccountList, getAccountStat, getAccountType } from '@/app/api/site'
 import type { FormInstance } from 'element-plus'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const siteAccountLogTable = reactive({
     page: 1,

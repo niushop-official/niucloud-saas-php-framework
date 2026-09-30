@@ -1,223 +1,39 @@
 <template>
-    <el-dialog v-model="showDialog" :title="t('upgrade.title')" width="850px" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="dialogClose">
+    <!-- 升级前校验：点击升级后首先弹出，通过后自动关闭；
+         随后按「是否存在历史备份」决定：有则弹选项弹窗，无则直接发起升级 -->
+    <!-- 不加 destroy-on-close：v-if="checkVisible" 已保证每次打开都是新实例，
+         再叠一层动画结束后的销毁会和关闭时序打架（已卸载的 vnode 被重复处理） -->
+    <el-dialog v-model="checkVisible" title="升级前校验" :width="dialogWidth" :close-on-click-modal="false" :close-on-press-escape="false">
+        <div class="min-h-[150px]">
+            <verify-panel v-if="checkVisible" scene="upgrade" :params="{ addon: upgradeAppKey }"
+                          :auto-next="true" :auto-next-delay="500" :show-prev="false"
+                          :next-text="t('nextStep')" @next="onCheckPassed"
+                          @passed="is_pass = true" @failed="is_pass = false" />
+        </div>
+    </el-dialog>
 
+    <!-- 升级选项：仅保留备份选项（无历史备份时不会弹出，校验通过即直接发起升级） -->
+    <el-dialog v-model="showDialog" title="升级" :width="dialogWidth" :close-on-click-modal="false" :close-on-press-escape="false" :before-close="dialogClose">
         <template v-if="upgradeContent">
-            <!-- 检测服务是否到期 -->
-            <template v-if="step == 1">
-                <template v-for="(item, index) in upgradeContent.content">
-                    <div class="text-lg">
-                        <template v-if="item.upgrade_version">
-                            <span>【{{ item.app.app_name }}】本次升级将从</span>
-                            <span class="font-bold px-[2px]">{{ item.version }}</span>
-                            <span>升级到</span>
-                            <span class="font-bold px-[2px]">{{ item.upgrade_version }}</span>
-                            <span>版本</span>
-                        </template>
-                        <template v-else>
-                            <template v-if="upgradeContent.content.length > 1">
-                                <span>【{{ item.app.app_name }}】当前版本</span>
-                                <span class="font-bold px-[2px]">{{ item.version }}</span>
-                            </template>
-                            <template v-else>
-                                <span>当前版本</span>
-                                <span class="font-bold px-[2px]">{{ item.version }}</span>
-                            </template>
-                        </template>
-                    </div>
-                    <div class="mt-[10px]" :class="{ 'mb-[10px]' : (index + 1) < upgradeContent.content.length }" v-if="item.upgrade_version != item.last_version">
-                        <el-alert type="info" show-icon :closable="false">
-                            <template #title>
-                                <span>当前最新版本为{{ item.last_version }}，您的服务{{ item.expire_time ? `已于${item.expire_time}到期` : '长期有效' }}。</span>
-                                <span>如需升级到最新版可在<a class="text-primary" href="https://www.niucloud.com" target="_blank">niucloud-admin官网</a>购买相关服务后再进行升级</span>
-                            </template>
-                        </el-alert>
-                    </div>
-                </template>
-            </template>
-            <div v-show="step == 2">
-                <el-steps :active="numberOfSteps" align-center class="number-of-steps" process-status="process">
-                    <el-step :title="t('testDirectoryPermissions')" />
-                    <el-step :title="t('upgrade.option')" />
-                    <el-step :title="t('startUpgrade')" />
-                    <el-step :title="t('upgradeEnd')" />
-                </el-steps>
-                <div class="h-[400px]" style="overflow: auto">
-                    <!-- 判断文件权限 -->
-                    <div v-show="active == 'upgrade'">
-                        <div class="flex flex-col" v-if="upgradeCheck && !upgradeTask">
-                            <el-scrollbar>
-                                <div class="bg-[#fff] my-3" v-if="upgradeCheck.dir">
-                                    <div class="px-[20px] pt-[10px] text-[14px] el-table">
-                                        <el-row class="py-[10px] items table-head-bg pl-[15px] mb-[10px]">
-                                            <el-col :span="18">
-                                                <span>{{ t("upgrade.path") }}</span>
-                                            </el-col>
-                                            <el-col :span="3">
-                                                <span>{{ t("upgrade.demand") }}</span>
-                                            </el-col>
-                                            <el-col :span="3">
-                                                <span>{{ t("status") }}</span>
-                                            </el-col>
-                                        </el-row>
-
-                                        <div style="height: calc(300px); overflow: auto">
-                                            <el-row class="pb-[10px] items pl-[15px]" v-for="item in upgradeCheck.dir.is_readable">
-                                                <el-col :span="18">
-                                                    <span>{{ item.dir }}</span>
-                                                </el-col>
-                                                <el-col :span="3">
-                                                    <span>{{ t("upgrade.readable") }}</span>
-                                                </el-col>
-                                                <el-col :span="3" >
-                                                    <span v-if="item.status">
-                                                        <el-icon color="green">
-                                                            <Select />
-                                                        </el-icon>
-                                                    </span>
-                                                    <span v-else>
-                                                        <el-icon color="red">
-                                                            <CloseBold />
-                                                        </el-icon>
-                                                    </span>
-                                                </el-col>
-                                            </el-row>
-                                            <el-row class="pb-[10px] items pl-[15px]" v-for="item in upgradeCheck.dir.is_write">
-                                                <el-col :span="18">
-                                                    <span>{{ item.dir }}</span>
-                                                </el-col>
-                                                <el-col :span="3">
-                                                    <span>{{ t("upgrade.write") }}</span>
-                                                </el-col>
-                                                <el-col :span="3">
-                                                    <span v-if="item.status">
-                                                        <el-icon color="green">
-                                                            <Select />
-                                                        </el-icon>
-                                                    </span>
-                                                    <span v-else>
-                                                        <el-icon color="red">
-                                                            <CloseBold />
-                                                        </el-icon>
-                                                    </span>
-                                                </el-col>
-                                            </el-row>
-                                        </div>
-                                    </div>
-                                </div>
-                            </el-scrollbar>
-                        </div>
-                        <div class="h-[370px] mt-[30px]" v-show="showTerminal && upgradeTask && !errorDialog">
-                            <terminal ref="terminalRef" :name="`upgrade-${terminalId}`"  :context="upgradeTask ? upgradeTask.upgrade.app_key : ''" :init-log="null" :show-header="false" :show-log-time="true" @exec-cmd="onExecCmd" />
-                        </div>
-                    </div>
-                    <!-- 是否备份选择 -->
-                    <div class="flex flex-col" v-show="active == 'backup'">
-                        <el-scrollbar>
-                            <div class="bg-[#fff] my-3">
-                                <div class="p-[20px] mt-[20px] mx-[10px] border-[1px] border-[#E6E6E6] rounded-[10px]" v-if="upgradeContent.last_backup">
-                                    <div class="flex justify-between items-center mt-[-9px]">
-                                        <el-checkbox v-model="upgradeOption.is_need_backup" :label="t('upgrade.isNeedBackup')" :true-value="true" :false-value="false" size="large" ></el-checkbox>
-                                        <el-button link type="primary" class="!text-[#9699B6]" @click="toBackupRecord">{{ t('upgrade.isNeedBackupBtn') }}</el-button>
-                                    </div>
-
-                                    <div class="text-[14px] text-[#374151] mb-[10px]">{{ t('upgrade.isNeedBackupTips') }}</div>
-                                    <div class="text-[14px] text-[#9699B6]">{{ t('上次备份时间：') }}{{ upgradeContent.last_backup.complete_time }}</div>
-                                </div>
-                            </div>
-                        </el-scrollbar>
+            <el-scrollbar max-height="50vh">
+                <!-- 备份选项（存在历史备份时才可勾选） -->
+                <div class="p-[16px] border-[1px] rounded-[8px] border border-solid border-[#ebeef5]" v-if="upgradeContent.last_backup">
+                    <div class="flex justify-between items-center">
+                        <el-checkbox v-model="upgradeOption.is_need_backup" :label="t('upgrade.isNeedBackup')" :true-value="true" :false-value="false" size="large" ></el-checkbox>
+                        <el-button link type="primary" class="!text-[#9699B6]" @click="toBackupRecord">{{ t('upgrade.isNeedBackupBtn') }}</el-button>
                     </div>
 
+                    <div class="text-[14px] text-[#374151] mt-[10px] mb-[10px]">{{ t('upgrade.isNeedBackupTips') }}</div>
+                    <div class="text-[14px] text-[#9699B6]">{{ t('上次备份时间：') }}{{ upgradeContent.last_backup.complete_time }}</div>
                 </div>
-            </div>
-            <div v-if="step == 3">
-                <div class="mt-[10px]" v-show="active == 'complete'">
-                    <el-result icon="success" :title="t('upgrade.upgradeSuccess')">
-                        <template #icon>
-                            <img src="@/app/assets/images/success_icon.png" alt="">
-                        </template>
-                        <template #extra>
-                            <!-- <div class="text-[16px] text-[#9699B6] mt-[10px]">本次升级用时{{ formatUpgradeDuration }}</div> -->
-                            <div class="w-[750px]" v-if="upgradeTask.cloud_build_error">
-                                <el-alert class="!w-[750px] border-warning !border-[1px] !rounded-[0px] border-solid" type="warning" :closable="false">
-                                    <template #title>
-                                        <span class="text-error">警告：</span>
-                                        <span class="text-black">升级过程中发生云编译错误</span>
-                                    </template>
-                                </el-alert>
-                                <div class="text-left mt-[10px] leading-8">
-                                    <div class="font-bold">为了保证系统稳定，建议您做以下处理:</div>
-                                    <div><span class="w-[6px] h-[6px] rounded-[6px] bg-black inline-block mr-[10px]"></span>如果您是开发者，安装的框架或者插件二开过或者正在开发中，可能是因为您的本地代码不完整导致的云编译失败，需要自己调试并重新进行编译才算升级完成(云编译会把本地插件前端代码上传编译)。</div>
-                                    <div><span class="w-[6px] h-[6px] rounded-[6px] bg-black inline-block mr-[10px]"></span>如果您没有二开过任何代码，可能是本地插件存在兼容性问题，请联系插件开发者或者官方客服解决。</div>
-                                    <div><span class="w-[6px] h-[6px] rounded-[6px] bg-black inline-block mr-[10px]"></span>如果您的项目已经投入正式运营中，请立即回滚。</div>
-                                </div>
-                                <div class="text-left mt-[10px]">
-                                    <div class="font-bold">编译信息错误</div>
-                                    <div class="mt-[10px] text-secondary overflow-hidden line-clamp-4">
-                                        {{  upgradeTask.cloud_build_error }}
-                                    </div>
-                                </div>
-                                <div class="mt-[20px]">
-                                    <el-button @click="handleBack()" class="!w-[90px]">更多信息</el-button>
-                                    <el-button @click="showDialog=false" type="primary" plain class="!w-[90px]">我已知晓</el-button>
-                                    <el-button @click="cloudBuildError('cloud_build_error_rollback')" type="primary" class="!w-[90px]">回滚</el-button>
-                                </div>
-                            </div>
-                            <div class="mt-[20px]" v-else>
-                                <el-button @click="handleBack()" class="!w-[90px]">返回</el-button>
-                                <el-button @click="showDialog=false" type="primary" class="!w-[90px]">完成</el-button>
-                            </div>
-                        </template>
-                    </el-result>
-                </div>
-                <div class="mt-[20px] h-[370px]" v-show="active == 'fail'">
-                    <el-result icon="error" :title="t('升级失败')">
-                        <template #icon>
-                            <img src="@/app/assets/images/error_icon.png" alt="" />
-                        </template>
-                        <template #extra>
-                            <el-scrollbar class="max-h-[120px] !overflow-auto text-[15px] text-[#4F516D] mb-[15px] mt-[-15px]">
-                                {{errorMsg}}
-                            </el-scrollbar>
-                            <el-button @click="handleBack()" class="!w-[90px]">错误信息</el-button>
-                            <el-button @click="showDialog=false" type="primary" class="!w-[90px]">完成</el-button>
-                        </template>
-                    </el-result>
-                </div>
-            </div>
+            </el-scrollbar>
         </template>
         <template #footer>
             <div class="dialog-footer">
-                <!-- 查看升级内容 -->
-                <el-button v-if="step == 1 && upgradeContent.content.length && isAllowUpgrade" @click="step = 2" type="primary">{{ t("upgrade.upgradeButton") }}</el-button>
-                <el-button type="primary" v-show="step == 2 && showTerminal && upgradeTask && !errorDialog"  :loading="timeloading" class="!w-[140px]">已用时 {{ formatUpgradeDuration }}</el-button>
-                <template v-if="step == 2 && active != 'complete'">
-                    <el-button type="primary" :disabled="!is_pass" v-if="active == 'upgrade' && !upgradeTask" @click="showUpgradeOption">{{ t("nextStep") }}</el-button>
-                    <el-button v-if="active == 'backup'" @click="() => { active = 'upgrade'; numberOfSteps = 1 } ">{{ t("prev") }}</el-button>
-                    <el-button type="primary" v-if="active == 'backup'" :loading="loading" @click="() => { upgradeAddonFn() }">{{ t("nextStep") }}</el-button>
-                    <el-button v-if="active == 'complete'" @click="showDialog = false">{{ t("complete") }}</el-button>
-                </template>
-            </div>
-        </template>
-    </el-dialog>
-
-    <el-dialog v-model="upgradeTipsShowDialog" :title="t('warning')" width="500px" draggable>
-        <span v-html="t('upgrade.upgradeTips')"></span>
-        <template #footer>
-            <div class="flex justify-end">
-                <el-button @click="upgradeTipsConfirm(true)" type="primary">{{ t("upgrade.knownToKnow") }}</el-button>
-                <el-button @click="handleUpgrade()" type="primary" plain :loading="readyLoading">{{ t("upgrade.upgradeButton") }}</el-button>
-                <el-button @click="upgradeTipsShowDialog = false">{{ t("cancel") }}</el-button>
-            </div>
-        </template>
-    </el-dialog>
-
-    <el-dialog v-model="cloudBuildErrorTipsShowDialog" :title="t('warning')" width="500px" draggable :show-close="false">
-        <span v-html="t('upgrade.cloudBuildErrorTips')"></span>
-        <template #footer>
-            <div class="flex justify-end">
-                <el-button @click="cloudBuildError('local')" type="primary">{{ t("upgrade.localBuild") }}</el-button>
-                <el-button @click="cloudBuildError('retry')" type="primary">{{ t("upgrade.cloudBuild") }}（{{ retrySecond }}S）</el-button>
-                <el-button @click="cloudBuildError('rollback')" type="primary">{{ t("upgrade.rollback") }}</el-button>
+                <el-button @click="showDialog = false">{{ t("cancel") }}</el-button>
+                <el-button type="primary" :loading="loading" :disabled="!isAllowUpgrade" @click="upgradeAddonFn">
+                    {{ t("upgrade.upgradeButton") }}
+                </el-button>
             </div>
         </template>
     </el-dialog>
@@ -236,266 +52,52 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, h, watch, computed } from 'vue'
+import { ref, h, watch, nextTick } from 'vue'
 import { t } from '@/lang'
 import { getVersions } from '@/app/api/auth'
 import { getFrameworkNewVersion } from '@/app/api/module'
-import {
-    getUpgradeContent,
-    getUpgradeTask,
-    upgradeAddon,
-    executeUpgrade,
-    preUpgradeCheck,
-    clearUpgradeTask, upgradeUserOperate
-} from '@/app/api/upgrade'
-import { Terminal, TerminalFlash } from 'vue-web-terminal'
-import 'vue-web-terminal/lib/theme/dark.css'
+import { getUpgradeContent } from '@/app/api/upgrade'
+import { createTask, getTaskActive } from '@/app/api/task'
+import VerifyPanel from '@/app/components/verify-panel/index.vue'
 import { AnyObject } from '@/types/global'
-import { ElNotification, ElMessage, ElMessageBox } from 'element-plus'
-import Storage from '@/utils/storage'
+import { ElNotification, ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+import useTaskRunnerStore from '@/stores/modules/taskRunner'
 
 const router = useRouter()
-const terminalId = ref(Date.now());
+const runner = useTaskRunnerStore()
+
+/** 弹窗宽度：与「文件差异」弹窗（components/file-diff）保持一致 */
+const dialogWidth = '880px'
+
+/** 升级选项弹窗（插件信息 + 选项） */
 const showDialog = ref<boolean>(false)
+/** 升级前校验弹窗（校验通过后自动关闭） */
+const checkVisible = ref<boolean>(false)
 const upgradeContent = ref<null | AnyObject>(null)
+/**
+ * getUpgradeContent 的在途请求
+ *
+ * 校验弹窗现在点击即弹、不再等内容接口，因此校验有可能先于内容返回；
+ * 弹选项弹窗前需据此等待（内容为空时选项弹窗无从渲染）。
+ */
+let contentPromise: Promise<any> | null = null
 const isAllowUpgrade = ref(true) // 是否允许升级
-const upgradeTask = ref<null | AnyObject>(null)
-const active = ref('upgrade')
-const step = ref(1)
-const upgradeCheck = ref<null | AnyObject>(null)
+/** 本次升级的应用标识（传给统一校验组件做升级前校验） */
+const upgradeAppKey = ref('')
 const loading = ref(false)
-const terminalRef: any = ref(null)
-const emits = defineEmits(['complete', 'cloudbuild'])
-const upgradeTipsShowDialog = ref<boolean>(false)
-let upgradeLog: any = []
-let errorLog: any = []
-const cloudBuildErrorTipsShowDialog = ref<boolean>(false)
-const retrySecond = ref(30)
-let retrySecondInterval: any = null
+const emits = defineEmits(['complete'])
 const upgradeOption = ref({
-    is_need_backup: true,
+    is_need_backup: false,
     is_need_cloudbuild: false
 })
 
-// 升级步骤排除，backupCode 备份代码，backupSql 备份数据库
-const excludeSteps: any = ref([
-    {
-        name: '备份源码',
-        code: 'backupCode'
-    },
-    {
-        name: '备份数据库',
-        code: 'backupSql'
-    }
-])
-/**
- * 查询升级任务
- */
-const timeloading = ref(false)
-const showTerminal = ref(false)
-const upgradeStartTime = ref<number | null>(null)
-const upgradeDuration = ref(0) // 单位：秒
-let upgradeTimer: ReturnType<typeof setInterval> | null = null
-const errorDialog = ref(false)
-const errorMsg = ref('')
-const getUpgradeTaskFn = () => {
-    getUpgradeTask().then(({ data }) => {
-        if (!data) return
+const is_pass = ref(false)
 
-        if (!upgradeContent.value) {
-            upgradeContent.value = data.upgrade_content
-
-            if (!data.upgrade_content || !Array.isArray(data.upgrade_content.content)) {
-                return
-            }
-
-            let upgradeCount = 0
-            let failUpgradeCount = 0
-            for (let i = 0; i < upgradeContent.value.content.length; i++) {
-                if (upgradeContent.value.content[i].version_list.length) {
-                    upgradeCount++
-                } else {
-                    failUpgradeCount++
-                }
-            }
-            if (upgradeContent.value.content.length == upgradeCount) {
-                isAllowUpgrade.value = true
-            } else if (upgradeContent.value.content.length == failUpgradeCount) {
-                isAllowUpgrade.value = false
-            }
-        }
-
-        // 检测有没有正在进行中的升级任务
-        if (!showDialog.value) {
-            showElNotification()
-            return
-        }
-        if (!upgradeTask.value) {
-            showTerminal.value = true
-            terminalRef.value.execute('clear')
-            terminalRef.value.execute('开始升级')
-            timeloading.value = true
-            upgradeStartTime.value = Date.now()
-            upgradeDuration.value = 0
-            if (upgradeTimer) clearInterval(upgradeTimer)
-            upgradeTimer = setInterval(() => {
-                upgradeDuration.value++
-            }, 1000)
-        }
-
-        upgradeTask.value = data
-
-        data.log.forEach((item) => {
-            if (!upgradeLog.includes(item)) {
-                if (item.indexOf('云编译任务正在排队') != -1) {
-                    cloudQueue = item
-                    upgradeLog.push(item)
-                } else {
-                    cloudQueue = null
-                    terminalRef.value.pushMessage({ content: `${item}` })
-                    upgradeLog.push(item)
-                }
-            }
-        })
-        // 安装失败
-        if (data.error) {
-            data.error.forEach((item) => {
-                if (!errorLog.includes(item)) {
-                    terminalRef.value.pushMessage({ content: item, class: 'error' })
-                    errorLog.push(item)
-                    errorMsg.value = item
-                }
-            })
-            if (upgradeTimer) {
-                clearInterval(upgradeTimer)
-                upgradeTimer = null
-            }
-            timeloading.value = false
-        }
-        // 恢复完毕
-        if (data.step == 'restoreComplete') {
-            flashInterval && clearInterval(flashInterval)
-            step.value = 3
-            active.value = 'fail'
-            return
-        }
-        // 升级完成
-        if (data.step == 'upgradeComplete') {
-            if (data.cloud_build_error) {
-                terminalRef.value.pushMessage({ content: data.cloud_build_error, class: 'error' })
-            }
-            step.value = 3
-            active.value = 'complete'
-            numberOfSteps.value = 4
-            notificationEl && notificationEl.close()
-            emits('complete')
-            if (upgradeTimer) {
-                clearInterval(upgradeTimer)
-                upgradeTimer = null
-            }
-            timeloading.value = false
-            return
-        }
-        numberOfSteps.value = 2
-        active.value = 'upgrade'
-        executeUpgradeFn()
-    }).catch((err) => {
-        console.log(err)
-    })
-}
-getUpgradeTaskFn()
-
-const upgradePromptConfirm = ()=>{
-    dialogUpgradePrompt.value = false
-    open('niucloud-admin')
-}
-
-const isBack = ref(false)
-const handleBack = () => {
-    active.value = 'upgrade'
-    isBack.value = true
-    showTerminal.value = true
-    errorDialog.value = false // 隐藏错误弹窗
-    step.value = 2
-}
-
-const formatUpgradeDuration = computed(() => {
-    const s = upgradeDuration.value
-    const h = Math.floor(s / 3600)
-    const m = Math.floor((s % 3600) / 60)
-    const sec = s % 60
-    return [
-        h > 0 ? `${h}小时` : '',
-        m > 0 ? `${m}分钟` : '',
-        `${sec}秒`
-    ].filter(Boolean).join('')
-})
-
-const executeUpgradeFn = () => {
-    executeUpgrade().then(() => {
-        getUpgradeTaskFn()
-    }).catch((err) => {
-        if (err.msg.indexOf('队列') != -1) {
-            retrySecond.value = 30
-            retrySecondInterval = setInterval(() => {
-                retrySecond.value--
-                if (retrySecond.value == 0) {
-                    cloudBuildError('retry')
-                }
-            }, 1000)
-            cloudBuildErrorTipsShowDialog.value = true
-        } else if (err.code && err.code == 601) {
-            ElMessageBox.confirm(
-                '云编译服务未启动，必须在启动后进行云编译！',
-                '提示',
-                {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: '重新检测',
-                    cancelButtonText: '查看操作手册',
-                    type: 'warning'
-                }
-            ).then(() => {
-                open()
-            }).catch((action) => {
-                action == 'cancel' && window.open('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html', '_blank')
-            })
-        } else if (err.response && err.response.status && err.response.status == 502) {
-            ElMessage({ dangerouslyUseHTMLString: true, duration: 5000, message: '程序执行超时请先调整超时限制, 具体操作方法<a style="text-decoration: underline;" href="https://doc.press.niucloud.com/php/v6-shop/use/chang-jian-wen-ti-chu-li/er-shi-ba-3001-an-88c5-sheng-ji-guo-cheng-zhong-ti-shi-201c-502-bad-gateway-201d-wen-ti-jie-jue.html#%E5%AE%89%E8%A3%85-%E5%8D%87%E7%BA%A7%E5%AE%8C%E6%88%90%E5%90%8E-%E4%BA%91%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B%E4%B8%AD%E6%8F%90%E7%A4%BA-502-bad-gateway-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3" target="blank">点击查看相关手册</a>', type: 'error' })
-            setTimeout(() => {
-                executeUpgradeFn()
-            }, 5000)
-        } else {
-            ElMessage({ message: err.message, type: 'error' })
-        }
-    })
-}
-
-let notificationEl: any = null
-/**
- * 升级中任务提示
- */
-const showElNotification = () => {
-    notificationEl = ElNotification.success({
-        title: t('warning'),
-        dangerouslyUseHTMLString: true,
-        message: h('div', {}, [t('upgrade.upgradingTips'), h('span', {
-            class: 'text-primary cursor-pointer',
-            onClick: elNotificationClick
-        }, [t('upgrade.clickView')])]),
-        duration: 0,
-        showClose: false
-    })
-}
-
-const elNotificationClick = () => {
-    showDialog.value = true
-    getUpgradeTaskFn()
-    step.value = 2
-    numberOfSteps.value = 3
-    active.value = 'upgrade'
-    notificationEl && notificationEl.close()
-}
+const dialogUpgradePrompt = ref(false)
+const applicationVersion = ref('')
+const newApplicationVersion = ref('')
+const applicationType = ref('app')
 
 const frameworkVersion = ref('')
 getVersions().then((res) => {
@@ -506,95 +108,54 @@ getFrameworkNewVersion().then(({ data }) => {
     newFrameworkVersion.value = data.last_version
 })
 
-/**
- * 执行升级
- */
-const is_pass = ref(false)
-const repeat = ref(false)
-const readyLoading = ref(false)
-
-const handleUpgrade = async () => {
-    if (repeat.value) return
-    repeat.value = true
-    readyLoading.value = true
-
-    const appKey = upgradeContent.value?.upgrade_apps.join(',') != 'niucloud-admin' ? upgradeContent.value?.upgrade_apps.join(',') : ''
-
-    await preUpgradeCheck(appKey).then(async ({ data }) => {
-        upgradeCheck.value = data
-        is_pass.value = data.is_pass
-        active.value = 'upgrade'
-        !upgradeTask.value ? (numberOfSteps.value = 0) : numberOfSteps.value
-        upgradeTipsShowDialog.value = false
-        showDialog.value = true
-        repeat.value = false
-        readyLoading.value = false
-    }).catch(() => {
-        repeat.value = false
-        readyLoading.value = false
-    })
-}
-
-const showUpgradeOption = () => {
-    if (upgradeContent.value.last_backup) {
-        active.value = 'backup';
-        numberOfSteps.value = 1
-    } else {
-        upgradeAddonFn()
-    }
-}
-
-const upgradeAddonFn = () => {
-    if (!is_pass.value) return
-    if (loading.value) return
-    loading.value = true
-
-    const appKey = upgradeContent.value?.upgrade_apps.join(',') != 'niucloud-admin' ? upgradeContent.value?.upgrade_apps.join(',') : ''
-
-    upgradeAddon(appKey, upgradeOption.value).then(() => {
-        getUpgradeTaskFn()
-    }).catch((res) => {
-        loading.value = false
-        if (res.code && res.code == 601) {
-            ElMessageBox.confirm(
-                '云编译服务未启动，必须在启动后进行云编译！',
-                '提示',
-                {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: '重新检测',
-                    cancelButtonText: '查看操作手册',
-                    type: 'warning'
-                }
-            ).then(() => {
-                upgradeAddonFn()
-            }).catch((action) => {
-                action == 'cancel' && window.open('https://doc.press.niucloud.com/php/saas-framework/use/other/third-party-cloud-compilation.html', '_blank')
-            })
-        } else {
-            ElMessage({ message: res.msg, type: 'error' })
-        }
-    })
-}
-
 const isNeedUpgrade = (currVersion: string, onlineVersion: string) => {
     if (isNaN(parseInt(onlineVersion.replaceAll('.', ''))) || isNaN(parseInt(currVersion.replaceAll('.', '')))) return false
     return parseInt(onlineVersion.replaceAll('.', '')) > parseInt(currVersion.replaceAll('.', ''))
 }
 
-const dialogUpgradePrompt = ref(false)
-const applicationVersion = ref('')
-const newApplicationVersion = ref('')
-const applicationType = ref('app')
-const open = (addonKey: string = '', callback = null, otherData: any = {}) => {
-    errorDialog.value = false // 隐藏错误弹窗
-    if (upgradeTask.value) {
-        ElMessage({ message: '已有正在执行中的升级任务', type: 'error' })
-        showDialog.value = true
-        step.value = 2
-        numberOfSteps.value = 3
-        active.value = 'upgrade'
-        if (callback) callback()
-    } else {
+/**
+ * 归一化升级内容里的插件展示字段
+ *
+ * 云端返回的图标字段命名不统一（icon / app_icon / logo），这里统一成 icon 与 type_label，
+ * 模板只读字段，无需在模板里调用函数或做兼容判断。
+ * @param list getUpgradeContent 返回的 content
+ * @return array
+ */
+const normalizeContent = (list: any[]): any[] => ( list || [] ).map((item: any) => {
+    const app = item?.app || {}
+    return {
+        ...item,
+        icon: app.icon || app.app_icon || app.logo || '',
+        type_label: app.app_type === 'app' ? '应用' : '插件'
+    }
+})
+
+/** 终态任务（不视为「进行中」） */
+const TERMINAL_STATUS = [ 'success', 'failed', 'canceled', 'rolled_back', 'rollback_failed' ]
+
+/**
+ * 取当前进行中的指定类型任务
+ * 进行中的任务可能有多个（互斥任务与非互斥任务并行），这里按类型精确定位
+ */
+const findActiveTask = (taskType: string): Promise<any> => getTaskActive().then(({ data }) => {
+    const list = Array.isArray(data?.list) && data.list.length ? data.list : ( data?.task_key ? [ data ] : [] )
+    return list.find((item: any) => item?.task_type === taskType && !TERMINAL_STATUS.includes(String(item?.status ?? ''))) ?? null
+})
+
+/**
+ * 打开升级流程
+ * - 已有进行中的升级任务：直接进入任务详情查看进度
+ * - 否则先弹出「升级前校验」，通过后自动关闭并弹出选项弹窗（插件信息 + 选项）
+ */
+const open = (addonKey: string = '', callback: any = null, otherData: any = {}) => {
+    // 续跑：存在进行中的升级任务时直接跳到任务详情（升级过程统一在任务详情查看）
+    findActiveTask('upgrade').then((active) => {
+        if (active) {
+            toTaskDetail(active.task_key)
+            if (callback) callback()
+            return
+        }
+
         if (addonKey && addonKey.indexOf('niucloud-admin') == -1 && frameworkVersion.value != newFrameworkVersion.value && isNeedUpgrade(frameworkVersion.value, newFrameworkVersion.value)) {
             applicationVersion.value = otherData.install_info.version
             newApplicationVersion.value = otherData.version
@@ -605,9 +166,22 @@ const open = (addonKey: string = '', callback = null, otherData: any = {}) => {
         }
         if (loading.value) return
         loading.value = true
-        getUpgradeContent(addonKey).then(({ data }) => {
+
+        // 先弹出校验弹窗：不等升级内容接口（要请求云端），点击后立即有反馈。
+        // 校验参数由入参推导：框架升级传空串，与 upgrade_apps 的口径保持一致
+        upgradeAppKey.value = addonKey === 'niucloud-admin' ? '' : addonKey
+        handleUpgrade()
+
+        contentPromise = getUpgradeContent(addonKey).then(({ data }) => {
             loading.value = false
             upgradeContent.value = data
+            // 内容归一化：本弹窗不再展示插件信息，但保留字段兼容（扩展 / 其它入口可能读取）
+            upgradeContent.value.content = normalizeContent(upgradeContent.value.content)
+
+            // 内容到达后用真实应用列表校正校验参数（供「重新校验」使用）
+            const apps = upgradeContent.value?.upgrade_apps?.join(',') ?? ''
+            upgradeAppKey.value = apps === 'niucloud-admin' ? '' : apps
+
             let upgradeCount = 0
             let failUpgradeCount = 0
             for (let i = 0; i < upgradeContent.value.content.length; i++) {
@@ -622,152 +196,152 @@ const open = (addonKey: string = '', callback = null, otherData: any = {}) => {
             } else if (upgradeContent.value.content.length == failUpgradeCount) {
                 isAllowUpgrade.value = false
             }
-            if (Storage.get('upgradeTipsLock')) {
-                handleUpgrade()
-            } else {
-                upgradeTipsShowDialog.value = true
-            }
+            // 校验弹窗已在发起请求前弹出，此处不再重复打开（否则会重置已通过的校验状态）
             if (callback) callback()
         }).catch(() => {
             loading.value = false
             if (callback) callback()
         })
-    }
+    })
+}
+
+/** 打开统一任务详情（全局抽屉）：升级过程与结果统一在任务详情查看，不离开当前页 */
+const toTaskDetail = (key: string) => {
+    if (!key) return
+    runner.openDetail(key, 'upgrade')
+}
+
+/** 打开升级前校验弹窗（校验参数 upgradeAppKey 由 open() 预置，此处不再从内容推导） */
+const handleUpgrade = () => {
+    is_pass.value = false
+    checkVisible.value = true
 }
 
 /**
- * 升级进度动画
+ * 校验通过：自动关闭校验弹窗，按是否有可勾选项决定流程
+ *
+ * - 存在历史备份（last_backup）：弹出选项弹窗让用户确认是否备份
+ * - 无历史备份：没有可选项，跳过选项弹窗直接发起升级
+ * - 无可升级内容：两者都不做，提示后结束
  */
-let flashInterval: any = null
-const terminalFlash = new TerminalFlash()
-let cloudQueue = null
+const onCheckPassed = async () => {
+    is_pass.value = true
+    // verify-panel 在自己的定时器回调里 emit('next')，此刻它可能仍有渲染在途；
+    // 同步卸载会让 Vue 去 patch 已销毁的 vnode，故延后一个 tick 再关闭
+    nextTick(() => {
+        checkVisible.value = false
+    })
 
-const onExecCmd = (key, command, success, failed, name) => {
-    if (command == '开始升级') {
-        success(terminalFlash)
-        const frames = makeIterator(['/', '——', '\\', '|'])
-        flashInterval = setInterval(() => {
-            if (cloudQueue) {
-                terminalFlash.flush(cloudQueue + '<br>> ' + frames.next().value)
-            } else {
-                terminalFlash.flush('> ' + frames.next().value)
-            }
-        }, 150)
+    // 校验不再等内容接口，因此它可能先返回：这里等内容落地再决定后续流程
+    if (contentPromise) await contentPromise.catch(() => null)
+
+    if (!upgradeContent.value) {
+        ElMessage({ message: '获取升级内容失败，请重新发起升级', type: 'error' })
+        return
     }
+
+    // 全部应用都没有可升级版本：既不弹选项也不发起升级
+    if (!isAllowUpgrade.value) {
+        ElMessage({ message: '暂无可升级的内容', type: 'warning' })
+        return
+    }
+
+    // 无备份选项：无需用户选择，直接发起升级（下一步）
+    if (!upgradeContent.value.last_backup) {
+        upgradeAddonFn()
+        return
+    }
+
+    showDialog.value = true
 }
 
-const makeIterator = (array: string[]) => {
-    let nextIndex = 0
-    return {
-        next () {
-            if (nextIndex + 1 == array.length) {
-                nextIndex = 0
-            }
-            return { value: array[nextIndex++] }
+/**
+ * 发起升级：交由统一任务中心（sys_task）创建并驱动
+ * 任务创建成功后关闭选项弹窗并跳转任务详情
+ */
+const upgradeAddonFn = () => {
+    if (!is_pass.value) return
+    if (loading.value) return
+    loading.value = true
+    
+    showDialog.value = false
+    
+    const appKey = upgradeContent.value?.upgrade_apps.join(',') != 'niucloud-admin' ? upgradeContent.value?.upgrade_apps.join(',') : ''
+
+    // 无选项分支没有弹窗缓冲：先打开占位抽屉，避免「校验弹窗已关、详情还没出来」的空窗
+    runner.openPendingDetail('upgrade', '正在发起升级')
+
+    createTask('upgrade', { addon: appKey, data: upgradeOption.value }).then((res: any) => {
+        loading.value = false
+        emits('complete')
+
+        const key = res?.data?.task_key
+        if (!key) {
+            runner.closePendingDetail()
+            ElMessage({ message: '升级任务创建失败', type: 'error' })
+            return
         }
-    }
+        toTaskDetail(key)
+    }).catch((err: any) => {
+        loading.value = false
+        runner.closePendingDetail()
+        ElMessage({ message: err?.msg || err?.message || '升级发起失败', type: 'error' })
+    })
+}
+
+let notificationEl: any = null
+/**
+ * 升级中任务提示（处于后台运行时，引导用户回到向导/统一任务页）
+ */
+
+const elNotificationClick = () => {
+    findActiveTask('upgrade').then((active) => {
+        if (active) {
+            notificationEl && notificationEl.close()
+            toTaskDetail(active.task_key)
+        }
+    })
+}
+
+const upgradePromptConfirm = () => {
+    dialogUpgradePrompt.value = false
+    open('niucloud-admin')
 }
 
 const dialogClose = (done: () => {}) => {
-    if (active.value == 'upgrade' && upgradeTask.value && ['upgradeComplete', 'restoreComplete'].includes(upgradeTask.value.step) === false && !isBack.value) {
-        ElMessageBox.confirm(t('upgrade.showDialogCloseTips'), t('warning'), {
-            confirmButtonText: t('confirm'),
-            cancelButtonText: t('cancel'),
-            type: 'warning'
-        }).then(() => {
-            done()
-        })
-    } else {
-        done()
-    }
+    done()
 }
 
-window.addEventListener('beforeunload', function (event) {
-    if (showDialog.value && active.value == 'upgrade' && upgradeTask.value && ['upgradeComplete', 'restoreComplete'].includes(upgradeTask.value.step) === false && !isBack.value) {
-        event.preventDefault()
-        event.returnValue = ''
-        return t('upgrade.showDialogCloseTips')
-    }
-})
+const handleClose = (done: () => {}) => {
+    dialogUpgradePrompt.value = false
+    done()
+}
 
 watch(
     () => showDialog.value,
     () => {
-        if (!showDialog.value) {
-            clearUpgradeTaskFn()
-        }
+        if (!showDialog.value) resetLocal()
     }
 )
 
-const clearUpgradeTaskFn = () => {
-    active.value = 'upgrade'
+/**
+ * 关闭向导仅隐藏视图，任务在后台继续（可于统一任务页 / 通知中恢复），不做取消
+ */
+const resetLocal = () => {
     loading.value = false
-    upgradeTask.value = null
-    isBack.value = false
-    errorDialog.value = false
-    errorMsg.value = ''
-    showTerminal.value = false
-    upgradeLog = []
-    errorLog = []
-    numberOfSteps.value = 0
-    flashInterval && clearInterval(flashInterval)
-    retrySecondInterval && clearInterval(retrySecondInterval)
+    is_pass.value = false
     upgradeOption.value = {
         is_need_backup: true,
-        is_need_cloudbuild: true
-    }
-    step.value = 1
-    clearUpgradeTask().then(() => {
-    })
-}
-
-/**
- * 云编译队列不足操作
- * @param event
- */
-const cloudBuildError = (event: string) => {
-    cloudBuildErrorTipsShowDialog.value = false
-    switch (event) {
-        case 'local':
-            upgradeUserOperate(event).then(() => {
-                getUpgradeTaskFn()
-            })
-            break
-        case 'retry':
-            executeUpgradeFn()
-            retrySecondInterval && clearInterval(retrySecondInterval)
-            break
-        case 'rollback':
-            upgradeUserOperate(event).then(() => {
-                getUpgradeTaskFn()
-            })
-            break
-        case 'cloud_build_error_rollback':
-            upgradeUserOperate(event).then(() => {
-                handleBack()
-                executeUpgradeFn()
-            })
-            break
+        is_need_cloudbuild: false
     }
 }
 
-const timeSplit = (str: string) => {
-    const [date, time] = str.split(' ')
-    const [hours, minutes] = time.split(':')
-    return [date, `${hours}:${minutes}`]
-}
 
-const upgradeTipsConfirm = (isLock: boolean = false) => {
-    isLock && Storage.set({ key: 'upgradeTipsLock', data: isLock })
-    upgradeTipsShowDialog.value = false
-    !isLock && (showDialog.value = true)
-}
 const activeName = ref(0)
-const numberOfSteps = ref(0)
 
 const toBackupRecord = () => {
     const routeUrl = router.resolve({
-        path: '/tools/backup_records'
+        path: '/tools/task_records'
     })
     window.open(routeUrl.href, '_blank')
 }
@@ -887,7 +461,7 @@ defineExpose({
     min-height: 100px;
 }
 
-.el-timeline-item >>> .el-timeline-item__node--normal {
+.el-timeline-item :deep(.el-timeline-item__node--normal) {
     left: 117px;
     width: 18px;
     height: 18px;
@@ -899,7 +473,7 @@ defineExpose({
     /* 用于定位伪元素 */
 }
 
-.el-timeline-item >>> .el-timeline-item__node--normal::before {
+.el-timeline-item :deep(.el-timeline-item__node--normal::before) {
     content: "";
     position: absolute;
     top: 50%;
@@ -915,7 +489,7 @@ defineExpose({
     /* 居中显示 */
 }
 
-.el-timeline-item >>> .el-timeline-item__tail {
+.el-timeline-item :deep(.el-timeline-item__tail) {
     left: 125px;
     border-left-color: #dddddd;
     border-left-style: dashed;
@@ -923,7 +497,7 @@ defineExpose({
     height: calc(100% - 24px - 12px);
 }
 
-.time-dialog-wrap >>> .el-dialog__header {
+.time-dialog-wrap :deep(.el-dialog__header) {
     padding: 10px 20px;
     height: 25px;
     line-height: 25px;
@@ -932,33 +506,33 @@ defineExpose({
     border-bottom: solid 1px #e4e7ed;
 }
 
-.time-dialog-wrap >>> .el-card__body {
+.time-dialog-wrap :deep(.el-card__body) {
     padding: 8px;
 }
 
-.time-dialog-wrap >>> .el-card.is-always-shadow {
+.time-dialog-wrap :deep(.el-card.is-always-shadow) {
     box-shadow: none;
 }
 
-.time-dialog-wrap >>> .el-dialog__headerbtn .el-dialog__close {
+.time-dialog-wrap :deep(.el-dialog__headerbtn .el-dialog__close) {
     color: #666;
 }
 
-.time-dialog-wrap >>> .el-dialog__headerbtn:hover .el-dialog__close {
+.time-dialog-wrap :deep(.el-dialog__headerbtn:hover .el-dialog__close) {
     color: #666;
 }
 
-.time-dialog-wrap >>> .el-dialog__headerbtn {
+.time-dialog-wrap :deep(.el-dialog__headerbtn) {
     top: 14px;
 }
 
-.time-dialog-wrap >>> .el-collapse {
+.time-dialog-wrap :deep(.el-collapse) {
     margin-left: 119px;
     border: none;
     margin-top: -22px;
 }
 
-.time-dialog-wrap >>> .el-collapse-item__header {
+.time-dialog-wrap :deep(.el-collapse-item__header) {
     border: none;
     line-height: 25px;
     height: 25px;
@@ -966,16 +540,16 @@ defineExpose({
     z-index: 999;
 }
 
-.time-dialog-wrap >>> .el-collapse-item__wrap {
+.time-dialog-wrap :deep(.el-collapse-item__wrap) {
     border: none;
 }
 
-.time-dialog-wrap >>> .el-collapse-item__content {
+.time-dialog-wrap :deep(.el-collapse-item__content) {
     margin-top: 15px;
     padding-bottom: 0 !important;
 }
 
-.time-dialog-wrap >>> .el-timeline-item__node--01 {
+.time-dialog-wrap :deep(.el-timeline-item__node--01) {
     width: 18px !important;
     height: 18px !important;
     left: 117px !important;

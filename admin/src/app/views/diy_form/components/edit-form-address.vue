@@ -28,9 +28,7 @@
                                 <p>会自动将提交的个人信息做加密展示。</p>
                                 <p>适用于公开展示收集的数据且不暴露用户隐私。</p>
                             </template>
-                            <el-icon>
-                                <QuestionFilled color="#999999" />
-                            </el-icon>
+                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                         </el-tooltip>
                     </div>
                 </template>

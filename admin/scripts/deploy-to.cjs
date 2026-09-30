@@ -7,7 +7,7 @@
  */
 const fs = require('fs')
 const path = require('path')
-const { ROOT } = require('./addon-utils.cjs')
+const { ROOT, resolveAddonEntry } = require('./addon-utils.cjs')
 const { fixDir } = require('./admin-lang-import-utils.cjs')
 
 const src = path.join(ROOT, 'dist')
@@ -47,7 +47,8 @@ function listDropInKeys(addonsDir) {
     if (!fs.existsSync(addonsDir)) return []
     return fs.readdirSync(addonsDir).filter((name) => {
         if (name === 'index.json' || name.startsWith('.')) return false
-        return fs.existsSync(path.join(addonsDir, name, 'index.js'))
+        const entry = resolveAddonEntry(path.join(addonsDir, name)).replace(/^\.\//, '')
+        return fs.existsSync(path.join(addonsDir, name, entry))
     })
 }
 
@@ -103,8 +104,10 @@ function main() {
     for (const key of preserveKeys) {
         const from = path.join(backup, key)
         const to = path.join(mergedAddons, key)
-        if (!fs.existsSync(path.join(from, 'index.js'))) continue
-        if (fs.existsSync(path.join(to, 'index.js'))) continue
+        const fromEntry = resolveAddonEntry(from).replace(/^\.\//, '')
+        const toEntry = resolveAddonEntry(to).replace(/^\.\//, '')
+        if (!fs.existsSync(path.join(from, fromEntry))) continue
+        if (fs.existsSync(path.join(to, toEntry))) continue
         copyTree(from, to)
         console.log(`[deploy] preserved drop-in addon "${key}"`)
     }

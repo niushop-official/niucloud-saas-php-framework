@@ -1,13 +1,9 @@
 <template>
     <!--站点列表-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none table-search-wrap table-search-wrap--panel table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="codeTableData.searchParam" ref="searchFormRef">
                      <el-form-item :label="t('addonName')" prop="addon_name">
                         <el-select v-model="codeTableData.searchParam.addon_name" placeholder="全部" filterable remote clearable :remote-method="loadGenerateTableList">
@@ -26,8 +22,10 @@
                     </el-form-item>
                 </el-form>
             </el-card>
-            <div>
-                <el-table :data="codeTableData.data" size="large" v-loading="codeTableData.loading">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false" />
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="codeTableData.data" size="large" v-loading="codeTableData.loading">
 
                     <template #empty>
                         <span>{{ !codeTableData.loading ? t('emptyData') : '' }}</span>
@@ -49,24 +47,23 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column :label="t('operation')" fixed="right" align="right" width="330">
+                    <el-table-column :label="t('operation')" fixed="right" align="right" width="200">
                         <template #default="{ row }">
-                            <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                            <el-button type="primary" link @click="generatePreviewFn(row.id)">{{ t('preview') }}</el-button>
-                            <el-button type="primary" link @click="generatorCheckFileFn(row.id)">{{ t('saveAndSync') }}</el-button>
-                            <el-button type="primary" link @click="generateCreateFn(row.id, 2)">{{ t('download') }}</el-button>
-                            <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
+                            <table-actions :actions="rowActions(row)" />
                         </template>
                     </el-table-column>
 
                 </el-table>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="codeTableData.page" v-model:page-size="codeTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="codeTableData.total"
-                        @size-change="loadGenerateTableList()" @current-change="loadGenerateTableList" />
                 </div>
+                <table-pagination
+                    v-model:current-page="codeTableData.page"
+                    v-model:page-size="codeTableData.limit"
+                    :total="codeTableData.total"
+                    @size-change="loadGenerateTableList()"
+                    @current-change="loadGenerateTableList"
+                />
             </div>
-        </el-card>
+        </div>
         
         <el-dialog v-model="dialogVisible" class="dialog-visible" width="70%" title="代码预览">
             <div class="flex h-[50vh]" v-loading="codeLoading">
@@ -112,12 +109,30 @@ import { img, setTablePageStorage } from '@/utils/common'
 import { t } from '@/lang'
 import { getGenerateTableList, deleteGenerateTable, generateCreate, generatePreview, generatorCheckFile, getAddonDevelop } from '@/app/api/tools'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
+import TableActions from '@/components/table-actions/index.vue'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import { useClipboard } from '@vueuse/core'
 
 const router = useRouter()
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
+
+/**
+ * 表格行内操作：超过 2 个自动收进「更多」
+ */
+const rowActions = (row: any) => [
+    { label: t('edit'), onClick: () => editEvent(row) },
+    { label: t('preview'), onClick: () => generatePreviewFn(row.id) },
+    { label: t('saveAndSync'), onClick: () => generatorCheckFileFn(row.id) },
+    { label: t('download'), onClick: () => generateCreateFn(row.id, 2) },
+    { label: t('delete'), type: 'danger', onClick: () => deleteEvent(row.id) }
+]
 
 const codeTableData = reactive({
     page: 1,

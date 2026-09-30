@@ -1,5 +1,6 @@
 <template>
-    <div class="flex border-t border-b main-wrap border-color w-full attachment-wrap" :class="scene == 'select' ? 'h-[546px]' : 'h-full'">
+    <div class="flex border-t border-b main-wrap border-color w-full attachment-wrap"
+        :class="[scene == 'select' ? 'h-[546px]' : 'h-full', scene == 'attachment' ? 'attachment-wrap--manage' : '']">
 
         <!-- 分组 -->
         <div class="group-wrap w-[180px] p-[15px] h-full border-r border-color flex flex-col">
@@ -18,7 +19,6 @@
                             <!-- 图片操作 -->
                             <el-dropdown :hide-on-click="false" v-if="scene == 'attachment'">
                                 <icon name="element MoreFilled" class="cursor-pointer ml-[10px]" size="14px" />
-                                {{ item.name }}
                                 <template #dropdown>
                                     <el-dropdown-menu>
                                         <el-dropdown-item class="text-center">
@@ -38,21 +38,21 @@
             </div>
             <!-- 添加分组 -->
             <popover-input :placeholder="t('upload.attachmentCategoryPlaceholder')" @confirm="addAttachmentCategory" v-model="attachmentCategoryName" v-if="prop.type != 'icon'">
-                <el-button>{{ t('upload.addAttachmentCategory') }}</el-button>
+                <el-button class="add-group-btn" :icon="Plus">{{ t('upload.addAttachmentCategory') }}</el-button>
             </popover-input>
         </div>
 
         <!-- 素材 -->
         <div class="attachment-list-wrap flex flex-col p-[15px] flex-1 overflow-hidden">
-            <el-row :gutter="15" class="h-[32px]">
+            <el-row :gutter="15" class="toolbar-row">
                 <el-col :span="10">
-                    <div class="flex">
+                    <div class="flex items-center">
                         <el-upload v-bind="upload" ref="uploadRef" v-if="prop.type != 'icon'">
-                            <el-button type="primary">{{ t('upload.upload' + type) }}</el-button>
+                            <el-button type="primary" :icon="Upload">{{ t('upload.upload' + type) }}</el-button>
                         </el-upload>
                         <div v-if="scene == 'attachment' && prop.type != 'icon'">
-                            <el-button v-if="operate === false" class="ml-[10px]" type="primary" @click="operate = true">{{ t('edit') }}</el-button>
-                            <el-button v-else class="ml-[10px]" type="primary" @click="operate = false">{{ t('complete') }}</el-button>
+                            <el-button v-if="operate === false" class="ml-[10px]" :icon="Edit" @click="operate = true">{{ t('edit') }}</el-button>
+                            <el-button v-else class="ml-[10px]" :icon="Check" @click="operate = false">{{ t('complete') }}</el-button>
                         </div>
                     </div>
                 </el-col>
@@ -63,9 +63,9 @@
             <div class="flex-1 mb-[15px] mt-[10px] h-0" v-loading="attachment.loading">
                 <el-scrollbar>
                     <!-- 选择弹出框 -->
-                    <div class="flex flex-wrap" v-if="attachment.data.length && (operate === true || scene != 'attachment')">
-                        <div class="attachment-item relative mr-[10px] mt-[6px]" :class="scene == 'select' ? 'w-[100px]' : 'w-[120px]'" v-for="(item, index) in attachment.data" :key="index">
-                            <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center" :class="scene == 'select' ? 'h-[100px]' : 'h-[120px]'" @click="selectFile(item)">
+                    <div class="flex flex-wrap attachment-grid" v-if="attachment.data.length && (operate === true || scene != 'attachment')">
+                        <div class="attachment-item relative mr-[10px] mt-[6px]" :class="[scene == 'select' ? 'w-[100px]' : 'w-[120px]', { 'is-selected': selectedFile[item.att_id] }]" v-for="(item, index) in attachment.data" :key="index">
+                            <div class="attachment-wrap attachment-thumb w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center" :class="scene == 'select' ? 'h-[100px]' : 'h-[120px]'" @click="selectFile(item)">
 
                                 <el-image :src="img(item.thumb)" fit="contain" v-if="type == 'image'"/>
                                 <video :src="img(item.thumb)" v-else-if="type == 'video'"/>
@@ -83,7 +83,7 @@
                             <div class="flex items-center">
                                 <el-tooltip placement="top">
                                     <template #content>{{ item.real_name }}</template>
-                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center h-[20px] leading-[20px]">{{ item.real_name }}</div>
+                                    <div class="attachment-file-name truncate my-[10px] cursor-pointer text-base flex-1 text-center h-[20px] leading-[20px]">{{ item.real_name }}</div>
                                 </el-tooltip>
                                 <!-- 图片操作 -->
                                 <el-dropdown :hide-on-click="false" v-if="scene == 'attachment'" class="attachment-action hidden ">
@@ -110,9 +110,9 @@
                     </div>
 
                     <!-- 素材管理 -->
-                    <div class="flex flex-wrap" v-else-if="attachment.data.length && operate === false">
+                    <div class="flex flex-wrap attachment-grid" v-else-if="attachment.data.length && operate === false">
                         <div class="attachment-item relative mr-[10px] mt-[6px] w-[120px]" v-for="(item, index) in attachment.data" :key="index">
-                            <div class="attachment-wrap w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center h-[120px]">
+                            <div class="attachment-wrap attachment-thumb w-full rounded cursor-pointer overflow-hidden relative flex items-center justify-center h-[120px]">
                                 <el-image :src="img(item.thumb)" fit="contain" v-if="type == 'image'" :preview-src-list="item.image_list"/>
                                 <video :src="img(item.thumb)" v-else-if="type == 'video'" @click="previewVideo(index)"></video>
                                 <icon :name="item.url" size="24px" v-else-if="type == 'icon'"></icon>
@@ -120,7 +120,7 @@
                             <div class="flex items-center">
                                 <el-tooltip placement="top">
                                     <template #content>{{ item.real_name }}</template>
-                                    <div class="truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{ item.real_name }}</div>
+                                    <div class="attachment-file-name truncate my-[10px] cursor-pointer text-base flex-1 text-center">{{ item.real_name }}</div>
                                 </el-tooltip>
                             </div>
                             <icon name="element CircleCloseFilled" v-if="type != 'icon'" @click="deleteAttachmentEvent(index)" class="top-[-6px] right-[-6px] absolute z-[3] del-icon hidden cursor-pointer opacity-[0.8]" />
@@ -134,23 +134,19 @@
                     </div>
                 </el-scrollbar>
             </div>
-            <el-row :gutter="20">
-                <el-col :span="8" v-if="scene == 'attachment' && operate === true">
-                    <div class="flex items-center">
-                        <el-checkbox v-model="selectAll" :label="t('selectAll')" size="large" />
-                        <el-button class="ml-[15px]" :disabled="batchOperateDisabled" @click="deleteAttachmentEvent()">{{ t('delete') }}</el-button>
-                        <el-button :disabled="batchOperateDisabled" @click="moveAttachmentEvent()">{{ t('upload.move') }}</el-button>
-                    </div>
-                </el-col>
-                <el-col :span="24">
-                    <div class="flex h-full justify-end items-center">
-                        <el-pagination v-model:current-page="attachment.page" :small="true"
-                            v-model:page-size="attachment.limit" :page-sizes="[10, 20, 30, 40, 60]"
-                            layout="total, sizes, prev, pager, next, jumper" :total="attachment.total"
-                            @size-change="getAttachmentList()" @current-change="getAttachmentList" />
-                    </div>
-                </el-col>
-            </el-row>
+            <div class="attachment-footer">
+                <div class="attachment-footer__left" v-if="scene == 'attachment' && operate === true">
+                    <el-checkbox v-model="selectAll" :label="t('selectAll')" size="large" />
+                    <el-button :disabled="batchOperateDisabled" @click="deleteAttachmentEvent()">{{ t('delete') }}</el-button>
+                    <el-button :disabled="batchOperateDisabled" @click="moveAttachmentEvent()">{{ t('upload.move') }}</el-button>
+                </div>
+                <div class="attachment-footer__right">
+                    <el-pagination v-model:current-page="attachment.page" :small="true"
+                        v-model:page-size="attachment.limit" :page-sizes="[10, 20, 30, 40, 60]"
+                        layout="total, sizes, prev, pager, next, jumper" :total="attachment.total"
+                        @size-change="getAttachmentList()" @current-change="getAttachmentList" />
+                </div>
+            </div>
         </div>
 
         <template v-if="scene == 'attachment'">
@@ -198,6 +194,7 @@ import {
 } from '@/app/api/sys'
 import { debounce, img, getToken } from '@/utils/common'
 import { ElMessage, UploadFile, UploadFiles, ElMessageBox, MessageParams } from 'element-plus'
+import { Plus, Upload, Edit, Check } from '@element-plus/icons-vue'
 import storage from '@/utils/storage'
 import envConfig from '@/utils/config'
 
@@ -443,7 +440,6 @@ const deleteAttachmentCategory = (index: number) => {
 }
 
 const uploadRef = ref<Record<string, any> | null>(null)
-const time = ref<any>(null)
 // 上传文件
 const upload = computed(() => {
     const headers: Record<string, any> = {}
@@ -464,18 +460,14 @@ const upload = computed(() => {
                 getAttachmentList()
                 uploadRef.value?.handleRemove(uploadFile)
             } else {
-                if (time.value == null) {
-                    time.value = setTimeout(() => {
-                        uploadFile.status = 'fail'
-                        showElMessage({ message: response.msg, type: 'error' })
-                        clearTimeout(time.value)
-                        time.value = null
-                    }, 500)
-                } else {
-                    clearTimeout(time.value)
-                    time.value = null
-                }
+                // 业务失败也要清掉上传列表项，否则失败卡片会一直挂在按钮下方
+                showElMessage({ message: response.msg || t('upload.fail'), type: 'error' })
+                uploadRef.value?.handleRemove(uploadFile)
             }
+        },
+        onError: (_error: Error, uploadFile: UploadFile) => {
+            showElMessage({ message: t('upload.fail'), type: 'error' })
+            uploadRef.value?.handleRemove(uploadFile)
         }
     }
 })
@@ -683,6 +675,26 @@ defineExpose({
         background: var(--el-border-color-extra-light);
     }
 }
+
+/* 底部：批量操作与分页 */
+.attachment-footer {
+    display: flex;
+    flex: none;
+    align-items: center;
+
+    &__left {
+        display: flex;
+        gap: var(--sys-space-3);
+        align-items: center;
+    }
+
+    &__right {
+        display: flex;
+        margin-left: auto;
+        align-items: center;
+    }
+}
+
 .file-box-active {
     &:after {
         content: '';
@@ -697,6 +709,194 @@ defineExpose({
     span{
         font-style: normal;
     }
+}
+
+/**
+ * ==================== 素材管理（scene=attachment） ====================
+ *
+ * 左侧分组卡片 + 右侧素材卡片：右侧含工具栏、素材网格以及底部的批量操作与分页。
+ * 圆角、边框、间距、字号统一使用全局 Token，选择弹窗（scene=select）不受影响。
+ */
+.attachment-wrap--manage {
+    gap: var(--sys-space-4);
+    background-color: transparent;
+    border: none !important;
+
+    /* 左侧分组：白底模块，用边框代替投影 */
+    .group-wrap {
+        width: 216px;
+        gap: var(--sys-space-3);
+        padding: var(--sys-space-3);
+        background-color: var(--cmp-card-bg);
+        border: var(--cmp-module-card-border-width) solid var(--cmp-module-card-border-color);
+        border-radius: var(--cmp-module-card-radius);
+        box-shadow: none;
+
+        :deep(.el-input__wrapper) {
+            background-color: var(--sys-color-bg-surface);
+            border-radius: var(--sys-radius-lg) !important;
+            box-shadow: 0 0 0 1px var(--sys-color-border-default) inset;
+        }
+    }
+
+    .group-list {
+        margin: var(--sys-space-3) 0;
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            height: 34px;
+            margin-top: var(--sys-space-1);
+            padding: 0 var(--sys-space-3);
+            border-radius: var(--sys-radius-md);
+            font-size: var(--sys-font-size-sm);
+            color: var(--sys-color-text-regular);
+
+            > div {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+
+            &.active {
+                background-color: var(--sys-color-primary-soft);
+                color: var(--sys-color-primary);
+                font-weight: var(--sys-font-weight-medium);
+            }
+
+            &:hover {
+                background-color: var(--sys-color-fill-light);
+            }
+
+            &.active:hover {
+                background-color: var(--sys-color-primary-soft);
+            }
+        }
+    }
+
+    .group-wrap:has(.add-group-btn) .group-list {
+        padding-bottom: var(--sys-space-3);
+        border-bottom: 1px solid var(--sys-color-border-lighter);
+    }
+
+    /* 添加分组 */
+    .add-group-btn {
+        width: 100%;
+        height: 36px;
+        color: var(--sys-color-primary);
+        font-weight: var(--sys-font-weight-medium);
+        background-color: var(--sys-color-bg-page);
+        border-color: transparent;
+        border-radius: var(--sys-radius-lg) !important;
+        box-shadow: none;
+
+        &:hover,
+        &:focus {
+            color: var(--sys-color-primary);
+            background-color: var(--sys-color-fill-light);
+            border-color: transparent;
+        }
+    }
+
+    /* 右侧素材区：白底模块，用边框代替投影 */
+    .attachment-list-wrap {
+        padding: 0;
+        overflow: hidden;
+        background-color: var(--cmp-card-bg);
+        border: var(--cmp-module-card-border-width) solid var(--cmp-module-card-border-color);
+        border-radius: var(--cmp-module-card-radius);
+        box-shadow: none;
+
+        .toolbar-row {
+            align-items: center;
+            height: 64px;
+            margin-right: 0 !important;
+            margin-left: 0 !important;
+            padding: 0 var(--sys-space-5);
+            border-bottom: 1px solid var(--sys-color-border-lighter);
+
+            :deep(.el-input__wrapper) {
+                background-color: var(--sys-color-bg-surface);
+                border-radius: var(--sys-radius-lg) !important;
+                box-shadow: 0 0 0 1px var(--sys-color-border-default) inset;
+            }
+        }
+
+        > .flex-1 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: var(--sys-space-3) var(--sys-space-4) var(--sys-space-4);
+        }
+
+        .attachment-footer {
+            min-height: 60px;
+            padding: 0 var(--sys-space-6);
+            border-top: 1px solid var(--sys-color-border-lighter);
+        }
+
+        /* 素材网格：固定卡片宽度，按容器换行 */
+        .attachment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 157px);
+            gap: var(--sys-space-3);
+            align-content: start;
+            padding-top: 5px;
+        }
+
+        .attachment-item {
+            width: 100%;
+            margin: 0;
+            padding: var(--sys-space-2);
+            background-color: var(--cmp-card-bg);
+            border: var(--cmp-module-card-border-width) solid var(--cmp-module-card-border-color);
+            border-radius: var(--cmp-module-card-radius);
+            box-shadow: none;
+            transition: border-color .15s ease;
+
+            &:hover {
+                border-color: var(--cmp-module-card-hover-border-color);
+                box-shadow: none;
+                transform: none;
+            }
+
+            &.is-selected,
+            &.is-selected:hover {
+                border-color: var(--sys-color-primary);
+                box-shadow: none;
+            }
+        }
+
+        .attachment-thumb {
+            height: 76px;
+            background-color: var(--sys-color-fill-lighter);
+            border-radius: var(--sys-radius-md);
+
+            :deep(.el-image) {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            video {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        /* 素材名称 */
+        .attachment-file-name {
+            height: 18px;
+            margin-top: var(--sys-space-2);
+            margin-bottom: 0;
+            overflow: hidden;
+            font-size: var(--sys-font-size-xs);
+            line-height: 18px;
+            color: var(--sys-color-text-regular);
+            text-align: left;
+            text-overflow: ellipsis;
+        }
+    }
+
 }
 </style>
 <style lang="scss">

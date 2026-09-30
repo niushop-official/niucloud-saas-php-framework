@@ -37,7 +37,7 @@ class Ueditor extends BaseAdminController
             // 插入的图片浮动方式，默认值：none
             "imageInsertAlign" => "none",
             // 图片访问路径前缀，默认值：空
-            "imageUrlPrefix" => url('/', domain: true)->buildUrl(),
+            "imageUrlPrefix" => url('/', domain: true)->build(),
             // 执行上传涂鸦的action名称，默认值：uploadscrawl
             "scrawlActionName" => "crawl",
             // 提交的图片表单名称，默认值：upfile
@@ -71,7 +71,7 @@ class Ueditor extends BaseAdminController
             // 提交的视频表单名称，默认值：upfile
             "videoFieldName" => "file",
             // 视频访问路径前缀
-            "videoUrlPrefix" => url('/', domain: true)->buildUrl(),
+            "videoUrlPrefix" => url('/', domain: true)->build(),
             // 上传大小限制，单位B，默认值：102400000
             "videoMaxSize" => 104857600,
             // 上传视频格式显示
@@ -107,7 +107,7 @@ class Ueditor extends BaseAdminController
             // 公式配置
             "formulaConfig" => [
                 // 公式渲染的路径
-                "imageUrlTemplate" => url('/', domain: true)->buildUrl() . "{}"
+                "imageUrlTemplate" => url('/', domain: true)->build() . "{}"
             ]
         ], 'json', 200);
     }

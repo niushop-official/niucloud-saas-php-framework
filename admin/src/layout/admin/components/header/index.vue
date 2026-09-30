@@ -1,33 +1,18 @@
 <template>
-    <el-container class="h-[64px] w-full layout-admin flex items-center justify-between pr-[15px] border-b-[1px] border-solid border-[var(--el-color-info-light-8)]" >
+    <el-container class="layout-header h-full w-full flex items-center justify-between" >
         <!-- :class="['h-full px-[10px]',{'layout-header border-b border-color': !dark}]"  -->
-        <div class="flex items-center">
-            <!-- <div class="navbar-item flex items-center h-full cursor-pointer" @click="toggleMenuCollapse">
-                <icon name="element Expand" v-if="systemStore.menuIsCollapse" />
-                <icon name="element Fold" v-else />
-            </div> -->
-            <div class="flex justify-center items-center flex-shrink-0" :class="{'w-[185px]': systemStore.menuIsCollapse,'w-[78px]': !systemStore.menuIsCollapse}">
-                <div class="w-full h-[40px] overflow-hidden">
-                    <el-image style="width: 100%; height: 100%" :src="img(logoUrl)" fit="contain" v-if="!systemStore.menuIsCollapse">
-                        <template #error>
-                            <div class="flex justify-center items-center w-full h-full"><img class="max-w-[70px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
-                        </template>
-                    </el-image>
-                    <el-image style="width: 100%; height: 100%" :src="img(longLogoUrl)" fit="contain" v-else>
-                        <template #error>
-                            <div class="flex justify-center items-center w-full h-full"><img class="max-w-[180px]" src="@/app/assets/images/logo.default.png" alt=""  object-fit="contain"></div>
-                        </template>
-                    </el-image>
-                </div>
+        <div class="left-panel flex min-w-0 items-center text-[14px] leading-[1]">
+            <div class="header-logo" :class="{ 'is-expanded': systemStore.menuIsCollapse }">
+                <el-image class="header-logo__image" :src="img(systemStore.menuIsCollapse ? longLogoUrl : logoUrl)" fit="contain">
+                    <template #error>
+                        <img src="@/app/assets/images/logo.default.png" alt="" />
+                    </template>
+                </el-image>
             </div>
-            <div class="left-panel flex items-center text-[14px] leading-[1]">
+            <div class="left-panel__nav flex items-center">
                 <div class="navbar-item flex items-center h-full cursor-pointer" @click="toggleMenuCollapse">
                     <icon name="element Fold" v-if="systemStore.menuIsCollapse" />
                     <icon name="element Expand" v-else />
-                </div>
-                <!-- 刷新当前页 -->
-                <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
-                    <icon name="element Refresh" />
                 </div>
                 <!-- 面包屑导航 -->
                 <div class="flex items-center h-full pl-[10px] hidden-xs-only">
@@ -43,19 +28,29 @@
 
         <div>
             <div class="right-panel h-full flex items-center justify-end">
-                <div class="border-primary border-[1px] h-[30px] px-[15px] flex items-center rounded-[6px] mr-[10px] cursor-pointer" @click="toHome()">
+                <div class="client-entry px-[12px] mr-[8px] flex items-center cursor-pointer" @click="toHome()">
                     <span class="iconfont iconguanliduan !text-primary mr-1"></span>
                     <span class="text-[14px] text-primary">客户端</span>
+                </div>
+                <!-- 菜单搜索 -->
+                <div class="header-search flex items-center h-full">
+                    <menu-search />
+                </div>
+                <span class="header-divider"></span>
+                <!-- 任务指示器：有进行中的任务时图标转动，悬浮可查看进度并进入详情 -->
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="openTaskIndicator">
+                    <task-indicator ref="taskIndicatorRef" />
                 </div>
                 <div class="navbar-item flex items-center h-full cursor-pointer">
                     <message />
                 </div>
-                <div class="navbar-item flex items-center h-full cursor-pointer">
-                    <layout-setting />
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="openLayoutSetting">
+                    <layout-setting ref="layoutSettingRef" :show-layout-style="true" />
                 </div>
+                <span class="header-divider"></span>
                 <!-- 用户信息 -->
-                <div class="navbar-item flex items-center h-full cursor-pointer">
-                    <user-info />
+                <div class="navbar-item navbar-item--user flex items-center h-full cursor-pointer" @click="openUserInfo">
+                    <user-info ref="userInfoRef" />
                 </div>
             </div>
         </div>
@@ -97,21 +92,27 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import useUserStore from '@/stores/modules/user'
-import useAppStore from '@/stores/modules/app'
 import useSystemStore from '@/stores/modules/system'
 import { useRoute,useRouter } from 'vue-router'
 import { img, getToken } from '@/utils/common'
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 import userInfo from './user-info.vue'
-import layoutSetting from './layout-setting.vue'
-import message from './message.vue'
+import layoutSetting from '@/layout/components/layout-setting/index.vue'
+import message from '@/layout/components/message/index.vue'
+import menuSearch from '@/layout/components/menu-search/index.vue'
+import taskIndicator from '@/layout/components/task-indicator/index.vue'
 
 const showDialog = ref<boolean>(false)
+const taskIndicatorRef = ref()
+const layoutSettingRef = ref()
+const userInfoRef = ref()
+const openTaskIndicator = () => taskIndicatorRef.value?.open()
+const openLayoutSetting = () => layoutSettingRef.value?.open()
+const openUserInfo = () => userInfoRef.value?.open()
 const systemStore = useSystemStore()
 const route = useRoute()
 const router = useRouter()
-const appStore = useAppStore()
 const userStore = useUserStore()
 const logoUrl = computed(() => {
     return userStore.siteInfo.icon ? userStore.siteInfo.icon : systemStore.website.icon
@@ -142,12 +143,6 @@ const detectionLoginFn = () => {
 }
 // 检测登录 end
 
-// 刷新路由
-const refreshRouter = () => {
-    if (!appStore.routeRefreshTag) return
-    appStore.refreshRouterView()
-}
-
 // 面包屑导航
 const breadcrumb = computed(() => {
     const matched = route.matched.filter(item => { return item.meta.title })
@@ -173,13 +168,103 @@ const toHome = () => {
 </script>
 
 <style lang="scss" scoped>
-.layout-header{
+.layout-header {
     position: relative;
     z-index: 5;
-    border-bottom: 1px solid #e8e9eb;
+    height: var(--cmp-header-height);
+    padding: 0 var(--cmp-admin-header-padding-inline);
+    color: var(--cmp-header-text);
+    background-color: var(--cmp-header-bg);
+    border-bottom: 1px solid var(--cmp-header-border);
 }
+
+.header-logo {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: calc(var(--cmp-admin-primary-width) - var(--cmp-admin-header-padding-inline));
+    height: 100%;
+    padding: 5px 8px;
+    overflow: hidden;
+    transition: width 180ms ease;
+
+    &.is-expanded {
+        width: calc(var(--cmp-admin-primary-expanded-width) - var(--cmp-admin-header-padding-inline));
+    }
+}
+
+.header-logo__image,
+.header-logo__image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.client-entry {
+    box-sizing: border-box;
+    height: var(--cmp-admin-control-height);
+    border-radius: var(--cmp-admin-control-radius);
+    background-color: var(--cmp-admin-control-bg);
+    transition: background-color 160ms ease;
+
+    &:hover {
+        background-color: var(--cmp-admin-control-hover-bg);
+    }
+}
+
+:deep(.header-search .menu-search-trigger) {
+    --el-input-border-radius: var(--cmp-admin-header-search-radius);
+    --el-input-height: var(--cmp-admin-control-height);
+
+    flex: 0 0 auto;
+    width: var(--cmp-admin-header-search-width);
+    transition: none;
+
+    &:focus-within,
+    &.is-active {
+        width: var(--cmp-admin-header-search-width);
+    }
+
+    .el-input__wrapper,
+    .el-input__wrapper:hover,
+    .el-input__wrapper.is-focus {
+        padding: 1px var(--cmp-admin-control-padding-inline);
+        background-color: var(--cmp-admin-control-bg);
+        border-radius: var(--cmp-admin-header-search-radius) !important;
+        box-shadow: none !important;
+    }
+}
+
+.header-divider {
+    align-self: center;
+    flex: 0 0 1px;
+    width: 1px;
+    height: 16px;
+    margin: 0 8px;
+    background-color: var(--cmp-header-border);
+}
+
 .navbar-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: var(--cmp-admin-action-size);
+    height: var(--cmp-admin-action-size);
     padding: 0 8px;
+    border-radius: var(--cmp-admin-action-radius);
+    transition: background-color 160ms ease;
+
+    &:hover {
+        background-color: var(--sys-color-fill-light);
+    }
+}
+
+.navbar-item.navbar-item--user:hover {
+    background-color: transparent;
 }
 .index-item {
 	border: 1px solid;

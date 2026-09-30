@@ -3,6 +3,7 @@
   <active-cube wx:if="{{component.q==='ActiveCube'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />
   <carousel-search wx:if="{{component.q==='CarouselSearch'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />
   <float-btn wx:if="{{component.q==='FloatBtn'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />
+  <float-btn-customer wx:if="{{component.q==='FloatBtnCustomer'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />
   <form-address wx:if="{{component.q==='FormAddress'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />
   <form-checkbox wx:if="{{component.q==='FormCheckbox'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />
   <form-date wx:if="{{component.q==='FormDate'}}" class="r-i-f data-v-f84d20b5" u-r="{{component.f}}" bindupdateComponentIsShow="{{component.g}}" u-i="{{component.h}}" bind:__l="__l" u-p="{{component.i}}" />

@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -100,6 +100,10 @@ trait TimeFieldQuery
     public function whereMonth(string $field, string $month = 'this month', int $step = 1, string $logic = 'AND')
     {
         if (in_array($month, ['this month', 'last month'])) {
+            if($month === 'last month') {
+                $month = $this->timeRule['last month'][0];
+            }
+
             $month = date('Y-m', strtotime($month));
         }
 

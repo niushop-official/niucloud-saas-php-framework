@@ -91,4 +91,22 @@ watch(() => systemStore.site, () => {
 // 		return title ? `${title} - ${siteTitle}` : siteTitle
 // 	}
 // })
+
+// ========== 客服脚本引入（客户端执行，SSR安全）==========
+useHead({
+  script: [
+    {
+      src: 'http://niucloud-admin-saas/addon/shop_customer/widget.js',
+      defer: true, // 延迟加载，等dom解析完再执行
+      onload: () => {
+        // js加载完成后初始化客服
+        window.shopCustomerVisitor = window.NiuShopCustomer.init({
+          "wapUrl": "http://localhost:5174/wap/",
+          "entryImg": 'http://niucloud-admin-saas/addon/shop_customer/entry-default.png',
+          "siteId": "432"
+        });
+      }
+    }
+  ]
+})
 </script>

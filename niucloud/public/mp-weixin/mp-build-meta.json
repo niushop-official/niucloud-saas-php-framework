@@ -1,9 +1,9 @@
 {
   "kind": "framework",
-  "buildId": "4fc3c6402fd4",
+  "buildId": "006819ce5c7e",
   "commonManifest": {
-    "common/vendor.js": "f849fb9582ebc4f60441756565d3bef44c1369e4e537cb84208a50e458812acd"
+    "common/vendor.js": "5faf745a117a57705bfaa47885a9ed6204f58f388745046c8a098ff3105cfeb0"
   },
-  "time": "2026-08-20T08:23:38.240Z",
-  "gitCommit": "59c9c744bb9b57862f921c16f4a02afb00aaf55a"
+  "time": "2026-09-30T06:46:57.828Z",
+  "gitCommit": "93600e82b65542514accc1e7188f8e52580bd9ab"
 }

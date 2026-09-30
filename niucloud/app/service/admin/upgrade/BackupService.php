@@ -30,10 +30,10 @@ class BackupService extends UpgradeService
         dir_mkdir($backup_dir);
 
         // 备份admin
-        dir_copy($this->root_path . 'admin', $backup_dir . 'admin', exclude_dirs: [ '.vscode', 'node_modules', 'dist' ]);
+        dir_copy($this->root_path . 'admin', $backup_dir . 'admin', exclude_dirs: [ '.build', '.vscode', 'node_modules', 'dist' ]);
 
         // 备份uni-app
-        dir_copy($this->root_path . 'uni-app', $backup_dir . 'uni-app', exclude_dirs: [ 'node_modules', 'dist' ]);
+        dir_copy($this->root_path . 'uni-app', $backup_dir . 'uni-app', exclude_dirs: [ '.build', 'node_modules', 'dist' ]);
 
         // 备份web
         dir_copy($this->root_path . 'web', $backup_dir . 'web', exclude_dirs: [ 'node_modules', '.nuxt', '.output', 'dist' ]);

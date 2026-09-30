@@ -7,6 +7,9 @@
   "completeTime": "升级时间",
   "status": "状态",
   "failReason": "失败原因",
+  "detail": "详情",
   "batchDelete": "批量删除",
-  "deleteTips": "确定要删除吗？"
+  "deleteTips": "确定要删除吗？",
+  "collapse": "收起",
+  "expandAll": "展开全部"
 }

@@ -30,6 +30,8 @@ return [
     'imageH'   => 36,
     // 验证码图片宽度
     'imageW'   => 100,
+    // 是否以 API 模式生成：true 时 create() 返回 ['code'=>..,'img'=>..] 数组，而非图片响应
+    'api'      => true,
 
     // 添加额外的验证码设置
     // verify => [

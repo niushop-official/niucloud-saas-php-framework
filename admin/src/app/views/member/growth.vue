@@ -1,13 +1,13 @@
 <template>
     <!--会员成长值-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
 
-            <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none mb-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="memberAccountLogTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('fromType')" prop="from_type">
                         <el-select v-model="memberAccountLogTableData.searchParam.from_type" clearable :placeholder="t('fromTypePlaceholder')" class="input-width">
@@ -27,8 +27,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[16px]">
-                <el-table :data="memberAccountLogTableData.data" size="large" v-loading="memberAccountLogTableData.loading">
+            <div class="mt-[16px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="memberAccountLogTableData.data" size="large" v-loading="memberAccountLogTableData.loading">
 
                     <template #empty>
                         <span>{{ !memberAccountLogTableData.loading ? t('emptyData') : '' }}</span>
@@ -69,6 +70,7 @@
                     <el-table-column prop="memo" :label="t('memo')" min-width="300" align="left" :show-overflow-tooltip="true"/>
                     <el-table-column prop="create_time" :show-overflow-tooltip="true" :label="t('createTime')" min-width="150" />
                 </el-table>
+                </div>
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="memberAccountLogTableData.page"
                         v-model:page-size="memberAccountLogTableData.limit" layout="total, sizes, prev, pager, next, jumper"
@@ -89,9 +91,13 @@ import { FormInstance } from 'element-plus'
 import { img } from '@/utils/common'
 import pointInfo from '@/app/views/member/components/member-point-info.vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const member_id: number = parseInt(route.query.id || 0)
 

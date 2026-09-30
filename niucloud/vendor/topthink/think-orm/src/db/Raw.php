@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -45,10 +45,15 @@ class Raw
     /**
      * 获取参数绑定.
      *
-     * @return string
+     * @return array
      */
     public function getBind(): array
     {
         return $this->bind;
+    }
+
+    public function __toString()
+    {
+        return $this->value;
     }
 }

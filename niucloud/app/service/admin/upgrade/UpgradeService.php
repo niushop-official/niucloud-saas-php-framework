@@ -13,11 +13,11 @@ namespace app\service\admin\upgrade;
 
 use app\dict\addon\AddonDict;
 use app\dict\sys\AppTypeDict;
-use app\dict\sys\BackupDict;
+use app\dict\sys\TaskDict;
 use app\dict\sys\UpgradeDict;
 use app\model\addon\Addon;
 use app\model\site\Site;
-use app\model\sys\SysBackupRecords;
+use app\model\sys\SysTask;
 use app\service\admin\install\InstallSystemService;
 use app\service\admin\sys\ConfigService;
 use app\service\core\addon\CoreAddonCloudService;
@@ -34,6 +34,7 @@ use core\base\BaseAdminService;
 use core\exception\CloudBuildException;
 use core\exception\CommonException;
 use core\util\DbBackup;
+use core\util\StepLogger;
 use core\util\niucloud\BaseNiucloudClient;
 use core\util\niucloud\CloudService;
 use think\facade\Cache;
@@ -59,6 +60,25 @@ class UpgradeService extends BaseAdminService
 
     protected $addon = '';
 
+    // 升级相关接口（method 仅记录路由形式：[http方法]路由；操作名称记录在 name 字段）
+    private const API_UPGRADE         = '[post]niucloud/upgrade';
+    private const API_UPGRADE_EXECUTE = '[post]niucloud/upgrade/execute';
+    private const API_UPGRADE_CLEAR   = '[post]niucloud/upgrade/clear';
+
+    /**
+     * 升级包下载分片大小（字节）
+     * 需与 CoreAddonCloudService::downloadUpgradeFile() 的 $chunk_size 保持一致，
+     * 用于把「已完成分片数」换算成已下载字节数。
+     */
+    public const DOWNLOAD_CHUNK_SIZE = 1024 * 1024;
+
+    // 接口路由 -> 操作名称（写入 name 字段）
+    private const UPGRADE_API_NAME = [
+        self::API_UPGRADE         => '发起升级',
+        self::API_UPGRADE_EXECUTE => '执行升级步骤',
+        self::API_UPGRADE_CLEAR   => '清除升级任务(取消)',
+    ];
+
     private $steps = [
         'requestUpgrade' => [ 'step' => 'requestUpgrade', 'title' => '请求升级' ],
         'downloadFile' => [ 'step' => 'downloadFile', 'title' => '' ],
@@ -83,6 +103,76 @@ class UpgradeService extends BaseAdminService
         if (!empty($this->upgrade_task) && !isset($this->upgrade_task[ 'upgrade_apps' ])) {
             $this->upgrade_task[ 'upgrade_apps' ] = [ AddonDict::FRAMEWORK_KEY ];
         }
+    }
+
+    /**
+     * 获取升级步骤记录文件(steps.jsonl)路径，按 upgrade_key 落到临时目录
+     * @param string $upgradeKey
+     * @return string
+     */
+    private function upgradeStepFile(string $upgradeKey): string
+    {
+        if (empty($upgradeKey)) return '';
+        return task_runtime_path() . 'backup' . DIRECTORY_SEPARATOR . 'upgrade' . DIRECTORY_SEPARATOR . $upgradeKey . DIRECTORY_SEPARATOR . 'steps.jsonl';
+    }
+
+    /**
+     * 写入一条升级步骤记录（容错：记录失败不影响主流程）
+     * @param string $upgradeKey
+     * @param string $step
+     * @param string $method
+     * @param array  $params
+     * @param array  $result
+     * @param string $status
+     * @param array  $next
+     */
+    private function upgradeLogStep(string $upgradeKey, string $step, string $method, string $desc = '', array $params = [], array $result = [], string $status = 'success', array $next = [])
+    {
+        $file = $this->upgradeStepFile($upgradeKey);
+        if (!$file) return;
+        try {
+            StepLogger::append($file, [
+                'type'     => 'upgrade',
+                'task_key' => $upgradeKey,
+                'step'     => $step,
+                'name'     => self::UPGRADE_API_NAME[ $method ] ?? $method,
+                'desc'     => $desc,
+                'method'   => $method,
+                'params'   => $params,
+                'result'   => $result,
+                'status'   => $status,
+                'next'     => $next,
+            ]);
+        } catch (\Throwable $e) {
+        }
+    }
+
+    /**
+     * 记录某步骤执行成功，并写入下一步入口
+     * @param string $step
+     * @param array  $steps 升级步骤顺序（键名数组）
+     */
+    private function logUpgradeStepSuccess(string $step, array $steps)
+    {
+        $nextStep = $steps[ array_search($step, $steps) + 1 ] ?? '';
+        $desc = $this->steps[ $step ][ 'title' ] ?? ( '执行升级步骤：' . $step );
+        $this->upgradeLogStep($this->upgrade_task[ 'key' ], $step, self::API_UPGRADE_EXECUTE, $desc, [], [], 'success', [
+            'method' => $nextStep ? self::API_UPGRADE_EXECUTE : '',
+            'params' => []
+        ]);
+    }
+
+    /**
+     * 记录某步骤执行失败
+     * @param string $step
+     */
+    private function logUpgradeStepFail(string $step)
+    {
+        $desc = $this->steps[ $step ][ 'title' ] ?? ( '执行升级步骤失败：' . $step );
+        $this->upgradeLogStep($this->upgrade_task[ 'key' ], $step, self::API_UPGRADE_EXECUTE, $desc, [], [], 'fail', [
+            'method' => self::API_UPGRADE_EXECUTE,
+            'params' => []
+        ]);
     }
 
     /**
@@ -227,9 +317,14 @@ class UpgradeService extends BaseAdminService
             unset($this->steps['backupSql']);
         }
 
+        // 备份使用独立标识：sys_task.task_key 上有唯一索引（uk_task_key），
+        // 备份记录不能与升级任务共用 key；归档目录也随之独立为 upgrade/{backup_key}/backup
+        $backup_key = $is_need_backup ? uniqid() : '';
+
         try {
             $upgrade_task = [
                 'key' => $key,
+                'backup_key' => $backup_key,
                 'upgrade' => $upgrade,
                 'steps' => $this->steps,
                 'step' => 'requestUpgrade',
@@ -253,11 +348,20 @@ class UpgradeService extends BaseAdminService
                 'content' => json_encode($upgrade_content),
                 'prev_version' => "",
                 'current_version' => "",
-                'status' => UpgradeDict::STATUS_READY,
-                'is_need_backup' => $is_need_backup
+                'status' => UpgradeDict::STATUS_READY
             ]);
 
             Cache::set($this->cache_key, $upgrade_task);
+
+            // 备份独立成一条任务记录（sys_task），与升级任务区分开，便于任务列表单独查看 / 恢复
+            if ($backup_key !== '') $this->createBackupTask($backup_key, $key);
+
+            // 记录升级第一步：请求升级
+            $this->upgradeLogStep($key, 'requestUpgrade', self::API_UPGRADE, '请求升级并准备升级包', [
+                'app_key' => $upgrade[ 'app_key' ] ?? '',
+                'version' => $upgrade[ 'version' ] ?? ''
+            ], [ 'upgrade_key' => $key ], 'success', [ 'method' => self::API_UPGRADE_EXECUTE, 'params' => [] ]);
+
             return $upgrade_task;
         } catch (\Exception $e) {
             throw new CommonException($e->getMessage());
@@ -291,6 +395,8 @@ class UpgradeService extends BaseAdminService
                     if (!empty($this->steps[ $step ][ 'title' ])) {
                         $this->upgrade_task[ 'log' ][] = $this->steps[ $step ][ 'title' ];
                     }
+                    // 步骤执行完成（非分片中间态），记录成功步骤
+                    $this->logUpgradeStepSuccess($step, $steps);
                 }
                 if (!in_array($step, [ 'upgradeComplete', 'restoreComplete' ])) {
                     Cache::set($this->cache_key, $this->upgrade_task);
@@ -300,6 +406,7 @@ class UpgradeService extends BaseAdminService
                     throw new CloudBuildException($e->getMessage());
                 }
                 $this->upgrade_task[ 'step' ] = $step;
+                $this->logUpgradeStepFail($step);
                 $this->upgrade_task[ 'error' ][] = '升级失败，失败原因：' . $e->getMessage() . $e->getFile() . $e->getLine();
 
                 $fail_reason = [
@@ -311,6 +418,7 @@ class UpgradeService extends BaseAdminService
                 $this->upgradeErrorHandle($fail_reason);
             } catch (\Exception $e) {
                 $this->upgrade_task[ 'step' ] = $step;
+                $this->logUpgradeStepFail($step);
                 $this->upgrade_task[ 'error' ][] = '升级失败，失败原因：' . $e->getMessage() . $e->getFile() . $e->getLine();
                 $fail_reason = [
                     'Message' => '失败原因：' . $e->getMessage(),
@@ -342,6 +450,9 @@ class UpgradeService extends BaseAdminService
         }
         $res = ( new CoreAddonCloudService() )->downloadUpgradeFile($app_key, $token, $dir, $index, $step, $length);
 
+        // 记录下载进度（分片下载）：供任务步骤按应用展开子步骤并渲染进度条
+        $this->recordDownloadProgress($app_key, $res);
+
         if ($res === true) {
             $index = array_search($app_key, $this->upgrade_task['upgrade_apps']);
             if ($app_key == AddonDict::FRAMEWORK_KEY) {
@@ -367,13 +478,80 @@ class UpgradeService extends BaseAdminService
     }
 
     /**
-     * 备份源码
-     * @return true
+     * 记录升级包下载进度
+     *
+     * 分片下载时 downloadUpgradeFile() 回传新的 index（已完成分片数）/ step（总分片数）/ length（总字节数），
+     * 这里落到 upgrade_task.download，由 UpgradeTaskHandler 上报为「下载升级包」步骤的进度。
+     * 同时每 10% 追加一条日志——按分片输出会把执行输出刷满（1MB 一片）。
+     *
+     * @param string $app_key 当前正在下载的应用标识（用于展开「每个应用一个子步骤」）
+     * @param array|bool $res downloadUpgradeFile 的返回值
+     * @return void
      */
-    public function backupCode()
+    protected function recordDownloadProgress(string $app_key, $res): void
     {
-        ( new BackupService() )->backupCode();
-        return true;
+        $total  = is_array($res) ? (int) ( $res[ 'step' ] ?? 0 ) : 0;
+        $length = is_array($res) ? (int) ( $res[ 'length' ] ?? 0 ) : 0;
+
+        // 下载结束（true）或切换到下一个应用（返回值只有 app_key / token）时清理，
+        // 否则下一个应用会沿用上一个应用已推进到的百分比
+        if ($total <= 0 || $length <= 0) {
+            unset($this->upgrade_task[ 'download' ], $this->upgrade_task[ 'download_percent' ]);
+            return;
+        }
+
+        $done = max(0, (int) ( $res[ 'index' ] ?? 0 ));
+
+        $this->upgrade_task[ 'download' ] = [
+            'app_key' => $app_key,
+            'index'   => $done,
+            'step'    => $total,
+            'length'  => $length,
+            'current' => min($done * self::DOWNLOAD_CHUNK_SIZE, $length)
+        ];
+
+        // 这里不再往 log 追加「下载 xx%」文本行：终端会把带「下载 + N%」的文本
+        // 按云编译的启发式规则渲染成「编译产物下载」进度条，造成误标。
+        // 下载进度改由 UpgradeTaskHandler 以结构化 progress 事件下发。
+    }
+
+    /**
+     * 字节格式化
+     * @param int $bytes
+     * @return string
+     */
+    public static function formatBytes(int $bytes): string
+    {
+        $units = [ 'B', 'KB', 'MB', 'GB', 'TB' ];
+        $bytes = max($bytes, 0);
+        $power = $bytes > 0 ? min((int) floor(log($bytes, 1024)), count($units) - 1) : 0;
+
+        return ( $power === 0 ? (string) $bytes : number_format($bytes / pow(1024, $power), 2) ) . ' ' . $units[ $power ];
+    }
+
+    /**
+     * 备份源码
+     *
+     * 复用备份任务的「按根目录分片 + 可续跑复制」实现（BackupRecordsService）：
+     * 原先一次请求内复制 admin / uni-app / web / niucloud 四个目录，耗时不可控，
+     * 且步骤内没有任何进度——总进度条会一直停在上一阶段（表现为「还在下载那一步」）。
+     * 改为每次 run 推进一个目录，复制进度落在 upgrade_task.backup_code，
+     * 供任务步骤按目录展开子步骤并实时反映进度。
+     *
+     * @param int $index 分片序号（实际进度以 backup_code 状态为准，与 backupSql 同口径）
+     * @return array|true
+     */
+    public function backupCode($index = 0)
+    {
+        $state    = (array) ( $this->upgrade_task[ 'backup_code' ] ?? [] );
+        $finished = ( new BackupRecordsService() )->backupCode($this->backupKey(), $state);
+
+        $this->upgrade_task[ 'backup_code' ] = $state;
+
+        if ($finished === true) return true;
+
+        // 未完成：保持当前步骤，等待下一次 run 驱动
+        return [ 'index' => (int) ( $state[ 'code_root_index' ] ?? 0 ) ];
     }
 
     /**
@@ -382,7 +560,8 @@ class UpgradeService extends BaseAdminService
      */
     public function backupSql($index = 0)
     {
-        $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+        // 备份归档目录随备份任务独立：upgrade/{backup_key}/backup/sql
+        $backup_dir = $this->upgrade_dir . $this->backupKey() . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         // 创建目录
         dir_mkdir($backup_dir);
 
@@ -401,13 +580,158 @@ class UpgradeService extends BaseAdminService
         ];
 
         $result = $db->setExcludeTables($not_need_backup)->backupDatabaseSegment();
-        if ($db->getBackupProgress() == 100) {
+
+        $percent = (int) $db->getBackupProgress();
+        if ($percent == 100) {
             $this->upgrade_task[ 'log' ][] = "数据库备份完成";
         } else {
-            $this->upgrade_task[ 'log' ][] = $db->getBackupProgress() == 0 ? '数据库开始备份' : '数据库备份已备份'. $db->getBackupProgress() . '%';
+            $this->upgrade_task[ 'log' ][] = $percent == 0 ? '数据库开始备份' : '数据库备份已备份'. $percent . '%';
         }
-        if ($result === true) return true;
+
+        // 供任务步骤渲染数据库备份进度
+        $this->upgrade_task[ 'backup_sql' ] = [ 'percent' => $percent ];
+
+        if ($result === true) {
+            // 源码 + 数据库均备份完成：备份任务记录置为成功
+            $this->completeBackupTask();
+
+            // 同步落一条备份记录：backup_key 用备份任务标识（与归档目录同名），
+            // 升级产生的备份归为「自动备份」
+            ( new BackupRecordsService() )->finishBackup([
+                'key'     => $this->backupKey(),
+                'mode'    => BackupRecordsService::MODE_BACKUP,
+                'content' => '自动备份'
+            ]);
+
+            // 备份完成即回写升级记录：即便后续升级失败（走不到 upgradeComplete），
+            // 升级记录也能关联到本次产生的备份
+            ( new UpgradeRecordsService() )->setBackupKey((string) ( $this->upgrade_task[ 'key' ] ?? '' ), $this->backupKey());
+
+            return true;
+        }
         return ['index' => $result];
+    }
+
+    /**
+     * 本次备份的归档标识（备份任务在 sys_task 中的 task_key）
+     *
+     * 早期任务没有 backup_key 字段，回退到升级任务 key，保证在途任务不受影响。
+     * @return string
+     */
+    protected function backupKey(): string
+    {
+        return (string) ( $this->upgrade_task[ 'backup_key' ] ?? $this->upgrade_task[ 'key' ] ?? '' );
+    }
+
+    /**
+     * 把「本次升级实际使用的备份」写回升级记录
+     *
+     * 两种情况（与 restoreCode / restoreSql 的取备份口径保持一致）：
+     * - 本次勾选了备份：使用本次产生的备份（backup_key 即备份任务标识）
+     * - 未勾选备份：本次没有新备份，回滚 / 恢复都基于最近一次备份（upgrade_content.last_backup）
+     *
+     * 这样升级记录与备份记录指向同一个标识，列表展示的备份路径与可删除的备份都准确。
+     *
+     * @return void
+     */
+    protected function syncBackupKey(): void
+    {
+        $upgradeKey = (string) ( $this->upgrade_task[ 'key' ] ?? '' );
+        if ($upgradeKey === '') return;
+
+        $isNeedBackup = !isset($this->upgrade_task[ 'is_need_backup' ]) || !empty($this->upgrade_task[ 'is_need_backup' ]);
+        $backupKey    = '';
+
+        if ($isNeedBackup) {
+            // 只取本次备份任务的标识：不能用 backupKey() 的回退值（旧结构缓存下它会回退成升级任务标识，
+            // 导致升级记录把 upgrade_key 当成备份标识写入，与备份记录对不上）
+            $backupKey = (string) ( $this->upgrade_task[ 'backup_key' ] ?? '' );
+
+            // 二次确认：备份任务记录确实存在（避免备份未真正产生时写入无效标识）
+            if ($backupKey !== '') {
+                try {
+                    $exists = Db::name('sys_task')
+                        ->where([ [ 'task_key', '=', $backupKey ], [ 'task_type', '=', TaskDict::TYPE_BACKUP ] ])
+                        ->count();
+                    if ($exists <= 0) $backupKey = '';
+                } catch (\Throwable $e) {
+                    $backupKey = '';
+                }
+            }
+        }
+
+        // 未备份（或备份未生成）：沿用最近一次备份
+        if ($backupKey === '') {
+            $backupKey = (string) ( $this->upgrade_task[ 'upgrade_content' ][ 'last_backup' ][ 'backup_key' ] ?? '' );
+        }
+
+        ( new UpgradeRecordsService() )->setBackupKey($upgradeKey, $backupKey);
+    }
+
+    /**
+     * 为本次升级的备份创建一条独立的任务记录（sys_task）
+     *
+     * sys_task.task_key 有唯一索引，备份不能复用升级任务的 key，因此独立生成；
+     * 归档目录随之独立为 upgrade/{backup_key}/backup，产物查看与恢复都能定位到真实归档。
+     *
+     * @param string $backup_key 备份任务标识
+     * @param string $upgrade_key 所属升级任务标识
+     * @return void
+     */
+    protected function createBackupTask(string $backup_key, string $upgrade_key): void
+    {
+        if ($backup_key === '') return;
+
+        try {
+            $siteId = (int) request()->siteId();
+        } catch (\Throwable $e) {
+            $siteId = 0;
+        }
+
+        $now = time();
+
+        Db::name('sys_task')->insert([
+            'site_id'     => $siteId,
+            'task_key'    => $backup_key,
+            'parent_key'  => $upgrade_key,
+            'task_type'   => TaskDict::TYPE_BACKUP,
+            'title'       => '升级前自动备份',
+            'status'      => TaskDict::STATUS_RUNNING,
+            'end_reason'  => '',
+            'progress'    => 0,
+            'stage'       => '等待备份',
+            'cursor'      => '',
+            // mode=backup：与手动备份一致，任务列表据此开放「恢复」入口
+            'params'      => json_encode([ 'mode' => 'backup', 'from' => 'upgrade', 'upgrade_key' => $upgrade_key ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'actions'     => json_encode([], JSON_UNESCAPED_UNICODE),
+            'fail_reason' => '',
+            'log_size'    => 0,
+            'start_time'  => $now,
+            'end_time'    => 0,
+            'create_time' => $now
+        ]);
+    }
+
+    /**
+     * 标记备份任务记录完成（源码 + 数据库均备份完成）
+     * @return void
+     */
+    protected function completeBackupTask(): void
+    {
+        $backup_key = $this->backupKey();
+        if ($backup_key === '') return;
+
+        $now = time();
+
+        Db::name('sys_task')
+            ->where([ [ 'task_key', '=', $backup_key ], [ 'task_type', '=', TaskDict::TYPE_BACKUP ] ])
+            ->update([
+                'status'      => TaskDict::STATUS_SUCCESS,
+                'end_reason'  => TaskDict::END_REASON_COMPLETED,
+                'progress'    => 100,
+                'stage'       => '备份完成',
+                'end_time'    => $now
+            ]);
     }
 
     /**
@@ -743,6 +1067,7 @@ class UpgradeService extends BaseAdminService
             }
         }
         // 执行完成，更新升级记录状态，备份记录状态
+        $this->syncBackupKey();
         ( new UpgradeRecordsService() )->complete($this->upgrade_task[ 'key' ]);
         if (!isset($this->upgrade_task['cloud_build_error'])) {
             $this->upgrade_task['step'] = 'upgradeComplete';
@@ -782,7 +1107,7 @@ class UpgradeService extends BaseAdminService
     public function restoreCode()
     {
         if (!isset($this->upgrade_task['is_need_backup']) || $this->upgrade_task['is_need_backup']) {
-            $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
+            $backup_dir = $this->upgrade_dir . $this->backupKey() . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         } else {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'backup_key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'code' . DIRECTORY_SEPARATOR;
         }
@@ -805,7 +1130,7 @@ class UpgradeService extends BaseAdminService
     public function restoreSql($index = 0)
     {
         if (!isset($this->upgrade_task['is_need_backup']) || $this->upgrade_task['is_need_backup']) {
-            $backup_dir = $this->upgrade_dir . $this->upgrade_task[ 'key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
+            $backup_dir = $this->upgrade_dir . $this->backupKey() . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         } else {
             $backup_dir = $this->upgrade_dir . $this->upgrade_task['upgrade_content']['last_backup'][ 'backup_key' ] . DIRECTORY_SEPARATOR . 'backup' . DIRECTORY_SEPARATOR . 'sql' . DIRECTORY_SEPARATOR;
         }
@@ -840,6 +1165,8 @@ class UpgradeService extends BaseAdminService
     {
         $error = $this->upgrade_task['error'] ?? [];
         if (isset($this->upgrade_task['cloud_build_error'])) $error[] = $this->upgrade_task['cloud_build_error'];
+        // 失败收尾也同步关联备份：回滚用的是本次备份或上次备份，记录要指向同一个标识
+        $this->syncBackupKey();
         ( new UpgradeRecordsService() )->failed($this->upgrade_task[ 'key' ], $error);
         $this->upgrade_task['step'] = 'restoreComplete';
         Cache::set($this->cache_key, $this->upgrade_task);
@@ -899,7 +1226,28 @@ class UpgradeService extends BaseAdminService
         }
 
         if (!empty($content['content'])) {
-            $content['last_backup'] = (new SysBackupRecords())->where([ ['status', '=', BackupDict::STATUS_COMPLETE ] ])->order('complete_time desc')->find();
+            // 最近一次备份：统一取 sys_task（sys_backup_records 已废弃）。
+            // 用 SysTask 模型而非 Db 查询，才能沿用模型的 timestamp 类型转换，
+            // 让 complete_time 与旧结构一样输出格式化时间（前端直接展示）。
+            $last = ( new SysTask() )
+                ->where([
+                    [ 'task_type', '=', TaskDict::TYPE_BACKUP ],
+                    [ 'status', '=', TaskDict::STATUS_SUCCESS ]
+                ])
+                ->order('id desc')
+                ->field('id, task_key, title, status, create_time, end_time')
+                ->find();
+
+            if (!empty($last)) {
+                $last = $last->toArray();
+
+                // 字段对齐旧结构：restoreCode / restoreSql 用 backup_key 定位归档目录，前端展示 complete_time
+                $content['last_backup'] = [
+                    'id'            => (int) ( $last[ 'id' ] ?? 0 ),
+                    'backup_key'    => (string) ( $last[ 'task_key' ] ?? '' ),
+                    'complete_time' => (string) ( $last[ 'end_time' ] ?: ( $last[ 'create_time' ] ?? '' ) )
+                ];
+            }
         }
 
         return $content;
@@ -912,6 +1260,18 @@ class UpgradeService extends BaseAdminService
     public function getUpgradeTask()
     {
         return $this->upgrade_task;
+    }
+
+    /**
+     * 从快照恢复任务状态（统一任务中心续跑：Cache 失效后由 task.json 恢复）
+     * @param array $task
+     * @return void
+     */
+    public function restoreTask(array $task)
+    {
+        if (empty($task)) return;
+        $this->upgrade_task = $task;
+        Cache::set($this->cache_key, $task);
     }
 
     /**
@@ -936,6 +1296,19 @@ class UpgradeService extends BaseAdminService
     }
 
     /**
+     * 用户取消/清除升级任务（先记录取消步骤，再清理任务）
+     * @param int $delayed
+     * @param int $is_active
+     * @return true
+     */
+    public function cancelUpgrade(int $delayed = 0, int $is_active = 1)
+    {
+        $key = $this->upgrade_task[ 'key' ] ?? '';
+        $this->upgradeLogStep($key, 'cancel', self::API_UPGRADE_CLEAR, '用户取消/清除升级任务', [], [], 'cancel', []);
+        return $this->clearUpgradeTask($delayed, $is_active);
+    }
+
+    /**
      * 获取插件定义的package目录
      * @param string $addon
      * @return string
@@ -957,6 +1330,19 @@ class UpgradeService extends BaseAdminService
         switch ($operate) {
             case 'local':
                 $this->upgrade_task[ 'step' ] = 'gteCloudBuildLog';
+                Cache::set($this->cache_key, $this->upgrade_task);
+                break;
+            case 'skip':
+                // 跳过当前出错步骤：清理错误与分片参数，并把该步骤记入 executed，
+                // 下一次 execute() 会据此推进到它的下一步（step 本身保持不变，
+                // 若直接把 step 改成下一步，execute() 会再往后推一格，等于多跳过一步）
+                $current = (string) ( $this->upgrade_task[ 'step' ] ?? '' );
+                $this->upgrade_task[ 'error' ]  = [];
+                $this->upgrade_task[ 'params' ] = [];
+                if ($current !== '' && !in_array($current, (array) ( $this->upgrade_task[ 'executed' ] ?? [] ), true)) {
+                    $this->upgrade_task[ 'executed' ][] = $current;
+                }
+                $this->upgrade_task[ 'log' ][] = '已跳过出错步骤：' . $current;
                 Cache::set($this->cache_key, $this->upgrade_task);
                 break;
             case 'rollback':

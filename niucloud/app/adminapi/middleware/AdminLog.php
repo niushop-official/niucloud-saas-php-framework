@@ -26,6 +26,19 @@ use think\facade\Route;
  */
 class AdminLog
 {
+    /**
+     * 操作日志中需要脱敏的请求参数字段（避免凭据明文落库）
+     */
+    private const SENSITIVE_KEYS = [
+        'token',
+        'access_token',
+        'refresh_token',
+        'auth_secret',
+        'password',
+        'old_password',
+        'new_password'
+    ];
+
     public function handle(Request $request, Closure $next)
     {
         //写入日志
@@ -57,7 +70,7 @@ class AdminLog
                 'uid' => $request->uid(),
                 'username' => $request->username(),
                 'url' => $request->url(),
-                'params' => $request->param(),
+                'params' => $this->filterSensitiveParams($request->param()),
                 'ip' => $request->ip(),
                 'type' => $request->method(),
                 'operation' => $operation,
@@ -66,6 +79,25 @@ class AdminLog
         }
 
         return $next($request);
+    }
+
+    /**
+     * 敏感参数脱敏（token / 密码 / 授权秘钥等不写入操作日志）
+     * @param array $params
+     * @return array
+     */
+    private function filterSensitiveParams(array $params): array
+    {
+        foreach ($params as $key => $value) {
+            if (is_array($value)) {
+                $params[$key] = $this->filterSensitiveParams($value);
+                continue;
+            }
+            if ($value !== '' && in_array(strtolower((string)$key), self::SENSITIVE_KEYS, true)) {
+                $params[$key] = '******';
+            }
+        }
+        return $params;
     }
 
     private function extractDescFromAnnotation($controllerClass, $actionMethod)

@@ -2,7 +2,7 @@
 
 namespace Overtrue\Socialite\Providers;
 
-use GuzzleHttp\Utils;
+use GuzzleHttp\Exception\GuzzleException;
 use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use Overtrue\Socialite\Contracts;
@@ -63,8 +63,8 @@ class QQ extends Base
     }
 
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Overtrue\Socialite\Exceptions\AuthorizeFailedException
+     * @throws GuzzleException
+     * @throws AuthorizeFailedException
      */
     protected function getUserByToken(string $token): array
     {
@@ -76,6 +76,10 @@ class QQ extends Base
         ]);
 
         $me = $this->fromJsonBody($response);
+
+        if (empty($me['openid'])) {
+            throw new AuthorizeFailedException('Authorization failed: missing openid in token response', $me);
+        }
 
         $response = $this->getHttpClient()->get($this->baseUrl.'/user/get_user_info', [
             'query' => [
@@ -89,12 +93,12 @@ class QQ extends Base
         $user = $this->fromJsonBody($response);
 
         if (! array_key_exists('ret', $user) || $user['ret'] !== 0) {
-            throw new AuthorizeFailedException('Authorize Failed: '.Utils::jsonEncode($user, \JSON_UNESCAPED_UNICODE), $user);
+            throw new AuthorizeFailedException('Authorize Failed: '.\json_encode($user, \JSON_UNESCAPED_UNICODE | \JSON_THROW_ON_ERROR), $user);
         }
 
         return $user + [
             'unionid' => $me['unionid'] ?? null,
-            'openid' => $me['openid'] ?? null,
+            'openid' => $me['openid'],
         ];
     }
 

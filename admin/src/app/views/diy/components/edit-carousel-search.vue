@@ -3,6 +3,31 @@
     <div class="content-wrap" v-show="diyStore.editTab == 'content'">
 
         <div class="edit-attr-item-wrap">
+            <h3 class="mb-[10px]">{{ t('carouselSearchHeaderSet') }}</h3>
+            <el-form label-width="100px" class="px-[10px]" @submit.prevent>
+                <el-form-item :label="t('carouselSearchHeaderBackIsShow')">
+                    <el-switch v-model="diyStore.editComponent.header.backIsShow" />
+                </el-form-item>
+                <el-form-item :label="t('carouselSearchHeaderTitleIsShow')">
+                    <el-switch v-model="headerTitleIsShow" :disabled="headerTitleDisabled" />
+                </el-form-item>
+                <el-form-item :label="t('carouselSearchHeaderTitle')" v-if="diyStore.editComponent.header.titleIsShow && !headerTitleDisabled">
+                    <el-input v-model.trim="diyStore.editComponent.header.title" :placeholder="t('carouselSearchHeaderTitlePlaceholder')" clearable maxlength="10" show-word-limit />
+                </el-form-item>
+                <el-form-item :label="t('carouselSearchHeaderPositionIsShow')">
+                    <el-switch v-model="headerPositionIsShow" :disabled="headerPositionDisabled" />
+                </el-form-item>
+                <el-form-item :label="t('carouselSearchHeaderTextColor')">
+                    <el-color-picker v-model="diyStore.editComponent.header.textColor" :disabled="headerTextColorDisabled" show-alpha :predefine="diyStore.predefineColors" />
+                </el-form-item>
+                <el-form-item :label="t('carouselSearchHeaderIconColor')">
+                    <el-color-picker v-model="diyStore.editComponent.header.iconColor" show-alpha :predefine="diyStore.predefineColors" />
+                </el-form-item>
+                <div class="text-sm text-gray-400 leading-[1.5]">{{ t(headerTipsKey) }}</div>
+            </el-form>
+        </div>
+
+        <div class="edit-attr-item-wrap">
             <h3 class="mb-[10px]">{{ t('carouselSearchShowPosition') }}</h3>
             <el-form label-width="100px" class="px-[10px]">
                 <el-form-item :label="t('carouselSearchShowWay')">
@@ -328,7 +353,8 @@
 import { t } from '@/lang'
 import { img } from '@/utils/common'
 import useDiyStore from '@/stores/modules/diy'
-import { ref, reactive, watch, onMounted, nextTick } from 'vue'
+import { ref, reactive, watch, onMounted, nextTick, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { ElTable } from 'element-plus'
 import Sortable from 'sortablejs'
 import { range, cloneDeep } from 'lodash-es'
@@ -336,7 +362,71 @@ import { range, cloneDeep } from 'lodash-es'
 import { getDiyPageListByCarouselSearch } from '@/app/api/diy'
 
 const diyStore = useDiyStore()
+const route = useRoute()
 diyStore.editComponent.ignore = ['componentBgColor', 'componentBgUrl', 'marginTop', 'marginBottom', 'topRounded', 'bottomRounded', 'pageBgColor', 'marginBoth'] // 忽略公共属性
+
+// 顶部标题栏默认标题，按当前所在应用区分
+const defaultHeaderTitle = () => {
+    const titleMap: Record<string, string> = {
+        mall: '商城'
+    }
+    return titleMap[(route.meta.addon as string) || ''] || '商城'
+}
+
+// 顶部标题栏配置，兼容未保存过该字段/字段不全的历史数据
+// 默认值口径与后端组件字典（ComponentDict.php）保持一致：返回箭头关 / 标题关 / 地址定位开
+const headerDefaults = {
+    backIsShow: false, // 返回箭头
+    titleIsShow: false, // 标题
+    title: defaultHeaderTitle(), // 标题文字
+    positionIsShow: true, // 地址定位
+    textColor: '#333333', // 文字颜色
+    iconColor: '#333333' // 图标颜色
+}
+diyStore.editComponent.header = Object.assign({}, headerDefaults, diyStore.editComponent.header || {})
+
+// 内嵌内容行的风格：返回箭头并入内容行左侧，不使用通用标题栏
+// 风格1（返回箭头在搜索行）、风格2（返回箭头在生活圈行、地址定位在搜索行）、风格3（返回箭头在地址定位左侧）
+const isEmbedStyle = computed(() => {
+    const style = diyStore.editComponent.search.style
+    return style == 'style-1' || style == 'style-2' || style == 'style-3'
+})
+
+// 标题：三种内嵌风格的行内都没有标题位，一律禁止开启
+const headerTitleDisabled = computed(() => isEmbedStyle.value)
+
+// 地址定位：风格1 行内没有定位位；风格2/3 的定位都内嵌在搜索框左侧，仍由该开关控制
+const headerPositionDisabled = computed(() => {
+    const style = diyStore.editComponent.search.style
+    return style == 'style-1'
+})
+
+// 文字颜色：风格1 行内没有文字元素；风格2/3 的地址定位文字仍受该颜色控制
+const headerTextColorDisabled = computed(() => headerPositionDisabled.value)
+
+// 禁用的开关强制显示为关闭且不可操作，避免误开启；
+// 仅影响展示，不改写已保存的值，切回其它风格后可恢复原有设置
+const headerTitleIsShow = computed({
+    get: () => (headerTitleDisabled.value ? false : diyStore.editComponent.header.titleIsShow),
+    set: (val: boolean) => {
+        diyStore.editComponent.header.titleIsShow = val
+    }
+})
+
+const headerPositionIsShow = computed({
+    get: () => (headerPositionDisabled.value ? false : diyStore.editComponent.header.positionIsShow),
+    set: (val: boolean) => {
+        diyStore.editComponent.header.positionIsShow = val
+    }
+})
+
+// 顶部标题栏提示文案，按当前风格给出对应说明
+const headerTipsKey = computed(() => {
+    const style = diyStore.editComponent.search.style
+    if (style == 'style-1') return 'carouselSearchHeaderStyle1Tips'
+    if (style == 'style-2') return 'carouselSearchHeaderStyle2Tips'
+    return 'carouselSearchHeaderTips'
+})
 
 // 组件验证
 diyStore.editComponent.verify = (index: number) => {

@@ -29,8 +29,7 @@ Route::group('', function () {
     // 清除升级任务
     Route::post('upgrade/clear', 'addon.Upgrade/clearUpgradeTask');
 
-    // 升级环境检测
-    Route::get('upgrade/check/[:addon]', 'addon.Upgrade/upgradePreCheck')->pattern(['addon' => '[\w,-]+']);
+    // 升级环境校验已统一到通用校验（sys/check，scene=upgrade），此处不再单独提供
 
     // 升级
     Route::post('upgrade/[:addon]', 'addon.Upgrade/upgrade')->pattern(['addon' => '[\w,-]+']);
@@ -46,17 +45,31 @@ Route::group('', function () {
     // 删除升级记录
     Route::delete('upgrade/records', 'addon.Upgrade/delRecords');
 
+    // 删除升级记录对应的备份（备份记录 + 归档目录），升级记录保留
+    Route::post('upgrade/backup/delete', 'addon.Upgrade/delBackup');
+
     // 备份记录分页列表
     Route::get('backup/records', 'addon.Backup/getRecords');
 
     // 修改备注
     Route::put('backup/remark', 'addon.Backup/modifyRemark');
 
+    // 框架补丁列表
+    Route::get('framework_patch', 'addon.FrameworkPatch/lists');
+
+    // 框架补丁详情
+    Route::get('framework_patch/:id', 'addon.FrameworkPatch/info')->pattern([ 'id' => '\d+' ]);
+
+    // 立即同步云端补丁（入库 + 新补丁推送消息）
+    Route::post('framework_patch/sync', 'addon.FrameworkPatch/sync');
+
+    // 标记 / 取消标记补丁已解决
+    Route::put('framework_patch/resolve/:id', 'addon.FrameworkPatch/resolve')->pattern([ 'id' => '\d+' ]);
+
     // 恢复前检测文件是否存在，备份
     Route::post('backup/check_dir', 'addon.Backup/checkDirExist');
 
-    // 检测目录权限
-    Route::post('backup/check_permission', 'addon.Backup/checkPermission');
+    // 备份目录权限校验已统一到通用校验（sys/check，scene=backup），此处不再单独提供
 
     // 恢复升级备份
     Route::post('backup/restore', 'addon.Backup/restoreBackup');

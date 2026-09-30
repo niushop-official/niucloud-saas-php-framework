@@ -1,0 +1,23 @@
+{
+  "h5Wechat": "H5/微信公众号端",
+  "weappTerminal": "微信小程序端",
+  "serviceType": "客服类型",
+  "notEnabled": "不启用",
+  "selfService": "自建客服",
+  "workWeixinService": "企业微信客服",
+  "thirdService": "第三方客服",
+  "phoneContact": "电话联系",
+  "weappService": "小程序客服",
+  "workWeixinLink": "企微客服链接",
+  "workWeixinLinkPlaceholder": "请输入企微客服链接",
+  "thirdServiceLink": "第三方客服链接",
+  "thirdServiceLinkPlaceholder": "请输入第三方客服链接",
+  "contactsTel": "联系电话",
+  "phonePlaceholder": "请输入联系电话",
+  "workWeixinH5Tips": "H5中如何接入企业微信客服请查看",
+  "inWechatPageAccess": "在微信内网页中接入",
+  "corpId": "企业ID",
+  "corpIdPlaceholder": "请输入企业ID",
+  "workWeixinWeappTips": "小程序中如何接入企业微信客服请查看",
+  "inWeappAccess": "在小程序中接入"
+}

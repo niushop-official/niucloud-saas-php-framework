@@ -45,6 +45,22 @@ Route::group('niucloud', function() {
     // 获取应用/插件的版本更新记录
     Route::get('app_version/list', 'niucloud.Module/getAppVersionList');
 
+    // 官网账号（内嵌授权）
+    // 获取官网内嵌页地址
+    Route::get('account/embed_url', 'niucloud.Account/embedUrl');
+    // 获取账号与当前授权信息
+    Route::get('account/info', 'niucloud.Account/info');
+    // 保存官网账号登录态（用于下次进入免登录）
+    Route::post('account/token', 'niucloud.Account/saveToken');
+    // 选用授权（仅保存所选授权的授权码，不做绑定）
+    Route::post('account/select', 'niucloud.Account/select');
+    // 绑定授权（官网 embed 页回传授权凭据）
+    Route::post('account/bind', 'niucloud.Account/bind');
+    // 退出官网账号会话（不解除本地授权）
+    Route::post('account/logout', 'niucloud.Account/logout');
+    // 同步当前授权状态
+    Route::get('account/sync_state', 'niucloud.Account/syncState');
+
     // 云编译
     Route::post('build', 'niucloud.Cloud/build');
     // 获取编译任务
@@ -53,18 +69,21 @@ Route::group('niucloud', function() {
     Route::get('build/log', 'niucloud.Cloud/getBuildLog');
     // 清除编译任务
     Route::post('build/clear', 'niucloud.Cloud/clearBuildTask');
-    // 编译前环境检测
-    Route::get('build/check', 'niucloud.Cloud/buildPreCheck');
+    // 编译前校验已统一到通用校验（sys/check，scene=cloud_build），此处不再单独提供
+    // 获取编译命令配置
+    Route::get('build/command', 'niucloud.Cloud/buildCommand');
+    // 编译端口列表（含说明与最近发版记录）
+    Route::get('build/ports', 'niucloud.Cloud/getBuildPorts');
+    // 发版记录：分页 / 发布状态 / 删除
+    Route::get('build/version', 'niucloud.Cloud/getVersionList');
+    Route::post('build/version/release', 'niucloud.Cloud/setVersionRelease');
+    Route::delete('build/version', 'niucloud.Cloud/delVersion');
     //连通测试
     Route::post('build/connect_test', 'niucloud.Cloud/connectTest');
     //保存本地服务器地址
     Route::post('build/set_local_url', 'niucloud.Cloud/setLocalCloudCompileConfig');
     //获取本地服务器地址
     Route::get('build/get_local_url', 'niucloud.Cloud/getLocalCloudCompileConfig');
-    //启动后台下载（SSE编译完成后）
-    Route::post('build/start_server_download', 'niucloud.Cloud/startServerDownload');
-    //获取后台下载进度
-    Route::get('build/get_sse_build_log', 'niucloud.Cloud/getSseBuildLog');
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,

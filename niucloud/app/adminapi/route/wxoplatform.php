@@ -37,6 +37,8 @@ Route::group('wxoplatform', function () {
     Route::post('weapp/version/commit', 'wxoplatform.WeappVersion/weappCommit');
     // 删除小程序版本
     Route::delete('weapp/version/:id', 'wxoplatform.WeappVersion/delVersion');
+    // 直接同步模板库（已上传成功、无模板ID 的记录补跑，不创建任务）
+    Route::post('weapp/version/syncTemplate', 'wxoplatform.WeappVersion/syncTemplate');
     // 获取最后一次提交记录
     Route::get('weapp/commit/last', 'wxoplatform.WeappVersion/lastCommitRecord');
     // 获取小程序提交记录

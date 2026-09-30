@@ -7,6 +7,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+declare(strict_types=1);
 
 namespace think\db\connector;
 
@@ -107,7 +108,7 @@ class Oracle extends PDOConnection
      *
      * @return mixed
      */
-    public function getLastInsID(BaseQuery $query, string $sequence = null)
+    public function getLastInsID(BaseQuery $query, ?string $sequence = null)
     {
         if (!is_null($sequence)) {
             $pdo = $this->linkID->query("select {$sequence}.currval as id from dual");
@@ -120,5 +121,17 @@ class Oracle extends PDOConnection
     protected function supportSavepoint(): bool
     {
         return true;
+    }
+
+    /**
+     * 获取设置时区的SQL语句.
+     *
+     * @param string $timezone 时区名称，如 'Asia/Shanghai' 或 '+08:00'
+     *
+     * @return string
+     */
+    protected function getSetTimezoneSql(string $timezone): string
+    {
+        return "ALTER SESSION SET TIME_ZONE = '$timezone'";
     }
 }

@@ -39,7 +39,7 @@ class CoreAddonService extends CoreAddonBaseService
      * @param string $type icon | cover
      * @return string 公网路径，如 /addon/shop/icon.png
      */
-    private function getAddonImagePublicUrl(string $sourcePath, string $key, string $type = 'icon'): string
+    public function getAddonImagePublicUrl(string $sourcePath, string $key, string $type = 'icon'): string
     {
         $filename = $type === 'cover' ? 'cover.png' : 'icon.png';
         $targetDir = public_path() . 'addon' . DIRECTORY_SEPARATOR . $key;

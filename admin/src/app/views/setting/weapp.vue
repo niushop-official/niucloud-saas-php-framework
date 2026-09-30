@@ -1,14 +1,15 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-                <el-button type="primary" @click="showEvent">{{ t('addVersion') }}</el-button>
-            </div>
-
-            <div class="mt-[20px]">
-                <el-table :data="weappTableData.data" size="large" v-loading="weappTableData.loading">
+            <div class="table-panel mt-[20px] table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false">
+                    <template #actions>
+                        <el-button type="primary" @click="showEvent">{{ t('addVersion') }}</el-button>
+                    </template>
+                </table-toolbar>
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="weappTableData.data" size="large" v-loading="weappTableData.loading">
                     <template #empty>
                         <span>{{ !weappTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -23,13 +24,16 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="weappTableData.page" v-model:page-size="weappTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="weappTableData.total"
-                        @size-change="loadWeappTemplateList()" @current-change="loadWeappTemplateList" />
                 </div>
+                <table-pagination
+                    v-model:current-page="weappTableData.page"
+                    v-model:page-size="weappTableData.limit"
+                    :total="weappTableData.total"
+                    @size-change="loadWeappTemplateList()"
+                    @current-change="loadWeappTemplateList"
+                />
             </div>
-        </el-card>
+        </div>
 
         <cron-info ref="cronDialog" @complete="weappTableData" />
 
@@ -60,11 +64,17 @@ import { reactive, ref, computed } from 'vue'
 import { t } from '@/lang'
 import { getVersionList, addVersion, editVersion, deleteVersion } from '@/app/api/weapp'
 import { ElMessageBox, FormInstance } from 'element-plus'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import CronInfo from '@/app/views/setting/components/cron-info.vue'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const weappTableData = reactive({
     page: 1,

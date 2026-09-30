@@ -8,10 +8,6 @@
                         <icon name="element Expand" v-if="systemStore.menuIsCollapse" />
                         <icon name="element Fold" v-else />
                     </div> -->
-                    <!-- 刷新当前页 -->
-                    <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
-                        <icon name="element Refresh" />
-                    </div>
                     <!-- 面包屑导航 -->
                     <div class="flex items-center h-full pl-[10px] hidden-xs-only">
                         <el-breadcrumb separator="/">
@@ -45,25 +41,13 @@
                             </template>
                         </el-dropdown>
                     </div>
-                    <div class="flex items-center flex-shrink-0 hidden-xs-only">
-                        <el-popover placement="bottom" :width="330" trigger="click" v-model:visible="isMenuSearch" >
-                            <template #reference>
-                                <i class="iconfont icona-sousuoV6xx-36 cursor-pointer px-[8px] !text-[14px]"></i>
-                            </template>
-                            <template #default>
-                                <div class="flex items-center">
-                                    <el-select v-model="selectedRoute"  filterable class="!w-[250px] mr-[20px] menu-select" :teleported="false" clearable  @change="handleRouteSelect">
-                                        <el-option v-for="item in flatRoutes" :key="item.name" :label="item.full_title" :value="item.name" >
-                                        </el-option>
-                                    </el-select>
-                                    <el-button type="primary" link @click="isMenuSearch = false">{{t('取消')}}</el-button>
-                                </div>
-                            </template>
-                        </el-popover>
+                    <!-- 菜单搜索 -->
+                    <div class="navbar-item flex items-center h-full cursor-pointer">
+                        <menu-search />
                     </div>
                     
                     <!-- 预览 只有站点时展示-->
-                    <i class="iconfont iconicon_huojian1 cursor-pointer px-[8px]" :title="t('visitWap')" @click="toPreview"></i>
+                    <visit-channel class="px-[8px]" />
                     <i class="iconfont iconlingdang-xianxing cursor-pointer px-[8px]" :title="t('newInfo')" v-if="appType == 'site'"></i>
                     <!-- 切换语言 -->
                     <!-- <div class="navbar-item flex items-center h-full cursor-pointer">
@@ -74,13 +58,17 @@
                         <icon name="iconfont icontuichuquanping" v-if="isFullscreen" />
                         <icon name="iconfont iconquanping" v-else />
                     </div> -->
+                    <!-- 任务指示器：有进行中的任务时图标转动，悬浮可查看进度并进入详情 -->
+                    <div class="navbar-item flex items-center h-full cursor-pointer" @click="openTaskIndicator">
+                        <task-indicator ref="taskIndicatorRef" />
+                    </div>
                     <!-- 布局设置 -->
-                    <div class="navbar-item flex items-center h-full cursor-pointer">
-                        <layout-setting />
+                    <div class="navbar-item flex items-center h-full cursor-pointer" @click="openLayoutSetting">
+                        <layout-setting ref="layoutSettingRef" :show-tab="true" />
                     </div>
                     <!-- 用户信息 -->
-                    <div class="navbar-item flex items-center h-full cursor-pointer">
-                        <user-info />
+                    <div class="navbar-item flex items-center h-full cursor-pointer" @click="openUserInfo">
+                        <user-info ref="userInfoRef" />
                     </div>
                 </div>
             </el-col>
@@ -101,20 +89,27 @@
 
 <script lang="ts" setup>
 import { computed, ref, onMounted } from 'vue'
-import layoutSetting from './layout-setting.vue'
+import layoutSetting from '@/layout/components/layout-setting/index.vue'
+import menuSearch from '@/layout/components/menu-search/index.vue'
+import taskIndicator from '@/layout/components/task-indicator/index.vue'
 import userInfo from './user-info.vue'
+import visitChannel from '@/components/visit-channel/index.vue'
 import { useFullscreen } from '@vueuse/core'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
-import useAppStore from '@/stores/modules/app'
 import { useRoute, useRouter } from 'vue-router'
 import { t } from '@/lang'
 import storage from '@/utils/storage'
 
 const appType = storage.get('app_type')
+const taskIndicatorRef = ref()
+const layoutSettingRef = ref()
+const userInfoRef = ref()
+const openTaskIndicator = () => taskIndicatorRef.value?.open()
+const openLayoutSetting = () => layoutSettingRef.value?.open()
+const openUserInfo = () => userInfoRef.value?.open()
 const { toggle: toggleFullscreen } = useFullscreen()
 const systemStore = useSystemStore()
-const appStore = useAppStore()
 const route = useRoute()
 const router = useRouter()
 const screenWidth = ref(window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
@@ -231,12 +226,6 @@ onMounted(() => {
 //     })
 // }
 
-// 刷新路由
-const refreshRouter = () => {
-    if (!appStore.routeRefreshTag) return
-    appStore.refreshRouterView()
-}
-
 // 面包屑导航
 const breadcrumb = computed(() => {
     // console.log(route.matched)
@@ -245,16 +234,6 @@ const breadcrumb = computed(() => {
     return matched
 })
 
-// 跳转去预览
-const toPreview = () => {
-    const url = router.resolve({
-        path: '/preview/wap',
-        query: {
-            page:'/'
-        }
-    })
-    window.open(url.href)
-}
 </script>
 
 <style lang="scss" scoped>

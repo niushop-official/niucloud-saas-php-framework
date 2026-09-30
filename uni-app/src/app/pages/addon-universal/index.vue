@@ -29,7 +29,7 @@ interface BridgeOptions {
 onLoad((options: BridgeOptions) => {
     if (options?.addon && options?.page) {
         addonKey.value = options.addon
-        const p = options.page.startsWith('pages/') ? options.page : `pages/${options.page}`
+        const p = /pages\//.test(options.page) ? options.page : `pages/${options.page}`
         pagePath.value = p
         fullRoute.value = `/addon/${options.addon}/${p}`
         useConfigStore().addon = options.addon

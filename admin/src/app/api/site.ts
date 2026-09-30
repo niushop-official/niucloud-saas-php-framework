@@ -301,3 +301,11 @@ export function getShowApp() {
 export function getShowSpecialMenu() {
     return request.get('site/special_menu')
 }
+
+/**
+ * 获取站点创建流程（主流程 + 子流程）
+ * @param params
+ */
+export function getSiteCreateFlow(params: Record<string, any> = {}) {
+    return request.get('site/create_flow', { params })
+}

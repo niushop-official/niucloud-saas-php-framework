@@ -1,6 +1,6 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center mb-[5px]">
                 <span class="text-lg">{{pageName}}</span>
@@ -12,7 +12,7 @@
                 <el-tab-pane :label="t('tabPrinterTemplate')" name="/printer/template/list" />
             </el-tabs>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="printerTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('printerName')" prop="printer_name">
                         <el-input v-model.trim="printerTable.searchParam.printer_name" :placeholder="t('printerNamePlaceholder')" maxlength="20" />
@@ -25,8 +25,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="printerTable.data" size="large" v-loading="printerTable.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="printerTable.data" size="large" v-loading="printerTable.loading">
                     <template #empty>
                         <span>{{ !printerTable.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -44,7 +45,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column :label="t('operation')" fixed="right" min-width="120">
+                    <el-table-column :label="t('operation')" fixed="right" min-width="250">
                        <template #default="{ row }">
                            <el-button type="primary" link @click="testPrintEvent(row.printer_id)">{{ t('testPrint') }}</el-button>
                            <el-button type="primary" link @click="refreshTokenEvent(row.printer_id)">{{ t('refreshToken') }}</el-button>
@@ -54,6 +55,7 @@
                     </el-table-column>
 
                 </el-table>
+                </div>
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="printerTable.page" v-model:page-size="printerTable.limit"
                         layout="total, sizes, prev, pager, next, jumper" :total="printerTable.total"
@@ -71,11 +73,15 @@ import { t } from '@/lang'
 import { getPrinterPageList, modifyPrinterStatus, deletePrinter, refreshPrinterToken, testPrint } from '@/app/api/printer'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import { setTablePageStorage, getTablePageStorage } from '@/utils/common'
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const repeat = ref(false)
 
 const handleClick = (path: string) => {

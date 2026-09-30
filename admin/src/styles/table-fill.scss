@@ -1,0 +1,146 @@
+/**
+ * 列表页表格撑满容器
+ * 配合 hooks/useTablePageHeight 使用：表格占据页面剩余高度，超出部分在表格内部滚动
+ */
+.table-fill-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+/**
+ * 列表页纵向节奏：页头 / 提示语 / 页签 / 搜索区 / 表格面板之间统一用 --cmp-table-page-section-gap。
+ *
+ * 间距只由容器 gap 承担，区块自身的上下外边距一律清零，避免出现
+ * 「区块下边距 + 容器 gap」这类叠加出来的多余缝隙。
+ * 旧列表页（未使用 table-fill-page 结构）继续由 .table-panel 的上边距兜底。
+ */
+@mixin table-fill-page-section-gap {
+    gap: var(--cmp-table-page-section-gap);
+
+    > .table-search-wrap,
+    > .table-panel,
+    > .table-fill-page__search,
+    > .table-fill-page__panel,
+    > .el-alert,
+    > .tip-notice {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/** 卡片容器内直接子元素的高度分配，div 与 el-card 两种写法共用 */
+@mixin table-fill-page-card-children {
+    @include table-fill-page-section-gap;
+
+    // 页头、页签、搜索区等保持自身高度
+    > * {
+        flex-shrink: 0;
+    }
+
+    > .table-fill-page__panel,
+    > .table-fill-page__table {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    // 页签场景：仅当页签自身承载表格（是最后一个子元素）时撑满，
+    // 否则页签只是筛选标签（后面还有表格面板），不参与高度分配
+    > .el-tabs:last-child {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-height: 0;
+
+        > .el-tabs__content {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+
+            > .el-tab-pane {
+                display: flex;
+                flex: 1 1 auto;
+                flex-direction: column;
+                min-height: 0;
+
+                @include table-fill-page-section-gap;
+
+                > * {
+                    flex-shrink: 0;
+                }
+
+                > .table-fill-page__panel,
+                > .table-fill-page__table {
+                    flex: 1 1 auto;
+                    min-height: 0;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 列表页内容容器，外层卡片可能是：
+ * 1. <div class="table-fill-page__card">：弹性容器就是自身，页面留白交给 --cmp-layout-content-padding
+ * 2. <el-card class="... table-fill-page__card">：弹性容器是 el-card__body
+ */
+.table-fill-page__card {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+
+    @include table-fill-page-card-children;
+
+    // el-card 写法：布局容器是 el-card__body
+    > .el-card__body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        box-sizing: border-box;
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+
+        @include table-fill-page-card-children;
+    }
+}
+
+.table-fill-page__search {
+    flex-shrink: 0;
+}
+
+.table-fill-page__panel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+
+    // 面板内除表格外的内容（页签、批量操作、分页等）保持自身高度
+    > * {
+        flex-shrink: 0;
+    }
+
+    > .table-fill-page__table {
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+}
+
+.table-fill-page__table {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+
+    > .el-table {
+        flex: 1;
+        min-width: 0;
+    }
+}

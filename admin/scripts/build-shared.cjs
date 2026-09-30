@@ -27,7 +27,7 @@ const ENTRY_CONTENT = {
     'icons-vue': "export * from '@element-plus/icons-vue'\n",
     axios: "export { default } from 'axios'\nexport * from 'axios'\n",
     'vue-i18n': "export * from 'vue-i18n/dist/vue-i18n.esm-bundler.js'\n",
-    'admin-lang': "export { language, t, default } from '../../src/lang/index.ts'\n",
+    'admin-lang': "export { language, t, i18n, default } from '../../src/lang/index.ts'\n",
     'core-shared': ''  // 动态生成，从 API 目录扫描
 }
 

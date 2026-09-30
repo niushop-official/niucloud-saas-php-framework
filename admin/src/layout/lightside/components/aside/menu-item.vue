@@ -2,20 +2,16 @@
     <template v-if="meta.show">
         <el-sub-menu v-if="routes.children" :index="String(routes.name)">
             <template #title>
-                <div v-if="meta.icon && props.level != 2" class="w-[13px] h-[13px] mr-[10rpx] relative flex justify-center items-center">
-                    <icon v-if="meta.icon && props.level != 2" :name="meta.icon" color="#1D1F3A" class="absolute !w-auto" />
-                </div>
-                <span class="using-hidden" :class="['ml-[10px]', {'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}]">{{ meta.title }}</span>
+                <icon v-if="props.level == 1" :name="menuIcon" class="aside-menu-icon" />
+                <span class="aside-menu-label using-hidden">{{ meta.title }}</span>
             </template>
             <menu-item v-for="(route, index) in routes.children" :routes="route" :level="props.level + 1"  :key="index" :isNewVersion="props.isNewVersion" />
         </el-sub-menu>
-        <el-menu-item v-else :index="String(routes.name)" :route="routes.path">
+        <el-menu-item v-else :index="String(routes.name)" @click="handleJump(routes.name)">
             <template #title>
-                <div v-if="meta.icon && props.level != 2" class="w-[13px] h-[13px] mr-[10rpx] relative flex justify-center items-center">
-                    <icon v-if="meta.icon && props.level != 2"  color="#1D1F3A" :name="meta.icon" class="absolute !w-auto" />
-                </div>
-                <span class="using-hidden" :class="[{'text-[15px]': routes.meta.class == 1}, {'text-[14px]': routes.meta.class != 1}, {'ml-[10px]': routes.meta.class == 2, 'ml-[15px]': routes.meta.class == 3}]">{{ meta.title }}
-                    <div v-if="meta.view=='app/upgrade'&& props.isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[10px] right-[65px]"></div>
+                <icon v-if="props.level == 1" :name="menuIcon" class="aside-menu-icon" />
+                <span class="aside-menu-label using-hidden">{{ meta.title }}
+                    <div v-if="meta.view=='app/upgrade'&& props.isNewVersion" class="w-[7px] h-[7px] bg-[var(--sys-color-danger)] absolute flex items-center justify-center rounded-full top-[10px] right-[65px]"></div>
                 </span>
             </template>
         </el-menu-item>
@@ -25,8 +21,10 @@
 <script lang="ts" setup>
 import { t } from '@/lang'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useMenuJump } from '@/hooks/useMenuActive'
+import { resolveMenuIcon } from '@/utils/menu-icon'
 import menuItem from './menu-item.vue'
-import { CollectionTag } from '@element-plus/icons-vue'
 
 const props = defineProps({
     routes: {
@@ -42,11 +40,20 @@ const props = defineProps({
         default: false
     }
 })
+const router = useRouter()
 const meta = computed(() => props.routes.meta)
+const menuIcon = computed(() => resolveMenuIcon(meta.value?.icon))
+const { handleMenuJump } = useMenuJump()
+
+// 统一处理跳转：需要新窗口打开的菜单开新标签页并保持原高亮，其余当前页跳转
+const handleJump = (routeName: string) => {
+    if (handleMenuJump(routeName, meta.value)) return
+    router.push({ name: routeName })
+}
 </script>
 
-<style lang="scss" scoped>
-:deep(.el-sub-menu){
+<style lang="scss">
+.el-sub-menu{
     .el-icon{
         width: auto;
     }
@@ -59,10 +66,10 @@ const meta = computed(() => props.routes.meta)
 }
 .index-item {
 	border: 1px solid;
-	border-color: var(--el-color-primary);
+	border-color: var(--sys-color-primary);
     &:hover {
-		color: #fff;
-        background-color: var(--el-color-primary);
+		color: var(--sys-color-text-on-primary);
+        background-color: var(--sys-color-primary);
     }
 }
 

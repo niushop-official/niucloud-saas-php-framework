@@ -3,11 +3,13 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
+// +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace think\db;
 
@@ -46,7 +48,7 @@ class Mongo extends BaseQuery
      *
      * @return mixed
      */
-    public function command(Command $command, string $dbName = '', ReadPreference $readPreference = null, $typeMap = null)
+    public function command(Command $command, string $dbName = '', ?ReadPreference $readPreference = null, $typeMap = null)
     {
         return $this->connection->command($command, $dbName, $readPreference, $typeMap);
     }
@@ -106,7 +108,7 @@ class Mongo extends BaseQuery
      *
      * @return int
      */
-    public function count(string $field = null): int
+    public function count(?string $field = null): int
     {
         $result = $this->cmd('count');
 
@@ -125,7 +127,7 @@ class Mongo extends BaseQuery
     public function aggregate(string $aggregate, $field, bool $force = false, bool $one = false)
     {
         $result = $this->cmd('aggregate', [strtolower($aggregate), $field]);
-        $value = $result[0]['aggregate'] ?? 0;
+        $value  = $result[0]['aggregate'] ?? 0;
 
         if ($force) {
             $value += 0;
@@ -161,12 +163,12 @@ class Mongo extends BaseQuery
     /**
      * 字段值增长
      *
-     * @param string $field 字段名
-     * @param float  $step  增长值
+     * @param string    $field 字段名
+     * @param float|int $step  增长值
      *
      * @return $this
      */
-    public function inc(string $field, float $step = 1)
+    public function inc(string $field, float|int $step = 1)
     {
         $this->options['data'][$field] = ['$inc', $step];
 
@@ -176,12 +178,12 @@ class Mongo extends BaseQuery
     /**
      * 字段值减少.
      *
-     * @param string $field 字段名
-     * @param float  $step  减少值
+     * @param string    $field 字段名
+     * @param float|int $step  减少值
      *
      * @return $this
      */
-    public function dec(string $field, float $step = 1)
+    public function dec(string $field, float|int $step = 1)
     {
         return $this->inc($field, -1 * $step);
     }
@@ -462,14 +464,14 @@ class Mongo extends BaseQuery
      *
      * @return $this
      */
-    public function limit(int $offset, int $length = null)
+    public function limit(int $offset, ?int $length = null)
     {
         if (is_null($length)) {
             $length = $offset;
             $offset = 0;
         }
 
-        $this->options['skip'] = $offset;
+        $this->options['skip']  = $offset;
         $this->options['limit'] = $length;
 
         return $this;
@@ -486,7 +488,9 @@ class Mongo extends BaseQuery
     public function order($field, string $order = '')
     {
         if (is_array($field)) {
-            $this->options['sort'] = $field;
+            $this->options['sort'] = array_map(function ($val) {
+                return 'asc' == strtolower($val) ? 1 : -1;
+            }, $field);
         } else {
             $this->options['sort'][$field] = 'asc' == strtolower($order) ? 1 : -1;
         }
@@ -537,23 +541,21 @@ class Mongo extends BaseQuery
      *
      * @return Cursor
      */
+    public function cursor(): Cursor
+    {
+        return $this->getCursor();
+    }
+    
+    /**
+     * 执行查询但只返回Cursor对象
+     *
+     * @return Cursor
+     */
     public function getCursor(): Cursor
     {
         $this->parseOptions();
 
-        return $this->connection->getCursor($this);
-    }
-
-    /**
-     * 获取当前的查询标识.
-     *
-     * @param mixed $data 要序列化的数据
-     *
-     * @return string
-     */
-    public function getQueryGuid($data = null): string
-    {
-        return md5($this->getConfig('database') . serialize(var_export($data ?: $this->options, true)));
+        return $this->connection->cursor($this);
     }
 
     /**
@@ -569,7 +571,7 @@ class Mongo extends BaseQuery
     public function paginate($listRows = null, $simple = false): Paginator
     {
         if (is_int($simple)) {
-            $total = $simple;
+            $total  = $simple;
             $simple = false;
         }
 
@@ -581,10 +583,10 @@ class Mongo extends BaseQuery
         ];
 
         if (is_array($listRows)) {
-            $config = array_merge($defaultConfig, $listRows);
+            $config   = array_merge($defaultConfig, $listRows);
             $listRows = intval($config['list_rows']);
         } else {
-            $config = $defaultConfig;
+            $config   = $defaultConfig;
             $listRows = intval($listRows ?: $config['list_rows']);
         }
 
@@ -599,11 +601,11 @@ class Mongo extends BaseQuery
 
             unset($this->options['order'], $this->options['limit'], $this->options['page'], $this->options['field']);
 
-            $total = $this->count();
+            $total   = $this->count();
             $results = $this->options($options)->page($page, $listRows)->select();
         } elseif ($simple) {
             $results = $this->limit(($page - 1) * $listRows, $listRows + 1)->select();
-            $total = null;
+            $total   = null;
         } else {
             $results = $this->page($page, $listRows)->select();
         }
@@ -629,7 +631,7 @@ class Mongo extends BaseQuery
     public function chunk(int $count, callable $callback, $column = null, string $order = 'asc'): bool
     {
         $options = $this->getOptions();
-        $column = $column ?: $this->getPk();
+        $column  = $column ?: $this->getPk();
 
         if (isset($options['order'])) {
             unset($options['order']);
@@ -645,6 +647,9 @@ class Mongo extends BaseQuery
                 [$alias, $key] = explode('.', $column);
             } else {
                 $key = $column;
+                if ($key == '_id' && $this->connection->getConfig('pk_convert_id')) {
+                    $key = 'id';
+                }
             }
         }
 
@@ -659,7 +664,7 @@ class Mongo extends BaseQuery
                 $times++;
                 $query = $this->options($options)->page($times, $count);
             } else {
-                $end = $resultSet->pop();
+                $end    = $resultSet->pop();
                 $lastId = is_array($end) ? $end[$key] : $end->getData($key);
 
                 $query = $this->options($options)
@@ -724,10 +729,10 @@ class Mongo extends BaseQuery
             // 根据页数计算limit
             [$page, $listRows] = $options['page'];
 
-            $page = $page > 0 ? $page : 1;
-            $listRows = $listRows > 0 ? $listRows : (is_numeric($options['limit']) ? $options['limit'] : 20);
-            $offset = $listRows * ($page - 1);
-            $options['skip'] = intval($offset);
+            $page             = $page > 0 ? $page : 1;
+            $listRows         = $listRows > 0 ? $listRows : (is_numeric($options['limit']) ? $options['limit'] : 20);
+            $offset           = $listRows * ($page - 1);
+            $options['skip']  = intval($offset);
             $options['limit'] = intval($listRows);
         }
 
@@ -762,5 +767,36 @@ class Mongo extends BaseQuery
         $fieldType = $this->getFieldsType();
 
         return $fieldType[$field] ?? null;
+    }
+
+    /**
+     * 获取字段类型
+     * 
+     * @return array
+     */
+    public function getType()
+    {
+        return $this->getFieldsType();
+    }
+
+    /**
+     * 获取自增主键
+     * 
+     * @return string
+     */
+    public function getAutoInc()
+    {
+        return '';
+    }
+
+    /**
+     * 设置自增主键
+     * 
+     * @param string $autoInc
+     * @return static
+     */
+    public function autoInc(?string $autoInc)
+    {
+        return $this;
     }
 }

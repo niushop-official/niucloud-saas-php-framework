@@ -20,12 +20,12 @@ class Weapp extends BaseOauth
         parent::initialize($config);
     }
 
-    public function getFansInfo(string $openid = null)
+    public function getFansInfo(?string $openid = null)
     {
         // TODO: Implement getFansInfo() method.
     }
 
-    public function oauth(string $code = null, array $options = [])
+    public function oauth(?string $code = null, array $options = [])
     {
         // TODO: Implement oauth() method.
     }

@@ -1,13 +1,13 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" class="w-[100px]" @click="dialogVisible = true">{{ t('addDiyPage') }}</el-button>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="diyPageTableData.searchParam" ref="searchFormDiyPageRef">
                     <el-form-item :label="t('title')" prop="title">
                         <el-input v-model.trim="diyPageTableData.searchParam.title" :placeholder="t('titlePlaceholder')" />
@@ -31,7 +31,8 @@
                 </el-form>
             </el-card>
 
-            <el-table :data="diyPageTableData.data" size="large" v-loading="diyPageTableData.loading">
+            <div class="table-fill-page__table">
+            <el-table height="100%" :data="diyPageTableData.data" size="large" v-loading="diyPageTableData.loading">
                 <template #empty>
                     <span>{{ !diyPageTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -50,7 +51,7 @@
                 </el-table-column>
                 <el-table-column prop="update_time" :label="t('updateTime')" min-width="120" />
 
-                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="160">
+                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="340">
                     <template #default="{ row }">
                         <el-button type="primary" link @click="toPreview(row)">{{ t('preview') }}</el-button>
                         <el-button v-if="row.is_default == 0" type="primary" link @click="setUse(row.id)">{{ t('use') }}</el-button>
@@ -62,6 +63,7 @@
                 </el-table-column>
 
             </el-table>
+            </div>
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="diyPageTableData.page" v-model:page-size="diyPageTableData.limit"
                     layout="total, sizes, prev, pager, next, jumper" :total="diyPageTableData.total"
@@ -131,10 +133,14 @@ import { getApps, getDiyPageList, deleteDiyPage, getDiyTemplate, editDiyPageShar
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { setTablePageStorage, getTablePageStorage } from '@/utils/common'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const pageType: any = reactive({}) // 页面类型
 

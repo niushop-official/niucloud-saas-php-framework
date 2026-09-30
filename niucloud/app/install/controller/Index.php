@@ -37,7 +37,7 @@ class Index extends BaseInstall
             $host = ( empty($_SERVER[ 'REMOTE_ADDR' ]) ? $_SERVER[ 'REMOTE_HOST' ] : $_SERVER[ 'REMOTE_ADDR' ] );
             $name = $_SERVER[ 'SERVER_NAME' ];
 
-            $verison = !( version_compare(PHP_VERSION, '8.0.0') == -1 );
+            $verison = !( version_compare(PHP_VERSION, '8.2.0') == -1 );
             //pdo
             $pdo = extension_loaded('pdo') && extension_loaded('pdo_mysql');
             $system_variables[] = [ "name" => "pdo", "need" => "开启", "status" => $pdo ];
@@ -175,7 +175,6 @@ class Index extends BaseInstall
                             "status" => 1,
                             "message" => "数据库不存在,系统将自动创建"
                         ];
-                        return fail($result);
                     }
                 }
                 @mysqli_close($conn);
@@ -360,7 +359,7 @@ class Index extends BaseInstall
             }
 
             //修改自增主键默认值
-            Db::execute("alter table " . env('database.prefix', '') . "site auto_increment = 100000");
+            Db::execute("alter table " . env('database.prefix', '') . "site auto_increment = 1000");
             //获取默认套餐
 
             $fp = fopen($this->lock_file, 'wb');
@@ -406,7 +405,12 @@ class Index extends BaseInstall
         }
 
         //数据库可写和是否存在测试
-        $empty_db = mysqli_select_db($conn, $dbname);
+        $empty_db = null;
+        try {
+            $empty_db = mysqli_select_db($conn, $dbname);
+        } catch (Exception $e) {
+        }
+
         if ($empty_db) {
             $sql = "DROP DATABASE `$dbname`";
             $retval = mysqli_query($conn, $sql);

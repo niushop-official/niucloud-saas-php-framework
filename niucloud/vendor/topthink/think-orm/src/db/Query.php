@@ -3,18 +3,20 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace think\db;
 
 use PDOStatement;
+use think\Collection;
 use think\db\exception\DbException as Exception;
+use think\model\LazyCollection as ModelLazyCollection;
 
 /**
  * PDO数据查询类.
@@ -22,8 +24,8 @@ use think\db\exception\DbException as Exception;
 class Query extends BaseQuery
 {
     use concern\JoinAndViewQuery;
-    use concern\ParamsBind;
     use concern\TableFieldInfo;
+    use concern\Transaction;
 
     /**
      * 表达式方式指定Field排序.
@@ -143,7 +145,7 @@ class Query extends BaseQuery
      */
     public function batchQuery(array $sql = []): bool
     {
-        return $this->connection->batchQuery($this, $sql);
+        return $this->connection->batchQuery($sql);
     }
 
     /**
@@ -317,7 +319,7 @@ class Query extends BaseQuery
     /**
      * 获取当前数据表的主键.
      *
-     * @return string|array
+     * @return string|array|null
      */
     public function getPk()
     {
@@ -335,7 +337,7 @@ class Query extends BaseQuery
      *
      * @return $this
      */
-    public function autoinc(string $autoinc)
+    public function autoinc(?string $autoinc)
     {
         $this->autoinc = $autoinc;
 
@@ -361,14 +363,22 @@ class Query extends BaseQuery
     /**
      * 字段值增长
      *
-     * @param string $field 字段名
-     * @param float  $step  增长值
+     * @param string    $field    字段名
+     * @param float|int $step     增长值
+     * @param int       $lazyTime 延迟时间（秒）
      *
      * @return $this
      */
-    public function inc(string $field, float $step = 1)
+    public function inc(string $field, float|int $step = 1, int $lazyTime = 0)
     {
-        $this->options['data'][$field] = ['INC', $step];
+        if ($lazyTime > 0) {
+            $step = $this->lazyWrite($field, 'inc', $step, $lazyTime);
+            if (false === $step) {
+                return $this;
+            }
+        }
+
+        $this->options['data'][$field] = new Express('+', $step);
 
         return $this;
     }
@@ -376,14 +386,23 @@ class Query extends BaseQuery
     /**
      * 字段值减少.
      *
-     * @param string $field 字段名
-     * @param float  $step  增长值
+     * @param string    $field    字段名
+     * @param float|int $step     增长值
+     * @param int       $lazyTime 延迟时间（秒）
      *
      * @return $this
      */
-    public function dec(string $field, float $step = 1)
+    public function dec(string $field, float|int $step = 1, int $lazyTime = 0)
     {
-        $this->options['data'][$field] = ['DEC', $step];
+        if ($lazyTime > 0) {
+            $step = $this->lazyWrite($field, 'dec', $step, $lazyTime);
+            if (false === $step) {
+                return $this;
+            }
+            return $this->inc($field, $step);
+        }
+
+        $this->options['data'][$field] = new Express('-', $step);
 
         return $this;
     }
@@ -391,78 +410,44 @@ class Query extends BaseQuery
     /**
      * 字段值增长（支持延迟写入）
      *
-     * @param string    $field 字段名
-     * @param int       $step  步进值
+     * @param string    $field    字段名
+     * @param float|int $step     步进值
      * @param int       $lazyTime 延迟时间（秒）
      *
      * @return int|false
      */
-    public function setInc(string $field, int $step = 1, $lazyTime = 0)
+    public function setInc(string $field, float|int $step = 1, int $lazyTime = 0)
     {
-        if (empty($this->options['where']) && $this->model) {
-            $this->where($this->model->getWhere());
-        }
-
-        if (empty($this->options['where'])) {
-            // 如果没有任何更新条件则不执行
-            throw new Exception('miss update condition');
-        }
-
-        if ($lazyTime > 0) {
-            $guid = $this->getLazyFieldCacheKey($field);
-            $step = $this->lazyWrite('inc', $guid, $step, $lazyTime);
-            if (false === $step) {
-                return true;
-            }
-        }
-
-        return $this->inc($field, $step)->update();
+        return $this->inc($field, $step, $lazyTime)->update();
     }
 
     /**
      * 字段值减少（支持延迟写入）
      *
-     * @param string    $field 字段名
-     * @param int       $step  步进值
+     * @param string    $field    字段名
+     * @param float|int $step     步进值
      * @param int       $lazyTime 延迟时间（秒）
      *
      * @return int|false
      */
-    public function setDec(string $field, int $step = 1, int $lazyTime = 0)
+    public function setDec(string $field, float|int $step = 1, int $lazyTime = 0)
     {
-        if (empty($this->options['where']) && $this->model) {
-            $this->where($this->model->getWhere());
-        }
-
-        if (empty($this->options['where'])) {
-            // 如果没有任何更新条件则不执行
-            throw new Exception('miss update condition');
-        }
-
-        if ($lazyTime > 0) {
-            $guid = $this->getLazyFieldCacheKey($field);
-            $step = $this->lazyWrite('dec', $guid, $step, $lazyTime);
-            if (false === $step) {
-                return true;
-            }
-            return $this->inc($field, $step)->update();
-        }
-
-        return $this->dec($field, $step)->update();
+        return $this->dec($field, $step, $lazyTime)->update();
     }
 
     /**
      * 延时更新检查 返回false表示需要延时
      * 否则返回实际写入的数值
-     * @access protected
+     * @access public
+     * @param  string  $field    字段名
      * @param  string  $type     自增或者自减
-     * @param  string  $guid     写入标识
-     * @param  int     $step     写入步进值
+     * @param  float|int   $step     写入步进值
      * @param  int     $lazyTime 延时时间(s)
      * @return false|integer
      */
-    protected function lazyWrite(string $type, string $guid, int $step, int $lazyTime)
+    public function lazyWrite(string $field, string $type, float|int $step, int $lazyTime)
     {
+        $guid  = $this->getLazyFieldCacheKey($field);
         $cache = $this->getCache();
         if (!$cache->has($guid . '_time')) {
             // 计时开始
@@ -509,18 +494,6 @@ class Query extends BaseQuery
     }
 
     /**
-     * 获取当前的查询标识.
-     *
-     * @param mixed $data 要序列化的数据
-     *
-     * @return string
-     */
-    public function getQueryGuid($data = null): string
-    {
-        return md5($this->getConfig('database') . serialize(var_export($data ?: $this->options, true)) . serialize($this->getBind(false)));
-    }
-
-    /**
      * 执行查询但只返回PDOStatement对象
      *
      * @return PDOStatement
@@ -531,84 +504,142 @@ class Query extends BaseQuery
     }
 
     /**
-     * 使用游标查找记录.
+     * 使用游标查找记录.（不支持查询缓存）
      *
-     * @param mixed $data 数据
-     *
-     * @return \Generator
+     * @param bool $unbuffered 是否开启无缓冲查询（仅限mysql）
+     * 
+     * @return LazyCollection
      */
-    public function cursor($data = null)
+    public function cursor(bool $unbuffered = false): LazyCollection
     {
-        if (!is_null($data)) {
-            // 主键条件分析
-            $this->parsePkWhere($data);
+        $connection = clone $this->connection;
+        $class      = $this->model ? ModelLazyCollection::class : LazyCollection::class;
+
+        if (!empty($this->options['with_join'])) {
+            $withJoin  = true;
+            $relations = $this->options['with_join'];
+        } elseif(!empty($this->options['with'])) {
+            $withJoin  = false;
+            $relations = $this->options['with'];
         }
 
-        $this->options['data'] = $data;
+        if (isset($withJoin)) {
+            return (new $class(function () use ($connection, $unbuffered) {
+                yield from $connection->cursor($this, $unbuffered);
+            }))->load($relations, false, $withJoin);
+        } else {
+            return new $class(function () use ($connection, $unbuffered) {
+                yield from $connection->cursor($this, $unbuffered);
+            });
+        }
+    }
 
-        $connection = clone $this->connection;
-
-        return $connection->cursor($this);
+    /**
+     * 流式处理查询结果（不支持查询缓存）
+     *
+     * @param callable $callback    处理回调
+     * @param bool     $unbuffered  是否使用无缓冲查询（仅MySQL支持）
+     *
+     * @return int 处理的记录数
+     */
+    public function stream(callable $callback, bool $unbuffered = false): int
+    {
+        $count = 0;
+        $this->cursor($unbuffered)
+            ->each(function ($item) use ($callback, &$count) {
+                $callback($item);
+                $count++;
+            });
+        return $count;
     }
 
     /**
      * 分批数据返回处理.
      *
-     * @param int          $count    每次处理的数据数量
-     * @param callable     $callback 处理回调方法
-     * @param string|array $column   分批处理的字段名
-     * @param string       $order    字段排序
+     * @param int         $size    每次处理的数据数量
+     * @param callable    $callback 处理回调方法
+     * @param string|null $column   分批处理的字段名
+     * @param string      $order    字段排序
      *
      * @throws Exception
      *
      * @return bool
      */
-    public function chunk(int $count, callable $callback, string|array $column = null, string $order = 'asc'): bool
+    public function chunk(int $size, callable $callback, string | null $column = null, string $order = 'asc'): bool
     {
-        $options = $this->getOptions();
-        $column = $column ?: $this->getPk();
-
-        if (isset($options['order'])) {
-            unset($options['order']);
-        }
-
-        $bind = $this->bind;
-
-        if (is_array($column)) {
-            $times = 1;
-            $query = $this->options($options)->page($times, $count);
-        } else {
-            $query = $this->options($options)->limit($count);
-
-            if (str_contains($column, '.')) {
-                [$alias, $key] = explode('.', $column);
-            } else {
-                $key = $column;
-            }
-        }
-
-        $resultSet = $query->order($column, $order)->select();
-
-        while (count($resultSet) > 0) {
-            if (false === call_user_func($callback, $resultSet)) {
+        $chunks = $this->lazy($size, $column, $order)->chunk($size);
+        
+        foreach ($chunks as $chunk) {
+            $result = $callback($chunk);
+            if ($result === false) {
                 return false;
             }
+        }
+        
+        return true;
+    }
 
-            if (isset($times)) {
-                $times++;
-                $query = $this->options($options)->page($times, $count);
-            } else {
-                $end = $resultSet->pop();
-                $lastId = is_array($end) ? $end[$key] : $end->getData($key);
-
-                $query = $this->options($options)
-                    ->limit($count)
-                    ->where($column, 'asc' == strtolower($order) ? '>' : '<', $lastId);
-            }
-
-            $resultSet = $query->bind($bind)->order($column, $order)->select();
+    /**
+     * 惰性分批遍历数据
+     * @param int         $count   每批处理的数量
+     * @param string|null $column  分批处理的字段名
+     * @param string      $order   字段排序 
+     * @return LazyCollection
+     */
+    public function lazy(int $size = 1000, ?string $column = null, string $order = 'desc'): LazyCollection
+    {
+        if ($size < 1) {
+            throw new Exception('The chunk size should be at least 1');
         }
 
-        return true;
+        $class = $this->model ? ModelLazyCollection::class : LazyCollection::class;
+        return new $class(function () use ($size, $column, $order) {
+            $limit   = (int) $this->getOption('limit', 0);
+            $column  = $column ?: $this->getPk();
+            $length  = $limit && $size >= $limit ? $limit : $size;
+            $options = $this->getOptions();
+            $bind    = $this->bind;
+            $times   = 0;
+            $field   = $this->getOption('field');
+            if (is_array($field) && false !== stripos(implode(',', $field), 'distinct')) {
+                $distinct = true;
+            } else {
+                $distinct = false;
+            }
+            if ($this->getOption('order') || !is_string($column) || $distinct) {
+                $page      = 1;
+                $resultSet = $this->options($options)->page($page, $length)->select();
+            } else {
+                $resultSet = $this->options($options)->order($column, $order)->limit($length)->select();
+            }
+
+            while (true) {
+                foreach ($resultSet as $item) {
+                    yield $item;
+                    $times++;
+                    if ($limit > $size && $times >= $limit) {
+                        break 2;
+                    }
+                    if (!isset($page)) {
+                        $lastId = $item[$column];
+                    }
+                }
+
+                if (count($resultSet) < $size) {
+                    break;
+                }
+
+                if (isset($page)) {
+                    $page++;
+                    $query = $this->options($options)->page($page, $length);
+                } else {
+                    $query = $this->options($options)
+                        ->where($column, 'asc' == strtolower($order) ? '>' : '<', $lastId)
+                        ->order($column, $order)
+                        ->limit($length);
+                }
+                $resultSet = $query->bind($bind)->select();
+            }
+        });
     }
 }

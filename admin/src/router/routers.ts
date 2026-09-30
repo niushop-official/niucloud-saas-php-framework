@@ -8,6 +8,29 @@ export const STATIC_ROUTES: Array<RouteRecordRaw> = [
     {
         path: '/:pathMatch(.*)*',
         component: () => import('@/app/views/error/404.vue')
+    },
+    // 客服聊天独立全屏页面（新窗口打开，供外部系统接入）
+    // 顶层路由不挂 admin/site 布局，直接全屏渲染
+    {
+        path: '/shop_customer/chat',
+        name: 'shop_customer_chat',
+        meta: {
+            type: 1,
+            title: '客服聊天'
+        },
+        component: loadAddonView('shop_customer', 'session/chat')
+    },
+    // 插件面板宿主页（全屏无布局，供 iframe 嵌入）
+    // 统一面板协议：任何系统的面板 = 一个 URL，query 传 addon/view/会员信息
+    // 本系统插件面板由聊天台拼 /addon_panel?addon=xx&view=xx；外部系统直接提供完整页面地址
+    {
+        path: '/addon_panel',
+        name: 'addon_panel_host',
+        meta: {
+            type: 1,
+            title: '插件面板'
+        },
+        component: () => import('@/app/views/addon_panel/index.vue')
     }
 ]
 
@@ -123,6 +146,7 @@ interface Route {
     children?: [],
     auth?:[],
     is_show: boolean,
+    is_blank?: boolean,
     app_type: string,
     addon: string,
     menu_attr ?:  String
@@ -143,6 +167,7 @@ const createRoute = function (route: Route, parentRoute: RouteRecordRaw | null =
             icon: route.icon,
             type: route.menu_type,
             show: route.is_show,
+            is_blank: route.is_blank,
             app: route.app_type,
             view: route.view_path,
             addon: route.addon,
@@ -199,7 +224,8 @@ export function formatRouters(routes: Route[], parentRoute: RouteRecordRaw | nul
  */
 export function findFirstValidRoute(routes: RouteRecordRaw[]): string | undefined {
     for (const route of routes) {
-        if (route.meta?.type == 1 && route.meta?.show) {
+        // 跳过需要新窗口打开的菜单
+        if (route.meta?.type == 1 && route.meta?.show && Number(route.meta?.is_blank) !== 1) {
             return route.name as string
         }
         if (route.children) {

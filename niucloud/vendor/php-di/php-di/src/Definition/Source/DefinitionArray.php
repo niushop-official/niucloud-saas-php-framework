@@ -27,7 +27,7 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
 
     private DefinitionNormalizer $normalizer;
 
-    public function __construct(array $definitions = [], Autowiring $autowiring = null)
+    public function __construct(array $definitions = [], ?Autowiring $autowiring = null)
     {
         if (isset($definitions[0])) {
             throw new \Exception('The PHP-DI definition is not indexed by an entry name in the definition array');
@@ -63,7 +63,7 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
         $this->wildcardDefinitions = null;
     }
 
-    public function getDefinition(string $name) : Definition|null
+    public function getDefinition(string $name) : ?Definition
     {
         // Look for the definition by name
         if (array_key_exists($name, $this->definitions)) {
@@ -86,7 +86,7 @@ class DefinitionArray implements DefinitionSource, MutableDefinitionSource
         foreach ($this->wildcardDefinitions as $key => $definition) {
             // Turn the pattern into a regex
             $key = preg_quote($key, '#');
-            $key = '#' . str_replace('\\' . self::WILDCARD, self::WILDCARD_PATTERN, $key) . '#';
+            $key = '#^' . str_replace('\\' . self::WILDCARD, self::WILDCARD_PATTERN, $key) . '#';
             if (preg_match($key, $name, $matches) === 1) {
                 array_shift($matches);
 

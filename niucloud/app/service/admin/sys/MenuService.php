@@ -11,8 +11,10 @@
 
 namespace app\service\admin\sys;
 
+use app\dict\sys\AppTypeDict;
 use app\dict\sys\MenuDict;
 use app\dict\sys\MenuTypeDict;
+use app\dict\sys\MethodDict;
 use app\model\sys\SysMenu;
 use app\service\admin\addon\AddonService;
 use app\service\admin\site\SiteService;
@@ -23,6 +25,7 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
 use think\db\exception\ModelNotFoundException;
 use think\facade\Cache;
+use think\facade\Db;
 use think\Model;
 
 /**
@@ -34,6 +37,20 @@ class MenuService extends BaseAdminService
 {
 
     public static $cache_tag_name = 'menu_cache';
+
+    /**
+     * 导出菜单保留的核心字段
+     */
+    private const EXPORT_MENU_FIELDS = [
+        'menu_key', 'parent_key', 'menu_name', 'menu_type', 'icon',
+        'api_url', 'router_path', 'view_path', 'methods', 'sort',
+        'status', 'is_show', 'is_blank', 'addon'
+    ];
+
+    /**
+     * 导入菜单文件大小上限（2M，业务限制）
+     */
+    private const IMPORT_FILE_MAX_BYTE = 2097152;
 
     public function __construct()
     {
@@ -51,6 +68,7 @@ class MenuService extends BaseAdminService
         $menu = $this->find($data[ 'menu_key' ], $data[ 'app_type' ]);
         if (!$menu->isEmpty()) throw new AdminException('validate_menu.exit_menu_key');//创建失败
 
+        $data = $this->normalizeIsBlank($data);
         $data[ 'source' ] = MenuDict::CREATE;
         $res = $this->model->create($data);
         if (!$res) throw new AdminException('ADD_FAIL');//创建失败
@@ -69,6 +87,7 @@ class MenuService extends BaseAdminService
      */
     public function edit(string $app_type, string $menu_key, array $data)
     {
+        $data = $this->normalizeIsBlank($data);
         $where = array(
             [ 'app_type', '=', $app_type ],
             [ 'menu_key', '=', $menu_key ]
@@ -76,6 +95,19 @@ class MenuService extends BaseAdminService
         $res = $this->model->update($data, $where);
         Cache::tag(self::$cache_tag_name)->clear();
         return $res;
+    }
+
+    /**
+     * 仅菜单类型（menu_type=1）支持新窗口打开，目录/按钮一律置为否
+     * @param array $data
+     * @return array
+     */
+    private function normalizeIsBlank(array $data): array
+    {
+        if ((string) ( $data[ 'menu_type' ] ?? '' ) !== MenuTypeDict::MENU) {
+            $data[ 'is_blank' ] = 0;
+        }
+        return $data;
     }
 
     /**
@@ -197,17 +229,28 @@ class MenuService extends BaseAdminService
 
     /**
      * 获取所有接口菜单
+     * @param string $app_type
+     * @param string $status
+     * @param int $is_tree
+     * @param int $is_button
+     * @param array $addons 指定应用范围（空字符串代表系统菜单）；为空时默认"系统菜单 + 当前站点已安装应用"
      */
-    public function getAllMenuList($app_type = '', $status = 'all', $is_tree = 0, $is_button = 0)
+    public function getAllMenuList($app_type = '', $status = 'all', $is_tree = 0, $is_button = 0, $addons = [])
     {
         $site_id = $this->site_id;
-        $cache_name = 'site_menu_api_' . $app_type . '_' . $status . '_' . $is_tree . '_' . $is_button . '_' . $this->site_id;
+        // 未指定应用范围时，默认系统菜单 + 当前站点已安装应用
+        if (empty($addons)) {
+            $addons = array_merge([ '' ], get_site_addons($site_id));
+        } else {
+            $addons = array_values(array_unique(array_map('strval', $addons)));
+        }
+        $cache_name = 'site_menu_api_' . $app_type . '_' . $status . '_' . $is_tree . '_' . $is_button . '_' . md5(implode('_', $addons)) . '_' . $this->site_id;
         $menu_list = cache_remember(
             $cache_name,
-            function() use ($status, $is_tree, $is_button, $app_type, $site_id) {
+            function() use ($status, $is_tree, $is_button, $app_type, $site_id, $addons) {
                 $where = [
                     [ 'app_type', '=', $app_type ],
-                    [ 'addon', 'in', array_merge([ '' ], get_site_addons($site_id)) ]
+                    [ 'addon', 'in', $addons ]
                 ];
                 if ($status != 'all') {
                     $where[] = [ 'status', '=', $status ];
@@ -216,7 +259,8 @@ class MenuService extends BaseAdminService
                 // 排除菜单
                 $delete_menu_addon = [];
                 $addon_loader = new DictLoader("Menu");
-                foreach (get_site_addons($site_id) as $addon) {
+                foreach ($addons as $addon) {
+                    if ($addon === '') continue;
                     $delete_menu = $addon_loader->load([ "addon" => $addon, "app_type" => $app_type ])[ 'delete' ] ?? [];
                     if (!empty($delete_menu) && is_array($delete_menu)) $delete_menu_addon[] = $delete_menu;
                 }
@@ -243,7 +287,328 @@ class MenuService extends BaseAdminService
     }
 
     /**
+     * 导出菜单(平台/站点)
+     * @param string $app_type
+     * @param array $addons 导出范围（空字符串元素代表系统菜单）；为空表示导出全部
+     * @return \think\response\File
+     * @throws AdminException
+     */
+    public function exportMenu(string $app_type, array $addons = [])
+    {
+        if (!in_array($app_type, [ AppTypeDict::ADMIN, AppTypeDict::SITE ], true)) {
+            throw new AdminException('validate_menu.app_type_error');
+        }
+
+        // 复用菜单树(is_tree=1, is_button=0)，按钮(menu_type=2)会作为 children 嵌套在树中
+        $menu_list = $this->getAllMenuList($app_type, 'all', 1, 0, $addons);
+        $menus = $this->filterExportMenu($menu_list);
+
+        // 导出内容即菜单树数组，端类型/时间体现在文件名中
+        $content = json_encode($menus, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+
+        return download($content, $this->buildExportFileName($app_type), true)
+            ->mimeType('application/octet-stream');
+    }
+
+    /**
+     * 生成导出文件名：menu_{端类型}_{时间}.json
+     * @param string $app_type
+     * @return string
+     */
+    private function buildExportFileName(string $app_type)
+    {
+        return 'menu_' . $app_type . '_' . date('YmdHis') . '.json';
+    }
+
+    /**
+     * 递归裁剪菜单节点，仅保留核心字段
+     * @param array $menu_list
+     * @return array
+     */
+    private function filterExportMenu(array $menu_list)
+    {
+        $result = [];
+        foreach ($menu_list as $menu) {
+            $item = [];
+            foreach (self::EXPORT_MENU_FIELDS as $field) {
+                if (array_key_exists($field, $menu)) {
+                    $item[ $field ] = $menu[ $field ];
+                }
+            }
+            if (!empty($menu[ 'children' ]) && is_array($menu[ 'children' ])) {
+                $item[ 'children' ] = $this->filterExportMenu($menu[ 'children' ]);
+            }
+            $result[] = $item;
+        }
+        return $result;
+    }
+
+    /**
+     * 获取导入菜单的PHP上传限制配置（字节，0 表示不限制）
+     * @return array
+     */
+    public function getImportConfig()
+    {
+        $upload_max_filesize = (string) ini_get('upload_max_filesize');
+        $post_max_size = (string) ini_get('post_max_size');
+        $upload_max_byte = $this->convertSizeToByte($upload_max_filesize);
+        $post_max_byte = $this->convertSizeToByte($post_max_size);
+
+        $max_upload_byte = 0;
+        if ($upload_max_byte > 0) $max_upload_byte = $upload_max_byte;
+        if ($post_max_byte > 0) $max_upload_byte = $max_upload_byte > 0 ? min($max_upload_byte, $post_max_byte) : $post_max_byte;
+
+        // 导入文件业务上限 2M：PHP 限制更大时按 2M，更小时按 PHP 限制
+        $max_import_byte = self::IMPORT_FILE_MAX_BYTE;
+        $limit_from_php = $max_upload_byte > 0 && $max_upload_byte < $max_import_byte;
+        $limit_byte = $limit_from_php ? $max_upload_byte : $max_import_byte;
+
+        return [
+            'upload_max_filesize' => $upload_max_filesize,
+            'post_max_size' => $post_max_size,
+            'upload_max_filesize_byte' => $upload_max_byte,
+            'post_max_size_byte' => $post_max_byte,
+            'max_upload_byte' => $max_upload_byte,
+            'max_import_byte' => $max_import_byte,
+            'limit_byte' => $limit_byte,
+            'limit_source' => $limit_from_php ? 'php' : 'system'
+        ];
+    }
+
+    /**
+     * 解析 php.ini 容量配置（如 2M / 512K）为字节数，无法解析或为 0/-1 时返回 0（表示不限制）
+     * @param string $size
+     * @return int
+     */
+    private function convertSizeToByte(string $size)
+    {
+        $size = strtoupper(trim($size));
+        if ($size === '' || !preg_match('/^(\d+(?:\.\d+)?)\s*([BKMGTP]?)B?$/', $size, $matches)) {
+            return 0;
+        }
+        $units = [ 'B' => 1, 'K' => 1024, 'M' => 1048576, 'G' => 1073741824, 'T' => 1099511627776, 'P' => 1125899906842624 ];
+        $unit = $matches[ 2 ] !== '' ? $matches[ 2 ] : 'B';
+        return (int) round((float) $matches[ 1 ] * ( $units[ $unit ] ?? 1 ));
+    }
+
+    /**
+     * 导入菜单(平台/站点) —— 增量导入
+     * @param string $app_type
+     * @param mixed $file 上传的json文件
+     * @param bool $overwrite 已存在时是否覆盖更新
+     * @return array
+     * @throws AdminException
+     */
+    public function importMenu(string $app_type, $file, bool $overwrite = false)
+    {
+        if (!in_array($app_type, [ AppTypeDict::ADMIN, AppTypeDict::SITE ], true)) {
+            throw new AdminException('validate_menu.app_type_error');
+        }
+        if (empty($file)) {
+            throw new AdminException('validate_menu.import_file_require');
+        }
+        if ($file->getSize() > self::IMPORT_FILE_MAX_BYTE) {
+            throw new AdminException('validate_menu.import_file_over_max');
+        }
+
+        $data = json_decode((string) file_get_contents($file->getPathname()), true);
+        if (!is_array($data) || empty($data)) {
+            throw new AdminException('validate_menu.import_file_invalid');
+        }
+        // 导出文件即菜单树数组，必须是顺序索引数组
+        if (array_keys($data) !== range(0, count($data) - 1)) {
+            throw new AdminException('validate_menu.import_file_invalid');
+        }
+        $menu_list = $data;
+
+        $stat = [
+            'total' => 0,
+            'insert' => 0,
+            'update' => 0,
+            'skip' => 0,
+            'fail' => 0,
+            'fail_list' => []
+        ];
+        // 一次性预载该端已有的菜单标识，导入过程中判重走内存，避免逐条查询
+        $exist_keys = $this->getExistMenuKeys($app_type);
+        $seen_keys = [];
+
+        // 整批放入一个事务：避免逐条提交的开销（单条失败仍按原逻辑跳过并记录）
+        Db::startTrans();
+        try {
+            $this->importMenuNode($menu_list, $app_type, '', $overwrite, $exist_keys, $seen_keys, $stat);
+            Db::commit();
+        } catch (\Throwable $e) {
+            Db::rollback();
+            Cache::tag(self::$cache_tag_name)->clear();
+            throw $e;
+        }
+
+        Cache::tag(self::$cache_tag_name)->clear();
+        return $stat;
+    }
+
+    /**
+     * 预载指定端已存在的菜单标识（用于导入判重）
+     * @param string $app_type
+     * @return array
+     */
+    private function getExistMenuKeys(string $app_type)
+    {
+        $menu_keys = $this->model->where([ [ 'app_type', '=', $app_type ] ])->column('menu_key');
+        return array_fill_keys($menu_keys, true);
+    }
+
+    /**
+     * 递归导入菜单节点
+     * 参考若依：逐条判重，不存在则新增、存在则按需覆盖/跳过，并以当前节点接管子节点的父级
+     * @param array $menu_list
+     * @param string $app_type
+     * @param string $parent_key 遍历上下文中的父级菜单标识
+     * @param bool $overwrite
+     * @param array $exist_keys 该端已存在的菜单标识（含本次已新增的）
+     * @param array $seen_keys 本次导入已处理过的菜单标识
+     * @param array $stat
+     * @return void
+     */
+    private function importMenuNode(array $menu_list, string $app_type, string $parent_key, bool $overwrite, array &$exist_keys, array &$seen_keys, array &$stat)
+    {
+        foreach ($menu_list as $menu) {
+            if (!is_array($menu)) {
+                $stat[ 'total' ]++;
+                $stat[ 'fail' ]++;
+                $stat[ 'fail_list' ][] = [ 'menu_key' => '', 'menu_name' => '', 'reason' => get_lang('validate_menu.import_file_invalid') ];
+                continue;
+            }
+
+            $stat[ 'total' ]++;
+            $menu_key = trim((string) ( $menu[ 'menu_key' ] ?? '' ));
+            $menu_name = trim((string) ( $menu[ 'menu_name' ] ?? '' ));
+            // 子节点父级优先取遍历上下文，顶层节点则沿用文件里的 parent_key
+            $menu_parent_key = $parent_key !== '' ? $parent_key : trim((string) ( $menu[ 'parent_key' ] ?? '' ));
+
+            try {
+                $this->checkImportMenu($menu, $menu_key, $app_type, $menu_parent_key, $parent_key === '', $exist_keys, $seen_keys);
+            } catch (AdminException $e) {
+                $stat[ 'fail' ]++;
+                $stat[ 'fail_list' ][] = [ 'menu_key' => $menu_key, 'menu_name' => $menu_name, 'reason' => get_lang($e->getMessage()) ];
+                // 父级校验失败，跳过整棵子树，避免产生孤儿菜单
+                continue;
+            }
+
+            $seen_keys[ $menu_key ] = true;
+            $menu_data = $this->buildImportMenuData($menu, $app_type, $menu_parent_key);
+
+            try {
+                if (!isset($exist_keys[ $menu_key ])) {
+                    $menu_data[ 'source' ] = MenuDict::CREATE;
+                    $this->model->create($menu_data);
+                    // 标记为已存在，供后续节点判重
+                    $exist_keys[ $menu_key ] = true;
+                    $stat[ 'insert' ]++;
+                } elseif ($overwrite) {
+                    unset($menu_data[ 'menu_key' ]);
+                    $this->model->update($menu_data, [ [ 'menu_key', '=', $menu_key ], [ 'app_type', '=', $app_type ] ]);
+                    $stat[ 'update' ]++;
+                } else {
+                    $stat[ 'skip' ]++;
+                }
+            } catch (\Throwable $e) {
+                $stat[ 'fail' ]++;
+                $stat[ 'fail_list' ][] = [ 'menu_key' => $menu_key, 'menu_name' => $menu_name, 'reason' => $e->getMessage() ];
+                continue;
+            }
+
+            if (!empty($menu[ 'children' ]) && is_array($menu[ 'children' ])) {
+                $this->importMenuNode($menu[ 'children' ], $app_type, $menu_key, $overwrite, $exist_keys, $seen_keys, $stat);
+            }
+        }
+    }
+
+    /**
+     * 校验单条导入菜单数据
+     * @param array $menu
+     * @param string $menu_key
+     * @param string $app_type
+     * @param string $menu_parent_key
+     * @param bool $is_root 是否为文件顶层节点
+     * @param array $exist_keys 该端已存在的菜单标识
+     * @param array $seen_keys 本次导入已处理过的菜单标识
+     * @return void
+     * @throws AdminException
+     */
+    private function checkImportMenu(array $menu, string $menu_key, string $app_type, string $menu_parent_key, bool $is_root, array $exist_keys, array $seen_keys)
+    {
+        if ($menu_key === '') {
+            throw new AdminException('validate_menu.import_menu_key_require');
+        }
+        if (!preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $menu_key)) {
+            throw new AdminException('validate_menu.import_menu_key_format');
+        }
+        if (isset($seen_keys[ $menu_key ])) {
+            throw new AdminException('validate_menu.import_menu_key_duplicate');
+        }
+        if (trim((string) ( $menu[ 'menu_name' ] ?? '' )) === '') {
+            throw new AdminException('validate_menu.menu_name_require');
+        }
+
+        $menu_type = (string) ( $menu[ 'menu_type' ] ?? '' );
+        if (!isset(MenuTypeDict::getMenuType()[ $menu_type ])) {
+            throw new AdminException('validate_menu.not_exit_menu_type');
+        }
+        if ($menu_type === MenuTypeDict::MENU) {
+            if (trim((string) ( $menu[ 'router_path' ] ?? '' )) === '') {
+                throw new AdminException('validate_menu.router_path_requireif');
+            }
+            if (trim((string) ( $menu[ 'view_path' ] ?? '' )) === '') {
+                throw new AdminException('validate_menu.view_path_requireif');
+            }
+        }
+
+        if (trim((string) ( $menu[ 'api_url' ] ?? '' )) !== '') {
+            $methods = strtolower(trim((string) ( $menu[ 'methods' ] ?? '' )));
+            if (!isset(MethodDict::getMethodType()[ $methods ])) {
+                throw new AdminException('validate_menu.methods_requirewith');
+            }
+        }
+
+        // 顶层节点若指向了本地不存在的父级，则拒绝，避免产生孤儿菜单
+        if ($is_root && $menu_parent_key !== '' && !isset($exist_keys[ $menu_parent_key ])) {
+            throw new AdminException('validate_menu.import_parent_not_exist');
+        }
+    }
+
+    /**
+     * 组装导入菜单数据
+     * @param array $menu
+     * @param string $app_type
+     * @param string $menu_parent_key
+     * @return array
+     */
+    private function buildImportMenuData(array $menu, string $app_type, string $menu_parent_key)
+    {
+        return $this->normalizeIsBlank([
+            'menu_key' => trim((string) ( $menu[ 'menu_key' ] ?? '' )),
+            'parent_key' => $menu_parent_key,
+            'menu_name' => trim((string) ( $menu[ 'menu_name' ] ?? '' )),
+            'menu_type' => (string) ( $menu[ 'menu_type' ] ?? MenuTypeDict::LIST ),
+            'icon' => (string) ( $menu[ 'icon' ] ?? '' ),
+            'api_url' => (string) ( $menu[ 'api_url' ] ?? '' ),
+            'router_path' => (string) ( $menu[ 'router_path' ] ?? '' ),
+            'view_path' => (string) ( $menu[ 'view_path' ] ?? '' ),
+            'methods' => strtolower((string) ( $menu[ 'methods' ] ?? '' )),
+            'sort' => (int) ( $menu[ 'sort' ] ?? 0 ),
+            'status' => (int) ( $menu[ 'status' ] ?? MenuDict::ON ),
+            'is_show' => (int) ( $menu[ 'is_show' ] ?? 0 ),
+            'is_blank' => (int) ( $menu[ 'is_blank' ] ?? 0 ),
+            'addon' => (string) ( $menu[ 'addon' ] ?? '' ),
+            'app_type' => $app_type
+        ]);
+    }
+
+    /**
      * 根据parent_select_key字段重新整理上下级关系
+
      * @param array $menus
      * @return array
      * @throws DataNotFoundException

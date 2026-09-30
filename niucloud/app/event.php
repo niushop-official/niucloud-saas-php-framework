@@ -78,6 +78,7 @@ $system_event = [
             'app\listener\notice\Sms',//短信
             'app\listener\notice\Wechat',//公众号模板消息
             'app\listener\notice\Weapp',//小程序订阅消息
+            'app\listener\notice\Message',//站内信
         ],
         //小程序包替换
         'AppletReplace' => [
@@ -116,6 +117,12 @@ $system_event = [
         'StatExecute' => [],
         //统计字段获取
         'StatField' => [],
+
+        //校验场景的校验项扩展（CheckSceneDict::EVENT_CHECK_SCENE）
+        'CheckScene' => [],
+
+        //任务类型扩展（TaskDict::EVENT_TASK_TYPE）：插件可注册自己的任务类型与处理器
+        'TaskType' => [],
 
         // 获取海报数据
         'GetPosterType' => ['app\listener\system\PosterType'],

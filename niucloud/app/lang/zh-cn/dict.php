@@ -10,6 +10,19 @@
 // +----------------------------------------------------------------------
 
 return [
+    //运营面板
+    'dict_addon_panel' => [
+        //站点地域：未填写
+        'area_unknown' => '未填写',
+        //套餐分组：未分组
+        'group_none' => '未分组',
+        //分布图：其他
+        'other' => '其他',
+        //新老站点构成
+        'age_new' => '近30天',
+        'age_middle' => '30-180天',
+        'age_old' => '180天以上',
+    ],
     //端口管理
     'dict_app' => [
         'type_admin' => '平台管理端',
@@ -69,12 +82,24 @@ return [
         'type_sms' => '短信',
         'type_wechat' => '微信公众号',
         'type_weapp' => '微信小程序',
+        'type_message' => '站内信',
         'var_username' => '用户名',
         'var_nickname' => '用户昵称',
         'var_code' => '验证码',
         'var_mobile' => '手机号',
         'var_balance' => '会员余额',
         'var_point' => '会员积分',
+    ],
+    'dict_notice_message_main_type' => [
+        'admin' => '平台',
+        'site' => '站点',
+        'member' => '会员',
+    ],
+    'dict_notice_message_level' => [
+        'info' => '普通',
+        'success' => '成功',
+        'warning' => '警告',
+        'error' => '错误',
     ],
     'dict_sms_api' => [
         'template_status_again_report' => '需重新报备',
@@ -370,7 +395,7 @@ return [
         'server_setting' => '服务器web环境',
         'php_version' => 'PHP版本',
         'mysql_version' => 'mysql版本',
-        'php_ask' => '大于等于8.0.0',
+        'php_ask' => '大于等于8.2.0',
         'mysql_ask' => '大于等于5.7',
         'php_authority_ask' => '开启',
         'file_authority_ask' => '可读可写'
@@ -412,6 +437,34 @@ return [
         'audit_fail' => '审核失败',
         'published' => '已发布',
         'undo' => '已撤回'
+    ],
+    'dict_cloud_build' => [
+        'scope_all' => '整体编译',
+        'scope_framework' => '仅框架',
+        'scope_plugin' => '仅插件',
+        'scope_custom' => '自定义端口',
+        'scope_all_desc' => '编译该端全部产物（含所有插件）',
+        'scope_framework_desc' => '只编译框架产物，不含插件',
+        'scope_plugin_desc' => '只编译所选插件的产物',
+        'scope_custom_desc' => '按自定义端口配置编译',
+        'addon_key' => '插件标识',
+        'group_web' => 'Web',
+        'group_mobile' => '移动端',
+        'group_applet' => '小程序',
+        'port_admin' => '管理后台',
+        'port_web' => 'PC网页',
+        'port_h5' => 'H5',
+        'port_app' => 'App',
+        'port_mp_weixin' => '微信小程序',
+        'desc_admin' => '进入admin目录执行，编译到 public/admin',
+        'desc_web' => '进入web目录执行，编译到 public/web',
+        'desc_h5' => '进入uniapp目录执行，编译到 public/wap',
+        'desc_app' => '进入uniapp目录执行，编译App',
+        'desc_mp_weixin' => '进入uniapp目录执行，编译到 uni-app/dist/build/mp-weixin',
+        'port_admin_desc' => '后台前端产物',
+        'port_web_desc' => 'PC 官网静态产物',
+        'port_h5_desc' => 'H5 站点产物，可嵌入公众号 / 自有 App',
+        'port_mp_weixin_desc' => '微信小程序静态产物',
     ],
     'dict_wechat_media' => [
         'type_image' => '图片',

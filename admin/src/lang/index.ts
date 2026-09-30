@@ -21,7 +21,7 @@ const t = (message: string) => {
     return i18n.global.t(key) != key ? i18n.global.t(key) : i18n.global.t(message)
 }
 
-export { language, t }
+export { language, t, i18n }
 
 export default {
     install(app: any) {

@@ -48,7 +48,7 @@ class BaseNiucloudClient
      * @var string
      */
     protected string $baseUri = 'https://api.niucloud.com/openapi/';
-//    protected string $baseUri = 'http://niucloud-admin.cn/openapi/';//调试放开
+//    protected string $baseUri = 'http://niuwebsite.cc/openapi/';//调试放开
 
     /**
      *
@@ -84,7 +84,7 @@ class BaseNiucloudClient
     /**
      * @param string $url
      * @param array $data
-     * @return array|Response|object|ResponseInterface
+     * @return array|object|ResponseInterface
      * @throws GuzzleException
      */
     public function httpPost(string $url, array $data = [])
@@ -134,7 +134,7 @@ class BaseNiucloudClient
             function (
                 $retries,
                 RequestInterface $request,
-                ResponseInterface $response = null
+                ?ResponseInterface $response = null
             ) {
                 // Limit the number of retries to 2  重试次数，默认 1，指定当 http 请求失败时重试的次数。
                 if ($retries < config('niucloud.http.max_retries', 1) && $response && $body = $response->getBody()) {
@@ -224,7 +224,7 @@ class BaseNiucloudClient
      * @param string $url
      * @param array $data
      * @param array $query
-     * @return array|Response|object|ResponseInterface
+     * @return array|object|ResponseInterface
      * @throws GuzzleException
      */
     public function httpPostJson(string $url, array $data = [], array $query = [])
@@ -237,7 +237,7 @@ class BaseNiucloudClient
      * @param array $files
      * @param array $form
      * @param array $query
-     * @return array|Response|object|ResponseInterface
+     * @return array|object|ResponseInterface
      * @throws GuzzleException
      */
     public function httpUpload(string $url, array $files = [], array $form = [], array $query = [])

@@ -1,0 +1,7 @@
+// Token 加载顺序不可调整：L2 依赖 L1，L3 与 Element Plus 兼容桥依赖 L2。
+@import 'reference';
+@import 'semantic';
+@import 'component';
+@import 'layouts/default';
+@import 'layouts/lightside';
+@import 'element-plus';

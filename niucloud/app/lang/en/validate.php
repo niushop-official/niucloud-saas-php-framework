@@ -18,7 +18,18 @@ return [
         'methods_requirewith' => 'methods is require',
         'not_exist_menu_type' => 'menu_type is not exist',
         'not_exist_request_type' => 'request_type is not exist',
-        'exist_menu_key' => 'key must be unique'
+        'exist_menu_key' => 'key must be unique',
+        'app_type_error' => 'unsupported app_type',
+        'import_file_require' => 'please upload menu file',
+        'import_file_invalid' => 'invalid menu file, please upload exported json file',
+        'import_menu_empty' => 'menu file content is empty',
+        'import_app_type_mismatch' => 'import file does not match current app_type',
+        'import_menu_key_require' => 'menu_key is require',
+        'import_menu_key_format' => 'menu_key can only contain letters, numbers and underscores, and cannot start with a number',
+        'import_menu_key_duplicate' => 'duplicate menu_key in menu file',
+        'import_parent_not_exist' => 'parent menu not exist',
+        'import_file_too_large' => 'the uploaded file exceeds the PHP limit (upload_max_filesize/post_max_size), please adjust php.ini and retry',
+        'import_file_over_max' => 'the menu file size cannot exceed 2MB, please split the file and import in batches'
     ],
     //角色
     'validate_role' => [

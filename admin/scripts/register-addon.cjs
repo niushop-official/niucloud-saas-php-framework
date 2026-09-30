@@ -12,7 +12,7 @@
  */
 const fs = require('fs')
 const path = require('path')
-const { ROOT } = require('./addon-utils.cjs')
+const { ROOT, resolveAddonEntry } = require('./addon-utils.cjs')
 
 const key = process.argv[2]
 const deployDir = process.argv[3] ? path.resolve(process.argv[3]) : path.join(ROOT, 'dist')
@@ -24,7 +24,8 @@ if (!key) {
 
 const addonDir = path.join(deployDir, 'assets', 'addons', key)
 const indexPath = path.join(deployDir, 'assets', 'addons', 'index.json')
-const entryPath = path.join(addonDir, 'index.js')
+const entryRel = resolveAddonEntry(addonDir)
+const entryPath = path.join(addonDir, entryRel.replace(/^\.\//, ''))
 const manifestPath = path.join(addonDir, 'manifest.json')
 
 if (!fs.existsSync(entryPath)) {
@@ -38,7 +39,7 @@ if (!fs.existsSync(manifestPath)) {
         key,
         version: '1.0.0',
         sharedVersion: 'admin-core-1.0.0',
-        entry: './index.js',
+        entry: entryRel,
         langBase: './lang/'
     }
     fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2) + '\n', 'utf-8')

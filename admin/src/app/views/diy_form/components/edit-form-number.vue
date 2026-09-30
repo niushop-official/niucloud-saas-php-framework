@@ -16,9 +16,7 @@
                     <div class="flex items-center">
                         <span class="mr-[3px]">{{ t('defaultValue') }}</span>
                         <el-tooltip effect="light" :content="t('defaultValueTips')" placement="top">
-                            <el-icon>
-                                <QuestionFilled color="#999999" />
-                            </el-icon>
+                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                         </el-tooltip>
                     </div>
                 </template>

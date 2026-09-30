@@ -12,6 +12,7 @@ namespace app\listener\system;
 
 use app\service\admin\diy\DiyService;
 use app\service\core\site\CoreSiteService;
+use app\service\core\upload\CoreStorageService;
 
 /**
  * 站点初始化
@@ -77,6 +78,9 @@ class SiteInitListener
         $site_id = $params[ 'site_id' ];
 
         (new CoreSiteService())->siteInitBySiteId($site_id, $this->tables);
+
+        // 初始化站点默认存储配置（本地存储默认启用，各云存储方式预置一条空配置）
+        (new CoreStorageService())->initStorageConfig($site_id);
 
         event("AddSiteAfter", [ 'site_id' => $site_id, 'main_app' => [], 'site_addons' => [] ]);
 

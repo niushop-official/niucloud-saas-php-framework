@@ -17,6 +17,7 @@
 
 namespace Obs;
 
+use Obs\Internal\Resource\Constants;
 use Obs\Internal\Signature\DefaultSignature;
 use Obs\Log\ObsLog;
 use Obs\Internal\Common\SdkCurlFactory;
@@ -29,22 +30,20 @@ use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\Handler\CurlMultiHandler;
 use GuzzleHttp\Handler\Proxy;
 use GuzzleHttp\Promise\Promise;
-use Obs\Internal\Resource\Constants;
+use const Obs\Internal\INVALID_HTTP_METHOD_MSG;
 
-
-define('DEBUG', Logger::DEBUG);
-define('INFO', Logger::INFO);
-define('NOTICE', Logger::NOTICE);
-define('WARNING', Logger::WARNING);
-define('WARN', Logger::WARNING);
-define('ERROR', Logger::ERROR);
-define('CRITICAL', Logger::CRITICAL);
-define('ALERT', Logger::ALERT);
-define('EMERGENCY', Logger::EMERGENCY);
+defined('DEBUG') || define('DEBUG', Logger::DEBUG);
+defined('INFO') || define('INFO', Logger::INFO);
+defined('NOTICE') || define('NOTICE', Logger::NOTICE);
+defined('WARNING') || define('WARNING', Logger::WARNING);
+defined('WARN') || define('WARN', Logger::WARNING);
+defined('ERROR') || define('ERROR', Logger::ERROR);
+defined('CRITICAL') || define('CRITICAL', Logger::CRITICAL);
+defined('ALERT') || define('ALERT', Logger::ALERT);
+defined('EMERGENCY') || define('EMERGENCY', Logger::EMERGENCY);
 
 /**
- * @method Model createPostSignature(array $args = []);
-// * @method Model createSignedUrl(array $args = []);
+ * @method Model createPostSignature(array $args=[]);
  * @method Model createBucket(array $args = []);
  * @method Model listBuckets();
  * @method Model deleteBucket(array $args = []);
@@ -80,11 +79,22 @@ define('EMERGENCY', Logger::EMERGENCY);
  * @method Model getBucketNotification(array $args = []);
  * @method Model setBucketTagging(array $args = []);
  * @method Model getBucketTagging(array $args = []);
+ * @method Model setBucketCustomDomain(array $args = []);
+ * @method Model getBucketCustomDomain(array $args = []);
+ * @method Model deleteBucketCustomDomain(array $args = []);
  * @method Model deleteBucketTagging(array $args = []);
  * @method Model optionsBucket(array $args = []);
+ * @method Model getFetchPolicy(array $args = []);
+ * @method Model setFetchPolicy(array $args = []);
+ * @method Model deleteFetchPolicy(array $args = []);
+ * @method Model setFetchJob(array $args = []);
+ * @method Model getFetchJob(array $args = []);
  *
  * @method Model putObject(array $args = []);
  * @method Model getObject(array $args = []);
+ * @method Model setObjectTagging(array $args = []);
+ * @method Model deleteObjectTagging(array $args = []);
+ * @method Model getObjectTagging(array $args = []);
  * @method Model copyObject(array $args = []);
  * @method Model deleteObject(array $args = []);
  * @method Model deleteObjects(array $args = []);
@@ -136,11 +146,17 @@ define('EMERGENCY', Logger::EMERGENCY);
  * @method Promise getBucketNotificationAsync(array $args = [], callable $callback);
  * @method Promise setBucketTaggingAsync(array $args = [], callable $callback);
  * @method Promise getBucketTaggingAsync(array $args = [], callable $callback);
+ * @method Promise setBucketCustomDomainAsync(array $args = [], callable $callback);
+ * @method Promise getBucketCustomDomainAsync(array $args = [], callable $callback);
+ * @method Promise deleteBucketCustomDomainAsync(array $args = [], callable $callback);
  * @method Promise deleteBucketTaggingAsync(array $args = [], callable $callback);
  * @method Promise optionsBucketAsync(array $args = [], callable $callback);
  *
  * @method Promise putObjectAsync(array $args = [], callable $callback);
  * @method Promise getObjectAsync(array $args = [], callable $callback);
+ * @method Promise setObjectTaggingAsync(array $args = [], callable $callback);
+ * @method Promise deleteObjectTaggingAsync(array $args = [], callable $callback);
+ * @method Promise getObjectTaggingAsync(array $args = [], callable $callback);
  * @method Promise copyObjectAsync(array $args = [], callable $callback);
  * @method Promise deleteObjectAsync(array $args = [], callable $callback);
  * @method Promise deleteObjectsAsync(array $args = [], callable $callback);
@@ -156,12 +172,17 @@ define('EMERGENCY', Logger::EMERGENCY);
  * @method Promise listMultipartUploadsAsync(array $args = [], callable $callback);
  * @method Promise optionsObjectAsync(array $args = [], callable $callback);
  * @method Promise restoreObjectAsync(array $args = [], callable $callback);
+ * @method Promise getFetchPolicyAsync(array $args = [], callable $callback);
+ * @method Promise setFetchPolicyAsync(array $args = [], callable $callback);
+ * @method Promise deleteFetchPolicyAsync(array $args = [], callable $callback);
+ * @method Promise setFetchJobAsync(array $args = [], callable $callback);
+ * @method Promise getFetchJobAsync(array $args = [], callable $callback);
  *
  */
 class ObsImageClient
 {
 
-    const SDK_VERSION = '3.20.5';
+    const SDK_VERSION = '3.24.9';
 
     const AclPrivate = 'private';
     const AclPublicRead = 'public-read';
@@ -249,7 +270,7 @@ class ObsImageClient
         }
 
         if ($this->endpoint === '') {
-            throw new \RuntimeException('endpoint is not set');
+            throw new \InvalidArgumentException('endpoint is not set');
         }
 
         while ($this->endpoint[strlen($this->endpoint) - 1] === '/') {
@@ -274,8 +295,10 @@ class ObsImageClient
 
         if (isset($config['ssl_verify'])) {
             $this->sslVerify = $config['ssl_verify'];
-        } else if (isset($config['ssl.certificate_authority'])) {
+        } elseif (isset($config['ssl.certificate_authority'])) {
             $this->sslVerify = $config['ssl.certificate_authority'];
+        } else {
+            // nothing handle
         }
 
         if (isset($config['max_retry_count'])) {
@@ -311,9 +334,14 @@ class ObsImageClient
             $this->pathStyle = true;
         }
 
-        $handler = self::choose_handler($this);
+        $handler = self::chooseHandler($this);
 
-        $this->httpClient = new Client(
+        $this->httpClient = self::createHttpClient($handler);
+    }
+
+    private function createHttpClient($handler)
+    {
+        return new Client(
             [
                 'timeout' => 0,
                 'read_timeout' => $this->socketTimeout,
@@ -323,24 +351,22 @@ class ObsImageClient
                 'expect' => false,
                 'handler' => HandlerStack::create($handler),
                 'curl' => [
-                    CURLOPT_BUFFERSIZE => $this->chunkSize
-                ]
+                    CURLOPT_BUFFERSIZE => $this->chunkSize,
+                ],
             ]
         );
-
     }
-
     public function __destruct()
     {
         $this->close();
     }
 
-    public function refresh($key, $secret, $security_token = false)
+    public function refresh($key, $secret, $securityToken = false)
     {
         $this->ak = strval($key);
         $this->sk = strval($secret);
-        if ($security_token) {
-            $this->securityToken = strval($security_token);
+        if ($securityToken) {
+            $this->securityToken = strval($securityToken);
         }
     }
 
@@ -349,7 +375,7 @@ class ObsImageClient
      *
      * @return string
      */
-    private static function default_user_agent()
+    public static function getDefaultUserAgent()
     {
         static $defaultAgent = '';
         if (!$defaultAgent) {
@@ -392,7 +418,7 @@ class ObsImageClient
         ObsLog::commonLog(WARNING, implode("];[", $msg));
     }
 
-    private static function choose_handler($obsclient)
+    private static function chooseHandler($obsclient)
     {
         $handler = null;
         if (function_exists('curl_multi_exec') && function_exists('curl_exec')) {
@@ -400,7 +426,10 @@ class ObsImageClient
             $f2 = new SdkCurlFactory(3);
             $obsclient->factorys[] = $f1;
             $obsclient->factorys[] = $f2;
-            $handler = Proxy::wrapSync(new CurlMultiHandler(['handle_factory' => $f1]), new CurlHandler(['handle_factory' => $f2]));
+            $handler = Proxy::wrapSync(
+                new CurlMultiHandler(['handle_factory' => $f1]),
+                new CurlHandler(['handle_factory' => $f2])
+            );
         } elseif (function_exists('curl_exec')) {
             $f = new SdkCurlFactory(3);
             $obsclient->factorys[] = $f;
@@ -409,6 +438,8 @@ class ObsImageClient
             $f = new SdkCurlFactory(50);
             $obsclient->factorys[] = $f;
             $handler = new CurlMultiHandler(['handle_factory' => $f]);
+        } else {
+            // nothing handle
         }
 
         if (ini_get('allow_url_fopen')) {
@@ -416,118 +447,137 @@ class ObsImageClient
                 ? Proxy::wrapStreaming($handler, new SdkStreamHandler())
                 : new SdkStreamHandler();
         } elseif (!$handler) {
-            throw new \RuntimeException('GuzzleHttp requires cURL, the '
-                . 'allow_url_fopen ini setting, or a custom HTTP handler.');
+            throw new \UnexpectedValueException(
+                'GuzzleHttp requires cURL, the allow_url_fopen ini setting, or a custom HTTP handler.');
+        } else {
+            // nothing handle
         }
 
         return $handler;
     }
 
-    public function createSignedUrl(array $args=[])
+    public function createSignedUrl(array $args = [])
     {
-        if (strcasecmp($this -> signature, 'v4') === 0) {
-            return $this -> createV4SignedUrl($args);
+        if (strcasecmp($this->signature, 'v4') === 0) {
+            return $this->createV4SignedUrl($args);
         }
-        return $this->createCommonSignedUrl($this->signature,$args);
+        return $this->createCommonSignedUrl($this->signature, $args);
     }
 
-    private function createCommonSignedUrl(string $signature,array $args=[]) {
-        if(!isset($args['Method'])){
-            $obsException = new ObsException('Method param must be specified, allowed values: GET | PUT | HEAD | POST | DELETE | OPTIONS');
-            $obsException-> setExceptionType('client');
+    /************************************************ 改造内容 *******************************************************/
+    private function createCommonSignedUrl(string $signature, array $args = [])
+    {
+        if (!isset($args['Method'])) {
+            $obsException = new ObsException(INVALID_HTTP_METHOD_MSG);
+            $obsException->setExceptionType('client');
             throw $obsException;
         }
         $method = strval($args['Method']);
-        $bucketName = isset($args['Bucket'])? strval($args['Bucket']): null;
-        $objectKey =  isset($args['Key'])? strval($args['Key']): null;
-        $specialParam = isset($args['SpecialParam'])? strval($args['SpecialParam']): null;
-        $expires = isset($args['Expires']) && is_numeric($args['Expires']) ? intval($args['Expires']): 300;
+        $bucketName = isset($args['Bucket']) ? strval($args['Bucket']) : null;
+        $objectKey = isset($args['Key']) ? strval($args['Key']) : null;
+        $specialParam = isset($args['SpecialParam']) ? strval($args['SpecialParam']) : null;
+        $expires = isset($args['Expires']) && is_numeric($args['Expires']) ? intval($args['Expires']) : 300;
         $objectKey = $this->genKey($objectKey);
 
         $headers = [];
-        if(isset($args['Headers']) && is_array($args['Headers']) ){
-            foreach ($args['Headers'] as $key => $val){
-                if(is_string($key) && $key !== ''){
+        if (isset($args['Headers']) && is_array($args['Headers'])) {
+            foreach ($args['Headers'] as $key => $val) {
+                if (is_string($key) && $key !== '') {
                     $headers[$key] = $val;
                 }
             }
         }
 
-
-
         $queryParams = [];
-        if(isset($args['QueryParams']) && is_array($args['QueryParams']) ){
-            foreach ($args['QueryParams'] as $key => $val){
-                if(is_string($key) && $key !== ''){
+        if (isset($args['QueryParams']) && is_array($args['QueryParams'])) {
+            foreach ($args['QueryParams'] as $key => $val) {
+                if (is_string($key) && $key !== '') {
                     $queryParams[$key] = $val;
                 }
             }
         }
 
         $constants = Constants::selectConstants($signature);
-        if($this->securityToken && !isset($queryParams[$constants::SECURITY_TOKEN_HEAD])){
+        if ($this->securityToken && !isset($queryParams[$constants::SECURITY_TOKEN_HEAD])) {
             $queryParams[$constants::SECURITY_TOKEN_HEAD] = $this->securityToken;
         }
 
-        $sign = new DefaultSignature($this->ak, $this->sk, $this->pathStyle, $this->endpoint, $method, $this->signature, $this->securityToken, $this->isCname);
+        $sign = new DefaultSignature(
+            $this->ak,
+            $this->sk,
+            $this->pathStyle,
+            $this->endpoint,
+            $method,
+            $this->signature,
+            $this->securityToken,
+            $this->isCname
+        );
 
         $url = parse_url($this->endpoint);
         $host = $url['host'];
 
         $result = '';
 
-        if($bucketName){
-            if($this-> pathStyle){
+        if ($bucketName) {
+            if ($this->pathStyle) {
                 $result = '/' . $bucketName;
-            }else{
+            } else {
                 $host = $this->isCname ? $host : $bucketName . '.' . $host;
             }
         }
 
         $headers['Host'] = $this->custom_domain ?? $host;
 
-        if($objectKey){
-            $objectKey = $sign ->urlencodeWithSafe($objectKey);
+        if ($objectKey) {
+            $objectKey = $sign->urlencodeWithSafe($objectKey);
             $result .= '/' . $objectKey;
         }
 
         $result .= '?';
 
-        if($specialParam){
+        if ($specialParam) {
             $queryParams[$specialParam] = '';
         }
 
         $queryParams[$constants::TEMPURL_AK_HEAD] = $this->ak;
 
-
-        if(!is_numeric($expires) || $expires < 0){
+        if (!is_numeric($expires) || $expires < 0) {
             $expires = 300;
         }
         $expires = intval($expires) + intval(microtime(true));
 
         $queryParams['Expires'] = strval($expires);
 
-        $_queryParams = [];
+        $queryParamsResult = [];
 
-        foreach ($queryParams as $key => $val){
-            $key = $sign -> urlencodeWithSafe($key);
-            $val = $sign -> urlencodeWithSafe($val);
-            $_queryParams[$key] = $val;
+        foreach ($queryParams as $key => $val) {
+            $key = $sign->urlencodeWithSafe($key);
+            $val = $sign->urlencodeWithSafe($val);
+            $queryParamsResult[$key] = $val;
             $result .= $key;
-            if($val){
+            if ($val) {
                 $result .= '=' . $val;
             }
             $result .= '&';
         }
 
-        $canonicalstring = $sign ->makeCanonicalstring($method, $headers, $_queryParams, $bucketName, $objectKey, $expires);
+        $canonicalstring = $sign->makeCanonicalstring(
+            $method,
+            $headers,
+            $queryParamsResult,
+            $bucketName,
+            $objectKey,
+            $expires
+        );
         $signatureContent = base64_encode(hash_hmac('sha1', $canonicalstring, $this->sk, true));
 
         $result .= 'Signature=' . $sign->urlencodeWithSafe($signatureContent);
 
         $model = new Model();
         $model['ActualSignedRequestHeaders'] = $headers;
-        $model['SignedUrl'] = $url['scheme'] . '://' . ($this->custom_domain ?? $host) . ':' . (isset($url['port']) ? $url['port'] : (strtolower($url['scheme']) === 'https' ? '443' : '80')) . $result;
+        $defaultPort = strtolower($url['scheme']) === 'https' ? '443' : '80';
+        $port = isset($url['port']) ? $url['port'] : $defaultPort;
+        $model['SignedUrl'] = $url['scheme'] . '://' . ($this->custom_domain ?? $host) . ':' . $port . $result;
         return $model;
     }
 
@@ -547,13 +597,12 @@ class ObsImageClient
         return $filePath;
     }
 
-    /************************************************ 改造内容 *******************************************************/
     public function __call($originMethod, $args)
     {
         $method = $originMethod;
 
         $contents = Constants::selectRequestResource($this->signature);
-        $resource = &$contents::$RESOURCE_ARRAY;
+        $resource = &$contents::$resourceArray;
         $async = false;
         if (strpos($method, 'Async') === (strlen($method) - 5)) {
             $method = substr($method, 0, strlen($method) - 5);
@@ -565,7 +614,6 @@ class ObsImageClient
         }
 
         $method = lcfirst($method);
-
 
         $operation = isset($resource['operations'][$method]) ?
             $resource['operations'][$method] : null;
@@ -583,12 +631,12 @@ class ObsImageClient
             $model = new Model();
             $model['method'] = $method;
             $params = empty($args) ? [] : $args[0];
-            $this->_checkParams($params);//house365::校验参数，自动生成文件路径名
+            $this->_checkParams($method, $params);//house365::校验参数，自动生成文件路径名
             $this->checkMimeType($method, $params);
             $this->doRequest($model, $operation, $params);
             ObsLog::commonLog(INFO, 'obsclient cost ' . round(microtime(true) - $start, 3) * 1000 . ' ms to execute ' . $originMethod);
             unset($model['method']);
-            $this->_replaceDomain($model);//house365::替换域名
+            $this->_replaceDomain($method, $model);//house365::替换域名
             return $model;
         } else {
             if (empty($args) || !(is_callable($callback = $args[count($args) - 1]))) {
@@ -607,8 +655,12 @@ class ObsImageClient
     }
 
     //house365::校验参数，自动生成文件路径名
-    private function _checkParams(&$params)
+    private function _checkParams($method, &$params)
     {
+        if ($method != 'putObject') {
+            return;
+        }
+
         if (!isset($params['Key'])) {
             throw new \RuntimeException('Key 参数有误');
         }
@@ -627,8 +679,12 @@ class ObsImageClient
     }
 
     //house365::替换域名
-    private function _replaceDomain(&$model)
+    private function _replaceDomain($method, &$model)
     {
+        if ($method != 'putObject') {
+            return;
+        }
+
         if ($this->custom_domain && $model['ObjectURL']) {
             $origin_url = $model['ObjectURL'];
             $url_arr = parse_url($origin_url);

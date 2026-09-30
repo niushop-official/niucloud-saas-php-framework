@@ -1,12 +1,13 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
 
-            <el-table class="mt-[20px]" :data="bottomNavTableData.data" size="large" v-loading="bottomNavTableData.loading">
+            <div class="table-fill-page__table mt-[20px]">
+            <el-table height="100%" :data="bottomNavTableData.data" size="large" v-loading="bottomNavTableData.loading">
                 <template #empty>
                     <span>{{ !bottomNavTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -31,6 +32,7 @@
                     </template>
                 </el-table-column>
             </el-table>
+            </div>
 
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="bottomNavTableData.page" v-model:page-size="bottomNavTableData.limit"
@@ -49,10 +51,14 @@
     import { getDiyBottomList } from '@/app/api/diy'
     import { useRoute, useRouter } from 'vue-router'
     import { cloneDeep } from 'lodash-es'
+    import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
     const route = useRoute()
     const router = useRouter()
     const pageName = route.meta.title
+
+    // 表格占满页面剩余高度，超出部分在表格内部滚动
+    const { pageRef, pageStyle } = useTablePageHeight()
 
     const bottomNavTableData: any = reactive({
         page: 1,

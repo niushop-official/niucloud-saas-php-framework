@@ -57,6 +57,11 @@ class SysUpgradeRecords extends BaseModel
 
     /**
      * 备份目录
+     *
+     * 注意：这是获取器，它会忽略外部写入的值（按 upgrade_key 计算），
+     * 因此「升级记录列表的真实备份路径」由 UpgradeRecordsService::getPage() 在数组上覆盖输出，
+     * 不要在这里改语义去适配列表 —— 会影响其它沿用旧口径的调用。
+     *
      * @param $value
      * @param $data
      * @return string

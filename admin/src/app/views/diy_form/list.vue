@@ -1,13 +1,13 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" class="w-[100px]" @click="dialogVisible = true">{{ t('addDiyForm') }}</el-button>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="diyFormTableData.searchParam" ref="searchFormDiyFormRef">
                     <el-form-item :label="t('title')" prop="title">
                         <el-input v-model.trim="diyFormTableData.searchParam.title" :placeholder="t('titlePlaceholder')" />
@@ -34,7 +34,8 @@
                 <el-checkbox v-model="toggleCheckbox" size="large" class="px-[14px]" @change="toggleChange" :indeterminate="isIndeterminate" />
                 <el-button @click="batchDeleteForms" size="small">{{t("batchDeletion")}}</el-button>
             </div>
-            <el-table :data="diyFormTableData.data" size="large" ref="diyFormListTableRef" v-loading="diyFormTableData.loading" @selection-change="handleSelectionChange">
+            <div class="table-fill-page__table">
+            <el-table height="100%" :data="diyFormTableData.data" size="large" ref="diyFormListTableRef" v-loading="diyFormTableData.loading" @selection-change="handleSelectionChange">
                 <template #empty>
                     <span>{{ !diyFormTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -50,7 +51,7 @@
                 </el-table-column>
                 <el-table-column prop="update_time" :label="t('updateTime')" min-width="120" />
 
-                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="130">
+                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="220">
                     <template #default="{ row }">
                         <div class="flex items-center justify-end">
                             <el-button type="primary" v-if="row.status == 1 && row.type=='DIY_FORM'" link @click="spreadEvent(row)">{{ t('promotion') }}</el-button>
@@ -59,7 +60,7 @@
                             <el-button v-if="row.status == 0" type="primary" link @click="deleteEvent(row.form_id)">{{ t('delete') }}</el-button>
                             <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
                             <el-dropdown placement="bottom" trigger="click" class="ml-[12px]">
-                                <el-button type="primary" link>{{ t('more') }}</el-button>
+                                <el-button type="primary" link><icon name="element MoreFilled" /></el-button>
                                 <template #dropdown>
                                     <el-dropdown-menu>
                                         <el-dropdown-item v-if="row.type=='DIY_FORM'">
@@ -85,6 +86,7 @@
                 </el-table-column>
 
             </el-table>
+            </div>
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="diyFormTableData.page" v-model:page-size="diyFormTableData.limit"
                     layout="total, sizes, prev, pager, next, jumper" :total="diyFormTableData.total"
@@ -179,6 +181,7 @@ import { getFormType, getApps, getDiyFormPageList, deleteDiyForm, editDiyFormSha
 import { FormInstance, ElMessage, ElMessageBox } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { setTablePageStorage, getTablePageStorage, img } from '@/utils/common'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 import recordsDetail from '@/app/views/diy_form/records.vue'
 import formSubmitPopup from '@/app/views/diy_form/components/form-submit-popup.vue'
@@ -188,6 +191,10 @@ import spreadPopup from '@/components/spread-popup/index.vue'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
+
 const repeat = ref(false)
 
 const formType: any = reactive({}) // 表单类型

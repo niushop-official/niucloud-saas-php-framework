@@ -70,16 +70,8 @@ class Upgrade extends BaseAdminController
         return success(data: ( new UpgradeService() )->getUpgradeTask());
     }
 
-    /**
-     * 升级前环境检测
-     * @description 升级前环境检测
-     * @param $addon
-     * @return Response
-     */
-    public function upgradePreCheck($addon = '')
-    {
-        return success(data: ( new UpgradeService() )->upgradePreCheck($addon));
-    }
+    // 升级前环境检测已统一到通用校验（sys/check?scene=upgrade）
+    // UpgradeService::upgradePreCheck() 仍保留，由通用校验服务复用
 
     /**
      * 清除
@@ -88,7 +80,7 @@ class Upgrade extends BaseAdminController
      */
     public function clearUpgradeTask()
     {
-        return success(data: ( new UpgradeService() )->clearUpgradeTask(0, 1));
+        return success(data: ( new UpgradeService() )->cancelUpgrade(0, 1));
     }
 
     /**
@@ -112,6 +104,19 @@ class Upgrade extends BaseAdminController
             [ "name", "" ],
         ]);
         return success(( new UpgradeRecordsService() )->getPage($data));
+    }
+
+    /**
+     * 删除升级记录对应的备份
+     * @description 删除指定升级记录产生的备份（备份记录 + 归档目录），升级记录本身保留
+     * @return Response
+     */
+    public function delBackup()
+    {
+        $data = $this->request->params([
+            [ 'upgrade_key', '' ],
+        ]);
+        return success(data: ( new UpgradeRecordsService() )->delBackup($data[ 'upgrade_key' ]));
     }
 
     /**

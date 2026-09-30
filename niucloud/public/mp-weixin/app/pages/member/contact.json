@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "客服",
   "usingComponents": {
-    "nc-contact": "../../../components/nc-contact/nc-contact"
+    "nc-contact": "../../../components/nc-contact/nc-contact",
+    "u-popup": "../../../node-modules/uview-plus/components/u-popup/u-popup"
   }
 }

@@ -10,11 +10,40 @@
 // +----------------------------------------------------------------------
 
 return [
+    //运营面板
+    'dict_addon_panel' => [
+        'area_unknown' => 'Not set',
+        'group_none' => 'Ungrouped',
+        'other' => 'Others',
+        'age_new' => 'Under 30 days',
+        'age_middle' => '30-180 days',
+        'age_old' => 'Over 180 days',
+    ],
     //端口管理
     'dict_app' => [
         'type_admin' => 'admin',
         'type_site' => 'site',
         'type_api' => 'api',
+    ],
+    'dict_cloud_build' => [
+        'scope_all' => 'All',
+        'scope_framework' => 'Framework only',
+        'scope_plugin' => 'Plugin only',
+        'scope_custom' => 'Custom port',
+        'addon_key' => 'addon key',
+        'group_web' => 'Web',
+        'group_mobile' => 'Mobile',
+        'group_applet' => 'Applet',
+        'port_admin' => 'Admin',
+        'port_web' => 'PC Web',
+        'port_h5' => 'H5',
+        'port_app' => 'App',
+        'port_mp_weixin' => 'WeChat Mini Program',
+        'desc_admin' => 'Run in admin dir, build to public/admin',
+        'desc_web' => 'Run in web dir, build to public/web',
+        'desc_h5' => 'Run in uniapp dir, build to public/wap',
+        'desc_app' => 'Run in uniapp dir, build App',
+        'desc_mp_weixin' => 'Run in uniapp dir, build to uni-app/dist/build/mp-weixin',
     ],
     'dict_menu' => [
         //菜单类型

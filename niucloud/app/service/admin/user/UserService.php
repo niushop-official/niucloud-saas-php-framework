@@ -159,7 +159,11 @@ class UserService extends BaseAdminService
             $is_admin = $data['is_admin'] ?? 0;
             //创建用户站点管理权限
             (new UserRoleService())->add($uid, ['role_ids' => $role_ids, 'is_admin' => $is_admin, 'status' => $data['status'] ], $site_id);
+
+
             Db::commit();
+            //触发站点用户添加之后事件（插件可监听，如客服系统同步坐席）
+            event('AddSiteUserAfter', ['site_id' => $site_id, 'uid' => $uid, 'role_ids' => $role_ids, 'is_admin' => $is_admin, 'status' => $data['status'] ]);
             return $uid;
         } catch ( Exception $e) {
             Db::rollback();
@@ -286,6 +290,8 @@ class UserService extends BaseAdminService
         if ($site_num) throw new CommonException("USER_NOT_ALLOW_DEL");
 
         $this->model->where([ ['uid', '=', $uid] ])->find()->delete();
+        //触发用户删除之后事件（插件可监听，如客服系统同步删除坐席）
+        event('DelUserAfter', ['uid' => $uid]);
         return true;
     }
 

@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -110,7 +110,7 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
      */
     protected static $maker;
 
-    public function __construct($items, int $listRows, int $currentPage = 1, int $total = null, bool $simple = false, array $options = [])
+    public function __construct($items, int $listRows, int $currentPage = 1, ?int $total = null, bool $simple = false, array $options = [])
     {
         $this->options = array_merge($this->options, $options);
 
@@ -146,7 +146,7 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
      *
      * @return Paginator
      */
-    public static function make($items, int $listRows, int $currentPage = 1, int $total = null, bool $simple = false, array $options = [])
+    public static function make($items, int $listRows, int $currentPage = 1, ?int $total = null, bool $simple = false, array $options = [])
     {
         if (isset(static::$maker)) {
             return call_user_func(static::$maker, $items, $listRows, $currentPage, $total, $simple, $options);
@@ -282,6 +282,16 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
     /**
      * 获取当前页页码
      *
+     * @return bool
+     */
+    public function hasMore(): bool
+    {
+        return $this->hasMore;
+    }
+
+    /**
+     * 获取当前页页码
+     *
      * @return int
      */
     public function currentPage(): int
@@ -339,7 +349,7 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
      *
      * @return $this
      */
-    public function fragment(string $fragment = null)
+    public function fragment(?string $fragment = null)
     {
         $this->options['fragment'] = $fragment;
 
@@ -531,6 +541,7 @@ abstract class Paginator implements ArrayAccess, Countable, IteratorAggregate, J
             'current_page' => $this->currentPage(),
             'last_page'    => $this->lastPage,
             'data'         => $this->items->toArray(),
+            'has_more'     => $this->hasMore,
         ];
     }
 

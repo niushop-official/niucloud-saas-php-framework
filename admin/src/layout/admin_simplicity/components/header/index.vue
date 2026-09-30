@@ -16,10 +16,6 @@
                     <icon name="element Expand" v-if="systemStore.menuIsCollapse" />
                     <icon name="element Fold" v-else />
                 </div>
-                <!-- 刷新当前页 -->
-                <div class="navbar-item flex items-center h-full cursor-pointer" @click="refreshRouter">
-                    <icon name="element Refresh" />
-                </div>
                 <!-- 面包屑导航 -->
                 <div class="flex items-center h-full pl-[10px] hidden-xs-only">
                     <el-breadcrumb separator="/">
@@ -34,15 +30,23 @@
                     <span class="iconfont iconguanliduan !text-primary mr-1"></span>
                     <span class="text-[14px] text-primary">客户端</span>
                 </div>
+                <!-- 菜单搜索 -->
+                <div class="navbar-item flex items-center h-full cursor-pointer">
+                    <menu-search />
+                </div>
+                <!-- 任务指示器：有进行中的任务时图标转动，悬浮可查看进度并进入详情 -->
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="openTaskIndicator">
+                    <task-indicator ref="taskIndicatorRef" />
+                </div>
                 <div class="navbar-item flex items-center h-full cursor-pointer">
                     <message />
                 </div>
-                <div class="navbar-item flex items-center h-full cursor-pointer">
-                    <layout-setting />
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="openLayoutSetting">
+                    <layout-setting ref="layoutSettingRef" :show-layout-style="true" />
                 </div>
                 <!-- 用户信息 -->
-                <div class="navbar-item flex items-center h-full cursor-pointer">
-                    <user-info />
+                <div class="navbar-item flex items-center h-full cursor-pointer" @click="openUserInfo">
+                    <user-info ref="userInfoRef" />
                 </div>
             </div>
         </div>
@@ -83,21 +87,26 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 import useUserStore from '@/stores/modules/user'
-import useAppStore from '@/stores/modules/app'
 import { useRoute,useRouter } from 'vue-router'
 import { t } from '@/lang'
 import { img, getToken } from '@/utils/common'
 
 import storage from '@/utils/storage'
 import userInfo from './user-info.vue'
-import layoutSetting from './layout-setting.vue'
-import message from './message.vue'
+import layoutSetting from '@/layout/components/layout-setting/index.vue'
+import message from '@/layout/components/message/index.vue'
+import menuSearch from '@/layout/components/menu-search/index.vue'
 import useSystemStore from "@/stores/modules/system";
 
 const showDialog = ref<boolean>(false)
+const taskIndicatorRef = ref()
+const layoutSettingRef = ref()
+const userInfoRef = ref()
+const openTaskIndicator = () => taskIndicatorRef.value?.open()
+const openLayoutSetting = () => layoutSettingRef.value?.open()
+const openUserInfo = () => userInfoRef.value?.open()
 const route = useRoute()
 const router = useRouter()
-const appStore = useAppStore()
 const systemStore = useSystemStore()
 const website = computed(() => {
     return systemStore.website
@@ -127,12 +136,6 @@ const detectionLoginFn = () => {
     location.reload()
 }
 // 检测登录 end
-
-// 刷新路由
-const refreshRouter = () => {
-    if (!appStore.routeRefreshTag) return
-    appStore.refreshRouterView()
-}
 
 // 面包屑导航
 const breadcrumb = computed(() => {

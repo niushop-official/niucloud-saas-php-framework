@@ -44,6 +44,16 @@ class System extends BaseAdminController
     }
 
     /**
+     * 获取当前站点渠道访问地址
+     * @description 获取当前站点渠道访问地址
+     * @return Response
+     */
+    public function channel()
+    {
+        return success((new SystemService())->getChannel());
+    }
+
+    /**
      * 获取系统环境配置
      * @description 获取系统环境配置
      * @return Response

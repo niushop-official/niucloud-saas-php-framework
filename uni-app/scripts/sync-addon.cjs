@@ -3,7 +3,7 @@
  */
 const fs = require('fs')
 const path = require('path')
-const { ROOT } = require('./addon-utils.cjs')
+const { ROOT, resolveAddonEntry } = require('./addon-utils.cjs')
 const { stripAddonStyleImport } = require('./inject-addon-style-import.cjs')
 
 const ADDONS_STAGING = path.join(ROOT, 'dist', '.addons')
@@ -36,7 +36,9 @@ function writeAddonManifest(key, destAddonDir) {
         key,
         version: '1.0.0',
         sharedVersion: 'wap-core-1.0.0',
-        entry: './index.js',
+        // entry 保持相对路径（./index-[hash].js），与旧插件 ./index.js 兼容；
+        // 真正拼带 key 的 URL 由运行时 loader 用 addon key 重建，避免 wapUrl 丢 key
+        entry: resolveAddonEntry(destAddonDir),
         localeBase: './locale/'
     }
     fs.writeFileSync(
@@ -66,9 +68,21 @@ function markSuccess(key) {
 
 function writeAddonsIndex(keys) {
     fs.mkdirSync(OUT_ASSETS, { recursive: true })
+    // 合并各插件 manifest.json 到 index.json.manifests，减少前端 N 次 HTTP 请求
+    // （与后端 rebuildPublicWapAddonIndexJson 行为一致）
+    const manifests = {}
+    for (const key of keys) {
+        const manifestFile = path.join(OUT_ASSETS, key, 'manifest.json')
+        if (fs.existsSync(manifestFile)) {
+            try {
+                const data = JSON.parse(fs.readFileSync(manifestFile, 'utf-8'))
+                if (data && Object.keys(data).length) manifests[key] = data
+            } catch { /* 忽略损坏的 manifest，保持构建不中断 */ }
+        }
+    }
     fs.writeFileSync(
         path.join(OUT_ASSETS, 'index.json'),
-        JSON.stringify({ keys, sharedVersion: 'wap-core-1.0.0' }, null, 2) + '\n',
+        JSON.stringify({ keys, sharedVersion: 'wap-core-1.0.0', manifests }, null, 2) + '\n',
         'utf-8'
     )
 }
@@ -79,9 +93,10 @@ function syncAddon(key) {
         console.error(`[sync-addon] missing staging: ${src}`)
         process.exit(1)
     }
-    const entry = path.join(src, 'index.js')
+    const entryRel = resolveAddonEntry(src)
+    const entry = path.join(src, entryRel.replace(/^\.\//, ''))
     if (!fs.existsSync(entry)) {
-        console.error(`[sync-addon] missing ${key}/index.js`)
+        console.error(`[sync-addon] missing ${key}/${entryRel}`)
         process.exit(1)
     }
 

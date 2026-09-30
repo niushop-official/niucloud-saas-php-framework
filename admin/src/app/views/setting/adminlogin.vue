@@ -1,47 +1,56 @@
 <template>
     <div class="main-container">
+        <el-form class="page-form page-form--stacked form-page form-page--narrow" :model="formData" label-position="top" ref="ruleFormRef" v-loading="loading">
+            <section class="form-section form-section--has-header">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('admin') }}</h3>
+                </div>
+                <div class="form-section__body">
+                    <el-form-item :label="t('isCaptcha')">
+                        <el-switch v-model="formData.is_captcha" :active-value="1" :inactive-value="0" />
+                    </el-form-item>
+                    <el-form-item :label="t('bgImg')">
+                        <div>
+                            <upload-image v-model="formData.bg" />
+                            <div class="form-tip">{{ t('adminBgImgTip') }}</div>
+                        </div>
+                    </el-form-item>
+                </div>
+            </section>
 
-        <el-form class="page-form" :model="formData" label-width="150px" ref="ruleFormRef" v-loading="loading">
-            <el-card class="box-card !border-none" shadow="never">
-                <h3 class="text-[16px] text-[#1D1F3A] font-bold mb-4">{{ pageName }}</h3>
-                <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('admin') }}</h3>
-                <el-form-item :label="t('isCaptcha')">
-                    <el-switch v-model="formData.is_captcha" :active-value="1" :inactive-value="0" />
-                </el-form-item>
-                <el-form-item :label="t('bgImg')">
-                    <upload-image v-model="formData.bg" />
-                    <div class="form-tip">{{t('adminBgImgTip')}}</div>
-                </el-form-item>
-
-                <div class="box-card mt-[20px] !border-none">
-                    <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('site') }}</h3>
-
+            <section class="form-section form-section--has-header">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('site') }}</h3>
+                </div>
+                <div class="form-section__body">
                     <el-form-item :label="t('isCaptcha')">
                         <el-switch v-model="formData.is_site_captcha" :active-value="1" :inactive-value="0" />
                     </el-form-item>
-                    <el-form-item :label="t('bgImg')">
+                    <!-- <el-form-item :label="t('bgImg')">
                         <upload-image v-model="formData.site_bg" />
-                        <div class="form-tip">{{t('siteBgImgTip')}}</div>
-                    </el-form-item>
+                        <div class="form-tip">{{ t('siteBgImgTip') }}</div>
+                    </el-form-item> -->
                     <el-form-item :label="t('siteLoginLogo')">
                         <div>
                             <upload-image v-model="formData.site_login_logo" />
-                            <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginLogoTips') }}</p>
+                            <div class="form-tip">{{ t('siteLoginLogoTips') }}</div>
                         </div>
                     </el-form-item>
                     <el-form-item :label="t('siteLoginBgImg')">
                         <div>
                             <upload-image v-model="formData.site_login_bg_img" />
-                            <p class="text-[12px] text-[#a9a9a9]">{{ t('siteLoginBgImgTips') }}</p>
+                            <div class="form-tip">{{ t('siteLoginBgImgTips') }}</div>
                         </div>
                     </el-form-item>
                 </div>
-            </el-card>
+            </section>
         </el-form>
 
         <div class="fixed-footer-wrap">
-            <div class="fixed-footer">
-                <el-button type="primary" @click="onSave(ruleFormRef)">{{ t('save') }}</el-button>
+            <div class="fixed-footer fixed-footer--form">
+                <div class="fixed-footer__inner fixed-footer__inner--narrow">
+                    <el-button type="primary" @click="onSave(ruleFormRef)">{{ t('save') }}</el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -53,10 +62,7 @@ import { t } from '@/lang'
 import { getConfigLogin, setConfigLogin } from '@/app/api/sys'
 import { FormInstance } from 'element-plus'
 import { cloneDeep } from 'lodash-es'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
-const pageName = route.meta.title
 const loading = ref(true)
 const ruleFormRef = ref<FormInstance>()
 const formData = reactive<Record<string, number | string>>({

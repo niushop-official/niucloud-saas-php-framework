@@ -156,6 +156,7 @@ class CoreModuleService extends BaseNiucloudClient
         return $this->httpGet('store/framework/version', [ 'product_key' => self::PRODUCT ])[ 'data' ] ?? false;
     }
 
+
     /**
      * 获取应用/插件的版本更新记录
      * @return false|mixed
@@ -164,6 +165,31 @@ class CoreModuleService extends BaseNiucloudClient
     public function getAppVersionList($app_key)
     {
         return $this->httpGet('store/app_version/list', [ 'product_key' => self::PRODUCT, 'app_key' => $app_key ])[ 'data' ] ?? false;
+    }
+    /**
+     * 获取云端补丁列表
+     *
+     * 业务接口放在服务层，基类 BaseNiucloudClient 只保留通用 HTTP 能力。
+     *
+     * 按**应用**维度查询（不再是「产品线 + 单一框架版本」）：
+     * 请求体
+     * {
+     *   "product_key": "saas",
+     *   "apps": [ { "app_key": "niucloud-admin", "app_version": "2.0.0" }, ... ]
+     * }
+     * 返回（按应用分组，每组带该应用的补丁列表）
+     * { "code": 1, "msg": "操作成功", "data": [ { app_key, app_version, resolved, patches: [ ... ] } ] }
+     *
+     * @param array $apps 应用清单 [[ 'app_key' => ..., 'app_version' => ... ], ...]；为空时只传产品线
+     * @return array|object|Response|ResponseInterface
+     * @throws GuzzleException
+     */
+    public function getPatch(array $apps = [])
+    {
+        $data = [ 'product_key' => self::PRODUCT ];
+        if (!empty($apps)) $data[ 'apps' ] = array_values($apps);
+
+        return $this->httpPostJson('patch', $data);
     }
 
     /**

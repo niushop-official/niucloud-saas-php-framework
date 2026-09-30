@@ -39,9 +39,6 @@ class ErrorChunk implements ChunkInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isTimeout(): bool
     {
         $this->didThrow = true;
@@ -53,59 +50,41 @@ class ErrorChunk implements ChunkInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isFirst(): bool
     {
         $this->didThrow = true;
         throw null !== $this->error ? new TransportException($this->errorMessage, 0, $this->error) : new TimeoutException($this->errorMessage);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isLast(): bool
     {
         $this->didThrow = true;
         throw null !== $this->error ? new TransportException($this->errorMessage, 0, $this->error) : new TimeoutException($this->errorMessage);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInformationalStatus(): ?array
     {
         $this->didThrow = true;
         throw null !== $this->error ? new TransportException($this->errorMessage, 0, $this->error) : new TimeoutException($this->errorMessage);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContent(): string
     {
         $this->didThrow = true;
         throw null !== $this->error ? new TransportException($this->errorMessage, 0, $this->error) : new TimeoutException($this->errorMessage);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getError(): ?string
     {
         return $this->errorMessage;
     }
 
-    public function didThrow(bool $didThrow = null): bool
+    public function didThrow(?bool $didThrow = null): bool
     {
         if (null !== $didThrow && $this->didThrow !== $didThrow) {
             return !$this->didThrow = $didThrow;
@@ -114,12 +93,12 @@ class ErrorChunk implements ChunkInterface
         return $this->didThrow;
     }
 
-    public function __sleep(): array
+    public function __serialize(): array
     {
         throw new \BadMethodCallException('Cannot serialize '.__CLASS__);
     }
 
-    public function __wakeup()
+    public function __unserialize(array $data): void
     {
         throw new \BadMethodCallException('Cannot unserialize '.__CLASS__);
     }

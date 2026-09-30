@@ -2,19 +2,21 @@
   <el-container :class="['h-full bg-[var(--layout-header-bg)]',{'layout-header border-b border-color': !dark}]" >
     <div class="flex items-center h-full px-[10px] w-full box-border">
         <div class="left-panel h-full flex items-center">
-            <el-header class="logo-wrap flex items-center w-[190px]">
-                <div class="logo flex items-center" v-if="!systemStore.menuIsCollapse">
-                    <el-image style="width: 30px; height: 30px" class="rounded-[6px]" :src="img(logoUrl ? logoUrl : '' )" fit="contain">
-                        <template #error>
-                            <div class="flex justify-center items-center w-full h-[30px] rounded-[6px]"><img class="max-w-[30px]" src="@/app/assets/images/icon-addon.png" alt=""  object-fit="contain"></div>
-                        </template>
-                    </el-image>
+            <el-header class="logo-wrap flex items-center justify-center w-[190px]">
+                <div class="flex items-center justify-center min-w-0 max-w-full">
+                    <div class="logo flex items-center shrink-0" v-if="!systemStore.menuIsCollapse">
+                        <el-image style="width: 30px; height: 30px" class="rounded-[6px]" :src="img(logoUrl ? logoUrl : '' )" fit="contain">
+                            <template #error>
+                                <div class="flex justify-center items-center w-full h-[30px] rounded-[6px]"><img class="max-w-[30px]" src="@/app/assets/images/icon-addon.png" alt=""  object-fit="contain"></div>
+                            </template>
+                        </el-image>
+                    </div>
+                    <div class="logo flex items-center justify-center shrink-0" v-else>
+                        <i class="text-3xl iconfont iconyunkongjian"></i>
+                    </div>
+                    <!-- 店铺名称 -->
+                    <div class="ml-[10px] text-[20px] text-[#333] min-w-0 using-hidden">{{siteInfo.site_name}}</div>
                 </div>
-                <div class="logo flex items-center justify-center" v-else>
-                    <i class="text-3xl iconfont iconyunkongjian"></i>
-                </div>
-                <!-- 店铺名称 -->
-                <div class="ml-[10px] text-[#333] max-w-[150px] using-hidden">{{siteInfo.site_name}}</div>
             </el-header>
         </div>
         <div class="flex items-center gap-[8px] h-[var(--layout-header-height)] text-[var(--layout-header-text-color)]">
@@ -47,32 +49,24 @@
                     </template>
                 </el-dropdown>
             </div>
-            <div class="flex items-center flex-shrink-0 hidden-xs-only">
-                <el-popover placement="bottom" :width="330" trigger="click" v-model:visible="isMenuSearch" >
-                    <template #reference>
-                        <i class="iconfont icona-sousuoV6xx-36 cursor-pointer px-[8px] !text-[14px]"></i>
-                    </template>
-                    <template #default>
-                        <div class="flex items-center">
-                            <el-select v-model="selectedRoute"  filterable class="!w-[250px] mr-[20px] menu-select" :teleported="false" clearable  @change="handleRouteSelect">
-                                <el-option v-for="item in flatRoutes" :key="item.name" :label="item.full_title" :value="item.name" >
-                                </el-option>
-                            </el-select>
-                            <el-button type="primary" link @click="isMenuSearch = false">{{t('取消')}}</el-button>
-                        </div>
-                    </template>
-                </el-popover>
+            <!-- 菜单搜索 -->
+            <div class="navbar-item flex items-center h-full cursor-pointer">
+                <menu-search />
             </div>
             <!-- 预览 只有站点时展示-->
-            <i class="navbar-item iconfont iconicon_huojian1 cursor-pointer text-[#333]" :title="t('visitWap')" @click="toPreview"></i>
+            <visit-channel class="navbar-item text-[#333]" />
             <i class="navbar-item iconfont iconlingdang-xianxing cursor-pointer text-[#333]" :title="t('newInfo')" v-if="appType == 'site'"></i>
+            <!-- 任务指示器：有进行中的任务时图标转动，悬浮可查看进度并进入详情 -->
+            <div class="navbar-item flex items-center h-full cursor-pointer" @click="openTaskIndicator">
+                <task-indicator ref="taskIndicatorRef" />
+            </div>
             <!-- 布局设置 -->
-            <div class="navbar-item flex items-center h-full cursor-pointer">
-                <layout-setting />
+            <div class="navbar-item flex items-center h-full cursor-pointer" @click="openLayoutSetting">
+                <layout-setting ref="layoutSettingRef" icon-color="#333" />
             </div>
             <!-- 用户信息 -->
-            <div class="navbar-item flex items-center h-full cursor-pointer">
-                <user-info />
+            <div class="navbar-item flex items-center h-full cursor-pointer" @click="openUserInfo">
+                <user-info ref="userInfoRef" />
             </div>
         </div>
     </div>
@@ -92,8 +86,11 @@
 
 <script lang="ts" setup>
 import { computed, ref, onMounted, watch } from 'vue'
-import layoutSetting from './layout-setting.vue'
+import layoutSetting from '@/layout/components/layout-setting/index.vue'
+import menuSearch from '@/layout/components/menu-search/index.vue'
+import taskIndicator from '@/layout/components/task-indicator/index.vue'
 import userInfo from './user-info.vue'
+import visitChannel from '@/components/visit-channel/index.vue'
 import { useFullscreen } from '@vueuse/core'
 import useSystemStore from '@/stores/modules/system'
 import useAppStore from '@/stores/modules/app'
@@ -102,14 +99,22 @@ import { useRoute, useRouter } from 'vue-router'
 import { findFirstValidRoute, formatRouters } from '@/router/routers'
 import { t } from '@/lang'
 import { img } from '@/utils/common'
+import { useMenuJump } from '@/hooks/useMenuActive'
 import storage from '@/utils/storage'
 
 const appType = storage.get('app_type')
+const taskIndicatorRef = ref()
+const layoutSettingRef = ref()
+const userInfoRef = ref()
+const openTaskIndicator = () => taskIndicatorRef.value?.open()
+const openLayoutSetting = () => layoutSettingRef.value?.open()
+const openUserInfo = () => userInfoRef.value?.open()
 const { toggle: toggleFullscreen } = useFullscreen()
 const systemStore = useSystemStore()
 const appStore = useAppStore()
 const route = useRoute()
 const router = useRouter()
+const { handleMenuJump } = useMenuJump()
 const screenWidth = ref(window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
 
 const userStore = useUserStore()
@@ -269,6 +274,9 @@ const handleJump = (routeName: string) => {
         storage.remove('activeAppKey')
     } else {
     }
+    // 需要新窗口打开的菜单：新开标签页，当前页面不跳转
+    const target = oneMenuData.value.find(menu => menu.name === routeName)
+    if (handleMenuJump(routeName, target?.meta)) return
 
     // 执行跳转
     router.push({ name: routeName })
@@ -335,17 +343,6 @@ const collectSpecialMenuNamesLevel1 = (menus: any[]) =>{
         }
     })
     return names
-}
-
-// 跳转去预览
-const toPreview = () => {
-    const url = router.resolve({
-        path: '/preview/wap',
-        query: {
-            page: `/addon/mall/pages/index?site_id=${siteInfo.value.site_id}`
-        }
-    })
-    window.open(url.href)
 }
 
 const getParentTitleChain = (meta:any) => {
@@ -427,6 +424,7 @@ body {
     }
 }
 .navbar-item {
+    --navbar-hit-x: 5px;
     display: flex;
     align-items: center;
     justify-content: center;

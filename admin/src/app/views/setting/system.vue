@@ -1,34 +1,41 @@
 <template>
     <div class="main-container">
-        <el-form class="page-form loading-box" :model="formData" label-width="150px" ref="formRef" :rules="formRules" v-loading="loading">
-            <el-card class="box-card !border-none" shadow="never">
-                <h3 class="text-[16px] text-[#1D1F3A] font-bold mb-4">{{ pageName }}</h3>
-                <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('websiteInfo') }}</h3>
+        <el-form class="page-form page-form--stacked form-page form-page--narrow loading-box" :model="formData" label-position="top" ref="formRef" :rules="formRules" v-loading="loading">
+            <section class="form-section form-section--has-header">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('websiteInfo') }}</h3>
+                </div>
 
-                <el-form-item :label="t('siteName')" prop="site_name">
-                    <el-input v-model.trim="formData.site_name" :placeholder="t('siteNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
-                </el-form-item>
-                <el-form-item :label="t('logo')" prop="logo">
-                    <div>
-                        <upload-image v-model="formData.logo" />
-                        <p class="text-[12px] text-[#a9a9a9]">{{ t('logoPlaceholder') }}</p>
-                    </div>
-                </el-form-item>
-                <el-form-item :label="t('icon')" prop="icon">
-                    <div>
-                        <upload-image v-model="formData.icon" />
-                        <p class="text-[12px] text-[#a9a9a9]">{{ t('iconPlaceholder') }}</p>
-                    </div>
-                </el-form-item>
-                <el-form-item :label="t('keywords')">
-                    <el-input v-model.trim="formData.keywords" :placeholder="t('keywordsPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
-                </el-form-item>
-                <el-form-item :label="t('desc')">
-                    <el-input v-model.trim="formData.desc" type="textarea" :rows="4" clearable :placeholder="t('descPlaceholder')" class="input-width" maxlength="100" show-word-limit />
-                </el-form-item>
+                <div class="form-section__body">
+                    <el-form-item :label="t('siteName')" prop="site_name">
+                        <el-input v-model.trim="formData.site_name" :placeholder="t('siteNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                    </el-form-item>
+                    <el-form-item :label="t('logo')" prop="logo">
+                        <div>
+                            <upload-image v-model="formData.logo" />
+                            <p class="form-tip">{{ t('logoPlaceholder') }}</p>
+                        </div>
+                    </el-form-item>
+                    <el-form-item :label="t('icon')" prop="icon">
+                        <div>
+                            <upload-image v-model="formData.icon" />
+                            <p class="form-tip">{{ t('iconPlaceholder') }}</p>
+                        </div>
+                    </el-form-item>
+                    <el-form-item :label="t('keywords')">
+                        <el-input v-model.trim="formData.keywords" :placeholder="t('keywordsPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
+                    </el-form-item>
+                    <el-form-item :label="t('desc')" class="form-item--wide">
+                        <el-input v-model.trim="formData.desc" type="textarea" :rows="4" clearable :placeholder="t('descPlaceholder')" maxlength="100" show-word-limit />
+                    </el-form-item>
+                </div>
+            </section>
 
-                <div class="mt-[20px]" v-show="appType == 'site'">
-                    <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('frontEndInfo') }}</h3>
+            <section class="form-section form-section--has-header" v-show="appType == 'site'">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('frontEndInfo') }}</h3>
+                </div>
+                <div class="form-section__body">
                     <el-form-item :label="t('frontEndName')">
                         <el-input v-model.trim="formData.front_end_name" :placeholder="t('frontEndNamePlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
                     </el-form-item>
@@ -42,35 +49,41 @@
                         <upload-image v-model="formData.front_end_icon" />
                     </el-form-item>
 
-                    <el-form-item :label="t('metaTitle')">
-                        <el-input v-model.trim="formData.meta_title" :placeholder="t('MetaPlaceholder')" class="input-width" clearable maxlength="40" show-word-limit />
+                    <el-form-item :label="t('metaTitle')" class="form-item--wide">
+                        <el-input v-model.trim="formData.meta_title" :placeholder="t('MetaPlaceholder')" clearable maxlength="40" show-word-limit />
                     </el-form-item>
-                    <el-form-item :label="t('metaDescription')">
-                        <el-input v-model.trim="formData.meta_desc" :placeholder="t('metaDescriptionPlaceholder')" class="input-width" clearable maxlength="200" show-word-limit />
+                    <el-form-item :label="t('metaDescription')" class="form-item--wide">
+                        <el-input v-model.trim="formData.meta_desc" :placeholder="t('metaDescriptionPlaceholder')" clearable maxlength="200" show-word-limit />
                     </el-form-item>
-                    <el-form-item :label="t('metaKeywords')">
-                        <el-input v-model.trim="formData.meta_keyword" :placeholder="t('metaKeywordsPlaceholder')" class="input-width" clearable maxlength="200" show-word-limit />
+                    <el-form-item :label="t('metaKeywords')" class="form-item--wide">
+                        <el-input v-model.trim="formData.meta_keyword" :placeholder="t('metaKeywordsPlaceholder')" clearable maxlength="200" show-word-limit />
                     </el-form-item>
                 </div>
+            </section>
 
-                <div class="mt-[20px]" v-if="appType == 'admin'">
-                    <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('serviceInformation') }}</h3>
+            <section class="form-section form-section--has-header" v-if="appType == 'admin'">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('serviceInformation') }}</h3>
+                </div>
+                <div class="form-section__body">
                     <el-form-item :label="t('contactsTel')">
                         <el-input v-model.trim="formData.tel" :placeholder="t('contactsTelPlaceholder')" class="input-width" clearable maxlength="20" show-word-limit />
                     </el-form-item>
-                    <el-form-item :label="t('wechatCode')">
+                    <!-- <el-form-item :label="t('wechatCode')">
                         <upload-image v-model="formData.wechat_code" />
                     </el-form-item>
                     <el-form-item :label="t('customerServiceCode')">
                         <upload-image v-model="formData.enterprise_wechat" />
-                    </el-form-item>
+                    </el-form-item> -->
                 </div>
-            </el-card>
+            </section>
         </el-form>
 
         <div class="fixed-footer-wrap">
-            <div class="fixed-footer">
-                <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
+            <div class="fixed-footer fixed-footer--form">
+                <div class="fixed-footer__inner fixed-footer__inner--narrow">
+                    <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -84,10 +97,6 @@ import { FormInstance, FormRules } from 'element-plus'
 import { getAppType } from '@/utils/common'
 import useUserStore from '@/stores/modules/user'
 import useSystemStore from '@/stores/modules/system'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
-const pageName = route.meta.title
 const loading = ref(true)
 const appType = ref(getAppType())
 const formData: any = reactive<Record<string, string>>({
@@ -124,12 +133,12 @@ const setFormData = async () => {
         if (data[key] != undefined) formData[key] = data[key]
     })
 
-    const service_data: any = await (await getService()).data
-    formData.wechat_code = service_data.wechat_code
-    formData.enterprise_wechat = service_data.enterprise_wechat
-    formData.tel = service_data.tel
-    formData.site_login_logo = service_data.site_login_logo
-    formData.site_login_bg_img = service_data.site_login_bg_img
+    const serviceData: any = await (await getService()).data
+    formData.wechat_code = serviceData.wechat_code
+    formData.enterprise_wechat = serviceData.enterprise_wechat
+    formData.tel = serviceData.tel
+    formData.site_login_logo = serviceData.site_login_logo
+    formData.site_login_bg_img = serviceData.site_login_bg_img
     loading.value = false
 }
 setFormData()

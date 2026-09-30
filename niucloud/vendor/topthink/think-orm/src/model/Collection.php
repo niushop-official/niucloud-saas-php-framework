@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace think\model;
 
 use think\Collection as BaseCollection;
-use think\Model;
+use think\model\contract\Modelable as Model;
 use think\Paginator;
 
 /**
@@ -32,17 +32,32 @@ class Collection extends BaseCollection
      *
      * @param array $relation 关联
      * @param mixed $cache    关联缓存
+     * @param bol   $withJoin 是否JOIN
      *
      * @return $this
      */
-    public function load(array $relation, $cache = false)
+    public function load(array $relation, $cache = false, bool $withJoin = false)
     {
         if (!$this->isEmpty()) {
             $item = current($this->items);
-            $item->eagerlyResultSet($this->items, $relation, [], false, $cache);
+            $item->eagerlyResultSet($this->items, $relation, [], $withJoin, $cache);
         }
 
         return $this;
+    }
+
+    /**
+     * 转换为视图模型
+     *
+     * @param string $view 视图类名
+     *
+     * @return $this
+     */
+    public function toView(string $view)
+    {
+        return $this->map(function (Model $model) use($view) {
+            return $model->toView($view);
+        });
     }
 
     /**
@@ -132,6 +147,22 @@ class Collection extends BaseCollection
     }
 
     /**
+     * 设置属性映射.
+     *
+     * @param array $mapping 属性映射
+     *
+     * @return $this
+     */
+    public function mapping(array $mapping)
+    {
+        $this->each(function (Model $model) use ($mapping) {
+            $model->mapping($mapping);
+        });
+
+        return $this;
+    }
+
+    /**
      * 设置模型输出场景.
      *
      * @param string $scene 场景名称
@@ -148,22 +179,6 @@ class Collection extends BaseCollection
     }
 
     /**
-     * 设置父模型.
-     *
-     * @param Model $parent 父模型
-     *
-     * @return $this
-     */
-    public function setParent(Model $parent)
-    {
-        $this->each(function (Model $model) use ($parent) {
-            $model->setParent($parent);
-        });
-
-        return $this;
-    }
-
-    /**
      * 设置数据字段获取器.
      *
      * @param string|array $name     字段名
@@ -171,10 +186,10 @@ class Collection extends BaseCollection
      *
      * @return $this
      */
-    public function withAttr(string|array $name, callable $callback = null)
+    public function withAttr(string|array $name, ?callable $callback = null)
     {
         $this->each(function (Model $model) use ($name, $callback) {
-            $model->withAttr($name, $callback);
+            $model->withFieldAttr($name, $callback);
         });
 
         return $this;
@@ -207,7 +222,7 @@ class Collection extends BaseCollection
      *
      * @return array
      */
-    public function dictionary($items = null, string &$indexKey = null)
+    public function dictionary($items = null, ?string &$indexKey = null)
     {
         if ($items instanceof self || $items instanceof Paginator) {
             $items = $items->all();
@@ -234,7 +249,7 @@ class Collection extends BaseCollection
      *
      * @return static
      */
-    public function diff($items, string $indexKey = null)
+    public function diff($items, ?string $indexKey = null)
     {
         if ($this->isEmpty()) {
             return new static($items);
@@ -262,7 +277,7 @@ class Collection extends BaseCollection
      *
      * @return static
      */
-    public function intersect($items, string $indexKey = null)
+    public function intersect($items, ?string $indexKey = null)
     {
         if ($this->isEmpty()) {
             return new static([]);

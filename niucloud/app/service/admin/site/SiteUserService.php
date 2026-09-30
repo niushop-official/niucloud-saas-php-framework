@@ -143,6 +143,8 @@ class SiteUserService extends BaseAdminService
         $user->delete();
         LoginService::clearToken($uid);
         Cache::delete('user_role_list_' . $uid);
+        //触发站点用户删除之后事件（插件可监听，如客服系统同步删除坐席）
+        event('DelSiteUserAfter', ['site_id' => $this->site_id, 'uid' => $uid]);
         return true;
     }
 

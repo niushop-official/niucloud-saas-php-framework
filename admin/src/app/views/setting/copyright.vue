@@ -1,48 +1,56 @@
 <template>
     <div class="main-container">
+        <el-form class="page-form page-form--stacked form-page form-page--narrow" :model="formData" label-position="top" ref="formRef" :rules="formRules" v-loading="loading">
+            <section class="form-section form-section--has-header">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('copyrightEdit') }}</h3>
+                </div>
+                <div class="form-section__body">
+                    <el-form-item :label="t('logo')">
+                        <upload-image v-model="formData.logo" />
+                    </el-form-item>
+                    <el-form-item :label="t('companyName')" prop="company_name">
+                        <el-input v-model.trim="formData.company_name" :placeholder="t('companyNamePlaceholder')" class="input-width" clearable maxlength="30" />
+                    </el-form-item>
+                    <el-form-item :label="t('copyrightLink')" prop="copyright_link">
+                        <el-input v-model.trim="formData.copyright_link" :placeholder="t('copyrightLinkPlaceholder')" class="input-width" clearable />
+                    </el-form-item>
+                    <el-form-item :label="t('copyrightDesc')" class="form-item--wide">
+                        <el-input v-model.trim="formData.copyright_desc" type="textarea" :rows="4" clearable :placeholder="t('copyrightDescPlaceholder')" maxlength="150" show-word-limit />
+                    </el-form-item>
+                </div>
+            </section>
 
-        <el-form class="page-form" :model="formData" label-width="150px" ref="formRef" :rules="formRules" v-loading="loading">
-            <el-card class="box-card !border-none" shadow="never">
-                <h3 class="text-[16px] text-[#1D1F3A] font-bold mb-4">{{ pageName }}</h3>
-                <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('copyrightEdit') }}</h3>
-
-                <el-form-item :label="t('logo')">
-                    <upload-image v-model="formData.logo" />
-                </el-form-item>
-                <el-form-item :label="t('companyName')" prop="company_name">
-                    <el-input v-model.trim="formData.company_name" :placeholder="t('companyNamePlaceholder')" class="input-width" clearable maxlength="30"/>
-                </el-form-item>
-                <el-form-item :label="t('copyrightLink')" prop="copyright_link">
-                    <el-input v-model.trim="formData.copyright_link" :placeholder="t('copyrightLinkPlaceholder')" class="input-width" clearable />
-                </el-form-item>
-                <el-form-item :label="t('copyrightDesc')" >
-                    <el-input v-model.trim="formData.copyright_desc" type="textarea" rows="4" clearable :placeholder="t('copyrightDescPlaceholder')" class="input-width" maxlength="150" />
-                </el-form-item>
-                <div class="mt-[20px]">
-                    <h3 class="panel-title !text-[14px] bg-[#F4F5F7] p-3 border-[#E6E6E6] border-solid border-b-[1px]">{{ t('putOnRecordEdit') }}</h3>
+            <section class="form-section form-section--has-header">
+                <div class="form-section__header">
+                    <h3 class="form-section__title">{{ t('putOnRecordEdit') }}</h3>
+                </div>
+                <div class="form-section__body">
                     <el-form-item :label="t('icp')" prop="icp">
-                        <el-input v-model.trim="formData.icp" :placeholder="t('icpPlaceholder')" class="input-width" clearable maxlength="20"/>
+                        <el-input v-model.trim="formData.icp" :placeholder="t('icpPlaceholder')" class="input-width" clearable maxlength="20" />
                         <div class="form-tip">{{ t('网站的ICP备案号,显示在PC端底部') }}</div>
                     </el-form-item>
-                    <el-form-item :label="t('govRecord')" >
-                        <el-input v-model.trim="formData.gov_record" :placeholder="t('govRecordPlaceholder')" class="input-width" clearable maxlength="50"/>
+                    <el-form-item :label="t('govRecord')">
+                        <el-input v-model.trim="formData.gov_record" :placeholder="t('govRecordPlaceholder')" class="input-width" clearable maxlength="50" />
                         <div class="form-tip">{{ t('公安部门登记的备案信息,显示在PC底部') }}</div>
                     </el-form-item>
-                    <el-form-item :label="t('govUrl')" >
+                    <el-form-item :label="t('govUrl')">
                         <el-input v-model.trim="formData.gov_url" :placeholder="t('govUrlPlaceholder')" class="input-width" clearable />
                         <div class="form-tip">{{ t('PC底部显示的网站公安点击跳转的链接') }}</div>
                     </el-form-item>
-                    <el-form-item :label="t('marketSupervisionUrl')" >
-                        <el-input v-model.trim="formData.market_supervision_url" rows="4" clearable :placeholder="t('marketSupervisionUrlPlaceholder')" class="input-width" />
+                    <el-form-item :label="t('marketSupervisionUrl')">
+                        <el-input v-model.trim="formData.market_supervision_url" clearable :placeholder="t('marketSupervisionUrlPlaceholder')" class="input-width" />
                         <div class="form-tip">{{ t('PC底部显示的市场监督管理局点击跳转的链接') }}</div>
                     </el-form-item>
                 </div>
-            </el-card>
+            </section>
         </el-form>
 
         <div class="fixed-footer-wrap">
-            <div class="fixed-footer">
-                <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
+            <div class="fixed-footer fixed-footer--form">
+                <div class="fixed-footer__inner fixed-footer__inner--narrow">
+                    <el-button type="primary" :loading="loading" @click="save(formRef)">{{ t('save') }}</el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -53,10 +61,6 @@ import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { setCopyright, getCopyright } from '@/app/api/sys'
 import { FormInstance, FormRules } from 'element-plus'
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
-const pageName = route.meta.title
 
 const loading = ref(true)
 

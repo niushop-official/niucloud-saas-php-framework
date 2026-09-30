@@ -1,13 +1,9 @@
 <template>
     <!--发送记录-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="recordsTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('searchReceiver')" prop="mobile">
                         <el-input v-model.trim="recordsTableData.searchParam.mobile" :placeholder="t('receiverPlaceholder')" />
@@ -32,8 +28,10 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="recordsTableData.data" size="large" v-loading="recordsTableData.loading">
+            <div class="table-panel mt-[10px] table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false" />
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="recordsTableData.data" size="large" v-loading="recordsTableData.loading">
 
                     <template #empty>
                         <span>{{ !recordsTableData.loading ? t('emptyData') : '' }}</span>
@@ -52,12 +50,15 @@
                     </el-table-column>
 
                 </el-table>
-
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="recordsTableData.page" v-model:page-size="recordsTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="recordsTableData.total"
-                        @size-change="loadNoticeLogList()" @current-change="loadNoticeLogList" />
                 </div>
+
+                <table-pagination
+                    v-model:current-page="recordsTableData.page"
+                    v-model:page-size="recordsTableData.limit"
+                    :total="recordsTableData.total"
+                    @size-change="loadNoticeLogList()"
+                    @current-change="loadNoticeLogList"
+                />
             </div>
 
             <records-info ref="recordsDialog" @complete="loadNoticeLogList" />
@@ -71,10 +72,16 @@ import { t } from '@/lang'
 import { getNoticeList, getSmsLog } from '@/app/api/notice'
 import RecordsInfo from '@/app/views/setting/components/sms-records-info.vue'
 import { FormInstance } from 'element-plus'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const recordsTableData = reactive({
     page: 1,

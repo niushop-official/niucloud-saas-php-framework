@@ -9,17 +9,34 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
+
 namespace Hyperf\Context;
 
+use ArrayObject;
 use Closure;
 use Hyperf\Engine\Coroutine;
+use Hyperf\Macroable\Macroable;
 
 use function Hyperf\Support\value;
 
+/**
+ * @template TKey of string
+ * @template TValue
+ */
 class Context
 {
+    use Macroable;
+
+    /**
+     * @var array<TKey, TValue>
+     */
     protected static array $nonCoContext = [];
 
+    /**
+     * @param TKey $id
+     * @param TValue $value
+     * @return TValue
+     */
     public static function set(string $id, mixed $value, ?int $coroutineId = null): mixed
     {
         if (Coroutine::id() > 0) {
@@ -31,6 +48,10 @@ class Context
         return $value;
     }
 
+    /**
+     * @param TKey $id
+     * @return TValue
+     */
     public static function get(string $id, mixed $default = null, ?int $coroutineId = null): mixed
     {
         if (Coroutine::id() > 0) {
@@ -40,6 +61,9 @@ class Context
         return static::$nonCoContext[$id] ?? $default;
     }
 
+    /**
+     * @param TKey $id
+     */
     public static function has(string $id, ?int $coroutineId = null): bool
     {
         if (Coroutine::id() > 0) {
@@ -51,6 +75,8 @@ class Context
 
     /**
      * Release the context when you are not in coroutine environment.
+     *
+     * @param TKey $id
      */
     public static function destroy(string $id, ?int $coroutineId = null): void
     {
@@ -86,6 +112,9 @@ class Context
 
     /**
      * Retrieve the value and override it by closure.
+     *
+     * @param TKey $id
+     * @param (Closure(TValue):TValue) $closure
      */
     public static function override(string $id, Closure $closure, ?int $coroutineId = null): mixed
     {
@@ -104,6 +133,10 @@ class Context
 
     /**
      * Retrieve the value and store it if not exists.
+     *
+     * @param TKey $id
+     * @param TValue $value
+     * @return TValue
      */
     public static function getOrSet(string $id, mixed $value, ?int $coroutineId = null): mixed
     {
@@ -114,6 +147,9 @@ class Context
         return self::get($id, null, $coroutineId);
     }
 
+    /**
+     * @return null|array<TKey, TValue>|ArrayObject<TKey, TValue>
+     */
     public static function getContainer(?int $coroutineId = null)
     {
         if (Coroutine::id() > 0) {

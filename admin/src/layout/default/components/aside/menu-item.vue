@@ -3,7 +3,7 @@
         <el-sub-menu v-if="hasVisibleChild" :index="String(routes.name)">
             <template #title>
                 <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
-                    <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
+                    <icon :name="menuIcon" class="absolute !w-auto" />
                 </div>
                 <span class="ml-[10px]">{{ meta.title }}</span>
             </template>
@@ -18,7 +18,7 @@
             <el-menu-item :index="String(routes.name)" @click="handleJump(routes.name)" v-if="meta.addon && meta.parent_route && meta.parent_route.addon == ''">
                 <template #title>
                     <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
-                        <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
+                        <icon :name="menuIcon" class="absolute !w-auto" />
                     </div>
                     <span class="ml-[10px]">{{ meta.title }}</span>
                 </template>
@@ -26,7 +26,7 @@
             <el-menu-item :index="String(routes.name)" @click="handleJump(routes.name)" v-else>
                 <template #title>
                     <div class="w-[16px] h-[16px] relative flex items-center" v-if="props.level == 1">
-                        <icon v-if="meta.icon" :name="meta.icon" class="absolute !w-auto" />
+                        <icon :name="menuIcon" class="absolute !w-auto" />
                     </div>
                     <span class="ml-[10px]">{{ meta.title }}</span>
                 </template>
@@ -44,6 +44,7 @@ import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import storage from '@/utils/storage'
 import { findFirstValidRoute ,formatRouters} from '@/router/routers'
+import { resolveMenuIcon } from '@/utils/menu-icon'
 
 const router = useRouter()
 const route = useRoute()
@@ -61,6 +62,7 @@ const props = defineProps({
 })
 const systemStore = useSystemStore()
 const meta = computed(() => props.routes.meta)
+const menuIcon = computed(() => resolveMenuIcon(meta.value?.icon))
 
 // 存储所有特殊菜单的name
 const specialMenuNames = ref<string[]>([])

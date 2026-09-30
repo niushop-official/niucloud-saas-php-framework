@@ -74,6 +74,15 @@ class Config extends BaseApiController
     }
 
     /**
+     * 获取渠道设置(客服)
+     * @return Response
+     */
+    public function getChannelSetting()
+    {
+        return success(( new ConfigService() )->getChannelSetting());
+    }
+
+    /**
      * 获取初始化数据信息
      * @return Response
      */

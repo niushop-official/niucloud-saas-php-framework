@@ -211,7 +211,61 @@ class PagesDict
                             ]
                         ],
                         "value" => [
-                            $default_index_value
+                            $default_index_value,
+                            // 客服快捷浮窗（固定右侧中部，链接固定为系统客服页）
+                            [
+                                "path" => "edit-float-btn-customer",
+                                "uses" => 1,
+                                "position" => "fixed",
+                                "id" => "9sysfbc001k0",
+                                "componentName" => "FloatBtnCustomer",
+                                "componentTitle" => "客服快捷浮窗",
+                                "ignore" => [
+                                    "pageBgColor",
+                                    "marginTop",
+                                    "marginBottom",
+                                    "marginBoth"
+                                ],
+                                "imageSize" => 40,
+                                "aroundRadius" => 50,
+                                "style" => "style-1",
+                                "styleName" => "风格一",
+                                "bottomPosition" => "middleRight",
+                                "list" => [
+                                    [
+                                        "imageUrl" => "static/resource/images/diy/kefu_default.png",
+                                        "link" => [
+                                            "parent" => "MEMBER_LINK",
+                                            "name" => "MEMBER_CONTACT",
+                                            "title" => "客服",
+                                            "url" => "/app/pages/member/contact",
+                                            "action" => ""
+                                        ],
+                                        "id" => "9sysfbc001k1"
+                                    ]
+                                ],
+                                "offset" => 0,
+                                "lateralOffset" => 15,
+                                "textColor" => "#303133",
+                                "pageStartBgColor" => "",
+                                "pageEndBgColor" => "",
+                                "pageGradientAngle" => "to bottom",
+                                "componentBgUrl" => "",
+                                "componentBgAlpha" => 2,
+                                "componentStartBgColor" => "",
+                                "componentEndBgColor" => "",
+                                "componentGradientAngle" => "to bottom",
+                                "topRounded" => 0,
+                                "bottomRounded" => 0,
+                                "elementBgColor" => "",
+                                "topElementRounded" => 0,
+                                "bottomElementRounded" => 0,
+                                "margin" => [
+                                    "top" => 0,
+                                    "bottom" => 0,
+                                    "both" => 0
+                                ]
+                            ]
                         ]
                     ]
                 ],

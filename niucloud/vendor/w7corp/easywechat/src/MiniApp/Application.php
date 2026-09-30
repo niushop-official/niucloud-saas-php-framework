@@ -23,6 +23,7 @@ use JetBrains\PhpStorm\Pure;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\HttpClient\Response\AsyncContext;
 use Symfony\Component\HttpClient\RetryableHttpClient;
+
 use function array_merge;
 use function is_null;
 use function str_contains;
@@ -32,21 +33,24 @@ use function str_contains;
  */
 class Application implements ApplicationInterface
 {
-    use InteractWithConfig;
     use InteractWithCache;
-    use InteractWithServerRequest;
-    use InteractWithHttpClient;
     use InteractWithClient;
+    use InteractWithConfig;
+    use InteractWithHttpClient;
+    use InteractWithServerRequest;
     use LoggerAwareTrait;
 
     protected ?Encryptor $encryptor = null;
+
     protected ?ServerInterface $server = null;
+
     protected ?AccountInterface $account = null;
+
     protected ?AccessTokenInterface $accessToken = null;
 
     public function getAccount(): AccountInterface
     {
-        if (!$this->account) {
+        if (! $this->account) {
             $this->account = new Account(
                 appId: (string) $this->config->get('app_id'), /** @phpstan-ignore-line */
                 secret: (string) $this->config->get('secret'), /** @phpstan-ignore-line */
@@ -66,11 +70,11 @@ class Application implements ApplicationInterface
     }
 
     /**
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getEncryptor(): Encryptor
     {
-        if (!$this->encryptor) {
+        if (! $this->encryptor) {
             $token = $this->getAccount()->getToken();
             $aesKey = $this->getAccount()->getAesKey();
 
@@ -96,17 +100,14 @@ class Application implements ApplicationInterface
         return $this;
     }
 
-    /**
-     * @throws \ReflectionException
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     * @throws \Throwable
-     */
     public function getServer(): Server|ServerInterface
     {
-        if (!$this->server) {
+        if (! $this->server) {
             $this->server = new Server(
                 request: $this->getRequest(),
-                encryptor: $this->getAccount()->getAesKey() ? $this->getEncryptor() : null
+                encryptor: $this->getAccount()->getAesKey() ? $this->getEncryptor() : null,
+                token: $this->getAccount()->getToken(),
+                requireEncryption: (bool) $this->config->get('require_encryption', false),
             );
         }
 
@@ -122,12 +123,13 @@ class Application implements ApplicationInterface
 
     public function getAccessToken(): AccessTokenInterface
     {
-        if (!$this->accessToken) {
+        if (! $this->accessToken) {
             $this->accessToken = new AccessToken(
                 appId: $this->getAccount()->getAppId(),
                 secret: $this->getAccount()->getSecret(),
                 cache: $this->getCache(),
                 httpClient: $this->getHttpClient(),
+                stable: $this->config->get('use_stable_access_token', false)
             );
         }
 
@@ -151,7 +153,7 @@ class Application implements ApplicationInterface
     {
         $httpClient = $this->getHttpClient();
 
-        if (!!$this->config->get('http.retry', false)) {
+        if ($this->config->get('http.retry', false)) {
             $httpClient = new RetryableHttpClient(
                 $httpClient,
                 $this->getRetryStrategy(),
@@ -164,8 +166,8 @@ class Application implements ApplicationInterface
             accessToken: $this->getAccessToken(),
             failureJudge: fn (
                 Response $response
-            ) => !!($response->toArray()['errcode'] ?? 0) || !is_null($response->toArray()['error'] ?? null),
-            throw: !!$this->config->get('http.throw', true),
+            ) => ($response->toArray()['errcode'] ?? 0) || ! is_null($response->toArray()['error'] ?? null),
+            throw: (bool) $this->config->get('http.throw', true),
         ))->setPresets($this->config->all());
     }
 
@@ -175,7 +177,7 @@ class Application implements ApplicationInterface
 
         return (new AccessTokenExpiredRetryStrategy($retryConfig))
             ->decideUsing(function (AsyncContext $context, ?string $responseContent): bool {
-                return !empty($responseContent)
+                return ! empty($responseContent)
                     && str_contains($responseContent, '42001')
                     && str_contains($responseContent, 'access_token expired');
             });

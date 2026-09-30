@@ -10,9 +10,7 @@
                     <div class="flex items-center">
                         <span class="mr-[3px]">{{ t('上传方式') }}</span>
                         <el-tooltip effect="light" :content="t('拍摄时长限制1分钟，从相册上传不限制时长。')" placement="top">
-                            <el-icon>
-                                <QuestionFilled color="#999999" />
-                            </el-icon>
+                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                         </el-tooltip>
                     </div>
                 </template>

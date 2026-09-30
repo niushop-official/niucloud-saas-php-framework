@@ -1,6 +1,6 @@
 <template>
     <el-dialog v-model="showDialog" :title="formData.id ? t('updateDict') : t('addDict')" width="480" class="diy-dialog-wrap" :destroy-on-close="true">
-        <el-form :model="formData" label-width="120px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
+        <el-form :model="formData" label-width="100px" ref="formRef" :rules="formRules" class="page-form" v-loading="loading">
             <el-form-item :label="t('name')" prop="name">
                 <el-input v-model.trim="formData.name" clearable maxlength="40" show-word-limit :placeholder="t('namePlaceholder')" class="input-width" />
             </el-form-item>

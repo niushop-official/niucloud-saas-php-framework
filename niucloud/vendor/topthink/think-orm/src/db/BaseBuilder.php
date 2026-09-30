@@ -3,19 +3,21 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace think\db;
 
+use BackedEnum;
 use Closure;
 use think\db\BaseQuery as Query;
 use think\db\exception\DbException as Exception;
+use UnitEnum;
 
 /**
  * Db Base Builder.
@@ -42,7 +44,7 @@ abstract class BaseBuilder
      * @var array
      */
     protected $parser = [
-        'parseCompare'     => ['=', '<>', '>', '>=', '<', '<='],
+        'parseCompare'     => ['=', '<>', '>', '>=', '<', '<=', '&', '|', '^', '>>', '<<'],
         'parseLike'        => ['LIKE', 'NOT LIKE'],
         'parseBetween'     => ['NOT BETWEEN', 'BETWEEN'],
         'parseIn'          => ['NOT IN', 'IN'],
@@ -94,7 +96,7 @@ abstract class BaseBuilder
      *
      * @param ConnectionInterface $connection 数据库连接对象实例
      */
-    public function __construct(ConnectionInterface $connection)
+    public function __construct(?ConnectionInterface $connection)
     {
         $this->connection = $connection;
     }
@@ -157,7 +159,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    abstract public function parseKey(Query $query, string|int|Raw $key, bool $strict = false): string;
+    abstract public function parseKey(Query $query, string | int | Raw $key, bool $strict = false): string;
 
     /**
      * 查询额外参数分析.
@@ -187,7 +189,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    abstract protected function parseTable(Query $query, array|string $tables): string;
+    abstract protected function parseTable(Query $query, array | string $tables): string;
 
     /**
      * where分析.
@@ -273,7 +275,7 @@ abstract class BaseBuilder
                 $where[] = $this->parseFieldsAnd($query, $value, $field, $logic, $binds);
             } else {
                 // 对字段使用表达式查询
-                $field = is_string($field) ? $field : '';
+                $field   = is_string($field) ? $field : '';
                 $where[] = ' ' . $logic . ' ' . $this->parseWhereItem($query, $field, $value, $binds);
             }
         }
@@ -338,7 +340,7 @@ abstract class BaseBuilder
     {
         $newQuery = $query->newQuery();
         $value($newQuery);
-        $whereClosure = $this->buildWhere($newQuery, $newQuery->getOptions('where') ?: []);
+        $whereClosure = $this->buildWhere($newQuery, $newQuery->getOption('where') ?: []);
 
         if (!empty($whereClosure)) {
             $query->bind($newQuery->getBind(false));
@@ -466,7 +468,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    abstract protected function parseBetween(Query $query, string $key, string $exp, array|string $value, $field, int $bindType): string;
+    abstract protected function parseBetween(Query $query, string $key, string $exp, array | string $value, $field, int $bindType): string;
 
     /**
      * Exists查询.
@@ -480,7 +482,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    protected function parseExists(Query $query, string $key, string $exp, Raw|Closure $value, string $field, int $bindType): string
+    protected function parseExists(Query $query, string $key, string $exp, Raw | Closure $value, string $field, int $bindType): string
     {
         // EXISTS 查询
         if ($value instanceof Closure) {
@@ -518,10 +520,11 @@ abstract class BaseBuilder
      * @param mixed  $value
      * @param string $field
      * @param int    $bindType
+     * @param string $param
      *
      * @return string
      */
-    protected function parseCompare(Query $query, string $key, string $exp, $value, $field, int $bindType): string
+    protected function parseCompare(Query $query, string $key, string $exp, $value, $field, int $bindType, ?string $param = null): string
     {
         if (is_array($value)) {
             throw new Exception('where express error:' . $exp . var_export($value, true));
@@ -532,13 +535,21 @@ abstract class BaseBuilder
             $value = $this->parseClosure($query, $value);
         } elseif ($value instanceof Raw) {
             $value = $this->parseRaw($query, $value);
+        } elseif ($value instanceof BackedEnum) {
+            $value = $value->value;
+        } elseif ($value instanceof UnitEnum) {
+            $value = $value->name;
         }
 
         if ('=' == $exp && is_null($value)) {
             return $key . ' IS NULL';
         }
 
-        return $key . ' ' . $exp . ' ' . $value;
+        if (is_null($param)) {
+            return $key . ' ' . $exp . ' ' . $value;
+        } else {
+            return '( ' . $key . ' ' . $exp . ' ' . $value . ' ) ' . $param;
+        }
     }
 
     /**
@@ -560,9 +571,9 @@ abstract class BaseBuilder
         }
 
         return $key . ' ' . substr($exp, 0, -4)
-            . $this->parseDateTime($query, $value[0], $field, $bindType)
-            . ' AND '
-            . $this->parseDateTime($query, $value[1], $field, $bindType);
+        . $this->parseDateTime($query, $value[0], $field, $bindType)
+        . ' AND '
+        . $this->parseDateTime($query, $value[1], $field, $bindType);
     }
 
     /**
@@ -665,7 +676,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    abstract protected function parseGroup(Query $query, string|array $group): string;
+    abstract protected function parseGroup(Query $query, string | array $group): string;
 
     /**
      * having分析.
@@ -740,7 +751,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    abstract protected function parseForce(Query $query, string|array $index): string;
+    abstract protected function parseForce(Query $query, string | array $index): string;
 
     /**
      * 设置锁机制.
@@ -750,7 +761,7 @@ abstract class BaseBuilder
      *
      * @return string
      */
-    abstract protected function parseLock(Query $query, bool|string $lock = false): string;
+    abstract protected function parseLock(Query $query, bool | string $lock = false): string;
 
     /**
      * 生成查询SQL.

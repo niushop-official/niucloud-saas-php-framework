@@ -1,15 +1,13 @@
 <template>
     <el-container class="w-[200px] h-screen layout-aside flex flex-col">
-        <el-header class="logo-wrap flex items-center justify-center h-[64px]">
-            <div class="logo flex items-center m-auto h-[64px]" v-if="!systemStore.menuIsCollapse">
-                <el-image style="width: 40px; height: 40px" :src="img(logoUrl)" fit="contain">
+        <el-header class="logo-wrap flex items-center h-[64px]">
+            <div class="logo flex items-center min-w-0 h-[64px]" :class="{ 'is-collapse': systemStore.menuIsCollapse }">
+                <el-image class="logo__image" :src="img(logoUrl)" fit="contain">
                     <template #error>
-                        <div class="flex justify-center items-center w-full h-[40px]"><img class="max-w-[40px]" src="@/app/assets/images/icon-addon-one.png" alt=""  object-fit="contain"></div>
+                        <img class="logo__image" src="@/app/assets/images/icon-addon-one.png" alt="" />
                     </template>
                 </el-image>
-            </div>
-            <div class="logo flex items-center justify-center h-[64px]" v-else>
-                <i class="text-3xl iconfont iconyunkongjian"></i>
+                <span v-if="!systemStore.menuIsCollapse" class="logo__name">{{ siteName }}</span>
             </div>
         </el-header>
         <el-main class="menu-wrap">
@@ -44,7 +42,12 @@ const addonIndexRoute = userStore.addonIndexRoute
 const menuData = ref<Record<string, any>[]>([])
 const addonRouters: Record<string, any> = {}
 const logoUrl = computed(() => {
-    return userStore.siteInfo.logo ? userStore.siteInfo.logo : systemStore.website.logo
+    const website = systemStore.website as any
+    return userStore.siteInfo?.icon || website?.icon
+})
+const siteName = computed(() => {
+    const website = systemStore.website as any
+    return website?.site_name || userStore.siteInfo?.site_name || ''
 })
 
 const appList = ref<Record<string, any>[]>([])
@@ -136,6 +139,38 @@ if (siteInfo?.apps.length > 1) {
 </script>
 
 <style lang="scss" scoped>
+.logo-wrap {
+    /* 与一级菜单默认左内边距一致，logo 左缘对齐菜单图标 */
+    padding-right: var(--el-menu-base-level-padding, 20px);
+    padding-left: var(--el-menu-base-level-padding, 20px);
+}
+.logo {
+    width: 100%;
+    &.is-collapse{
+        justify-content: center;
+    }
+}
+.logo__image {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 6px;
+    object-fit: contain;
+}
+.logo__name {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    margin-left: 8px;
+    overflow: hidden;
+    font-size: 20px;
+    font-weight: var(--sys-font-weight-medium);
+    line-height: 1;
+    color: var(--sys-color-text-primary);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .menu-wrap {
     padding: 0!important;
 

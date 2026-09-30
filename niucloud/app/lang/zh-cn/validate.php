@@ -18,7 +18,18 @@ return [
         'methods_requirewith' => '请求类型必须填写',
         'not_exit_menu_type' => '不存在的菜单类型',
         'not_exit_request_type' => '不存在的菜单类型',
-        'exit_menu_key' => '菜单key不可重复'
+        'exit_menu_key' => '菜单key不可重复',
+        'app_type_error' => '不支持的菜单端类型',
+        'import_file_require' => '请上传菜单文件',
+        'import_file_invalid' => '菜单文件格式错误，请上传导出的JSON文件',
+        'import_menu_empty' => '菜单文件内容为空',
+        'import_app_type_mismatch' => '导入文件与当前菜单端类型不匹配',
+        'import_menu_key_require' => '菜单标识不能为空',
+        'import_menu_key_format' => '菜单标识只能使用字母数字下划线并且开头不能为数字',
+        'import_menu_key_duplicate' => '菜单文件中存在重复的菜单标识',
+        'import_parent_not_exist' => '父级菜单不存在',
+        'import_file_too_large' => '上传文件超过PHP限制（upload_max_filesize/post_max_size），请在php.ini中调整后重试',
+        'import_file_over_max' => '菜单文件大小不能超过2MB，请拆分菜单文件后分批导入'
     ],
     //角色
     'validate_role' => [

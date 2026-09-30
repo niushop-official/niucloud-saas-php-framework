@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="showDialog" :title="elDialogTitle" width="500px" :destroy-on-close="true">
+    <el-dialog v-model="showDialog" :title="elDialogTitle" width="560px" :destroy-on-close="true">
         <el-form :model="formData" label-width="100px" ref="formRef" :rules="formRules" class="page-form" autocomplete="off" v-loading="loading">
             <div v-if="formData.site_id == 0">
                 <el-form-item :label="t('siteName')" prop="site_name">
@@ -11,18 +11,23 @@
                         <el-option :label="item['group_name']" :value="item['group_id']" v-for="(item,index) in groupList" :key="index"/>
                     </el-select>
                 </el-form-item>
-                <!-- <el-form-item :label="t('realName')" prop="real_name" v-if="!formData.site_id && !loading">
-                        <el-input v-model.trim="formData.real_name" clearable :placeholder="t('realNamePlaceholder')" class="input-width" />
-                    </el-form-item> -->
-                <el-form-item :label="t('manager')" prop="uid">
-                    <el-select v-model="formData.uid" :placeholder="t('managerPlaceholder')" class="input-width" filterable>
-                        <el-option :label="t('newAddManager')" :value="0">
+                <!-- 账号：''=未选择，0=新增站点管理员（下拉切换为登录账号），其余为选择已有管理员 -->
+                <el-form-item :label="formData.uid === 0 ? t('addManagerUsername') : t('manager')" :prop="formData.uid === 0 ? 'username' : 'uid'">
+                    <el-select
+                        v-if="formData.uid !== 0"
+                        v-model="formData.uid"
+                        :placeholder="t('managerPlaceholder')"
+                        filterable
+                        class="input-width"
+                        @change="onUidChange"
+                    >
+                        <el-option label="新增站点管理员" :value="0">
                             <template #default>
                                 <div class="flex items-center">
                                     <el-icon class="mr-[10px]">
                                         <Plus />
                                     </el-icon>
-                                    {{ t('newAddManager') }}
+                                    新增站点管理员
                                 </div>
                             </template>
                         </el-option>
@@ -34,19 +39,30 @@
                             </div>
                         </el-option>
                     </el-select>
+
+                    <div v-else class="account-control">
+                        <el-input
+                            v-model.trim="formData.username"
+                            clearable
+                            :placeholder="t('addManagerUsernamePlaceholder')"
+                            autocomplete="off"
+                            :readonly="usernameInput"
+                            @click="usernameInput = false"
+                            @blur="usernameInput = true"
+                        />
+                        <el-button link type="primary" class="ml-[10px] shrink-0" @click="backToSelect">
+                            选择
+                        </el-button>
+                    </div>
                 </el-form-item>
 
                 <div v-show="formData.uid === 0">
-                    <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model.trim="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
+                    <el-form-item :label="t('addManagerPassword')" prop="password">
+                        <el-input v-model.trim="formData.password" clearable :placeholder="t('addManagerPasswordPlaceholder')" class="input-width" autocomplete="new-password" :show-password="true" type="password" :readonly="passwordInput" @click="passwordInput = false" @blur="passwordInput = true" />
                     </el-form-item>
 
-                    <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model.trim="formData.password" autocomplete="off" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
-                    </el-form-item>
-
-                    <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model.trim="formData.confirm_password" autocomplete="off" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
+                    <el-form-item :label="t('addManagerConfirmPassword')" prop="confirm_password">
+                        <el-input v-model.trim="formData.confirm_password" clearable :placeholder="t('addManagerConfirmPasswordPlaceholder')" class="input-width" autocomplete="new-password" :show-password="true" type="password" :readonly="confirmPasswordInput" @click="confirmPasswordInput = false" @blur="confirmPasswordInput = true" />
                     </el-form-item>
                 </div>
             </div>
@@ -62,40 +78,19 @@
                 </el-form-item>
 
                 <el-form-item :label="t('manager')" prop="uid">
-                    <el-select v-model="formData.uid" :placeholder="t('managerPlaceholder')" class="input-width" filterable>
-                        <el-option :label="t('newAddManager')" :value="0">
-                            <template #default>
+                    <div class="input-width manager-field flex items-center">
+                        <el-select v-model="formData.uid" :placeholder="t('managerPlaceholder')" class="min-w-0 flex-1" filterable>
+                            <el-option v-for="item in siteUser" :key="item.uid" :label="item['username']" :value="item['uid']">
                                 <div class="flex items-center">
-                                    <el-icon class="mr-[10px]">
-                                        <Plus />
-                                    </el-icon>
-                                    {{ t('newAddManager') }}
+                                    <el-avatar :src="img(item.head_img)" size="small" class="mr-[10px]" v-if="item.head_img" />
+                                    <img src="@/app/assets/images/member_head.png" alt="" class="mr-[10px] w-[24px]" v-else>
+                                    {{ item.username }}
                                 </div>
-                            </template>
-                        </el-option>
-                        <el-option v-for="item in siteUser" :key="item.uid" :label="item['username']" :value="item['uid']">
-                            <div class="flex items-center">
-                                <el-avatar :src="img(item.head_img)" size="small" class="mr-[10px]" v-if="item.head_img" />
-                                <img src="@/app/assets/images/member_head.png" alt="" class="mr-[10px] w-[24px]" v-else>
-                                {{ item.username }}
-                            </div>
-                        </el-option>
-                    </el-select>
+                            </el-option>
+                        </el-select>
+                        <el-button class="ml-[8px] shrink-0" @click="openAddUser">{{ t('addManagerAction') }}</el-button>
+                    </div>
                 </el-form-item>
-
-                <div v-show="formData.uid === 0">
-                    <el-form-item :label="t('username')" prop="username">
-                        <el-input v-model.trim="formData.username" clearable :placeholder="t('usernamePlaceholder')" class="input-width" :readonly="user_name_input" @click="inputClick('user_name_input')" @blur="user_name_input = true" />
-                    </el-form-item>
-
-                    <el-form-item :label="t('password')" prop="password">
-                        <el-input v-model.trim="formData.password" clearable :placeholder="t('passwordPlaceholder')" class="input-width" :show-password="true" type="password" :readonly="password_input" @click="inputClick('password_input')" @blur="password_input = true" />
-                    </el-form-item>
-
-                    <el-form-item :label="t('confirmPassword')" prop="confirm_password">
-                        <el-input v-model.trim="formData.confirm_password" :placeholder="t('confirmPasswordPlaceholder')" type="password" :show-password="true" clearable class="input-width" :readonly="confirm_password_input" @click="inputClick('confirm_password_input')" @blur="confirm_password_input = true" />
-                    </el-form-item>
-                </div>
             </div>
 
             <el-form-item :label="t('siteDomain')" prop="site_domain">
@@ -119,25 +114,42 @@
             </span>
         </template>
     </el-dialog>
+    <add-user ref="addUserRef" @success="onAddUserSuccess" />
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, nextTick } from 'vue'
 import { t } from '@/lang'
 import type { FormInstance } from 'element-plus'
 import { addSite, getSiteGroupAll, getSiteInfo, editSite } from '@/app/api/site'
 import { getUserListSelect } from '@/app/api/user'
 import { getInstalledAddonList } from '@/app/api/addon'
 import { img } from '@/utils/common'
+import AddUser from '@/components/add-user/index.vue'
 
 const showDialog = ref(false)
 const loading = ref(true)
 const groupList = ref([])
 const siteUser = ref([])
 const siteType = ref([])
-getUserListSelect({}).then(({ data }) => {
-    siteUser.value = data
-})
+const addUserRef = ref()
+const loadSiteUser = () => {
+    return getUserListSelect({}).then(({ data }) => {
+        siteUser.value = data
+    })
+}
+loadSiteUser()
+
+const openAddUser = () => {
+    addUserRef.value?.open()
+}
+
+const onAddUserSuccess = (payload: { uid: number, status: boolean }) => {
+    if (!payload.status) return
+    loadSiteUser().then(() => {
+        if (payload.uid) formData.uid = payload.uid
+    })
+}
 
 const end = new Date()
 
@@ -149,7 +161,7 @@ const initialFormData = {
     site_id: '',
     site_name: '',
     real_name: '',
-    uid: '',
+    uid: '' as number | '',
     username: '',
     password: '',
     confirm_password: '',
@@ -160,18 +172,40 @@ const initialFormData = {
 const formData: Record<string, any> = reactive({ ...initialFormData })
 
 const formRef = ref<FormInstance>()
+const usernameInput = ref(true)
+const passwordInput = ref(true)
+const confirmPasswordInput = ref(true)
 
-const user_name_input = ref(true)
-const password_input = ref(true)
-const confirm_password_input = ref(true)
-const inputClick=(key:any)=>{
-    let time = setTimeout(() => {
-        clearTimeout(time)
-        if(key=='user_name_input') user_name_input.value = false
-        if(key=='password_input') password_input.value = false
-        if(key=='confirm_password_input') confirm_password_input.value = false
-    }, 200);
+const resetAccountInputLock = () => {
+    usernameInput.value = true
+    passwordInput.value = true
+    confirmPasswordInput.value = true
 }
+
+const clearNewManager = () => {
+    formData.username = ''
+    formData.password = ''
+    formData.confirm_password = ''
+    resetAccountInputLock()
+}
+
+const clearNewManagerValidate = () => {
+    nextTick(() => {
+        formRef.value?.clearValidate(['uid', 'username', 'password', 'confirm_password'])
+    })
+}
+
+const onUidChange = () => {
+    clearNewManager()
+    clearNewManagerValidate()
+}
+
+const backToSelect = () => {
+    clearNewManager()
+    formData.uid = ''
+    clearNewManagerValidate()
+}
+
 const setGroupList = async () => {
     groupList.value = await (await getSiteGroupAll()).data
 }
@@ -188,6 +222,7 @@ getInstalledAddonList().then(({ data }) => {
 const setFormData = async (row: any = null) => {
     loading.value = true
     Object.assign(formData, initialFormData)
+    resetAccountInputLock()
     if (row) {
         const data = await (await getSiteInfo(row.site_id)).data
         siteType.value = data
@@ -200,6 +235,7 @@ const setFormData = async (row: any = null) => {
 
 // 表单验证规则
 const formRules = computed(() => {
+    const isNew = formData.site_id == 0 && formData.uid === 0
     return {
         site_name: [
             { required: true, message: t('siteNamePlaceholder'), trigger: 'blur' }
@@ -207,30 +243,23 @@ const formRules = computed(() => {
         group_id: [
             { required: true, message: t('groupIdPlaceholder'), trigger: 'blur' }
         ],
-        uid: [
-            { required: true, message: t('uIdPlaceholder'), trigger: 'blur' },
+        uid: isNew ? [] : [
+            { required: true, message: t('uIdPlaceholder'), trigger: 'change' },
             {
                 validator: (rule: any, value: string, callback: any) => {
                     if (formData.uid === '') callback(new Error(t('managerPlaceholder')))
                     else callback()
                 },
-                trigger: 'blur'
+                trigger: 'change'
             }
         ],
-        username: [
-            { required: formData.uid == 0, message: t('usernamePlaceholder'), trigger: 'blur' }
-        ],
-        password: [
-            { required: formData.uid == 0, message: t('passwordPlaceholder'), trigger: 'blur' }
-        ],
-        real_name: [
-            { required: true, message: t('userRealNamePlaceholder'), trigger: 'blur' }
-        ],
+        username: [{ required: isNew, message: t('addManagerUsernamePlaceholder'), trigger: 'blur' }],
+        password: [{ required: isNew, message: t('addManagerPasswordPlaceholder'), trigger: 'blur' }],
         confirm_password: [
-            { required: formData.uid == 0, message: t('confirmPasswordPlaceholder'), trigger: 'blur' },
+            { required: isNew, message: t('addManagerConfirmPasswordPlaceholder'), trigger: 'blur' },
             {
                 validator: (rule: any, value: string, callback: any) => {
-                    if (formData.uid == 0 && value != formData.password) callback(new Error(t('confirmPasswordError')))
+                    if (isNew && value != formData.password) callback(new Error(t('addManagerConfirmPasswordError')))
                     else callback()
                 },
                 trigger: 'blur'
@@ -261,14 +290,20 @@ const confirm = async (formEl: FormInstance | undefined) => {
         if (valid) {
             loading.value = true
 
-            const data = formData
+            const data: Record<string, any> = { ...formData }
+            const isNewManager = data.site_id == 0 && data.uid === 0
+            if (!isNewManager) {
+                delete data.username
+                delete data.password
+                delete data.confirm_password
+            } else {
+                delete data.confirm_password
+            }
             const save = data.site_id ? editSite : addSite
             save(data).then(res => {
                 loading.value = false
                 showDialog.value = false
-                getUserListSelect({}).then(({ data }) => {
-                    siteUser.value = data
-                })
+                loadSiteUser()
                 emit('complete')
             }).catch(() => {
                 loading.value = false
@@ -278,14 +313,6 @@ const confirm = async (formEl: FormInstance | undefined) => {
     })
 }
 
-// 禁止点击input输入框时浏览器显示默认的账号信息
-window.onload = function() {
-    const inputs = document.getElementsByTagName('input');
-    for(let i=0; i<inputs.length; i++) {
-        inputs[i].setAttribute('autocomplete', 'off');
-    }
-};
-
 defineExpose({
     showDialog,
     setFormData,
@@ -293,4 +320,21 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.manager-field {
+    :deep(.el-select) {
+        width: 100%;
+    }
+}
+
+.account-control {
+    display: flex;
+    align-items: center;
+
+    :deep(.el-input) {
+        width: var(--cmp-page-form-control-width, 320px);
+        max-width: 100%;
+        flex: 0 0 auto;
+    }
+}
+</style>

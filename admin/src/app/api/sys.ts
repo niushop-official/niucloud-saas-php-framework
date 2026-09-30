@@ -18,6 +18,13 @@ export function getUrl() {
     return request.get('sys/url')
 }
 
+/**
+ * 当前站点已开启渠道及访问地址
+ */
+export function getChannel() {
+    return request.get('sys/visit_channel')
+}
+
 /***************************************************** 用户组 ****************************************************/
 
 /**
@@ -123,6 +130,41 @@ export function deleteMenu(app_type: string, menu_key: string) {
 }
 
 /**
+ * 导出菜单(平台/站点)
+ * @param app_type admin | site
+ * @param addons 导出范围：空数组=全部；[''] 表示仅系统菜单；['', 'shop'] 表示系统菜单+商城
+ * @returns
+ */
+export function exportMenu(app_type: string, addons: string[] = []) {
+    return request.get(`sys/menu/export/${ app_type }`, {
+        params: { addons: JSON.stringify(addons) },
+        responseType: 'blob',
+        showErrorMessage: false
+    })
+}
+
+/**
+ * 导入菜单(平台/站点)
+ * @param app_type admin | site
+ * @param data FormData，包含 file 菜单文件与 overwrite 是否覆盖同名菜单
+ * @returns
+ */
+export function importMenu(app_type: string, data: FormData) {
+    // 必须覆盖默认的 application/json，否则 axios 会把 FormData 转成 JSON 导致文件上传失败
+    return request.post(`sys/menu/import/${ app_type }`, data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })
+}
+
+/**
+ * 获取菜单导入的PHP上传限制配置
+ * @returns
+ */
+export function getMenuImportConfig() {
+    return request.get('sys/menu/import/config', { showErrorMessage: false })
+}
+
+/**
  * 获取系统菜单
  *
  */
@@ -205,6 +247,23 @@ export function getCopyright() {
  */
 export function getService() {
     return request.get('sys/config/service')
+}
+
+/**
+ * 获取渠道设置
+ * @returns
+ */
+export function getChannelSetting() {
+    return request.get('sys/config/channel')
+}
+
+/**
+ * 设置渠道设置
+ * @param params
+ * @returns
+ */
+export function setChannelSetting(params: Record<string, any>) {
+    return request.put('sys/config/channel', params)
 }
 
 /**
@@ -357,6 +416,50 @@ export function getStorageInfo(type: string) {
  */
 export function editStorage(params: Record<string, any>) {
     return request.put(`sys/storage/${ params.storage_type }`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 获取存储配置列表（多套配置）
+ */
+export function getStorageConfigList() {
+    return request.get(`sys/storage/config/list`)
+}
+
+/**
+ * 新增存储配置
+ * @param params
+ * @returns
+ */
+export function addStorageConfig(params: Record<string, any>) {
+    return request.post(`sys/storage/config`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 编辑存储配置
+ * @param id
+ * @param params
+ * @returns
+ */
+export function editStorageConfig(id: number | string, params: Record<string, any>) {
+    return request.put(`sys/storage/config/${ id }`, params, { showSuccessMessage: true })
+}
+
+/**
+ * 启用存储配置
+ * @param id
+ * @returns
+ */
+export function useStorageConfig(id: number | string) {
+    return request.put(`sys/storage/config/use/${ id }`, {}, { showSuccessMessage: true })
+}
+
+/**
+ * 删除存储配置
+ * @param id
+ * @returns
+ */
+export function deleteStorageConfig(id: number | string) {
+    return request.delete(`sys/storage/config/${ id }`, { showSuccessMessage: true })
 }
 
 /***************************************************** 支付设置 ****************************************************/
@@ -592,7 +695,7 @@ export function setPatConfig(params: Record<string, any>) {
  * 刷新菜单
  */
 export function menuRefresh() {
-    return request.post(`sys/menu/refresh`, {})
+    return request.post(`sys/menu/refresh`, {}, { showSuccessMessage: true })
 }
 
 /**

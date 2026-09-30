@@ -2,12 +2,9 @@
     <template v-if="meta.show">
         <el-sub-menu v-if="hasVisibleChild" :index="String(routes.name)">
             <template #title>
-                <div class="w-[25px] h-full flex items-center justify-center">
-                    <template v-if="meta.icon">
-                        <el-image class="w-[16px] h-[16px] overflow-hidden" :src="meta.icon" fit="fill" v-if="isUrl(meta.icon)"/>
-                        <icon :name="meta.icon" v-else />
-                    </template>
-                    <icon v-else :name="'iconfont iconshezhi1'" />
+                <div class="menu-icon-slot w-[25px] h-full flex items-center justify-center">
+                    <el-image class="w-[16px] h-[16px] overflow-hidden" :src="meta.icon" fit="fill" v-if="meta.icon && isUrl(meta.icon)"/>
+                    <icon :name="menuIcon" v-else />
                 </div>
                 <span class="text-[14px]">{{ meta.title }}</span>
             </template>
@@ -15,12 +12,9 @@
         </el-sub-menu>
         <el-menu-item :index="String(routes.name)" @click="handleJump(routes.name)" v-else>
             <template #title>
-                <div class="w-[25px] h-full flex items-center justify-center" v-if="props.level == 1">
-                    <template v-if="meta.icon">
-                        <el-image class="w-[16px] h-[16px] overflow-hidden" :src="meta.icon" fit="fill" v-if="isUrl(meta.icon)"/>
-                        <icon :name="meta.icon" v-else />
-                    </template>
-                    <icon v-else :name="'iconfont iconshezhi1'" />
+                <div class="menu-icon-slot w-[25px] h-full flex items-center justify-center" v-if="props.level == 1">
+                    <el-image class="w-[16px] h-[16px] overflow-hidden" :src="meta.icon" fit="fill" v-if="meta.icon && isUrl(meta.icon)"/>
+                    <icon :name="menuIcon" v-else />
                 </div>
                 <span class="text-[14px]">{{ meta.title }}</span>
             </template>
@@ -35,6 +29,8 @@ import { ref, computed } from 'vue'
 import { img, isUrl } from '@/utils/common'
 import menuItem from './menu-item.vue'
 import storage from '@/utils/storage'
+import { useMenuJump } from '@/hooks/useMenuActive'
+import { resolveMenuIcon } from '@/utils/menu-icon'
 
 const router = useRouter()
 const route = useRoute()
@@ -51,6 +47,8 @@ const props = defineProps({
 })
 
 const meta = computed(() => props.routes.meta)
+const menuIcon = computed(() => resolveMenuIcon(meta.value?.icon))
+const { handleMenuJump } = useMenuJump()
 
 const hasVisibleChild = computed(() => {
     if (!props.routes.children || !Array.isArray(props.routes.children)) {
@@ -73,6 +71,8 @@ const handleJump = (routeName: string) => {
     if (specialMenuNamesLevel1.includes(routeName)) {
         routeName = 'addon_list'
     }
+    // 需要新窗口打开的菜单：新开标签页，当前页面不跳转，高亮保持在原来的菜单上
+    if (handleMenuJump(routeName, meta.value)) return
     // 跳转时添加随机查询参数（用于触发页面感知）// 相同路由时添加随机参数
     const query = route.name === routeName ? { refresh: Date.now() } : {}
 
@@ -83,4 +83,15 @@ const handleJump = (routeName: string) => {
 </script>
 
 <style lang="scss" scoped>
+.menu-icon-slot {
+    width: 25px;
+    min-width: 25px;
+    flex: 0 0 25px;
+
+    :deep(.el-icon) {
+        width: 16px;
+        margin-right: 0;
+        font-size: 16px;
+    }
+}
 </style>

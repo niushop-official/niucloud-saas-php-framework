@@ -74,6 +74,10 @@ return [
     'ATTACHMENT_NOE_EXIST' => '附件不存在',
     'ATTACHMENT_GROUP_HAS_IMAGE' => '附件组中存在图片不允许删除',
     'OSS_TYPE_NOT_EXIST' => '云存储类型不存在',
+    'OSS_CONFIG_NOT_EXIST' => '存储配置不存在',
+    'OSS_CONFIG_IS_USING' => '该存储配置正在使用中，请先切换其他配置后再删除',
+    'OSS_CONFIG_NOT_COMPLETE' => '存储配置未完善，请先完善配置后再启用',
+    'OSS_CONFIG_NOT_ALLOW_DELETE' => '该存储配置不允许删除',
     'URL_FILE_NOT_EXIST' => '获取不到网址指向的文件',
     'PLEASE_SELECT_IMAGE' => '请选择要删除的图片',
     'UPLOAD_TYPE_ERROR' => '不是有效的上传类型',
@@ -123,4 +127,6 @@ return [
     'SITE_GROUP_IS_EXIST' => '站点分组已存在站点，请调整站点后重试',
     //小程序版本
     'APPLET_VERSION_NOT_EXISTS' => 'applet version not exists',
+    //官网账号（内嵌授权）
+    'WEB_LOGIN_TOKEN_REQUIRE' => 'web login token is required',
 ];

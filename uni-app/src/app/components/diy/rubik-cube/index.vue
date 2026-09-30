@@ -223,7 +223,23 @@ const refresh = () => {
             }
         });
     }
+    // #ifdef H5
+    if (window.self != window.parent && !window.frameElement.offsetWidth) {
+      let getOffsetWidthInterval = setInterval(() => {
+        if (window.frameElement.offsetWidth) {
+          systemStore.systemInfo.windowWidth = window.frameElement?.offsetWidth
+          handleData()
+          clearInterval(getOffsetWidthInterval)
+        }
+      }, 100)
+    } else {
+      handleData()
+    }
+    // #endif
+    // #ifdef H5
     handleData()
+    // #endif
+
     nextTick(() => {
         const query = uni.createSelectorQuery().in(instance);
         query.select('.rubik-cube').boundingClientRect((data: any) => {

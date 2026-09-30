@@ -33,7 +33,7 @@ onLaunch(async (data: any) => {
     if (isSplitBuildEnabled()) {
         // 处理未知插件直接 URL 访问：动态判定是否需要桥接（基于 router.resolve，不写死插件名）
         const launchPath = data.path || ''
-        const addonMatch = launchPath.match(/^\/?addon\/([^/]+)\/pages\/(.+)/)
+        const addonMatch = launchPath.match(/^\/?addon\/([^/]+)\/(?:[^/]+\/)?pages\/(.+)/)
         if (addonMatch) {
             // 预登记当前插件路由，使 initSplitBuildRuntime 首屏只预热该插件，而非全量插件
             setActiveAddonPageRoute(launchPath)
@@ -42,7 +42,7 @@ onLaunch(async (data: any) => {
             if (bridgeUrl) {
                 // 先把浏览器 URL 同步改成桥接页路径，消除闪烁
                 const newPathname = location.pathname.replace(
-                    /\/addon\/([^/]+)\/pages\/(.+)$/,
+                    /\/addon\/([^/]+)\/(?:[^/]+\/)?pages\/(.+)$/,
                     `/app/pages/addon-universal/index`
                 )
                 history.replaceState(null, '', newPathname)

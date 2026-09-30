@@ -62,7 +62,7 @@
                         </el-popover>
                     </div>
                     <!-- 预览 只有站点时展示-->
-                    <i class="iconfont iconicon_huojian1 cursor-pointer px-[8px]" :title="t('visitWap')" @click="toPreview"></i>
+                    <visit-channel class="px-[8px]" />
                     <i class="iconfont iconlingdang-xianxing cursor-pointer px-[8px]" :title="t('newInfo')" v-if="appType == 'site'"></i>
                     <!-- 切换语言 -->
                     <!-- <div class="navbar-item flex items-center h-full cursor-pointer">
@@ -102,6 +102,7 @@
 import { computed, ref, onMounted } from 'vue'
 import layoutSetting from './layout-setting.vue'
 import userInfo from './user-info.vue'
+import visitChannel from '@/components/visit-channel/index.vue'
 import { useFullscreen } from '@vueuse/core'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
@@ -255,16 +256,6 @@ const breadcrumb = computed(() => {
     return matched
 })
 
-// 跳转去预览
-const toPreview = () => {
-    const url = router.resolve({
-        path: '/preview/wap',
-        query: {
-            page:'/'
-        }
-    })
-    window.open(url.href)
-}
 </script>
 
 <style lang="scss" scoped>

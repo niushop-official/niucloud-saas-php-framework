@@ -290,5 +290,54 @@ class ConfigService extends BaseAdminService
         return ( new CoreConfigService() )->setConfig(0, "THEMECOLOR_SETTING", $config);
     }
 
+    /**
+     * 获取渠道设置
+     * @return array
+     */
+    public function getChannelSetting()
+    {
+        $value = ( new CoreConfigService() )->getConfigValue($this->site_id, 'CHANNEL_SETTING');
+        $default = [
+            'h5' => [
+                'type' => 'none',// 客服类型 none 不启用 self 本站客服 work_weixin 企业微信客服 third 第三方客服 phone 电话联系
+                'work_weixin_link' => '',// 企微客服链接
+                'third_link' => '',// 第三方客服链接
+                'phone' => '',// 联系电话
+            ],
+            'weapp' => [
+                'type' => 'none',// 客服类型 none 不启用 self 自建客服 weapp 小程序客服 work_weixin 企业微信客服 third 第三方客服 phone 电话联系
+                'work_weixin_link' => '',// 企微客服链接
+                'third_link' => '',// 第三方客服链接
+                'phone' => '',// 联系电话
+                'corp_id' => '',// 联系电话
+            ]
+        ];
+        return array_merge($default, $value ?? []);
+    }
+
+    /**
+     * 设置渠道设置
+     * @param array $value
+     * @return bool
+     */
+    public function setChannelSetting(array $value)
+    {
+        $data = [
+            'h5' => [
+                'type' => $value[ 'h5' ][ 'type' ] ?? 'none',
+                'work_weixin_link' => $value[ 'h5' ][ 'work_weixin_link' ] ?? '',
+                'third_link' => $value[ 'h5' ][ 'third_link' ] ?? '',
+                'phone' => $value[ 'h5' ][ 'phone' ] ?? '',
+            ],
+            'weapp' => [
+                'type' => $value[ 'weapp' ][ 'type' ] ?? 'none',
+                'work_weixin_link' => $value[ 'weapp' ][ 'work_weixin_link' ] ?? '',
+                'third_link' => $value[ 'weapp' ][ 'third_link' ] ?? '',
+                'phone' => $value[ 'weapp' ][ 'phone' ] ?? '',
+                'corp_id' => $value[ 'weapp' ][ 'corp_id' ] ?? '',
+            ]
+        ];
+        return $this->core_config_service->setConfig($this->site_id, 'CHANNEL_SETTING', $data);
+    }
 
 }

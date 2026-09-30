@@ -1,13 +1,10 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
-
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-
-            <div class="mt-[20px]">
-                <el-table :data="addonList" size="large" v-loading="loading">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false" />
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="addonList" size="large" v-loading="loading">
                     <template #empty>
                         <span>{{ !loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -27,14 +24,15 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="100">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="120">
                         <template #default="{ row }">
-                            <el-button type="primary" link @click="openSettingLayer(row.key)">{{ t('setting') }}</el-button>
+                            <table-actions :actions="[{ label: t('setting'), onClick: () => openSettingLayer(row.key) }]" />
                         </template>
                     </el-table-column>
                 </el-table>
+                </div>
             </div>
-        </el-card>
+        </div>
     </div>
 
     <el-dialog v-model="showDialog" :title="t('selectLayout')" width="800" :destroy-on-close="true">
@@ -48,15 +46,15 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap justify-items-stretch">
-                    <div class="w-[180px] h-[130px] mr-[10px] mb-[10px] border hover:border-primary cursor-pointer"
-                         :class="{'border-primary': ((!layoutConfig[currAddon] && item.layout == 'default') || (layoutConfig[currAddon] == item.layout)) }"
-                         @click="layoutConfig[currAddon] = item.layout"
+                    <div class="layout-item mr-[10px] mb-[10px]"
+                         :class="{ 'is-active': ((!selectedLayout && item.layout == 'site') || (selectedLayout == item.layout)) }"
+                         @click="selectedLayout = item.layout"
                          v-for="item in systemLayout">
                         <img :src="img(item.cover)" class="w-full h-full" />
                     </div>
-                    <div class="w-[180px] h-[130px] mr-[20px] border hover:border-primary cursor-pointer"
-                         :class="{'border-primary': ((!layoutConfig[currAddon] && addonLayout.layout == 'default') || (layoutConfig[currAddon] == addonLayout.layout)) }"
-                         @click="layoutConfig[currAddon] = addonLayout.layout"
+                    <div class="layout-item mr-[20px] mb-[10px]"
+                         :class="{ 'is-active': ((!selectedLayout && addonLayout.layout == 'site') || (selectedLayout == addonLayout.layout)) }"
+                         @click="selectedLayout = addonLayout.layout"
                          v-if="addonLayout">
                         <img :src="img(addonLayout.cover)" class="w-full h-full" />
                     </div>
@@ -84,9 +82,15 @@ import { useRoute } from 'vue-router'
 import { getInstalledAddonList } from '@/app/api/addon'
 import { setLayout, getLayout, getThemecolor, setThemecolor } from '@/app/api/sys'
 import { img } from '@/utils/common'
+import TableToolbar from '@/components/table-toolbar/index.vue'
+import TableActions from '@/components/table-actions/index.vue'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const loading = ref(true)
 const layoutConfig = ref({})
 const systemLayout = ref([])
@@ -127,6 +131,8 @@ getLayoutConfig()
 
 const currAddon = ref('')
 const showDialog = ref(false)
+// 弹窗内的草稿选中，打开时从已保存配置恢复，确定后才写回
+const selectedLayout = ref('')
 const openSettingLayer = async (key: string) => {
     if (key != 'system') {
         addonLayout.value = null
@@ -135,17 +141,19 @@ const openSettingLayer = async (key: string) => {
         })
     }
     currAddon.value = key
+    selectedLayout.value = layoutConfig.value[key] || ''
     showDialog.value = true
 }
 
 const confirm = () => {
+    layoutConfig.value[currAddon.value] = selectedLayout.value
     setThemecolor({
         key: currAddon.value,
         value: themeColor.value[currAddon.value] ? themeColor.value[currAddon.value] : ''
     })
     setLayout({
         key: currAddon.value,
-        value: layoutConfig.value[currAddon.value] ? layoutConfig.value[currAddon.value] : 'default'
+        value: selectedLayout.value ? selectedLayout.value : 'site'
     })
     showDialog.value = false
 }
@@ -157,4 +165,29 @@ const toDiyLayout = () => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* 布局缩略图：与站点列表卡片一致的圆角、白色背景与悬浮动效 */
+.layout-item {
+    position: relative;
+    box-sizing: border-box;
+    width: 180px;
+    height: 130px;
+    overflow: hidden;
+    background-color: var(--cmp-card-bg, var(--el-bg-color-overlay));
+    border: var(--cmp-module-card-border-width) solid var(--cmp-module-card-border-color);
+    border-radius: var(--sys-radius-md);
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+
+    &:hover {
+        border-color: var(--cmp-module-card-hover-border-color);
+        box-shadow: var(--cmp-module-card-hover-shadow);
+        transform: translateY(var(--cmp-module-card-hover-offset));
+    }
+
+    &.is-active {
+        border-color: var(--sys-color-primary);
+        box-shadow: 0 0 0 2px var(--sys-color-primary-soft);
+    }
+}
+</style>

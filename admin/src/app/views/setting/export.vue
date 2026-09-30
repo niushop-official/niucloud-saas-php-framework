@@ -1,12 +1,8 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="exportTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('exportKey')" prop="export_key">
                         <el-select v-model="exportTableData.searchParam.export_key" clearable :placeholder="t('exportKeyPlaceholder')" class="input-width">
@@ -32,8 +28,10 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="exportTableData.data" size="large" v-loading="exportTableData.loading">
+            <div class="table-panel mt-[10px] table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false" />
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="exportTableData.data" size="large" v-loading="exportTableData.loading">
                     <template #empty>
                         <span>{{ !exportTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -58,7 +56,7 @@
                             {{ row.create_time || '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="100">
+                    <el-table-column :label="t('operation')" align="right" fixed="right" width="130">
                         <template #default="{ row }">
                             <div class="flex justify-end">
                                 <el-button type="primary" link @click="downloadEvent(row)" v-if="row.export_status == 2">{{ t('download') }}</el-button>
@@ -67,11 +65,14 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="exportTableData.page" v-model:page-size="exportTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="exportTableData.total"
-                        @size-change="loadExportList()" @current-change="loadExportList" />
                 </div>
+                <table-pagination
+                    v-model:current-page="exportTableData.page"
+                    v-model:page-size="exportTableData.limit"
+                    :total="exportTableData.total"
+                    @size-change="loadExportList()"
+                    @current-change="loadExportList"
+                />
             </div>
         </el-card>
     </div>
@@ -83,10 +84,16 @@ import { t } from '@/lang'
 import { img } from '@/utils/common'
 import { getExportStatusList, getExportKeyList, getExportList, deleteExport } from '@/app/api/sys'
 import { ElMessageBox, FormInstance } from 'element-plus'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const exportTableData = reactive({
     page: 1,
     limit: 10,

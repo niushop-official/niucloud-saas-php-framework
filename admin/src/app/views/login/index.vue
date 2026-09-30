@@ -30,40 +30,29 @@
         </el-main>
 
         <!-- 站点端登录 -->
-        <el-main class="login-main w-full mt-[120px] justify-center h-0" v-else-if="!imgLoading && loginType == 'site'">
+        <el-main class="login-main w-full justify-center items-center  h-0" v-else-if="!imgLoading && loginType == 'site'">
             <div>
-                <div class="login-main-left flex flex-col items-center justify-center">
-                    <div class="w-[130px] h-[40px] overflow-hidden" v-if="loginConfig.site_login_logo">
-                        <el-image class="w-full h-full" :src="img(loginConfig.site_login_logo)" fit="contain">
+                <div class="login site-login-card flex flex-col w-[392px] rounded-[10px] px-[28px] pt-[26px] pb-[28px]">
+                    <div class="flex justify-center mb-[10px]">
+                        <el-image v-if="loginConfig && loginConfig.site_login_logo" class="w-[58px] h-[58px]" :src="img(loginConfig.site_login_logo)" fit="contain">
                             <template #error>
-                                <div class="flex justify-center items-center w-full h-full">
-                                    <img class="max-w-[130px]" src="@/app/assets/images/white_logo.png" alt="" object-fit="contain" />
-                                </div>
+                                <img class="w-[58px] h-[58px] object-contain" src="@/app/assets/images/site_login_logo.png" alt="" />
                             </template>
                         </el-image>
+                        <img v-else class="w-[58px] h-[58px] object-contain" src="@/app/assets/images/site_login_logo.png" alt="" />
                     </div>
-                    <div class="text-[30px] mt-[10px] text-[#fff]">{{ webSite.site_name || t('siteTitle') }}</div>
-                </div>
-                <div class="login flex flex-col w-[400px] mt-[60px] h-[350px] rounded-[10px] py-[20px] px-[40px]">
-                    <h3 class="text-center mt-[20px] text-[24px]">{{ t('欢迎登录') }}</h3>
-                    <el-form :model="form" ref="formRef" :rules="formRules" class="mt-[30px] form-two">
+                    <p class="text-center text-[14px] font-[500] leading-[20px] text-[#303133] mb-[6px]">{{ webSite.site_name || t('siteTitle') }}</p>
+                    <h3 class="text-center text-[21px] leading-[28px] font-bold text-[#303133]">欢迎登录</h3>
+                    <el-form :model="form" ref="formRef" :rules="formRules" class="mt-[22px] site-login-form">
                         <el-form-item prop="username">
-                            <el-input v-model.trim="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" :input-style="{boxShadow: 'none'}" @keyup.enter="handleLogin(formRef)" class="h-[40px]">
-                                <template #prefix>
-                                    <img class="max-w-[20px]" src="@/app/assets/images/login/username.png" alt="" object-fit="contain">
-                                </template>
-                            </el-input>
+                            <el-input v-model.trim="form.username" :placeholder="t('userPlaceholder')" autocomplete="off" @keyup.enter="handleLogin(formRef)" class="h-[40px]"></el-input>
                         </el-form-item>
 
-                        <el-form-item prop="password" class="mt-[30px]">
-                            <el-input v-model.trim="form.password" :placeholder="t('passwordPlaceholder')" type="password" autocomplete="new-password" @keyup.enter="handleLogin(formRef)" :show-password="true" class="h-[40px]">
-                                <template #prefix>
-                                    <img class="max-w-[20px]" src="@/app/assets/images/login/password.png" alt="" object-fit="contain">
-                                </template>
-                            </el-input>
+                        <el-form-item prop="password">
+                            <el-input v-model.trim="form.password" :placeholder="t('passwordPlaceholder')" type="password" autocomplete="new-password" @keyup.enter="handleLogin(formRef)" :show-password="true" class="h-[40px]"></el-input>
                         </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" class="mt-[30px] !h-[40px] w-full" @click="handleLogin(formRef)" :loading="loading">{{ loading ? t('logging') : t('login') }}</el-button>
+                        <el-form-item class="!mb-0">
+                            <el-button type="primary" class="site-login-btn mt-[8px] !h-[40px] w-full" @click="handleLogin(formRef)" :loading="loading">{{ loading ? t('logging') : t('login') }}</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -215,11 +204,44 @@ const loginFn = (data = {}) => {
     }
 
 }
-.form-two .el-input__wrapper {
-    // border: none !important;
-    box-shadow: none !important;
-    border-bottom: 1px solid #DCDEE0 !important;
-    padding: 10px 0 !important;
+.site-login-card {
+    box-shadow: 0 16px 44px rgba(15, 23, 42, .1), inset 0 1px rgba(255, 255, 255, .22);
+}
+
+.site-login-form {
+    .el-form-item {
+        margin-bottom: 18px;
+    }
+
+    .el-form-item__error {
+        top: 40px;
+    }
+
+    .el-input__wrapper {
+        box-shadow: 0 0 0 1px #dcdfe6 inset !important;
+        background-color: #fff !important;
+        border-radius: 6px !important;
+        padding: 1px 14px !important;
+    }
+
+    .el-input__wrapper:hover {
+        box-shadow: 0 0 0 1px #c0c4cc inset !important;
+    }
+
+    .el-input__wrapper.is-focus {
+        box-shadow: 0 0 0 1px var(--el-color-primary) inset !important;
+    }
+
+    .el-checkbox__label {
+        color: #606266;
+        font-size: 14px;
+    }
+}
+
+.site-login-btn {
+    border-radius: 7px !important;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 @media only screen and (max-width: 750px) {

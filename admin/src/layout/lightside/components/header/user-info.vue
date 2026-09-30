@@ -1,45 +1,48 @@
 <template>
-    <div>
-        <el-dropdown @command="clickEvent" :tabindex="1">
-            <div class="userinfo flex h-full items-center">
-                <el-avatar v-if="userStore.userInfo.head_img" :size="25" :icon="UserFilled" :src="img(userStore.userInfo.head_img)"/>
-                <img v-else src="@/app/assets/images/member_head.png" class="w-[25px] rounded-full" />
-                <div class="user-name pl-[8px]">{{ userStore.userInfo.username }}</div>
-                <icon name="element ArrowDown" class="ml-[5px]" />
+    <div class="user-info-root">
+        <el-dropdown ref="dropdownRef" class="user-info-dropdown" @command="clickEvent" :tabindex="1" popper-class="layout-lightside-user-menu">
+            <div class="userinfo navbar-hit flex h-full items-center">
+                <div class="userinfo-avatar">
+                    <img v-if="userStore.userInfo.head_img" :src="img(userStore.userInfo.head_img)" alt="">
+                    <span v-else>{{ userInitial }}</span>
+                </div>
             </div>
             <template #dropdown>
-                <div class="p-[10px]">
-                    <div class="userinfo flex h-full items-center pb-[10px] border-b-[1px] border-solid border-[#e5e5e5]">
-                        <el-avatar v-if="userStore.userInfo.head_img" :size="45" :icon="UserFilled" :src="img(userStore.userInfo.head_img)"/>
-                        <img v-else src="@/app/assets/images/member_head.png" class="w-[45px] rounded-full" />
-                        <div>
-                            <div class="user-name pl-[8px] text-[14px]">{{ userStore.userInfo.username }}</div>
-                            <div class="pl-[8px] text-[13px] text-[#9699B6]">个人中心</div>
+                <div class="userinfo-pop">
+                    <div class="userinfo-pop-head">
+                        <div class="userinfo-avatar is-lg">
+                            <img v-if="userStore.userInfo.head_img" :src="img(userStore.userInfo.head_img)" alt="">
+                            <span v-else>{{ userInitial }}</span>
+                        </div>
+                        <div class="userinfo-pop-info">
+                            <div class="userinfo-pop-name">{{ userStore.userInfo.username }}</div>
+                            <div class="userinfo-pop-role">个人中心</div>
                         </div>
                     </div>
+                    <div class="userinfo-pop-divider"></div>
                     <el-dropdown-menu>
                         <el-dropdown-item @click="toLink('/home/index')" v-if="isAllowChange">
-                            <div class="flex items-center leading-[1] py-[5px]">
-                                <span class="iconfont iconqiehuan ml-[4px] !text-[14px] mr-[10px]"></span>
-                                <span class="text-[14px]">切换站点</span>
+                            <div class="userinfo-pop-item">
+                                <span class="iconfont iconqiehuan"></span>
+                                <span>切换站点</span>
                             </div>
                         </el-dropdown-item>
                         <el-dropdown-item @click="getUserInfoFn">
-                            <div class="flex items-center leading-[1] py-[5px]">
-                                <span class="iconfont iconshezhi1 ml-[4px] !text-[14px] mr-[10px]"></span>
-                                <span class="text-[14px]">账号设置</span>
+                            <div class="userinfo-pop-item">
+                                <span class="iconfont iconshezhi1"></span>
+                                <span>账号设置</span>
                             </div>
                         </el-dropdown-item>
                         <el-dropdown-item @click="changePasswordDialog=true">
-                            <div class="flex items-center leading-[1] py-[5px]">
-                                <span class="iconfont iconxiugai ml-[4px] !text-[14px] mr-[10px]"></span>
-                                <span class="text-[14px]">修改密码</span>
+                            <div class="userinfo-pop-item">
+                                <span class="iconfont iconxiugai"></span>
+                                <span>修改密码</span>
                             </div>
                         </el-dropdown-item>
-                        <el-dropdown-item @click="logout">
-                            <div class="flex items-center leading-[1] py-[5px]">
-                                <span class="iconfont icontuichudenglu ml-[4px] !text-[14px] mr-[10px]"></span>
-                                <span class="text-[14px]">退出登录</span>
+                        <el-dropdown-item class="is-danger" @click="logout">
+                            <div class="userinfo-pop-item">
+                                <span class="iconfont icontuichudenglu"></span>
+                                <span>退出登录</span>
                             </div>
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -73,8 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-import { UserFilled } from '@element-plus/icons-vue'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { FormInstance, FormRules, ElNotification } from 'element-plus'
 import useUserStore from '@/stores/modules/user'
@@ -85,7 +87,14 @@ import userInfoEdit from '@/app/components/user-info-edit/index.vue'
 
 const isAllowChange = localStorage.getItem('isAllowChange') === 'true';
 const userStore = useUserStore()
+const dropdownRef = ref()
+const open = () => {
+    dropdownRef.value?.handleOpen()
+}
+defineExpose({ open })
 const router = useRouter()
+// 无头像时使用用户名首字作为默认头像
+const userInitial = computed(() => String(userStore.userInfo?.username || 'U').slice(0, 1).toUpperCase())
 const clickEvent = (command: string) => {
     switch (command) {
         case 'logout':
@@ -154,7 +163,139 @@ const submitForm = (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
-.el-popper .el-dropdown-menu{
-    width: 150px;
+/* ========== 头像 ========== */
+.userinfo-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    overflow: hidden;
+    border: 2px solid var(--sys-color-bg-surface);
+    border-radius: var(--sys-radius-full);
+    background-color: var(--sys-color-primary);
+    box-shadow: 0 0 0 1px var(--sys-color-border-default);
+    color: var(--el-color-white);
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-semibold);
+    line-height: 1;
+    transition: transform .2s, box-shadow .2s;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &.is-lg {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.userinfo:hover .userinfo-avatar {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 2px var(--el-color-primary-light-7);
+}
+
+/* ========== 用户下拉弹窗 ========== */
+.userinfo-pop {
+    width: 184px;
+    padding: var(--space-2);
+}
+
+.userinfo-pop-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+}
+
+.userinfo-pop-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.userinfo-pop-name {
+    overflow: hidden;
+    color: var(--sys-color-text-primary);
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.userinfo-pop-role {
+    margin-top: 2px;
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-xs);
+}
+
+.userinfo-pop-divider {
+    height: 1px;
+    margin: var(--space-1) 0;
+    background-color: var(--sys-color-fill-light);
+}
+
+.userinfo-pop :deep(.el-dropdown-menu) {
+    padding: 0;
+    background-color: transparent;
+}
+
+.userinfo-pop :deep(.el-dropdown-menu__item) {
+    padding: 0;
+    border-radius: var(--sys-radius-sm);
+    color: var(--sys-color-text-regular);
+    font-size: var(--sys-font-size-sm);
+    transition: background-color .2s, color .2s;
+
+    &:hover,
+    &:focus {
+        background-color: var(--sys-color-fill-light);
+        color: var(--sys-color-primary);
+    }
+}
+
+.userinfo-pop :deep(.el-dropdown-menu__item.is-danger) {
+
+    &:hover,
+    &:focus {
+        background-color: var(--sys-color-danger-soft);
+        color: var(--sys-color-danger);
+    }
+}
+
+.userinfo-pop-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--space-2);
+    line-height: 1;
+
+    .iconfont {
+        margin-right: var(--space-3);
+        font-size: var(--sys-font-size-base);
+    }
+}
+</style>
+
+<style lang="scss">
+/* 下拉面板被传送到 body，需使用非 scoped 样式覆盖 el-popper 默认外观 */
+.layout-lightside-user-menu.el-dropdown__popper.el-popper {
+    padding: 0;
+    border: 1px solid var(--sys-color-border-light);
+    border-radius: var(--sys-radius-lg);
+    background-color: var(--cmp-dialog-bg);
+    box-shadow: var(--cmp-dialog-shadow);
+
+    .el-popper__arrow {
+        display: none;
+    }
+
+    .el-dropdown-menu {
+        padding: 0;
+    }
 }
 </style>

@@ -1,13 +1,9 @@
 <template>
     <!--操作日志-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-
-            <div class="flex justify-between items-start mt-[20px]">
+            <div class="table-search-wrap table-search-wrap--panel flex justify-between items-start">
                 <el-form :inline="true" :model="sysUserLogTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('ip')" prop="ip">
                         <el-input v-model.trim="sysUserLogTableData.searchParam.ip" :placeholder="t('ipPlaceholder')" />
@@ -31,15 +27,16 @@
                         <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
                     </el-form-item>
                 </el-form>
-                <div class="flex justify-end items-center w-[10%]">
-                    <div>
-                        <el-button type="primary" class="w-[100px]" @click="clearEvent()">{{ t('清空日志') }}</el-button>
-                    </div>
-                </div>
             </div>
 
-            <div>
-                <el-table :data="sysUserLogTableData.data" size="large" v-loading="sysUserLogTableData.loading">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false">
+                    <template #actions>
+                        <el-button type="primary" @click="clearEvent()">{{ t('清空日志') }}</el-button>
+                    </template>
+                </table-toolbar>
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="sysUserLogTableData.data" size="large" v-loading="sysUserLogTableData.loading">
                     <template #empty>
                         <span>{{ !sysUserLogTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -59,14 +56,19 @@
                         </template>
                     </el-table-column>
                 </el-table>
-
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="sysUserLogTableData.page" v-model:page-size="sysUserLogTableData.limit" layout="total, sizes, prev, pager, next, jumper" :total="sysUserLogTableData.total" @size-change="loadSysUserLogList()" @current-change="loadSysUserLogList" />
                 </div>
+
+                <table-pagination
+                    v-model:current-page="sysUserLogTableData.page"
+                    v-model:page-size="sysUserLogTableData.limit"
+                    :total="sysUserLogTableData.total"
+                    @size-change="loadSysUserLogList()"
+                    @current-change="loadSysUserLogList"
+                />
 
                 <user-log-detail ref="userLogDetailDialog" @complete="loadSysUserLogList()" />
             </div>
-        </el-card>
+        </div>
     </div>
 </template>
 
@@ -76,10 +78,16 @@ import { t } from '@/lang'
 import { getLogList, logDestroy } from '@/app/api/site'
 import UserLogDetail from '@/app/views/auth/components/user-log-detail.vue'
 import { FormInstance } from 'element-plus'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const sysUserLogTableData = reactive({
     page: 1,
     limit: 10,

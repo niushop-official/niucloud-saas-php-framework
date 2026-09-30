@@ -3,6 +3,7 @@
 namespace EasyWeChat\Pay;
 
 use RuntimeException;
+
 use function is_array;
 use function is_string;
 use function json_decode;
@@ -22,11 +23,14 @@ class Message extends \EasyWeChat\Kernel\Message
         return is_array($attributes) ? $attributes : [];
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function getEventType(): ?string
     {
         $eventType = $this->getOriginalAttributes()['event_type'];
 
-        if (!is_string($eventType)) {
+        if (! is_string($eventType)) {
             throw new RuntimeException('Invalid event type.');
         }
 

@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-wrap">
         <template v-if="limit == 1">
-            <div class="rounded cursor-pointer overflow-hidden relative border border-solid border-color image-wrap mr-[10px]" :class="{'rounded-full': type=='avatar'}" :style="style">
+            <div class="cursor-pointer overflow-hidden relative border border-solid border-color image-wrap mr-[10px]" :class="{'rounded-full': type=='avatar'}" :style="style">
                 <div class="w-full h-full relative" v-if="images.data.length">
                     <div class="w-full h-full flex items-center justify-center">
                         <el-image class="w-full h-full" :src="images.data[0].indexOf('data:image') != -1 ? images.data[0] : img(images.data[0])" :fit="imageFit"></el-image>
@@ -21,7 +21,7 @@
         </template>
         <template v-else>
             <div class="flex flex-wrap" ref="imgListRef">
-                <div class="rounded cursor-pointer overflow-hidden relative border border-solid border-color image-wrap mr-[10px] mb-[10px]" :style="style" v-for="(item, index) in images.data" :key="item+index">
+                <div class="cursor-pointer overflow-hidden relative border border-solid border-color image-wrap mr-[10px] mb-[10px]" :style="style" v-for="(item, index) in images.data" :key="item+index">
                     <div class="w-full h-full relative">
                         <div class="w-full h-full flex items-center justify-center">
                             <el-image :src="img(item)" fit="contain"></el-image>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <div class="rounded cursor-pointer overflow-hidden relative border border-dashed border-color" :style="style" v-if="images.data.length < limit">
+            <div class="cursor-pointer overflow-hidden relative border border-dashed border-color image-wrap" :style="style" v-if="images.data.length < limit">
                 <upload-attachment :limit="uploadImgNum" @confirm="confirmSelect">
                     <div class="w-full h-full flex items-center justify-center flex-col content-wrap">
                         <icon name="element Plus" size="20px" color="var(--el-text-color-secondary)" />
@@ -202,6 +202,14 @@ const rowDrop = () => {
 
 <style lang="scss" scoped>
 .image-wrap {
+    // 与表单控件保持一致的圆角
+    border-radius: var(--cmp-control-radius, 8px);
+
+    // 头像等场景仍保持圆形
+    &.rounded-full {
+        border-radius: var(--sys-radius-full, 999px);
+    }
+
     .operation {
         display: none;
     }

@@ -14,6 +14,7 @@ namespace app\dict\sys;
 class ConfigKeyDict
 {
     public const NIUCLOUD_CONFIG = 'NIUCLOUD_CONFIG';//牛云配置
+    public const NIUCLOUD_ACCOUNT_CONFIG = 'NIUCLOUD_ACCOUNT_CONFIG';//官网账号（内嵌授权）配置
     public const WECHAT = 'WECHAT';//微信公众号
 
     public const WEAPP = 'weapp';//微信小程序

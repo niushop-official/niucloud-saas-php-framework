@@ -23,6 +23,7 @@ class Addon extends BaseModel
 {
     protected $type = [
         'install_time' => 'timestamp',
+        'compile' => 'json'
     ];
     /**
      * 数据表主键

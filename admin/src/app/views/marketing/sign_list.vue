@@ -1,13 +1,13 @@
 <template>
     <!--签到记录-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="memberSignListTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('memberInfo')" prop="keywords">
                         <el-input v-model.trim="memberSignListTableData.searchParam.keywords" class="!w-[230px]" :placeholder="t('memberInfoPlaceholder')" />
@@ -22,8 +22,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="memberSignListTableData.data" size="large" v-loading="memberSignListTableData.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="memberSignListTableData.data" size="large" v-loading="memberSignListTableData.loading">
                     <template #empty>
                         <span>{{ !memberSignListTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -74,6 +75,7 @@
                     </el-table-column>
                     <el-table-column prop="create_time" :show-overflow-tooltip="true" :label="t('createTime')" min-width="150" />
                 </el-table>
+                </div>
 
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="memberSignListTableData.page"
@@ -93,10 +95,14 @@ import { getMemberSignList } from '@/app/api/member'
 import { FormInstance } from 'element-plus'
 import { img } from '@/utils/common'
 import { useRoute, useRouter } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const memberSignListTableData = reactive({
     page: 1,

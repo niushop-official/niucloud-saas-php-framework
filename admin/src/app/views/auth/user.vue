@@ -1,12 +1,9 @@
 <template>
     <!--管理员-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-            <div class="flex justify-between items-center mt-[20px]">
+            <div class="table-search-wrap table-search-wrap--panel flex justify-between items-center">
                         <el-form :inline="true" :model="userTableData.searchParam" ref="searchFormRef">
                             <el-form-item :label="t('accountNumber')" prop="search">
                                 <el-input v-model.trim="userTableData.searchParam.search" class="input-width" :placeholder="t('accountNumberPlaceholder')" />
@@ -16,11 +13,16 @@
                                 <el-button @click="resetForm(searchFormRef)">{{ t('reset') }}</el-button>
                             </el-form-item>
                         </el-form>
-                        <el-button type="primary" class="w-[100px] self-start" @click="addEvent">{{ t('addUser') }}</el-button>
                     </div>
 
-                    <div>
-                        <el-table :data="userTableData.data" size="large" v-loading="userTableData.loading">
+                    <div class="table-panel table-fill-page__panel">
+                        <table-toolbar :title="pageName" :selectable="false">
+                            <template #actions>
+                                <el-button type="primary" @click="addEvent">{{ t('addUser') }}</el-button>
+                            </template>
+                        </table-toolbar>
+                        <div class="table-fill-page__table">
+                        <el-table height="100%" :data="userTableData.data" size="large" v-loading="userTableData.loading">
                             <template #empty>
                                 <span>{{ !userTableData.loading ? t('emptyData') : '' }}</span>
                             </template>
@@ -61,26 +63,22 @@
                                     {{ row.last_ip || '' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="t('operation')" align="right" fixed="right" width="160">
+                            <el-table-column :label="t('operation')" align="right" fixed="right" width="180">
                                 <template #default="{ row }">
-                                    <div v-if="row.is_admin != 1">
-                                        <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                                        <el-button type="primary" link @click="lockEvent(row.uid)" v-if="row.status">{{ t('lock') }}</el-button>
-                                        <el-button type="primary" link @click="unlockEvent(row.uid)" v-else>{{ t('unlock') }}</el-button>
-                                        <el-button type="primary" link @click="deleteEvent(row.uid)">{{ t('delete') }}</el-button>
-                                    </div>
-                                    <div v-else>
-                                        <el-button link disabled>{{ t('adminDisabled') }}</el-button>
-                                    </div>
+                                    <table-actions v-if="row.is_admin != 1" :actions="rowActions(row)" />
+                                    <el-button v-else link disabled>{{ t('adminDisabled') }}</el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
-
-                        <div class="mt-[16px] flex justify-end">
-                            <el-pagination v-model:current-page="userTableData.page" v-model:page-size="userTableData.limit"
-                                layout="total, sizes, prev, pager, next, jumper" :total="userTableData.total"
-                                @size-change="loadUserList()" @current-change="loadUserList" />
                         </div>
+
+                        <table-pagination
+                            v-model:current-page="userTableData.page"
+                            v-model:page-size="userTableData.limit"
+                            :total="userTableData.total"
+                            @size-change="loadUserList()"
+                            @current-change="loadUserList"
+                        />
                     </div>
             <!-- <el-tabs v-model="activeName" class="mt-[20px]">
                 <el-tab-pane :label="t('管理员')" name="userList">
@@ -91,7 +89,7 @@
                 </el-tab-pane>
             </el-tabs> -->
             <edit-user ref="editUserDialog" @complete="loadUserList()" />
-        </el-card>
+        </div>
     </div>
 </template>
 
@@ -104,10 +102,26 @@ import userRole from '@/app/views/auth/role.vue'
 import { img } from '@/utils/common'
 import { ElMessageBox } from 'element-plus'
 import type { FormInstance } from 'element-plus'
+import TableActions from '@/components/table-actions/index.vue'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
+
+/**
+ * 表格行内操作：超过 2 个自动收进「更多」
+ */
+const rowActions = (row: any) => [
+    { label: t('edit'), onClick: () => editEvent(row) },
+    { label: row.status ? t('lock') : t('unlock'), onClick: () => (row.status ? lockEvent(row.uid) : unlockEvent(row.uid)) },
+    { label: t('delete'), type: 'danger', onClick: () => deleteEvent(row.uid) }
+]
 const userTableData = reactive({
     page: 1,
     limit: 10,

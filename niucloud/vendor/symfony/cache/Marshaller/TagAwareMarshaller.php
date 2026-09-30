@@ -18,16 +18,13 @@ namespace Symfony\Component\Cache\Marshaller;
  */
 class TagAwareMarshaller implements MarshallerInterface
 {
-    private $marshaller;
+    private MarshallerInterface $marshaller;
 
-    public function __construct(MarshallerInterface $marshaller = null)
+    public function __construct(?MarshallerInterface $marshaller = null)
     {
         $this->marshaller = $marshaller ?? new DefaultMarshaller();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshall(array $values, ?array &$failed): array
     {
         $failed = $notSerialized = $serialized = [];
@@ -43,7 +40,7 @@ class TagAwareMarshaller implements MarshallerInterface
                     $f = [];
                     $failed[] = $id;
                 } else {
-                    if ([] === $value['tags']) {
+                    if (!$value['tags']) {
                         $v['tags'] = '';
                     }
 
@@ -64,9 +61,6 @@ class TagAwareMarshaller implements MarshallerInterface
         return $serialized;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshall(string $value): mixed
     {
         // detect the compact format used in marshall() using magic numbers in the form 9D-..-..-..-..-00-..-..-..-5F

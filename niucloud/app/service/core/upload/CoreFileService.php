@@ -101,4 +101,16 @@ class CoreFileService extends BaseCoreService
         //查询启用的上传方式
         return new UploadLoader(self::$storage_type, $storage_config ?? []);
     }
+
+    /**
+     * 按指定的单套存储配置实例化上传引擎（同一存储方式存在多套配置时，用于精确指定某一套）
+     * @param array $config 单套配置（需包含 storage_type 与对应参数）
+     * @return UploadLoader
+     * @throws Exception
+     */
+    public function driverByConfig(array $config){
+        self::$storage_type = $config['storage_type'] ?? '';
+        $config['storage_type'] = self::$storage_type;
+        return new UploadLoader(self::$storage_type, $config);
+    }
 }

@@ -11,9 +11,9 @@
 
 namespace Symfony\Component\HttpClient;
 
+use Symfony\Component\HttpClient\Internal\OutgoingRequest;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\Response\ResponseStream;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\StoreInterface;
 use Symfony\Component\HttpKernel\HttpClientKernel;
@@ -35,14 +35,14 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
 {
     use HttpClientTrait;
 
-    private $client;
-    private $cache;
+    private HttpClientInterface $client;
+    private HttpCache $cache;
     private array $defaultOptions = self::OPTIONS_DEFAULTS;
 
     public function __construct(HttpClientInterface $client, StoreInterface $store, array $defaultOptions = [])
     {
         if (!class_exists(HttpClientKernel::class)) {
-            throw new \LogicException(sprintf('Using "%s" requires that the HttpKernel component version 4.3 or higher is installed, try running "composer require symfony/http-kernel:^5.4".', __CLASS__));
+            throw new \LogicException(\sprintf('Using "%s" requires the HttpKernel component, try running "composer require symfony/http-kernel".', __CLASS__));
         }
 
         $this->client = $client;
@@ -52,6 +52,7 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
         unset($defaultOptions['debug']);
         unset($defaultOptions['default_ttl']);
         unset($defaultOptions['private_headers']);
+        unset($defaultOptions['skip_response_headers']);
         unset($defaultOptions['allow_reload']);
         unset($defaultOptions['allow_revalidate']);
         unset($defaultOptions['stale_while_revalidate']);
@@ -64,9 +65,6 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function request(string $method, string $url, array $options = []): ResponseInterface
     {
         [$url, $options] = $this->prepareRequest($method, $url, $options, $this->defaultOptions, true);
@@ -76,14 +74,18 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
             return $this->client->request($method, $url, $options);
         }
 
-        $request = Request::create($url, $method);
+        $request = OutgoingRequest::create($url, $method);
         $request->attributes->set('http_client_options', $options);
 
         foreach ($options['normalized_headers'] as $name => $values) {
             if ('cookie' !== $name) {
+                $headerValues = [];
+
                 foreach ($values as $value) {
-                    $request->headers->set($name, substr($value, 2 + \strlen($name)), false);
+                    $headerValues[] = substr($value, 2 + \strlen($name));
                 }
+
+                $request->headers->set($name, $headerValues);
 
                 continue;
             }
@@ -107,10 +109,7 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
         return MockResponse::fromRequest($method, $url, $options, $response);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function stream(ResponseInterface|iterable $responses, float $timeout = null): ResponseStreamInterface
+    public function stream(ResponseInterface|iterable $responses, ?float $timeout = null): ResponseStreamInterface
     {
         if ($responses instanceof ResponseInterface) {
             $responses = [$responses];
@@ -141,6 +140,9 @@ class CachingHttpClient implements HttpClientInterface, ResetInterface
         })());
     }
 
+    /**
+     * @return void
+     */
     public function reset()
     {
         if ($this->client instanceof ResetInterface) {

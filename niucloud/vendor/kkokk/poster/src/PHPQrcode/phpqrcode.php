@@ -75,8 +75,9 @@
  */
 
 	// Encoding modes
-    if(!defined('QR_MODE_NUL')) define('QR_MODE_NUL', -1);
-    if(!defined('QR_MODE_NUM')) define('QR_MODE_NUM', 0);
+
+	define('QR_MODE_NUL', -1);
+	define('QR_MODE_NUM', 0);
 	define('QR_MODE_AN', 1);
 	define('QR_MODE_8', 2);
 	define('QR_MODE_KANJI', 3);
@@ -2952,11 +2953,11 @@
                 if($col >= $this->rsblocks[0]->dataLength) {
                     $row += $this->b1;
                 }
-                $ret = $this->rsblocks[$row]->data[$col];
+                $ret = $this->rsblocks[(int)$row]->data[(int)$col];
             } else if($this->count < $this->dataLength + $this->eccLength) {
                 $row = ($this->count - $this->dataLength) % $this->blocks;
                 $col = ($this->count - $this->dataLength) / $this->blocks;
-                $ret = $this->rsblocks[$row]->ecc[$col];
+                $ret = $this->rsblocks[$row]->ecc[(int)$col];
             } else {
                 return 0;
             }

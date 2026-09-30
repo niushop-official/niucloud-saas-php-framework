@@ -1,0 +1,1 @@
+<view class="kefu-unread-wrap data-v-9b8d9d79"><slot /><text wx:if="{{a}}" class="kefu-unread-badge data-v-9b8d9d79">{{b}}</text></view>

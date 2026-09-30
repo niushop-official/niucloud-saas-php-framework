@@ -74,9 +74,7 @@
                         <template #content>
                             <p class="w-[250px]">{{ t('writeTips') }}</p>
                         </template>
-                        <el-icon>
-                            <QuestionFilled color="#999999" />
-                        </el-icon>
+                        <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                     </el-tooltip>
                 </div>
             </el-form-item>

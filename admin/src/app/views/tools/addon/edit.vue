@@ -1,11 +1,11 @@
 <template>
-    <div class="main-container" v-loading="loading">
+    <div class="main-container form-sections" v-loading="loading">
 
         <el-card class="card !border-none" shadow="never">
             <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
-        <el-card class="box-card mt-[15px] !border-none" shadow="never">
+        <el-card class="box-card !border-none" shadow="never">
             <el-form :model="form" label-width="90px" ref="formRef" :rules="rules" class="page-form">
                 <el-form-item :label="t('title')" prop="title">
                     <el-input v-model.trim="form.title" clearable :placeholder="t('titlePlaceholder')" class="input-width" />

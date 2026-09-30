@@ -25,7 +25,7 @@ use Symfony\Component\HttpClient\Exception\TransportException;
  */
 class AmpBody implements RequestBody, InputStream
 {
-    private $body;
+    private ResourceInputStream|\Closure|string $body;
     private array $info;
     private \Closure $onProgress;
     private ?int $offset = 0;
@@ -139,7 +139,7 @@ class AmpBody implements RequestBody, InputStream
         }
 
         if (!\is_string($data)) {
-            throw new TransportException(sprintf('Return value of the "body" option callback must be string, "%s" returned.', get_debug_type($data)));
+            throw new TransportException(\sprintf('Return value of the "body" option callback must be string, "%s" returned.', get_debug_type($data)));
         }
 
         return new Success($data);

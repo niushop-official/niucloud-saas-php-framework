@@ -17,7 +17,7 @@ use DI\Definition\Source\DefinitionSource;
 use DI\Definition\StringDefinition;
 use DI\Definition\ValueDefinition;
 use DI\DependencyException;
-use DI\Proxy\ProxyFactory;
+use DI\Proxy\ProxyFactoryInterface;
 use function dirname;
 use function file_put_contents;
 use InvalidArgumentException;
@@ -78,11 +78,11 @@ class Compiler
     private bool $autowiringEnabled;
 
     public function __construct(
-        private ProxyFactory $proxyFactory,
+        private ProxyFactoryInterface $proxyFactory,
     ) {
     }
 
-    public function getProxyFactory() : ProxyFactory
+    public function getProxyFactory() : ProxyFactoryInterface
     {
         return $this->proxyFactory;
     }
@@ -97,7 +97,7 @@ class Compiler
         string $directory,
         string $className,
         string $parentClassName,
-        bool $autowiringEnabled
+        bool $autowiringEnabled,
     ) : string {
         $fileName = rtrim($directory, '/') . '/' . $className . '.php';
 
@@ -184,6 +184,7 @@ class Compiler
         $renamed = @rename($tmpFile, $fileName);
         if (!$renamed) {
             @unlink($tmpFile);
+
             throw new InvalidArgumentException(sprintf('Error while renaming %s to %s', $tmpFile, $fileName));
         }
     }
@@ -290,7 +291,7 @@ class Compiler
                 break;
             default:
                 // This case should not happen (so it cannot be tested)
-                throw new \Exception('Cannot compile definition of type ' . get_class($definition));
+                throw new \Exception('Cannot compile definition of type ' . $definition::class);
         }
 
         $this->methods[$methodName] = $code;
@@ -311,6 +312,7 @@ class Compiler
             $subEntryName = 'subEntry' . (++$this->subEntryCounter);
             // Compile the sub-definition in another method
             $methodName = $this->compileDefinition($subEntryName, $value);
+
             // The value is now a method call to that method (which returns the value)
             return "\$this->$methodName()";
         }
@@ -360,6 +362,10 @@ class Compiler
             return true;
         }
         if ($value instanceof \Closure) {
+            return true;
+        }
+        /** @psalm-suppress UndefinedClass */
+        if ((\PHP_VERSION_ID >= 80100) && ($value instanceof \UnitEnum)) {
             return true;
         }
         if (is_object($value)) {

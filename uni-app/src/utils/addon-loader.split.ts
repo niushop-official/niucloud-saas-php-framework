@@ -39,10 +39,13 @@ export { isSplitBuildEnabled }
  * 跟随当前 core 构建实际打入的插件，不写死任何插件名。
  */
 export function resolveAddonBridgeUrl(rawPath: string): string | null {
-    const match = rawPath.replace(/^\//, '').match(/^addon\/([^/]+)\/pages\/(.+)$/)
+    const stripped = rawPath.replace(/^\//, '')
+    // 兼容多角色插件页路径：addon/{key}/[user|store|technician/]pages/xxx
+    const match = stripped.match(/^addon\/([^/]+)\/(?:([^/]+)\/)?pages\/(.+)$/)
     if (!match) return null
     const addonKey = match[1]
-    const pagePath = match[2].split('?')[0] // 去掉可能附带的 query
+    const rolePrefix = match[2] ? match[2] + '/' : ''
+    const pagePath = rolePrefix + 'pages/' + match[3].split('?')[0] // 去掉可能附带的 query
     // 1) vue-router 已就绪时（导航守卫 / 运行时导航）：直接看该路由是否注册。
     //    内置插件页（编译进 core 的真实组件）已注册 -> 不桥接；
     //    外部部署插件（不在 pages.json）无注册 -> 桥接。
@@ -59,8 +62,8 @@ export function resolveAddonBridgeUrl(rawPath: string): string | null {
     // 误判为“内置不桥接”会导致外部插件的页面与装修组件全部空白。
     // router 未就绪（onLaunch 极早期）时，保守返回桥接 URL（内置插件同样可经 loadAddonModule 加载，不影响渲染）。
     // 构建 _orig 保留原始 path + 当前 location.search（装修参数等）
-    const origPath = '/' + rawPath.replace(/^\//, '') + (typeof location !== 'undefined' ? (location.search || '') : '')
-    return `/app/pages/addon-universal/index?addon=${addonKey}&page=pages/${pagePath}&_orig=${encodeURIComponent(origPath)}`
+    const origPath = '/' + stripped + (typeof location !== 'undefined' ? (location.search || '') : '')
+    return `/app/pages/addon-universal/index?addon=${addonKey}&page=${pagePath}&_orig=${encodeURIComponent(origPath)}`
 }
 
 export async function initSplitBuildRuntime() {

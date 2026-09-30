@@ -254,6 +254,10 @@ export function moneyFormat(money: string): string {
  * 时间戳转日期格式
  */
 export function timeStampTurnTime(timeStamp: any, type = "") {
+	// 后端返回 0 表示未发生。0 交给 Date 会得到东八区的 1970-01-01 08:00:00
+	if (timeStamp === 0 || timeStamp === '0') {
+		return ""
+	}
 	if (timeStamp != undefined && timeStamp != "" && timeStamp > 0) {
 		const date = new Date();
 		date.setTime(timeStamp * 1000);
@@ -286,6 +290,9 @@ export function timeStampTurnTime(timeStamp: any, type = "") {
  * 获取当前日期时间
  */
 export function getCurrentDataTime(timeStamp: any) {
+	if (timeStamp === 0 || timeStamp === '0') {
+		return ''
+	}
 	const addZero = (t) => {
 		return t < 10 ? '0' + t : t;
 	}
@@ -436,4 +443,17 @@ export function getImageDimensions (url: string) {
 		// 注意：如果图片跨域且服务器未设置CORS，可能会触发onerror
 		imgObj.src = img(url)
 	})
+}
+
+/**
+ * 富文本转纯文本
+ * 用于列表、摘要等只需展示文字的场景（消息内容可能为富文本）
+ * 借助 DOM 解析，可正确处理 &nbsp; &amp; 等 HTML 实体
+ * @param html 富文本内容
+ */
+export function stripHtml(html: string): string {
+	if (!html) return ''
+	const div = document.createElement('div')
+	div.innerHTML = String(html)
+	return (div.textContent || div.innerText || '').trim()
 }

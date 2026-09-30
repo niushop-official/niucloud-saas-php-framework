@@ -273,6 +273,7 @@ class NiuSms extends BaseAdminController
             ['telecomAppstoreUrl', ''],
             ['idcardFrontUrl', ''],
             ['idcardBackUrl', ''],
+            ['commitmentLetterUrl', ''],
         ]);
         (new NiuSmsService())->signCreate($username, $params);
         return success("SUCCESS");

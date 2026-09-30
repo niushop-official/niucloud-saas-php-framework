@@ -7,16 +7,37 @@ const path = require('path')
 
 const DEFAULT_EXTENSIONS = ['.ts', '.js', '.tsx', '.jsx']
 
-/** 从源码中提取所有命名导出名称 */
+/**
+ * 去掉注释
+ *
+ * 本扫描器是按正则匹配源码文本、不做语法解析的。若注释里出现形如
+ * 「export { xxx }」的示例写法，会被误判成一个真实导出并写进生成的 barrel，
+ * 而那个名字在运行时并不存在，最终 Rollup 报 "xxx is not exported by ..."。
+ * 因此匹配前先剥离注释。
+ * @param {string} src
+ * @return {string}
+ */
+function stripComments(src) {
+    return src
+        .replace(/\/\*[\s\S]*?\*\//g, ' ')
+        // 排除 :// （如 http://）避免误伤 URL
+        .replace(/(^|[^:])\/\/[^\n]*/g, '$1')
+}
+
+/** 从源码中提取所有命名导出名称（仅运行时存在的值导出） */
 function scanExports(src) {
+    const code = stripComments(src)
     const names = []
-    // export const|let|var|function|class|type|interface|enum NAME
-    const declRe = /export\s+(?:const|let|var|function|class|type|interface|enum)\s+(\w+)/g
-    for (const m of src.matchAll(declRe)) names.push(m[1])
-    // export { a, b, c as d }
-    const braceRe = /export\s*(?:type\s*)?\{([^}]+)\}/g
-    for (const m of src.matchAll(braceRe)) {
-        for (const item of m[1].split(',').map(s => s.trim()).filter(Boolean)) {
+    // export const|let|var|function|class|enum NAME
+    // ★ 不含 type / interface：类型导出编译后并不存在于运行时，
+    //   而生成的 barrel 是按值重导出，收进去会报 "not exported by"
+    const declRe = /export\s+(?:const|let|var|function|class|enum)\s+(\w+)/g
+    for (const m of code.matchAll(declRe)) names.push(m[1])
+    // export { a, b, c as d }（export type { ... } 为纯类型导出，跳过）
+    const braceRe = /export\s*(type\s*)?\{([^}]+)\}/g
+    for (const m of code.matchAll(braceRe)) {
+        if (m[1]) continue
+        for (const item of m[2].split(',').map(s => s.trim()).filter(Boolean)) {
             const parts = item.split(/\s+(?:as|:)\s+/)
             names.push(parts.length > 1 ? parts[parts.length - 1].trim() : parts[0].trim())
         }

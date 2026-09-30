@@ -1,0 +1,358 @@
+/**
+ * L3：组件 Token
+ *
+ * 仅放置需要独立控制或跨多个文件复用的组件语义。
+ * 单次出现的尺寸与常规间距继续使用 Tailwind，不在这里无限扩充。
+ */
+:root {
+    // 布局
+    --cmp-layout-page-bg: var(--sys-color-bg-page);
+    --cmp-layout-content-padding: 15px;
+    // 内容页同级区块间距（.page-sections），例如：概览 → 表格区块。
+    --cmp-page-section-gap: 30px;
+    // 列表页同级区块间距（.table-fill-page__card / 旧 .table-panel 兜底）。
+    --cmp-table-page-section-gap: 15px;
+    --cmp-header-height: 64px;
+    --cmp-sidebar-width: var(--aside-width, 210px);
+
+    // 顶部区域
+    --cmp-header-bg: var(--sys-color-bg-surface);
+    --cmp-header-text: var(--sys-color-text-primary);
+    --cmp-header-border: var(--sys-color-border-light);
+
+    // 侧栏与菜单
+    --cmp-sidebar-bg: var(--sys-color-bg-surface);
+    --cmp-sidebar-border: var(--sys-color-border-light);
+    --cmp-menu-text: var(--sys-color-text-secondary);
+    --cmp-menu-text-active: var(--sys-color-primary);
+    --cmp-menu-bg-hover: var(--sys-color-primary-soft);
+    --cmp-menu-bg-active: var(--sys-color-primary-soft);
+
+    // 卡片
+    --cmp-card-bg: var(--sys-color-bg-surface);
+    --cmp-card-text: var(--sys-color-text-primary);
+    --cmp-card-border: var(--sys-color-border-light);
+    --cmp-card-radius: var(--sys-radius-sm);
+
+    // 可点击模块卡片：首页站点、营销功能入口等共用
+    --cmp-module-card-bg: var(--cmp-card-bg);
+    --cmp-module-card-text: var(--cmp-card-text);
+    --cmp-module-card-border-color: var(--cmp-card-border);
+    --cmp-module-card-border-width: 1px;
+    --cmp-module-card-radius: var(--sys-radius-lg);
+    --cmp-module-card-padding: var(--sys-space-5);
+    --cmp-module-card-gap: var(--sys-space-4);
+    --cmp-module-card-accent-height: 2px;
+    --cmp-module-card-accent-start: var(--sys-color-primary);
+    --cmp-module-card-accent-end: var(--sys-color-primary-hover);
+    --cmp-module-card-hover-border-color: var(--sys-color-primary-border);
+    --cmp-module-card-hover-shadow: var(--sys-shadow-md);
+    --cmp-module-card-hover-offset: -2px;
+
+    // 温馨提示：页面级提示条，列表页 / 内容页统一使用
+    --cmp-tip-bg: var(--sys-color-bg-surface);
+    --cmp-tip-border: var(--sys-color-border-default);
+    --cmp-tip-radius: 10px;
+    --cmp-tip-padding: 14px;
+    --cmp-tip-gap: var(--sys-space-3);
+    --cmp-tip-icon-size: 32px;
+    --cmp-tip-icon-bg: var(--sys-color-primary-soft);
+    --cmp-tip-icon-text: var(--sys-color-primary);
+    --cmp-tip-glyph-size: 16px;
+    --cmp-tip-body-gap: 3px;
+    --cmp-tip-title-font-size: var(--sys-font-size-sm);
+    --cmp-tip-title-font-weight: var(--sys-font-weight-semibold);
+    --cmp-tip-title-line-height: 20px;
+    --cmp-tip-title-text: var(--sys-color-text-primary);
+    --cmp-tip-text-font-size: var(--sys-font-size-xs);
+    --cmp-tip-text-line-height: 20px;
+    --cmp-tip-text: var(--sys-color-text-secondary);
+    --cmp-tip-paragraph-gap: var(--sys-space-1);
+    --cmp-tip-close-size: 14px;
+    --cmp-tip-close-text: var(--sys-color-text-placeholder);
+    --cmp-tip-close-hover-text: var(--sys-color-text-secondary);
+
+    // 表格：基础
+    --cmp-table-bg: var(--sys-color-bg-surface);
+    --cmp-table-font-size: var(--sys-font-size-base);
+    --cmp-table-line-height: 22px;
+    --cmp-table-font-weight: var(--sys-font-weight-regular);
+    --cmp-table-text: var(--sys-color-text-regular);
+    --cmp-table-primary-text: var(--sys-color-text-primary);
+    --cmp-table-primary-font-weight: var(--sys-font-weight-medium);
+    --cmp-table-secondary-font-size: var(--sys-font-size-xs);
+    --cmp-table-secondary-line-height: 18px;
+    --cmp-table-secondary-text: var(--sys-color-text-secondary);
+    --cmp-table-disabled-text: var(--sys-color-text-disabled);
+    --cmp-table-border: var(--sys-color-border-light);
+
+    // 表格：整块容器
+    --cmp-table-panel-bg: var(--sys-color-bg-surface);
+    --cmp-table-panel-border: var(--sys-color-border-default);
+    --cmp-table-panel-radius: var(--sys-radius-lg);
+    --cmp-table-panel-padding-block: 5px;
+    --cmp-table-panel-padding-inline: 10px;
+    --cmp-search-panel-padding: var(--sys-space-4);
+
+    // 表格：表头
+    --cmp-table-header-height: 48px;
+    --cmp-table-header-bg: var(--sys-color-bg-surface);
+    --cmp-table-header-text: var(--sys-color-text-secondary);
+    --cmp-table-header-font-size: var(--sys-font-size-sm);
+    --cmp-table-header-font-weight: var(--sys-font-weight-regular);
+    --cmp-table-header-padding-inline: 16px;
+    --cmp-table-header-border: var(--sys-color-border-default);
+
+    // 表格：数据行
+    --cmp-table-row-min-height: 56px;
+    --cmp-table-composite-row-min-height: 64px;
+    --cmp-table-cell-padding-block: 12px;
+    --cmp-table-cell-padding-inline: 16px;
+    --cmp-table-row-bg: var(--sys-color-bg-surface);
+    --cmp-table-row-hover-bg: var(--sys-color-fill-lighter);
+    --cmp-table-row-selected-bg: var(--sys-color-primary-soft);
+    --cmp-table-row-current-bg: var(--sys-color-primary-soft);
+
+    // 表格：默认列宽，仅作为基础组件和业务页面的推荐值
+    --cmp-table-selection-column-width: 48px;
+    --cmp-table-short-column-min-width: 100px;
+    --cmp-table-title-column-min-width: 180px;
+    --cmp-table-status-column-width: 112px;
+    --cmp-table-time-column-width: 176px;
+    --cmp-table-actions-column-min-width: 168px;
+
+    // 表格：复合信息
+    --cmp-table-composite-icon-size: 32px;
+    --cmp-table-composite-icon-radius: var(--sys-radius-md);
+    --cmp-table-composite-icon-bg: var(--sys-color-fill-lighter);
+    --cmp-table-composite-icon-text: var(--sys-color-text-placeholder);
+    --cmp-table-composite-gap: 12px;
+    --cmp-table-composite-text-gap: 2px;
+
+    // 表格：顶部工具栏
+    --cmp-table-toolbar-min-height: 56px;
+    --cmp-table-toolbar-padding-inline: 16px;
+    --cmp-table-toolbar-gap: 12px;
+    --cmp-table-toolbar-bg: var(--sys-color-bg-surface);
+    --cmp-table-toolbar-title-font-size: var(--sys-font-size-base);
+    --cmp-table-toolbar-title-font-weight: var(--sys-font-weight-semibold);
+    --cmp-table-toolbar-title-text: var(--sys-color-text-primary);
+    --cmp-table-toolbar-selection-gap: 12px;
+    --cmp-table-toolbar-selected-text: var(--sys-color-text-regular);
+    --cmp-table-toolbar-selected-count-text: var(--sys-color-primary);
+    --cmp-table-toolbar-divider: var(--sys-color-border-default);
+
+    // 表格：行内操作
+    --cmp-table-action-font-size: var(--sys-font-size-base);
+    --cmp-table-action-font-weight: var(--sys-font-weight-regular);
+    --cmp-table-action-text: var(--sys-color-text-regular);
+    --cmp-table-action-hover-text: var(--sys-color-primary);
+    --cmp-table-action-primary-text: var(--sys-color-primary);
+    --cmp-table-action-primary-hover-text: var(--sys-color-primary-hover);
+    --cmp-table-action-danger-text: var(--sys-color-text-primary);
+    --cmp-table-action-gap: 16px;
+    --cmp-table-more-size: 32px;
+    --cmp-table-more-icon-size: 16px;
+    --cmp-table-more-radius: var(--sys-radius-sm);
+    --cmp-table-more-text: var(--sys-color-text-secondary);
+    --cmp-table-more-hover-text: var(--sys-color-primary);
+    --cmp-table-more-hover-bg: var(--sys-color-fill-light);
+
+    // 表格：更多操作菜单
+    --cmp-table-action-menu-min-width: 112px;
+    --cmp-table-action-menu-padding-block: 4px;
+    --cmp-table-action-menu-item-height: 36px;
+    --cmp-table-action-menu-item-padding-inline: 12px;
+    --cmp-table-action-menu-item-font-size: var(--sys-font-size-base);
+    --cmp-table-action-menu-bg: var(--sys-color-bg-overlay);
+    --cmp-table-action-menu-text: var(--sys-color-text-regular);
+    --cmp-table-action-menu-hover-bg: var(--sys-color-fill-lighter);
+    --cmp-table-action-menu-hover-text: var(--sys-color-primary);
+    --cmp-table-action-menu-danger-text: var(--sys-color-text-primary);
+    --cmp-table-action-menu-radius: var(--sys-radius-md);
+    --cmp-table-action-menu-shadow: var(--sys-shadow-md);
+
+    // 表格：固定列与滚动条
+    --cmp-table-fixed-bg: var(--sys-color-bg-surface);
+    --cmp-table-fixed-left-shadow: inset 10px 0 10px -10px rgb(0 0 0 / 12%);
+    --cmp-table-fixed-right-shadow: inset -10px 0 10px -10px rgb(0 0 0 / 12%);
+    // 固定右列末列（操作列）：表格出现纵向滚动条时，内容右对齐会被滚动条压住，需额外让出滚动条宽度
+    --cmp-table-fixed-right-padding-inline: calc(var(--cmp-table-cell-padding-inline) + var(--cmp-table-scrollbar-size));
+    --cmp-table-scrollbar-size: 8px;
+    --cmp-table-scrollbar-thumb-bg: var(--sys-color-border-darker);
+    --cmp-table-scrollbar-thumb-hover-bg: var(--sys-color-text-secondary);
+    --cmp-table-scrollbar-track-bg: transparent;
+    --cmp-table-scrollbar-radius: var(--sys-radius-full);
+
+    // 表格：分页区域
+    --cmp-table-pagination-min-height: 64px;
+    --cmp-table-pagination-margin-top: 16px;
+    --cmp-table-pagination-padding-inline: 16px;
+    --cmp-table-pagination-gap: 8px;
+    --cmp-table-pagination-font-size: var(--sys-font-size-sm);
+    --cmp-table-pagination-text: var(--sys-color-text-secondary);
+    --cmp-table-pagination-item-size: 32px;
+    --cmp-table-pagination-item-radius: var(--sys-radius-sm);
+    --cmp-table-pagination-control-height: 32px;
+    --cmp-table-pagination-control-radius: var(--sys-radius-sm);
+    --cmp-table-pagination-size-select-width: 112px;
+    --cmp-table-pagination-jumper-input-width: 48px;
+    --cmp-table-pagination-item-bg: var(--sys-color-bg-surface);
+    --cmp-table-pagination-item-hover-bg: var(--sys-color-fill-lighter);
+    --cmp-table-pagination-active-bg: var(--sys-color-primary);
+    --cmp-table-pagination-active-text: var(--sys-color-text-on-primary);
+
+    // 表格：空状态与加载状态
+    --cmp-table-empty-min-height: 240px;
+    --cmp-table-empty-icon-size: 64px;
+    --cmp-table-empty-text: var(--sys-color-text-secondary);
+    --cmp-table-empty-font-size: var(--sys-font-size-base);
+    --cmp-table-loading-bg: rgb(255 255 255 / 72%);
+    --cmp-table-loading-text: var(--sys-color-text-secondary);
+
+    // 通用状态标签：表格与其他业务组件共用
+    --cmp-status-tag-height: 24px;
+    --cmp-status-tag-padding-inline: 8px;
+    --cmp-status-tag-gap: 6px;
+    --cmp-status-tag-font-size: var(--sys-font-size-xs);
+    --cmp-status-tag-radius: var(--sys-radius-full);
+    --cmp-status-tag-dot-size: 6px;
+    --cmp-status-tag-default-text: var(--sys-color-text-secondary);
+    --cmp-status-tag-default-bg: var(--sys-color-fill-light);
+    --cmp-status-tag-success-text: var(--sys-color-success);
+    --cmp-status-tag-success-bg: var(--el-color-success-light-9);
+    --cmp-status-tag-warning-text: var(--sys-color-warning);
+    --cmp-status-tag-warning-bg: var(--el-color-warning-light-9);
+    --cmp-status-tag-danger-text: var(--sys-color-danger);
+    --cmp-status-tag-danger-bg: var(--el-color-danger-light-9);
+
+    // 表单：基础控件
+    --cmp-control-height: 32px;
+    --cmp-control-height-small: 28px;
+    --cmp-control-height-large: 44px;
+    --cmp-control-radius: var(--sys-radius-md);
+    --cmp-control-default-width: 240px;
+    --cmp-input-bg: var(--sys-color-bg-surface);
+    --cmp-input-text: var(--sys-color-text-regular);
+    --cmp-input-placeholder: var(--sys-color-text-placeholder);
+    --cmp-input-border: var(--sys-color-border-default);
+
+    // 表单：新增、编辑、设置等独立页面
+    --cmp-form-page-width-narrow: 780px;
+    --cmp-form-page-width: 960px;
+    --cmp-form-page-width-wide: 1200px;
+    // 设置、编辑、添加页面中，同级表单模块（表单分区）之间的间距。
+    --cmp-form-page-gap: var(--sys-space-5);
+    --cmp-form-page-footer-space: 76px;
+    --cmp-form-control-short-width: 240px;
+    --cmp-form-control-width: 320px;
+    --cmp-form-control-wide-width: 560px;
+    --cmp-form-item-gap: var(--sys-space-5);
+    --cmp-form-label-gap: var(--sys-space-2);
+    --cmp-form-label-line-height: 20px;
+    --cmp-form-label-text: var(--sys-color-text-primary);
+    --cmp-form-label-font-size: var(--sys-font-size-base);
+    --cmp-form-label-font-weight: var(--sys-font-weight-medium);
+    --cmp-form-tip-font-size: var(--sys-font-size-xs);
+    --cmp-form-tip-line-height: 20px;
+    --cmp-form-tip-margin-top: var(--sys-space-2);
+    --cmp-form-tip-text: var(--sys-color-text-secondary);
+
+    // 表单：分区
+    --cmp-form-section-bg: var(--sys-color-bg-surface);
+    --cmp-form-section-border: var(--sys-color-border-light);
+    --cmp-form-section-radius: var(--sys-radius-lg);
+    --cmp-form-section-padding-block: var(--sys-space-6);
+    --cmp-form-section-padding-inline: var(--sys-space-6);
+    --cmp-form-section-header-padding-block: var(--sys-space-4);
+    --cmp-form-section-header-padding-inline: var(--sys-space-6);
+    --cmp-form-section-header-border: var(--sys-color-border-light);
+    --cmp-form-section-title-text: var(--sys-color-text-primary);
+    --cmp-form-section-title-font-size: var(--sys-font-size-md);
+    --cmp-form-section-title-font-weight: var(--sys-font-weight-semibold);
+    --cmp-form-section-description-text: var(--sys-color-text-secondary);
+    --cmp-form-section-description-font-size: var(--sys-font-size-sm);
+
+    // 表单：大段帮助说明
+    --cmp-form-help-bg: var(--sys-color-fill-lighter);
+    --cmp-form-help-border: var(--sys-color-border-light);
+    --cmp-form-help-radius: var(--sys-radius-md);
+    --cmp-form-help-padding-block: var(--sys-space-3);
+    --cmp-form-help-padding-inline: var(--sys-space-4);
+    --cmp-form-help-gap: var(--sys-space-2);
+    --cmp-form-help-title-font-size: var(--sys-font-size-sm);
+    --cmp-form-help-title-font-weight: var(--sys-font-weight-semibold);
+    --cmp-form-help-title-text: var(--sys-color-text-primary);
+    --cmp-form-help-text-font-size: var(--sys-font-size-sm);
+    --cmp-form-help-text-line-height: 22px;
+    --cmp-form-help-text: var(--sys-color-text-secondary);
+
+    // 表单：返回入口
+    --cmp-form-back-height: 36px;
+    --cmp-form-back-padding-inline: var(--sys-space-2);
+    --cmp-form-back-gap: var(--sys-space-2);
+    --cmp-form-back-icon-size: 16px;
+    --cmp-form-back-font-size: var(--sys-font-size-base);
+    --cmp-form-back-text: var(--sys-color-text-secondary);
+    --cmp-form-back-hover-text: var(--sys-color-text-primary);
+    --cmp-form-back-hover-bg: var(--sys-color-fill-light);
+    --cmp-form-back-radius: var(--sys-radius-md);
+
+    // 表单：底部保存栏
+    --cmp-form-footer-height: 60px;
+    --cmp-form-footer-bg: var(--sys-color-bg-overlay);
+    --cmp-form-footer-border: var(--sys-color-border-light);
+    --cmp-form-footer-padding-inline: var(--sys-space-6);
+    --cmp-form-footer-action-gap: var(--sys-space-2);
+    --cmp-form-footer-backdrop-blur: 8px;
+    --cmp-form-footer-z-index: 4;
+
+    // 弹层
+    --cmp-dialog-bg: var(--sys-color-bg-overlay);
+    --cmp-dialog-text: var(--sys-color-text-primary);
+    --cmp-dialog-shadow: var(--sys-shadow-md);
+
+    // 标签栏
+    --cmp-tabbar-height: 40px;
+    --cmp-tabbar-bg: var(--sys-color-bg-surface);
+    --cmp-tabbar-border: var(--sys-color-border-light);
+    --cmp-tabbar-padding-inline: 16px;
+    --cmp-tabbar-gap: 0;
+    --cmp-tabbar-item-padding-inline: 16px;
+    --cmp-tabbar-item-gap: 8px;
+    --cmp-tabbar-item-radius: 0;
+    --cmp-tabbar-item-max-width: 140px;
+    --cmp-tabbar-item-font-size: var(--sys-font-size-sm);
+    --cmp-tabbar-item-text: var(--sys-color-text-regular);
+    --cmp-tabbar-item-text-hover: var(--sys-color-text-primary);
+    --cmp-tabbar-item-text-active: var(--sys-color-text-primary);
+    --cmp-tabbar-item-bg-hover: var(--sys-color-fill-lighter);
+    --cmp-tabbar-item-bg-active: var(--sys-color-bg-surface);
+    --cmp-tabbar-item-divider: var(--sys-color-border-default);
+    --cmp-tabbar-item-indicator: var(--sys-color-primary);
+    --cmp-tabbar-item-indicator-height: 2px;
+    --cmp-tabbar-icon-size: 15px;
+    --cmp-tabbar-close-size: 16px;
+    --cmp-tabbar-close-icon-size: 12px;
+    --cmp-tabbar-close-radius: var(--sys-radius-full);
+    --cmp-tabbar-close-text: var(--sys-color-text-placeholder);
+    --cmp-tabbar-close-text-tab-hover: var(--sys-color-text-secondary);
+    --cmp-tabbar-close-bg-hover: var(--sys-color-danger-soft);
+    --cmp-tabbar-close-text-hover: var(--sys-color-danger);
+    --cmp-tabbar-toolbar-height: 32px;
+    --cmp-tabbar-action-text: var(--sys-color-text-secondary);
+    --cmp-tabbar-action-text-hover: var(--sys-color-text-primary);
+    --cmp-tabbar-action-bg-hover: var(--sys-color-fill-light);
+    --cmp-tabbar-action-size: 32px;
+    --cmp-tabbar-action-icon-size: 16px;
+    --cmp-tabbar-action-radius: var(--sys-radius-md);
+    --cmp-tabbar-action-gap: 4px;
+    --cmp-tabbar-toolbar-gap: 16px;
+    --cmp-tabbar-toolbar-divider: var(--sys-color-border-light);
+}
+
+html.dark {
+    --cmp-table-fixed-left-shadow: inset 10px 0 10px -10px rgb(0 0 0 / 36%);
+    --cmp-table-fixed-right-shadow: inset -10px 0 10px -10px rgb(0 0 0 / 36%);
+    --cmp-table-loading-bg: rgb(24 24 27 / 72%);
+}

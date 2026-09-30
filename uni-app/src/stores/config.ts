@@ -77,14 +77,27 @@ const useConfigStore = defineStore('config', {
             if (!this.themeColor && themeColorStorage) {
                 this.themeColor = JSON.parse(themeColorStorage);
             }
-            if (this.themeColor) {
+
+            // 某些站点的主题配置以 JSON 字符串返回（或曾被重复序列化）。
+            // style 绑定接收到该字符串时，H5 运行时会把每个字符当成样式键，
+            // 从而尝试写入 CSSStyleDeclaration[0] 并中断页面渲染。
+            let themeColor: any = this.themeColor
+            while (typeof themeColor === 'string') {
+                try {
+                    themeColor = JSON.parse(themeColor)
+                } catch (e) {
+                    break
+                }
+            }
+
+            if (themeColor && typeof themeColor === 'object') {
                 let style = '';
-                for (let k in this.themeColor) {
-                    style += `${ k }:${ this.themeColor[k] };`;
+                for (let k in themeColor) {
+                    style += `${ k }:${ themeColor[k] };`;
                 }
                 return style;
             }
-            return '';
+            return typeof themeColor === 'string' ? themeColor : '';
         }
     }
 })

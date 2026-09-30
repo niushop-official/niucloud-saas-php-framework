@@ -1,7 +1,7 @@
 <template>
     <!--小程序发布-->
-    <div class="main-container">
-        <el-card class="card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
@@ -40,7 +40,8 @@
                 </div>
             </div>
 
-            <el-table class="mt-[15px]" :data="weappTableData.data" v-loading="weappTableData.loading" size="default">
+            <div class="table-fill-page__table mt-[15px]">
+            <el-table height="100%" :data="weappTableData.data" v-loading="weappTableData.loading" size="default">
                 <template #empty>
                     <span>{{ t('emptyData') }}</span>
                 </template>
@@ -52,20 +53,23 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="create_time" :label="t('createTime')" align="center" />
-                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="120">
+                <el-table-column :label="t('operation')" fixed="right" align="right" min-width="250">
                     <template #default="{ row, $index }">
                         <template v-if="previewContent && $index == 0 && (row.status == 1 || row.status == 2) && weappTableData.page == 1">
                             <el-tooltip :content="previewContent" raw-content effect="light">
                                 <el-button type="primary" link>{{ t('preview') }}</el-button>
                             </el-tooltip>
                         </template>
-                        <el-button type="primary" link v-if="row.status == -1 || row.status == -2" @click="handleFailReason(row)">{{ t('failReason') }}</el-button>
+                        <el-button type="primary" link @click="handleDetail(row)">{{ t('detail') }}</el-button>
+                        <!-- 回退：用该成功版本保留的源码包重新提交发布任务 -->
+                        <el-button type="primary" link v-if="($index > 0 || weappTableData.page > 1) && canRollback(row)" @click="rollbackVersion(row)">{{ t('rollback') }}</el-button>
                         <el-button type="primary" link v-if="row.status == -2" @click="againUpload(row)" :loading="uploading">{{ t('againUpload') }}</el-button>
                         <el-button type="primary" link v-if="row.status == 2" @click="undoAuditFn(row)">{{ t('undoAudit') }}</el-button>
-                        <el-button type="danger" link @click="delVersion(row)">{{ t('delete') }}</el-button>
+                        <el-button class="table-delete" link @click="delVersion(row)">{{ t('delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
+            </div>
 
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="weappTableData.page" v-model:page-size="weappTableData.limit"
@@ -146,41 +150,43 @@
             </template>
         </el-dialog>
 
-        <el-dialog v-model="uploadSuccessShowDialog" :title="t('warning')" width="500px" draggable>
-            <span v-html="t('uploadSuccessTips')"></span>
-            <template #footer>
-                <div class="flex justify-end">
-                    <el-button @click="knownToKnow" type="primary">{{ t('knownToKnow') }}</el-button>
-                    <el-button @click="uploadSuccessShowDialog = false" type="primary" plain>{{ t('confirm') }}</el-button>
-                </div>
-            </template>
+        <!-- 发布前校验：通过后创建任务并打开任务详情 -->
+        <el-dialog v-model="checkVisible" title="发布前校验" width="580px"
+                   :close-on-click-modal="false" :close-on-press-escape="false">
+            <div class="min-h-[150px]">
+                <verify-panel v-if="checkVisible" scene="weapp_upload" :params="checkParams"
+                              :auto-next="true" :auto-next-delay="500" :show-prev="false"
+                              :next-text="t('nextStep')" @next="onCheckPassed" />
+            </div>
         </el-dialog>
     </div>
-
-    <component :is="WeappUpload" ref="weappUploadRef" @success="getWeappVersionListFn" @error="getWeappVersionListFn" />
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { setWeappVersion, getWeappPreview, getWeappVersionList, getWeappUploadLog, getWeappConfig, deleteVersion } from '@/app/api/weapp'
+import { reactive, ref, computed, nextTick, watch } from 'vue'
+import { getWeappPreview, getWeappVersionList, getWeappConfig, deleteVersion } from '@/app/api/weapp'
 import { t } from '@/lang'
 import { useRoute, useRouter } from 'vue-router'
 import { getAuthInfo } from '@/app/api/module'
 import { getAppType } from '@/utils/common'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElMessage } from 'element-plus'
 import { AnyObject } from '@/types/global'
-import Storage from '@/utils/storage'
 import { siteWeappCommit, undoAudit } from "@/app/api/wxoplatform";
-import WeappUpload from '@/app/components/weappupload/index.vue'
-// 使用导入的组件，避免未读取警告
-const WeappUploadComponent = WeappUpload
+import { createTask } from '@/app/api/task'
+import VerifyPanel from '@/app/components/verify-panel/index.vue'
+import useTaskRunnerStore from '@/stores/modules/taskRunner'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
+const runner = useTaskRunnerStore()
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
+
 const dialogVisible = ref(false)
 const loading = ref(true)
-const weappUploadRef = ref<any>(null)
 
 const weappTableData:{
     page: number,
@@ -204,7 +210,6 @@ const form = ref({
     code2: '0',
     code3: '0'
 })
-const uploadSuccessShowDialog = ref(false)
 const authCode = ref('')
 
 getAuthInfo().then(res => {
@@ -306,12 +311,6 @@ const getWeappVersionListFn = (page?: number) => {
         weappTableData.data = res.data.data
         weappTableData.total = res.data.total
         weappTableData.version_info = res.data.version_info
-
-        const uploadingTask = res.data.data.find((d: any) => d.status == 0)
-        if (uploadingTask && weappUploadRef.value) {
-            weappUploadRef.value.setTask(uploadingTask)
-            weappUploadRef.value.open(uploadingTask.task_key, uploadingTask)
-        }
     }).catch(() => {
         weappTableData.loading = false
     })
@@ -353,64 +352,93 @@ const handleCloseCloudVersion = () => {
     }
 }
 
-const save = () => {
-    cloudRuleFormRef.value.validate((valid: boolean) => {
-        if (valid) {
-            if (form.value.type == 2) {
-                form.value.version = `${form.value.code1}.${form.value.code2}.${form.value.code3}`
-            }
-            delete form.value.code1
-            delete form.value.code2
-            delete form.value.code3
-            delete form.value.type
-            cloudVersionDialogVisible.value = false
-            insert()
+// ==================== 发布（校验 -> 任务 -> 详情） ====================
+const uploading = ref(false)
+/** 本次发起的发布任务标识（终态时刷新列表） */
+const runningTaskKey = ref('')
+const checkVisible = ref(false)
+/** 校验通过后的动作：upload 云端发布（创建任务）/ commit 已授权站点提交（同步调用） */
+const pendingAction = ref<'upload' | 'commit'>('upload')
+/** 待发布的版本号（空 = 按站点版本递增自动生成） */
+const pendingVersion = ref('')
+const checkParams = computed(() => ({
+    version: pendingVersion.value,
+    mode: pendingAction.value
+}))
+
+/**
+ * 发起发布：先做发布前校验（授权码 / 小程序配置 / 上传占用 / 云端连通），通过后再执行
+ * @param action upload 云端发布 | commit 已授权站点提交
+ * @param version 自定义版本号（空则自动递增）
+ */
+const startCheck = (action: 'upload' | 'commit', version: string = '') => {
+    if (checkVisible.value) return
+    pendingAction.value = action
+    pendingVersion.value = version
+    checkVisible.value = true
+}
+
+/** 校验通过：云端发布创建任务并打开任务详情；已授权站点提交仍为一次性同步调用 */
+const onCheckPassed = () => {
+    // verify-panel 的 next 是 setTimeout 回调，同步销毁自身会 patch 已卸载的 vnode
+    nextTick(() => { checkVisible.value = false })
+
+    const action = pendingAction.value
+    const version = pendingVersion.value
+    pendingVersion.value = ''
+
+    if (action === 'commit') {
+        doSiteCommit()
+        return
+    }
+
+    previewContent.value = ''
+    uploading.value = true
+
+    // 先占位打开任务详情：创建期间不留空窗
+    runner.openPendingDetail('weapp_upload', '正在发起发布')
+    createTask('weapp_upload', { version }).then((res: any) => {
+        uploading.value = false
+        const key = res?.data?.task_key
+        if (!key) {
+            runner.closePendingDetail()
+            ElMessage.error('发布任务创建失败')
+            return
         }
+        // 全局抽屉打开任务详情：不离开当前页，发布过程可随时关闭继续操作
+        runner.openDetail(key, 'weapp_upload')
+        runningTaskKey.value = key
+        getWeappVersionListFn()
+    }).catch((err: any) => {
+        uploading.value = false
+        runner.closePendingDetail()
+        ElMessage({ message: err?.msg || err?.message || '发布任务创建失败', type: 'error' })
     })
 }
 
-const uploading = ref(false)
-const insert = () => {
-    if (!authCode.value) {
-        authElMessageBox()
-        return
-    }
-    if (!weappConfig.value.app_id) {
-        configElMessageBox()
-        return
-    }
-
-    if (uploading.value) {
-        const ref = weappUploadRef.value
-        if (ref && ref.cloudBuildTask && ref.cloudBuildTask.task_key) {
-            ref.open(ref.cloudBuildTask.task_key, ref.cloudBuildTask)
-        } else if (ref) {
-            ref.showDialog = true
-        }
-        return
-    }
+/** 已授权站点的小程序提交：一次性同步调用，无中间过程，保持原逻辑 */
+const doSiteCommit = () => {
     uploading.value = true
-
-    previewContent.value = ''
-
-    setWeappVersion(form.value).then(res => {
-        const versionId = res.data
-
-        getWeappVersionListFn().then(() => {
-            const item = weappTableData.data.find((d: any) => d.id === versionId)
-            if (item && item.task_key) {
-                const ref = weappUploadRef.value
-                if (ref) {
-                    ref.open(item.task_key, item)
-                }
-            }
-            getWeappPreviewImage()
-            uploading.value = false
-        }).catch(() => {
-            uploading.value = false
-        })
+    siteWeappCommit().then(() => {
+        getWeappVersionListFn()
+        getWeappPreviewImage()
+        uploading.value = false
     }).catch(() => {
         uploading.value = false
+    })
+}
+
+const save = () => {
+    cloudRuleFormRef.value.validate((valid: boolean) => {
+        if (valid) {
+            // 自定义版本：1.0.0 形式；默认则由后端按站点版本递增
+            const version = form.value.type == 2
+                ? `${form.value.code1}.${form.value.code2}.${form.value.code3}`
+                : ''
+            cloudVersionDialogVisible.value = false
+            handleCloseCloudVersion()
+            startCheck('upload', version)
+        }
     })
 }
 
@@ -427,62 +455,6 @@ const getWeappPreviewImage = () => {
     getWeappPreview().then(res => {
         if (res.data) previewContent.value = `<img src="${ res.data }" class="w-[150px]">`
     }).catch()
-}
-
-const currentUploadKey = ref<string | null>(null)
-const uploadPollingCount = ref(0)
-const maxPollingCount = 150
-
-const getWeappUploadLogFn = (key: string) => {
-    if (!key) return
-
-    if (currentUploadKey.value !== key) {
-        currentUploadKey.value = key
-        uploadPollingCount.value = 0
-    }
-
-    uploadPollingCount.value++
-
-    if (uploadPollingCount.value > maxPollingCount) {
-        currentUploadKey.value = null
-        uploadPollingCount.value = 0
-        uploading.value = false
-        return
-    }
-
-    getWeappUploadLog(key).then(res => {
-        if (currentUploadKey.value !== key) return
-
-        const data = (res.data && res.data.data) ? res.data.data : []
-        if (data[0] && data[0].length) {
-            const last = data[0][data[0].length - 1]
-            if (last.code == 0) {
-                currentUploadKey.value = null
-                uploadPollingCount.value = 0
-                getWeappVersionListFn()
-                return
-            }
-            if (last.code == 1 && last.percent == 100) {
-                currentUploadKey.value = null
-                uploadPollingCount.value = 0
-                getWeappVersionListFn()
-                getWeappPreviewImage()
-                !Storage.get('weappUploadTipsLock') && (uploadSuccessShowDialog.value = true)
-                return
-            }
-        }
-        if (currentUploadKey.value === key) {
-            setTimeout(() => {
-                getWeappUploadLogFn(key)
-            }, 2000)
-        }
-    }).catch(() => {
-        if (currentUploadKey.value === key) {
-            setTimeout(() => {
-                getWeappUploadLogFn(key)
-            }, 2000)
-        }
-    })
 }
 
 const authElMessageBox = () => {
@@ -540,6 +512,49 @@ const undoAuditFn = (data: any) => {
 }
 
 /**
+ * 是否可回退：上传成功（status=1）且保留了上传时的源码包
+ * 源码包由发布任务保留并登记，历史记录没有包时无法回退
+ */
+const canRollback = (row: any) => Number(row.status) === 1 && !!row.source_zip
+
+/**
+ * 版本回退：用该版本保留的源码包重新提交一次发布任务
+ * 会生成一条新的版本记录（版本号沿用被回退的版本），过程在任务详情查看
+ */
+const rollbackVersion = (row: any) => {
+    ElMessageBox.confirm(
+        `确认回退到版本 ${ row.version }？${ t('rollbackTips') }`,
+        t('rollback'),
+        {
+            confirmButtonText: t('confirm'),
+            cancelButtonText: t('cancel'),
+            type: 'warning'
+        }
+    ).then(() => {
+        // 先占位打开任务详情：创建期间不留空窗
+        runner.openPendingDetail('weapp_upload', '正在发起回退')
+        createTask('weapp_upload', {
+            version: row.version,
+            source_zip: row.source_zip
+        }).then((res: any) => {
+            const key = res?.data?.task_key
+            if (!key) {
+                runner.closePendingDetail()
+                ElMessage.error('回退任务创建失败')
+                return
+            }
+            runner.openDetail(key, 'weapp_upload')
+            runningTaskKey.value = key
+            getWeappVersionListFn()
+        }).catch((err: any) => {
+            runner.closePendingDetail()
+            ElMessage({ message: err?.msg || err?.message || '回退任务创建失败', type: 'error' })
+        })
+    }).catch(() => {
+    })
+}
+
+/**
  * 删除版本
  * @param data
  */
@@ -560,32 +575,39 @@ const delVersion = (data: any) => {
 
 const failReason = ref('')
 const failReasonDialogVisible = ref(false)
-const handleFailReason = (data: any) => {
-    failReason.value = data.fail_reason
-    failReasonDialogVisible.value = true
+
+/**
+ * 查看失败原因
+ * 上传失败（-1）：任务里保留了完整的执行日志与失败原因，优先打开任务详情；
+ * 查不到任务（任务记录已清理 / 改造前的历史记录）时回退为失败原因弹窗。
+ * 审核失败（-2）由微信审核产生，没有对应任务，仍走弹窗。
+ */
+const handleDetail = (data: any) => {
+    runner.openDetail(String(data.upload_task_key), 'weapp_upload')
 }
 
 const helpInfo = () => {
     window.open('https://doc.press.niucloud.com/php/saas-framework/use/configFAQ/minWaChatUpload.html')
 }
 
-const knownToKnow = () => {
-    Storage.set({ key: 'weappUploadTipsLock', data: true })
-    uploadSuccessShowDialog.value = false
-}
-
+/** 上传小程序（已授权站点）：同样先做发布前校验，通过后提交 */
 const againUpload = () => {
     if (uploading.value) return
-    uploading.value = true
+    startCheck('commit')
+}
 
-    siteWeappCommit().then(() => {
+/**
+ * 发布任务结束后刷新列表
+ * 版本状态（成功 / 失败）由任务回写，这里只负责把最新结果同步到页面
+ */
+watch(() => runningTaskKey.value ? String(runner.tasks[ runningTaskKey.value ]?.status ?? '') : '', (status) => {
+    if (!status) return
+    if ([ 'success', 'failed', 'canceled' ].includes(status)) {
         getWeappVersionListFn()
         getWeappPreviewImage()
-        uploading.value = false
-    }).catch(() => {
-        uploading.value = false
-    })
-}
+        runningTaskKey.value = ''
+    }
+})
 </script>
 
 <style lang="scss" scoped></style>

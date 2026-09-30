@@ -16,6 +16,7 @@ use app\dict\sys\MenuDict;
 use app\model\sys\SysMenu;
 use app\service\admin\sys\MenuService;
 use app\service\core\menu\CoreMenuService;
+use app\service\core\upload\CoreStorageService;
 use core\base\BaseAdminService;
 use think\facade\Cache;
 use think\facade\Db;
@@ -36,6 +37,8 @@ class InstallSystemService extends BaseAdminService
     public function install()
     {
         $this->installMenu();
+        // 初始化平台默认存储配置（本地存储默认启用，各云存储方式预置一条空配置）
+        (new CoreStorageService())->initStorageConfig(0);
         return true;
     }
 
@@ -98,6 +101,7 @@ class InstallSystemService extends BaseAdminService
                     'sort' => $value[ 'sort' ] ?? '',
                     'status' => 1,
                     'is_show' => $value[ 'is_show' ] ?? 1,
+                    'is_blank' => $value[ 'is_blank' ] ?? 0,
                     'menu_attr' => $value['menu_attr'] ?? '',
                     'parent_select_key' => $value['parent_select_key'] ?? ''
                 ];

@@ -29,7 +29,7 @@ abstract class BaseOauth extends Storage
      * @param string|null $openid
      * @return mixed
      */
-    abstract public function getFansInfo(string $openid = null);
+    abstract public function getFansInfo(?string $openid = null);
 
     /**
      * 授权
@@ -37,7 +37,7 @@ abstract class BaseOauth extends Storage
      * @param array $options
      * @return mixed
      */
-    abstract public function oauth(string $code = null, array $options = []);
+    abstract public function oauth(?string $code = null, array $options = []);
 
 
 }

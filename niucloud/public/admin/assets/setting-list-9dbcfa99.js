@@ -1,1 +1,0 @@
-import{_ as o}from"./setting-list.vue_vue_type_script_setup_true_lang-71a7393e.js";import"./index.vue_vue_type_script_setup_true_lang-03438c63.js";import"vue";import"/admin/assets/shared/admin-lang.js";export{o as default};

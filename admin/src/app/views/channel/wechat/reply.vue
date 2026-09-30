@@ -1,7 +1,7 @@
 <template>
     <!--自动回复-->
-    <div class="main-container">
-        <el-card class="card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ t('title') }}</span>
@@ -14,20 +14,21 @@
                 <el-tab-pane :label="t('reply')" name="/channel/wechat/reply" />
             </el-tabs>
 
-            <div>
+            <div class="table-fill-page__panel">
                 <el-radio-group v-model="replyType" style="margin-bottom: 30px">
                     <el-radio-button label="keyword">{{ t('keywordReply') }}</el-radio-button>
                     <el-radio-button label="default">{{ t('defaultReply') }}</el-radio-button>
                     <el-radio-button label="subscribe">{{ t('subscribeReply') }}</el-radio-button>
                 </el-radio-group>
 
-                <div v-show="replyType == 'keyword'">
+                <div v-show="replyType == 'keyword'" class="table-fill-page__panel">
                     <div class="flex justify-between items-center">
                         <el-button type="primary" @click="addKeywordsReply">新建回复</el-button>
                     </div>
 
-                    <div class="mt-[10px]">
-                        <el-table :data="replyTableData.data" size="large" v-loading="replyTableData.loading">
+                    <div class="mt-[10px] table-fill-page__panel">
+                        <div class="table-fill-page__table">
+                        <el-table height="100%" :data="replyTableData.data" size="large" v-loading="replyTableData.loading">
                             <template #empty>
                                 <span>{{ !replyTableData.loading ? t('emptyData') : '' }}</span>
                             </template>
@@ -50,6 +51,7 @@
                                 </template>
                             </el-table-column>
                         </el-table>
+                        </div>
 
                         <div class="mt-[16px] flex justify-end">
                             <el-pagination v-model:current-page="replyTableData.page" v-model:page-size="replyTableData.limit"
@@ -89,10 +91,14 @@ import {
 } from '@/app/api/wechat'
 import ReplyForm from '@/app/views/channel/wechat/components/reply-form.vue'
 import { ElMessageBox } from 'element-plus'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const router = useRouter()
 const activeName = ref('/channel/wechat/reply')
 const replyType = ref('keyword')
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const addKeywordsReply = () => {
     router.push('/channel/wechat/keyword_reply_edit')

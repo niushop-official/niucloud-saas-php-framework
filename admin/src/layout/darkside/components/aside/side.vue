@@ -1,20 +1,18 @@
 <template>
     <el-container class="w-[200px] h-screen flex flex-col">
-        <el-header class="logo-wrap flex items-center justify-center h-[64px]">
-            <div class="logo flex items-center m-auto h-[64px]" v-if="!systemStore.menuIsCollapse">
-                <el-image style="width: 40px; height: 40px" :src="img(logoUrl)" fit="contain">
+        <el-header class="logo-wrap flex items-center h-[64px]">
+            <div class="logo flex items-center min-w-0 h-[64px]" :class="{ 'is-collapse': systemStore.menuIsCollapse }">
+                <el-image class="logo__image" :src="img(logoUrl)" fit="contain">
                     <template #error>
-                        <div class="flex justify-center items-center w-full h-[40px]"><img class="max-w-[40px]" src="@/app/assets/images/icon-addon-one.png" alt=""  object-fit="contain"></div>
+                        <img class="logo__image" src="@/app/assets/images/icon-addon-one.png" alt="" />
                     </template>
                 </el-image>
-            </div>
-            <div class="logo flex items-center justify-center h-[64px]" v-else>
-                <i class="text-3xl iconfont iconyunkongjian"></i>
+                <span v-if="!systemStore.menuIsCollapse" class="logo__name">{{ siteName }}</span>
             </div>
         </el-header>
         <el-main class="menu-wrap">
             <el-scrollbar>
-                <el-menu :default-active="route.name" :router="true" background-color="--side-dark-color" text-color="#fff" active-text-color="#fff" :unique-opened="true" :collapse="systemStore.menuIsCollapse" >
+                <el-menu :default-active="menuActive" :router="false" background-color="--side-dark-color" text-color="#fff" active-text-color="#fff" :unique-opened="true" :collapse="systemStore.menuIsCollapse" >
                     <menu-item v-for="(route, index) in menuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -31,6 +29,7 @@ import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
 import { img } from '@/utils/common'
 import { findFirstValidRoute ,formatRouters} from '@/router/routers'
+import { useMenuActive } from '@/hooks/useMenuActive'
 import storage from '@/utils/storage'
 import {getShowApp, getShowSpecialMenu} from '@/app/api/site'
 
@@ -38,12 +37,19 @@ const systemStore = useSystemStore()
 const userStore = useUserStore()
 const route = useRoute()
 const siteInfo = userStore.siteInfo
+// 受控菜单高亮：点击需要新窗口打开的菜单后，高亮回滚到原菜单
+const { menuActive } = useMenuActive()
 const routers = userStore.routers
 const addonIndexRoute = userStore.addonIndexRoute
 const menuData = ref<Record<string, any>[]>([])
 const addonRouters: Record<string, any> = {}
 const logoUrl = computed(() => {
-    return userStore.siteInfo.logo ? userStore.siteInfo.logo : systemStore.website.logo
+    const website = systemStore.website as any
+    return userStore.siteInfo?.icon || website?.icon
+})
+const siteName = computed(() => {
+    const website = systemStore.website as any
+    return userStore.siteInfo?.site_name || website?.site_name || ''
 })
 
 const appList = ref<Record<string, any>[]>([])
@@ -134,6 +140,44 @@ if (siteInfo?.apps.length > 1) {
 </script>
 
 <style lang="scss" scoped>
+.logo-wrap {
+    /* 与一级菜单默认左内边距一致，logo 左缘对齐菜单图标 */
+    padding-right: var(--el-menu-base-level-padding, 20px);
+    padding-left: var(--el-menu-base-level-padding, 20px);
+    background: transparent;
+}
+
+.logo {
+    width: 100%;
+
+    &.is-collapse {
+        justify-content: center;
+    }
+}
+
+.logo__image {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 6px;
+    object-fit: contain;
+}
+
+.logo__name {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    margin-left: 8px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1;
+    color: #fff;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .menu-wrap {
     padding: 0!important;
 

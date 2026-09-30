@@ -1,13 +1,13 @@
 <template>
     <!--会员退款-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="payRefundTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('refundNo')" prop="refund_no">
                         <el-input v-model.trim="payRefundTable.searchParam.refund_no" :placeholder="t('refundNoPlaceholder')" />
@@ -31,8 +31,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="payRefundTable.data" size="large" v-loading="payRefundTable.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="payRefundTable.data" size="large" v-loading="payRefundTable.loading">
                     <template #empty>
                         <span>{{ !payRefundTable.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -47,6 +48,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                </div>
 
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="payRefundTable.page" v-model:page-size="payRefundTable.limit"
@@ -64,11 +66,15 @@ import { reactive, ref } from 'vue'
 import { t } from '@/lang'
 import { getPayRefundPages, getRefundStatus } from '@/app/api/pay'
 import { useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import type { FormInstance } from 'element-plus'
 import refundDetail from '@/app/views/finance/components/refund-detail.vue'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const refundStatusList = ref([])
 const checkStatusList = async () => {
     refundStatusList.value = await (await getRefundStatus()).data

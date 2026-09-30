@@ -151,7 +151,9 @@ class Request extends \think\Request
      * @return array|string|null
      */
     public function adminToken(){
-        return $this->header(system_name('admin_token_name'));
+        $name = system_name('admin_token_name');
+        // EventSource（SSE）不支持自定义请求头，token 通过 query 传递，此处做回退
+        return $this->header($name) ?: $this->param($name);
     }
 
 
@@ -168,7 +170,9 @@ class Request extends \think\Request
      * @return array|string|null
      */
     public function adminSiteId(){
-        return $this->header(system_name('admin_site_id_name'));
+        $name = system_name('admin_site_id_name');
+        // EventSource（SSE）不支持自定义请求头，site-id 通过 query 传递，此处做回退
+        return is_null($this->header($name)) ? $this->param($name) : $this->header($name);
     }
 
     /**

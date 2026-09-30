@@ -1,0 +1,1 @@
+import{r as t}from"./index-e87d8368.js";function o(){return t.get("stat/index")}function s(){return t.get("stat/addon_panel")}function d(n,e){return t.get(`stat/addon_panel/${n}`,{params:e})}function r(n){return t.get(`stat/addon_panel/${n}/sites`)}export{d as a,r as b,s as c,o as g};

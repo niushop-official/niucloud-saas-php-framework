@@ -116,7 +116,7 @@ defineExpose({
     min-height: 75px;
 }
 
-.el-timeline-item >>> .el-timeline-item__node--normal {
+.el-timeline-item :deep(.el-timeline-item__node--normal) {
     left: 117px;
     width: 18px;
     height: 18px;
@@ -128,7 +128,7 @@ defineExpose({
     /* 用于定位伪元素 */
 }
 
-.el-timeline-item >>> .el-timeline-item__node--normal::before {
+.el-timeline-item :deep(.el-timeline-item__node--normal::before) {
     content: "";
     position: absolute;
     top: 50%;
@@ -144,7 +144,7 @@ defineExpose({
     /* 居中显示 */
 }
 
-.el-timeline-item >>> .el-timeline-item__tail {
+.el-timeline-item :deep(.el-timeline-item__tail) {
     left: 125px;
     border-left-color: #dddddd;
     border-left-style: dashed;
@@ -152,7 +152,7 @@ defineExpose({
     height: calc(100% - 24px - 12px);
 }
 
-.time-dialog >>> .el-dialog__header {
+.time-dialog :deep(.el-dialog__header) {
     padding: 10px 20px;
     height: 25px;
     line-height: 25px;
@@ -161,33 +161,33 @@ defineExpose({
     border-bottom: solid 1px #e4e7ed;
 }
 
-.time-dialog >>> .el-card__body {
+.time-dialog :deep(.el-card__body) {
     padding: 8px;
 }
 
-.time-dialog >>> .el-card.is-always-shadow {
+.time-dialog :deep(.el-card.is-always-shadow) {
     box-shadow: none;
 }
 
-.time-dialog >>> .el-dialog__headerbtn .el-dialog__close {
+.time-dialog :deep(.el-dialog__headerbtn .el-dialog__close) {
     color: #666;
 }
 
-.time-dialog >>> .el-dialog__headerbtn:hover .el-dialog__close {
+.time-dialog :deep(.el-dialog__headerbtn:hover .el-dialog__close) {
     color: #666;
 }
 
-.time-dialog >>> .el-dialog__headerbtn {
+.time-dialog :deep(.el-dialog__headerbtn) {
     top: 14px;
 }
 
-.time-dialog >>> .el-collapse {
+.time-dialog :deep(.el-collapse) {
     margin-left: 119px;
     border: none;
     margin-top: -22px;
 }
 
-.time-dialog >>> .el-collapse-item__header {
+.time-dialog :deep(.el-collapse-item__header) {
     border: none;
     line-height: 25px;
     height: 25px;
@@ -195,16 +195,16 @@ defineExpose({
     z-index: 999;
 }
 
-.time-dialog >>> .el-collapse-item__wrap {
+.time-dialog :deep(.el-collapse-item__wrap) {
     border: none;
 }
 
-.time-dialog >>> .el-collapse-item__content {
+.time-dialog :deep(.el-collapse-item__content) {
     margin-top: 15px;
     padding-bottom: 0 !important;
 }
 
-.time-dialog >>> .el-timeline-item__node--01 {
+.time-dialog :deep(.el-timeline-item__node--01) {
     width: 18px !important;
     height: 18px !important;
     left: 117px !important;

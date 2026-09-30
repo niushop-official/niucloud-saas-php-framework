@@ -48,9 +48,7 @@
                                             <template v-if="weappConfig.is_authorization">
                                                 <el-button type="primary" plain @click="cencelAuth" >{{ t("取消授权") }}</el-button>
                                                 <el-tooltip class="box-item" effect="light" placement="top">
-                                                    <el-icon color="#666" size="15px"  class="ml-[5px]">
-                                                        <QuestionFilled />
-                                                    </el-icon>
+                                                    <span class="iconfont iconwenhao text-[#999] !text-[14px] ml-[5px]"></span>
                                                     <template #content>
                                                         <div>
                                                             <div>

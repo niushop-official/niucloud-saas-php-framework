@@ -69,6 +69,9 @@ class CoreAddonDevelopDownloadService extends CoreAddonBaseService
         if (!is_dir($zip_dir) && !mkdir($zip_dir, 0777, true) && !is_dir($zip_dir)) {
             throw new AddonException(sprintf('Directory "%s" was not created', $zip_dir));
         }
+        // 打包前清理残留 zip 文件：PHP8.3+ 对已存在的空文件执行 ZipArchive::open 会异常，
+        // 且并发任务可能在打包过程中删除该文件导致 close() 报「Can't open file」
+        if (is_file($zip_file)) @unlink($zip_file);
         if ($zip->open($zip_file, ZipArchive::CREATE) !== true) {
             return false;
         }
@@ -85,7 +88,11 @@ class CoreAddonDevelopDownloadService extends CoreAddonBaseService
         } else if (file_exists($source_dir) === true) {
             $zip->addFile($source_dir, basename($source_dir));
         }
-        $zip->close();
+        // close 时若 zip 文件已被并发任务删除会产生警告并中断流程，容错处理并记录日志
+        if (@$zip->close() !== true) {
+            \think\facade\Log::write('compressToZip 关闭压缩包失败：' . $zip_file);
+            return false;
+        }
         return file_exists($zip_file);
     }
 

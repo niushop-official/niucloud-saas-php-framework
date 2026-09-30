@@ -115,8 +115,9 @@ class Site extends BaseAdminController
     public function create() {
         $data = $this->request->params([
             ['site_name', ''],
-            ['group_id', 0]
+            ['group_id', 0],
+            ['desc', '']
         ]);
-        return success((new AuthSiteService())->createSite($data));
+        return success(data: (new AuthSiteService())->createSite($data));
     }
 }

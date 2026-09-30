@@ -11,8 +11,8 @@
 
 // [ 应用入口文件 ]
 namespace think;
-if (PHP_VERSION_ID < 80000)
-    die('require PHP > 8.0.0 !');
+if (PHP_VERSION_ID < 80200)
+    die('require PHP >= 8.2.0 !');
 require __DIR__ . '/../vendor/autoload.php';
 //if (file_exists(__DIR__ .'/../install.lock')) {
 //    header("location:/index.php");

@@ -657,10 +657,10 @@ final class Editor implements EditorInterface
         if (($resizeWidth > $newWidth) or ($resizeHeight > $newHeight)) { // Oops, either with or height does not fit
             // So base on height instead
             $resizeHeight = $newHeight;
-            $resizeWidth  = round($newHeight * $ratio);
+            $resizeWidth  = $newHeight * $ratio;
         }
 
-        $this->_resize($image, round($resizeWidth, 2), round($resizeHeight, 2));
+        $this->_resize($image, $resizeWidth, $resizeHeight);
 
         return $this;
     }

@@ -56,7 +56,7 @@ trait HasHttpRequests
      * @param string|null $name
      * @return $this
      */
-    public function pushMiddleware(callable $middleware, string $name = null)
+    public function pushMiddleware(callable $middleware, ?string $name = null)
     {
         if (!is_null($name)) {
             $this->middlewares[$name] = $middleware;
@@ -96,6 +96,7 @@ trait HasHttpRequests
         $options['connect_timeout'] = config('niucloud.http.connect_timeout', 3);
         $response = $this->getHttpClient()->request($method, $url, $options);
         $response->getBody()->rewind();
+//        dd($response->getBody()->getContents());
         return json_decode($response->getBody()->getContents(), true);
     }
 

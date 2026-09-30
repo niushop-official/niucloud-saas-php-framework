@@ -55,10 +55,9 @@ class PoFileLoader extends FileLoader
      * - No support for comments spanning multiple lines.
      * - Translator and extracted comments are treated as being the same type.
      * - Message IDs are allowed to have other encodings as just US-ASCII.
+     * - Contexts (msgctxt) are parsed but discarded.
      *
      * Items with an empty id are ignored.
-     *
-     * {@inheritdoc}
      */
     protected function loadResource(string $resource): array
     {
@@ -67,6 +66,7 @@ class PoFileLoader extends FileLoader
         $defaults = [
             'ids' => [],
             'translated' => null,
+            'context' => null,
         ];
 
         $messages = [];
@@ -78,23 +78,28 @@ class PoFileLoader extends FileLoader
 
             if ('' === $line) {
                 // Whitespace indicated current item is done
-                if (!\in_array('fuzzy', $flags)) {
-                    $this->addMessage($messages, $item);
+                $this->saveItem($messages, $item, $flags, $defaults);
+            } elseif (str_starts_with($line, '#,')) {
+                // flags belong to the next entry, so the previous one ends here
+                if (null !== $item['translated']) {
+                    $this->saveItem($messages, $item, $flags, $defaults);
                 }
-                $item = $defaults;
-                $flags = [];
-            } elseif ('#,' === substr($line, 0, 2)) {
                 $flags = array_map('trim', explode(',', substr($line, 2)));
-            } elseif ('msgid "' === substr($line, 0, 7)) {
+            } elseif (str_starts_with($line, 'msgctxt "')) {
+                if (null !== $item['translated']) {
+                    $this->saveItem($messages, $item, $flags, $defaults);
+                }
+                $item['context'] = substr($line, 9, -1);
+            } elseif (str_starts_with($line, 'msgid "')) {
                 // We start a new msg so save previous
-                // TODO: this fails when comments or contexts are added
-                $this->addMessage($messages, $item);
-                $item = $defaults;
+                if ($item['ids']) {
+                    $this->saveItem($messages, $item, $flags, $defaults);
+                }
                 $item['ids']['singular'] = substr($line, 7, -1);
-            } elseif ('msgstr "' === substr($line, 0, 8)) {
+            } elseif (str_starts_with($line, 'msgstr "')) {
                 $item['translated'] = substr($line, 8, -1);
             } elseif ('"' === $line[0]) {
-                $continues = isset($item['translated']) ? 'translated' : 'ids';
+                $continues = isset($item['translated']) ? 'translated' : ($item['ids'] ? 'ids' : 'context');
 
                 if (\is_array($item[$continues])) {
                     end($item[$continues]);
@@ -102,20 +107,27 @@ class PoFileLoader extends FileLoader
                 } else {
                     $item[$continues] .= substr($line, 1, -1);
                 }
-            } elseif ('msgid_plural "' === substr($line, 0, 14)) {
+            } elseif (str_starts_with($line, 'msgid_plural "')) {
                 $item['ids']['plural'] = substr($line, 14, -1);
-            } elseif ('msgstr[' === substr($line, 0, 7)) {
+            } elseif (str_starts_with($line, 'msgstr[')) {
                 $size = strpos($line, ']');
                 $item['translated'][(int) substr($line, 7, 1)] = substr($line, $size + 3, -1);
             }
         }
         // save last item
-        if (!\in_array('fuzzy', $flags)) {
-            $this->addMessage($messages, $item);
-        }
+        $this->saveItem($messages, $item, $flags, $defaults);
         fclose($stream);
 
         return $messages;
+    }
+
+    private function saveItem(array &$messages, array &$item, array &$flags, array $defaults): void
+    {
+        if (!\in_array('fuzzy', $flags, true)) {
+            $this->addMessage($messages, $item);
+        }
+        $item = $defaults;
+        $flags = [];
     }
 
     /**
@@ -124,7 +136,7 @@ class PoFileLoader extends FileLoader
      * A .po file could contain by error missing plural indexes. We need to
      * fix these before saving them.
      */
-    private function addMessage(array &$messages, array $item)
+    private function addMessage(array &$messages, array $item): void
     {
         if (!empty($item['ids']['singular'])) {
             $id = stripcslashes($item['ids']['singular']);

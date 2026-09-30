@@ -12,7 +12,7 @@
  */
 const fs = require('fs')
 const path = require('path')
-const { ROOT, listAddonKeys } = require('./addon-utils.cjs')
+const { ROOT, listAddonKeys, resolveAddonEntry } = require('./addon-utils.cjs')
 const { IMPORT_MAP } = require('./shared-external.cjs')
 const { stripBuiltAssets } = require('./strip-style-imports.cjs')
 
@@ -148,7 +148,9 @@ function writeAddonManifest(key, destAddonDir) {
         key,
         version: '1.0.0',
         sharedVersion: 'admin-core-1.0.0',
-        entry: './index.js',
+        // entry 保持相对路径（./index-[hash].js），与旧插件 ./index.js 兼容；
+        // 真正拼带 key 的 URL 由运行时 loader 用 addon key 重建，避免 adminUrl 丢 key
+        entry: resolveAddonEntry(destAddonDir),
         langBase: './lang/'
     }
     fs.writeFileSync(path.join(destAddonDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf-8')
@@ -224,6 +226,9 @@ function runAssemble() {
         ? JSON.parse(fs.readFileSync(REPORT_PATH, 'utf-8'))
         : { success: listAddonKeys(), failed: [] }
 
+    // build:core 场景：不承担插件打包，dist/assets/addons 留空，也不生成 index.json
+    const skipAddons = process.env.SKIP_ADDONS === '1'
+
     cleanAssembledOutput()
 
     if (!fs.existsSync(CORE_DIR)) {
@@ -235,30 +240,54 @@ function runAssemble() {
     const installedKeys = []
 
     // 先同步 addon，避免后续 core 合并耗时过长时 assets/addons 仍为空
-    for (const key of successKeys) {
-        const src = path.join(ADDONS_STAGING, key)
-        if (!fs.existsSync(src)) continue
-        const dest = path.join(OUT_DIR, 'assets', 'addons', key)
-        rmDir(dest)
-        copyTree(src, dest)
-        copyLang(key, dest)
-        writeAddonManifest(key, dest)
-        const entryFile = path.join(dest, 'index.js')
-        if (!fs.existsSync(entryFile)) {
-            console.error(`[assemble] missing ${key}/index.js — run: node scripts/build-addon.cjs ${key}`)
-            process.exit(1)
+    if (skipAddons) {
+        // build:core 场景：不打包插件，dist/assets/addons 留空，也不生成 index.json
+        rmDir(path.join(OUT_DIR, 'assets', 'addons'))
+        console.log('[assemble] SKIP_ADDONS: dist/assets/addons left empty')
+    } else {
+        for (const key of successKeys) {
+            const src = path.join(ADDONS_STAGING, key)
+            if (!fs.existsSync(src)) continue
+            const dest = path.join(OUT_DIR, 'assets', 'addons', key)
+            rmDir(dest)
+            copyTree(src, dest)
+            copyLang(key, dest)
+            writeAddonManifest(key, dest)
+            const entryRel = resolveAddonEntry(dest)
+            const entryFile = path.join(dest, entryRel.replace(/^\.\//, ''))
+            if (!fs.existsSync(entryFile)) {
+                console.error(`[assemble] missing ${key}/${entryRel} — run: node scripts/build-addon.cjs ${key}`)
+                process.exit(1)
+            }
+            installedKeys.push(key)
+            console.log(`[assemble] addon "${key}" -> assets/addons/${key}/`)
         }
-        installedKeys.push(key)
-        console.log(`[assemble] addon "${key}" -> assets/addons/${key}/`)
     }
 
-    const indexJson = { keys: installedKeys, sharedVersion: 'admin-core-1.0.0' }
-    fs.mkdirSync(path.join(OUT_DIR, 'assets', 'addons'), { recursive: true })
-    fs.writeFileSync(
-        path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
-        JSON.stringify(indexJson, null, 2) + '\n',
-        'utf-8'
-    )
+    // 合并各插件 manifest.json 到 index.json.manifests，减少前端 N 次 HTTP 请求
+    // （与后端 rebuildPublicAdminAddonIndexJson 行为一致）
+    const manifests = {}
+    for (const key of installedKeys) {
+        const manifestFile = path.join(OUT_DIR, 'assets', 'addons', key, 'manifest.json')
+        if (fs.existsSync(manifestFile)) {
+            try {
+                const data = JSON.parse(fs.readFileSync(manifestFile, 'utf-8'))
+                if (data && Object.keys(data).length) manifests[key] = data
+            } catch { /* 忽略损坏的 manifest，保持构建不中断 */ }
+        }
+    }
+
+    // buildTime 作为插件包运行时缓存版本：addon-lang 用它拼 ?v= 参数，
+    // 同一构建内插件包 URL 稳定可被浏览器长期缓存，重新部署后自动失效
+    const indexJson = { keys: installedKeys, sharedVersion: 'admin-core-1.0.0', buildTime: Date.now(), manifests }
+    if (!skipAddons) {
+        fs.mkdirSync(path.join(OUT_DIR, 'assets', 'addons'), { recursive: true })
+        fs.writeFileSync(
+            path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
+            JSON.stringify(indexJson, null, 2) + '\n',
+            'utf-8'
+        )
+    }
 
     cleanCoreAssetsOutput()
     mergeCoreOutput()
@@ -291,12 +320,14 @@ function runAssemble() {
     }
     copySharedLocales()
 
-    // core 合并可能覆盖 addons/index.json，需再次写入
-    fs.writeFileSync(
-        path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
-        JSON.stringify(indexJson, null, 2) + '\n',
-        'utf-8'
-    )
+    // core 合并可能覆盖 addons/index.json，需再次写入（仅 build/build:addon 产出）
+    if (!skipAddons) {
+        fs.writeFileSync(
+            path.join(OUT_DIR, 'assets', 'addons', 'index.json'),
+            JSON.stringify(indexJson, null, 2) + '\n',
+            'utf-8'
+        )
+    }
     for (const key of installedKeys) {
         writeAddonManifest(key, path.join(OUT_DIR, 'assets', 'addons', key))
     }
@@ -307,6 +338,16 @@ function runAssemble() {
     if (cleaned.length) {
         console.log(`[assemble] stripped element-plus style imports from ${cleaned.length} js files`)
     }
+
+    // 组装完成，移除中间 staging 目录（已合并进 dist，发布时也不会拷贝）
+    for (const staging of ['.core', '.shared']) {
+        const dir = path.join(OUT_DIR, staging)
+        if (fs.existsSync(dir)) {
+            rmDir(dir)
+            console.log(`[assemble] removed staging ${staging}`)
+        }
+    }
+
     console.log(`[assemble] done: core + ${installedKeys.length} addons`)
     if (report.failed?.length) {
         console.warn('[assemble] skipped failed addons:', report.failed.map((f) => f.key).join(', '))

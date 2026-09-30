@@ -26,6 +26,14 @@ Route::group('stat', function () {
     //站点控制台
     Route::get('siteindex', 'stat.SiteStat/index');
 
+    /***************************************************** 插件运营面板 ****************************************************/
+    //插件卡片列表
+    Route::get('addon_panel', 'stat.AddonPanel/index');
+    //插件统计详情
+    Route::get('addon_panel/:key', 'stat.AddonPanel/detail');
+    //插件关联站点（即将到期 / 会员数排行）
+    Route::get('addon_panel/:key/sites', 'stat.AddonPanel/sites');
+
 
 })->middleware([
     AdminCheckToken::class,

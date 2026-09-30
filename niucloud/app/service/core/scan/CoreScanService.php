@@ -39,7 +39,7 @@ class CoreScanService extends BaseCoreService
      * @param int|null $expire
      * @return array|string|string[]
      */
-    public function scan(int $site_id, string $action, array $data, int $expire = null){
+    public function scan(int $site_id, string $action, array $data, ?int $expire = null){
         $key = str_replace('==','', md5(uniqid('', true)));
         $cache_name = self::$cache_name.$key;
         $data['status'] = ScanDict::WAIT;

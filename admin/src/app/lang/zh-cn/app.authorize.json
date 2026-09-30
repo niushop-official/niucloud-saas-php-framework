@@ -1,4 +1,5 @@
 {
+  "title": "授权信息",
   "companyName": "授权主体",
   "siteAddress": "授权域名",
   "contactName": "授权联系人",
@@ -15,5 +16,27 @@
   "notHaveAuth": "还没有授权？去购买",
   "authInfoTips": "授权码和授权秘钥可在Niucloud官网我的授权 授权详情中查看",
   "cloudBuildTips": "是否要进行云编译该操作可能会影响到正在访问的客户是否要继续操作？",
-  "versionTips": "已经升级到最新版本"
+  "versionTips": "已经升级到最新版本",
+
+  "bindTitle": "绑定官网账号",
+  "bindDesc": "在下方官网页面登录账号并选择要绑定到本站的授权；账号密码仅提交至官网，本站不会保存。",
+  "loadingEmbed": "正在加载官网页面…",
+  "fallbackTip": "官网页面加载失败或长时间无响应，可改用以下方式完成绑定：",
+  "openOfficial": "在新窗口打开官网",
+  "manualBind": "授权码认证",
+  "manualBindDesc": "也可使用授权码与授权秘钥手动完成绑定",
+  "switchAuth": "切换授权",
+  "switchTip": "在官网页面选择要切换到本站的授权，切换后当前授权将自动解绑",
+  "syncState": "同步状态",
+  "logoutAccount": "退出官网账号",
+  "logoutConfirm": "退出后将清除官网账号信息，已绑定的授权不受影响。是否继续？",
+  "source": "绑定来源",
+  "sourceAccount": "官网账号",
+  "sourceManual": "授权码手动绑定",
+  "lastSync": "上次同步",
+  "notSync": "尚未同步",
+  "bindSuccess": "授权绑定成功",
+  "selectSuccess": "已保存所选授权",
+  "addressMismatch": "授权域名与当前站点不一致",
+  "cancel": "取消"
 }

@@ -14,6 +14,7 @@ namespace app\service\core\sys;
 use app\dict\sys\StorageDict;
 use app\model\sys\SysAttachment;
 use app\service\core\upload\CoreFileService;
+use app\service\core\upload\CoreStorageService;
 use core\base\BaseCoreService;
 use core\exception\AdminException;
 use core\exception\UploadFileException;
@@ -132,14 +133,14 @@ class CoreAttachmentService extends BaseCoreService
         $del_success_ids = [];
         foreach($list as $v){
             try {
-                $file_driver = (new CoreFileService())->driver($site_id, $v['storage_type']);
+                $file_driver = $this->getAttachmentDriver($site_id, $v);
                 //读取上传附件的信息用于后续得校验和数据写入,删除失败直接通过
                 $file_driver->delete($v['path']);
             } catch (\Exception $e) {
                 // 如果附件在云存储中删除失败后 尝试该资源是否是在平台云存储中
                 if ($v['storage_type'] != StorageDict::LOCAL) {
                     try {
-                        $file_driver = (new CoreFileService())->driver(0, $v['storage_type']);
+                        $file_driver = $this->getAttachmentDriver(0, $v);
                         $file_driver->delete($v['path']);
                     } catch (\Exception $e) {
                         if (!empty($del_success_ids)) {
@@ -153,5 +154,36 @@ class CoreAttachmentService extends BaseCoreService
         }
         $this->model->destroy($del_success_ids);
         return true;
+    }
+
+    /**
+     * 获取附件对应的存储驱动
+     * 同一存储方式存在多套配置时，优先按附件地址域名精确匹配到具体配置，匹配不到再按存储方式取
+     * @param int $site_id
+     * @param array $attachment
+     * @return mixed
+     */
+    private function getAttachmentDriver(int $site_id, array $attachment)
+    {
+        $storage_type = $attachment['storage_type'] ?? '';
+        $url = $attachment['url'] ?? '';
+        $core_file_service = new CoreFileService();
+        if (!empty($url)) {
+            $scheme = parse_url($url, PHP_URL_SCHEME);
+            $host = parse_url($url, PHP_URL_HOST);
+            $url_domain = (!empty($scheme) && !empty($host)) ? $scheme . '://' . $host : '';
+            if (!empty($url_domain)) {
+                foreach ((new CoreStorageService())->getStorageConfigList($site_id) as $item) {
+                    if ($item['storage_type'] != $storage_type) continue;
+                    $item_domain = $item['params']['domain'] ?? '';
+                    if (!empty($item_domain) && rtrim($item_domain, '/') == rtrim($url_domain, '/')) {
+                        $driver_config = $item['params'];
+                        $driver_config['storage_type'] = $item['storage_type'];
+                        return $core_file_service->driverByConfig($driver_config);
+                    }
+                }
+            }
+        }
+        return $core_file_service->driver($site_id, $storage_type);
     }
 }

@@ -7,16 +7,11 @@ namespace EasyWeChat\Work;
 use EasyWeChat\Kernel\Exceptions\HttpException;
 use JetBrains\PhpStorm\ArrayShape;
 use Psr\SimpleCache\CacheInterface;
-use Psr\SimpleCache\InvalidArgumentException;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 use function intval;
 use function is_string;
 use function sprintf;
@@ -24,6 +19,7 @@ use function sprintf;
 class JsApiTicket
 {
     protected HttpClientInterface $httpClient;
+
     protected CacheInterface $cache;
 
     public function __construct(
@@ -38,20 +34,13 @@ class JsApiTicket
 
     /**
      * @return array<string, mixed>
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws HttpException
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
      */
     #[ArrayShape([
-        'url' => "string",
-        'nonceStr' => "string",
-        'timestamp' => "int",
-        'appId' => "string",
-        'signature' => "string",
+        'url' => 'string',
+        'nonceStr' => 'string',
+        'timestamp' => 'int',
+        'appId' => 'string',
+        'signature' => 'string',
     ])]
     public function createConfigSignature(string $url, string $nonce, int $timestamp): array
     {
@@ -70,20 +59,14 @@ class JsApiTicket
     }
 
     /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws TransportExceptionInterface
      * @throws HttpException
-     * @throws ServerExceptionInterface
      */
     public function getTicket(): string
     {
         $key = $this->getKey();
         $ticket = $this->cache->get($key);
 
-        if (!!$ticket && is_string($ticket)) {
+        if ($ticket && is_string($ticket)) {
             return $ticket;
         }
 
@@ -112,22 +95,14 @@ class JsApiTicket
 
     /**
      * @return array<string, mixed>
-     *
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws ClientExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws TransportExceptionInterface
-     * @throws HttpException
-     * @throws ServerExceptionInterface
      */
     #[ArrayShape([
-        'corpid' => "string",
-        'agentid' => "int",
-        'nonceStr' => "string",
-        'timestamp' => "int",
-        'url' => "string",
-        'signature' => "string"
+        'corpid' => 'string',
+        'agentid' => 'int',
+        'nonceStr' => 'string',
+        'timestamp' => 'int',
+        'url' => 'string',
+        'signature' => 'string',
     ])]
     public function createAgentConfigSignature(int $agentId, string $url, string $nonce, int $timestamp): array
     {
@@ -142,20 +117,14 @@ class JsApiTicket
     }
 
     /**
-     * @throws RedirectionExceptionInterface
-     * @throws DecodingExceptionInterface
-     * @throws InvalidArgumentException
-     * @throws ClientExceptionInterface
      * @throws HttpException
-     * @throws TransportExceptionInterface
-     * @throws ServerExceptionInterface
      */
     public function getAgentTicket(int $agentId): string
     {
         $key = $this->getAgentKey($agentId);
         $ticket = $this->cache->get($key);
 
-        if (!!$ticket && is_string($ticket)) {
+        if ($ticket && is_string($ticket)) {
             return $ticket;
         }
 
@@ -173,6 +142,6 @@ class JsApiTicket
 
     public function getAgentKey(int $agentId): string
     {
-        return $this->key ?? $this->key = sprintf('work.jsapi_ticket.%s.%s', $this->corpId, $agentId);
+        return sprintf('%s.%s', $this->getKey(), $agentId);
     }
 }

@@ -508,6 +508,19 @@ class ComponentDict
                             'positionWay' => 'static',
                             'fixedBgColor' => '',
                             'bgGradient' => false,
+                            // 顶部标题栏：返回箭头 + 标题 + 地址定位
+                            // 默认值口径（与 admin 编辑器 headerDefaults、前端 headerConfig 兜底保持一致）：
+                            //   返回箭头 false / 标题 false / 地址定位 true
+                            // 各搜索风格支持的项不同（风格1/2 只有返回箭头，风格3 有返回箭头+定位，风格4 三项都有），
+                            // 不支持的项在编辑器里禁用、行内也没有对应位置，这里的取值不影响展示。
+                            'header' => [
+                                'backIsShow' => false, // 返回箭头
+                                'titleIsShow' => false, // 标题
+                                'title' => '', // 标题文字
+                                'positionIsShow' => true, // 地址定位
+                                'textColor' => '#333333', // 文字颜色
+                                'iconColor' => '#333333' // 图标颜色
+                            ],
                             // 搜索设置
                             'search' => [
                                 'logo' => '',
@@ -750,7 +763,38 @@ class ComponentDict
                                 "both" => 10 // 左右边距
                             ],
                         ]
-                    ]
+                    ],
+                    // 客服快捷浮窗：结构同浮动按钮，链接固定为系统客服页，装修端不可更换跳转
+                     'FloatBtnCustomer' => [
+                        'title' => '客服快捷浮窗',
+                        'icon' => 'iconfont iconfudonganniupc',
+                        'path' => 'edit-float-btn-customer',
+                        'support_page' => [],
+                        'uses' => 1,
+                        'sort' => 10018,
+                        'position' => 'fixed',
+                        'value' => [
+                            "imageSize" => 40,
+                            "aroundRadius" => 50,
+                            'style' => 'style-1',
+                            "styleName" => "风格一",
+                            "bottomPosition" => "middleRight",
+                            "list" => [
+                                [
+                                    "imageUrl" => "static/resource/images/diy/kefu_default.png",
+                                    "link" => [
+                                        "name" => "MEMBER_CONTACT",
+                                        "parent" => "MEMBER_LINK",
+                                        "title" => "客服",
+                                        "url" => "/app/pages/member/contact",
+                                        "action" => ""
+                                    ]
+                                ]
+                            ],
+                            "offset" => 0,
+                            "lateralOffset" => 15
+                        ],
+                    ],
                 ],
             ],
         ];

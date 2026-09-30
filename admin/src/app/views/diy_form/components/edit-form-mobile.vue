@@ -22,9 +22,7 @@
                                 <p>{{ t('preventDuplicationTipsOne') }}</p>
                                 <p>{{ t('preventDuplicationTipsTwo') }}</p>
                             </template>
-                            <el-icon>
-                                <QuestionFilled color="#999999" />
-                            </el-icon>
+                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                         </el-tooltip>
                     </div>
                 </template>
@@ -39,9 +37,7 @@
                                 <p>{{ t('privacyProtectionTipsOne') }}</p>
                                 <p>{{ t('privacyProtectionTipsTwo') }}</p>
                             </template>
-                            <el-icon>
-                                <QuestionFilled color="#999999" />
-                            </el-icon>
+                            <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span>
                         </el-tooltip>
                     </div>
                 </template>

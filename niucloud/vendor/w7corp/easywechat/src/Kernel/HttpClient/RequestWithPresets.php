@@ -7,6 +7,7 @@ use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use EasyWeChat\Kernel\Form\File;
 use EasyWeChat\Kernel\Form\Form;
 use EasyWeChat\Kernel\Support\Str;
+
 use function array_merge;
 use function in_array;
 use function is_file;
@@ -85,43 +86,36 @@ trait RequestWithPresets
 
     /**
      * @throws RuntimeException
-     * @throws InvalidArgumentException
      */
-    public function withFile(string $pathOrContents, string $formName = 'file', string $filename = null): static
+    public function withFile(string $pathOrContents, string $formName = 'file', ?string $filename = null): static
     {
         $file = is_file($pathOrContents) ? File::fromPath(
             $pathOrContents,
             $filename
-        ) : File::withContents($pathOrContents, $filename);
+        ) : File::fromContents($pathOrContents, $filename);
 
         /**
-         * @var array{headers: array<string, string>, body: array<string, mixed>}
+         * @var array{headers: array<string, string>, body: string} $options
          */
         $options = Form::create([$formName => $file])->toOptions();
 
-        foreach ($options['headers'] as $key => $value) {
-            $this->withHeader($key, $value);
-        }
+        $this->withHeaders($options['headers']);
 
-        foreach ($options['body'] as $key => $value) {
-            $this->with($key, $value);
-        }
-
-        return $this;
+        return $this->withOptions([
+            'body' => $options['body'],
+        ]);
     }
 
     /**
      * @throws RuntimeException
-     * @throws InvalidArgumentException
      */
-    public function withFileContents(string $contents, string $formName = 'file', string $filename = null): static
+    public function withFileContents(string $contents, string $formName = 'file', ?string $filename = null): static
     {
         return $this->withFile($contents, $formName, $filename);
     }
 
     /**
      * @throws RuntimeException
-     * @throws InvalidArgumentException
      */
     public function withFiles(array $files): static
     {
@@ -132,23 +126,26 @@ trait RequestWithPresets
         return $this;
     }
 
+    /**
+     * @return array{xml?:array<string,mixed>|string,json?:array<string,mixed>|string,body?:array<string,mixed>|string,query?:array<string,mixed>,headers?:array<string,string>}
+     */
     public function mergeThenResetPrepends(array $options, string $method = 'GET'): array
     {
         $name = in_array(strtoupper($method), ['GET', 'HEAD', 'DELETE']) ? 'query' : 'body';
 
-        if (($options['headers']['Content-Type'] ?? $options['headers']['content-type'] ?? null) === 'application/json' || !empty($options['json'])) {
+        if (($options['headers']['Content-Type'] ?? $options['headers']['content-type'] ?? null) === 'application/json' || ! empty($options['json'])) {
             $name = 'json';
         }
 
-        if (($options['headers']['Content-Type'] ?? $options['headers']['content-type'] ?? null) === 'text/xml' || !empty($options['xml'])) {
+        if (($options['headers']['Content-Type'] ?? $options['headers']['content-type'] ?? null) === 'text/xml' || ! empty($options['xml'])) {
             $name = 'xml';
         }
 
-        if (!empty($this->prependParts)) {
+        if (! empty($this->prependParts)) {
             $options[$name] = array_merge($this->prependParts, $options[$name] ?? []);
         }
 
-        if (!empty($this->prependHeaders)) {
+        if (! empty($this->prependHeaders)) {
             $options['headers'] = array_merge($this->prependHeaders, $options['headers'] ?? []);
         }
 
@@ -166,7 +163,7 @@ trait RequestWithPresets
         // $client->withAppid();
         // $client->withAppid('wxf8b4f85f3a794e77');
         // $client->withAppidAs('sub_appid');
-        if (!str_starts_with($method, 'with')) {
+        if (! str_starts_with($method, 'with')) {
             throw new InvalidArgumentException(sprintf('The method "%s" is not supported.', $method));
         }
 

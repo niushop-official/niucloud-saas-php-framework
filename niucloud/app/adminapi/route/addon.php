@@ -32,8 +32,7 @@ Route::group(function () {
     Route::post('addon/cloudinstall/:addon', 'addon.Addon/cloudInstall')->pattern(['addon' => '[\w|\,]+']);
     // 云编译进度
     Route::get('addon/cloudinstall/:addon', 'addon.Addon/cloudInstallLog')->pattern(['addon' => '[\w|\,]+']);
-    //插件安装检测安装环境
-    Route::get('addon/install/check/:addon', 'addon.Addon/installCheck')->pattern(['addon' => '[\w|\,]+']);
+    // 插件安装环境检测已统一到通用校验（sys/check?scene=addon_install）
     // 获取安装任务
     Route::get('addon/installtask', 'addon.Addon/getInstallTask');
     //下载插件
@@ -41,8 +40,7 @@ Route::group(function () {
     //插件类型
     Route::get('addontype', 'addon.Addon/getType');
 
-    //卸载插件环境检测
-    Route::get('addon/uninstall/check/:addon', 'addon.Addon/uninstallCheck');
+    // 插件卸载环境检测已统一到通用校验（sys/check?scene=addon_uninstall）
     //卸载插件
     Route::post('addon/uninstall/:addon', 'addon.Addon/uninstall');
     //卸载插件

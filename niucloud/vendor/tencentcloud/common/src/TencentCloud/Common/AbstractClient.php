@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) 2017-2018 THL A29 Limited, a Tencent company. All Rights Reserved.
+ * Copyright (c) 2017 Tencent. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ abstract class AbstractClient
     /**
      * @var string SDK版本
      */
-    public static $SDK_VERSION = "SDK_PHP_3.0.1105";
+    public static $SDK_VERSION = "SDK_PHP_3.0.1673";
 
     /**
      * @var integer http响应码200
@@ -223,9 +223,9 @@ abstract class AbstractClient
             }
             $responseData = $this->doRequestWithTC3($action, $body, $options, $headers, null);
             if ($responseData->getStatusCode() !== AbstractClient::$HTTP_RSP_OK) {
-                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody());
+                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody()->getContents());
             }
-            $resp = json_decode($responseData->getBody(), true)["Response"];
+            $resp = json_decode($responseData->getBody()->getContents(), true)["Response"];
             if (array_key_exists("Error", $resp)) {
                 throw new TencentCloudSDKException($resp["Error"]["Code"], $resp["Error"]["Message"], $resp["RequestId"]);
             }
@@ -266,23 +266,36 @@ abstract class AbstractClient
             $contentType = $responseData->getHeaderLine('Content-Type');
             if ($contentType === 'text/event-stream') {
                 $body = $responseData->getBody();
-                $buffer = '';
-                while (!$body->eof()) {
-                    $buffer .= $body->read(1024);
-                    $delimiterPosition = strpos($buffer, "\n\n");
-                    while ($delimiterPosition !== false) {
-                        $chunk = substr($buffer, 0, $delimiterPosition + 2);
-                        $buffer = substr($buffer, $delimiterPosition + 2);
-                        $callback($chunk);
+                $buffer = '';                
+                if (isset($callback) && is_callable($callback)) {
+                    while (!$body->eof()) {
+                        $buffer .= $body->read(1024);
                         $delimiterPosition = strpos($buffer, "\n\n");
+                        while ($delimiterPosition !== false) {
+                            $chunk = substr($buffer, 0, $delimiterPosition + 2);
+                            $buffer = substr($buffer, $delimiterPosition + 2);
+                            
+                            $callback($chunk);
+                            $delimiterPosition = strpos($buffer, "\n\n");
+                        }
                     }
-                }
-                if (!empty($buffer)) {
-                    $callback($buffer);
+                    if (!empty($buffer)) {
+                        $callback($buffer);
+                    }
+                } else {
+                    while (!$body->eof()) {
+                        $buffer .= $body->read(1024);
+                    }
+                    return $buffer;
                 }
             } else {
-                throw new TencentCloudSDKException("ServerError", "The Response content-type is not text/event-stream " . $responseData->getBody());
-            }
+                $resp = json_decode($responseData->getBody()->getContents(), true)["Response"];
+                if (array_key_exists("Error", $resp)) {
+                    throw new TencentCloudSDKException($resp["Error"]["Code"], $resp["Error"]["Message"], $resp["RequestId"]);
+                }                
+                return $resp;
+            }            
+
         } catch (\Exception $e) {
             if (!($e instanceof TencentCloudSDKException)) {
                 throw new TencentCloudSDKException("", $e->getMessage());
@@ -314,9 +327,9 @@ abstract class AbstractClient
                     break;
             }
             if ($responseData->getStatusCode() !== AbstractClient::$HTTP_RSP_OK) {
-                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody());
+                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody()->getContents());
             }
-            $tmpResp = json_decode($responseData->getBody(), true)["Response"];
+            $tmpResp = json_decode($responseData->getBody()->getContents(), true)["Response"];
             if (array_key_exists("Error", $tmpResp)) {
                 throw new TencentCloudSDKException($tmpResp["Error"]["Code"], $tmpResp["Error"]["Message"], $tmpResp["RequestId"]);
             }
@@ -340,7 +353,7 @@ abstract class AbstractClient
             $responseData = $this->getResponseData($action, $request, $options);
             
             if ($responseData->getStatusCode() !== AbstractClient::$HTTP_RSP_OK) {
-                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody());
+                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody()->getContents());
             }
             
             $contentType = $responseData->getHeaderLine('Content-Type');
@@ -384,14 +397,14 @@ abstract class AbstractClient
                     break;
             }
             if ($responseData->getStatusCode() !== AbstractClient::$HTTP_RSP_OK) {
-                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody());
+                throw new TencentCloudSDKException($responseData->getReasonPhrase(), $responseData->getBody()->getContents());
             }
             
             $contentType = $responseData->getHeaderLine('Content-Type');
             if ($contentType === 'text/event-stream') {
                 return $this->handleEventStreamResponse($responseData);
             } else {
-                $tmpResp = json_decode($responseData->getBody(), true)["Response"];
+                $tmpResp = json_decode($responseData->getBody()->getContents(), true)["Response"];
                 if (array_key_exists("Error", $tmpResp)) {
                     $this->circuitBreaker->afterRequests($generation, True);
                     throw new TencentCloudSDKException($tmpResp["Error"]["Code"], $tmpResp["Error"]["Message"], $tmpResp["RequestId"]);
@@ -455,7 +468,7 @@ abstract class AbstractClient
     
     private function handleJsonResponse($action, $responseData)
     {
-        $tmpResp = json_decode($responseData->getBody(), true)["Response"];
+        $tmpResp = json_decode($responseData->getBody()->getContents(), true)["Response"];
         if (array_key_exists("Error", $tmpResp)) {
             throw new TencentCloudSDKException($tmpResp["Error"]["Code"], $tmpResp["Error"]["Message"], $tmpResp["RequestId"]);
         }

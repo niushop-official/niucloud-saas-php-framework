@@ -61,6 +61,16 @@
             @update:componentIsShow="emit('update:componentIsShow', $event)"
             @loadingFn="emit('loadingFn', $event)"
         />
+        <FloatBtnCustomer
+            v-if="componentName === 'FloatBtnCustomer'"
+            :ref="setInnerRef"
+            :component="component"
+            :global="global"
+            :index="index"
+            :scrollBool="scrollBool"
+            @update:componentIsShow="emit('update:componentIsShow', $event)"
+            @loadingFn="emit('loadingFn', $event)"
+        />
         <FormAddress
             v-if="componentName === 'FormAddress'"
             :ref="setInnerRef"
@@ -1454,6 +1464,7 @@ import CardList from '@/addon/home_service/components/diy/card-list/index.vue'
 import CarouselSearch from '@/app/components/diy/carousel-search/index.vue'
 import FenxiaoGoodsList from '@/addon/shop_fenxiao/components/diy/fenxiao-goods-list/index.vue'
 import FloatBtn from '@/app/components/diy/float-btn/index.vue'
+import FloatBtnCustomer from '@/app/components/diy/float-btn-customer/index.vue'
 import FormAddress from '@/app/components/diy/form-address/index.vue'
 import FormCheckbox from '@/app/components/diy/form-checkbox/index.vue'
 import FormDate from '@/app/components/diy/form-date/index.vue'

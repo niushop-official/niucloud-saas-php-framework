@@ -1,0 +1,86 @@
+/**
+ * Lightside 布局 Token
+ *
+ * 双栏侧边菜单与顶部导航的尺寸、间距和交互状态集中在这里管理。
+ * 颜色只引用现有语义 Token，以便跟随运行时主题色与暗色模式。
+ */
+.layout-lightside {
+    // 布局骨架
+    --cmp-lightside-header-height: 50px;
+    --cmp-lightside-primary-width: 80px;
+    --cmp-lightside-primary-expanded-width: 110px;
+    --cmp-lightside-secondary-width: 172px;
+    --cmp-lightside-sidebar-bg: var(--sys-color-bg-surface);
+    --cmp-lightside-sidebar-border: var(--sys-color-border-default);
+    --cmp-lightside-icon-hover-scale: 1.1;
+    // hover 时图标"加粗"：字体图标用文字描边模拟，Element SVG 图标按 viewBox(1024) 描边宽度
+    --cmp-lightside-icon-hover-stroke: 0.5px;
+    --cmp-lightside-icon-hover-stroke-svg: 36px;
+
+    // 一级应用菜单
+    --cmp-lightside-primary-padding-block: 8px;
+    --cmp-lightside-primary-item-width: 50px;
+    --cmp-lightside-primary-item-height: 50px;
+    --cmp-lightside-primary-item-expanded-height: 40px;
+    --cmp-lightside-primary-item-radius: var(--sys-radius-md);
+    --cmp-lightside-primary-item-gap: 3px;
+    --cmp-lightside-primary-item-padding-inline: 4px;
+    --cmp-lightside-primary-label-gap: 5px;
+    --cmp-lightside-primary-font-size: var(--sys-font-size-xs);
+    --cmp-lightside-primary-expanded-font-size: var(--sys-font-size-base);
+    --cmp-lightside-primary-icon-size: 17px;
+    --cmp-lightside-primary-text: var(--sys-color-text-regular);
+    --cmp-lightside-primary-icon: var(--sys-color-text-regular);
+    --cmp-lightside-primary-hover-bg: var(--sys-color-fill-light);
+    --cmp-lightside-primary-hover-text: var(--sys-color-primary);
+    --cmp-lightside-primary-active-bg: var(--sys-color-primary);
+    --cmp-lightside-primary-active-text: var(--sys-color-text-on-primary);
+
+    // 二级业务菜单
+    --cmp-lightside-secondary-title-height: var(--cmp-lightside-header-height);
+    --cmp-lightside-secondary-title-padding-inline: 20px;
+    --cmp-lightside-secondary-title-font-size: var(--sys-font-size-md);
+    --cmp-lightside-secondary-title-font-weight: var(--sys-font-weight-semibold);
+    --cmp-lightside-secondary-title-text: var(--sys-color-text-primary);
+    --cmp-lightside-secondary-menu-padding-block: 8px;
+    --cmp-lightside-secondary-item-height: 42px;
+    --cmp-lightside-secondary-item-margin-inline: 8px;
+    --cmp-lightside-secondary-item-padding-inline: 12px;
+    --cmp-lightside-secondary-item-radius: var(--sys-radius-md);
+    --cmp-lightside-secondary-font-size: var(--sys-font-size-base);
+    --cmp-lightside-secondary-icon-size: 15px;
+    --cmp-lightside-secondary-icon-gap: 8px;
+    // 二级菜单层级缩进步长：一个图标位 = 图标宽度 + 图标与文字的间距，每深一层多一个图标位
+    --cmp-lightside-secondary-indent-step: calc(var(--cmp-lightside-secondary-icon-size) + var(--cmp-lightside-secondary-icon-gap));
+    --cmp-lightside-secondary-text: var(--sys-color-text-primary);
+    --cmp-lightside-secondary-hover-bg: var(--sys-color-fill-light);
+    --cmp-lightside-secondary-active-bg: var(--sys-color-primary-soft);
+    --cmp-lightside-secondary-active-text: var(--sys-color-primary);
+
+    // 顶部导航
+    --cmp-lightside-header-bg: var(--sys-color-bg-surface);
+    --cmp-lightside-header-border: var(--sys-color-border-default);
+    --cmp-lightside-header-text: var(--sys-color-text-regular);
+    --cmp-lightside-header-padding-inline: 10px;
+    --cmp-lightside-header-action-size: 36px;
+    --cmp-lightside-header-action-radius: var(--sys-radius-md);
+    --cmp-lightside-header-action-hover-bg: var(--sys-color-fill-light);
+    // 顶栏浅色填充控件（菜单搜索框、站点状态）：同规格的填充块，无边框
+    --cmp-lightside-header-control-height: 30px;
+    --cmp-lightside-header-control-padding-inline: 12px;
+    --cmp-lightside-header-control-radius: 4px;
+    --cmp-lightside-header-control-bg: var(--sys-color-fill-light);
+    --cmp-lightside-header-control-hover-bg: var(--sys-color-fill-default);
+    // 顶栏功能区间隔线
+    --cmp-lightside-header-divider-width: 1px;
+    --cmp-lightside-header-divider-height: 16px;
+    --cmp-lightside-header-divider-margin-inline: 8px;
+    // 顶栏菜单搜索框：宽度固定
+    --cmp-lightside-header-search-width: 175px;
+    --cmp-lightside-header-search-radius: 4px;
+    // 顶栏站点状态：状态圆点尺寸
+    --cmp-lightside-site-status-dot-size: 8px;
+    // 顶栏面包屑：非当前层级为灰色，最后一级（当前页）为深色
+    --cmp-lightside-breadcrumb-text: var(--sys-color-text-secondary);
+    --cmp-lightside-breadcrumb-active-text: var(--sys-color-text-primary);
+}

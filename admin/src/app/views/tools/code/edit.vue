@@ -1,11 +1,11 @@
 <template>
-    <div class="main-container" v-loading="loading">
+    <div class="main-container form-sections" v-loading="loading">
 
         <el-card class="card !border-none" shadow="never">
             <el-page-header :content="pageName" :icon="ArrowLeft" @back="back()" />
         </el-card>
 
-        <el-card class="box-card mt-[15px] !border-none" shadow="never">
+        <el-card class="box-card !border-none" shadow="never">
             <el-tabs v-model="activeName" class="demo-tabs">
                 <el-tab-pane :label="t('basicSettings')" name="basicSettings">
                     <el-form :model="formData" label-width="70px" class="page-form">
@@ -38,6 +38,7 @@
                     </el-form>
                 </el-tab-pane>
                 <el-tab-pane :label="t('fieldSettings')" name="fieldSettings">
+                    <div class="table-panel">
                     <el-table :data="formData.table_column" size="large" ref="tableRef" :key="toggleIndex">
                         <el-table-column align="center" label="操作" width="80">
                             <template #default>
@@ -133,6 +134,7 @@
                             </template>
                         </el-table-column> -->
                     </el-table>
+                    </div>
                 </el-tab-pane>
                 <el-tab-pane :label="t('generationSettings')" name="generationSettings">
                     <el-form :model="formData" class="page-form" label-width="140px" ref="formRef" :rules="rules">
@@ -225,6 +227,7 @@
                     <div class="mb-[20px]">
                         <el-button type="primary" class="w-[100px]" @click="addEvent(null, -1)">{{ t('insertAssociated') }}</el-button>
                     </div>
+                    <div class="table-panel">
                     <el-table :data="formData.relations" size="large">
                         <el-table-column :label="t('associatedType')" prop="type" min-width="130px" />
                         <el-table-column :label="t('associatedName')" prop="name" min-width="130px" />
@@ -239,6 +242,7 @@
                             </template>
                         </el-table-column>
                     </el-table>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
         </el-card>

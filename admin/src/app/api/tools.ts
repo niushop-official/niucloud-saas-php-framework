@@ -178,6 +178,25 @@ export function getGeneratorTableColumn(params: any) {
     return request.get(`generator/table_column`, { params })
 }
 
+/***************************************************** 数据库修复 ****************************************************/
+
+/**
+ * 数据库结构检测
+ * @returns
+ */
+export function getDatabaseRepairCheck() {
+    return request.get(`sys/database_repair/check`)
+}
+
+/**
+ * 数据库结构一键修复
+ * @param params {source: 来源, type: 差异类型}
+ * @returns
+ */
+export function repairDatabase(params: Record<string, any> = {}) {
+    return request.post(`sys/database_repair/repair`, params, { showSuccessMessage: true })
+}
+
 /**
  * 同步校验
  */

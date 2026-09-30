@@ -40,8 +40,8 @@ function createCloudCompileRequest() {
 
 const cloudCompileRequest = createCloudCompileRequest()
 
-export function cloudBuild() {
-    return request.post('niucloud/build')
+export function cloudBuild(data = {}) {
+    return request.post('niucloud/build', data)
 }
 
 export function getCloudBuildTask() {
@@ -52,12 +52,14 @@ export function getCloudBuildLog() {
     return request.get('niucloud/build/log')
 }
 
-export function clearCloudBuildTask() {
-    return request.post('niucloud/build/clear', {}, { showErrorMessage: false, showSuccessMessage: false })
+export function clearCloudBuildTask(type: 'finish' | 'cancel' = 'cancel') {
+    return request.post('niucloud/build/clear', { type }, { showErrorMessage: false, showSuccessMessage: false })
 }
 
-export function preBuildCheck() {
-    return request.get('niucloud/build/check')
+// 编译前检测已统一到通用校验（sys/check?scene=cloud_build）
+
+export function getBuildCommand() {
+    return request.get('niucloud/build/command')
 }
 
 export function getCloudBuildQueuePosition(taskId: string) {
@@ -76,15 +78,35 @@ export function setCloudCompileLocalUrl(url: string) {
     return request.post('niucloud/build/set_local_url', { url })
 }
 
-export function startServerDownload(taskId: string, downloadUrl: string, authorizeCode: string, timestamp: string) {
-    return request.post('niucloud/build/start_server_download', {
-        task_id: taskId,
-        download_url: downloadUrl,
-        authorize_code: authorizeCode,
-        timestamp
-    })
+/**
+ * 编译端口列表（含端口说明与最近一次发版记录）
+ */
+export function getBuildPorts() {
+    return request.get('niucloud/build/ports')
 }
 
-export function getSseBuildLog(taskId: string) {
-    return request.get('niucloud/build/get_sse_build_log', { params: { task_id: taskId } })
+/**
+ * 发版记录分页
+ */
+export function getBuildVersionList(params: Record<string, any>) {
+    return request.get('niucloud/build/version', { params })
+}
+
+/**
+ * 发布 / 取消发布
+ * @param id 版本记录 id
+ * @param releaseStatus 0未发布 / 1已发布
+ */
+export function setBuildVersionRelease(id: number | string, releaseStatus: number) {
+    return request.post('niucloud/build/version/release', { id, release_status: releaseStatus }, { showSuccessMessage: true })
+}
+
+/**
+ * 删除发版记录
+ */
+export function delBuildVersions(ids: string | number[]) {
+    return request.delete('niucloud/build/version', {
+        params: { ids: Array.isArray(ids) ? ids.join(',') : ids },
+        showSuccessMessage: true
+    })
 }

@@ -1,12 +1,13 @@
 <template>
-    <el-card class="box-card !border-none" shadow="never" v-loading="payLoading">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+    <div class="table-fill-page__card" v-loading="payLoading">
         <!-- 设置支付配置 -->
         <div class="flex justify-between items-center">
             <span class="text-page-title">{{ pageName }}</span>
         </div>
 
-        <div class="mt-[10px]">
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+        <div class="mt-[10px] table-fill-page__panel">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="payListTable.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('outTradeNo')" prop="trade_no">
                         <el-input v-model.trim="payListTable.searchParam.out_trade_no" :placeholder="t('outTradeNoPlaceholder')" />
@@ -31,7 +32,8 @@
                 </el-form>
             </el-card>
 
-            <el-table :data="payListTable.data" size="large" v-loading="payListTable.loading">
+            <div class="table-fill-page__table">
+            <el-table height="100%" :data="payListTable.data" size="large" v-loading="payListTable.loading">
                 <template #empty>
                     <span>{{ !payListTable.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -52,7 +54,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="t('operation')" fixed="right" width="240" align="right">
+                <el-table-column :label="t('operation')" fixed="right" width="260" align="right">
                     <template #default="{ row }">
                         <el-button type="primary" link @click="detailEvent(row)">{{ t('detail') }}</el-button>
                         <span v-if="row.status == 3">
@@ -64,13 +66,15 @@
                 </el-table-column>
 
             </el-table>
+            </div>
             <div class="mt-[16px] flex justify-end">
                 <el-pagination v-model:current-page="payListTable.page" v-model:page-size="payListTable.limit"
                     layout="total, sizes, prev, pager, next, jumper" :total="payListTable.total"
                     @size-change="loadPayList()" @current-change="loadPayList" />
             </div>
         </div>
-    </el-card>
+    </div>
+    </div>
 
     <el-image-viewer :url-list="previewImageList" v-if="imageViewerShow" @close="imageViewerShow = false" :initial-index="0" :zoom-rate="1" />
 </template>
@@ -79,6 +83,7 @@
 import { ref, reactive } from 'vue'
 import { t } from '@/lang'
 import { useRoute, useRouter } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import { getPayAuditList, payAuditPass, payAuditRefuse } from '@/app/api/sys'
 import { AnyObject } from '@/types/global'
 import { ElMessageBox, FormInstance } from 'element-plus'
@@ -87,6 +92,9 @@ import { img } from '@/utils/common'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const previewImageList = ref<string[]>([])
 const imageViewerShow = ref(false)

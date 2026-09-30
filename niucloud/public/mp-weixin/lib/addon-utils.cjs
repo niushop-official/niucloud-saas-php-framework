@@ -29,6 +29,72 @@ function parsePagesJson() {
     return JSON.parse(raw)
 }
 
+/**
+ * 基于 pages.json 中的 // {KEY}_PAGE_BEGIN ... // {KEY}_PAGE_END 注释区块，
+ * 以「注释声明」作为插件分包归属的权威来源（而非 root 命名），通用且无需写死。
+ *
+ * 实现：
+ * 1. 按行扫描原始文本，记录每个 KEY 对应的 BEGIN/END 行号区间；
+ * 2. 解析 JSON（保留 root 的所在行号），将每个 addon 分包 root 映射到所属 KEY。
+ *
+ * @returns {{ [key: string]: string[] }} key -> 该插件区块内所有 addon 分包 root
+ */
+function parseAddonBoundaries() {
+    if (!fs.existsSync(PAGES_JSON)) return {}
+    const lines = fs.readFileSync(PAGES_JSON, 'utf-8').split(/\r?\n/)
+
+    // 1. 收集每个 KEY 的 BEGIN/END 行号
+    const ranges = {} // key -> { begin, end }
+    const beginRe = /^\s*\/\/\s*([A-Z0-9_]+)_PAGE_BEGIN\s*$/
+    const endRe = /^\s*\/\/\s*([A-Z0-9_]+)_PAGE_END\s*$/
+    lines.forEach((line, idx) => {
+        const lb = line.match(beginRe)
+        if (lb) {
+            ranges[lb[1]] = { begin: idx, end: -1 }
+            return
+        }
+        const le = line.match(endRe)
+        if (le) {
+            if (!ranges[le[1]]) ranges[le[1]] = { begin: -1, end: idx }
+            else ranges[le[1]].end = idx
+        }
+    })
+
+    // 2. 解析分包 root 并定位行号
+    const core = parsePagesJson()
+    const result = {}
+    const subs = core.subPackages || []
+    subs.forEach((sub) => {
+        const root = sub.root
+        if (!root || !root.startsWith('addon/')) return
+        // 通过文本定位该 root 所在行
+        let rootLine = -1
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].includes(`"root"`) && lines[i].includes(root)) {
+                rootLine = i
+                break
+            }
+        }
+        if (rootLine < 0) return
+        // 3. 判断落在哪个 KEY 区间
+        let matchedKey = null
+        for (const key of Object.keys(ranges)) {
+            const r = ranges[key]
+            if (r.begin >= 0 && r.end >= 0 && rootLine > r.begin && rootLine < r.end) {
+                matchedKey = key
+                break
+            }
+        }
+        if (!matchedKey) return
+        const normalizedKey = matchedKey.toLowerCase()
+        if (!result[normalizedKey]) result[normalizedKey] = []
+        if (!result[normalizedKey].includes(root)) result[normalizedKey].push(root)
+    })
+
+    for (const key of Object.keys(result)) result[key].sort()
+    return result
+}
+
 function listAddonKeys() {
     if (!fs.existsSync(ADDON_DIR)) return []
     return fs.readdirSync(ADDON_DIR, { withFileTypes: true })
@@ -52,14 +118,21 @@ function walkFiles(dir, filter, base = dir) {
     return out
 }
 
-/** 从 pages.json 解析插件分包页面 */
+/** 从 pages.json 解析插件分包页面（addonKey 以 // {KEY}_PAGE_BEGIN 注释区块为准） */
 function scanSubPackagePages() {
     const pagesJson = parsePagesJson()
+    const boundaries = parseAddonBoundaries()
+    // root -> key 反查，便于 O(1) 命中
+    const rootToKey = {}
+    for (const key of Object.keys(boundaries)) {
+        for (const root of boundaries[key]) rootToKey[root] = key
+    }
     const rows = []
     for (const sub of pagesJson.subPackages || []) {
         const root = sub.root
         if (!root || !root.startsWith('addon/')) continue
-        const addonKey = root.split('/')[1]
+        // 优先用注释区块归属；无匹配则回退到 root 第二段（兼容非注释区块场景）
+        const addonKey = rootToKey[root] || root.split('/')[1]
         if (!addonKey || SKIP_ADDON_DIRS.has(addonKey)) continue
         for (const page of sub.pages || []) {
             if (!page.path) continue
@@ -129,9 +202,26 @@ module.exports = {
     listAddonKeys,
     walkFiles,
     parsePagesJson,
+    parseAddonBoundaries,
     scanSubPackagePages,
     scanAddonPages,
     scanAddonLocale,
     scanAddonDiyComponents,
-    stripJsonComments
+    stripJsonComments,
+    resolveAddonEntry
+}
+
+/** 解析 addon 入口文件名：默认 index.js；启用内容哈希后为 index-[hash].js */
+function resolveAddonEntry(addonDir) {
+    // 入口文件名来自构建期写入的 manifest.json（generateBundle 按 chunk.isEntry 精确记录 entry 字段），
+    // 直接读取即可，无需扫描目录：shop 等大插件的懒加载 chunk（components/xxx/index.vue）
+    // basename 也叫 index，目录里会同时存在多个 index-[hash].js，扫描文件名无法区分入口。
+    // 兼容未生成 manifest.json 的旧产物（入口固定为 index.js）
+    try {
+        const m = JSON.parse(fs.readFileSync(path.join(addonDir, 'manifest.json'), 'utf-8'))
+        if (m && typeof m.entry === 'string' && m.entry) {
+            return './' + m.entry.replace(/\\/g, '/')
+        }
+    } catch { /* 无 manifest.json（旧构建）：入口固定为 index.js */ }
+    return './index.js'
 }

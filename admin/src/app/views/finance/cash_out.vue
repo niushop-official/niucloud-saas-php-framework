@@ -1,7 +1,7 @@
 <template>
     <!--会员提现-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
@@ -32,7 +32,7 @@
                 </el-row>
             </el-card>
 
-            <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none mb-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="orderTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('applyTime')" prop="create_time">
                         <el-date-picker v-model="orderTableData.searchParam.create_time" type="datetimerange"
@@ -79,7 +79,7 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
+            <div class="mt-[10px] table-fill-page__panel">
                 <el-table :data="orderTableData.data" size="large" class="table-top">
                     <el-table-column :label="t('memberInfo')" min-width="180" />
                     <el-table-column :label="t('cashOutMethod')" align="center" min-width="100" />
@@ -93,7 +93,8 @@
                     <el-table-column :label="t('transferTime')" align="center" min-width="160" />
                     <el-table-column :label="t('operation')" fixed="right" align="right" min-width="120" />
                 </el-table>
-                <div class="table-body min-h-[150px]" v-loading="orderTableData.loading">
+                <div class="table-fill-page__table">
+                <div class="table-body" style="flex: 1; min-height: 0; overflow-y: auto;" v-loading="orderTableData.loading">
                     <div v-if="!orderTableData.loading">
                         <template v-if="orderTableData.data.length">
                             <div v-for="(item, index) in orderTableData.data" :key="index">
@@ -196,6 +197,7 @@
                         </template>
                         <el-empty v-else :image-size="1" :description="t('emptyData')" />
                     </div>
+                </div>
                 </div>
 
                 <div class="mt-[16px] flex justify-end">
@@ -506,6 +508,7 @@ import { getCashOutList, getTransfertype, memberTransfer, memberAudit, getCashOu
 import { img } from '@/utils/common'
 import { ElMessageBox, FormInstance, FormRules } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 
 const cashOutStatusList = ref([])
 const checkStatusList = async () => {
@@ -515,6 +518,9 @@ checkStatusList()
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 // 表单验证规则
 const formRules = reactive<FormRules>({})

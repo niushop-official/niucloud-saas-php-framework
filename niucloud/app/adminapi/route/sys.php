@@ -23,6 +23,8 @@ Route::group('sys', function() {
     //系统信息
     Route::get('info', 'sys.System/info');
     Route::get('url', 'sys.System/url');
+    // 当前站点已开启渠道及访问地址
+    Route::get('visit_channel', 'sys.System/channel');
     Route::get('qrcode', 'sys.System/getSpreadQrcode');
     /***************************************************** 用户组 ****************************************************/
     //用户组列表
@@ -44,6 +46,12 @@ Route::group('sys', function() {
     Route::post('menu', 'sys.Menu/add');
     //菜单更新
     Route::put('menu/:app_type/:menu_key', 'sys.Menu/edit');
+    //导出菜单(平台/站点)
+    Route::get('menu/export/:app_type', 'sys.Menu/export');
+    //导入菜单上传限制配置
+    Route::get('menu/import/config', 'sys.Menu/importConfig');
+    //导入菜单(平台/站点)
+    Route::post('menu/import/:app_type', 'sys.Menu/importMenu');
     //菜单列表
     Route::get('menu/:app_type', 'sys.Menu/lists');
     //删除单个菜单
@@ -99,6 +107,11 @@ Route::group('sys', function() {
     // 色调设置
     Route::put('config/themecolor', 'sys.Config/setThemeColor');
 
+    //渠道设置
+    Route::get('config/channel', 'sys.Config/getChannelSetting');
+    //渠道设置
+    Route::put('config/channel', 'sys.Config/setChannelSetting');
+
     /***************************************************** 图片上传 ****************************************************/
     //附件图片上传
     Route::post('image', 'upload.Upload/image');
@@ -127,6 +140,16 @@ Route::group('sys', function() {
     Route::get('attachment/category', 'sys.Attachment/categoryLists');
     //删除单个附件组
     Route::delete('attachment/category/:id', 'sys.Attachment/deleteCategory');
+    //站点存储配置列表（多套）
+    Route::get('storage/config/list', 'upload.Storage/storageConfigList');
+    //新增存储配置
+    Route::post('storage/config', 'upload.Storage/addStorageConfig');
+    //启用存储配置
+    Route::put('storage/config/use/:id', 'upload.Storage/useStorageConfig');
+    //编辑存储配置
+    Route::put('storage/config/:id', 'upload.Storage/editStorageConfig');
+    //删除存储配置
+    Route::delete('storage/config/:id', 'upload.Storage/deleteStorageConfig');
     //获取存储列表
     Route::get('storage', 'upload.Storage/storageList');
     //存储详情
@@ -167,6 +190,12 @@ Route::group('sys', function() {
     Route::get('schedule', 'sys.System/checkSchedule');
     //环境变量
     Route::get('env', 'sys.System/getEnvInfo');
+
+    /***************************************************** 数据库修复 ****************************************************/
+    //数据库结构检测
+    Route::get('database_repair/check', 'sys.DatabaseRepair/check');
+    //数据库结构一键修复
+    Route::post('database_repair/repair', 'sys.DatabaseRepair/repair');
 
     /***************************************************** 计划任务 ****************************************************/
     //计划任务列表

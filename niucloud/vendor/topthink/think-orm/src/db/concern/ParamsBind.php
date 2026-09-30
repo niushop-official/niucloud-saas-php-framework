@@ -3,13 +3,13 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace think\db\concern;
 
@@ -50,7 +50,7 @@ trait ParamsBind
      *
      * @return string
      */
-    public function bindValue($value, int $type = null, string $name = null)
+    public function bindValue($value, ?int $type = null, ?string $name = null)
     {
         $name = $name ?: 'ThinkBind_' . (count($this->bind) + 1) . '_' . mt_rand() . '_';
 
@@ -93,8 +93,8 @@ trait ParamsBind
     public function isAutoBind(): bool
     {
         $autoBind = $this->getConfig('auto_param_bind');
-        if (null !== $this->getOptions('auto_bind')) {
-            $autoBind = $this->getOptions('auto_bind');
+        if (null !== $this->getOption('auto_bind')) {
+            $autoBind = $this->getOption('auto_bind');
         }
 
         return (bool) $autoBind;
@@ -119,8 +119,13 @@ trait ParamsBind
 
             if (is_numeric($key)) {
                 $sql = substr_replace($sql, ':' . $name, strpos($sql, '?'), 1);
+            } elseif (str_ends_with($sql, ':' . $key)) {
+                $sql = substr_replace($sql, ':' . $name . ' ', strrpos($sql, ':' . $key), strlen(':' . $key));
             } else {
-                $sql = str_replace(':' . $key, ':' . $name, $sql);
+                $sql = str_replace(
+                    [':' . $key . ' ', ':' . $key . ',', ':' . $key . ')'],
+                    [':' . $name . ' ', ':' . $name . ',', ':' . $name . ')'],
+                    $sql);
             }
         }
     }

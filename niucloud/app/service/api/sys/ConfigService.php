@@ -12,6 +12,7 @@
 namespace app\service\api\sys;
 
 use app\service\core\channel\CoreAppService;
+use app\service\core\sys\CoreConfigService;
 use app\service\core\sys\CoreSysConfigService;
 use app\service\core\weapp\CoreWeappConfigService;
 use core\base\BaseApiService;
@@ -46,6 +47,29 @@ class ConfigService extends BaseApiService
      */
     public function getSceneDomain(){
         return (new CoreSysConfigService())->getSceneDomain($this->site_id);
+    }
+
+    /**
+     * 获取渠道设置(客服)
+     * @return array
+     */
+    public function getChannelSetting()
+    {
+        $value = ( new CoreConfigService() )->getConfigValue($this->site_id, 'CHANNEL_SETTING');
+        $default = [
+            'h5' => [
+                'type' => 'none',// 客服类型 none 不启用 self 本站客服 work_weixin 企业微信客服 third 第三方客服 phone 电话联系
+                'work_weixin_link' => '',// 企微客服链接
+                'third_link' => '',// 第三方客服链接
+                'phone' => '',// 联系电话
+            ],
+            'weapp' => [
+                'type' => 'none',// 客服类型 none 不启用 weapp 小程序客服 work_weixin 企业微信客服 phone 电话联系
+                'work_weixin_link' => '',// 企微客服链接
+                'phone' => '',// 联系电话
+            ]
+        ];
+        return array_merge($default, $value ?? []);
     }
 
     /**

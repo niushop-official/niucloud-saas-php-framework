@@ -18,5 +18,5 @@ interface Writable
 
     public function write(string $data): bool;
 
-    public function end(): bool;
+    public function end(): ?bool;
 }

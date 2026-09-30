@@ -1,21 +1,27 @@
 <template>
     <!--平台菜单-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <div class="table-fill-page__card">
 
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-                <div class="flex items-center">
-                    <el-button type="primary" class="w-[100px]" @click="addEvent">
-                        {{ t('addMenu') }}
-                    </el-button>
-                    <el-button class="w-[100px]" :loading="refreshLoading" @click="refreshMenu">
-                        {{ t('initializeMenu') }}
-                    </el-button>
-                </div>
-            </div>
-
-            <el-table class="mt-[20px]" :data="menusTableData.data" row-key="menu_key" size="large" v-loading="menusTableData.loading">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false">
+                    <template #actions>
+                        <el-button @click="importEvent">
+                            {{ t('importMenu') }}
+                        </el-button>
+                        <el-button @click="exportEvent">
+                            {{ t('exportMenu') }}
+                        </el-button>
+                        <el-button :loading="refreshLoading" @click="refreshMenu">
+                            {{ t('initializeMenu') }}
+                        </el-button>
+                        <el-button type="primary" @click="addEvent">
+                            {{ t('addMenu') }}
+                        </el-button>
+                    </template>
+                </table-toolbar>
+            <div class="table-fill-page__table">
+            <el-table height="100%" :data="menusTableData.data" row-key="menu_key" size="large" v-loading="menusTableData.loading">
                 <template #empty>
                     <span>{{ !menusTableData.loading ? t('emptyData') : '' }}</span>
                 </template>
@@ -48,22 +54,33 @@
                     </template>
                 </el-table-column>
             </el-table>
+            </div>
+            </div>
 
             <edit-menu ref="editMenuDialog" :menu-tree="menusTableData.data" @complete="getMenuList" app-type="admin" />
-        </el-card>
+            <import-menu ref="importMenuDialog" app-type="admin" @complete="getMenuList" />
+            <export-menu ref="exportMenuDialog" app-type="admin" :menus="menusTableData.data" />
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref,h } from 'vue'
-import { getMenus, deleteMenu,menuRefresh } from '@/app/api/sys'
+import { getMenus, deleteMenu, menuRefresh } from '@/app/api/sys'
 import { t } from '@/lang'
 import { ElMessageBox } from 'element-plus'
 import EditMenu from '@/app/views/auth/components/edit-menu.vue'
+import ImportMenu from '@/app/views/auth/components/import-menu.vue'
+import ExportMenu from '@/app/views/auth/components/export-menu.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 const menusTableData = reactive({
     loading: true,
     data: []
@@ -102,6 +119,22 @@ const refreshMenu = () => {
         })
     }).catch(() => {
     })
+}
+
+/**
+ * 导入菜单
+ */
+const importMenuDialog: Record<string, any> | null = ref(null)
+const importEvent = () => {
+    importMenuDialog.value.showDialog = true
+}
+
+/**
+ * 导出菜单
+ */
+const exportMenuDialog: Record<string, any> | null = ref(null)
+const exportEvent = () => {
+    exportMenuDialog.value.showDialog = true
 }
 
 /**

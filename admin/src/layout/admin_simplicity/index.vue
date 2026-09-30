@@ -10,19 +10,25 @@
                 <!-- 左侧边栏 -->
                 <layout-aside></layout-aside>
                 <!-- 左侧边栏 end -->
-                <!-- 主体 -->
-                <el-main class="h-full p-0 bg-page">
-                    <el-scrollbar>
-                        <div class="p-[15px]">
-                            <router-view v-slot="{ Component, route }" v-if="appStore.routeRefreshTag">
-                                <keep-alive :include="tabbarStore.tabNames" :max="15">
-                                    <component :is="Component" :key="route.fullPath" />
-                                </keep-alive>
-                            </router-view>
-                        </div>
-                    </el-scrollbar>
-                </el-main>
+
+                <el-container direction="vertical">
+                    <!-- 标签栏 -->
+                    <layout-tab />
+
+                    <!-- 主体 -->
+                    <el-main class="h-full p-0 bg-page">
+                        <el-scrollbar>
+                            <div class="p-[15px]">
+                                <router-view v-slot="{ Component, route }" v-if="appStore.routeRefreshTag">
+                                    <keep-alive :include="tabbarStore.tabNames" :max="15">
+                                        <component :is="Component" :key="route.fullPath" />
+                                    </keep-alive>
+                                </router-view>
+                            </div>
+                        </el-scrollbar>
+                    </el-main>
                     <!-- 主体 end -->
+                </el-container>
             </el-container>
         </el-container>
     </div>
@@ -31,6 +37,7 @@
 <script lang="ts" setup>
 import layoutHeader from './components/header/index.vue'
 import layoutAside from './components/aside/index.vue'
+import layoutTab from './components/tabs.vue'
 import useAppStore from '@/stores/modules/app'
 import useTabbarStore from '@/stores/modules/tabbar'
 

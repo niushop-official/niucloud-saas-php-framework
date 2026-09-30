@@ -2,7 +2,7 @@
     <el-container class="flex flex-col">
         <el-main class="menu-wrap">
             <el-scrollbar class="menu-scrollbar flex-1 h-0">
-                <el-menu :default-active="route.name" :default-openeds="defaultOpeneds" :router="true" :unique-opened="false" :collapse="systemStore.menuIsCollapse">
+                <el-menu :default-active="menuActive" :default-openeds="defaultOpeneds" :router="false" :unique-opened="false" :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in menuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -18,11 +18,14 @@ import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
 import { findFirstValidRoute } from '@/router/routers'
+import { useMenuActive } from '@/hooks/useMenuActive'
 
 const systemStore = useSystemStore()
 const userStore = useUserStore()
 const route = useRoute()
 const siteInfo = userStore.siteInfo
+// 受控菜单高亮：点击需要新窗口打开的菜单后，高亮回滚到原菜单
+const { menuActive } = useMenuActive()
 const routers = userStore.routers
 const addonIndexRoute = userStore.addonIndexRoute
 const menuData = ref<Record<string, any>[]>([])

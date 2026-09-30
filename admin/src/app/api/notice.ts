@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+import storage from '@/utils/storage'
+import envConfig from '@/utils/config'
 
 /***************************************************** 消息管理 ****************************************************/
 
@@ -371,4 +373,87 @@ export function resetPassword(username: string, params: Record<string, any>) {
  */
 export function clearTemplate(username: string,template_id: string) {
     return request.delete(`notice/niusms/template/${username}/${template_id}`)
+}
+
+/***************************************************** 站内信（消息中心） ****************************************************/
+
+/**
+ * 消息分类树
+ */
+export function getMessageCategory() {
+    return request.get('notice/message/category')
+}
+
+/**
+ * 消息列表
+ * @param params
+ */
+export function getMessageList(params: Record<string, any>) {
+    return request.get('notice/message/list', { params })
+}
+
+/**
+ * 消息详情
+ * @param id
+ */
+export function getMessageInfo(id: number) {
+    return request.get(`notice/message/info/${id}`)
+}
+
+/**
+ * 各分类未读数量
+ */
+export function getMessageUnreadCount() {
+    return request.get('notice/message/unread_count')
+}
+
+/**
+ * 标记已读（ids 为空表示全部已读）
+ * @param ids
+ */
+export function markMessageRead(ids: number[]) {
+    return request.put('notice/message/mark_read', { ids })
+}
+
+/**
+ * 删除消息
+ * @param ids
+ */
+export function deleteMessage(ids: number[]) {
+    return request.delete('notice/message/del', { data: { ids } })
+}
+
+/**
+ * 构造 SSE 连接地址
+ *
+ * EventSource 不支持自定义请求头，token 与 site-id 只能通过 query 传递，
+ * 后端 Request::adminToken() / Request::adminSiteId() 已支持 query 回退。
+ */
+export function getMessageStreamUrl(): string {
+    const token = storage.get('token') || ''
+    const siteId = storage.get('siteId') || 0
+    const base = envConfig.VITE_APP_BASE_URL || '/adminapi/'
+    const prefix = base.startsWith('http') ? base : `${location.origin}${base.startsWith('/') ? '' : '/'}${base}`
+    const path = `${prefix}${prefix.endsWith('/') ? '' : '/'}notice/message/stream`
+    const tokenKey = envConfig.VITE_REQUEST_HEADER_TOKEN_KEY || 'token'
+    const siteIdKey = envConfig.VITE_REQUEST_HEADER_SITEID_KEY || 'site-id'
+    return `${path}?${tokenKey}=${encodeURIComponent(token)}&${siteIdKey}=${encodeURIComponent(String(siteId))}`
+}
+
+/**
+ * 长轮询监听消息变化（SSE 不可用时的降级通道）
+ *
+ * 服务端最多挂起 25 秒，因此超时必须大于该值，否则每次都会在前端被掐断。
+ * showErrorMessage 置为 false：轮询是后台静默请求，网络抖动不应弹全局错误提示。
+ *
+ * @param version 上次返回的版本号，首次传空字符串
+ * @param signal 用于页面隐藏 / 切换站点时中止在途请求
+ */
+export function getMessageListen(version: string, signal?: AbortSignal) {
+    return request.get('notice/message/listen', {
+        params: { version },
+        timeout: 35000,
+        showErrorMessage: false,
+        signal
+    })
 }

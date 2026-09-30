@@ -1,46 +1,44 @@
 <template>
-    <!--站点列表-->
-    <div class="main-container">
-        <el-card class="box-card !border-none setting-card" shadow="never">
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+    <!--站点列表：内容挂在「站点管理」页签内，页面高度由 site/manage.vue 统一分配-->
+    <el-card class="box-card !border-none table-search-wrap table-search-wrap--panel table-fill-page__search" shadow="never">
                 <div class="flex justify-between items-start">
-                    <el-form :inline="true" :model="siteTableData.searchParam" ref="searchFormRef" class="search-form">
-                        <el-form-item prop="keywords">
+                    <el-form :inline="true" :model="siteTableData.searchParam" ref="searchFormRef">
+                        <el-form-item :label="t('siteName')" prop="keywords">
                             <el-input v-model.trim="siteTableData.searchParam.keywords" :placeholder="t('siteNamePlaceholder')" />
                         </el-form-item>
 
-                        <el-form-item prop="site_domain" v-if="isShow">
+                        <el-form-item :label="t('siteDomain')" prop="site_domain" v-if="isShow">
                             <el-input v-model.trim="siteTableData.searchParam.site_domain" :placeholder="t('siteDomainPlaceholder')" />
                         </el-form-item>
 
-                        <el-form-item prop="app">
+                        <el-form-item :label="t('app')" prop="app">
                             <el-select v-model="siteTableData.searchParam.app" clearable @change="appChangeFn" :placeholder="t('appIdPlaceholder')" class="input-width">
                                 <el-option :label="t('selectPlaceholder')" value="all" />
                                 <el-option :label="item['title']" :value="item['key']" v-for="(item, index) in Object.values(addonList)"  :key="index"/>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item prop="group_id">
+                        <el-form-item :label="t('groupId')" prop="group_id">
                             <el-select v-model="siteTableData.searchParam.group_id" clearable :placeholder="t('groupIdPlaceholder')" class="input-width">
                                 <el-option :label="t('selectPlaceholder')" value="" />
                                 <el-option :label="item['group_name']" :value="item['group_id']" v-for="(item, index) in groupList.all" :key="index"/>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item prop="status">
+                        <el-form-item :label="t('status')" prop="status">
                             <el-select v-model="siteTableData.searchParam.status" clearable :placeholder="t('请选择状态')" class="input-width">
                                 <el-option :label="t('selectPlaceholder')" value="" />
                                 <el-option :label="item" :value="index" v-for="(item, index) in statusList" :key="index"/>
                             </el-select>
                         </el-form-item>
 
-                        <el-form-item prop="create_time" v-if="isShow">
+                        <el-form-item :label="t('createTime')" prop="create_time" v-if="isShow">
                             <el-date-picker v-model="siteTableData.searchParam.create_time" type="datetimerange"
                                             value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('createTimeStartDate')"
                                             :end-placeholder="t('createTimeEndDate')" />
                         </el-form-item>
 
-                        <el-form-item prop="expire_time" v-if="isShow">
+                        <el-form-item :label="t('expireTime')" prop="expire_time" v-if="isShow">
                             <el-date-picker v-model="siteTableData.searchParam.expire_time" type="datetimerange"
                                             value-format="YYYY-MM-DD HH:mm:ss" :start-placeholder="t('expireTimeStartDate')"
                                             :end-placeholder="t('expireTimeEndDate')" />
@@ -54,31 +52,36 @@
                     </el-form>
                     <div class="flex justify-end items-center flex-1">
                         <div class="right-btn-group ">
-                            <tempalte  class="flex items-center">
+                            <div class="flex items-center">
                                  <el-tooltip
                                     class="box-item"
                                     effect="dark"
                                     content="前台用户登录某站点后，是否允许切换至站点管理列表或进入其他站点"
                                     placement="top-start"
                                 >
-                                    <span class="text-[14px] mr-[10px] flex items-center" >允许切换站点 <el-icon><QuestionFilled /></el-icon> </span>
+                                    <span class="text-[14px] mr-[10px] flex items-center" >允许切换站点 <span class="iconfont iconwenhao text-[#999] !text-[14px]"></span> </span>
                                 </el-tooltip>
                                 <el-switch v-model="allowChange"  @change="handleSwitchChange" lazy class="mr-[25px]"  :active-value="1" :inactive-value="0" />
 
-                            </tempalte>
-                            <el-button type="primary" class="w-[100px]" @click="addEvent">
-                                {{ t('addSite') }}
-                            </el-button>
-                            <el-button class="w-[100px]" @click="toSiteLink()">
-                                {{ t('toSite') }}
-                            </el-button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
             </el-card>
-            <div class="mt-[20px]">
-                <el-table :data="siteTableData.data" size="large" v-loading="siteTableData.loading">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar :title="pageName" :selectable="false">
+                    <template #actions>
+                        <el-button type="primary" @click="addEvent">
+                            {{ t('addSite') }}
+                        </el-button>
+                        <el-button @click="toSiteLink()">
+                            {{ t('toSite') }}
+                        </el-button>
+                    </template>
+                </table-toolbar>
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="siteTableData.data" size="large" v-loading="siteTableData.loading">
                     <template #empty>
                         <span>{{ !siteTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -87,8 +90,8 @@
                     <el-table-column :label="t('siteInfo')" width="300" align="left">
                         <template #default="{ row }">
                             <div class="flex items-center">
-                                <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-if="row.icon" :src="img(row.icon)" alt="">
-                                <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-else src="@/app/assets/images/site_default.png" alt="">
+                                <img class="w-[var(--cmp-table-composite-icon-size)] h-[var(--cmp-table-composite-icon-size)] mr-[10px] rounded-[4px]" v-if="row.icon" :src="img(row.icon)" alt="">
+                                <img class="w-[var(--cmp-table-composite-icon-size)] h-[var(--cmp-table-composite-icon-size)] mr-[10px] rounded-[4px]" v-else src="@/app/assets/images/site_default.png" alt="">
                                 <div class="flex flex-col">
                                     <span>{{ row.site_name || '' }}</span>
                                 </div>
@@ -127,123 +130,22 @@
                         </template>
                     </el-table-column>
 
-                   <el-table-column :label="t('operation')" min-width="250" align="right" fixed="right">
+                   <el-table-column :label="t('operation')" min-width="200" align="right" fixed="right">
                         <template #default="{ row }">
-                            <div class="operation-buttons">
-                                <div class="button-row">
-                                    <el-button type="primary" link @click="toSiteLink(row.site_id)">{{ t('toSite') }}</el-button>
-                                    <el-button type="primary" link @click="openClose(row.status, row.site_id)" v-if="row.status == 1 || row.status == 3">{{ row.status == 1 ? t('closeTxt') : t('openTxt') }}</el-button>
-                                    <el-button type="primary" link @click="infoEvent(row)">{{ t('info') }}</el-button>
-                                </div>
-                                <div class="button-row">
-                                    <el-button type="primary" link @click="initSiteEvent(row)">{{ t('站点初始化') }}</el-button>
-                                    <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                                    <el-button type="primary" link @click="deleteEvent(row)">{{ t('delete') }}</el-button>
-                                </div>
-                            </div>
+                            <table-actions :actions="rowActions(row)" />
                         </template>
                 </el-table-column>
                 </el-table>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="siteTableData.page" v-model:page-size="siteTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="siteTableData.total"
-                        @size-change="loadSiteList()" @current-change="loadSiteList" />
                 </div>
+                <table-pagination
+                    v-model:current-page="siteTableData.page"
+                    v-model:page-size="siteTableData.limit"
+                    :total="siteTableData.total"
+                    @size-change="loadSiteList()"
+                    @current-change="loadSiteList"
+                />
             </div>
-            <!-- <div class="mt-[20px]">
-                <div class="el-table--fit el-table--default el-table overflow-x-auto w-full" style="width: 100%;" v-loading="siteTableData.loading">
 
-                    <div class="el-table__inner-wrapper">
-                        <div class="el-table__header-wrapper">
-                            <table class="el-table__header" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">
-                                <thead>
-                                    <tr>
-                                        <th class="el-table__cell !w-[100px] !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('siteId') }}</div></th>
-                                        <th class="el-table__cell !w-[300px] !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('siteInfo') }}</div></th>
-                                        <th class="el-table__cell !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('manager') }}</div></th>
-                                        <th class="el-table__cell !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('groupId') }}</div></th>
-                                        <th class="el-table__cell !w-[250px] !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('siteDomain') }}</div></th>
-                                        <th class="el-table__cell !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('createTime') }}</div></th>
-                                        <th class="el-table__cell !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('expireTime') }}</div></th>
-                                        <th class="el-table__cell !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid"><div class="cell">{{ t('status') }}</div></th>
-                                        <th class="el-table__cell !h-[48px] border-b-[1px] !border-[var(--el-color-info-light-8)] border-solid "><div class="cell !text-right">{{ t('operation') }}</div></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div class="el-table__body-wrapper text-[14px]">
-                            <div class="el-scrollbar" v-if="siteTableData.data&&siteTableData.data.length>0" >
-                                <div class="el-scrollbar__wrap el-scrollbar__wrap--hidden-default">
-                                    <div class="el-scrollbar__view" style="display: inline-block; vertical-align: middle;">
-                                        <table class="el-table__body" cellspacing="0" cellpadding="0" border="0" style="table-layout: fixed; width: 100%;" >
-                                            <tbody tabindex="-1">
-                                                <tr v-for="row in siteTableData.data" :key="row.site_id" class="hover-row relative el-table__row " >
-                                                    <td class="w-[100px]"><div class="cell">{{ row.site_id }}</div></td>
-                                                    <td class="w-[300px]">
-                                                        <div class="flex items-center cell">
-                                                            <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-if="row.logo" :src="img(row.logo)" alt="">
-                                                            <img class="w-[54px] h-[54px] mr-[10px] rounded-[4px]" v-else src="@/app/assets/images/site_default.png" alt="">
-                                                            <div class="flex flex-col">
-                                                                <span>{{ row.site_name || '' }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="flex items-center cell">
-                                                            <div class="flex flex-col">
-                                                                <span>{{ row.admin.username || '' }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td><div class="cell">{{ row.group_name }}</div></td>
-                                                    <td class="w-[250px]"><div class="cell">{{ row.site_domain}}</div></td>
-                                                    <td><div class="cell">{{ row.create_time }}</div></td>
-                                                    <td>
-                                                        <div class="cell" v-if="row.expire_time == 0">永久</div>
-                                                        <div class="cell" v-else>{{ row.expire_time }}</div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="cell">
-                                                            <el-tag class="ml-2" type="success" v-if="row.status == 1">{{ row.status_name }}</el-tag>
-                                                            <el-tag class="ml-2" type="error" v-else-if="row.status == 3">
-                                                                {{ row.status_name }}
-                                                            </el-tag>
-                                                            <el-tag class="ml-2" type="error" v-else>
-                                                                {{ row.status_name }}
-                                                            </el-tag>
-                                                        </div>
-                                                    </td>
-                                                    <td class="text-right pr-[20px] relative">
-                                                        <el-button type="primary" link @click="openClose(row.status, row.site_id)" v-if="row.status == 1 || row.status == 3">{{ row.status == 1 ? t('closeTxt') : t('openTxt') }}</el-button>
-                                                        <el-button type="primary" link @click="toSiteLink(row.site_id)">{{ t('toSite') }}</el-button>
-
-                                                        <div class="manage-option text-right">
-                                                            <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
-                                                            <el-button type="primary" link @click="deleteEvent(row)">{{ t('delete') }}</el-button>
-                                                            <el-button type="primary" link @click="infoEvent(row)">{{ t('info') }}</el-button>
-                                                            <el-button type="primary" link @click="initSiteEvent(row)">{{ t('站点初始化') }}</el-button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-if="siteTableData.data.length == 0" class="flex justify-center items-center ">
-                                <span class="text-center !h-[60px] leading-[60px] !text-[var(--el-text-color-secondary)] ">{{ !siteTableData.loading ? t('emptyData') : '' }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="siteTableData.page" v-model:page-size="siteTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="siteTableData.total"
-                        @size-change="loadSiteList()" @current-change="loadSiteList" />
-                </div>
-            </div> -->
-
-        </el-card>
         <edit-site ref="addSiteDialog" @complete="loadSiteList()" />
         <el-dialog v-model="delshowDialog" :title="t('warning')" width="500px" :destroy-on-close="true">
             <div>
@@ -283,11 +185,10 @@
                 </span>
             </template>
         </el-dialog>
-    </div>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, watch } from 'vue'
+import { nextTick, reactive, ref, watch } from 'vue'
 import { getToken, img } from '@/utils/common'
 
 const countdown = ref(5)
@@ -334,7 +235,10 @@ import { t } from '@/lang'
 import { getSiteList, getSiteGroupAll, getStatusList, closeSite, openSite, deleteSite, initSite ,getSiteAllowChange,putSiteAllowChange} from '@/app/api/site'
 import { getsiteCaptcha } from '@/app/api/notice'
 import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
-import { useRouter } from 'vue-router'
+import TableActions from '@/components/table-actions/index.vue'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
+import { useRoute, useRouter } from 'vue-router'
 import EditSite from '@/app/views/site/components/edit-site.vue'
 import { getInstalledAddonList } from '@/app/api/addon'
 import useUserStore from '@/stores/modules/user'
@@ -346,6 +250,7 @@ const prop = defineProps({
     }
 })
 
+const route = useRoute()
 const groupList = ref({
     all: []
 })
@@ -368,8 +273,12 @@ const siteTableData = reactive({
         expire_time: []
     }
 })
-// siteTableData.searchParam.status = route.query.id || ''
 siteTableData.searchParam.status = prop.status || ''
+const expireTime = route.query.expire_time
+if (Array.isArray(expireTime) && expireTime.length === 2 && expireTime[0] && expireTime[1]) {
+    siteTableData.searchParam.expire_time = [String(expireTime[0]), String(expireTime[1])]
+    isShow.value = true
+}
 const setGroupList = async () => {
     const obj = await (await getSiteGroupAll({})).data
 
@@ -414,10 +323,13 @@ setStatusList()
 
 const searchFormRef = ref<FormInstance>()
 
-const resetForm = (formEl: FormInstance | undefined) => {
+const resetForm = async (formEl: FormInstance | undefined) => {
     if (!formEl) return
 
     formEl.resetFields()
+    await nextTick()
+    siteTableData.searchParam.status = ''
+    siteTableData.searchParam.expire_time = []
     loadSiteList()
 }
 
@@ -442,11 +354,15 @@ getInstalledAddonList().then(({ data }) => {
 const loadSiteList = (page: number = 1) => {
     siteTableData.loading = true
     siteTableData.page = page
-    siteTableData.searchParam.app = siteTableData.searchParam.app == 'all' ? '' : siteTableData.searchParam.app
+    // 「全部应用」在接口里用空字符串表示，这里只改传给接口的参数，避免把下拉框的选中值清空
+    const searchParam = {
+        ...siteTableData.searchParam,
+        app: siteTableData.searchParam.app == 'all' ? '' : siteTableData.searchParam.app
+    }
     getSiteList({
         page: siteTableData.page,
         limit: siteTableData.limit,
-        ...siteTableData.searchParam
+        ...searchParam
     }).then(res => {
         siteTableData.loading = false
         siteTableData.data = res.data.data
@@ -458,6 +374,19 @@ const loadSiteList = (page: number = 1) => {
 loadSiteList()
 
 const router = useRouter()
+const pageName = '站点列表'
+
+/**
+ * 表格行内操作：超过 2 个自动收进「更多」
+ */
+const rowActions = (row: any) => [
+    { label: t('toSite'), onClick: () => toSiteLink(row.site_id) },
+    { label: row.status == 1 ? t('closeTxt') : t('openTxt'), show: row.status == 1 || row.status == 3, onClick: () => openClose(row.status, row.site_id) },
+    { label: t('info'), onClick: () => infoEvent(row) },
+    { label: t('站点初始化'), onClick: () => initSiteEvent(row) },
+    { label: t('edit'), onClick: () => editEvent(row) },
+    { label: t('delete'), type: 'danger', onClick: () => deleteEvent(row) }
+]
 
 const addSiteDialog: Record<string, any> | null = ref(null)
 /**
@@ -670,95 +599,4 @@ const confirmInit = () => {
   flex-shrink: 0; // 防止容器被挤压
   min-width: 0; // 兼容部分浏览器的最小宽度限制
 }
-:deep(.el-table tr td) {
-    height: 100px !important;
-}
-:deep(.el-input__wrapper){
-    box-shadow: none !important;
-    border-radius: 4px !important;
-    border: 1px solid #D1D5DB !important;
-    height: 32px !important;
-}
-:deep(.el-select__wrapper){
-    box-shadow: none !important;
-    border-radius: 4px !important;
-    border: 1px solid #D1D5DB !important;
-    height: 32px !important;
-}
-:deep(.el-button){
-    border-radius: 4px !important;
-}
-/* 设置 el-select 的 placeholder 颜色 */
-:deep(.search-form .el-select__placeholder.is-transparent) {
-    color: #C4C7DA;
-    font-size: 12px;
-}
-
-/* 设置 el-select 选中后的颜色 */
-:deep(.search-form .el-select__placeholder) {
-    color: #4F516D;
-    font-size: 12px;
-
-}
-/* 设置 el-input 的 placeholder 颜色 */
-:deep(.search-form .el-input__inner::placeholder) {
-    color: #C4C7DA;
-    font-size: 12px;
-
-}
-/* 设置 el-input 输入内容后的颜色 */
-:deep(.search-form .el-input__inner) {
-    color: #4F516D;
-    font-size: 12px;
-
-}
-/* 设置 el-date-picker 的 placeholder 颜色 */
-:deep(.search-form .el-date-editor .el-range-input::placeholder) {
-  color: #C4C7DA;
-  font-size: 12px;
-}
-
-/* 设置 el-date-picker 的输入内容颜色 */
-:deep(.search-form .el-date-editor .el-range-input) {
-  color: #4F516D;
-  font-size: 12px;
-}
-/* 样式原样保留或略微调整即可适配原生 table */
-.manage-option {
-  line-height: 50px;
-  padding: 0 30px;
-  position: absolute;
-  right: 0;
-  width: 100vw;
-  bottom: 0;
-  background-color: #f4f6f9;
-  transition: all 0.3s;
-  box-shadow: 0 4px 4px rgba(220, 220, 220, 0.3);
-  opacity: 0;
-  z-index: 999;
-  white-space: nowrap;
-}
-
-/* 悬浮整行显示 manage-option */
-.hover-row:hover {
-    position: relative;
-  z-index: 10;
-}
-.hover-row:hover>td {
-  background-color: var(--el-table-row-hover-bg-color) !important;
-}
-.hover-row>td {
-  border-bottom: 1px solid var(--el-color-info-light-8) !important;
-}
-.hover-row:hover .manage-option {
-  opacity: 1;
-  bottom: -51px;
-}
-:deep(.setting-card .el-card__body){
-    padding: 0 !important;
-}
-// :deep(.el-scrollbar__view){
-//     margin-bottom: 53px !important;
-// }
-
 </style>

@@ -1,53 +1,51 @@
 <template>
-    <div :class="['layout-aside ease-in duration-200 flex box-border', { 'bright': !dark}]">
-        <div class="flex flex-col border-0 border-r-[1px] border-solid border-[var(--el-color-info-light-8)] box-border overflow-hidden">
-
-            <div :class="['w-[150px] one-menu hide-scrollbar', { 'expanded': systemStore.menuIsCollapse  }]" >
-                <!-- <div class="flex items-center justify-center bg-primary text-white h-[40px] text-[16px] rounded-[4px] mb-[10px]"><span  class="text-[20px]">+</span><span v-if="systemStore.menuIsCollapse" class="ml-[10px]">应用市场</span></div> -->
-                <div class="flex flex-col items-center">
-                    <template v-for="(item, index) in oneMenuData">
-                        <div v-if="item.meta.show" :title="systemStore.menuIsCollapse ? item.meta.title : item.meta.short_title" class="menu-item my-[2px] p-2 flex w-full box-border cursor-pointer relative" :class="{'is-active':oneMenuActive===item.original_name,'hover-left': systemStore.menuIsCollapse, 'vertical': !systemStore.menuIsCollapse , 'horizontal': systemStore.menuIsCollapse }" :style="{ height: (systemStore.menuIsCollapse ) ? '40px' : '55px' }" @click="router.push({ name: item.name })">
-                            <div class="w-[20px] h-[20px] flex items-center justify-center menu-icon" :class="{'is-active':oneMenuActive===item.original_name}">
-                                <template v-if="item.meta.icon">
-                                    <el-image class="w-[20px] h-[20px] overflow-hidden" :src="item.meta.icon" fit="fill" v-if="isUrl(item.meta.icon)"/>
-                                    <icon :name="item.meta.icon" size="20px" color="#1D1F3A" v-else />
-                                </template>
-                                <icon v-else :name="'iconfont iconshezhi1'" color="#1D1F3A" />
+    <aside :class="['layout-aside flex h-full box-border', { 'is-bright': !dark }]">
+        <div :class="['one-menu flex flex-col box-border overflow-hidden', { 'is-expanded': systemStore.menuIsCollapse }]">
+            <el-scrollbar class="one-menu__scrollbar">
+                <div class="one-menu__list">
+                    <template v-for="(item, index) in oneMenuData" :key="index">
+                        <div
+                            v-if="item.meta.show"
+                            :title="item.meta.title || item.meta.short_title"
+                            class="one-menu__item"
+                            :class="{
+                                'is-active': oneMenuActive === item.original_name,
+                                'is-expanded': systemStore.menuIsCollapse
+                            }"
+                            @click="handleOneMenuClick(item)"
+                        >
+                            <div class="one-menu__icon">
+                                <el-image v-if="item.meta.icon && isUrl(item.meta.icon)" class="one-menu__icon-image" :src="item.meta.icon" fit="contain" />
+                                <icon v-else :name="resolveMenuIcon(item.meta.icon)" size="var(--cmp-admin-primary-icon-size)" />
+                                <div v-if="item.name == 'app_store' && (recentlyUpdated.length > 0 || isNewVersion)" class="one-menu__badge"></div>
                             </div>
-
-                            <div v-if="systemStore.menuIsCollapse" class="text-left text-[14px] mt-[3px] w-[75px] using-hidden ml-[10px]">{{ item.meta.title || item.meta.short_title }}</div>
-                            <div v-else class="text-center text-[12px] using-hidden mt-1">{{ item.meta.short_title || item.meta.title }}</div>
-                            <div v-if="systemStore.menuIsCollapse && item.name=='app_store' && (recentlyUpdated.length>0 || isNewVersion)" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
-                            <div v-if="!systemStore.menuIsCollapse && item.name=='app_store' && (recentlyUpdated.length>0 || isNewVersion)" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div>
-                            <!-- <div v-if="systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="text-[11px] bg-[#DA203E] px-[10px] rounded-[12px] text-[#fff] absolute right-[6px]">更新</div>
-                            <div v-if="!systemStore.menuIsCollapse && item.original_name=='tool' && isNewVersion" class="w-[7px] h-[7px] bg-[#DA203E] absolute flex items-center justify-center rounded-full top-[4px] right-[14px]"></div> -->
-
+                            <div class="one-menu__label">{{ item.meta.short_title || item.meta.title }}</div>
                         </div>
                     </template>
                 </div>
-            </div>
-
-        </div>
-        <div class="flex flex-col two-menu w-[185px] " v-if="twoMenuData.length">
-            <!-- <div class="w-[185px] h-[64px]  flex items-center justify-center text-[16px]">{{ route.matched[1].meta.title }}</div> -->
-            <el-scrollbar class="flex-1" >
-                <el-menu :default-active="route.name" :default-openeds="defaultOpeneds" :router="true" class="aside-menu">
-                    <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" :isNewVersion="isNewVersion" />
-                </el-menu>
-                <div class="h-[48px]"></div>
             </el-scrollbar>
         </div>
 
-    </div>
+        <!-- 一级菜单下只有 1 个子菜单时，二级菜单面板纯属冗余（点击一级菜单已直达该页），不渲染，宽度让给内容区 -->
+        <div v-if="showTwoMenu" class="two-menu flex flex-col">
+            <el-scrollbar class="two-menu__scrollbar">
+                <el-menu :key="oneMenuActive" :default-active="menuActive" :default-openeds="defaultOpeneds" :router="false" class="aside-menu">
+                    <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" :isNewVersion="isNewVersion" />
+                </el-menu>
+            </el-scrollbar>
+        </div>
+    </aside>
 </template>
 
 <script lang="ts" setup>
 import { watch, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useMenuActive, useMenuJump, rollbackMenuActive, isBlankMenu } from '@/hooks/useMenuActive'
 import useSystemStore from '@/stores/modules/system'
 import useUserStore from '@/stores/modules/user'
 import { ADMIN_ROUTE,findFirstValidRoute } from "@/router/routers"
 import { isUrl } from '@/utils/common'
+import { resolveMenuIcon } from '@/utils/menu-icon'
 import menuItem from './menu-item.vue'
 import { getAddonLocal} from '@/app/api/addon'
 import { getVersions } from "@/app/api/auth"
@@ -78,12 +76,36 @@ routers.forEach(item => {
 })
 
 const oneMenuActive = ref(oneMenuData.value[0]?.name || '')
+
+// 受控菜单高亮：点击需要新窗口打开的菜单后，高亮回滚到原菜单
+const { menuActive } = useMenuActive()
+const { handleMenuJump } = useMenuJump()
+
+// 一级菜单点击：目录跳转到其第一个有效子菜单；单应用下一级叶子菜单同样支持新窗口打开
+const handleOneMenuClick = (item: any) => {
+    if (handleMenuJump(item.name, item.meta)) {
+        rollbackMenuActive(oneMenuActive, oneMenuActive.value)
+        return
+    }
+    router.push({ name: item.name })
+}
+
+/**
+ * 一级菜单只有 1 个子菜单时不渲染二级面板；但该子菜单若是「新窗口打开」必须保留面板：
+ * findFirstValidRoute 会跳过 is_blank 菜单，一级菜单的点击目标会变成空，该菜单将无法进入。
+ */
+const showTwoMenu = computed(() => {
+    if (twoMenuData.value.length > 1) return true
+    return twoMenuData.value.length === 1 && isBlankMenu(twoMenuData.value[0]?.meta)
+})
+
 watch(route, () => {
     twoMenuData.value = route.matched[2]?.children ?? []
     if (route.matched[1] && route.matched[2]) {
         oneMenuActive.value = route.matched[1].name == ADMIN_ROUTE.children[0]?.name ? route.matched[2].name : route.matched[1].name
     }
-    defaultOpeneds.value = twoMenuData.value.map(item => item.name)
+    // 开发（tool）下的菜单默认收起，其余一级菜单仍默认展开
+    defaultOpeneds.value = oneMenuActive.value === 'tool' ? [] : twoMenuData.value.map(item => item.name)
 }, { immediate: true })
 
 const isNeedUpgrade = (currVersion: string, onlineVersion: string) => {
@@ -136,179 +158,300 @@ getVersionsInfo()
 
 </script>
 
-<style lang="scss" scoped>
-.one-menu{
-    padding: 20px 10px 10px;
-    width: 78px;
-    overflow-y: auto;
-    // transition: width 0.1s ease-out;
-    &.expanded {
-        width: 185px;
-        padding: 18px 15px 15px;
-    }
-        .menu-item{
-            border-radius: 2px;
-            justify-content: center;
-            &.vertical {
-                width: 55px;
-                height: 55px;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            &.horizontal {
-                flex-direction: row;
-                align-items: center;
-            }
-            .menu-icon {
-                // background-color: transparent; /* 默认无背景色 */
-                color: #1D1F3A;
-            }
-
-            // .menu-icon.is-active {
-                // background-color: var(--el-color-primary); /* 选中时背景色 */
-                // color: white; /* 选中时图标颜色变白 */
-                // border-radius: 4px; /* 可选：使图标背景为圆形 */
-            // }
-
-            &:hover{
-                background-color: #EAEBF0 !important;
-                border-radius: 6px;
-                // background-color: var(--el-color-primary-light-9) !important;
-                // color:var(--el-color-primary);
-            }
-            &.is-active{
-                background-color: #EAEBF0 !important;
-                border-radius: 6px;
-                // background-color: var(--el-color-primary-light-9) !important;
-                // border: none;
-                // color:var(--el-color-primary);
-            }
-            span{
-                font-size: 14px;
-                margin-left: 8px;
-            }
-    }
-    .menu-item.hover-left {
-        justify-content: flex-start;
-        padding-left: 5px;
-    }
-    &.expanded .menu-item .text-center {
-        opacity: 1;
-    }
-    :deep(.el-menu){
-        border: 0;
-    }
-    :deep(.el-scrollbar){
-        height: calc(100vh - 65px);
-    }
-}
-.two-menu{
-    .aside-menu:not(.el-menu--collapse) {
-        width: 185px;
-        border: 0;
-        padding-top: 15px;
-        :deep(.el-menu-item){
-            height: 40px;
-            margin: 4px 15px;
-            padding: 0 8px !important;
-            border-radius: 2px;
-            span{
-                margin-left: 8px;
-                font-size: 14px;
-            }
-            &.is-active{
-                background-color: #EAEBF0 !important;
-                border-radius: 6px;
-                color: inherit;
-                // background-color: var(--el-color-primary-light-9) !important;
-            }
-            &:hover{
-                background-color: #EAEBF0 !important;
-                border-radius: 6px;
-                // background-color: var(--el-color-primary-light-9) !important;
-                // color: var(--el-color-primary);
-            }
-        }
-        :deep(.el-sub-menu){
-            width: 185px;
-            margin: 4px 0;
-            // margin-bottom: 8px;
-            :deep(.el-sub-menu__title){
-                margin: 0 15px;
-                height: 40px;
-                padding-left: 8px;
-                border-radius: 2px;
-                span{
-                    height: 40px;
-                    display: flex;
-                    align-items: center;
-                    font-size: 14px;
-                }
-                &:hover{
-                    background-color:#EAEBF0 !important;
-                    border-radius: 6px;
-                    // background-color: var(--el-color-primary-light-9) !important;
-                    // color: var(--el-color-primary);
-                }
-                .el-icon:deep(.el-sub-menu__icon-arrow){
-                    right: 5px;
-                }
-            }
-            :deep(.el-menu-item){
-                padding-left: 25px !important;
-            }
-        }
-    }
-}
-
-.logo-wrap {
-    padding: 0;
-    display: flex;
-    white-space: nowrap;
-    align-items: center;
-
-    .logo {
-        height: 100%;
-        box-sizing: border-box;
+<style lang="scss">
+.layout-admin {
+    .layout-aside {
+        --cmp-admin-sidebar-bg: var(--sys-color-bg-surface);
+        --cmp-admin-sidebar-border: var(--sys-color-border-default);
+        --cmp-admin-icon-hover-scale: 1.1;
+        --cmp-admin-icon-hover-stroke: 0.5px;
+        --cmp-admin-icon-hover-stroke-svg: 36px;
+        --cmp-admin-primary-width: 80px;
+        --cmp-admin-primary-expanded-width: 105px;
+        --cmp-admin-primary-padding-block: 8px;
+        --cmp-admin-primary-item-width: 50px;
+        --cmp-admin-primary-item-height: 50px;
+        --cmp-admin-primary-item-expanded-height: 40px;
+        --cmp-admin-primary-item-radius: var(--sys-radius-md);
+        --cmp-admin-primary-item-gap: 3px;
+        --cmp-admin-primary-item-padding-inline: 4px;
+        --cmp-admin-primary-label-gap: 5px;
+        --cmp-admin-primary-font-size: var(--sys-font-size-xs);
+        --cmp-admin-primary-expanded-font-size: var(--sys-font-size-base);
+        --cmp-admin-primary-icon-size: 17px;
+        --cmp-admin-primary-text: var(--sys-color-text-regular);
+        --cmp-admin-secondary-width: 172px;
+        --cmp-admin-secondary-menu-padding-block: 8px;
+        --cmp-admin-secondary-item-margin-inline: 8px;
+        --cmp-admin-secondary-item-padding-inline: 12px;
+        --cmp-admin-secondary-item-radius: var(--sys-radius-md);
+        --cmp-admin-secondary-font-size: var(--sys-font-size-base);
+        --cmp-admin-secondary-icon-size: 15px;
+        --cmp-admin-secondary-icon-gap: 8px;
+        --cmp-admin-secondary-indent-step: calc(var(--cmp-admin-secondary-icon-size) + var(--cmp-admin-secondary-icon-gap));
+        flex: 0 0 auto;
+        min-width: 0;
+        background-color: var(--cmp-admin-sidebar-bg);
     }
 
-    .logo-title {
-        flex: 1;
-        width: 0;
-        text-overflow: ellipsis;
+    .one-menu {
+        width: var(--cmp-admin-primary-width);
+        padding: 0;
         overflow: hidden;
-        font-size: var(--el-font-size-base);
+        background-color: var(--cmp-admin-sidebar-bg);
+        border-right: 1px solid var(--cmp-admin-sidebar-border);
+        transition: width 180ms ease;
+
+        &.is-expanded {
+            width: var(--cmp-admin-primary-expanded-width);
+        }
+    }
+
+    .one-menu__scrollbar,
+    .two-menu__scrollbar {
+        flex: 1;
+        min-height: 0;
+    }
+
+    .one-menu__list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: var(--cmp-admin-primary-padding-block) 0;
+    }
+
+    .one-menu__item {
+        --color: var(--cmp-admin-primary-text);
+        display: flex;
+        position: relative;
+        box-sizing: border-box;
+        flex: 0 0 auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: var(--cmp-admin-primary-label-gap);
+        width: var(--cmp-admin-primary-item-width);
+        min-height: var(--cmp-admin-primary-item-height);
+        margin: var(--cmp-admin-primary-item-gap) 0;
+        padding: 6px var(--cmp-admin-primary-item-padding-inline);
+        border-radius: var(--cmp-admin-primary-item-radius);
+        color: var(--cmp-admin-primary-text);
+        font-size: var(--cmp-admin-primary-font-size);
+        line-height: 1;
+        text-align: center;
+        cursor: pointer;
+        transition: color 160ms ease, background-color 160ms ease;
+
+        &:hover {
+            --color: var(--cmp-admin-primary-hover-text);
+            color: var(--cmp-admin-primary-hover-text);
+            background-color: var(--cmp-admin-primary-hover-bg);
+        }
+
+        &.is-active,
+        &.is-active:hover {
+            --color: var(--cmp-admin-primary-active-text);
+            color: var(--cmp-admin-primary-active-text);
+            background-color: var(--cmp-admin-primary-active-bg);
+        }
+
+        &.is-expanded {
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            width: calc(100% - 15px);
+            min-height: var(--cmp-admin-primary-item-expanded-height);
+            padding: 0 10px;
+            font-size: var(--cmp-admin-primary-expanded-font-size);
+            text-align: left;
+        }
+    }
+
+    .one-menu__icon {
+        display: flex;
+        position: relative;
+        flex: 0 0 var(--cmp-admin-primary-icon-size);
+        align-items: center;
+        justify-content: center;
+        width: var(--cmp-admin-primary-icon-size);
+        height: var(--cmp-admin-primary-icon-size);
+        color: currentColor;
+        line-height: 1;
+        transition: transform 200ms ease;
+        transform-origin: center center;
+        will-change: transform;
+        -webkit-text-stroke: 0 currentColor;
+
+        .icon,
+        .el-icon,
+        i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            line-height: 1;
+        }
+
+        svg {
+            stroke: currentColor;
+            stroke-width: 0;
+            transition: stroke-width 200ms ease;
+        }
+    }
+
+    .one-menu__item:hover .one-menu__icon {
+        transform: scale(var(--cmp-admin-icon-hover-scale));
+        -webkit-text-stroke: var(--cmp-admin-icon-hover-stroke) currentColor;
+
+        svg {
+            stroke-width: var(--cmp-admin-icon-hover-stroke-svg);
+        }
+    }
+
+    .one-menu__icon-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--cmp-admin-primary-icon-size);
+        height: var(--cmp-admin-primary-icon-size);
+        line-height: 1;
+        overflow: hidden;
+    }
+
+    .one-menu__badge {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: var(--sys-color-danger);
+    }
+
+    .one-menu__label {
+        width: 100%;
+        line-height: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .one-menu__item.is-expanded .one-menu__label {
+        width: auto;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .two-menu {
+        width: var(--cmp-admin-secondary-width);
+        min-width: var(--cmp-admin-secondary-width);
+        overflow: hidden;
+        background-color: var(--cmp-admin-sidebar-bg);
+        border-right: 1px solid var(--cmp-admin-sidebar-border);
+    }
+
+    .two-menu .aside-menu {
+        --el-menu-bg-color: transparent;
+        --el-menu-hover-bg-color: var(--cmp-admin-secondary-hover-bg);
+        --el-menu-text-color: var(--cmp-admin-secondary-text);
+        --el-menu-active-color: var(--cmp-admin-secondary-active-text);
+        width: 100%;
+        padding: var(--cmp-admin-secondary-menu-padding-block) 0;
+        border: 0;
+        background-color: transparent;
+
+        .el-menu {
+            overflow: hidden;
+            border: 0;
+            background-color: transparent;
+        }
+
+        .el-menu-item,
+        .el-sub-menu__title {
+            box-sizing: border-box;
+            height: var(--cmp-admin-secondary-item-height);
+            margin: 2px var(--cmp-admin-secondary-item-margin-inline);
+            padding: 0 var(--cmp-admin-secondary-item-padding-inline) !important;
+            padding-left: calc(
+                var(--cmp-admin-secondary-item-padding-inline) +
+                var(--el-menu-level, 0) * var(--cmp-admin-secondary-indent-step)
+            ) !important;
+            border-radius: var(--cmp-admin-secondary-item-radius);
+            color: var(--cmp-admin-secondary-text);
+            font-size: var(--cmp-admin-secondary-font-size);
+            line-height: var(--cmp-admin-secondary-item-height);
+            transition: color 160ms ease, background-color 160ms ease;
+
+            &:hover {
+                color: var(--cmp-admin-secondary-text);
+                background-color: var(--cmp-admin-secondary-hover-bg) !important;
+            }
+        }
+
+        .el-menu-item.is-active {
+            color: var(--cmp-admin-secondary-active-text);
+            background-color: var(--cmp-admin-secondary-active-bg) !important;
+
+            &:hover {
+                color: var(--cmp-admin-secondary-active-text);
+                background-color: var(--cmp-admin-secondary-active-bg) !important;
+            }
+        }
+
+        .el-sub-menu.is-active > .el-sub-menu__title {
+            color: var(--cmp-admin-secondary-active-text);
+
+            > .el-sub-menu__icon-arrow {
+                color: var(--cmp-admin-secondary-active-text);
+            }
+
+            &:hover {
+                color: var(--cmp-admin-secondary-active-text);
+            }
+        }
+
+        .el-sub-menu__icon-arrow {
+            right: 12px;
+            color: var(--sys-color-text-placeholder);
+            font-size: 12px;
+            transition: transform 180ms ease;
+        }
+
+        .aside-menu-icon {
+            --color: currentColor;
+            display: flex;
+            flex: 0 0 var(--cmp-admin-secondary-icon-size);
+            align-items: center;
+            justify-content: center;
+            width: var(--cmp-admin-secondary-icon-size) !important;
+            height: var(--cmp-admin-secondary-icon-size) !important;
+            margin-right: var(--cmp-admin-secondary-icon-gap);
+            color: currentColor;
+            font-size: var(--cmp-admin-secondary-icon-size) !important;
+            line-height: 1;
+            transition: transform 200ms ease;
+            transform-origin: center center;
+            will-change: transform;
+            -webkit-text-stroke: 0 currentColor;
+
+            svg {
+                stroke: currentColor;
+                stroke-width: 0;
+                transition: stroke-width 200ms ease;
+            }
+        }
+
+        .el-menu-item:hover .aside-menu-icon,
+        .el-sub-menu__title:hover .aside-menu-icon {
+            transform: scale(var(--cmp-admin-icon-hover-scale));
+            -webkit-text-stroke: var(--cmp-admin-icon-hover-stroke) currentColor;
+
+            svg {
+                stroke-width: var(--cmp-admin-icon-hover-stroke-svg);
+            }
+        }
     }
 }
-// :deep(.el-scrollbar__bar){
-//     display: none !important;
-// }
-// .layout-aside .el-scrollbar__wrap--hidden-default, .layout-aside :deep(.el-scrollbar){
-//     overflow: inherit !important;
-// }
-// 隐藏滚动条
-.hide-scrollbar::-webkit-scrollbar {
-    display: none;
-    /* Chrome/Safari/Edge */
-}
-
-.hide-scrollbar {
-    -ms-overflow-style: none;
-    /* IE/Edge */
-    scrollbar-width: none;
-    /* Firefox */
-}
-// .layout-aside .menu-item.is-active{
-//     position: relative;
-//     &:after{
-//         content: "";
-//         position: absolute;
-//         top: 0;
-//         bottom: 0;
-//         width: 1px;
-//         background: var(--el-color-primary);
-//         right: -1px;
-//     }
-// }
 </style>

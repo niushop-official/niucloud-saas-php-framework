@@ -15,11 +15,11 @@
                     </div>
                 </el-header>
                 <el-scrollbar class="h-[calc( 100vh - 64px )]">
-                    <el-menu :default-active="oneMenuActive" :router="true" class="aside-menu" :unique-opened="true">
+                    <el-menu :default-active="oneMenuActive" :router="false" class="aside-menu" :unique-opened="true">
                         <template v-for="(item, index) in oneMenuData" :key="index">
                             <el-menu-item :index="item.original_name" @click="handleJump(item.name)" v-if="item.meta.show">
-                                <div v-if="item.meta.icon" class="w-[16px] h-[16px] relative flex justify-center">
-                                    <icon :name="item.meta.icon" class="absolute top-[50%] -translate-y-[50%]" />
+                                <div class="w-[16px] h-[16px] relative flex justify-center">
+                                    <icon :name="resolveMenuIcon(item.meta.icon)" class="absolute top-[50%] -translate-y-[50%]" />
                                 </div>
                                 <template #title>
                                     <div class="relative">
@@ -34,7 +34,7 @@
             </div>
             <el-scrollbar v-if="twoMenuData.length" class="two-menu w-[190px]">
                 <div class="w-[190px] h-[64px] flex items-center justify-center text-[16px] border-0 border-b-[1px] border-solid border-[#eee]">{{ route.matched[2].meta.title }}</div>
-                <el-menu :default-active="route.name" :router="true" class="aside-menu" :collapse="systemStore.menuIsCollapse">
+                <el-menu :default-active="menuActive" :router="false" class="aside-menu" :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -51,7 +51,9 @@ import useUserStore from '@/stores/modules/user'
 import menuItem from './menu-item.vue'
 import { getShowApp,getShowSpecialMenu} from '@/app/api/site'
 import { img } from '@/utils/common'
+import { resolveMenuIcon } from '@/utils/menu-icon'
 import { findFirstValidRoute,formatRouters } from '@/router/routers'
+import { useMenuActive, useMenuJump, rollbackMenuActive } from '@/hooks/useMenuActive'
 import storage from '@/utils/storage'
 
 const systemStore = useSystemStore()
@@ -133,6 +135,9 @@ if (siteInfo?.apps.length > 1) {
 }
 
 const oneMenuActive = ref(route.matched[1].name)
+// 二级菜单受控高亮；跳转守卫：点击需要新窗口打开的菜单时开新标签页并保持原高亮
+const { menuActive } = useMenuActive()
+const { handleMenuJump } = useMenuJump()
 
 const appList = ref(null)
 const marketingList = ref(null)
@@ -286,7 +291,7 @@ const collectSpecialMenuNamesLevel1 = (menus: any[]) =>{
     return names
 }
 
-// 统一处理跳转逻辑
+// 统一处理跳转逻辑（一级菜单）
 const handleJump = (routeName: string) => {
     // 检查目标路由是否在特殊菜单列表中
     const isInSpecialMenus = specialMenuNames.value.includes(routeName)
@@ -295,7 +300,13 @@ const handleJump = (routeName: string) => {
         storage.remove('activeAppKey')
     } else {
     }
-    
+    // 需要新窗口打开的菜单：新开标签页，当前页面不跳转，高亮保持在原来的菜单上
+    const target = oneMenuData.value.find(menu => menu.name === routeName)
+    if (handleMenuJump(routeName, target?.meta)) {
+        rollbackMenuActive(oneMenuActive, oneMenuActive.value)
+        return
+    }
+
     // 执行跳转
     router.push({ name: routeName })
 }

@@ -62,16 +62,19 @@ class CoreAddonDevelopBuildService extends BaseCoreService
         $this->menu('admin');
         $this->menu('site');
 
-        // 先拷贝
-        dir_copy($this->addon_path, runtime_path() . $addon . DIRECTORY_SEPARATOR . $addon);
+        if ($this->scene == 'build') {
+            dir_copy($this->addon_path, task_runtime_path() . $addon . DIRECTORY_SEPARATOR . $addon);
 
-        $zip_file = runtime_path() . $addon . '.zip';
-        if (file_exists($zip_file)) unlink($zip_file);
+            $zip_file = task_runtime_path() . $addon . '.zip';
+            if (file_exists($zip_file)) @unlink($zip_file);
 
-        (new CoreAddonDevelopDownloadService(''))->compressToZip(runtime_path() . $addon, $zip_file);
+            // 打包失败必须中断，否则后续安装/上传拿到的是一个残缺的 zip
+            if (!( new CoreAddonDevelopDownloadService('') )->compressToZip(task_runtime_path() . $addon, $zip_file)) {
+                throw new AddonException('ADDON_ZIP_ERROR');
+            }
 
-        del_target_dir(runtime_path() . $addon, true);
-
+            del_target_dir(task_runtime_path() . $addon, true);
+        }
         return true;
     }
 
@@ -81,7 +84,7 @@ class CoreAddonDevelopBuildService extends BaseCoreService
      * @return array|string|string[]
      */
     public function download(string $addon) {
-        $zip_file = runtime_path() . $addon . '.zip';
+        $zip_file = task_runtime_path() . $addon . '.zip';
         if (!file_exists($zip_file)) throw new AddonException('ADDON_ZIP_ERROR');//下载失败
         return str_replace(project_path(), '', $zip_file);
     }

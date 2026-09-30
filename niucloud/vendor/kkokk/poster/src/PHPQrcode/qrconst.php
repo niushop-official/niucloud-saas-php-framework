@@ -27,10 +27,8 @@
  */
  
 	// Encoding modes
-     if(define('QR_MODE_NUL')){
-        define('QR_MODE_NUL', -1);
-     }
-
+	 
+	define('QR_MODE_NUL', -1);
 	define('QR_MODE_NUM', 0);
 	define('QR_MODE_AN', 1);
 	define('QR_MODE_8', 2);

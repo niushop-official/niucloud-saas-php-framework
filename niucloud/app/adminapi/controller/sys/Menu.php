@@ -17,6 +17,7 @@ use app\dict\sys\MethodDict;
 use app\service\admin\install\InstallSystemService;
 use app\service\admin\sys\MenuService;
 use core\base\BaseAdminController;
+use core\exception\AdminException;
 use think\Response;
 
 /**
@@ -36,6 +37,66 @@ class Menu extends BaseAdminController
     public function lists($app_type)
     {
         return success(( new MenuService() )->getAllMenuList($app_type, 'all', 1));
+    }
+
+    /**
+     * 导出菜单(平台/站点)
+     * @description 导出平台或站点菜单为JSON树结构文件
+     * @param $app_type
+     * @return \think\response\File
+     */
+    public function export($app_type)
+    {
+        return ( new MenuService() )->exportMenu($app_type, $this->parseExportAddons());
+    }
+
+    /**
+     * 解析导出范围参数（支持 JSON 字符串 / 逗号分隔 / 数组）
+     * 空字符串元素表示系统菜单，空数组表示导出全部
+     * @return array
+     */
+    private function parseExportAddons()
+    {
+        $addons = $this->request->param('addons', '');
+        if (is_string($addons)) {
+            if (trim($addons) === '') return [];
+            $decoded = json_decode($addons, true);
+            $addons = is_array($decoded) ? $decoded : explode(',', $addons);
+        }
+        if (!is_array($addons)) return [];
+        return array_values(array_unique(array_map('strval', $addons)));
+    }
+
+    /**
+     * 导入菜单(平台/站点)
+     * @description 上传导出的菜单JSON文件，增量导入菜单
+     * @param $app_type
+     * @return Response
+     */
+    public function importMenu($app_type)
+    {
+        $menu_service = new MenuService();
+        $file = $this->request->file('file');
+        if (empty($file)) {
+            // post_max_size 超限时 PHP 会直接丢弃整个 POST（$_FILES 为空），此处给出更明确的提示
+            $config = $menu_service->getImportConfig();
+            $content_length = (int) $this->request->server('CONTENT_LENGTH', 0);
+            if ($config[ 'post_max_size_byte' ] > 0 && $content_length > $config[ 'post_max_size_byte' ]) {
+                throw new AdminException('validate_menu.import_file_too_large');
+            }
+        }
+        $overwrite = (int) $this->request->param('overwrite', 0);
+        return success($menu_service->importMenu($app_type, $file, (bool) $overwrite));
+    }
+
+    /**
+     * 导入菜单上传限制配置
+     * @description 获取当前PHP上传限制，用于导入前校验文件大小
+     * @return Response
+     */
+    public function importConfig()
+    {
+        return success(( new MenuService() )->getImportConfig());
     }
 
     /**
@@ -70,6 +131,7 @@ class Menu extends BaseAdminController
             [ 'sort', 0 ],
             [ 'status', MenuDict::ON ],
             [ 'is_show', 0 ],
+            [ 'is_blank', 0 ],
             [ 'addon', '' ],
             [ 'menu_short_name', '' ]
         ]);
@@ -96,6 +158,7 @@ class Menu extends BaseAdminController
             [ 'sort', 0 ],
             [ 'status', MenuDict::ON ],
             [ 'is_show', 0 ],
+            [ 'is_blank', 0 ],
             [ 'addon', '' ],
             [ 'menu_short_name', '' ]
         ]);

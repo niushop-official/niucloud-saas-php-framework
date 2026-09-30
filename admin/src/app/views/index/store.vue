@@ -1,107 +1,104 @@
 <template>
 	<!--应用市场-->
-	<div class="main-container app-market bg-body min-h-[70vh]" v-loading="loading">
-		<el-card class="box-card app-head !border-none !pb-[0]" shadow="never">
-			<div class="flex flex-col mb-[8px]">
-				<div class="flex items-center justify-between mb-[5px]">
-					<h2 class="text-lg font-semibold">应用列表</h2>
-					<i class="iconfont cursor-pointer" @click="switchShowType" :class="showType == 'card' ? 'iconliebiao' : 'iconliebiaoqiehuan'"></i>
+	<div class="main-container app-market min-h-[70vh]" v-loading="loading">
+		<!-- 顶部框架信息栏：常驻显示，不随页签/视图切换隐藏 -->
+		<div class="am-framework">
+			<div class="am-framework__brand">
+				<span class="am-framework__mark" aria-hidden="true">
+					<!-- 框架 logo：站点静态资源里的 app.ico（niucloud/public/static/resource/icon/app.ico）
+					     与插件图标同一套写法：用 img() 按 VITE_IMG_DOMAIN 拼出完整地址。
+					     路径统一取 frameworkIcon，框架详情里的图标也用它，两处不会各写一份。 -->
+					<img :src="img(frameworkIcon)" alt="" />
+				</span>
+				<div class="am-framework__info">
+					<h1 class="am-framework__name">
+						系统框架
+						<span class="am-pill-status" :class="frameworkHasUpdate ? 'is-warn' : 'is-ok'">
+							<i class="am-pill-status__dot"></i>{{ frameworkHasUpdate ? '有可用更新' : '已是最新版本' }}
+						</span>
+					</h1>
+					<!-- 与右侧状态标签用同一个判断（frameworkHasUpdate）：已是最新时不再重复报「最新 v…」，
+					     分隔点一并隐藏，避免留下孤立的 · -->
+					<p class="am-framework__meta">当前 v{{ frameworkVersion || '--' }}<template v-if="frameworkHasUpdate"> · 最新 v{{ frameworkNewVersion || '--' }}</template> · {{ localList.recentlyUpdated.length ? localList.recentlyUpdated.length + ' 个应用可更新' : '无可更新应用' }}</p>
 				</div>
-				<el-tabs v-model="activeName" @tab-change="activeNameTabFn">
-					<el-tab-pane name="installed">
-						<template #label>
-							<span>已安装</span>
-						</template>
-					</el-tab-pane>
-					<el-tab-pane name="uninstalled">
-						<template #label>
-							<span>未安装</span>
-						</template>
-					</el-tab-pane>
-					<el-tab-pane name="all">
-						<template #label>
-							<span>已购买</span>
-						</template>
-					</el-tab-pane>
-					<el-tab-pane name="recentlyUpdated">
-						<template #label>
-							<span class="relative">
-								可更新
-								<div
-									v-if="localList.recentlyUpdated.length"
-									class="w-[8px] h-[8px] bg-[red] rounded-[8px] z-1 absolute top-[-2px] right-[-2px]"
-								></div>
-							</span>
-						</template>
-					</el-tab-pane>
-				</el-tabs>
+			</div>
+			<div class="am-framework__ops">
+				<!-- 校验框架：检测目标只认 framework（列表里的 key 是 niucloud-admin，后端不认） -->
+				<button type="button" class="am-btn am-btn--ghost" @click="openFrameworkDiff">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="12" cy="12" r="8.4" />
+						<path d="M8.4 12.4l2.5 2.5 4.7-5.3" />
+					</svg>
+					<span>{{ t('diffVerify') }}</span>
+				</button>
+				<button type="button" class="am-btn am-btn--ghost" @click="updateInformationFn({ key: 'niucloud-admin' })">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M6 3.6h8.4L19 8.2v12.2H6Z" />
+						<path d="M14.2 3.6v4.8H19" />
+						<path d="M9 12.6h6M9 16.2h4" />
+					</svg>
+					<span>更新记录</span>
+				</button>
+				<button
+					type="button"
+					class="am-btn am-btn--primary"
+					:disabled="!frameworkHasUpdate && !localList.recentlyUpdated.length"
+					@click="batchUpgrade"
+				>
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M12 3.6v10.8" />
+						<path d="M7.6 10l4.4 4.4L16.4 10" />
+						<path d="M4.2 20.4h15.6" />
+					</svg>
+					<span>一键升级<span v-if="localList.recentlyUpdated.length">（{{ localList.recentlyUpdated.length }}）</span></span>
+				</button>
+			</div>
+		</div>
+		<div class="app-head">
+			<div class="am-toolbar">
+				<div class="am-tabs" role="tablist">
+					<button
+						type="button"
+						role="tab"
+						class="am-tab"
+						:class="{ 'is-active': activeName == tab.key }"
+						:aria-selected="activeName == tab.key"
+						v-for="tab in storeTabs"
+						:key="tab.key"
+						@click="activeNameTabFn(tab.key); searchFn()"
+					>
+						{{ tab.label }}
+						<span class="am-tab__n" :class="{ 'am-tab__n--warn': tab.warn && tab.count > 0 }">{{ tab.count }}</span>
+					</button>
+				</div>
+				<div class="am-toolbar__right">
+					<!-- 应用类型：改用 el-select，展开面板由 el-select-dropdown 渲染，
+					     与项目其他下拉同源（原生 select 点开的是系统菜单，CSS 改不到） -->
+					<el-select v-model="searchParam.type" class="am-select" placeholder="应用类型" clearable
+						@change="searchFn()">
+						<el-option label="应用" value="app" />
+						<el-option label="插件" value="addon" />
+					</el-select>
+					<label class="am-search">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+							<circle cx="11" cy="11" r="6.8" />
+							<path d="M20.2 20.2 16.4 16.4" />
+						</svg>
+						<input v-model.trim="searchParam.keywords" type="search" placeholder="搜索应用名称" @keyup.enter="searchFn()" @input="onKeywordsInput" />
+					</label>
+					<!-- 搜索按钮：与搜索框同高同圆角，复用页面已有的 .am-btn--primary -->
+					<button type="button" class="am-btn am-btn--primary am-search__btn" @click="searchFn()">{{ t('search') }}</button>
+					<!-- 视图切换（卡片 / 列表）：原来挂在「应用列表」标题右边，挪到搜索框后面 -->
+					<i
+						class="iconfont cursor-pointer !text-[16px] text-[#4f516d] transition-colors hover:text-[#0766f5]"
+						:class="showType == 'card' ? 'iconliebiao' : 'iconliebiaoqiehuan'"
+						:title="showType == 'card' ? '切换为列表模式' : '切换为卡片模式'"
+						@click="switchShowType"
+					></i>
+				</div>
 			</div>
 
-			<el-form :inline="true" :model="searchParam" ref="searchFormRef" class="search-form" v-if="!loading && !isShowDetail && (activeName == 'installed' || activeName == 'all' || activeName == 'uninstalled')">
-				<el-form-item prop="type">
-					<el-select v-model="searchParam.type" clearable :placeholder="t('应用类型')" class="input-width">
-						<el-option :label="t('应用')" value="app" />
-						<el-option :label="t('插件')" value="addon" />
-					</el-select>
-				</el-form-item>
-
-				<el-form-item prop="keywords">
-					<el-input v-model.trim="searchParam.keywords" class="!w-[200px]" :placeholder="t('搜索关键词')" clearable />
-				</el-form-item>
-
-				<el-form-item>
-					<el-button type="primary" @click="searchFn()">{{ t('search') }}</el-button>
-					<el-button @click="resetForm(searchFormRef)">{{ t('重置') }}</el-button>
-				</el-form-item>
-			</el-form>
-
-			<div v-if="!loading && !isShowDetail && activeName == 'recentlyUpdated'">
-				<div class="flex items-center bg-[#F4F5F7] h-[80px] justify-between px-[20px]">
-					<div class="flex items-center">
-						<div class="w-[42px] h-[42px] bg-purple-100 rounded flex items-center justify-center mr-2 relative">
-							<img class="max-w-full max-h-full" src="@/app/assets/images/app_store/system_version.png" alt="" />
-							<div
-								v-if="frameworkVersion != frameworkNewVersion && isNeedUpgrade(frameworkVersion, frameworkNewVersion)"
-								class="w-[8px] h-[8px] bg-[red] rounded-[8px] z-1 absolute top-[-2px] right-[-2px]"
-							></div>
-						</div>
-						<div>
-							<p class="flex items-center" v-if="frameworkNewVersion != frameworkVersion && isNeedUpgrade(frameworkVersion, frameworkNewVersion)">
-								<span class="text-[16px] font-[500] text-[#1D1F3A]">框架更新</span>
-								<span class="text-[12px] text-[#9699B6] ml-[10px]">必须优先更新</span>
-							</p>
-							<p class="flex items-center" v-else>
-								<span class="text-[16px] font-[500] text-[#1D1F3A]">当前框架为最新版 V{{frameworkVersion}}</span>
-							</p>
-							<p class="text-[14px] text-[#374151]">
-                                <template v-if="frameworkNewVersion != frameworkVersion && isNeedUpgrade(frameworkVersion, frameworkNewVersion)">
-                                    <span class="">框架 V{{ frameworkVersion }}</span>
-                                    <span class="iconfont iconjiang-right text-[#F09000] mx-[2px]"></span>
-                                    <span class="text-[#F09000] mr-[4px]">{{ frameworkNewVersion }}</span>
-                                    <span class="mr-[4px]">和</span>
-                                </template>
-								<span class="text-[#F09000] mr-[4px]">{{batchUpgradeApp.length}}</span>
-								<span>个应用可更新</span>
-							</p>
-						</div>
-					</div>
-
-					<el-button class="ml-[auto]" @click="updateInformationFn({ key: 'niucloud-admin' })">
-						<el-icon class="mr-[5px]">
-							<DocumentCopy />
-						</el-icon>
-						更新记录
-					</el-button>
-					<el-button
-						type="primary"
-						v-show="activeName == 'recentlyUpdated' || (frameworkVersion != frameworkNewVersion && activeName != 'uninstalled')"
-						@click="batchUpgrade"
-					>
-						一键升级<span v-if="batchUpgradeApp.length"
-							>({{ batchUpgradeApp.length }})</span
-						>
-					</el-button>
-				</div>
+			<div v-if="!loading && activeName == 'recentlyUpdated'">
 				<div class="flex items-center justify-between mt-[14px] mb-[6px]">
 					<p class="flex items-center text-[12px]">
 						<span>共</span>
@@ -117,78 +114,145 @@
 					/>
 				</div>
 			</div>
-		</el-card>
-		<div class="flex mb-4 flex-wrap" v-show="showType == 'card' && !isShowDetail">
+		</div>
+		<div class="am-grid" v-show="showType == 'card'">
 			<template v-if="localList[activeName].length && !loading">
 				<div
-					class="rounded-md p-[16px] app-card mb-[20px] ml-[20px] cursor-pointer product-card-item flex justify-between items-start"
+					class="am-card"
 					@click="openDetail(row)"
-					:class="{ selected: batchUpgradeApp.includes(row.key), 'hidden': row.isHideen}"
+					:class="{ 'am-card--selected': batchUpgradeApp.includes(row.key), 'is-hidden': row.isHideen }"
 					v-for="row in localList[activeName]"
 					:key="row.key"
 				>
-					<div class="flex items-start flex-1 w-0">
-						<div class="w-[42px] h-[42px] bg-purple-100 rounded flex items-center justify-center mr-2 relative">
-							<div class="w-full h-full overflow-hidden rounded">
-								<el-image class="w-full h-full overflow-hidden rounded" :src="img(row.icon)" fit="contain">
-									<template #error>
-										<div class="flex items-center w-full h-full">
-											<img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
-										</div>
-									</template>
-								</el-image>
+					<div class="am-card__head">
+						<div class="am-card__tile">
+							<el-image class="am-card__logo" :src="img(row.icon)" fit="cover">
+								<template #error>
+									<img class="am-card__logo-default" src="@/app/assets/images/icon-addon-one.png" alt="" />
+								</template>
+							</el-image>
+						</div>
+						<div class="am-card__info">
+							<div class="am-card__title-row">
+								<span class="am-card__title" :title="row.title">{{ row.title }}</span>
+								<span :class="row.type == 'app' ? 'am-badge am-badge--app' : 'am-badge am-badge--addon'">{{ row.type == 'app' ? '应用' : '插件' }}</span>
+							</div>
+							<!-- 应用标识：空间不够时由它自己出省略号（见 .am-card__key） -->
+							<div class="am-card__key-row">
+								<span class="am-card__key" :title="row.key">{{ row.key }}</span>
 							</div>
 						</div>
-						<div class="flex-1 w-0">
-							<div class="flex items-center">
-								<p class="text-[16px] text-[#374151] truncate leading-[20px]" :title="row.title">{{ row.title }}</p>
-								<span :class="{'app-ident': row.type == 'app', 'addon-ident': row.type == 'addon'}">{{row.type == 'app' ? '应用' : '插件'}}</span>
-							</div>
-							<p class="text-xs text-[#4F516D] truncate mt-[2px] font-bold" :title="row.key">{{ row.key }}</p>
-							<div class="text-[#374151] text-[12px] leading-[16px] mt-[4px]">
-								<span>当前版本：</span>
-								<span>{{ row.install_info && Object.keys(row.install_info)?.length ? row.install_info.version : row.version }}</span>
-								<span v-if="row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version && activeName == 'recentlyUpdated'" class="text-[#374151] ml-[5px] text-[12px]">最新版本：{{ row.version }}</span>
-							</div>
+						<!-- 应用状态：卡片右上角，基于「应用名称 + 应用标识」这两行垂直居中 -->
+						<div class="am-card__status">
+							<span
+								v-if="
+									row.install_info &&
+									Object.keys(row.install_info)?.length &&
+									row.install_info.version != row.version &&
+									isNeedUpgrade(row.install_info.version, row.version)
+								"
+								class="am-pill am-pill--warn"
+								>可升级</span
+							>
+							<span v-else-if="row.install_info && Object.keys(row.install_info)?.length" class="am-pill am-pill--ok"><i class="am-pill__dot"></i>已安装</span>
+							<span v-else class="am-pill am-pill--muted">{{ row.is_download ? '待安装' : '未安装' }}</span>
+							<el-tooltip
+								v-if="versionJudge(row) && activeName == 'recentlyUpdated'"
+								effect="dark"
+								:content="`该插件适配框架版本为${row.support_version}，与已安装框架版本${frameworkVersion}不完全兼容`"
+								placement="top"
+							>
+								<span class="am-pill am-pill--danger">兼容提示</span>
+							</el-tooltip>
 						</div>
 					</div>
-					<view class="w-[25px] flex items-end flex-col h-full justify-between" :class="{ 'w-[40px]': !row.is_download && downloading == row.key }">
-						<template v-if="activeName == 'recentlyUpdated'">
-							<el-checkbox class="!h-[auto] leading-[1]" v-if="batchUpgradeApp.includes(row.key)" checked @click.stop="appKeySingleSelect($event, row.key)" />
-							<el-checkbox class="!h-[auto] leading-[1]" v-else @click.stop="appKeySingleSelect($event, row.key)" />
-						</template>
-						<template v-if="activeName == 'installed' || activeName == 'all' || activeName == 'uninstalled'">
-							<el-button
-								v-if="!row.is_download"
-								class="!text-[#0766F5] mt-[auto] !p-0 !border-[0] !bg-transparent !text-[12px] !h-[20px]"
-								:loading="downloading == row.key"
-								:disabled="downloading != ''"
-								@click.stop="downEvent(row)"
-								>安装
-							</el-button>
-							<el-button v-else-if="!row.install_info || Object.keys(row.install_info).length == 0" class=" mt-[auto] !text-[#0766F5] !p-0 !border-[0] !bg-transparent !text-[12px] !h-[20px]" @click.stop="installAddonFn(row.key)">安装</el-button>
-							<el-button class=" mt-[auto] !text-[#4F516D] !p-0 !border-[0] !bg-transparent !text-[12px] !h-[20px]" v-if="row.install_info && Object.keys(row.install_info)?.length"
-								link @click.stop="uninstallAddonFn(row.key)"
-								>{{ t('unload') }}
-							</el-button>
-						</template>
-						<template v-else>
-							<el-button
-								class="!text-[#008C1E] mt-[auto] !p-0 !border-[0] !bg-transparent !text-[12px] !h-[20px]"
-								@click.stop="upgradeAddonFn(row)"
-								v-if="row.install_info.version != row.version && isNeedUpgrade(row.install_info.version, row.version)"
+
+					<p class="am-card__desc" :title="row.desc">{{ row.desc }}</p>
+
+					<!-- 当前版本 / 最新版本 各占一半，卡片之间标签能上下对齐 -->
+					<div class="am-card__meta">
+						<span class="am-card__meta-item">
+							<span class="am-card__meta-k">当前版本</span>
+							<!-- 已安装且就是最新：紧跟一个「最新」标记。用文本空格分隔（不是 flex gap），
+							     所以正好只隔一个空格；嵌套在版本值里，它自己才能带底色 -->
+							<span class="am-card__meta-v">{{ row.install_info && Object.keys(row.install_info)?.length ? row.install_info.version : row.version }} <span class="am-card__meta-uptodate" v-if="cardUpToDate(row)">最新</span></span>
+						</span>
+						<!-- 两段之间的竖线：只在右半边存在时显示 —— 已最新时右半边不渲染，
+						     留着这根线会变成孤零零的 1px 立在中间 -->
+						<span class="am-card__sep" v-if="!cardUpToDate(row)"></span>
+						<!-- 不是最新才需要单独报「最新版本」（一致时上面那个「最新」标记已经说明了） -->
+						<span class="am-card__meta-item" v-if="!cardUpToDate(row)">
+							<span class="am-card__meta-k">最新版本</span>
+							<span
+								class="am-card__meta-v"
+								:class="{ 'is-new': row.install_info && Object.keys(row.install_info)?.length && row.install_info.version != row.version }"
+								>{{ row.version }}</span
 							>
-								升级
-							</el-button>
-						</template>
-					</view>
+						</span>
+					</div>
+
+					<div class="am-card__foot">
+						<div class="am-card__foot-left" @click.stop>
+							<el-checkbox
+								v-if="activeName == 'recentlyUpdated'"
+								class="am-card__check"
+								:model-value="batchUpgradeApp.includes(row.key)"
+								@change="appKeySingleSelect($event, row.key)"
+							/>
+						</div>
+						<div class="am-card__acts" @click.stop>
+							<el-button v-if="canDiff(row)" class="am-act am-act--verify" link @click.stop="openDiff(row)">{{ t('diffVerify') }}</el-button>
+							<template v-if="activeName == 'installed' || activeName == 'all' || activeName == 'uninstalled'">
+								<el-button
+									v-if="!row.is_download"
+									class="am-act am-act--primary"
+									link
+									:loading="downloading == row.key"
+									:disabled="downloading != ''"
+									@click.stop="downEvent(row)"
+									>{{ t('down') }}</el-button
+								>
+								<el-button
+									v-else-if="!row.install_info || Object.keys(row.install_info).length == 0"
+									class="am-act am-act--primary"
+									link
+									@click.stop="installAddonFn(row.key)"
+									>{{ t('install') }}</el-button
+								>
+								<el-button
+									v-if="row.install_info && Object.keys(row.install_info)?.length"
+									class="am-act am-act--muted"
+									link
+									@click.stop="uninstallAddonFn(row.key)"
+									>{{ t('unload') }}</el-button
+								>
+							</template>
+							<template v-else>
+								<el-button
+									class="am-act am-act--ok"
+									link
+									v-if="
+										row.install_info &&
+										Object.keys(row.install_info)?.length &&
+										row.install_info.version != row.version &&
+										isNeedUpgrade(row.install_info.version, row.version)
+									"
+									@click.stop="upgradeAddonFn(row)"
+									>升级</el-button
+								>
+							</template>
+						</div>
+					</div>
 				</div>
 			</template>
 		</div>
 
-		<div class="relative px-[20px] pb-[20px]" v-show="showType == 'list' && !isShowDetail">
+		<div ref="pageRef" class="am-list relative pb-[20px] table-fill-page__panel" :style="pageStyle" v-show="showType == 'list'">
+			<div class="table-panel table-fill-page__panel">
+			<div class="table-fill-page__table">
 			<el-table
-				v-if="localList[activeName].length && !loading && !isShowDetail"
+				v-if="localList[activeName].length && !loading"
+				height="100%"
 				ref="tableRef"
 				:tree-props="{ children: 'children' }"
 				:default-expand-all="true"
@@ -222,7 +286,7 @@
 				<el-table-column :label="t('appName')" align="left" width="300">
 					<template #default="{ row }">
 						<div class="flex items-center cursor-pointer relative left-[-10px]" @click="openDetail(row)">
-							<el-image class="w-[54px] h-[54px] rounded-[5px]" :src="img(row.icon)" fit="contain">
+							<el-image class="w-[var(--cmp-table-composite-icon-size)] h-[var(--cmp-table-composite-icon-size)] rounded-[5px]" :src="img(row.icon)" fit="contain">
 								<template #error>
 									<div class="flex items-center w-full h-full rounded-[5px]">
 										<img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
@@ -272,14 +336,12 @@
 						<div class="flex items-center">
 							<span class="font-500 text-[13px] mr-[5px]">{{ t('appIdentification') }}</span>
 							<el-tooltip class="box-item" effect="light" :content="t('tipText')" placement="bottom">
-								<el-icon class="cursor-pointer text-[16px] text-[#a9a9a9]">
-									<QuestionFilled />
-								</el-icon>
+								<span class="iconfont iconwenhao text-[#999] !text-[14px] cursor-pointer"></span>
 							</el-tooltip>
 						</div>
 					</template>
 					<template #default="{ row }">
-						<span class="font-500 text-[13px]">{{ row.key }}</span>
+						<span class="am-table-key font-500 text-[13px]" :title="row.key">{{ row.key }}</span>
 					</template>
 				</el-table-column>
 
@@ -342,10 +404,15 @@
 								>{{ t('升级') }}
 							</el-button>
 						</template>
+						<!-- 校验：与卡片模式同一套判断（canDiff —— 已安装、非本地自有、非框架），列表模式同样放开 -->
+						<el-button v-if="canDiff(row)" class="!text-[13px]" type="primary" link @click.stop="openDiff(row)">
+							{{ t('diffVerify') }}
+						</el-button>
 						<el-button class="!text-[13px]" type="primary" link @click="openDetail(row)">{{ t('detail') }}</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
+			</div>
 			<div class="data-loading" v-if="loading || !localList[activeName].length">
 				<el-table :data="[]" size="large" class="pt-[5px]">
 					<el-table-column :label="t('appName')" align="left" width="320" />
@@ -360,9 +427,10 @@
 				</el-table>
 				<div class="h-[100px]" v-loading="loading" v-if="loading"></div>
 			</div>
+			</div>
 		</div>
 
-		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && activeName == 'installed' && !authLoading && !isShowDetail">
+		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && activeName == 'installed' && !authLoading">
 			<template #image>
 				<div class="w-[230px] mx-auto">
 					<img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
@@ -372,7 +440,7 @@
 				<p class="flex items-center">{{ t('installed-empty') }}</p>
 			</template>
 		</el-empty>
-		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && activeName == 'uninstalled' && !authLoading && !isShowDetail">
+		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && activeName == 'uninstalled' && !authLoading">
 			<template #image>
 				<div class="w-[230px] mx-auto">
 					<img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
@@ -387,7 +455,7 @@
 			</template>
 		</el-empty>
 		<div
-			v-if="!localList.all.length && !loading && !authinfo && activeName == 'all' && !authLoading && !isShowDetail"
+			v-if="!localList.all.length && !loading && !authinfo && activeName == 'all' && !authLoading"
 			class="mx-auto overview-empty flex flex-col items-center pt-14 pb-6"
 		>
 			<div class="mb-[20px] text-sm text-[#888]">检测到当前账号尚未绑定授权，请先绑定授权！</div>
@@ -414,7 +482,7 @@
 				</el-popover>
 			</div>
 		</div>
-		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && authinfo && activeName == 'all' && !authLoading && !isShowDetail">
+		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && authinfo && activeName == 'all' && !authLoading">
 			<template #image>
 				<div class="w-[230px] mx-auto">
 					<img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
@@ -428,7 +496,7 @@
 				</p>
 			</template>
 		</el-empty>
-		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && activeName == 'recentlyUpdated' && !isShowDetail">
+		<el-empty class="mx-auto overview-empty" v-if="showType == 'card' && noAppLen && !loading && activeName == 'recentlyUpdated'">
 			<template #image>
 				<div class="w-[230px] mx-auto">
 					<img src="@/app/assets/images/index/apply_empty.png" class="max-w-full" alt="" />
@@ -441,7 +509,7 @@
 
 		<el-dialog v-model="authCodeApproveDialog" title="授权码认证" width="400px">
 			<el-form :model="formData" label-width="0" ref="formRef" :rules="formRules" class="page-form">
-				<el-card class="box-card !border-none" shadow="never">
+				<div class="p-[20px]">
 					<el-form-item prop="auth_code">
 						<el-input
 							v-model.trim="formData.auth_code"
@@ -474,7 +542,7 @@
 					<div class="mt-[10px] text-right">
 						<el-button type="primary" link @click="market">{{ t('notHaveAuth') }}</el-button>
 					</div>
-				</el-card>
+				</div>
 			</el-form>
 		</el-dialog>
 
@@ -499,94 +567,23 @@
 				<el-step :title="t('installProgress')" class="flex-1" />
 				<el-step :title="t('installComplete')" class="flex-1" />
 			</el-steps>
-			<div v-show="installStep == 0" v-loading="!installCheckResult.dir">
-				<!-- <el-scrollbar max-height="50vh"> -->
+			<div v-show="installStep == 0">
+				<!-- 安装前校验（统一校验组件）：SSE 实时推送各项检测结果 -->
 				<div class="min-h-[150px]">
 					<el-scrollbar style="height: calc(50vh); overflow: auto">
-						<div class="mt-3" v-if="installCheckResult.dir">
-							<p class="pt-[20px] pl-[20px]">{{ t('dirPermission') }}</p>
-							<div
-								v-if="!installCheckResult.file_permission_is_pass"
-								class="mt-[10px] mx-[20px] text-[14px] cursor-pointer text-primary flex items-center justify-between bg-[#EFF6FF] rounded-[4px] p-[10px]"
-								@click="cloudBuildCheckDirFn"
-							>
-								<div class="flex items-center">
-									<el-icon :size="17">
-										<QuestionFilled />
-									</el-icon>
-									<span class="ml-[5px] leading-[20px]">编译权限错误，查看解决方案</span>
-								</div>
-								<div class="border-[1px] border-primary rounded-[3px] w-[72px] h-[26px] leading-[25px] text-center">立即查看</div>
-							</div>
-							<div class="px-[20px] pt-[10px] text-[14px]">
-								<el-row class="py-[10px] items table-head-bg pl-[15px] mb-[10px]">
-									<el-col :span="18">
-										<span>{{ t('path') }}</span>
-									</el-col>
-									<el-col :span="3">
-										<span>{{ t('demand') }}</span>
-									</el-col>
-									<el-col :span="3">
-										<span>{{ t('status') }}</span>
-									</el-col>
-								</el-row>
-								<el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in installCheckResult.dir.is_readable" :key="index">
-									<el-col :span="18">
-										<span>{{ item.dir }}</span>
-									</el-col>
-									<el-col :span="3">
-										<span>{{ t('readable') }}</span>
-									</el-col>
-									<el-col :span="3">
-										<span v-if="item.status">
-											<el-icon color="green">
-												<Select />
-											</el-icon>
-										</span>
-										<span v-else>
-											<el-icon color="red">
-												<CloseBold />
-											</el-icon>
-										</span>
-									</el-col>
-								</el-row>
-								<el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in installCheckResult.dir.is_write" :key="index">
-									<el-col :span="18">
-										<span>{{ item.dir }}</span>
-									</el-col>
-									<el-col :span="3">
-										<span>{{ t('write') }}</span>
-									</el-col>
-									<el-col :span="3">
-										<span v-if="item.status" class="text-right">
-											<el-icon color="green">
-												<Select />
-											</el-icon>
-										</span>
-										<span v-else>
-											<el-icon color="red">
-												<CloseBold />
-											</el-icon>
-										</span>
-									</el-col>
-								</el-row>
-							</div>
-						</div>
-						<div class="my-3" v-if="installCheckResult.addon_check && installCheckResult.addon_check.length">
-							<p class="pl-[20px]">插件验证</p>
-							<div class="px-[20px] pt-[10px] text-[14px]">
-								<el-alert class="!mb-[10px]" v-for="item in installCheckResult.addon_check" type="error" :closable="false">
-									<div v-html="item.msg"></div>
-								</el-alert>
-							</div>
-						</div>
+						<verify-panel ref="installCheckRef" class="mt-3" v-if="installShowDialog" scene="addon_install" :params="{ addon: currAddon }"
+							:show-footer="false" @done="onInstallCheckDone"
+							@passed="installCheckPass = true" @failed="installCheckPass = false" />
 					</el-scrollbar>
 				</div>
-				<!-- </el-scrollbar> -->
-				<div class="flex justify-end">
-                    <el-button type="primary" class="!w-[140px]" :disabled="!installCheckResult.is_pass || cloudInstalling" :loading="localInstalling" @click="handleInstall"
-                        >{{ t('install') }}
-                    </el-button>
+				<div class="flex items-center justify-end gap-[10px] mt-[20px]">
+					<span v-if="installCheckDone && !installCheckPass" class="text-[12px] text-[#f56c6c]">
+						存在未通过的必检项，请处理后再继续
+					</span>
+					<el-button v-if="installCheckDone && !installCheckPass" :loading="installCheckRetrying" @click="reCheckInstall">
+						重新校验
+					</el-button>
+					<el-button type="primary" class="!w-[140px]" :disabled="!installCheckPass || cloudInstalling" :loading="localInstalling" @click="handleInstall">{{ t('install') }}</el-button>
 				</div>
 			</div>
 			<div v-show="installStep == 1 && !errorDialog" class="h-[50vh] mt-[20px]">
@@ -652,66 +649,11 @@
 			:close-on-click-modal="false"
 			:close-on-press-escape="false"
 		>
-			<el-scrollbar max-height="50vh">
-				<div class="min-h-[150px]">
-					<div class="bg-[#fff] my-3" v-if="uninstallCheckResult.dir">
-						<p class="pt-[20px] pl-[20px]">{{ t('dirPermission') }}</p>
-						<div class="px-[20px] pt-[10px] text-[14px]">
-							<el-row class="py-[10px] items table-head-bg pl-[15px] mb-[10px]">
-								<el-col :span="18">
-									<span>{{ t('path') }}</span>
-								</el-col>
-								<el-col :span="3">
-									<span>{{ t('demand') }}</span>
-								</el-col>
-								<el-col :span="3">
-									<span>{{ t('status') }}</span>
-								</el-col>
-							</el-row>
-							<el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in uninstallCheckResult.dir.is_readable" :key="index">
-								<el-col :span="18">
-									<span>{{ item.dir }}</span>
-								</el-col>
-								<el-col :span="3">
-									<span>{{ t('readable') }}</span>
-								</el-col>
-								<el-col :span="3">
-									<span v-if="item.status">
-										<el-icon color="green">
-											<Select />
-										</el-icon>
-									</span>
-									<span v-else>
-										<el-icon color="red">
-											<CloseBold />
-										</el-icon>
-									</span>
-								</el-col>
-							</el-row>
-							<el-row class="pb-[10px] items pl-[15px]" v-for="(item, index) in uninstallCheckResult.dir.is_write" :key="index">
-								<el-col :span="18">
-									<span>{{ item.dir }}</span>
-								</el-col>
-								<el-col :span="3">
-									<span>{{ t('write') }}</span>
-								</el-col>
-								<el-col :span="3">
-									<span v-if="item.status">
-										<el-icon color="green">
-											<Select />
-										</el-icon>
-									</span>
-									<span v-else>
-										<el-icon color="red">
-											<CloseBold />
-										</el-icon>
-									</span>
-								</el-col>
-							</el-row>
-						</div>
-					</div>
-				</div>
-			</el-scrollbar>
+			<div class="min-h-[150px] px-[10px]">
+				<!-- 卸载前校验（统一校验组件）：通过后自动执行卸载 -->
+				<verify-panel v-if="uninstallShowDialog" scene="addon_uninstall" :params="{ addon: uninstallAddonKey }"
+					:auto-next="true" :show-prev="false" :next-text="t('confirm')" @next="doUninstall" />
+			</div>
 		</el-dialog>
 
 		<!-- 下载提示 -->
@@ -725,192 +667,191 @@
 			</template>
 		</el-dialog>
 
-		<el-card class="box-card app-detail-static !border-none" shadow="never" v-if="!loading && isShowDetail">
-			<div class="flex items-center text-[14px] text-primary cursor-pointer mb-[20px]" @click="closeDetail">
-				<el-icon class="mr-[6px]"><ArrowLeft /></el-icon>
-				<span>返回应用列表</span>
-			</div>
-
-			<div class="border-[1px] border-solid border-[#EBEEF5] p-[20px]">
-
-				<div class="flex items-center justify-between">
-					<div class="flex items-center">
-						<div class="w-[42px] h-[42px] rounded-[6px] flex items-center justify-center mr-[10px] overflow-hidden">
-							<el-image class="w-full h-full" :src="img(detailAddon?.icon)" fit="contain">
+		<!-- 应用详情抽屉：内容沿用原整页详情 -->
+		<el-drawer v-model="isShowDetail" class="am-drawer" direction="rtl" size="560px" :with-header="false" @closed="resetDetail">
+			<div class="am-detail" v-if="detailAddon">
+				<div class="am-detail__head">
+					<div class="am-detail__head-main">
+						<span class="am-detail__tile">
+							<!-- 与卡片（am-card__logo）一致：cover 铺满整个图标块，不留白边 -->
+							<el-image class="am-detail__logo" :src="img(detailIcon)" fit="cover">
 								<template #error>
-									<div class="flex items-center w-full h-full">
-										<img class="max-w-full max-h-full" src="@/app/assets/images/icon-addon-one.png" alt="" />
-									</div>
+									<img class="am-detail__tile-default" src="@/app/assets/images/icon-addon-one.png" alt="" />
 								</template>
 							</el-image>
-						</div>
-						<div>
-							<div class="text-[16px] font-[500] leading-[20px]">{{ detailAddon?.title || '-' }}</div>
-							<div class="text-[12px] text-[#374151] leading-[18px] mt-[5px]">{{ detailAddon?.key || '-' }}</div>
-						</div>
-					</div>
-					<div class="flex items-center ml-[auto] gap-[10px] detail-btn-box">
-						<template v-if="detailAddon.key != 'niucloud-admin'">
-							<el-button v-if="!detailAddon.is_download"
-								type="primary"
-								class="download-btn !bg-[#0766F5]"
-								:loading="downloading == detailAddon.key"
-								:disabled="downloading != ''"
-								@click.stop="downEvent(detailAddon)"
-								>安装
-							</el-button>
-							<el-button v-else-if="!detailAddon.install_info || Object.keys(detailAddon.install_info).length == 0" type="primary" class="!bg-[#0766F5]" @click.stop="installAddonFn(detailAddon.key)">安装</el-button>
-							<el-button
-								type="warning"
-								@click.stop="upgradeAddonFn(detailAddon)"
-								v-else-if="detailAddon.install_info.version != detailAddon.version"
-							>
-								升级
-							</el-button>
-							<el-button type="info" v-if="detailAddon.is_download && (!detailAddon.install_info || !Object.keys(detailAddon.install_info).length)" @click="deleteAddonFn(detailAddon.key)"> 删除 </el-button>
-							<el-button type="info" v-if="detailAddon.is_download && detailAddon.install_info && Object.keys(detailAddon.install_info).length" @click="uninstallAddonFn(detailAddon.key)"> 卸载 </el-button>
-						</template>
-						<template v-else>
-							<el-button
-								type="warning"
-								@click.stop="upgradeAddonFn(detailAddon)"
-								v-if="detailAddon.install_info.version != detailAddon.version"
-							>
-								升级
-							</el-button>
-						</template>
-					</div>
-				</div>
-
-				<div class="app-section-header mt-[20px] mb-[12px]" v-if="detailAddon?.type || detailAddon?.desc">
-					<div class="app-section-title">应用信息</div>
-					<div class="app-section-line"></div>
-				</div>
-				<div class="space-y-[10px] text-[14px]" v-if="detailAddon?.type || detailAddon?.desc">
-					<div class="flex items-center">
-						<div class="w-[84px] text-[#9699B6]">应用类型：</div>
-						<div class="text-[#374151]">{{ detailAddon?.type == 'app' ? '应用' : '插件' }}</div>
-					</div>
-					<div class="flex items-start">
-						<div class="w-[84px] text-[#9699B6] pt-[2px]">应用简介：</div>
-						<div class="text-[#374151] flex-1">{{ detailAddon?.desc || '-' }}</div>
-					</div>
-				</div>
-
-				<div class="app-section-header mt-[20px] mb-[12px]">
-					<div class="app-section-title">服务周期</div>
-					<div class="app-section-line"></div>
-				</div>
-				<div class="space-y-[10px] text-[14px]">
-					<div class="flex items-center">
-						<div class="w-[84px] text-[#9699B6]">有效期至：</div>
-						<div class="text-[#374151] flex items-center">
-							<div class="text-[#374151]">{{ detailAddon.expire_time || '--' }}</div>
-							<div class="ml-[10px] flex items-center gap-[3px]" v-if="detailAddon.app_id">
-								<span class="iconfont icongouwuche text-[var(--el-color-primary)]"></span>
-								<span class="text-[var(--el-color-primary)] text-[14px] cursor-pointer" @click="toLink('pc')">续费应用</span>
+						</span>
+						<div class="am-detail__ident">
+							<h2 class="am-detail__title" :title="detailAddon?.title || '-'">{{ detailAddon?.title || '-' }}</h2>
+							<p class="am-detail__key" :title="detailAddon?.key || ''">{{ detailAddon?.key || '-' }}</p>
+							<div class="am-detail__badges">
+								<span class="am-pill am-pill--muted">{{ detailAddon?.type == 'app' ? '应用' : '插件' }}</span>
+								<span v-if="detailInstalled" class="am-pill am-pill--ok"><i class="am-pill__dot"></i>已安装</span>
+								<span v-else class="am-pill am-pill--muted">未安装</span>
+								<span v-if="detailCanUpgrade" class="am-pill am-pill--warn">可升级</span>
 							</div>
 						</div>
 					</div>
+					<button type="button" class="am-detail__close" aria-label="关闭" @click="closeDetail">
+						<el-icon><Close /></el-icon>
+					</button>
 				</div>
 
-				<template v-if="detailAddon?.author || detailAddon?.author_phone">
-					<div class="app-section-header mt-[20px] mb-[12px]">
-						<div class="app-section-title">开发者信息</div>
-						<div class="app-section-line"></div>
-					</div>
-					<div class="space-y-[10px] text-[14px]">
-						<div class="flex items-center">
-							<div class="w-[84px] text-[#9699B6]">开发者：</div>
-							<div class="text-[#374151]">{{ detailAddon?.author || '-' }}</div>
-						</div>
-						<div class="flex items-center" v-if="detailAddon?.author_phone">
-							<div class="w-[84px] text-[#9699B6]">联系方式：</div>
-							<div class="text-[#374151] inline-flex items-center">
-								{{detailAddon?.author_phone}}
-								<el-icon class="ml-[6px] text-primary"><Phone /></el-icon>
+				<div class="am-detail__body">
+					<p class="am-detail__desc" v-if="detailAddon?.desc">{{ detailAddon.desc }}</p>
+
+					<div class="am-detail__block">
+						<h3 class="am-detail__block-title">应用信息</h3>
+						<dl class="am-kv">
+							<div v-if="detailAddon?.type">
+								<dt>应用类型</dt>
+								<dd>{{ detailAddon.type == 'app' ? '应用' : '插件' }}</dd>
 							</div>
-						</div>
+							<div v-if="detailAddon?.key">
+								<dt>应用标识</dt>
+								<dd :title="detailAddon.key">{{ detailAddon.key }}</dd>
+							</div>
+							<div>
+								<dt>当前版本</dt>
+								<dd>{{ detailCurrentVersion }}</dd>
+							</div>
+						</dl>
 					</div>
-				</template>
 
-				<div class="app-section-header mt-[20px] mb-[12px]" v-if="detailAddon.key != 'niucloud-admin' && detailAddon.app_id">
-					<div class="app-section-title">访问应用</div>
-					<div class="app-section-line"></div>
-				</div>
-				<div class="flex gap-[30px]" v-if="detailAddon.key != 'niucloud-admin' && detailAddon.app_id">
-					<div class="bg-[#F5F5F5] w-[336px] h-[60px] px-[20px] flex items-center justify-between cursor-pointer" @click="toLink('pc')">
-						<div class="flex items-center">
-							<div class="w-[28px] h-[28px] flex items-center justify-center mr-[2px]">
+					<div class="am-detail__block">
+						<h3 class="am-detail__block-title">服务周期</h3>
+						<dl class="am-kv">
+							<div>
+								<dt>有效期至</dt>
+								<dd>
+									<span>{{ detailAddon.expire_time || '--' }}</span>
+									<span class="am-kv__link" v-if="detailAddon.app_id" @click="toLink('pc')">续费应用</span>
+								</dd>
+							</div>
+						</dl>
+					</div>
+
+					<div class="am-detail__block" v-if="detailAddon?.author || detailAddon?.author_phone">
+						<h3 class="am-detail__block-title">开发者信息</h3>
+						<dl class="am-kv">
+							<div v-if="detailAddon?.author">
+								<dt>开发者</dt>
+								<dd :title="detailAddon.author">{{ detailAddon.author }}</dd>
+							</div>
+							<div v-if="detailAddon?.author_phone">
+								<dt>联系方式</dt>
+								<dd>{{ detailAddon.author_phone }}</dd>
+							</div>
+						</dl>
+					</div>
+
+					<div class="am-detail__block" v-if="detailAddon.key != 'niucloud-admin' && detailAddon.app_id">
+						<h3 class="am-detail__block-title">访问应用</h3>
+						<div class="am-chips">
+							<button type="button" class="am-chip" @click="toLink('pc')">
 								<el-icon><Monitor /></el-icon>
-							</div>
-							<div class="text-[14px] text-[#374151]">PC端应用主页</div>
-						</div>
-						<span class="iconfont iconjiang-right"></span>
-					</div>
-					<div class="bg-[#F5F5F5] w-[336px] h-[60px] px-[20px] flex items-center justify-between cursor-pointer" @click="toLink('pc')">
-						<div class="flex items-center">
-							<div class="w-[28px] h-[28px] flex items-center justify-center mr-[2px]">
+								PC端应用主页
+							</button>
+							<button type="button" class="am-chip" @click="toLink('wap')">
 								<el-icon><Cellphone /></el-icon>
-							</div>
-							<div class="text-[14px] text-[#374151]">移动端应用主页</div>
+								移动端应用主页
+							</button>
 						</div>
-						<span class="iconfont iconjiang-right"></span>
+					</div>
+
+					<div class="am-detail__block">
+						<h3 class="am-detail__block-title">更新历史</h3>
+						<div class="am-log-wrap" v-loading="detailLogLoading">
+							<ol class="am-log" v-if="detailVersionList.length">
+								<li v-for="(item, index) in detailVersionList" :key="item.version_no || index">
+									<div class="am-log__head">
+										<span>v{{ item.version_no }}</span>
+										<span class="am-log__time">{{ timeSplit(item.release_time)[0] }}</span>
+									</div>
+									<div class="am-log__body" v-if="item.upgrade_log" v-html="item.upgrade_log"></div>
+								</li>
+							</ol>
+							<p class="am-log__empty" v-else>暂无版本更新信息</p>
+						</div>
 					</div>
 				</div>
 
-				<div class="app-section-header mt-[20px] mb-[12px]">
-					<div class="app-section-title">应用版本</div>
-					<div class="app-section-line"></div>
-				</div>
-				<div class="flex items-center text-[14px]">
-					<div class="w-[84px] text-[#9699B6]">当前版本：</div>
-					<div class="text-[#374151]">{{ detailCurrentVersion }}</div>
-				</div>
-
-				<div class="app-section-header mt-[20px] mb-[12px]">
-					<div class="app-section-title">更新历史</div>
-					<div class="app-section-line"></div>
-				</div>
-				<div class="detail-upgrade-log -mx-[20px] h-[500px] overflow-auto" v-loading="detailLogLoading">
-					<el-scrollbar class="px-[20px]">
-						<el-timeline style="width: 100%" v-if="detailVersionList.length">
-							<el-timeline-item v-for="(item, index) in detailVersionList" :key="item.version_no || index" placement="left">
-								<el-collapse v-model="detailLogActive" accordion>
-									<el-collapse-item :name="index">
-										<template #title>
-											<div class="flex items-center justify-between flex-1">
-												<div class="flex flex-col items-baseline">
-													<p class="text-[#1D1F3A] text-[14px]">版本：V{{ item.version_no }} </p>
-													<div class="flex items-center leading-[1] mt-[2px]">
-														<span class="text-[#9699B6] text-[14px]">{{ timeSplit(item.release_time)[0] }}</span>
-														<span class="text-[#9699B6] text-[14px] ml-[3px]">{{ timeSplit(item.release_time)[1] }}</span>
-													</div>
-												</div>
-												<div class="flex items-center collapse-arrow">
-													<span class="expand text-[14px] !text-[#374151]">更新内容</span>
-													<span class="fold-up text-[14px] !text-[#374151]">收起</span>
-													<span class="nc-iconfont nc-icon-xiaV6xx ml-[2px] text-[#9699B6]"></span>
-												</div>
-											</div>
-										</template>
-										<div class="timeline-log-wrap" v-if="item.upgrade_log">
-											<div v-html="item.upgrade_log"></div>
-										</div>
-									</el-collapse-item>
-								</el-collapse>
-							</el-timeline-item>
-						</el-timeline>
-						<el-empty v-else description="暂无版本更新信息" />
-					</el-scrollbar>
+				<div class="am-detail__foot">
+					<!-- 校验：框架的检测目标只认 framework（列表 key 是 niucloud-admin，后端不认），走 openFrameworkDiff；
+					     插件走原有的 canDiff + openDiff。两者占同一个位置、同一个样式，和插件弹框保持一致 -->
+					<button v-if="isFrameworkDetail" type="button" class="am-btn am-btn--outline" @click="openFrameworkDiff">
+						{{ t('diffVerify') }}
+					</button>
+					<button v-else-if="canDiff(detailAddon)" type="button" class="am-btn am-btn--outline" @click="openDiff(detailAddon)">
+						{{ t('diffVerify') }}
+					</button>
+					<template v-if="!isFrameworkDetail">
+						<button
+							v-if="!detailAddon.is_download"
+							type="button"
+							class="am-btn am-btn--primary"
+							:disabled="downloading != ''"
+							@click.stop="downEvent(detailAddon)"
+						>
+							{{ downloading == detailAddon.key ? '安装中…' : '安装' }}
+						</button>
+						<button
+							v-else-if="!detailAddon.install_info || Object.keys(detailAddon.install_info).length == 0"
+							type="button"
+							class="am-btn am-btn--primary"
+							@click.stop="installAddonFn(detailAddon.key)"
+						>
+							安装
+						</button>
+						<button
+							v-else-if="detailAddon.install_info.version != detailAddon.version"
+							type="button"
+							class="am-btn am-btn--primary"
+							@click.stop="upgradeAddonFn(detailAddon)"
+						>
+							升级
+						</button>
+					</template>
+					<!-- 框架：有新版才显示升级。detailCanUpgrade 用 isNeedUpgrade 逐段比较版本，
+					     比原来直接比 != 更稳（也顺带挡住 install_info 缺失的情况） -->
+					<button
+						v-else-if="detailCanUpgrade"
+						type="button"
+						class="am-btn am-btn--primary"
+						@click.stop="upgradeAddonFn(detailAddon)"
+					>
+						升级
+					</button>
+					<span class="am-detail__spacer"></span>
+					<button
+						v-if="detailAddon.key != 'niucloud-admin' && detailAddon.is_download && (!detailAddon.install_info || !Object.keys(detailAddon.install_info).length)"
+						type="button"
+						class="am-btn am-btn--danger"
+						@click="deleteAddonFn(detailAddon.key)"
+					>
+						删除
+					</button>
+					<button
+						v-else-if="detailAddon.key != 'niucloud-admin' && detailAddon.is_download && detailAddon.install_info && Object.keys(detailAddon.install_info).length"
+						type="button"
+						class="am-btn am-btn--danger"
+						@click="uninstallAddonFn(detailAddon.key)"
+					>
+						卸载
+					</button>
 				</div>
 			</div>
-		</el-card>
+		</el-drawer>
 	</div>
+	<!-- 文件差异弹框（公共组件）：传入应用标识与图标 -->
+	<file-diff v-model:show="diffVisible" :target="diffTarget" :icon="diffIcon" />
 	<upgrade-log :upgradeKey="upgradeKey" ref="upgradeLogRef" />
 	<upgrade ref="upgradeRef" @complete="upgradeCompleteFn" @cloudbuild="handleCloudBuild" />
-	<cloud-build ref="cloudBuildRef" />
-</template>
+
+	<!-- 云编译前校验（统一校验组件） -->
+	<el-dialog v-model="cloudCheckVisible" title="编译环境校验" width="580px" :destroy-on-close="true" append-to-body>
+	    <verify-panel scene="cloud_build" :show-footer="false" />
+	</el-dialog>
+	</template>
 
 <script lang="ts" setup>
 import { ref, reactive, watch, h, computed, nextTick } from 'vue'
@@ -919,13 +860,11 @@ import {
 	getAddonLocal,
 	uninstallAddon,
 	installAddon,
-	preInstallCheck,
 	cloudInstallAddon,
 	getAddonInstalltask,
 	getAddonCloudInstallLog,
-	preUninstallCheck,
 	cancelInstall,
-	getAddonInit,
+	getAddonInit
 } from '@/app/api/addon'
 import { deleteAddonDevelop } from '@/app/api/tools'
 import { downloadVersion, getAuthInfo, setAuthInfo, getFrameworkNewVersion, getAppVersionList } from '@/app/api/module'
@@ -938,9 +877,14 @@ import storage from '@/utils/storage'
 import { useRouter, useRoute } from 'vue-router'
 import useUserStore from '@/stores/modules/user'
 import Upgrade from '@/app/components/upgrade/index.vue'
-import CloudBuild from '@/app/components/cloud-build/index.vue'
+import VerifyPanel from '@/app/components/verify-panel/index.vue'
 import UpgradeLog from '@/app/components/upgrade-log/index.vue'
+import FileDiff from '@/components/file-diff/index.vue'
 import { deepClone, img } from '@/utils/common'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
+
+// 列表模式的表格占满剩余空间，超出部分在表格内部滚动（卡片模式仍保持整页滚动）
+const { pageRef, pageStyle, refreshTablePageHeight } = useTablePageHeight()
 
 const tableRef = ref(null)
 const router = useRouter()
@@ -948,7 +892,8 @@ const route = useRoute()
 const terminalId = ref(Date.now())
 const activeName = ref(storage.get('storeActiveName') || 'installed')
 const upgradeRef = ref(null)
-const cloudBuildRef = ref(null)
+/** 云编译前校验弹窗（统一校验组件） */
+const cloudCheckVisible = ref(false)
 const loading = ref<Boolean>(true)
 const downloading = ref('')
 const installAfterTips = ref<string[]>([])
@@ -960,6 +905,32 @@ const frameworkVersionCode = ref('')
 const upgradeLogRef = ref<any>(null)
 const showType = ref(storage.get('storeShowType') || 'card')
 const frameworkNewVersion = ref('')
+
+// 应用详情  ------ start
+const isShowDetail = ref(false)
+const detailAddon = ref<any>(null)
+	
+
+/**
+ * Only regard a version as updatable when both values are valid semantic
+ * version strings. The version request is asynchronous, so either value can
+ * temporarily be empty while the "recentlyUpdated" tab is rendering.
+ */
+const isNeedUpgrade = (currVersion: unknown, onlineVersion: unknown) => {
+	if (typeof currVersion !== 'string' || typeof onlineVersion !== 'string') return false
+
+	const current = currVersion.match(/^\d+(?:\.\d+)*$/)?.[0]?.split('.').map(Number)
+	const online = onlineVersion.match(/^\d+(?:\.\d+)*$/)?.[0]?.split('.').map(Number)
+	if (!current || !online) return false
+
+	const length = Math.max(current.length, online.length)
+	for (let index = 0; index < length; index++) {
+		const difference = (online[index] ?? 0) - (current[index] ?? 0)
+		if (difference !== 0) return difference > 0
+	}
+	return false
+}
+
 const searchParam = reactive({
 	keywords: '',
 	type: '',
@@ -975,6 +946,11 @@ const getFrameworkInfo = ()=>{
 }
 getFrameworkInfo()
 
+/** 是否存在框架更新（与页面原有判断口径保持一致） */
+const frameworkHasUpdate = computed(
+	() => frameworkVersion.value != frameworkNewVersion.value && isNeedUpgrade(frameworkVersion.value, frameworkNewVersion.value)
+)
+
 
 
 const upgradeCompleteFn = ()=>{
@@ -985,6 +961,8 @@ const upgradeCompleteFn = ()=>{
 const switchShowType = () => {
 	showType.value = showType.value == 'card' ? 'list' : 'card'
 	storage.set({ key: 'storeShowType', data: showType.value })
+	// 只有列表模式需要撑满：切过来时元素刚由隐藏变为可见，重新量一次剩余高度
+	if (showType.value == 'list') nextTick(refreshTablePageHeight)
 }
 
 const typeList = ref({})
@@ -1013,6 +991,8 @@ const activeNameTabFn = (data: any) => {
 	if (isShowDetail.value){
 		closeDetail()
 	}
+	// 页签切换会改变头部高度（如「可更新」多一行汇总），重算表格剩余高度
+	nextTick(refreshTablePageHeight)
 }
 if (route.query.id) {
 	activeNameTabFn(route.query.id)
@@ -1049,8 +1029,6 @@ getAuthInfo().then((res) => {
 /**
  * 本地下载的插件列表
  */
-const search_name = ref('')
-const search_type = ref('')
 // 表格展示数据
 const info = ref({
 	installed: [],
@@ -1088,11 +1066,12 @@ const buildInfo = (list: any[]) => {
 }
 
 const query = () => {
-	const name = search_name.value
-	const type = search_type.value
+	// 取筛选区的真实状态（输入框 / 应用类型下拉都绑定在 searchParam 上）
+	const name = searchParam.keywords
+	const type = searchParam.type
 
 	// 如果没填搜索关键词也没选类型，重置所有列表
-	if ((!name || name === '') && (type === '' || type == null)) {
+	if (!name && !type) {
 		info.value.installed = buildInfo(localList.value.installed)
 		info.value.uninstalled = buildInfo(localList.value.uninstalled)
 		info.value.all = buildInfo(localList.value.all)
@@ -1145,7 +1124,8 @@ const localListFn = () => {
 					if (data[i].is_download == true) localList.value.uninstalled.push(data[i])
 				}
 			}
-			query()
+			// 走 searchFn：数据重新加载后依然套用当前的关键词 / 应用类型筛选
+			searchFn()
 			userStore.routers.forEach((item, index) => {
 				if (item.children && item.children.length) {
 					item.name = findFirstValidRoute(item.children)
@@ -1175,28 +1155,37 @@ const noAppLen = computed(()=>{
 	return num == localList.value[activeName.value].length
 })
 
-const searchFormRef = ref<FormInstance>()
+/** 应用市场页签（带数量徽标） */
+const storeTabs = computed(() => [
+	{ key: 'installed', label: '已安装', count: localList.value.installed.length, warn: false },
+	{ key: 'uninstalled', label: '未安装', count: localList.value.uninstalled.length, warn: false },
+	{ key: 'all', label: '已购买', count: localList.value.all.length, warn: false },
+	{ key: 'recentlyUpdated', label: '可更新', count: localList.value.recentlyUpdated.length, warn: true },
+])
+
 const searchFn = ()=>{
+	const keywords = searchParam.keywords
+	const type = searchParam.type
 	localList.value[activeName.value].forEach(item=>{
-		item.isHideen = true
-		let keywords = searchParam.keywords;
-		let type = searchParam.type;
 		const typeMatch = !type || item.type === type;
 		const keywordsMatch = !keywords || item.title.indexOf(keywords) !== -1;
-		if(typeMatch && keywordsMatch){
-			item.isHideen = false
-		}
+		item.isHideen = !(typeMatch && keywordsMatch)
 	})
 
-	if(showType.value != 'card') query()
+	// 卡片模式靠 isHideen 隐藏卡片，列表模式的数据源是 info，两种模式都要同步一遍
+	query()
 }
 
-const resetForm = (formEl: FormInstance | undefined) => {
-    if (!formEl) return
-    formEl.resetFields()
-	searchParam.keywords = ''
-	searchParam.type = ''
-	searchFn()
+/**
+ * 输入框内容变化
+ *
+ * 搜索改成「点『搜索』或回车」提交之后，清空输入框必须自己把列表恢复回来 ——
+ * 否则用户把关键字删干净，列表还是筛剩的那几条，会以为界面坏了。
+ * 只在清空时触发：输入过程中不再发请求（列表模式下 searchFn() 会去打接口，
+ * 原来每敲一个字就发一次）。
+ */
+const onKeywordsInput = () => {
+	if (!searchParam.keywords) searchFn()
 }
 
 // 点击应用可以进系统
@@ -1221,8 +1210,37 @@ const installShowDialog = ref(false)
 // 安装步骤
 const installStep = ref(0)
 
-// 安装检测结果
-const installCheckResult = ref({})
+// 安装前校验是否通过（由统一校验组件的 passed / failed 事件驱动）
+const installCheckPass = ref(false)
+
+/** 安装前校验组件实例（用于「重新校验」触发组件内部的 retry） */
+const installCheckRef = ref<any>(null)
+/** 校验是否已出结果：未通过时才展示「重新校验」入口 */
+const installCheckDone = ref(false)
+/** 重新校验中（按钮 loading） */
+const installCheckRetrying = ref(false)
+
+/** 校验结束（通过 / 未通过都会触发 done） */
+const onInstallCheckDone = () => {
+	installCheckDone.value = true
+}
+
+/**
+ * 重新校验：清空上一次结论并原地重跑一轮
+ * （组件内部会重建清单、重连 SSE，未通过项处理完即可直接通过）
+ */
+const reCheckInstall = async () => {
+	if (installCheckRetrying.value) return
+
+	installCheckRetrying.value = true
+	installCheckPass.value = false
+	installCheckDone.value = false
+	try {
+		await installCheckRef.value?.retry()
+	} finally {
+		installCheckRetrying.value = false
+	}
+}
 
 let flashInterval = null
 const terminalFlash = new TerminalFlash()
@@ -1261,16 +1279,16 @@ function makeIterator(array: string[]) {
 const installAddonFn = (key: string) => {
 	currAddon.value = key
 
-	preInstallCheck(key).then((res) => {
-		installStep.value = 0
-		isBack.value = false
-		errorDialog.value = false
-		installType.value = ''
-		installShowDialog.value = true
-		installAfterTips.value = []
-		installCheckResult.value = res.data
-		userStore.clearRouters()
-	})
+	// 安装前校验交由统一校验组件（弹窗内 SSE 实时推送各项结果）
+	installCheckPass.value = false
+	installCheckDone.value = false
+	installStep.value = 0
+	isBack.value = false
+	errorDialog.value = false
+	installType.value = ''
+	installShowDialog.value = true
+	installAfterTips.value = []
+	userStore.clearRouters()
 }
 
 /**
@@ -1290,7 +1308,7 @@ const getInstallTask = (first: boolean = true) => {
 					currAddon.value = res.data.addon
 					if (!installShowDialog.value) {
 						notificationEl = ElNotification.success({
-							title: t('warning'),
+							title: '提示',
 							dangerouslyUseHTMLString: true,
 							message: h('div', {}, [
 								t('installingTips'),
@@ -1377,7 +1395,7 @@ const localInstalling = ref(false)
  */
 const installType = ref('')
 const handleInstall = () => {
-	if (!installCheckResult.value.is_pass || localInstalling.value) return
+	if (!installCheckPass.value || localInstalling.value) return
 	installType.value = 'local'
 	localInstalling.value = true
 	upgradeStartTime.value = Date.now()
@@ -1414,7 +1432,7 @@ const handleCloudInstall = () => {
 		return
 	}
 
-	if (!installCheckResult.value.is_pass || cloudInstalling.value) return
+	if (!installCheckPass.value || cloudInstalling.value) return
 	cloudInstalling.value = true
 	installType.value = 'cloud'
 
@@ -1498,14 +1516,14 @@ const getCloudInstallLog = () => {
 }
 
 watch(currAddon, (nval) => {
-	installCheckResult.value = {}
+	installCheckPass.value = false
 })
 
 // 卸载面板弹窗
 const uninstallShowDialog = ref(false)
 
-// 卸载环境检测结果
-const uninstallCheckResult = ref({})
+// 当前待卸载的插件标识（传给统一校验场景）
+const uninstallAddonKey = ref('')
 
 /**
  * 卸载
@@ -1517,8 +1535,29 @@ const uninstallAddonFn = (key: string) => {
 		cancelButtonText: t('cancel'),
 		type: 'warning',
 	}).then(() => {
-		handleUninstallAddon(key)
+		// 卸载前校验交由统一校验组件：打开弹窗逐项校验，通过后自动执行卸载
+		uninstallAddonKey.value = key
+		uninstallShowDialog.value = true
 	})
+}
+
+/**
+ * 执行卸载：由统一校验组件校验通过后触发
+ */
+const doUninstall = () => {
+	const key = uninstallAddonKey.value
+	if (!key) return
+
+	uninstallAddon({ addon: key })
+		.then((res) => {
+			localListFn()
+			userStore.clearRouters()
+			loading.value = false
+			uninstallShowDialog.value = false
+		})
+		.catch(() => {
+			loading.value = false
+		})
 }
 
 /**
@@ -1537,37 +1576,17 @@ const handleCloudBuild = () => {
 		authElMessageBox()
 		return
 	}
-	if (cloudBuildRef.value.cloudBuildTask) {
-		cloudBuildRef.value?.open()
-		return
-	}
 	ElMessageBox.confirm(t('cloudBuildTips'), t('warning'), {
 		confirmButtonText: t('confirm'),
 		cancelButtonText: t('cancel'),
 		type: 'warning',
 	}).then(() => {
-		cloudBuildRef.value?.open()
+		// 编译前校验统一由通用校验组件完成（SSE 实时推送各项结果）
+		cloudCheckVisible.value = true
 	})
 }
 
-const handleUninstallAddon = (key: string) => {
-	preUninstallCheck(key).then(({ data }) => {
-		if (data.is_pass) {
-			uninstallAddon({ addon: key })
-				.then((res) => {
-					localListFn()
-					userStore.clearRouters()
-					loading.value = false
-				})
-				.catch(() => {
-					loading.value = false
-				})
-		} else {
-			uninstallCheckResult.value = data
-			uninstallShowDialog.value = true
-		}
-	})
-}
+// 卸载前校验由统一校验组件承担（scene=addon_uninstall），通过后执行 doUninstall()
 
 const market = () => {
 	window.open('https://www.niucloud.com/app')
@@ -1722,19 +1741,23 @@ const appKeySingleSelect = (event: any, key: string) => {
 }
 
 const batchUpgrade = () => {
-	const appKeys = deepClone(batchUpgradeApp.value)
-	if (frameworkVersion.value != frameworkNewVersion.value && isNeedUpgrade(frameworkVersion.value, frameworkNewVersion.value)) {
+	// 顶部框架栏常驻：未勾选任何应用时，默认升级全部可更新应用
+	const selected = batchUpgradeApp.value.length
+		? batchUpgradeApp.value
+		: localList.value.recentlyUpdated.map((item: any) => item.key)
+	const appKeys = deepClone(selected)
+	if (frameworkHasUpdate.value && !appKeys.includes('niucloud-admin')) {
 		appKeys.unshift('niucloud-admin')
 	}
 	if (!appKeys.length) {
 		ElMessage({
-			message: localList.recentlyUpdated.length ? '请先勾选要升级的插件' : '当前已是最新版',
+			message: '当前已是最新版',
 			type: 'error',
 			duration: 5000,
 		})
 		return
 	}
-	upgradeAddonFn({'key': appKeys.toString()})
+	upgradeAddonFn({ key: appKeys.toString() })
 }
 
 const batchInstall = () => {
@@ -1750,14 +1773,35 @@ const visibleRowKeys = computed(() => {
 	return new Set((info.value[activeName.value] || []).map((row) => row.key))
 })
 
-// 应用详情  ------ start
-const isShowDetail = ref(false)
-const detailAddon = ref<any>(null)
+
+/** 框架 logo：站点静态资源里的 app.ico —— 顶部框架栏与框架详情共用同一份，避免两处各写一个路径 */
+const frameworkIcon = '/static/resource/icon/app.ico'
+
+/**
+ * 详情头部展示的图标
+ *
+ * 框架在应用列表里的 key 是 niucloud-admin，它没有云端图标 ——
+ * 顶部框架栏「更新记录」入口造的那条数据里压根没有 icon，
+ * 直接用 detailAddon.icon 会落到兜底图 icon-addon-one 上，
+ * 和外面的框架栏（app.ico）不是一个东西。
+ */
+const detailIcon = computed(() =>
+	detailAddon.value?.key === 'niucloud-admin' ? frameworkIcon : detailAddon.value?.icon || ''
+)
 
 const detailInstalled = computed(() => {
 	const installInfo = detailAddon.value?.install_info
 	return Boolean(installInfo && Object.keys(installInfo).length)
 })
+const detailCanUpgrade = computed(() => {
+	const installInfo = detailAddon.value?.install_info
+	if (!installInfo || !Object.keys(installInfo).length) return false
+	const latest = detailAddon.value?.version
+	return Boolean(latest) && installInfo.version != latest && isNeedUpgrade(installInfo.version, latest)
+})
+
+/** 当前详情打开的是不是框架（应用列表里框架的 key 是 niucloud-admin） */
+const isFrameworkDetail = computed(() => detailAddon.value?.key === 'niucloud-admin')
 const detailCurrentVersion = computed(() => {
 	const installInfo = detailAddon.value?.install_info
 	if (installInfo && Object.keys(installInfo).length) return installInfo.version || '-'
@@ -1796,8 +1840,71 @@ const openDetail = (row: any) => {
 
 const closeDetail = () => {
 	isShowDetail.value = false
+}
+
+/** 抽屉关闭动画结束后再清理数据，避免关闭过程中内容闪空 */
+const resetDetail = () => {
+	if (isShowDetail.value) return
 	detailAddon.value = null
 	detailVersionList.value = []
+}
+
+/** 「文件差异」弹框：只有已安装、且不是框架的条目才有本地文件可比对 */
+const diffVisible = ref(false)
+const diffTarget = ref('')
+const diffIcon = ref('')
+
+/**
+ * 是否显示「文件差异」入口
+ *
+ * - 未安装 / 未下载的条目本地没有文件，检测没有意义；
+ * - is_local = 本地自有（云端商城里没有这个应用）：云端没有它的官方包，
+ *   清单与官方内容都取不到，比不了；
+ * - 框架在应用列表里的 key 是 niucloud-admin，而检测目标只认 framework，
+ *   直接传会被后端以「未找到检测目标」拒绝，所以先不对框架开放。
+ */
+const canDiff = (row: any) => {
+	if (!row?.key || row.key === 'niucloud-admin') return false
+	// 本地自有应用（is_local=true）云端没有官方包，校验无从比对
+	if (row.is_local) return false
+	return Boolean(row.install_info && Object.keys(row.install_info).length)
+}
+
+const openDiff = (row: any) => {
+	diffTarget.value = row.key
+	diffIcon.value = row.icon
+	diffVisible.value = true
+}
+
+/**
+ * 卡片：是否「已安装且已是最新」
+ *
+ * 成立时右侧不再单独报「最新版本」（两个值本来就相同），
+ * 而是在「当前版本 x.y.z」后面紧跟一个「最新」标记。
+ *
+ * ★ 必须要求「已安装」：未安装的应用没有当前版本可言（那种情况下
+ *   当前与最新两个值只是都取了 row.version），说它「已经是最新版本」是错的。
+ */
+const cardUpToDate = (row: any) => {
+	const installInfo = row?.install_info
+	const installed = Boolean(installInfo && Object.keys(installInfo).length)
+
+	return installed && installInfo.version === row.version
+}
+
+/**
+ * 框架的「文件差异」入口（顶部框架栏的按钮，以及框架详情底部的「校验」）
+ *
+ * ★ 目标标识必须传 framework：应用列表里框架的 key 是 niucloud-admin，
+ *   那是商城 / 升级体系用的标识，检测接口只认 framework，
+ *   传过去会被后端直接以「未找到检测目标」拒掉（canDiff 里那段注释说的就是这件事）。
+ * 图标传 frameworkIcon：框架栏和框架详情显示的都是它，弹框里也保持一致，
+ * 不再落到占位图上（原来那条「用的是矢量图标、没有图片地址」的说明已过时）。
+ */
+const openFrameworkDiff = () => {
+	diffTarget.value = 'framework'
+	diffIcon.value = frameworkIcon
+	diffVisible.value = true
 }
 // 应用详情  ------ end
 
@@ -1809,10 +1916,6 @@ const toLink = (type)=>{
 	}
 }
 
-const isNeedUpgrade = (currVersion: string, onlineVersion: string) => {
-    if (isNaN(parseInt(onlineVersion.replaceAll('.', ''))) || isNaN(parseInt(currVersion.replaceAll('.', '')))) return false
-    return parseInt(onlineVersion.replaceAll('.', '')) > parseInt(currVersion.replaceAll('.', ''))
-}
 </script>
 
 <style lang="scss" scoped>
@@ -1911,7 +2014,10 @@ html.dark .table-head-bg {
 :deep(.el-table tr td:first-child) {
 	border-bottom: none;
 	// background-color: inherit !important;
-	height: 100px;
+
+	.cell {
+		height: 100%;
+	}
 }
 
 :deep(.el-table__body tr:hover td:first-child) {
@@ -1997,10 +2103,10 @@ html.dark .table-head-bg {
 	content: '';
 	position: absolute;
 	left: -5px;
-	top: -99px;
-	bottom: 0;
+	top: 0;
 	width: 1px;
-	height: 100px;
+	height: 100%;
+	transform: translateY(-100%);
 	background-color: #f5f5f5;
 }
 
@@ -2110,49 +2216,433 @@ html.dark .table-head-bg {
 	}
 }
 
-.app-card {
-	width: calc((100% - 120px) / 5);
-	min-width: 260px;
+/* ============================================================
+   应用卡片（参考应用中心设计稿换肤，沿用蓝色品牌色）
+   ============================================================ */
+.am-table-key {
+	display: inline-block;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: bottom;
+}
 
-	&.selected {
-		background-color: #f9f9f9;
-		border-color: #f9f9f9;
-	}
+.am-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+	gap: var(--cmp-module-card-gap);
+	align-items: stretch;
+	/* 与框架栏、筛选区同一档：列表页表格间距 */
+	margin: var(--cmp-table-page-section-gap) 0;
 }
-.product-card-item{
-	border: 1px solid #F1F1F1;
-	&:hover{
-		background-color: #f8f8f8;
-		border-color: #f8f8f8;
-	}
-}
-.app-ident{
-	margin: 0 3px;
+
+.am-card {
+	position: relative;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	gap: 10px;
+	overflow: hidden;
+	background: var(--cmp-module-card-bg);
+	border: var(--cmp-module-card-border-width) solid var(--cmp-module-card-border-color);
+	border-radius: var(--cmp-module-card-radius);
+	color: var(--cmp-module-card-text);
+	padding: var(--cmp-module-card-padding) var(--cmp-module-card-padding) var(--sys-space-3);
+	cursor: pointer;
+	transition: border-color .2s, box-shadow .2s, transform .2s;
+
+	/* 顶部渐变高亮条：悬浮时淡入，与站点列表卡片保持一致 */
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		height: var(--cmp-module-card-accent-height);
+		background: linear-gradient(90deg, var(--cmp-module-card-accent-start), var(--cmp-module-card-accent-end));
+		opacity: 0;
+		transition: opacity .3s;
+	}
+}
+
+.am-card:hover {
+	border-color: var(--cmp-module-card-hover-border-color);
+	box-shadow: var(--cmp-module-card-hover-shadow);
+	transform: translateY(var(--cmp-module-card-hover-offset));
+
+	&::before {
+		opacity: 1;
+	}
+}
+
+.am-card--selected {
+	border-color: var(--sys-color-primary);
+	box-shadow: 0 0 0 3px var(--sys-color-primary-soft);
+}
+
+/*
+ * 被筛选条件排除的卡片
+ *
+ * ★ 不能用 Tailwind 的 .hidden：它权重只有 (0,1,0)，而 .am-card 经 scoped 编译后是
+ *   .am-card[data-v-x]（0,2,0），display: flex 会把 display: none 盖掉，卡片照样显示。
+ *   这里用「.am-card + 状态类」两级选择器，权重高于 .am-card 自身，必定生效。
+ */
+.am-card.is-hidden {
+	display: none;
+}
+
+.am-card__head {
+	display: grid;
+	/* 三列：图标 / 名称+标识 / 右上角状态。第三列 auto，宽度只够放下状态标签 */
+	grid-template-columns: 44px 1fr auto;
+	column-gap: 12px;
+	row-gap: 6px;
+}
+
+.am-card__tile {
+	grid-row: 1 / span 2;
+	width: 44px;
+	height: 44px;
+	/* 图标块跟随卡片内的圆角梯度，与站点卡片一致 */
+	border-radius: var(--sys-radius-md);
+	background: var(--sys-color-primary-soft);
+	display: flex;
 	align-items: center;
-	min-width: 32px;
-	width: 32px;
-	height: 16px;
-	border-radius: 3px;
-	background: #F3321D;
-	font-size: 12px;
+	justify-content: center;
+	overflow: hidden;
+	flex: none;
+}
+
+.am-card__logo {
+	width: 100%;
+	height: 100%;
+}
+
+/* 让图标铺满整个图标块（cover 裁切，不留白边） */
+:deep(.am-card__logo .el-image__inner) {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.am-card__logo-default {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.am-card__info {
+	min-width: 0;
+}
+
+.am-card__title-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+}
+
+.am-card__title {
+	font-size: var(--sys-font-size-base);
+	font-weight: var(--sys-font-weight-semibold);
+	color: var(--sys-color-text-primary);
+	line-height: 20px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.am-badge {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 18px;
+	padding: 0 7px;
+	border-radius: var(--sys-radius-sm);
+	font-size: 11px;
+	line-height: 1;
 	color: #fff;
 	white-space: nowrap;
 }
-.addon-ident{
-	margin: 0 3px;
+
+.am-badge--app {
+	background: #f3321d;
+}
+
+.am-badge--addon {
+	background: #8031f0;
+}
+
+/* 应用标识那一行（状态标签已挪到右上角 .am-card__status） */
+.am-card__key-row {
 	display: flex;
-	justify-content: center;
 	align-items: center;
-	min-width: 32px;
-	width: 32px;
-	height: 16px;
-	border-radius: 3px;
-	background: #8031F0;
-	font-size: 12px;
-	color: #fff;
+	gap: 6px;
+	flex-wrap: nowrap;
+	margin-top: 6px;
+	min-width: 0;
+}
+
+/*
+ * 应用状态（可升级 / 已安装 / 兼容提示 …）：卡片右上角
+ *
+ * 位于 head 的第三列，align-self: center —— 该行正是「应用名称 + 应用标识」两行，
+ * 所以状态标签与这两行整体垂直居中。
+ * 标签不压缩（见下方 flex: none）：空间不够时由标识自己出省略号（.am-card__key）。
+ */
+.am-card__status {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: nowrap;
+	align-self: center;
+}
+
+.am-card__status .am-pill {
+	flex: none;
+}
+
+.am-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	height: 20px;
+	padding: 0 8px;
+	border-radius: var(--sys-radius-full);
+	font-size: 11.5px;
+	line-height: 1;
 	white-space: nowrap;
+}
+
+.am-pill--ok {
+	color: #03c92e;
+	background: rgba(3, 201, 46, 0.1);
+}
+
+.am-pill--warn {
+	color: #f09000;
+	background: rgba(240, 144, 0, 0.12);
+}
+
+.am-pill--muted {
+	color: #9699b6;
+	background: #f4f5f7;
+}
+
+.am-pill--danger {
+	color: #f3321d;
+	background: rgba(243, 50, 29, 0.1);
+}
+
+.am-pill__dot {
+	width: 5px;
+	height: 5px;
+	border-radius: var(--sys-radius-full);
+	background: currentColor;
+	flex: none;
+}
+
+.am-card__desc {
+	/* 与上方名称/徽标的间距收紧：卡片 gap 10px + 此处 -4px = 6px */
+	margin-top: -4px;
+	font-size: var(--sys-font-size-xs);
+	line-height: 1.5;
+	color: var(--sys-color-text-secondary);
+	min-height: 18px;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	word-break: break-all;
+}
+
+.am-card__meta {
+	/* 与上方简介的间距收紧：卡片 gap 10px + 此处 -4px = 6px */
+	margin-top: -4px;
+	display: flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	gap: 8px;
+	font-size: var(--sys-font-size-xs);
+	color: var(--sys-color-text-secondary);
+	min-width: 0;
+}
+
+/* 当前版本 / 最新版本 各占一半（flex-basis: 0），多张卡片的标签因此能上下对齐 */
+.am-card__meta-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.am-card__meta-k {
+	color: var(--sys-color-text-secondary);
+	flex: none;
+}
+
+.am-card__meta-v {
+	font-variant-numeric: tabular-nums;
+	color: var(--sys-color-text-regular);
+	white-space: nowrap;
+	/* ★ 版本值不压缩、也不设上限：当前版本 / 最新版本必须完整显示（版本号本身很短，不会撑破一行）。
+	   标识已挪到上面状态标签那一行，这行不再有需要收省略号的内容 */
+	flex: none;
+}
+
+.am-card__meta-v.is-new {
+	color: var(--sys-color-warning);
+	font-weight: var(--sys-font-weight-semibold);
+}
+
+/*
+ * 「最新」标记
+ *
+ * 行内元素，嵌在版本值里、靠一个文本空格跟在版本号后面（见模板）。
+ * 配色与卡片右上角「可升级」状态标签（.am-pill--warn）一致；尺寸不跟它对齐 ——
+ * 那是 20px 高的胶囊，直接套会把版本这一行撑高，这里只借用配色。
+ */
+.am-card__meta-uptodate {
+	padding: 1px 6px;
+	border-radius: var(--sys-radius-sm);
+	color: #f09000;
+	background: rgba(240, 144, 0, 0.12);
+}
+
+.am-card__sep {
+	width: 1px;
+	height: 9px;
+	background: var(--sys-color-border-default);
+	flex: none;
+}
+
+/*
+ * 应用标识（卡片第二行）
+ *
+ * ★ 它才是这一行里「可以被压缩」的元素：状态标签已挪到右上角且不压缩（见 .am-card__status），
+ *   标识却可能很长（如 template_flower_industry）。所以给它 min-width: 0 —— 空间不够时
+ *   由它自己出省略号，而不是把整行挤到第二行（.am-card__key-row 是 flex-wrap: nowrap）。
+ */
+.am-card__key {
+	flex: 0 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--sys-color-text-secondary);
+	/* 12px：比右上角的状态标签（11.5px）略大一档，作为可省略的次要信息 */
+	font-size: 12px;
+}
+
+/*
+ * 卡片底部操作区
+ * 不使用 margin-top:auto 压底：卡片被栅格拉伸后多出的高度会全部堆在
+ * 「版本行 → 操作区」之间，导致间距忽大忽小。这里让内容自然堆叠，
+ * 多余高度留在卡片底部（与 padding 融为一体），行内间距保持恒定。
+ */
+.am-card__foot {
+	/* 与卡片 padding-bottom 保持一致（均为 --sys-space-3），按钮上下留白等距 */
+	padding-top: var(--sys-space-3);
+	border-top: 1px solid var(--sys-color-border-lighter);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	min-height: 32px;
+}
+
+.am-card__foot-left {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+}
+
+.am-card__check {
+	height: auto;
+	margin-right: 0;
+}
+
+.am-card__acts {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-left: auto;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+}
+
+.am-act.el-button {
+	height: 26px;
+	padding: 0 8px;
+	margin-left: 0;
+	font-size: 12px;
+	border-color: transparent;
+	border-radius: var(--sys-radius-sm) !important;
+}
+
+.am-act.el-button > span {
+	display: inline-flex;
+	align-items: center;
+}
+
+.am-act--primary.el-button {
+	color: #0766f5;
+	background: #eaf2ff;
+}
+
+.am-act--primary.el-button:hover {
+	color: #fff;
+	background: #0766f5;
+}
+
+.am-act--ok.el-button {
+	color: #03c92e;
+	background: rgba(3, 201, 46, 0.1);
+}
+
+.am-act--ok.el-button:hover {
+	color: #fff;
+	background: #03c92e;
+}
+
+.am-act--verify.el-button {
+	color: #0766f5;
+	background: #f4f5f7;
+}
+
+.am-act--verify.el-button:hover {
+	color: #0766f5;
+	background: #eaf2ff;
+}
+
+.am-act--muted.el-button {
+	color: #4f516d;
+	background: #f4f5f7;
+}
+
+.am-act--muted.el-button:hover {
+	color: #f3321d;
+	background: rgba(243, 50, 29, 0.08);
+}
+
+@media (max-width: 560px) {
+	.am-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.am-card {
+		transition: none;
+	}
+
+	.am-card:hover {
+		transform: none;
+	}
 }
 
 .app-section-header {
@@ -2173,9 +2663,6 @@ html.dark .table-head-bg {
 	flex: 1;
 	height: 1px;
 	background: #EBEEF5;
-}
-:deep(.app-detail-static .el-card__body){
-	padding-top: 0 !important;
 }
 :deep(.detail-upgrade-log .el-timeline-item) {
 	min-height: 75px;
@@ -2277,13 +2764,775 @@ html.dark .table-head-bg {
 		background-color: #03C92E;
 	}
 }
+
+/* ============================================================
+   顶部框架信息栏（常驻）
+   ============================================================ */
+.am-framework {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sys-space-5);
+	flex-wrap: wrap;
+	/* 与站点列表一致的白底卡片：圆角、边框、内边距 */
+	padding: var(--sys-space-4);
+	margin-bottom: var(--cmp-table-page-section-gap);
+	background: var(--cmp-card-bg, var(--el-bg-color-overlay));
+	border: 1px solid var(--sys-color-border-default);
+	border-radius: var(--sys-radius-lg);
+}
+
+/* ---- 设计稿通用按钮 ---- */
+.am-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 33px;
+	padding: 0 13px;
+	border-radius: var(--sys-radius-md);
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	border: 1px solid transparent;
+	background: transparent;
+	cursor: pointer;
+	transition: background 0.14s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.14s cubic-bezier(0.16, 1, 0.3, 1),
+		color 0.14s cubic-bezier(0.16, 1, 0.3, 1), transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.am-btn:active {
+	transform: scale(0.975);
+}
+
+.am-btn svg {
+	flex: none;
+}
+
+.am-btn--ghost {
+	color: #4f516d;
+}
+
+.am-btn--ghost:hover {
+	background: #f1f2ef;
+	color: #1d1f3a;
+}
+
+.am-btn--outline {
+	border-color: #d3d7d0;
+	color: #1d1f3a;
+	background: #fff;
+}
+
+.am-btn--outline:hover {
+	border-color: #9699b6;
+	background: #f9faf8;
+}
+
+.am-btn--primary {
+	background: #0766f5;
+	color: #fff;
+	box-shadow: 0 1px 2px rgba(29, 31, 58, 0.06);
+}
+
+.am-btn--primary:hover {
+	background: #0553cc;
+}
+
+.am-btn--primary:disabled {
+	opacity: 0.45;
+	pointer-events: none;
+}
+
+.am-btn--danger {
+	color: #f3321d;
+}
+
+.am-btn--danger:hover {
+	background: rgba(243, 50, 29, 0.08);
+	color: #f3321d;
+}
+
+/* ---- 工具栏：页签 + 搜索（参考设计稿） ---- */
+.am-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+	.am-toolbar__right {
+		margin-left: 0;
+		width: 100%;
+	}
+
+	.am-search {
+		flex: 1;
+	}
+
+	.am-search input {
+		width: 100%;
+	}
+}
+
+.am-tabs {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	flex-wrap: wrap;
+}
+
+.am-tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	height: 31px;
+	padding: 0 12px;
+	border-radius: var(--sys-radius-md);
+	font-size: 13px;
+	font-weight: 500;
+	color: #4f516d;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	transition: background 0.14s cubic-bezier(0.16, 1, 0.3, 1), color 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.am-tab:hover {
+	background: var(--el-color-primary-light-9);
+	color: var(--el-color-primary);
+}
+
+.am-tab.is-active {
+	background: var(--el-color-primary);
+	color: #fff;
+	font-weight: 600;
+}
+
+.am-tab__n {
+	font-variant-numeric: tabular-nums;
+	font-size: 11px;
+	font-weight: 500;
+	min-width: 18px;
+	height: 17px;
+	padding: 0 5px;
+	border-radius: var(--sys-radius-full);
+	display: inline-grid;
+	place-items: center;
+	background: #f4f5f7;
+	color: #9699b6;
+}
+
+.am-tab.is-active .am-tab__n {
+	background: rgba(255, 255, 255, 0.24);
+	color: #fff;
+}
+
+.am-tab__n--warn {
+	background: rgba(240, 144, 0, 0.14);
+	color: #f09000;
+}
+
+.am-tab.is-active .am-tab__n--warn {
+	background: #fff;
+	color: #f09000;
+}
+
+.am-toolbar__right {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+/*
+ * 应用类型下拉
+ *
+ * ★ 原来是原生 <select>：闭合态可以靠 CSS 画出来，但点开的那张列表是**系统菜单**
+ *   （方角、系统字体、与主题无关的灰底），和项目里其他下拉（Element Plus 的 el-select）
+ *   不是一个观感 —— 这就是「展开后不匹配」的原因，而且系统菜单 CSS 根本改不到。
+ *   换成 el-select 后，展开面板由 el-select-dropdown 渲染，直接继承全局样式；
+ *   这里只负责把「触发框」对齐工具栏规格：33px 高、13px 字、#e4e6e1 边框。
+ */
+.am-select {
+	/* Element Plus 用这个变量控制控件高度；改成 33px 才能与相邻的搜索框/按钮齐平 */
+	--el-component-size: 33px;
+	width: 108px;
+	font-size: 13px;
+
+	:deep(.el-select__wrapper) {
+		min-height: 33px;
+		padding: 0 8px 0 12px;
+		border-radius: var(--sys-radius-md);
+		/* el-select 的边框是 inset 阴影而非 border，这里换成与工具栏其他控件同色的值 */
+		box-shadow: 0 0 0 1px #e4e6e1 inset;
+		transition: box-shadow 0.14s ease;
+	}
+
+	:deep(.el-select__wrapper:hover) {
+		box-shadow: 0 0 0 1px #9699b6 inset;
+	}
+
+	/* 聚焦反馈：与 .am-search input:focus 同一套主色 */
+	:deep(.el-select__wrapper.is-focused) {
+		box-shadow: 0 0 0 1px #0766f5 inset, 0 0 0 3px rgba(7, 102, 245, 0.14);
+	}
+
+	/* 选中值用正文色，空值（显示「应用类型」）用占位色，与搜索框 placeholder 一致 */
+	:deep(.el-select__placeholder) {
+		color: #1d1f3a;
+	}
+
+	:deep(.el-select__placeholder.is-transparent) {
+		color: #9699b6;
+	}
+}
+
+.am-search {
+	position: relative;
+	display: block;
+}
+
+.am-search svg {
+	position: absolute;
+	left: 9px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #9699b6;
+	pointer-events: none;
+}
+
+.am-search input {
+	width: 248px;
+	height: 33px;
+	padding: 0 12px 0 31px;
+	border-radius: var(--sys-radius-md);
+	background: #fff;
+	border: 1px solid #e4e6e1;
+	font-size: 13px;
+	color: #1d1f3a;
+	transition: border-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+.am-search input::-webkit-search-cancel-button {
+	display: none;
+}
+
+.am-search input::placeholder {
+	color: #9699b6;
+}
+
+.am-search input:focus {
+	outline: none;
+	border-color: #0766f5;
+	box-shadow: 0 0 0 3px rgba(7, 102, 245, 0.14);
+}
+
+/* 搜索按钮：与搜索框同高（.am-btn 本就是 33px / 9px 圆角），只保证别被 flex 压扁 */
+.am-search__btn {
+	flex: 0 0 auto;
+	padding: 0 16px;
+}
+
+.am-framework__brand {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	min-width: 0;
+}
+
+.am-framework__mark {
+	width: 30px;
+	height: 30px;
+	border-radius: var(--sys-radius-md);
+	flex: none;
+	display: grid;
+	place-items: center;
+	/* 原来这里是深底 + 白色描边的矢量图标；换成 app.ico 后让位给图片本身，
+	   只留一圈细描边 —— 图标若是浅色，浅背景上才看得出边界 */
+	background: #fff;
+	overflow: hidden;
+	box-shadow: inset 0 0 0 1px #ebedf0;
+}
+
+.am-framework__mark img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.am-framework__info {
+	min-width: 0;
+}
+
+.am-framework__name {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 15.5px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+	line-height: 22px;
+	color: #1d1f3a;
+}
+
+.am-framework__meta {
+	margin-top: 1px;
+	font-size: 11.5px;
+	letter-spacing: -0.01em;
+	color: #9699b6;
+	font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+.am-pill-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	height: 20px;
+	padding: 0 8px;
+	border-radius: var(--sys-radius-full);
+	font-size: 11.5px;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	white-space: nowrap;
+}
+
+.am-pill-status.is-ok {
+	color: #03c92e;
+	background: rgba(3, 201, 46, 0.12);
+}
+
+.am-pill-status.is-warn {
+	color: #f09000;
+	background: rgba(240, 144, 0, 0.14);
+}
+
+.am-pill-status__dot {
+	width: 5px;
+	height: 5px;
+	border-radius: var(--sys-radius-full);
+	background: currentColor;
+	flex: none;
+}
+
+.am-pill-status.is-ok .am-pill-status__dot {
+	animation: am-pill-pulse 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes am-pill-pulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	50% {
+		opacity: 0.45;
+		transform: scale(0.82);
+	}
+}
+
+.am-framework__ops {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex: none;
+}
+
+/* ============================================================
+   应用详情抽屉
+   ============================================================ */
+.am-detail {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	width: 100%;
+	min-height: 0;
+	background: #fff;
+}
+
+.am-detail__head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 18px 20px 14px;
+	border-bottom: 1px solid #f1f2f4;
+	flex: none;
+}
+
+.am-detail__head-main {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+}
+
+.am-detail__tile {
+	width: 54px;
+	height: 54px;
+	border-radius: var(--sys-radius-md);
+	background: var(--sys-color-primary-soft);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	margin-right: 12px;
+	flex: none;
+}
+
+.am-detail__logo {
+	width: 100%;
+	height: 100%;
+}
+
+/* 让图标铺满整个图标块（cover 裁切，不留白边）—— 与卡片 .am-card__logo 同一套 */
+:deep(.am-detail__logo .el-image__inner) {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* 兜底图也铺满，别在块里留一圈底色 */
+.am-detail__tile-default {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.am-detail__ident {
+	min-width: 0;
+}
+
+.am-detail__title {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 22px;
+	color: #1d1f3a;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.am-detail__key {
+	margin: 2px 0 0;
+	font-size: 11.5px;
+	line-height: 18px;
+	color: #9699b6;
+	font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.am-detail__badges {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
+	margin-top: 8px;
+}
+
+.am-detail__close {
+	width: 28px;
+	height: 28px;
+	border-radius: var(--sys-radius-md);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #9699b6;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	flex: none;
+	transition: background 0.14s ease, color 0.14s ease;
+
+	&:hover {
+		background: #f4f5f7;
+		color: #1d1f3a;
+	}
+}
+
+.am-detail__body {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	/* 下内边距为 0：让最后的「更新历史」块底边直接贴到操作区上方那条分隔线
+	   （上、左右仍留内边距，内容不贴边）；这 24px 也顺势变成了列表可用的高度 */
+	padding: 18px 20px 0;
+}
+
+/* 其余块按内容高度占位：既不拉伸也不被压缩，弹性空间全留给「更新历史」 */
+.am-detail__body > .am-detail__block {
+	flex: none;
+}
+
+/*
+ * 「更新历史」是最后一个块：吃掉剩余高度
+ *
+ * 它的高度 = 抽屉可用高度 − 其他块，所以这块区域恰好是「访问应用」到操作区上方
+ * 那条分隔线之间的全部空间，抽屉自身不出现滚动条（滚动条只可能出现在这块内部）。
+ */
+.am-detail__body > .am-detail__block:last-child {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+}
+
+.am-detail__desc {
+	margin: 0 0 20px;
+	font-size: 12.5px;
+	line-height: 1.62;
+	color: #4f516d;
+	word-break: break-word;
+}
+
+.am-detail__block + .am-detail__block {
+	margin-top: 20px;
+}
+
+.am-detail__block-title {
+	margin: 0 0 9px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	color: #9699b6;
+}
+
+.am-kv {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	border: 1px solid #ebeef5;
+	border-radius: var(--sys-radius-lg);
+	overflow: hidden;
+	background: #fafbfc;
+}
+
+.am-kv > div {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	padding: 8px 11px;
+	border-bottom: 1px solid #ebeef5;
+	font-size: 12px;
+}
+
+.am-kv > div:last-child {
+	border-bottom: 0;
+}
+
+.am-kv dt {
+	flex: none;
+	color: #9699b6;
+}
+
+.am-kv dd {
+	margin: 0;
+	min-width: 0;
+	text-align: right;
+	font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+	font-size: 11.5px;
+	color: #1d1f3a;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.am-kv__link {
+	margin-left: 8px;
+	font-family: inherit;
+	color: #0766f5;
+	cursor: pointer;
+}
+
+.am-kv__link:hover {
+	color: #0553cc;
+}
+
+.am-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.am-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 6px 10px;
+	border: 0;
+	border-radius: var(--sys-radius-sm);
+	font-size: 11.5px;
+	color: #4f516d;
+	background: #f4f5f7;
+	cursor: pointer;
+	transition: background 0.14s ease, color 0.14s ease;
+}
+
+.am-chip:hover {
+	background: #eaf2ff;
+	color: #0766f5;
+}
+
+.am-log-wrap {
+	display: flex;
+	flex-direction: column;
+	/* 撑满「更新历史」块（见 .am-detail__body > .am-detail__block:last-child）：
+	   打开详情那几秒（版本列表还在请求）也占住位置，短列表同样撑满，
+	   列表长了在块内滚动。
+	   ★ 不设 max-height —— 设了会把这块压回固定高度；
+	   ★ 不设 min-height —— 设了它就压不下去，整体高度超过抽屉，body 必然出现滚动条。
+	   撑满靠 flex: 1，不靠 min-height。
+	   下内边距留在这里（而不是挂在 .am-detail__body 上）：滚动区本身仍然抵到
+	   操作区上方那条分隔线，而列表最后一条与它之间留出呼吸空间；列表长到需要
+	   滚动时，这段空隙也在可滚动区域内，滚到底不会被裁掉。 */
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+	padding-bottom: 20px;
+}
+
+.am-log {
+	/* 保持自然高度：否则外层 .am-log-wrap 变 flex 后会把长列表压扁，
+	   内容溢出却不产生滚动条。滚动交给外层容器 */
+	flex: none;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: 0 0 0 3px;
+	padding: 0;
+	list-style: none;
+	border-left: 1px solid #e4e6e1;
+}
+
+.am-log li {
+	position: relative;
+	padding-left: 15px;
+}
+
+.am-log li::before {
+	content: "";
+	position: absolute;
+	left: -3.5px;
+	top: 5.5px;
+	width: 6px;
+	height: 6px;
+	border-radius: var(--sys-radius-full);
+	background: #d3d7d0;
+	box-shadow: 0 0 0 3px #fff;
+}
+
+.am-log li:first-child::before {
+	background: #0766f5;
+}
+
+.am-log__head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: #1d1f3a;
+}
+
+.am-log__time {
+	font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+	font-size: 11px;
+	font-weight: 400;
+	color: #9699b6;
+}
+
+.am-log__body {
+	margin-top: 3px;
+	font-size: 12px;
+	line-height: 1.55;
+	color: #4f516d;
+	word-break: break-word;
+
+	:deep(ul) {
+		list-style: disc;
+		padding-left: 16px;
+	}
+
+	:deep(ol) {
+		list-style: decimal;
+		padding-left: 16px;
+	}
+}
+
+.am-log__empty {
+	/* 空态（加载中也是空态，上面盖着 loading 遮罩）：占满这块高度并居中，
+	   别让中间空一大片、提示字却挤在顶上 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+	margin: 0;
+	padding: 12px 0;
+	font-size: 12px;
+	color: #9699b6;
+}
+
+.am-detail__foot {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+	padding: 12px 20px;
+	background: #fafbfc;
+	border-top: 1px solid #ebeef5;
+	flex: none;
+}
+
+.am-detail__spacer {
+	flex: 1;
+}
+
+/* ============================================================
+   顶部筛选区（页签 + 搜索）：与站点列表筛选区一致的白底卡片
+   ============================================================ */
+/* 列表模式与卡片栅格同一档表格间距；清掉 .table-panel 自带的上边距，避免两段间距叠在一起 */
+.am-list {
+	margin-top: var(--cmp-table-page-section-gap);
+
+	> .table-panel {
+		margin-top: 0 !important;
+	}
+}
+
+.app-head {
+	box-sizing: border-box;
+	/* 底部留白收窄：页签贴住卡片底边，与改造前 el-card 的几何一致 */
+	padding: var(--sys-space-4);
+	background-color: var(--cmp-card-bg, var(--el-bg-color-overlay));
+	border: 1px solid var(--sys-color-border-default);
+	border-radius: var(--sys-radius-lg);
+	overflow: hidden;
+}
 </style>
 
 <style>
-.app-market .app-head .el-card__body{
-	padding-bottom: 3px !important;
-}
 .el-empty .el-empty__image {
 	width: auto;
+}
+
+/* 应用详情抽屉：el-drawer 内部结构不由本组件渲染，需用非 scoped 样式覆盖 */
+.am-drawer {
+	max-width: 100vw;
+}
+.am-drawer .el-drawer__body {
+	padding: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 </style>

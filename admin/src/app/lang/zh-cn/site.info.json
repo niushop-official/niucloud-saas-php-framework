@@ -36,5 +36,15 @@
       "siteDomainPlaceholder": "请输入站点域名",
       "siteDomainTips": "站点域名的配置是针对站点的wap和web端",
       "siteDomainTipsTwo": "需要将域名配置到您的服务器，同时域名需要解析您的服务器才可生效",
-      "siteDomainTipsThree": "站点域名不需要加http或者https，末尾不需要加/"
+      "siteDomainTipsThree": "站点域名不需要加http或者https，末尾不需要加/",
+      "siteList": "站点列表",
+      "appEnabledCount": "{count} 个已启用",
+      "enterSite": "进入站点",
+      "addTime": "添加时间",
+      "permanent": "永久",
+      "expireSoon": "{days} 天后到期，请及时续费",
+      "itemCount": "{count} 个",
+      "emptyApp": "暂无应用",
+      "emptyAddon": "暂无插件",
+      "noPermission": "您没有该站点的管理权限"
 }

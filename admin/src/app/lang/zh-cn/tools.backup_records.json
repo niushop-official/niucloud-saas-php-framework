@@ -12,6 +12,7 @@
   "restoreTips": "此操作将恢复备份的源码和数据库，并且覆盖当前数据。为避免意外损失，请确认已了解此操作的影响，并确保已备份重要信息，是否确定继续？",
   "deleteTips": "删除记录将会同步删除其备份文件，确定要操作吗？",
   "batchEmptySelectedTips": "请选择需要批量删除的记录",
+  "detail": "详情",
   "restoreTitle": "恢复备份",
   "backupCompleteTips": "备份成功",
   "restoreCompleteTips": "恢复成功",

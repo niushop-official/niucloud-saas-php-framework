@@ -3,12 +3,13 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+declare (strict_types = 1);
 
 namespace think\model\relation;
 
@@ -16,7 +17,7 @@ use Closure;
 use think\Collection;
 use think\db\BaseQuery as Query;
 use think\helper\Str;
-use think\Model;
+use think\model\contract\Modelable as Model;
 use think\model\Relation;
 
 /**
@@ -58,14 +59,14 @@ class HasManyThrough extends Relation
      */
     public function __construct(Model $parent, string $model, string $through, string $foreignKey, string $throughKey, string $localKey, string $throughPk)
     {
-        $this->parent       = $parent;
-        $this->model        = $model;
-        $this->through      = (new $through())->db();
-        $this->foreignKey   = $foreignKey;
-        $this->throughKey   = $throughKey;
-        $this->localKey     = $localKey;
-        $this->throughPk    = $throughPk;
-        $this->query        = (new $model())->db();
+        $this->parent     = $parent;
+        $this->model      = $model;
+        $this->through    = (new $through())->db();
+        $this->foreignKey = $foreignKey;
+        $this->throughKey = $throughKey;
+        $this->localKey   = $localKey;
+        $this->throughPk  = $throughPk;
+        $this->query      = (new $model())->db();
     }
 
     /**
@@ -76,7 +77,7 @@ class HasManyThrough extends Relation
      *
      * @return Collection
      */
-    public function getRelation(array $subRelation = [], Closure $closure = null)
+    public function getRelation(array $subRelation = [], ?Closure $closure = null)
     {
         if ($closure) {
             $closure($this->query);
@@ -84,9 +85,7 @@ class HasManyThrough extends Relation
 
         $this->baseQuery();
 
-        return $this->query->relation($subRelation)
-            ->select()
-            ->setParent(clone $this->parent);
+        return $this->query->relation($subRelation)->select();
     }
 
     /**
@@ -97,32 +96,27 @@ class HasManyThrough extends Relation
      * @param string $id       关联表的统计字段
      * @param string $joinType JOIN类型
      * @param Query  $query    Query对象
-     *
      * @return Query
      */
-    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '', Query $query = null): Query
+    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = 'INNER', ?Query $query = null): Query
     {
+        // 子查询构建
         $model          = Str::snake(class_basename($this->parent));
-        $throughTable   = $this->through->getTable();
-        $pk             = $this->throughPk;
-        $throughKey     = $this->throughKey;
-        $relation       = new $this->model();
-        $relationTable  = $relation->getTable();
-        $softDelete     = $this->query->getOptions('soft_delete');
+        $table          = $this->through->getTable();
+        $relation       = Str::snake(class_basename($this->model));
+        $relationTable  = (new $this->model())->getTable();
+        $query          = $query ?: $this->parent->db();
+        $alias          = $query->getAlias() ?: $model;
 
-        if ('*' != $id) {
-            $id = $relationTable . '.' . $relation->getPk();
-        }
-        $query = $query ?: $this->parent->db()->alias($model);
+        // 统计子查询
+        $subQuery = $this->through
+            ->field('COUNT(' . $id . ')')
+            ->table($table)
+            ->join([$relationTable => $relation], $relation . '.' . $this->throughKey . '=' . $table . '.' . $this->throughPk, $joinType)
+            ->whereColumn($table . '.' . $this->throughPk, $model . '.' . $this->localKey);
 
-        return $query->field($model . '.*')
-            ->join($throughTable, $throughTable . '.' . $this->foreignKey . '=' . $model . '.' . $this->localKey)
-            ->join($relationTable, $relationTable . '.' . $throughKey . '=' . $throughTable . '.' . $this->throughPk)
-            ->when($softDelete, function ($query) use ($softDelete, $relationTable) {
-                $query->where($relationTable . strstr($softDelete[0], '.'), '=' == $softDelete[1][0] ? $softDelete[1][1] : null);
-            })
-            ->group($relationTable . '.' . $this->throughKey)
-            ->having('count(' . $id . ')' . $operator . $count);
+        $this->getRelationSoftDelete($subQuery, $relation);
+        return $query->alias($alias)->where('(' . $subQuery->buildSql() . ') ' . $operator . ' ' . $count);
     }
 
     /**
@@ -132,39 +126,26 @@ class HasManyThrough extends Relation
      * @param mixed  $fields   字段
      * @param string $joinType JOIN类型
      * @param Query  $query    Query对象
-     *
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, $joinType = '', Query $query = null): Query
+    public function hasWhere($where = [], $fields = null, $joinType = '', ?Query $query = null, string $logic = '', string $relationAlias = ''): Query
     {
         $model          = Str::snake(class_basename($this->parent));
-        $throughTable   = $this->through->getTable();
-        $pk             = $this->throughPk;
-        $throughKey     = $this->throughKey;
-        $modelTable     = (new $this->model())->getTable();
+        $relation       = Str::snake(class_basename($this->model));
+        $table          = $this->through->getTable();
+        $relationTable  = (new $this->model())->getTable();
+        $query          = $query ?: $this->parent->db();
+        $alias          = $query->getAlias() ?: $model;
+        $relAlias       = $relationAlias ?: $relation;
 
-        if (is_array($where)) {
-            $this->getQueryWhere($where, $modelTable);
-        } elseif ($where instanceof Query) {
-            $where->via($modelTable);
-        } elseif ($where instanceof Closure) {
-            $where($this->query->via($modelTable));
-            $where = $this->query;
-        }
+        // EXISTS子查询
+        $subQuery = $this->through
+            ->table($table)
+            ->join([$relationTable => $relAlias], $relAlias . '.' . $this->throughKey . '=' . $table . '.' . $this->throughPk, $joinType)
+            ->whereColumn($table . '.' . $this->throughPk, $alias . '.' . $this->localKey);
 
-        $fields     = $this->getRelationQueryFields($fields, $model);
-        $softDelete = $this->query->getOptions('soft_delete');
-        $query      = $query ?: $this->parent->db();
-
-        return $query->alias($model)
-            ->join($throughTable, $throughTable . '.' . $this->foreignKey . '=' . $model . '.' . $this->localKey)
-            ->join($modelTable, $modelTable . '.' . $throughKey . '=' . $throughTable . '.' . $this->throughPk, $joinType)
-            ->when($softDelete, function ($query) use ($softDelete, $modelTable) {
-                $query->where($modelTable . strstr($softDelete[0], '.'), '=' == $softDelete[1][0] ? $softDelete[1][1] : null);
-            })
-            ->group($modelTable . '.' . $this->throughKey)
-            ->where($where)
-            ->field($fields);
+        $this->getRelationSoftDelete($subQuery, $relAlias, $where, $logic);
+        return $query->alias($alias)->whereExists($subQuery->buildSql());
     }
 
     /**
@@ -178,12 +159,12 @@ class HasManyThrough extends Relation
      *
      * @return void
      */
-    public function eagerlyResultSet(array &$resultSet, string $relation, array $subRelation = [], Closure $closure = null, array $cache = []): void
+    public function eagerlyResultSet(array &$resultSet, string $relation, array $subRelation = [], ?Closure $closure = null, array $cache = []): void
     {
         $localKey   = $this->localKey;
         $foreignKey = $this->foreignKey;
 
-        $range      = [];
+        $range = [];
         foreach ($resultSet as $result) {
             // 获取关联外键列表
             if (isset($result->$localKey)) {
@@ -193,10 +174,10 @@ class HasManyThrough extends Relation
 
         if (!empty($range)) {
             $this->query->removeWhereField($foreignKey);
-
-            $data = $this->eagerlyWhere([
+            $range = array_unique($range);
+            $data  = $this->eagerlyWhere([
                 [$this->foreignKey, 'in', $range],
-            ], $foreignKey, $subRelation, $closure, $cache);
+            ], $foreignKey, $subRelation, $closure, $cache, count($range) > 1 ? true : false);
 
             // 关联数据封装
             foreach ($resultSet as $result) {
@@ -206,7 +187,7 @@ class HasManyThrough extends Relation
                 }
 
                 // 设置关联属性
-                $result->setRelation($relation, $this->resultSetBuild($data[$pk], clone $this->parent));
+                $result->setRelation($relation, $this->resultSetBuild($data[$pk]));
             }
         }
     }
@@ -222,7 +203,7 @@ class HasManyThrough extends Relation
      *
      * @return void
      */
-    public function eagerlyResult(Model $result, string $relation, array $subRelation = [], Closure $closure = null, array $cache = []): void
+    public function eagerlyResult(Model $result, string $relation, array $subRelation = [], ?Closure $closure = null, array $cache = []): void
     {
         $localKey   = $this->localKey;
         $foreignKey = $this->foreignKey;
@@ -239,7 +220,7 @@ class HasManyThrough extends Relation
             $data[$pk] = [];
         }
 
-        $result->setRelation($relation, $this->resultSetBuild($data[$pk], clone $this->parent));
+        $result->setRelation($relation, $this->resultSetBuild($data[$pk]));
     }
 
     /**
@@ -250,14 +231,15 @@ class HasManyThrough extends Relation
      * @param array   $subRelation 子关联
      * @param Closure $closure
      * @param array   $cache       关联缓存
+     * @param bool    $collection  是否数据集查询
      *
      * @return array
      */
-    protected function eagerlyWhere(array $where, string $key, array $subRelation = [], Closure $closure = null, array $cache = []): array
+    protected function eagerlyWhere(array $where, string $key, array $subRelation = [], ?Closure $closure = null, array $cache = [], bool $collection = false): array
     {
         // 预载入关联查询 支持嵌套预载入
-        $throughList    = $this->through->where($where)->select();
-        $keys           = $throughList->column($this->throughPk, $this->throughPk);
+        $throughList = $this->through->where($where)->select();
+        $keys        = $throughList->column($this->throughPk, $this->throughPk);
 
         if ($closure) {
             $this->baseQuery = true;
@@ -270,15 +252,23 @@ class HasManyThrough extends Relation
             $throughKey = Str::snake(class_basename($this->model)) . '.' . $this->throughKey;
         }
 
-        $withLimit = $this->query->getOptions('limit');
-        if ($withLimit) {
+        $withLimit = $this->query->getOption('limit');
+        if ($withLimit && $collection) {
             $this->query->removeOption('limit');
+        }
+
+        if ($this->isOneofMany) {
+            if (!$collection) {
+                $this->query->limit(1);
+            } else {
+                $withLimit = 1;
+            }
         }
 
         $list = $this->query
             ->where($throughKey, 'in', $keys)
             ->cache($cache[0] ?? false, $cache[1] ?? null, $cache[2] ?? null)
-            ->select();
+            ->lazy();
 
         // 组装模型数据
         $data = [];
@@ -308,7 +298,7 @@ class HasManyThrough extends Relation
      *
      * @return mixed
      */
-    public function relationCount(Model $result, Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null)
+    public function relationCount(Model $result, ?Closure $closure = null, string $aggregate = 'count', string $field = 'id',  ? string &$name = null)
     {
         $localKey = $this->localKey;
 
@@ -320,11 +310,12 @@ class HasManyThrough extends Relation
             $closure($this->query, $name);
         }
 
-        $alias = Str::snake(class_basename($this->model));
+        $alias        = Str::snake(class_basename($this->model));
+        $alias        = $this->query->getAlias() ?: $alias;
         $throughTable = $this->through->getTable();
-        $pk = $this->throughPk;
-        $throughKey = $this->throughKey;
-        $modelTable = $this->parent->getTable();
+        $pk           = $this->throughPk;
+        $throughKey   = $this->throughKey;
+        $modelTable   = $this->parent->getTable();
 
         if (!str_contains($field, '.')) {
             $field = $alias . '.' . $field;
@@ -348,17 +339,18 @@ class HasManyThrough extends Relation
      *
      * @return string
      */
-    public function getRelationCountQuery(Closure $closure = null, string $aggregate = 'count', string $field = '*', string &$name = null): string
+    public function getRelationCountQuery(?Closure $closure = null, string $aggregate = 'count', string $field = 'id',  ? string &$name = null) : string
     {
         if ($closure) {
             $closure($this->query, $name);
         }
 
-        $alias          = Str::snake(class_basename($this->model));
-        $throughTable   = $this->through->getTable();
-        $pk             = $this->throughPk;
-        $throughKey     = $this->throughKey;
-        $modelTable     = $this->parent->getTable();
+        $alias        = Str::snake(class_basename($this->model));
+        $alias        = $this->query->getAlias() ?: $alias . '_' . $aggregate;
+        $throughTable = $this->through->getTable();
+        $pk           = $this->throughPk;
+        $throughKey   = $this->throughKey;
+        $modelTable   = $this->parent->getTable();
 
         if (!str_contains($field, '.')) {
             $field = $alias . '.' . $field;
@@ -367,8 +359,7 @@ class HasManyThrough extends Relation
         return $this->query
             ->alias($alias)
             ->join($throughTable, $throughTable . '.' . $pk . '=' . $alias . '.' . $throughKey)
-            ->join($modelTable, $modelTable . '.' . $this->localKey . '=' . $throughTable . '.' . $this->foreignKey)
-            ->whereExp($throughTable . '.' . $this->foreignKey, '=' . $this->parent->getTable() . '.' . $this->localKey)
+            ->whereColumn($throughTable . '.' . $this->foreignKey, $this->parent->getTable() . '.' . $this->localKey)
             ->fetchSql()
             ->$aggregate($field);
     }
@@ -378,21 +369,20 @@ class HasManyThrough extends Relation
      *
      * @return void
      */
-    protected function baseQuery(): void
+    protected function baseQuery() : void
     {
         if (empty($this->baseQuery) && $this->parent->getData()) {
-            $alias          = Str::snake(class_basename($this->model));
-            $throughTable   = $this->through->getTable();
-            $pk             = $this->throughPk;
-            $throughKey     = $this->throughKey;
-            $modelTable     = $this->parent->getTable();
-            $fields         = $this->getQueryFields($alias);
+            $alias        = Str::snake(class_basename($this->model));
+            $throughTable = $this->through->getTable();
+            $pk           = $this->throughPk;
+            $throughKey   = $this->throughKey;
+            $modelTable   = $this->parent->getTable();
+            $fields       = $this->getQueryFields($alias);
 
             $this->query
                 ->field($fields)
                 ->alias($alias)
                 ->join($throughTable, $throughTable . '.' . $pk . '=' . $alias . '.' . $throughKey)
-                ->join($modelTable, $modelTable . '.' . $this->localKey . '=' . $throughTable . '.' . $this->foreignKey)
                 ->where($throughTable . '.' . $this->foreignKey, $this->parent->{$this->localKey});
 
             $this->baseQuery = true;

@@ -172,18 +172,22 @@ function del_target_dir($path, $delDir)
                 $itemPath = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $item;
                 if (is_dir($itemPath)) {
                     del_target_dir($itemPath, $delDir);
-                } else {
-                    unlink($itemPath);
+                } elseif (is_file($itemPath)) {
+                    // 文件可能已被并发任务删除（如插件卸载/打包同时操作 runtime 暂存目录），
+                    // 先判存在再删除并容错，避免 unlink 报错中断整个卸载流程
+                    if (!@unlink($itemPath)) {
+                        \think\facade\Log::write('del_target_dir 删除文件失败：' . $itemPath);
+                    }
                 }
             }
         }
         closedir($handle);
         if ($delDir) {
-            return rmdir($path);
+            return @rmdir($path);
         }
     } else {
         if (file_exists($path)) {
-            return unlink($path);
+            return @unlink($path);
         }
         return false;
     }
@@ -553,26 +557,35 @@ function dir_copy(string $src = '', string $dst = '', &$files = [], $exclude_dir
     if (!file_exists($src)) {
         return false;
     }
-    $dir = opendir($src);
+    $dir = @opendir($src);
+    if ($dir === false) {
+        throw new \core\exception\CommonException("无法打开源目录：{$src}，请检查目录权限或 open_basedir 限制");
+    }
     dir_mkdir($dst);
     while (false !== ($file = readdir($dir))) {
-        if (($file != '.') && ($file != '..')) {
-            $srcPath = rtrim($src, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
-            $dstPath = rtrim($dst, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
-            if (is_dir($srcPath)) {
-                // 排除目录
-                if (count($exclude_dirs) && in_array($file, $exclude_dirs)) continue;
-                dir_copy($srcPath, $dstPath, $files, $exclude_dirs, $exclude_files);
-            } else {
-                // 排除文件
-                if (count($exclude_files) && in_array($file, $exclude_files)) continue;
-                $copyResult = copy($srcPath, $dstPath);
-                $files[] = $dstPath;
-                if (!$copyResult) {
-                    closedir($dir);
-                    throw new \core\exception\CommonException("文件{$file}拷贝失败请检查是否有足够的权限");
-                }
+        if ($file == '.' || $file == '..') {
+            continue;
+        }
+        $srcPath = rtrim($src, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+        $dstPath = rtrim($dst, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+        if (is_dir($srcPath)) {
+            // 排除目录
+            if (!empty($exclude_dirs) && in_array($file, $exclude_dirs, true)) continue;
+            dir_copy($srcPath, $dstPath, $files, $exclude_dirs, $exclude_files);
+        } else {
+            // 排除文件
+            if (!empty($exclude_files) && in_array($file, $exclude_files, true)) continue;
+            $copyResult = copy($srcPath, $dstPath);
+            if (!$copyResult) {
+                closedir($dir);
+                throw new \core\exception\CommonException("文件{$file}拷贝失败，请检查是否有足够的权限或磁盘空间");
             }
+            // 二次校验目标文件是否真正生成，避免 copy() 偶发返回 true 却未落盘
+            if (!file_exists($dstPath)) {
+                closedir($dir);
+                throw new \core\exception\CommonException("文件{$file}拷贝后未生成，请检查目标目录写入权限");
+            }
+            $files[] = $dstPath;
         }
     }
     closedir($dir);
@@ -753,7 +766,7 @@ function getFileMap($path, $arr = [])
  * @param $options
  * @return mixed|string
  */
-function cache_remember(string $name = null, $value = '', $tag = null, $options = null)
+function cache_remember(?string $name = null, $value = '', $tag = null, $options = null)
 {
     if (!empty($hit = Cache::get($name)))//可以用has
         return $hit;
@@ -781,6 +794,28 @@ function cache_remember(string $name = null, $value = '', $tag = null, $options 
 function project_path()
 {
     return dirname(root_path()) . DIRECTORY_SEPARATOR;
+}
+
+/**
+ * 任务体系的运行目录（与入口无关）
+ *
+ * ThinkPHP 多应用下 runtime_path() 会随入口变化：
+ * - HTTP（adminapi）：{root}/runtime/adminapi/
+ * - CLI / 队列：{root}/runtime/
+ *
+ * 任务的 events / steps / 快照 / 编译产物由 HTTP 创建、由队列（CLI）读写，
+ * 两边必须落在同一目录，否则队列推进写入的日志 HTTP 读不到（终端没有输出）。
+ *
+ * @return string
+ */
+function task_runtime_path()
+{
+    $path = rtrim(runtime_path(), '/\\');
+
+    // CLI 下没有应用子目录：补上与 HTTP 一致的入口目录
+    if (basename($path) === 'runtime') $path .= DIRECTORY_SEPARATOR . 'adminapi';
+
+    return $path . DIRECTORY_SEPARATOR;
 }
 
 /**

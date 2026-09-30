@@ -29,6 +29,7 @@ import { computed } from 'vue'
 import { img } from '@/utils/common'
 import menuItem from './menu-item.vue'
 import useUserStore from '@/stores/modules/user'
+import { useMenuJump } from '@/hooks/useMenuActive'
 import storage from '@/utils/storage'
 
 const router = useRouter()
@@ -43,6 +44,7 @@ const props = defineProps({
 const userStore = useUserStore()
 const siteInfo = userStore.siteInfo
 const meta = computed(() => props.routes.meta)
+const { handleMenuJump } = useMenuJump()
 
 const hasVisibleChild = computed(() => {
   if (!props.routes.children || !Array.isArray(props.routes.children)) {
@@ -72,6 +74,8 @@ const handleJump = (routeName: string) => {
     if (specialMenuNamesLevel1.includes(routeName)) {
         routeName = 'addon_list'
     }
+    // 需要新窗口打开的菜单：新开标签页，当前页面不跳转，高亮保持在原来的菜单上
+    if (handleMenuJump(routeName, meta.value)) return
     // 跳转时添加随机查询参数（用于触发页面感知）
     const query = route.name === routeName 
       ? { refresh: Date.now() } // 相同路由时添加随机参数

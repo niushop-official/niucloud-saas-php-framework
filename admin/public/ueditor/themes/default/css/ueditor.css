@@ -144,7 +144,9 @@ div.edui-box {
     border: 1px solid var(--el-border-color);
     background-color: white;
     position: relative;
-    overflow: visible;
+    /* 圆角需裁剪内部工具栏与 iframe，弹出层挂载在 body 的 #edui_fixedlayer，不受影响 */
+    overflow: hidden;
+    border-radius: var(--cmp-control-radius, 8px);
     z-index: 1 !important;
 }
 /* 全屏状态 */
@@ -162,8 +164,8 @@ div.edui-box {
     /*-webkit-box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);*/
     /*-moz-box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);*/
     /*box-shadow:0 1px 4px rgba(204, 204, 204, 0.6);*/
-    border-top-left-radius: 2px;
-    border-top-right-radius: 2px;
+    border-top-left-radius: var(--cmp-control-radius, 8px);
+    border-top-right-radius: var(--cmp-control-radius, 8px);
 }
 
 .edui-default .edui-editor-toolbarboxouter {
@@ -176,9 +178,9 @@ div.edui-box {
     /*background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);*/
     /*background-repeat: repeat-x;*/
     /*border: 1px solid #d4d4d4;*/
-    -webkit-border-radius: 4px 4px 0 0;
-    -moz-border-radius: 4px 4px 0 0;
-    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: var(--cmp-control-radius, 8px) var(--cmp-control-radius, 8px) 0 0;
+    -moz-border-radius: var(--cmp-control-radius, 8px) var(--cmp-control-radius, 8px) 0 0;
+    border-radius: var(--cmp-control-radius, 8px) var(--cmp-control-radius, 8px) 0 0;
     /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff2f2f2', GradientType=0);*/
     /**zoom: 1;*/
     /*-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);*/

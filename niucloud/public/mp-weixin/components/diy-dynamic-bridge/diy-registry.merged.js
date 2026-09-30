@@ -17,6 +17,12 @@ module.exports = {
     "scrollBool": false,
     "formRef": false
   },
+  "FloatBtnCustomer": {
+    "scope": "app",
+    "folder": "float-btn-customer",
+    "scrollBool": false,
+    "formRef": false
+  },
   "FormAddress": {
     "scope": "app",
     "folder": "form-address",

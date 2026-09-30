@@ -12,6 +12,7 @@
 namespace app\model\site;
 
 use app\model\addon\Addon;
+use app\service\core\addon\CoreAddonService;
 use core\base\BaseModel;
 
 /**
@@ -60,9 +61,10 @@ class SiteGroup extends BaseModel
     {
         if (empty($data['app']))
             return [];
-        $list = (new Addon())->where([['key', 'in', $data['app']]])->column('title,icon');
+        $list = (new Addon())->where([['key', 'in', $data['app']]])->column('title,icon,key');
+        $coreAddonService = new CoreAddonService();
         foreach ($list as &$item) {
-            $item['icon'] = is_file($item['icon']) ? image_to_base64($item['icon']) : '';
+            $item['icon'] = $coreAddonService->getAddonImagePublicUrl($item['icon'], $item['key']);
         }
         return $list;
     }
@@ -90,9 +92,12 @@ class SiteGroup extends BaseModel
         if (empty($data['addon']))
             return [];
 
-        $list = (new Addon())->where([['key', 'in', $data['addon']]])->column('title,icon');
+        $list = (new Addon())->where([['key', 'in', $data['addon']]])->column('title,icon,key');
+
+        $coreAddonService = new CoreAddonService();
+
         foreach ($list as &$item) {
-            $item['icon'] = is_file($item['icon']) ? image_to_base64($item['icon']) : '';
+            $item['icon'] = $coreAddonService->getAddonImagePublicUrl($item['icon'], $item['key']);
         }
         return $list;
     }

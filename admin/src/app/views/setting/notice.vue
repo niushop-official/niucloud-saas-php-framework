@@ -1,29 +1,45 @@
 <template>
 	<!--消息模板-->
 	<div class="main-container" v-loading="noticeTableData.loading">
-		<el-card class="box-card !border-none" shadow="never">
-			<h3 class="panel-title !text-sm">{{ t('buyerNotice') }}</h3>
-
-			<div class="flex flex-row flex-wrap">
-				<el-table
-					:data="noticeTableData.buyer"
-					size="large"
-					:span-method="buyerSpan"
-				>
-					<el-table-column
-						prop="addon_name"
-						:label="t('addon')"
-						min-width="120"
-					/>
+		<div class="notice-layout">
+			<div class="notice-addon">
+				<div class="notice-addon__title">{{ t('addon') }}</div>
+				<div class="notice-addon__list">
+					<div
+						v-for="name in addonList"
+						:key="name"
+						class="notice-addon__item"
+						:class="{ 'is-active': name === activeAddon }"
+						@click="activeAddon = name"
+					>
+						{{ name }}
+					</div>
+				</div>
+			</div>
+			<div class="notice-content">
+				<div class="notice-tabs-bar">
+					<el-tabs v-model="activeTab">
+						<el-tab-pane :label="t('buyerNotice')" name="buyer" />
+						<el-tab-pane :label="t('sellerNotice')" name="seller" />
+					</el-tabs>
+					<el-button
+						v-if="activeTab === 'seller'"
+						type="primary"
+						@click="openBindAccountDialog"
+						class="!text-[12px]"
+					>绑定接收信息账号</el-button>
+				</div>
+				<el-table :data="currentTableData" size="large">
+					<template #empty>
+						<span>{{ !noticeTableData.loading ? t('emptyData') : '' }}</span>
+					</template>
 					<el-table-column
 						prop="name"
 						:label="t('noticeType')"
-						min-width="120"
+						min-width="160"
 					/>
 					<el-table-column
 						:label="t('operation')"
-						align="right"
-						fixed="right"
 						min-width="300"
 					>
 						<template #default="{ row }">
@@ -73,101 +89,25 @@
 									</el-icon>
 									<span class="ml-0.5">{{ t('weapp') }}</span>
 								</div>
-							</div>
-						</template>
-					</el-table-column>
-				</el-table>
-			</div>
-		</el-card>
-
-		<el-card class="box-card mt-[15px] !border-none" shadow="never">
-			<div class="flex items-center mb-[20px] gap-[10px]">
-				<h3 class="panel-title !text-sm !mb-[0]">
-					{{ t('sellerNotice') }}
-				</h3>
-				<el-button
-					type="primary"
-					@click="openBindAccountDialog"
-					class="!text-[12px]"
-					>绑定接收信息账号</el-button
-				>
-			</div>
-
-			<div class="flex flex-row flex-wrap">
-				<el-table
-					:data="noticeTableData.seller"
-					size="large"
-					:span-method="buyerSpan"
-				>
-					<el-table-column
-						prop="addon_name"
-						:label="t('addon')"
-						min-width="120"
-					/>
-					<el-table-column
-						prop="name"
-						:label="t('noticeType')"
-						min-width="120"
-					/>
-					<el-table-column
-						:label="t('operation')"
-						align="right"
-						fixed="right"
-						min-width="300"
-					>
-						<template #default="{ row }">
-							<div class="flex">
-								<div
-									class="text-sm mr-1 flex items-center cursor-pointer"
-									v-if="row.support_type.indexOf('sms') != -1"
-									@click="setNotice(row, 'sms')"
-								>
-									<el-icon
-										class="text-[15px] mr-[3px]"
-										:class="row.is_sms ? 'open' : ''"
-									>
-										<SuccessFilled />
-									</el-icon>
-									<span class="ml-0.5">{{ t('sms') }}</span>
-								</div>
 								<div
 									class="text-sm flex items-center cursor-pointer ml-[20px]"
-									v-if="
-										row.support_type.indexOf('wechat') != -1
-									"
-									@click="setNotice(row, 'wechat')"
+									v-if="row.support_type.indexOf('message') != -1"
+									@click="toggleMessage(row)"
 								>
 									<el-icon
 										class="text-[15px] mr-[3px]"
-										:class="row.is_wechat ? 'open' : ''"
+										:class="row.is_message ? 'open' : ''"
 									>
 										<SuccessFilled />
 									</el-icon>
-									<span class="ml-0.5">{{
-										t('wechat')
-									}}</span>
-								</div>
-								<div
-									class="text-sm flex items-center cursor-pointer ml-[20px]"
-									v-if="
-										row.support_type.indexOf('weapp') != -1
-									"
-									@click="setNotice(row, 'weapp')"
-								>
-									<el-icon
-										class="text-[15px] mr-[3px]"
-										:class="row.is_weapp ? 'open' : ''"
-									>
-										<SuccessFilled />
-									</el-icon>
-									<span class="ml-0.5">{{ t('weapp') }}</span>
+									<span class="ml-0.5">{{ t('message') }}</span>
 								</div>
 							</div>
 						</template>
 					</el-table-column>
 				</el-table>
 			</div>
-		</el-card>
+		</div>
 
 		<sms ref="smsDialog" @complete="loadNoticeList()" />
 		<wechat ref="wechatDialog" @complete="loadNoticeList()" />
@@ -342,7 +282,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { t } from '@/lang'
 import {
 	getNoticeList,
@@ -351,7 +291,8 @@ import {
 	getWechatAuthUrl,
 	getWeappAuthUrl,
 	sendSms,
-	bindSms
+	bindSms,
+	editNoticeStatus
 } from '@/app/api/notice'
 import Sms from '@/app/views/setting/components/notice-sms.vue'
 import Wechat from '@/app/views/setting/components/notice-wechat.vue'
@@ -380,6 +321,14 @@ const bindAccountDialogClose = () => {
 }
 
 const noticeTableData = reactive({ loading: true, buyer: [], seller: [] })
+const addonList = ref<string[]>([])
+const activeAddon = ref('')
+const activeTab = ref('buyer')
+
+const currentTableData = computed(() => {
+	const source = activeTab.value === 'seller' ? noticeTableData.seller : noticeTableData.buyer
+	return source.filter((item: any) => item.addon_name === activeAddon.value)
+})
 
 /**
  * 获取配置信息
@@ -390,6 +339,7 @@ const loadNoticeList = () => {
 		.then((res) => {
 			noticeTableData.buyer = []
 			noticeTableData.seller = []
+			const names: string[] = []
 			res.data.forEach((item) => {
 				if (item.notice.length) {
 					const buyer = []
@@ -411,8 +361,15 @@ const loadNoticeList = () => {
 						noticeTableData.seller =
 							noticeTableData.seller.concat(seller)
 					}
+					if ((buyer.length || seller.length) && item.title && !names.includes(item.title)) {
+						names.push(item.title)
+					}
 				}
 			})
+			addonList.value = names
+			if (!names.includes(activeAddon.value)) {
+				activeAddon.value = names[0] || ''
+			}
 			noticeTableData.loading = false
 		})
 		.catch((e) => {
@@ -651,16 +608,6 @@ const bindSmsFn = () => {
 }
 // --------------------- 短信绑定逻辑结束 ---------------------
 
-const buyerSpan = (row: any) => {
-	if (row.columnIndex === 0) {
-		if (row.row.rowspan) {
-			return { rowspan: row.row.rowspan, colspan: 1 }
-		} else {
-			return { rowspan: 0, colspan: 0 }
-		}
-	}
-}
-
 loadNoticeList()
 
 const setNotice = (data: any, type: string) => {
@@ -680,9 +627,115 @@ const setNotice = (data: any, type: string) => {
 		weappDialog.value.showDialog = true
 	}
 }
+
+/**
+ * 站内信开关：无需外部配置，直接切换启停状态
+ */
+const toggleMessage = (data: any) => {
+	editNoticeStatus({
+		key: data.key,
+		type: 'message',
+		status: data.is_message ? 0 : 1
+	}).then(() => {
+		data.is_message = data.is_message ? 0 : 1
+		loadNoticeList()
+	}).catch(() => {})
+}
 </script>
 
 <style lang="scss" scoped>
+.notice-layout {
+	display: flex;
+	min-height: calc(100vh - 140px);
+	background: #fff;
+}
+
+.notice-addon {
+	width: 168px;
+	flex-shrink: 0;
+	border-right: 1px solid var(--el-border-color-lighter);
+	display: flex;
+	flex-direction: column;
+}
+
+.notice-addon__title {
+	height: 48px;
+	display: flex;
+	align-items: center;
+	padding: 0 16px;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--el-text-color-primary);
+	border-bottom: 1px solid var(--el-border-color-lighter);
+}
+
+.notice-addon__list {
+	flex: 1;
+	overflow-y: auto;
+}
+
+.notice-addon__item {
+	height: 40px;
+	display: flex;
+	align-items: center;
+	padding: 0 16px;
+	font-size: 14px;
+	color: var(--el-text-color-regular);
+	cursor: pointer;
+
+	&:hover {
+		background: var(--el-fill-color-light);
+	}
+
+	&.is-active {
+		background: var(--el-color-primary-light-9);
+		color: var(--el-text-color-primary);
+	}
+}
+
+.notice-content {
+	flex: 1;
+	min-width: 0;
+	padding: 0 16px 16px;
+}
+
+.notice-tabs-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 48px;
+	border-bottom: 1px solid var(--el-border-color-lighter);
+
+	:deep(.el-tabs) {
+		min-width: 0;
+	}
+
+	:deep(.el-tabs__header) {
+		margin: 0;
+	}
+
+	:deep(.el-tabs__nav-wrap::after) {
+		display: none;
+	}
+
+	:deep(.el-tabs__content) {
+		display: none;
+	}
+
+	:deep(.el-tabs__item) {
+		height: 48px;
+		line-height: 48px;
+	}
+}
+
+.notice-content :deep(.el-table) {
+	margin-top: 16px;
+}
+
+.notice-content :deep(.el-table__empty-block) {
+	min-height: 220px;
+}
+
 .open {
 	color: var(--el-color-primary);
 }

@@ -73,8 +73,8 @@
                         </el-step>
                     </el-steps>
                 </el-tab-pane>
-                <el-tab-pane :label="t('codeList')" name="codeList">
-                    <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+                <el-tab-pane :label="t('codeList')" name="codeList" class="page-sections">
+                    <el-card class="box-card !border-none table-search-wrap table-search-wrap--panel" shadow="never">
                         <el-form :inline="true" :model="codeTableData.searchParam" ref="searchFormRef">
                              <el-form-item :label="t('addonName')" prop="addon_name">
                                 <el-select v-model="codeTableData.searchParam.addon_name" placeholder="全部" filterable remote clearable :remote-method="getAddonDevelopFn">

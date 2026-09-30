@@ -11,17 +11,24 @@ use EasyWeChat\Kernel\Traits\MockableHttpClient;
 use Symfony\Component\HttpClient\AsyncDecoratorTrait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 use function array_merge;
 
+/**
+ * Class AccessTokenAwareClient.
+ *
+ *
+ * @method HttpClientInterface withAppIdAs(string $name = null) 自定义 app_id 参数名
+ * @method HttpClientInterface withAppId(string $value = null)
+ */
 class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
 {
     use AsyncDecoratorTrait;
     use HttpClientMethods;
-    use RetryableClient;
     use MockableHttpClient;
     use RequestWithPresets;
+    use RetryableClient;
 
     public function __construct(
         ?HttpClientInterface $client = null,
@@ -41,7 +48,6 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
 
     /**
      * @param  array<string, mixed>  $options
-     * @throws TransportExceptionInterface
      */
     public function request(string $method, string $url, array $options = []): Response
     {
@@ -59,10 +65,14 @@ class AccessTokenAwareClient implements AccessTokenAwareHttpClientInterface
     }
 
     /**
-     * @param  array<string, mixed>  $arguments
+     * @param  array<int, mixed>  $arguments
      */
     public function __call(string $name, array $arguments): mixed
     {
+        if (\str_starts_with($name, 'with')) {
+            return $this->handleMagicWithCall($name, $arguments[0] ?? null);
+        }
+
         return $this->client->$name(...$arguments);
     }
 

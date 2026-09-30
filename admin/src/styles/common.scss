@@ -46,9 +46,31 @@ html, body {
 
 /** 表单 **/
 .page-form {
+    --cmp-page-form-control-width: var(--cmp-form-control-width);
 
     .input-width {
-        width: 300px;
+        width: var(--cmp-page-form-control-width);
+        max-width: 100%;
+    }
+
+    .input-width-wide {
+        width: var(--cmp-form-control-wide-width);
+        max-width: 100%;
+    }
+}
+
+/** 内嵌存储配置表单（站点端多套存储配置弹框，顶部标签 + 两列布局）**/
+.storage-form-inline {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+
+    .el-form-item {
+        margin-bottom: 16px;
+    }
+
+    .input-width {
+        width: 100%;
     }
 }
 
@@ -56,11 +78,318 @@ html, body {
 
     // 提示
     .form-tip {
-        font-size: var(--el-font-size-small);
-        line-height: 1;
+        font-size: var(--cmp-form-tip-font-size);
+        line-height: var(--cmp-form-tip-line-height);
         width: 100%;
-        margin-top: 10px;
-        color: var(--el-color-info-light-3);
+        margin-top: var(--cmp-form-tip-margin-top);
+        color: var(--cmp-form-tip-text);
+    }
+}
+
+/**
+ * 统一纵向间距容器
+ *
+ * .page-sections：内容页同级区块间距，统一取 --cmp-page-section-gap。
+ *                 同一页里同时有搜索表单、表格、分页时，整页改用 --cmp-table-page-section-gap。
+ * .form-sections：设置、编辑、添加页里同级表单模块之间的间距，统一取 --cmp-form-page-gap。
+ *
+ * 两者只负责间距，不改动模块自身结构，供还没用上 .table-fill-page / .form-page + .form-section
+ * 的旧页面过渡使用。间距只由容器 gap 提供，模块自身不再保留上下外边距，避免出现
+ * 「模块下边距 + 容器 gap」叠加出来的多余缝隙。
+ */
+.page-sections,
+.form-sections {
+    display: flex;
+    flex-direction: column;
+
+    > .el-card,
+    > .page-card,
+    > .table-search-wrap,
+    > .table-panel,
+    > .el-alert,
+    > .tip-notice {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+.page-sections {
+    gap: var(--cmp-page-section-gap);
+}
+
+.page-sections:has(.table-search-wrap):has(.el-table):has(.el-pagination) {
+    gap: var(--cmp-table-page-section-gap);
+}
+
+/**
+ * 页面内容区纵向滚动条。
+ * 宽 6px、圆角 3px，无上下箭头。滚动行为（overflow、内边距）由使用方自己写。
+ */
+.page-scrollbar {
+    --page-scrollbar-size: 6px;
+
+    &::-webkit-scrollbar {
+        width: var(--page-scrollbar-size);
+    }
+
+    &::-webkit-scrollbar-button,
+    &::-webkit-scrollbar-button:vertical:start:decrement,
+    &::-webkit-scrollbar-button:vertical:end:increment {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+        background-color: var(--sys-color-border-dark);
+
+        &:hover {
+            background-color: var(--sys-color-border-darker);
+        }
+    }
+}
+
+.form-sections {
+    gap: var(--cmp-form-page-gap);
+}
+
+/**
+ * 新增、编辑、设置类页面表单。
+ *
+ * page-form--stacked 只负责标签上下布局；form-page 与 form-section 负责页面宽度和分区。
+ * 搜索栏、弹窗、详情表单不添加这些类，继续保持紧凑的横向布局。
+ */
+.form-page {
+    --cmp-current-form-page-width: var(--cmp-form-page-width);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--cmp-form-page-gap);
+    width: min(100%, var(--cmp-current-form-page-width));
+    margin-inline: auto;
+}
+
+.form-page--narrow {
+    --cmp-current-form-page-width: var(--cmp-form-page-width-narrow);
+}
+
+.form-page--wide {
+    --cmp-current-form-page-width: var(--cmp-form-page-width-wide);
+}
+
+.form-page__back {
+    display: inline-flex;
+    align-self: flex-start;
+    height: var(--cmp-form-back-height);
+    padding-inline: var(--cmp-form-back-padding-inline);
+    gap: var(--cmp-form-back-gap);
+    align-items: center;
+    color: var(--cmp-form-back-text);
+    font-size: var(--cmp-form-back-font-size);
+    background: transparent;
+    border: 0;
+    border-radius: var(--cmp-form-back-radius);
+    cursor: pointer;
+    transition: color var(--el-transition-duration-fast), background-color var(--el-transition-duration-fast);
+
+    &:hover {
+        color: var(--cmp-form-back-hover-text);
+        background: var(--cmp-form-back-hover-bg);
+    }
+
+    &:focus-visible {
+        box-shadow: 0 0 0 2px var(--sys-color-primary-border);
+    }
+
+    .el-icon,
+    svg {
+        width: var(--cmp-form-back-icon-size);
+        height: var(--cmp-form-back-icon-size);
+        font-size: var(--cmp-form-back-icon-size);
+    }
+}
+
+.form-section {
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--cmp-form-section-padding-block) var(--cmp-form-section-padding-inline);
+    background: var(--cmp-form-section-bg);
+    border: 1px solid var(--cmp-form-section-border);
+    border-radius: var(--cmp-form-section-radius);
+}
+
+.form-section--has-header {
+    padding: 0;
+}
+
+.form-section__header {
+    padding: var(--cmp-form-section-header-padding-block) var(--cmp-form-section-header-padding-inline);
+    border-bottom: 1px solid var(--cmp-form-section-header-border);
+}
+
+.form-section__body {
+    padding: var(--cmp-form-section-padding-block) var(--cmp-form-section-padding-inline);
+}
+
+.form-section__title {
+    margin: 0;
+    color: var(--cmp-form-section-title-text);
+    font-size: var(--cmp-form-section-title-font-size);
+    font-weight: var(--cmp-form-section-title-font-weight);
+    line-height: 24px;
+}
+
+.form-section__description {
+    margin: var(--sys-space-1) 0 0;
+    color: var(--cmp-form-section-description-text);
+    font-size: var(--cmp-form-section-description-font-size);
+    line-height: 20px;
+}
+
+/** 单独成块的大段帮助说明；单字段说明继续使用 form-tip。 */
+.form-help {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cmp-form-help-gap);
+    padding: var(--cmp-form-help-padding-block) var(--cmp-form-help-padding-inline);
+    color: var(--cmp-form-help-text);
+    font-size: var(--cmp-form-help-text-font-size);
+    line-height: var(--cmp-form-help-text-line-height);
+    background: var(--cmp-form-help-bg);
+    border: 1px solid var(--cmp-form-help-border);
+    border-radius: var(--cmp-form-help-radius);
+}
+
+.form-help__title {
+    color: var(--cmp-form-help-title-text);
+    font-size: var(--cmp-form-help-title-font-size);
+    font-weight: var(--cmp-form-help-title-font-weight);
+    line-height: 20px;
+}
+
+.form-help__content {
+    margin: 0;
+}
+
+.page-form--stacked {
+    .el-form-item {
+        display: block;
+        margin-bottom: var(--cmp-form-item-gap);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .el-form-item__label {
+        display: flex;
+        width: auto !important;
+        height: auto;
+        margin-bottom: var(--cmp-form-label-gap);
+        padding: 0;
+        color: var(--cmp-form-label-text);
+        font-size: var(--cmp-form-label-font-size);
+        font-weight: var(--cmp-form-label-font-weight);
+        line-height: var(--cmp-form-label-line-height);
+        justify-content: flex-start;
+    }
+
+    .el-form-item__content {
+        margin-left: 0 !important;
+        line-height: var(--cmp-control-height);
+    }
+
+    .el-form-item__error {
+        position: static;
+        margin-top: var(--sys-space-1);
+    }
+
+    .el-input,
+    .el-cascader,
+    .el-select,
+    .el-date-editor,
+    .el-autocomplete,
+    .el-input-number {
+        width: var(--cmp-page-form-control-width);
+        max-width: 100%;
+    }
+
+    .form-item--short {
+        .el-form-item__content {
+            width: var(--cmp-form-control-short-width);
+            max-width: 100%;
+        }
+
+        .el-input,
+        .el-cascader,
+        .el-select,
+        .el-date-editor,
+        .el-autocomplete,
+        .el-input-number {
+            width: var(--cmp-form-control-short-width);
+        }
+    }
+
+    .form-item--wide {
+        .el-form-item__content {
+            width: var(--cmp-form-control-wide-width);
+            max-width: 100%;
+        }
+
+        .el-form-item__content > * {
+            width: 100%;
+        }
+
+        .el-input,
+        .el-cascader,
+        .el-select,
+        .el-date-editor,
+        .el-autocomplete,
+        .el-input-number {
+            width: var(--cmp-form-control-wide-width);
+        }
+    }
+
+    .form-item--full {
+        .el-form-item__content,
+        .el-form-item__content > * {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .el-input,
+        .el-cascader,
+        .el-select,
+        .el-date-editor,
+        .el-autocomplete,
+        .el-input-number {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .form-section {
+        padding: var(--sys-space-5) var(--sys-space-4);
+    }
+
+    .form-section--has-header {
+        padding: 0;
+    }
+
+    .form-section__header,
+    .form-section__body {
+        padding-inline: var(--sys-space-4);
+    }
+
+    .page-form--stacked {
+        --cmp-page-form-control-width: 100%;
     }
 }
 
@@ -84,25 +413,106 @@ html, body {
     }
 }
 
+/**
+ * 列表页筛选区：白底卡片面板
+ *
+ * 保持「左侧 label + 右侧 input / select / 日期」的横向布局不变，只把筛选区包成与
+ * 表格面板一致的白底卡片：背景、边框、圆角、内边距全部复用已定义的 Token。
+ *
+ * 兼容两种写法：
+ * 1. el-card 写法：<el-card class="... table-search-wrap table-search-wrap--panel">
+ * 2. 容器写法：筛选表单外层没有 el-card 时，直接给容器加这两个类
+ */
+.table-search-wrap--panel {
+    box-sizing: border-box;
+    padding: var(--cmp-search-panel-padding) !important;
+    background-color: var(--cmp-table-panel-bg) !important;
+    border: 1px solid var(--cmp-table-panel-border) !important;
+    border-radius: var(--cmp-table-panel-radius) !important;
+
+    // el-card 写法：内边距统一由卡片自身承担，避免与默认值叠加
+    > .el-card__body {
+        padding: 0;
+    }
+
+    // 抵消最后一行 el-form-item 的下外边距，保证四边留白一致
+    .el-form {
+        margin-bottom: -18px;
+    }
+
+    // 左侧 label 使用灰色
+    .el-form-item__label {
+        color: var(--sys-color-text-secondary);
+    }
+}
+
+/**
+ * 列表页：筛选区与表格面板之间的间距（旧结构兜底）
+ *
+ * 使用 table-fill-page 结构的页面，纵向间距（页头 / 提示语 / 页签 / 搜索区 / 表格面板）
+ * 由容器 gap 统一承担，见 styles/table-fill.scss。
+ *
+ * 这里的两条规则负责还没改造成 table-fill-page 的列表页：间距只由表格面板的上边距提供
+ * （--cmp-table-page-section-gap = 15px），筛选区不再保留下边距，避免「筛选区下边距 + 表格
+ * 上边距」叠加成多余缝隙。
+ *
+ * 用 :has(~ .table-panel) 限定作用范围：只有同一层里后面确实跟着表格面板的筛选区才会
+ * 归零，站点端等「筛选区后面没有表格面板」的页面不受影响。
+ * 浏览器不支持 :has() 时只失效这一条，表现为间距 = 筛选区下边距 + 15px，不会破坏布局。
+ */
+.table-panel {
+    margin-top: var(--cmp-table-page-section-gap) !important;
+}
+
+.table-search-wrap:has(~ .table-panel) {
+    margin-bottom: 0 !important;
+}
+
 /** 底部浮动保存 **/
 .fixed-footer-wrap {
-    height: 48px;
+    height: var(--cmp-form-page-footer-space);
 
     .fixed-footer {
         position: absolute;
-        z-index: 4;
-        right: 15px;
+        z-index: var(--cmp-form-footer-z-index);
+        right: 0;
         bottom: 0;
-        left: 15px;
+        left: 0;
         display: flex;
-        height: inherit;
-        background: var(--el-bg-color-overlay);
-        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-        --tw-shadow: var(--el-box-shadow);
-        --tw-shadow-colored: var(--el-box-shadow);
+        box-sizing: border-box;
+        height: var(--cmp-form-footer-height);
+        padding-inline: var(--cmp-form-footer-padding-inline);
+        background: var(--cmp-form-footer-bg);
+        background: color-mix(in srgb, var(--cmp-form-footer-bg) 92%, transparent);
+        border-top: 1px solid var(--cmp-form-footer-border);
+        -webkit-backdrop-filter: blur(var(--cmp-form-footer-backdrop-blur));
+        backdrop-filter: blur(var(--cmp-form-footer-backdrop-blur));
         align-items: center;
         justify-content: center;
         transition:var(--el-transition-duration) width ease-in-out,var(--el-transition-duration) padding-left ease-in-out,var(--el-transition-duration) padding-right ease-in-out;
+    }
+
+    .fixed-footer--form {
+        justify-content: center;
+    }
+
+    .fixed-footer__inner {
+        --cmp-current-form-footer-width: var(--cmp-form-page-width);
+
+        display: flex;
+        width: min(100%, var(--cmp-current-form-footer-width));
+        margin-inline: auto;
+        gap: var(--cmp-form-footer-action-gap);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fixed-footer__inner--narrow {
+        --cmp-current-form-footer-width: var(--cmp-form-page-width-narrow);
+    }
+
+    .fixed-footer__inner--wide {
+        --cmp-current-form-footer-width: var(--cmp-form-page-width-wide);
     }
 }
 /* 单行超出隐藏 */
@@ -134,7 +544,8 @@ html.dark {
         background-color: var(--el-bg-color) !important;
     }
 
-    .table-search-wrap {
+    // 面板样式的筛选框背景由 Token 提供，黑暗模式下同样保持卡片底色
+    .table-search-wrap:not(.table-search-wrap--panel) {
         background-color: transparent !important;
     }
 
@@ -162,15 +573,11 @@ html.dark {
 
 
 
-// .main-container{
-//     // background-color: #fff;
-//     background-color: var(--el-bg-color-overlay);
-//     min-height: calc(100vh - 84px);
-//     overflow: hidden;
-//     .full-container {
-//         height: calc(100vh - 122px);
-//     }
-// }
+ .main-container{
+     .full-container {
+         height: calc(100vh - 122px);
+     }
+ }
 
 
 
@@ -191,7 +598,7 @@ html.dark {
 
 .region-input {
     --region-input-border-color: var(--el-border-color);
-    --el-input-border-radius: 0;
+    --el-input-border-radius: var(--cmp-control-radius);
     display: flex;
     box-shadow: 0 0 0 1px var(--region-input-border-color) inset;
     border-radius: var(--el-input-border-radius,var(--el-border-radius-base));
@@ -293,29 +700,20 @@ html.dark {
     }
 }
 
-.t-window {
-    line-height: normal!important;
-    padding-top: 10px!important;
-    --t-main-background-color: #1d1f3a;
-    --t-main-font-color: #ececee;
+/* 顶栏操作按钮：触发区域向左右铺进父级内边距，整块按钮可点、可悬浮 */
+.navbar-hit {
+    box-sizing: content-box;
+    height: 100%;
+    margin-right: calc(var(--navbar-hit-x, 8px) * -1);
+    margin-left: calc(var(--navbar-hit-x, 8px) * -1);
+    padding-right: var(--navbar-hit-x, 8px);
+    padding-left: var(--navbar-hit-x, 8px);
+}
 
-    .t-cmd-key {
-        font-weight: normal;
-        color: var(--t-main-font-color);
-    }
-
-    .t-log-box {
-        margin-block-start: 3px;
-        margin-block-end: 3px;
-        &:first-child {
-            display: none;
-        }
-    }
-    .t-content-normal .error {
-        display: none;
-
-        & + span {
-            color: red;
-        }
-    }
+.user-info-root,
+.user-info-dropdown,
+.layout-setting-trigger {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }

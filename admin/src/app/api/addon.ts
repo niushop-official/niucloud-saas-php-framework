@@ -43,14 +43,7 @@ export function uninstallAddon(params: Record<string, any>) {
     return request.post(`addon/uninstall/${ params.addon }`, params, { showSuccessMessage: true })
 }
 
-/**
- * 插件安装前检测
- * @param addon
- * @returns
- */
-export function preInstallCheck(addon: string) {
-    return request.get(`addon/install/check/${ addon }`)
-}
+// 插件安装前检测已统一到通用校验（sys/check?scene=addon_install）
 
 /**
  * 获取正在安装的插件
@@ -69,14 +62,7 @@ export function getAddonCloudInstallLog(addon: string) {
     return request.get(`addon/cloudinstall/${ addon }`)
 }
 
-/**
- * 插件卸载前检测
- * @param addon
- * @returns
- */
-export function preUninstallCheck(addon: string) {
-    return request.get(`addon/uninstall/check/${ addon }`)
-}
+// 插件卸载前检测已统一到通用校验（sys/check?scene=addon_uninstall）
 
 /**
  * 取消插件安装

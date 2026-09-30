@@ -18,6 +18,8 @@ class DbBackup
     private $totalTables;
     private $processedTables = 0;
     private $restoreIndex = 0;
+    /** 各表总行数（首次处理时统计，用于把进度细化到表内行级） */
+    private $tableRows = [];
 
     private $startime = 0;
 
@@ -39,6 +41,7 @@ class DbBackup
         $this->totalTables = count($this->getAllTables());
         $this->processedTables = $cache['processedTables'] ?? 0;
         $this->tableOffset = $cache['tableOffset'] ?? [];
+        $this->tableRows = $cache['tableRows'] ?? [];
         $this->currentFileSize = $cache['currentFileSize'] ?? 0;
         $this->restoreIndex = $cache['restoreIndex'] ?? 0;
         $this->startime = time();
@@ -54,6 +57,7 @@ class DbBackup
             'currentFileIndex' => $this->currentFileIndex,
             'processedTables' => $this->processedTables,
             'tableOffset' => $this->tableOffset,
+            'tableRows' => $this->tableRows,
             'currentFileSize' => $this->currentFileSize,
             'restoreIndex' => $this->restoreIndex,
             'tables' => $this->tables
@@ -75,6 +79,8 @@ class DbBackup
             foreach ($tables as $table) {
                 if (!isset($this->tableOffset[$table])) {
                     $this->tableOffset[$table] = 0;
+                    // 统计该表总行数：用于把备份进度细化到表内（否则大表导出期间百分比一直不动）
+                    $this->tableRows[$table] = (int) Db::table($table)->count();
                     $this->backupTableStructure($table);
                 }
 
@@ -103,8 +109,28 @@ class DbBackup
         return true;
     }
 
+    /**
+     * 备份进度（0-100）
+     *
+     * 已完成表按整表计，当前正在导出的表按「已导出行数 / 表总行数」计，
+     * 避免单表导出耗时较长时进度长时间停滞在同一百分比。
+     * @return int
+     */
     public function getBackupProgress() {
-        return round($this->processedTables / $this->totalTables * 100);
+        if ($this->totalTables <= 0) return 0;
+
+        $doneTables = $this->processedTables;
+        $current    = 0;
+
+        $tables       = $this->getAllTables();
+        $currentTable = $tables[ $this->processedTables ] ?? '';
+        if ($currentTable !== '') {
+            $totalRows = (int) ( $this->tableRows[ $currentTable ] ?? 0 );
+            $offset    = (int) ( $this->tableOffset[ $currentTable ] ?? 0 );
+            $current   = $totalRows > 0 ? min(1, $offset / $totalRows) : 0;
+        }
+
+        return (int) round(min(1, ( $doneTables + $current ) / $this->totalTables) * 100);
     }
 
     private function backupTableStructure($table)

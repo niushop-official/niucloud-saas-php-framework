@@ -92,10 +92,8 @@ class Addon extends BaseAdminController
      * @param $addon
      * @return Response
      */
-    public function installCheck($addon)
-    {
-        return success(data:(new AddonService())->installCheck($addon));
-    }
+    // 安装环境检测已统一到通用校验（sys/check?scene=addon_install）
+    // AddonService::installCheck() 仍保留，由通用校验服务复用
 
     /**
      * 取消安装
@@ -125,10 +123,8 @@ class Addon extends BaseAdminController
      * @param $addon
      * @return Response
      */
-    public function uninstallCheck($addon)
-    {
-        return success(data:(new AddonService())->uninstallCheck($addon));
-    }
+    // 卸载环境检测已统一到通用校验（sys/check?scene=addon_uninstall）
+    // AddonService::uninstallCheck() 仍保留，由通用校验服务复用
 
     /**
      * 插件列表

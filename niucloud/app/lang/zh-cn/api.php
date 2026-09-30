@@ -40,6 +40,7 @@ return [
     'ADDON_INSTALL_NOT_EXIST' => '未找到插件安装任务',
     'ADDON_INSTALL_EXECUTED' => '插件安装任务已执行',
     'ADDON_INSTALLING' => '插件安装中',
+    'ADDON_UNINSTALLING' => '插件卸载中，请勿重复操作',
     'INSTALL_CHECK_NOT_PASS' => '安装校验未通过',
     'SITE_INDEX_VIEW_PATH_NOT_EXIST' => '当前首页路径不存在',
     'ADMIN_INDEX_VIEW_PATH_NOT_EXIST' => '当前首页路径不存在',
@@ -131,6 +132,10 @@ return [
     'UPLOAD_STORAGE_TYPE_ALL_CLOSE' => '【站点端】至少要有一个启用的存储方式',
     'SUPER_UPLOAD_STORAGE_TYPE_ALL_CLOSE' => '【管理端】至少要有一个启用的存储方式',
     'STORAGE_NOT_HAS_HTTP_OR_HTTPS' => '空间域名请补全http://或https://',
+    'OSS_CONFIG_NOT_EXIST' => '存储配置不存在',
+    'OSS_CONFIG_IS_USING' => '该存储配置正在使用中，请先切换其他配置后再删除',
+    'OSS_CONFIG_NOT_COMPLETE' => '存储配置未完善，请先完善配置后再启用',
+    'OSS_CONFIG_NOT_ALLOW_DELETE' => '该存储配置不允许删除',
 
 
     //消息管理
@@ -319,8 +324,25 @@ return [
     'UPLOAD_KEY_NOT_EXIST' => '未找到微信小程序代码上传秘钥',
     'NEED_TO_AUTHORIZE_FIRST' => '使用云服务需先进行授权',
     'WEAPP_UPLOADING' => '小程序有正在上传的版本，请等待上一版本上传完毕后再进行操作',
-    'CLOUD_BUILD_TASK_EXIST' => '已有正在执行中的编译任务',
+    'WEAPP_UPLOAD_SITE_EMPTY' => '未获取到站点信息，无法发布小程序',
+    'WEAPP_UPLOAD_KEY_EMPTY' => '云端未返回编译任务标识，请稍后重试',
+    'CLOUD_BUILD_TASK_EXIST' => '已有正在执行中的编译任务，请等待其结束，或到「任务记录」中取消该任务后再发起',
+    'CLOUD_BUILD_ARTIFACT_NOT_EXIST' => '编译产物不存在（可能已被清理或任务未完成）',
+    'CHECK_SCENE_NOT_EXIST' => '校验场景不存在',
+    'CHECK_HANDLER_NOT_EXIST' => '校验项未实现',
+    'TASK_ARTIFACT_NOT_EXIST' => '任务产物不存在（可能已被清理或任务未完成）',
+    'BUILD_VERSION_NOT_EXIST' => '版本记录不存在',
     'CONNECT_FAIL' => '云编译服务连接失败',
+    // 统一任务：互斥按站点隔离，互斥槽与非互斥槽各一个
+    'TASK_EXIST' => '已有正在执行的任务，请等待其结束后再发起',
+    'TASK_MUTEX_EXIST' => '已有正在执行的互斥任务（升级/云编译/备份），请等待其结束后再发起',
+    'TASK_TYPE_NOT_EXIST' => '任务类型不存在',
+    'TASK_TYPE_NOT_ALLOW' => '当前端不允许创建该类型的任务',
+    'TASK_CREATE_FAIL' => '任务创建失败',
+    'TASK_NOT_EXIST' => '任务不存在',
+    'TASK_RUNNING' => '任务正在执行中',
+    'TASK_TERMINAL_CANNOT_RUN' => '任务已结束，仅可查看回放，不可继续执行',
+    'TASK_OPERATE_NOT_ALLOWED' => '当前任务状态不允许该操作',
 
     //核销相关
     'VERIFY_TYPE_ERROR' => '核销类型错误',
@@ -374,4 +396,7 @@ return [
     'TEMPLATE_ERROR' => '短信模版ID错误或审核未通过',
     'TEMPLATE_USE_ERROR' => '短信模版参数不一致需修改/重新报备',
     /*******************************************牛云短信 end ********************************************************/
+
+    //官网账号（内嵌授权）
+    'WEB_LOGIN_TOKEN_REQUIRE' => '官网登录令牌不能为空',
 ];

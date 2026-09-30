@@ -13,25 +13,18 @@ namespace app\service\admin\wxoplatform;
 
 use app\dict\sys\CloudDict;
 use app\dict\sys\WxOplatform;
-use app\job\wxoplatform\GetVersionUploadResult;
 use app\job\wxoplatform\SiteWeappCommit;
 use app\job\wxoplatform\SubmitAudit;
-use app\job\wxoplatform\VersionUploadSuccess;
-use app\job\wxoplatform\WeappCommit;
 use app\model\site\Site;
 use app\model\site\SiteGroup;
 use app\model\sys\SysConfig;
 use app\model\sys\WxOplatfromWeappVersion;
 use app\model\weapp\WeappVersion;
-use app\service\admin\site\SiteGroupService;
 use app\service\core\site\CoreSiteService;
-use app\service\core\weapp\CoreWeappCloudService;
 use app\service\core\weapp\CoreWeappConfigService;
-use app\service\core\wxoplatform\CoreOplatformConfigService;
 use app\service\core\wxoplatform\CoreOplatformService;
 use core\base\BaseAdminService;
 use core\exception\CommonException;
-use think\facade\Cache;
 
 /**
  */
@@ -44,54 +37,20 @@ class WeappVersionService extends BaseAdminService
     }
 
     /**
-     * 添加小程序版本
-     * @param array $data
+     * 同步模板库已改为统一任务执行（WeappCommitTaskHandler）
+     *
+     * 原 add() 只负责「发起上传」，后续编译轮询、草稿入模板库、逐套餐串联
+     * 都依赖队列 job 链；任务化后这些环节由任务处理器的步骤 / 子步骤驱动。
+     * 本方法仅保留「是否存在上传中版本」的互斥判断供复用。
+     *
+     * @param int $site_group_id
+     * @return void
+     * @throws CommonException
      */
-    public function add(array $data = [])
+    public function checkUploading(int $site_group_id)
     {
-        $site_group = (new SiteGroup())->field("group_id, group_name, group_desc, create_time, update_time, app")->order('create_time asc')->select()->toArray();
-        if (empty($site_group)) throw new CommonException('PLEASE_ADD_FIRST_SITE_GROUP');
-
-        $site_group_id = isset($data['site_group_id']) && !empty($data['site_group_id']) ? $data['site_group_id'] : $site_group[0]['group_id'];
-        $base_url = $data['base_url'] ?? cache_remember('base_url', function (){
-            return (string)url('/', [], '', true);
-        });
-
-        $uploading = $this->model->where([ ['site_group_id', '=', $site_group_id ], ['status', '=', 0] ])->field('id')->findOrEmpty();
+        $uploading = $this->model->where([ [ 'site_group_id', '=', $site_group_id ], [ 'status', '=', 0 ] ])->field('id')->findOrEmpty();
         if (!$uploading->isEmpty()) throw new CommonException('WEAPP_UPLOADING');
-
-        $version_no = $this->model->where([ ['site_group_id', '=', $site_group_id ] ])->order('id desc')->field('version_no')->findOrEmpty()->toArray()['version_no'] ?? 0;
-        $version_no += 1;
-        $version = "1.{$site_group_id}.{$version_no}";
-
-        $upload_res = (new CoreWeappCloudService())->setConfig(function () use ($site_group_id, $base_url) {
-            $config = (new CoreOplatformConfigService())->getConfig();
-            $group_info = (new SiteGroupService())->getInfo($site_group_id);
-            return [
-                'app_id' => $config['develop_app_id'],
-                'upload_private_key' => public_path() . $config['develop_upload_private_key'],
-                'addon' => array_merge($group_info['app'], $group_info['addon']),
-                'base_url' => $base_url
-            ];
-        })->uploadWeapp([
-            'site_id' => $this->site_id,
-            'version' => $version,
-            'desc' => $data['desc'] ?? ''
-        ]);
-
-        $res = $this->model->create([
-            'site_group_id' => $site_group_id,
-            'user_version' => $version,
-            'user_desc' => $data['desc'] ?? '',
-            'version_no' => $version_no,
-            'create_time' => time(),
-            'task_key' => $upload_res['key'],
-            'template_id' => ''
-        ]);
-
-        // 获取小程序版本提交结果
-        GetVersionUploadResult::dispatch(['task_key' => $upload_res['key'], 'is_all' => $data['is_all'] ?? 1], secs: 10);
-        return $res->id;
     }
 
     /**
@@ -107,7 +66,7 @@ class WeappVersionService extends BaseAdminService
         $site_group = $this->pageQuery($search_model);
         if (!empty($site_group['data'])) {
             foreach ($site_group['data'] as $key => $item) {
-                $site_group['data'][$key]['commit_record'] = $this->model->where([ ['site_group_id', '=', $item['group_id'] ] ])->order('id desc')->field('id, user_version, user_desc, status, fail_reason, create_time, update_time, template_id')->append(['status_name'])->findOrEmpty()->toArray();
+                $site_group['data'][$key]['commit_record'] = $this->model->where([ ['site_group_id', '=', $item['group_id'] ], ['template_id', '<>', ''] ])->order('id desc')->field('id, user_version, user_desc, status, fail_reason, create_time, update_time, template_id')->append(['status_name'])->findOrEmpty()->toArray();
             }
         }
         return $site_group;
@@ -130,73 +89,6 @@ class WeappVersionService extends BaseAdminService
         $search_model = $this->model->field('*')->append(['status_name'])->withSearch([ 'site_group_id' ], $data)
             ->order('id desc');
         return $this->pageQuery($search_model);
-    }
-
-    /**
-     * 获取小程序版本提交结果
-     * @param string $task_key
-     * @return void
-     */
-    public static function getVersionUploadResult(string $task_key, $is_all = 1) {
-        $build_log = (new CoreWeappCloudService())->getWeappCompileLog($task_key);
-
-        if (isset($build_log['data']) && isset($build_log['data'][0]) && is_array($build_log['data'][0])) {
-            $last = end($build_log['data'][0]);
-            if ($last['code'] == 0) {
-                (new WxOplatfromWeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_FAIL, 'fail_reason' => $last['msg'] ?? '', 'update_time' => time() ], ['task_key' => $task_key]);
-                VersionUploadSuccess::dispatch(['task_key' => $task_key, 'is_all' => $is_all]);
-                return true;
-            }
-            if ($last['percent'] == 100) {
-                (new WxOplatfromWeappVersion())->update(['status' => CloudDict::APPLET_UPLOAD_SUCCESS, 'update_time' => time() ], ['task_key' => $task_key]);
-                VersionUploadSuccess::dispatch(['task_key' => $task_key, 'is_all' => $is_all]);
-                return true;
-            }
-            GetVersionUploadResult::dispatch(['task_key' => $task_key, 'is_all' => $is_all], secs: 10);
-        }
-    }
-
-    /**
-     * 小程序模板上传成功之后
-     * @param $task
-     * @return void
-     */
-    public static function uploadSuccess(string $task_key, $is_all = 1) {
-        $version = (new WxOplatfromWeappVersion())->where(['task_key' => $task_key])->findOrEmpty();
-        if ($version->isEmpty()) return true;
-
-        $draft_list = CoreOplatformService::getTemplateDraftList()['draft_list'] ?? [];
-
-        if (!empty($draft_list)) {
-            foreach ($draft_list as $draft_item) {
-                if ($draft_item['user_version'] == $version['user_version']) {
-                    // 添加草稿到模板库
-                    CoreOplatformService::addToTemplate(['draft_id' => $draft_item['draft_id']]);
-                    // 获取模板列表
-                    $template_list = CoreOplatformService::getTemplateList()['template_list'] ?? [];
-
-                    if (!empty($template_list)) {
-                        foreach ($template_list as $template_item) {
-                            if ($template_item['user_version'] == $version['user_version']) {
-                                (new WxOplatfromWeappVersion())->update(['template_id' => $template_item['template_id'] ], ['task_key' => $task_key]);
-
-                                // 删除之前的模板
-                                $prev = (new WxOplatfromWeappVersion())->where([ [ 'site_group_id', '=', $version['site_group_id'] ], ['id', '<', $version['id'] ] ])->order('id desc')->findOrEmpty();
-                                if (!$prev->isEmpty() && !empty($prev['template_id'])) {
-                                    CoreOplatformService::deleteTemplate($prev['template_id']);
-                                }
-                            }
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-
-        $site_group = (new SiteGroup())->where([ ['group_id', '>', $version['site_group_id'] ] ])->order('group_id asc')->findOrEmpty();
-        if (!$site_group->isEmpty() && $is_all == 1) {
-            WeappCommit::dispatch(['data' => ['site_group_id' => $site_group['group_id'], 'base_url' => Cache::get('base_url') ] ]);
-        }
     }
 
     /**
@@ -229,6 +121,83 @@ class WeappVersionService extends BaseAdminService
         if ($version->isEmpty()) throw new CommonException('NOT_YET_PRESENT_TEMPLATE_LIBRARY');
 
         (new WxOplatfromWeappVersion())->where([ ['id', '=', $id] ])->delete();
+    }
+
+    /**
+     * 直接同步模板库（已上传成功、无模板ID 的记录补跑）
+     *
+     * 不经过任务，直接走：草稿箱匹配 -> 添加到模板库 -> 取模板ID -> 回写 -> 清理旧模板。
+     *
+     * @param int $versionId 小程序版本记录 id
+     * @return string 同步得到的模板ID
+     * @throws CommonException
+     */
+    public function syncTemplate(int $versionId): string
+    {
+        $record = ( new WxOplatfromWeappVersion() )->where([ [ 'id', '=', $versionId ] ])->findOrEmpty();
+        if ($record->isEmpty()) throw new CommonException('NOT_YET_PRESENT_TEMPLATE_LIBRARY');
+
+        $tid = (string) ( $record->template_id ?? '' );
+        if ($tid !== '' && $tid !== '0') throw new CommonException('该版本已同步到模板库');
+
+        $userVersion = (string) ( $record->user_version ?? '' );
+
+        // 草稿箱匹配本次上传版本
+        $draftList = CoreOplatformService::getTemplateDraftList()[ 'draft_list' ] ?? [];
+        $draftId   = 0;
+        foreach ((array) $draftList as $item) {
+            if ((string) ( $item[ 'user_version' ] ?? '' ) === $userVersion) {
+                $draftId = (int) ( $item[ 'draft_id' ] ?? 0 );
+                break;
+            }
+        }
+        if ($draftId <= 0) throw new CommonException('草稿箱中未找到本次上传的版本');
+
+        // 添加到模板库
+        CoreOplatformService::addToTemplate([ 'draft_id' => $draftId ]);
+
+        // 取模板ID
+        $templateList = CoreOplatformService::getTemplateList()[ 'template_list' ] ?? [];
+        $templateId   = '';
+        foreach ((array) $templateList as $item) {
+            if ((string) ( $item[ 'user_version' ] ?? '' ) === $userVersion) {
+                $templateId = (string) ( $item[ 'template_id' ] ?? '' );
+                break;
+            }
+        }
+        if ($templateId === '') throw new CommonException('模板库中未找到本次添加的版本');
+
+        // 回写模板ID
+        ( new WxOplatfromWeappVersion() )->update(
+            [ 'template_id' => $templateId, 'update_time' => time() ],
+            [ 'id' => $versionId ]
+        );
+
+        // 清理旧模板
+        $this->cleanOldTemplate((int) $record->site_group_id, $versionId);
+
+        return $templateId;
+    }
+
+    /**
+     * 清理旧模板（保留最新一条，模板库有数量上限）
+     * @param int $groupId
+     * @param int $versionId
+     */
+    protected function cleanOldTemplate(int $groupId, int $versionId): void
+    {
+        if ($versionId <= 0) return;
+        $prev = ( new WxOplatfromWeappVersion() )
+            ->where([ [ 'site_group_id', '=', $groupId ], [ 'id', '<', $versionId ] ])
+            ->order('id desc')->findOrEmpty();
+
+        if ($prev->isEmpty() || empty($prev[ 'template_id' ])) return;
+
+        try {
+            CoreOplatformService::deleteTemplate($prev[ 'template_id' ]);
+        } catch (\Throwable $e) {
+            // 旧模板清理失败不影响本次同步结果
+        }
     }
 
     /**

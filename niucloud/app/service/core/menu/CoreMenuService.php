@@ -153,6 +153,8 @@ class CoreMenuService extends BaseCoreService
                     'sort' => $value[ 'sort' ] ?? '',
                     'status' => 1,
                     'is_show' => $value[ 'is_show' ] ?? 1,
+                    'is_blank' => $value[ 'is_blank' ] ?? 0,
+                    'menu_attr' => $value['menu_attr'] ?? '',
                     'parent_select_key' => $value['parent_select_key'] ?? ''
                 ];
                 $refer = $value;

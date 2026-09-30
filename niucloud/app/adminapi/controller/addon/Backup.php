@@ -11,6 +11,8 @@
 
 namespace app\adminapi\controller\addon;
 
+use app\dict\sys\TaskDict;
+use app\service\admin\task\TaskService;
 use app\service\admin\upgrade\BackupRecordsService;
 use core\base\BaseAdminController;
 use think\Response;
@@ -65,29 +67,24 @@ class Backup extends BaseAdminController
         return success(( new BackupRecordsService() )->checkDirExist($data[ 'id' ]));
     }
 
-    /**
-     * 检测目录权限
-     * @description 检测目录权限
-     * @return Response
-     */
-    public function checkPermission()
-    {
-        return success(( new BackupRecordsService() )->checkPermission());
-    }
+    // 目录权限检测已统一到通用校验（sys/check?scene=backup）
+    // BackupRecordsService::checkPermission() 仍保留，由通用校验服务复用
 
     /**
      * 恢复备份
-     * @description 恢复备份
-     * @return array
+     * @description 恢复备份（创建统一任务，由任务执行器逐片驱动）
+     * @return Response
      */
     public function restoreBackup()
     {
         $data = $this->request->params([
             [ 'id', 0 ],
-            [ 'task', '' ]
         ]);
-        $res = ( new BackupRecordsService() )->restore($data);
-        return $res;
+        $task = ( new TaskService() )->create(TaskDict::TYPE_BACKUP, [
+            'mode' => BackupRecordsService::MODE_RESTORE,
+            'id'   => (int) $data[ 'id' ]
+        ]);
+        return success(data: $task);
     }
 
     /**
@@ -106,16 +103,15 @@ class Backup extends BaseAdminController
 
     /**
      * 手动备份
-     * @description 手动备份
-     * @return array
+     * @description 手动备份（创建统一任务，由任务执行器逐片驱动）
+     * @return Response
      */
     public function manualBackup()
     {
-        $data = $this->request->params([
-            [ 'task', '' ]
+        $task = ( new TaskService() )->create(TaskDict::TYPE_BACKUP, [
+            'mode' => BackupRecordsService::MODE_BACKUP
         ]);
-        $res = ( new BackupRecordsService() )->manualBackup($data);
-        return $res;
+        return success(data: $task);
     }
 
     /**

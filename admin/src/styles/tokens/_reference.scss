@@ -1,0 +1,106 @@
+/**
+ * L1：基础 Token
+ *
+ * 这里只保存基础视觉值，不直接给业务组件使用。
+ * 亮暗模式通过覆盖同一组基础 Token 完成切换，上层 Token 无需重复维护。
+ */
+:root {
+    // 品牌与状态色：目前仅作为缺省值，运行时主题色仍由 setThemeColor() 管理。
+    --ref-color-brand-primary: #3b82f6;
+    --ref-color-success: #67c23a;
+    --ref-color-warning: #e6a23c;
+    --ref-color-danger: #f56c6c;
+    --ref-color-info: #909399;
+
+    // 背景
+    --ref-color-bg-page: #f7f8fa;
+    --ref-color-bg-surface: #ffffff;
+    --ref-color-bg-overlay: #ffffff;
+
+    // 文字
+    --ref-color-text-strong: #18181b;
+    --ref-color-text-regular: #3f3f46;
+    --ref-color-text-muted: #71717a;
+    --ref-color-text-placeholder: #a1a1aa;
+    --ref-color-text-disabled: #c4c4cc;
+    --ref-color-text-on-primary: #ffffff;
+
+    // 边框
+    --ref-color-border-default: #e4e4e7;
+    --ref-color-border-light: #f0f0f2;
+    --ref-color-border-lighter: #f4f4f5;
+    --ref-color-border-extra-light: #fafafa;
+    --ref-color-border-dark: #d4d4d8;
+    --ref-color-border-darker: #a1a1aa;
+
+    // 填充
+    --ref-color-fill-default: #f0f0f2;
+    --ref-color-fill-light: #f5f5f6;
+    --ref-color-fill-lighter: #fafafa;
+    --ref-color-fill-extra-light: #fcfcfd;
+    --ref-color-fill-dark: #e4e4e7;
+    --ref-color-fill-darker: #d4d4d8;
+    --ref-color-fill-blank: #ffffff;
+
+    // 字体
+    --ref-font-family-base: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --ref-font-size-xs: 12px;
+    --ref-font-size-sm: 13px;
+    --ref-font-size-base: 14px;
+    --ref-font-size-md: 16px;
+    --ref-font-size-lg: 18px;
+    --ref-font-size-xl: 20px;
+    --ref-font-weight-regular: 400;
+    --ref-font-weight-medium: 500;
+    --ref-font-weight-semibold: 600;
+
+    // 圆角
+    --ref-radius-sm: 4px;
+    --ref-radius-md: 6px;
+    --ref-radius-lg: 8px;
+    --ref-radius-full: 999px;
+
+    // 阴影
+    --ref-shadow-sm: 0 1px 2px rgb(0 0 0 / 4%);
+    --ref-shadow-md: 0 4px 12px rgb(0 0 0 / 8%);
+
+    // 间距梯度。常规页面仍优先使用 Tailwind；这些值供布局和组件 Token 组合使用。
+    --ref-space-1: 4px;
+    --ref-space-2: 8px;
+    --ref-space-3: 12px;
+    --ref-space-4: 16px;
+    --ref-space-5: 20px;
+    --ref-space-6: 24px;
+    --ref-space-8: 32px;
+    --ref-space-10: 40px;
+}
+
+html.dark {
+    --ref-color-bg-page: #0f1012;
+    --ref-color-bg-surface: #18181b;
+    --ref-color-bg-overlay: #202024;
+
+    --ref-color-text-strong: #f4f4f5;
+    --ref-color-text-regular: #e4e4e7;
+    --ref-color-text-muted: #a1a1aa;
+    --ref-color-text-placeholder: #71717a;
+    --ref-color-text-disabled: #52525b;
+
+    --ref-color-border-default: #3f3f46;
+    --ref-color-border-light: #36363d;
+    --ref-color-border-lighter: #2c2c31;
+    --ref-color-border-extra-light: #27272a;
+    --ref-color-border-dark: #52525b;
+    --ref-color-border-darker: #71717a;
+
+    --ref-color-fill-default: #303036;
+    --ref-color-fill-light: #27272a;
+    --ref-color-fill-lighter: #202024;
+    --ref-color-fill-extra-light: #1c1c20;
+    --ref-color-fill-dark: #3f3f46;
+    --ref-color-fill-darker: #52525b;
+    --ref-color-fill-blank: transparent;
+
+    --ref-shadow-sm: 0 1px 2px rgb(0 0 0 / 24%);
+    --ref-shadow-md: 0 4px 12px rgb(0 0 0 / 36%);
+}

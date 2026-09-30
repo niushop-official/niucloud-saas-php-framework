@@ -82,6 +82,12 @@ function main() {
         applyMpWeixinPost,
         scanAllDiyComponents
     } = deps
+
+    // build:mp-weixin:core 场景（SKIP_ADDONS=1）：仅产出框架包，不合并已编译插件分包
+    if (process.env.SKIP_ADDONS === '1') {
+        console.log('[merge-mp-addon] SKIP_ADDONS set, skipping addon merge (core build)')
+        process.exit(0)
+    }
     const {
         MP_OUT_BUILD,
         MP_CORE_DIR,

@@ -363,8 +363,10 @@ trait WapTrait
                         $json = @file_get_contents($ck);
                         $json = json_decode($json, true);
                         $addon_json = [];
-                        foreach ($json as $jk => $jv) {
-                            $addon_json[ $v . '.' . $jk ] = $jv;
+                        if (is_array($json)) {
+                            foreach ($json as $jk => $jv) {
+                                $addon_json[ $v . '.' . $jk ] = $jv;
+                            }
                         }
                         if (isset($locale_data[ $cv ])) $locale_data[ $cv ][ 'json' ] = array_merge($locale_data[ $cv ][ 'json' ], $addon_json);
                     }

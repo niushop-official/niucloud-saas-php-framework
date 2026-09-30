@@ -124,7 +124,7 @@ async function isAddonEntryAvailable(key: string): Promise<boolean> {
     }
 
     addonEntryAvailableCache[key] = (async () => {
-        const url = wapUrl(`/assets/addons/${key}/index.js`)
+        const url = wapUrl(`/assets/addons/${key}/manifest.json`)
         const attempts: RequestInit[] = [{ method: 'GET' }, { method: 'HEAD' }]
         for (const init of attempts) {
             try {
@@ -184,7 +184,11 @@ export async function loadAddonModule(addon: string): Promise<Record<string, unk
                 if (!available) {
                     return null
                 }
-                const url = wapUrl(`/assets/addons/${addon}/index.js`)
+                // entry 可能是相对路径（./index.js / ./index-[hash].js）或历史绝对路径（/assets/addons/{key}/index.js），
+                // 统一抽取文件名后按 /assets/addons/{addon}/ 重建 URL，兼容旧插件（固定 index.js）与新内容哈希入口
+                const entry = getProdManifests()[addon]?.entry || './index.js'
+                const entryFile = entry.split('/').pop() || 'index.js'
+                const url = wapUrl(`/assets/addons/${addon}/${entryFile}`)
                 const mod = await import(/* @vite-ignore */ url) as Record<string, unknown>
                 if (mod && addonLocaleMerger) {
                     mergeAddonLangsFromModule(addon, mod, addonLocaleMerger)
@@ -222,17 +226,23 @@ export async function initAddonManifests(keys?: string[]) {
         const prodManifests = getProdManifests()
         for (const key of Object.keys(prodManifests)) delete prodManifests[key]
         let addonKeys = keys
+        let manifestData = null
         if (!addonKeys?.length) {
             try {
                 const res = await fetch(wapUrl(`/assets/addons/index.json?_t=${Date.now()}`))
                 if (res.ok) {
                     const data = await res.json()
                     addonKeys = Array.isArray(data.keys) ? data.keys : []
+                    manifestData = data.manifests || null
                 }
             } catch {
                 addonKeys = []
             }
         }
+        // 把 index.json.manifests 登记进运行期清单（含 entry 字段，供 loadAddonModule 解析
+        // 内容哈希命名的入口 index-[hash].js），避免硬编码 /index.js 在改名后 404。
+        // 该数据已随 index.json 一并下载，仅做本地引用合并，不触发额外请求。
+        if (manifestData) Object.assign(prodManifests, manifestData)
         // 首屏仅登记“已安装清单”（来自 index.json），【不】逐个 fetch manifest.json / probe index.js，
         // 避免插件多时一次性请求所有插件的 index.js，造成首屏空白久、请求风暴。
         // 真正的 manifest.json / index.js 拉取推迟到 loadAddonModule（首次进入某插件页才按需请求）。

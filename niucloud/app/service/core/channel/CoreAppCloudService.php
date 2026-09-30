@@ -121,7 +121,9 @@ class CoreAppCloudService extends CoreCloudBaseService
 
         // 将临时目录下文件生成压缩包
         $zip_file = $temp_dir . DIRECTORY_SEPARATOR . 'app.zip';
-        ( new CoreAddonDevelopDownloadService('') )->compressToZip($package_dir, $zip_file);
+        if (!( new CoreAddonDevelopDownloadService('') )->compressToZip($package_dir, $zip_file)) {
+            throw new CommonException('源码压缩包生成失败，请检查磁盘空间与目录权限');
+        }
 
 
         $query = [
@@ -420,5 +422,10 @@ class CoreAppCloudService extends CoreCloudBaseService
         fwrite($file_resource, $response->getBody());
         fclose($file_resource);
         return $file;
+    }
+
+
+    public function downloadAppMap($key, $version_no){
+
     }
 }

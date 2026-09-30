@@ -1,19 +1,19 @@
 <template>
-    <div class="main-container" >
-        <el-card class="box-card !border-none" shadow="never" v-loading="loading">
-            <div class="flex justify-between items-center">
-                <span class="text-page-title">{{ pageName }}</span>
-            </div>
-            <div class="flex flex-wrap px-2 plug-list pb-10 mt-[20px] ">
-                <div class="flex items-center  p-3 w-[295px] relative plug-item mr-4 mb-4 bg-[var(--el-color-info-light-9)] cursor-pointer">
-                    <div class="flex flex-col ml-2">
-                        <span class="text-sm truncate w-[190px]">{{t('dataCache')}}</span>
-                        <span class="text-xs text-gray-400 mt-1 truncate w-[190px]" :title="t('dataCacheDesc')">{{t('dataCacheDesc')}}</span>
+    <div class="main-container" v-loading="loading">
+        <div class="flex justify-between items-center mb-3">
+            <span class="text-page-title">{{ pageName }}</span>
+        </div>
+
+        <div class="app-grid">
+            <div class="app-card" @click="schemaCache()">
+                <div class="app-card-head">
+                    <div class="app-card-info">
+                        <div class="app-card-name">{{ t('dataCache') }}</div>
                     </div>
-                    <span class="plug-item-operate" @click="schemaCache()">{{t('refresh')}}</span>
                 </div>
+                <p class="app-card-desc">{{ t('dataCacheDesc') }}</p>
             </div>
-        </el-card>
+        </div>
     </div>
 </template>
 
@@ -49,16 +49,78 @@ const schemaCache = () => {
 </script>
 
 <style lang="scss" scoped>
-.demo-tabs > .el-tabs__content {
-    padding: 32px;
-    color: #6b778c;
-    font-size: 32px;
-    font-weight: 600;
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
+    gap: var(--cmp-module-card-gap);
 }
-.plug-item{
-    .plug-item-operate{
-        @apply text-xs absolute right-3 cursor-pointer;
-        color: var(--el-color-primary);
+
+/* 可点击模块卡片：与站点应用页共用同一套 Token */
+.app-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cmp-module-card-gap);
+    overflow: hidden;
+    padding: var(--cmp-module-card-padding);
+    background-color: var(--cmp-module-card-bg);
+    border: var(--cmp-module-card-border-width) solid var(--cmp-module-card-border-color);
+    border-radius: var(--cmp-module-card-radius);
+    color: var(--cmp-module-card-text);
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: var(--cmp-module-card-accent-height);
+        background: linear-gradient(90deg, var(--cmp-module-card-accent-start), var(--cmp-module-card-accent-end));
+        opacity: 0;
+        transition: opacity .3s;
     }
+
+    &:hover {
+        border-color: var(--cmp-module-card-hover-border-color);
+        box-shadow: var(--cmp-module-card-hover-shadow);
+        transform: translateY(var(--cmp-module-card-hover-offset));
+
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+
+.app-card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.app-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.app-card-name {
+    overflow: hidden;
+    color: var(--sys-color-text-primary);
+    font-size: var(--sys-font-size-md);
+    font-weight: var(--sys-font-weight-semibold);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-card-desc {
+    overflow: hidden;
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.text-page-title{
+    font-weight: var(--sys-font-weight-semibold);
 }
 </style>

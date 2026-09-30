@@ -111,7 +111,7 @@ const onSave = async (formEl: FormInstance | undefined) => {
 }
 
 const back = () => {
-    tabbarStore.removeTab(route.path)
+    tabbarStore.removeTab(route.name as string)
     router.push({ path: '/setting/agreement' })
 }
 </script>

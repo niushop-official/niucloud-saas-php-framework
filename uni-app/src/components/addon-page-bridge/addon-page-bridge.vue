@@ -42,8 +42,39 @@ provide(BRIDGE_ADDON_INSTANCE_KEY, addonInstance)
 
 let loadSeq = 0
 
+/**
+ * 分构建走通用桥接时，onLoad 拿到的是 { addon, page, _orig }，
+ * 真正业务 query（如 embed=1&mode=mini）在 _orig 路径里。
+ * 合并后再转发给插件页，与本地直链 onLoad 行为一致。
+ */
+function mergeOrigPageQuery(options: Record<string, unknown> = {}) {
+    const result: Record<string, unknown> = { ...options }
+    const orig = result._orig
+    if (typeof orig === 'string' && orig) {
+        try {
+            const decoded = decodeURIComponent(orig)
+            const qi = decoded.indexOf('?')
+            if (qi >= 0) {
+                new URLSearchParams(decoded.slice(qi + 1)).forEach((v, k) => {
+                    if (result[k] === undefined) result[k] = v
+                })
+            }
+        } catch { /* ignore */ }
+    }
+    // #ifdef H5
+    if (typeof location !== 'undefined' && location.search) {
+        try {
+            new URLSearchParams(location.search).forEach((v, k) => {
+                if (result[k] === undefined) result[k] = v
+            })
+        } catch { /* ignore */ }
+    }
+    // #endif
+    return result
+}
+
 onLoad((options) => {
-    pageQuery.value = options || {}
+    pageQuery.value = mergeOrigPageQuery((options || {}) as Record<string, unknown>)
 })
 
 async function loadPage() {

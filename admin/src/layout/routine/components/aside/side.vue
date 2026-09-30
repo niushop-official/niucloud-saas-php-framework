@@ -2,7 +2,7 @@
     <el-container class="w-100 h-[100%]">
         <el-main class="p-0 flex">
             <el-scrollbar v-if="twoMenuData.length" class="two-menu w-[200px]">
-                <el-menu class="aside-menu" :default-active="route.name" :default-openeds="menuOption" :router="true" :collapse="systemStore.menuIsCollapse">
+                <el-menu class="aside-menu" :default-active="menuActive" :default-openeds="menuOption" :router="false" :collapse="systemStore.menuIsCollapse">
                     <menu-item v-for="(route, index) in twoMenuData" :routes="route" :key="index" />
                 </el-menu>
                 <div class="h-[48px]"></div>
@@ -21,8 +21,11 @@ import { cloneDeep } from 'lodash-es'
 import storage from '@/utils/storage'
 import { getShowApp, getShowSpecialMenu } from '@/app/api/site'
 import { formatRouters } from '@/router/routers'
+import { useMenuActive } from '@/hooks/useMenuActive'
 
 const route = useRoute()
+// 受控菜单高亮：点击需要新窗口打开的菜单后，高亮回滚到原菜单
+const { menuActive } = useMenuActive()
 
 const systemStore = useSystemStore()
 const userStore = useUserStore()
@@ -245,10 +248,11 @@ body {
         :deep(.el-sub-menu) {
             margin-bottom: 8px;
 
-            :deep(.el-sub-menu__title) {
+            .el-sub-menu__title {
                 height: 36px;
                 margin: 0 8px 4px;
-                padding-left: 0;
+                /* 去掉组件库按层级加的左内边距，文字从 25px 图标槽后开始 */
+                padding-left: 0 !important;
                 border-radius: 2px;
 
                 span {
@@ -262,22 +266,21 @@ body {
                     color: var(--el-color-primary);
                     background-color: #fff !important;
                 }
-                .el-icon:deep(.el-sub-menu__icon-arrow) {
-                    right: 5px;
-                }
             }
 
-            :deep(.el-menu-item) {
+            .el-menu-item {
+                /* 三级及更深的叶子没有图标，左内边距等于图标槽，文字与二级标题对齐 */
                 padding-left: 25px !important;
                 span{
                     margin-left: 0 !important;
                 }
             }
-            :deep(.el-sub-menu){
-                :deep(.el-sub-menu__title){
+            .el-sub-menu{
+                .el-sub-menu__title{
                     margin: 0 8px 2px;
                     height: 40px;
-                    padding-left: 18px;
+                    /* 分组行自带 25px 图标，不再加左内边距，文字与二级标题对齐 */
+                    padding-left: 0 !important;
                     border-radius: 2px;
                     span{
                         height: 40px;
@@ -288,12 +291,6 @@ body {
                     &:hover{
                         background-color: transparent;
                         color: var(--el-color-primary);
-                    }
-                }
-                :deep(.el-menu-item){
-                    padding-left: 40px !important;
-                    span{
-                        margin-left: 0 !important;
                     }
                 }
             }

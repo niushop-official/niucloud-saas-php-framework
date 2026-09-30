@@ -1,303 +1,260 @@
 <template>
-    <div class="flex items-center justify-center">
-        <el-card class="box-card !border-none profile-data w-[1280px] mt-[20px] loading-box" shadow="never">
-        <!-- <div>   -->
-            <div  class="box-border">
-                <div class="bg-[#fff] mb-[20px] rounded-[6px] relative banner-box" v-if="showBanner" @mouseenter="hovering = 'banner'"  @mouseleave="hovering = ''">
-                    <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'banner'">
-                        <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('banner')">
-                            <CircleCloseFilled />
-                        </el-icon>
+    <div class="index-dashboard">
+
+        <div class="index-page">
+            <!-- ================= 轮播图 ================= -->
+            <div class="index-banner index-closable" v-if="showBanner">
+                <section class="index-carousel">
+                    <!-- 无图片时的兜底装饰 -->
+                    <span class="index-carousel-decor">
+                        <span class="index-carousel-grid"></span>
                     </span>
-                    <div class="flex h-[156px]">
-                        <div class="w-full h-full ">
-                         <!-- 轮播图加载中 -->
-                         <div v-if="loading" class="skeleton-loading h-full flex items-center justify-center">
-                            <el-skeleton
-                                style="width: 100%"
-                                :loading="loading"
-                                animated
-                                :throttle="{ leading: 500, initVal: true }"
-                                >
-                                <template #template>
-                                    <el-skeleton-item variant="image" style="width: 100%; height: 156px;" />
-                                </template>
-                              
-                                </el-skeleton>
+                    <el-carousel :interval="3000" height="150px" class="index-carousel-body">
+                        <el-carousel-item v-for="(item, index) in bannerlistr" :key="index">
+                            <div class="index-carousel-item" @click="toApplicationurl(item)">
+                                <img :src="item.image" alt="" />
+                            </div>
+                        </el-carousel-item>
+                    </el-carousel>
+                    <span class="index-carousel-veil"></span>
+                </section>
+                <span class="index-module-close" @click="closeModule('banner')">
+                    <el-icon :size="20">
+                        <CircleCloseFilled />
+                    </el-icon>
+                </span>
+            </div>
+
+            <!-- ================= 快速开始 + AI 编程 ================= -->
+            <div class="index-row index-closable" v-if="showQuickStart">
+                <section class="index-panel">
+                    <h2 class="index-panel-title">快速开始，构建你的项目及应用</h2>
+                    <p class="index-panel-sub">基于Vue3+PHP8+MYSQL8的跨平台应用构建</p>
+                    <div class="index-tile-grid">
+                        <div class="index-tile" @click="toLink('/admin/tools/addon')">
+                            <span class="index-tile-ic"><i class="iconfont iconkaifayigechajianc"></i></span>
+                            <span class="index-tile-body">
+                                <span class="index-tile-text">开发一个插件</span>
+                                <span class="index-tile-tip">创建自定义功能扩展</span>
+                            </span>
                         </div>
-                            <el-carousel v-else :interval="3000" height="156px" class="rounded-[6px]">
-                                <!-- <el-carousel-item >
-                                    <div class="h-full index-carousel" @click="toApplication">
-                                        <img :src="img('static/resource/images/banner_1.png')" alt="" class="w-full h-full cursor-pointer">
-                                    </div>
-                                </el-carousel-item>
-                                <el-carousel-item >
-                                    <div class="h-full index-carousel" @click="toApplication">
-                                        <img :src="img('static/resource/images/banner_2.png')" alt="" class="w-full h-full cursor-pointer">
-                                    </div>
-                                </el-carousel-item> -->
-                               
-                                <el-carousel-item  v-for="(item, index) in bannerlistr" :key="index">
-                                    <div class="h-full index-carousel" @click="toApplicationurl(item)">
-                                        <img :src="item.image" alt="" class="w-full h-full cursor-pointer">
-                                    </div>
-                                </el-carousel-item>
-                                
-                            </el-carousel>
+                        <div class="index-tile" @click="toLink('/admin/tools/code')">
+                            <span class="index-tile-ic"><i class="iconfont iconAIshengchengchajianc"></i></span>
+                            <span class="index-tile-body">
+                                <span class="index-tile-text">AI生成插件</span>
+                                <span class="index-tile-tip">使用AI自动生成插件代码</span>
+                            </span>
+                        </div>
+                        <div class="index-tile" @click="toHref('/app_manage/app_store','uninstalled')">
+                            <span class="index-tile-ic"><i class="iconfont iconanzhuangyigechajian1"></i></span>
+                            <span class="index-tile-body">
+                                <span class="index-tile-text">安装一个插件</span>
+                                <span class="index-tile-tip">从市场安装现有插件</span>
+                            </span>
+                        </div>
+                        <div class="index-tile" @click="toLink('/admin/tools/cloud_compile')">
+                            <span class="index-tile-ic"><i class="iconfont iconyunbianyic"></i></span>
+                            <span class="index-tile-body">
+                                <span class="index-tile-text">云编译</span>
+                                <span class="index-tile-tip">在线编译你的应用</span>
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="index-panel">
+                    <h2 class="index-panel-title">AI编程</h2>
+                    <div class="index-tabs">
+                        <div class="index-tab" :class="{ 'is-active': activeName1 === '1' }"
+                            @click="activeNameTabFn1('1')">{{ t("插件开发") }}</div>
+                        <div class="index-tab" :class="{ 'is-active': activeName1 === '2' }"
+                            @click="activeNameTabFn1('2')">{{ t("插件设计") }}</div>
+                        <div class="index-tab" :class="{ 'is-active': activeName1 === '3' }"
+                            @click="activeNameTabFn1('3')">{{ t("APP编译") }}</div>
+                        <div class="index-tab" :class="{ 'is-active': activeName1 === '4' }"
+                            @click="activeNameTabFn1('4')">{{ t("小程序发布") }}</div>
+                    </div>
+                    <div class="index-video">
+                        <video src="@/app/assets/images/index/low-play.mp4" preload="auto" :controls="true" muted
+                            autoplay loop></video>
+                    </div>
+                </section>
+
+                <span class="index-module-close" @click="closeModule('quickStart')">
+                    <el-icon :size="20">
+                        <CircleCloseFilled />
+                    </el-icon>
+                </span>
+            </div>
+
+            <!-- ================= 生态精选应用推荐 ================= -->
+            <section class="index-section index-closable" v-if="showNiuCloud && appList.length > 0">
+                <h2 class="index-section-title">NIUCLOUD生态精选应用推荐</h2>
+                <div class="index-app-grid" :class="{ 'is-loading': loading }">
+                    <div class="index-app-card" v-for="(item,index) in appList.slice(0,5)" :key="index"
+                        @click="toApplicationDetail(item)">
+                        <div class="index-app-cover">
+                            <img :src="img(item.app_logo)" alt="">
+                        </div>
+                        <div class="index-app-body">
+                            <div class="index-app-name using-hidden">{{ item.app_name }}</div>
+                            <div class="index-app-desc multi-hidden">{{ item.app_desc }}</div>
+                            <div class="index-app-meta">
+                                <img :src="img(item.developer.headimg)" alt="" class="index-app-avatar"
+                                    v-if="item.developer.headimg">
+                                <img src="@/app/assets/images/member_head.png" alt="" class="index-app-avatar" v-else>
+                                <span class="index-app-dev using-hidden">{{ item.developer.nickname }}</span>
+                                <span class="index-app-nums">
+                                    <span class="index-app-num">
+                                        <i class="iconfont iconchakan"></i>{{ item.visit_num }}
+                                    </span>
+                                    <span class="index-app-num">
+                                        <i class="iconfont iconxiaoliang"></i>{{ item.sale_num }}
+                                    </span>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div v-if="showQuickStart" class="mt-[50px] flex items-center justify-between relative" @mouseenter="hovering = 'quickStart'"  @mouseleave="hovering = ''">
-                    <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'quickStart'">
-                        <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('quickStart')">
-                            <CircleCloseFilled />
-                        </el-icon>
-                    </span>
-                    <div class="w-[67%]">
-                        <p class="text-[18px] text-[#1D1F3A] mb-[10px]">快速开始，构建你的项目及应用</p>
-                        <p class="text-[14px] text-[#4F516D]">基于Vue3+PHP8+MYSQL8的跨平台应用构建</p>
-                        <div class="mt-[20px] grid grid-cols-2 gap-[20px]">
-                            <!-- 卡片 1 -->
-                            <div class="bg-[#EDEEF4] p-[20px] rounded-[6px] cursor-pointer flex flex-col items-start quick-action-card relative" @click="toLink('/admin/tools/addon')">
-                                <div class="title flex items-center">
-                                    <span class="iconfont iconkaifayigechajianc !text-[20px] mr-[10px]"></span>
-                                    <span class="text-[14px] text-[#1D1F3A]">开发一个插件</span>
-                                </div>
-                                <div class="absolute bottom-3 left-5 right-4 desc">
-                                    <p class="text-[12px] text-[#4F516D]">创建自定义功能扩展</p>
-                                </div>
-                                <span class="absolute right-4 top-[3px] -translate-y-1/2 text-[16px] iconfont iconFrame-1"></span>
-                            </div>
-                            <div class="bg-[#EDEEF4] p-[20px] rounded-[6px] cursor-pointer flex flex-col items-start quick-action-card relative" @click="toLink('/admin/tools/code')">
-                                <div class="title flex items-center">
-                                    <span class="iconfont iconAIshengchengchajianc !text-[20px] mr-[10px]"></span>
-                                    <span class="text-[14px] text-[#1D1F3A]">AI生成插件</span>
-                                </div>
-                                <div class="absolute bottom-3 left-5 right-4 desc">
-                                    <p class="text-[12px] text-[#4F516D]">使用AI自动生成插件代码</p>
-                                </div>
-                                <span class="absolute right-4 top-[3px] -translate-y-1/2 text-[16px] iconfont iconFrame-1"></span>
-                            </div>
-                            <div class="bg-[#EDEEF4] p-[20px] rounded-[6px] cursor-pointer flex flex-col items-start quick-action-card relative" @click="toHref('/app_manage/app_store','uninstalled')">
-                                <div class="title flex items-center">
-                                    <span class="iconfont iconanzhuangyigechajian1 !text-[20px] mr-[10px]"></span>
-                                    <span class="text-[14px] text-[#1D1F3A]">安装一个插件</span>
-                                </div>
-                                <div class="absolute bottom-3 left-5 right-4 desc">
-                                    <p class="text-[12px] text-[#4F516D]">从市场安装现有插件</p>
-                                </div>
-                                <span class="absolute right-4 top-[3px] -translate-y-1/2 text-[16px] iconfont iconFrame-1"></span>
-                            </div>
-                            <div class="bg-[#EDEEF4] p-[20px] rounded-[6px] cursor-pointer flex flex-col items-start quick-action-card relative" @click="toLink('/admin/tools/cloud_compile')">
-                                <div class="title flex items-center">
-                                    <span class="iconfont iconyunbianyic !text-[20px] mr-[10px]"></span>
-                                    <span class="text-[14px] text-[#1D1F3A]">云编译</span>
-                                </div>
-                                <div class="absolute bottom-3 left-5 right-4 desc">
-                                    <p class="text-[12px] text-[#4F516D]">在线编译你的应用</p>
-                                </div>
-                                <span class="absolute right-4 top-[3px] -translate-y-1/2 text-[16px] iconfont iconFrame-1"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-[33%] ml-[20px]">
-                        <p class="text-[18px] text-[#1D1F3A] mb-[10px]">AI编程</p>
-                        <div class="flex items-center text-[14px] text-[#4F516D]">
-                            <div :class="['cursor-pointer mr-[20px]', { '!text-primary': activeName1 === '1' }]" @click="activeNameTabFn1('1')">{{ t("插件开发") }}</div>
-                            <div :class="['cursor-pointer mr-[20px]', { '!text-primary': activeName1 === '2' }]" @click="activeNameTabFn1('2')">{{ t("插件设计") }}</div>
-                            <div :class="['cursor-pointer mr-[20px]', { '!text-primary': activeName1 === '3' }]" @click="activeNameTabFn1('3')">{{ t("APP编译") }}</div>
-                            <div :class="['cursor-pointer mr-[20px]', { '!text-primary': activeName1 === '4' }]" @click="activeNameTabFn1('4')">{{ t("小程序发布") }}</div>
-                        </div>
-                        <div class="bg-[#EDEEF4] h-[160px] rounded-[6px] mt-[20px] text-[#666] cursor-pointer">
-                            <video src="@/app/assets/images/index/low-play.mp4" preload="auto" :controls="true" muted autoplay loop class="w-full h-full"></video>
-                        </div>
-                    </div>
-                </div>
-                <template v-if="loading">
-                    <div v-if="showNiuCloud" class="mt-[50px] relative" @mouseenter="hovering = 'niuCloud'"  @mouseleave="hovering = ''">
-                        <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'niuCloud'">
-                            <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('niuCloud')">
-                                <CircleCloseFilled />
+                <span class="index-module-close" @click="closeModule('niuCloud')">
+                    <el-icon :size="20">
+                        <CircleCloseFilled />
+                    </el-icon>
+                </span>
+            </section>
+
+            <!-- ================= 数据概况 ================= -->
+            <section class="index-section">
+                <h2 class="index-section-title">{{ t("dataSummarize") }}</h2>
+                <div class="index-stat-grid">
+                    <div class="index-stat index-stat--success" @click="toHref('site/manage','1')">
+                        <span class="index-stat-ic">
+                            <el-icon>
+                                <Check />
                             </el-icon>
                         </span>
-                        <p class="text-[18px] text-[#1D1F3A]">NIUCLOUD生态精选应用推荐</p>
-                        <!-- 应用列表加载中 -->
-                        <div v-if="loading" class="mt-[20px] grid grid-cols-5 gap-4">
-                            <div v-for="i in 5" :key="i" class="bg-[#EDEEF4] rounded-[8px] overflow-hidden">
-                                <el-skeleton
-                                    style="width: 240px"
-                                    :loading="loading"
-                                    animated
-                                    :throttle="{ leading: 500, initVal: true }"
-                                    >
-                                    <template #template>
-                                        <el-skeleton-item variant="image" style="width: 240px; height: 265px" />
-                                        <div style="padding: 14px">
-                                        <el-skeleton-item variant="h3" style="width: 50%" />
-                                        <div
-                                            style="
-                                            display: flex;
-                                            align-items: center;
-                                            justify-items: space-between;
-                                            margin-top: 16px;
-                                            height: 16px;
-                                            "
-                                        >
-                                            <el-skeleton-item variant="text" style="margin-right: 16px" />
-                                            <el-skeleton-item variant="text" style="width: 30%" />
-                                        </div>
-                                        </div>
-                                    </template>
-                                
-                                    </el-skeleton>
-                            </div>
-                        </div>              
+                        <div class="index-stat-num">{{ statInfo.today_data.norma_site_count || 0 }}</div>
+                        <div class="index-stat-label">{{ t("normalSiteSum") }}</div>
                     </div>
-                </template>
-                <template v-else>
-                    <div v-if="showNiuCloud && appList.length >0" class="mt-[50px] relative" @mouseenter="hovering = 'niuCloud'"  @mouseleave="hovering = ''">
-                        <span class="absolute right-0 top-[-5px] text-[#999] hover:text-red-500 cursor-pointer z-10"  v-if="hovering === 'niuCloud'">
-                            <el-icon class="icon" :size="20" color="#7b7b7b" @click="closeModule('niuCloud')">
-                                <CircleCloseFilled />
+                    <div class="index-stat index-stat--warning" @click="toWeekExpireSite()">
+                        <span class="index-stat-ic">
+                            <el-icon>
+                                <Clock />
                             </el-icon>
                         </span>
-                        <p class="text-[18px] text-[#1D1F3A]">NIUCLOUD生态精选应用推荐</p>
-                        <div class="mt-[20px]">
-                            <div class="grid grid-cols-5 gap-4">
-                                <div v-for="(item,index) in appList.slice(0,5)" :key="index" @click="toApplicationDetail(item)" class="bg-[#EDEEF4] rounded-[8px] overflow-hidden text-[#666] cursor-pointer hover:shadow-xl transition-shadow duration-300 border-[1px] border-[#EDEEF4]">
-                                    <img :src="img(item.app_logo)" alt="" class="w-full rounded-t-[6px]" >
-                                    <div class="bg-[#fff] p-[10px]">
-                                        <div class="text-[16px] text-[#1D1F3A] mb-[10px]">
-                                            <span class="using-hidden">{{ item.app_name }}</span>
-                                        </div>
-                                        <div class="text-[12px] text-[#4F516D]">
-                                            <span class="using-hidden">{{ item.app_desc }}</span>
-                                        </div>
-                                        <div class="text-[12px] mt-[20px] flex justify-between">
-                                            <div class="flex items-center">
-                                                <img :src="img(item.developer.headimg)" alt="" class="w-[18px] h-[18px] rounded-full mr-[6px]" v-if="item.developer.headimg">
-                                                <img src="@/app/assets/images/member_head.png" alt="" class="w-[18px] h-[18px] rounded-full mr-[6px]" v-else>
-                                                <span class="text-[#4F516D] text-[12px] using-hidden">{{ item.developer.nickname }}</span>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <div class="mr-[10px]">
-                                                    <span class="iconfont iconchakan !text-[12px] mr-[8px] !text-[#4F516D]"></span>
-                                                    <span class="text-[#4F516D] text-[12px]">{{ item.visit_num}}</span>
-                                                </div>
-                                                <div>
-                                                    <span class="iconfont iconxiaoliang !text-[12px] mr-[8px] !text-[#4F516D]"></span>
-                                                    <span class="text-[#4F516D] text-[12px]">{{ item.sale_num }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>              
+                        <div class="index-stat-num">{{ statInfo.today_data.week_expire_site_count|| 0 }}</div>
+                        <div class="index-stat-label">{{ t("weekExpireSiteCount") }}</div>
                     </div>
-                </template>
-                
-
-                <div class="text-[18px]  mt-[50px] mb-[15px]">{{ t("dataSummarize") }}</div>
-                <el-card class="box-card !border-none profile-data" shadow="never">
-                    <el-row :gutter="20" class="top">
-                        <el-col>
-                            <el-card shadow="never" @click="toHref('site/manage','1')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.today_data.norma_site_count || 0 }}</div>
-                                <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("normalSiteSum") }}</div>
-                            </el-card>
-                        </el-col>
-                        <el-col>
-                            <el-card shadow="never" @click="toHref('site/manage','1')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.today_data.week_expire_site_count|| 0  }}</div>
-                                <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("weekExpireSiteCount") }}</div>
-                            </el-card>
-                        </el-col>
-                        <el-col>
-                            <el-card shadow="never" @click="toHref('site/manage','2')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.today_data.expire_site_count|| 0  }}</div>
-                                <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("expireSiteSum") }}</div>
-                            </el-card>
-                        </el-col>
-                        <el-col>
-                            <el-card shadow="never" @click="toHref('/app_manage/app_store','uninstalled')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.app.app_no_installed_count|| 0  }}</div>
-                                <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("noInstallAppSun") }}</div>
-                            </el-card>
-                        </el-col>
-                        <el-col>
-                            <el-card shadow="never" @click="toHref('/app_manage/app_store','installed')" class="cursor-pointer min-w-[180px] first-con">
-                                <div class="text-[20px] font-bold">{{ statInfo.app.app_installed_count|| 0  }}</div>
-                                <div class="text-[14px] mb-[9px] text-[#4F516D]">{{ t("installAppSun") }}</div>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                </el-card>
-                <div class="text-[18px] mt-[50px] mb-[15px]">{{ t("常用功能") }}</div>
-                <div class="flex justify-between">
-                    <div class="flex-1 h-[80px] flex  items-center cursor-pointer mr-[25px] bg-[#EDEEF4] rounded-[6px] pl-[25px] hover:bg-[#dcdfe6] transition-all duration-300" @click="toTypeLink('site/manage','list')">
-                        <img class="w-[32px] h-[32px] " src="@/app/assets/images/index/site_list1.png" />
-                        <span class="text-[14px] ml-3">{{ t("siteList") }}</span>
+                    <div class="index-stat index-stat--danger" @click="toHref('site/manage','2')">
+                        <span class="index-stat-ic">
+                            <el-icon>
+                                <Close />
+                            </el-icon>
+                        </span>
+                        <div class="index-stat-num">{{ statInfo.today_data.expire_site_count|| 0 }}</div>
+                        <div class="index-stat-label">{{ t("expireSiteSum") }}</div>
                     </div>
-                    <div class="flex-1 h-[80px] flex  items-center cursor-pointer mr-[25px] bg-[#EDEEF4] rounded-[6px] pl-[25px] hover:bg-[#dcdfe6] transition-all duration-300" @click="toTypeLink('site/manage','group')">
-                        <img class="w-[32px] h-[32px] " src="@/app/assets/images/index/site_tc1.png" />
-                        <span class="text-[14px] ml-3">{{ t("sitePackage") }}</span>
+                    <div class="index-stat index-stat--info" @click="toHref('/app_manage/app_store','uninstalled')">
+                        <span class="index-stat-ic">
+                            <el-icon>
+                                <Box />
+                            </el-icon>
+                        </span>
+                        <div class="index-stat-num">{{ statInfo.app.app_no_installed_count|| 0 }}</div>
+                        <div class="index-stat-label">{{ t("noInstallAppSun") }}</div>
                     </div>
-                    <div class="flex-1 h-[80px] flex items-center cursor-pointer mr-[25px] bg-[#EDEEF4] rounded-[6px] pl-[25px] hover:bg-[#dcdfe6] transition-all duration-300" @click="toTypeLink('site/manage','list')" >
-                        <img class="w-[32px] h-[32px] " src="@/app/assets/images/index/site_add1.png" />
-                        <span class="text-[14px] ml-3">{{ t("newSite") }}</span>
-                    </div>
-                    <div class="flex-1 h-[80px] flex items-center cursor-pointer mr-[25px] bg-[#EDEEF4] rounded-[6px] pl-[25px] hover:bg-[#dcdfe6] transition-all duration-300" @click="toLink('/admin/site/user')">
-                        <img class="w-[32px] h-[32px] " src="@/app/assets/images/index/site_user1.png" />
-                        <span class="text-[14px] ml-3">{{ t("administrator") }}</span>
-                    </div>
-                    <div class="flex-1 h-[80px] flex items-center cursor-pointer bg-[#EDEEF4] rounded-[6px] pl-[25px] hover:bg-[#dcdfe6] transition-all duration-300" @click="toApplication">
-                        <img class="w-[32px] h-[32px] " src="@/app/assets/images/index/app_store1.png" />
-                        <span class="text-[14px] ml-3">{{ t("appMarketplace") }}</span>
+                    <div class="index-stat index-stat--primary" @click="toHref('/app_manage/app_store','installed')">
+                        <span class="index-stat-ic">
+                            <el-icon>
+                                <Download />
+                            </el-icon>
+                        </span>
+                        <div class="index-stat-num">{{ statInfo.app.app_installed_count|| 0 }}</div>
+                        <div class="index-stat-label">{{ t("installAppSun") }}</div>
                     </div>
                 </div>
+            </section>
 
-                <div class="mt-[50px] flex site">
-                    <div class="flex-1 ">
-                        <div class="text-[18px]  mb-[15px]">{{ t("newSite") }}</div>
-                        <el-card class="box-card border mr-[30px] echarts-box" shadow="never">
-                            <div ref="newSiteStat" class="echarts-con" :style="{ width: '100%', height: '280px' }"></div>
-                        </el-card>
+            <!-- ================= 常用功能 ================= -->
+            <section class="index-section">
+                <h2 class="index-section-title">{{ t("常用功能") }}</h2>
+                <div class="index-fn-grid">
+                    <div class="index-fn" @click="toTypeLink('site/manage','list')">
+                        <span class="index-fn-ic">
+                            <img src="@/app/assets/images/index/site_list1.png" alt="">
+                        </span>
+                        <span class="index-fn-text">{{ t("siteList") }}</span>
                     </div>
-                    <div class="flex-1 ">
-                        <div class="text-[18px]  mb-[15px]">{{ t("addUser") }}</div>
-                        <el-card class="box-card border flex-1 echarts-box" shadow="never">
-                            <div ref="addUser" class="echarts-con" :style="{ width: '100%', height: '280px' }"></div>
-                        </el-card>
+                    <div class="index-fn" @click="toTypeLink('site/manage','group')">
+                        <span class="index-fn-ic">
+                            <img src="@/app/assets/images/index/site_tc1.png" alt="">
+                        </span>
+                        <span class="index-fn-text">{{ t("sitePackage") }}</span>
+                    </div>
+                    <div class="index-fn" @click="toTypeLink('site/manage','list')">
+                        <span class="index-fn-ic">
+                            <img src="@/app/assets/images/index/site_add1.png" alt="">
+                        </span>
+                        <span class="index-fn-text">{{ t("newSite") }}</span>
+                    </div>
+                    <div class="index-fn" @click="toLink('/admin/site/user')">
+                        <span class="index-fn-ic">
+                            <img src="@/app/assets/images/index/site_user1.png" alt="">
+                        </span>
+                        <span class="index-fn-text">{{ t("administrator") }}</span>
+                    </div>
+                    <div class="index-fn" @click="toApplication">
+                        <span class="index-fn-ic">
+                            <img src="@/app/assets/images/index/app_store1.png" alt="">
+                        </span>
+                        <span class="index-fn-text">{{ t("appMarketplace") }}</span>
                     </div>
                 </div>
-                <div class="flex justify-between text-[12px] mt-[20px] text-[#666]" v-if="copyright">
-                    <div>
-                        <a :href="copyright.copyright_link" target="_blank">
-                            <span class="mr-3" v-if="copyright.company_name">{{ copyright.company_name }}</span>
-                        </a>
-                        <a href="https://beian.miit.gov.cn/" v-if="copyright.icp" target="_blank">
-                            <span class="mr-3">{{ copyright.icp }}</span>
-                        </a>
+            </section>
+
+            <!-- ================= 趋势图表 ================= -->
+            <div class="index-chart-row">
+                <section class="index-panel index-chart">
+                    <div class="index-chart-head">
+                        <span class="index-chart-legend index-chart-legend--site"></span>{{ t("newSite") }}
                     </div>
-                    <div class="flex items-center  cursor-pointer">
-                        <span class="mx-1" @click="getInfoFn">版权信息</span> | <span
+                    <div ref="newSiteStat" class="index-chart-body"></div>
+                </section>
+                <section class="index-panel index-chart">
+                    <div class="index-chart-head">
+                        <span class="index-chart-legend index-chart-legend--user"></span>{{ t("addUser") }}
+                    </div>
+                    <div ref="addUser" class="index-chart-body"></div>
+                </section>
+            </div>
+
+            <!-- ================= 版权信息 ================= -->
+            <div class="index-copyright" v-if="copyright">
+                <div>
+                    <a :href="copyright.copyright_link" target="_blank">
+                        <span class="mr-3" v-if="copyright.company_name">{{ copyright.company_name }}</span>
+                    </a>
+                    <a href="https://beian.miit.gov.cn/" v-if="copyright.icp" target="_blank">
+                        <span class="mr-3">{{ copyright.icp }}</span>
+                    </a>
+                </div>
+                <div class="index-copyright-links">
+                    <span class="mx-1" @click="getInfoFn">版权信息</span> | <span
                         class="mx-1">开发者联盟与隐私的声明</span> | <span class="mx-1">隐私政策</span> | <span
                         class="mx-1">联系我们</span> | <span class="mx-1">Cookies</span>
-                    </div>
                 </div>
             </div>
-        <!-- </div>   -->
-        </el-card>
-        <el-dialog v-model="dialogVisible" title="版权信息" width="500">
-            <span>{{ copyright.copyright_desc }}</span>
-            <template #footer>
-                <div class="dialog-footer">
-                    <el-button type="primary" @click="dialogVisible = false">确定</el-button>
-                </div>
-            </template>
-        </el-dialog>
+        </div>
     </div>
+
+    <el-dialog v-model="dialogVisible" title="版权信息" width="500">
+        <span>{{ copyright.copyright_desc }}</span>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+            </div>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -492,6 +449,20 @@ const toHref = (url: any,id: any) => {
         query: { id }
     })
 }
+// 即将过期：状态正常，到期时间为当前时刻到 7 天后
+const toWeekExpireSite = () => {
+    const pad = (n: number) => String(n).padStart(2, '0')
+    const format = (date: Date) => `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+    const start = new Date()
+    const end = new Date(start.getTime() + 7 * 86400 * 1000)
+    router.push({
+        path: 'site/manage',
+        query: {
+            id: '1',
+            expire_time: [format(start), format(end)]
+        }
+    })
+}
 const toTypeLink = (url: any,type: any) => {
     router.push({
         path: url,
@@ -532,8 +503,6 @@ nowTime()
 const showQuickStart = ref(true)
 const showNiuCloud = ref(true)
 const showBanner = ref(true)
-const hovering = ref('')
-
 onMounted(() => {
     showQuickStart.value = localStorage.getItem('showQuickStart') !== 'false'
     showNiuCloud.value = localStorage.getItem('showNiuCloud') !== 'false'
@@ -574,108 +543,772 @@ const closeModule = (module:any) => {
 </script>
 
 <style lang="scss" scoped>
-.profile-data {
-    background-color: transparent !important;
+/* ==========================================================================
+   首页控制台
+   参考稿：niucloud-dashboard.html
+   约定：
+   1. 颜色 / 圆角 / 间距 / 边框 / 字号统一使用全局 Token，不直接写死视觉值；
+   2. 模块之间用「边框」区分层级，不使用阴影；
+   3. 本页专用值以 --index-* 局部变量声明，仅作用于本组件。
+   ========================================================================== */
+.index-dashboard {
+    --index-gap: var(--space-6);
+    /* 内容区最大宽度，超宽屏居中显示 */
+    --index-max-width: 1400px;
+    --index-accent: var(--sys-color-primary);
+    --index-accent-soft: var(--sys-color-primary-soft);
+    /* 图例色与 ECharts 折线颜色保持一致 */
+    --index-chart-site: #2fceb6;
+    --index-chart-user: #f7dc76;
+
+    --index-close-size: 20px;
+    --index-close-shift: 18px;
+
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: var(--index-max-width);
+    margin-inline: auto;
+    /* 20px 图标放进 15px 右侧留白时多出的宽度，避免按钮被滚动容器裁切 */
+    padding-right: max(0px, calc(var(--index-close-size) - var(--cmp-layout-content-padding)));
+    overflow: visible;
+    color: var(--sys-color-text-primary);
+    font-size: var(--sys-font-size-base);
 }
 
-:deep(.profile-data .el-card__header) {
-    padding: 0 !important;
-    border: none !important;
+.index-page {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--cmp-page-section-gap);
 }
 
-:deep(.profile-data .el-card__body) {
-    padding: 0 !important;
-}
+/* 入场动画：分区自上而下依次淡入，fill-mode 用 backwards，动画结束后不残留 transform */
+@keyframes index-rise {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
 
-.top :deep(.el-col) {
-    max-width: calc(100% / 5) !important;
-}
-
-.first-con {
-    // border: 1px solid #E9ECEF;
-    // background: #fff;
-    padding: 20px 30px 10px;
-    // height: 80px;
-    background: #EDEEF4 !important;
-    border-radius: 6px !important;
-    border: none !important;
-    &:hover {
-        background: #dcdfe6 !important; // 你可以换成你想要的颜色
+    to {
+        opacity: 1;
+        transform: none;
     }
 }
 
-.echarts-con {
-    // border: 1px solid #E9ECEF;
-    // background: #fff;
-    padding-top: 20px;
-    border-radius: 6px !important;
-}
-.echarts-box{
-    border-radius: 6px !important;
+@keyframes index-spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.quick-action-card {
-  position: relative;
-  overflow: visible; /* 允许伪元素超出 */
-  z-index: 0;
+.index-page > * {
+    animation: index-rise .8s cubic-bezier(.22, 1, .36, 1) backwards;
 }
 
-/* 伪元素作为视觉外壳 */
-.quick-action-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #EDEEF4;
-  border-radius: 8px;
-  z-index: -1;
-  transition: transform 0.3s ease;
+.index-page > *:nth-child(2) {
+    animation-delay: .08s;
 }
 
-/* 悬浮时放大背景，但不动内容 */
-.quick-action-card:hover::before {
-  transform: scaleY(1.3);
-  transform-origin: center;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+.index-page > *:nth-child(3) {
+    animation-delay: .16s;
 }
 
-.desc{
-  opacity: 0;
-  transition: opacity 0.3s ease;
+.index-page > *:nth-child(4) {
+    animation-delay: .24s;
 }
 
-.quick-action-card:hover > .desc{
-  opacity: 1;
-}
-.quick-action-card > span:last-child {
-  opacity: 0;
-  transform: translate(-8px, 8px); /* 初始位置稍微向下右 */
-  transition: all 0.3s ease;
+.index-page > *:nth-child(5) {
+    animation-delay: .32s;
 }
 
-.quick-action-card:hover > span:last-child {
-  opacity: 1;
-  transform: translate(0, 0); /* 回到原位（实现右上浮动） */
+.index-page > *:nth-child(6) {
+    animation-delay: .4s;
+}
+
+.index-page > *:nth-child(7) {
+    animation-delay: .48s;
+}
+
+/* ========== 通用模块：面板 / 卡片 ========== */
+.index-panel {
+    position: relative;
+    box-sizing: border-box;
+    padding: var(--space-6);
+    background-color: var(--sys-color-bg-surface);
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+}
+
+.index-panel-title {
+    margin: 0;
+    font-size: var(--sys-font-size-lg);
+    font-weight: var(--sys-font-weight-semibold);
+    line-height: 1.4;
+}
+
+.index-panel-sub {
+    margin: var(--space-2) 0 0;
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-sm);
+}
+
+.index-section {
+    position: relative;
+}
+
+.index-section-title {
+    margin: 0 0 var(--space-5);
+    font-size: var(--sys-font-size-lg);
+    font-weight: var(--sys-font-weight-semibold);
+}
+
+/* 右上角外侧留在模块范围内：鼠标移出卡片去点按钮时，悬停不会中断 */
+.index-closable {
+    margin-top: calc(var(--index-close-shift) * -1);
+    margin-right: calc(var(--index-close-size) * -1);
+    padding-top: var(--index-close-shift);
+    padding-right: var(--index-close-size);
+}
+
+.index-module-close {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    z-index: 6;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--index-close-size);
+    height: var(--index-close-size);
+    color: var(--sys-color-text-placeholder);
+    cursor: pointer;
+    visibility: hidden;
+    pointer-events: none;
+    transition: color .2s;
+
+    .index-closable:hover > & {
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    &:hover {
+        color: var(--sys-color-danger);
+    }
+}
+
+/* ========== 轮播图 ==========
+   关闭按钮在轮播外侧，避免被圆角裁切；悬停区域包住按钮 */
+.index-banner {
+    position: relative;
+}
+
+.index-carousel {
+    position: relative;
+    overflow: hidden;
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+    background: linear-gradient(105deg, var(--el-color-primary),
+            var(--el-color-primary-light-3) 55%, var(--el-color-primary-dark-2));
+}
+
+/* 无轮播数据时展示的兜底装饰 */
+.index-carousel-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.index-carousel-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgb(255 255 255 / 22%) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 45%, #000);
+    mask-image: linear-gradient(90deg, transparent 45%, #000);
 }
 
 
-.quick-action-card:hover > .desc,
-.quick-action-card:hover > span:last-child {
-  opacity: 1;
-}
-.quick-action-card:hover > .title {
-  transform: translateY(-15px);
+
+.index-carousel-body {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: var(--sys-radius-lg);
 }
 
-.title {
-  transition: transform 0.3s ease; 
+.index-carousel-item {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
-:deep(.banner-box .el-carousel__indicator){
-    padding: 2px !important;
+
+.index-carousel-veil {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    height: 50%;
+    background: linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 20%) 100%);
+    pointer-events: none;
 }
-:deep(.loading-box .el-loading-spinner){
-    top: 33%;
+
+.index-carousel :deep(.el-carousel__indicators) {
+    right: var(--space-6);
+    bottom: var(--space-3);
+    left: auto;
+    transform: none;
+}
+
+.index-carousel :deep(.el-carousel__indicator) {
+    padding: var(--space-1);
+}
+
+.index-carousel :deep(.el-carousel__indicator .el-carousel__button) {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--sys-radius-full);
+    background-color: rgb(255 255 255 / 45%);
+    opacity: 1;
+    transition: width .3s, background-color .3s;
+}
+
+.index-carousel :deep(.el-carousel__indicator.is-active .el-carousel__button) {
+    width: 26px;
+    background-color: var(--el-color-white);
+}
+
+.index-carousel :deep(.el-carousel__arrow) {
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgb(255 255 255 / 35%);
+    background-color: rgb(255 255 255 / 18%);
+    color: var(--el-color-white);
+}
+
+/* ========== 快速开始 + AI 编程 ==========
+   两块保持与改造前相近的高度：两栏等高，内容自适应填满，整体只比原来略高 */
+.index-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    gap: var(--index-gap);
+    align-items: stretch;
+}
+
+.index-row > .index-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding-block: var(--space-5);
+}
+
+.index-tile-grid {
+    display: grid;
+    flex: 1;
+    min-height: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* 两行均分剩余高度，但不低于内容高度 */
+    grid-template-rows: repeat(2, minmax(auto, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+}
+
+.index-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--sys-color-fill-extra-light);
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+    cursor: pointer;
+    transition: border-color .25s, background-color .25s, transform .25s;
+
+    &:hover {
+        background-color: var(--sys-color-bg-surface);
+        border-color: var(--sys-color-primary-border);
+        transform: translateY(-2px);
+    }
+
+    &:hover .index-tile-ic {
+        background: linear-gradient(135deg, var(--sys-color-primary), var(--sys-color-primary-hover));
+        color: var(--el-color-white);
+    }
+}
+
+.index-tile-ic {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--sys-radius-md);
+    background-color: var(--sys-color-primary-soft);
+    color: var(--sys-color-primary);
+    font-size: var(--sys-font-size-xl);
+    transition: background-color .25s, color .25s;
+}
+
+/* 名称 + 简介：纵向排列在图标右侧，简介常驻显示 */
+.index-tile-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+}
+
+.index-tile-text {
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-medium);
+}
+
+/* 简介：置于名称下方，次级灰色，字号小于名称 */
+.index-tile-tip {
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-xs);
+    line-height: 1.4;
+}
+
+/* AI 编程标签栏 */
+.index-tabs {
+    display: flex;
+    gap: var(--space-6);
+    margin-top: var(--space-1);
+    border-bottom: 1px solid var(--sys-color-border-light);
+}
+
+.index-tab {
+    position: relative;
+    padding: var(--space-2) 0;
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-base);
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color .2s;
+
+    &:hover {
+        color: var(--sys-color-primary);
+    }
+
+    &.is-active {
+        color: var(--sys-color-primary);
+        font-weight: var(--sys-font-weight-semibold);
+
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            bottom: -1px;
+            left: 0;
+            height: 2px;
+            border-radius: 2px 2px 0 0;
+            background: linear-gradient(90deg, var(--sys-color-primary-hover), var(--sys-color-primary));
+        }
+    }
+}
+
+/* 播放器高度跟随栏目内容，与改造前的 160px 量级保持一致 */
+.index-video {
+    display: flex;
+    flex: 1;
+    min-height: 150px;
+    overflow: hidden;
+    margin-top: var(--space-4);
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+    background-color: #10142b;
+
+    video {
+        display: block;
+        width: 100%;
+        height: 150px;
+        object-fit: contain;
+    }
+}
+
+/* ========== 应用推荐 ========== */
+.index-app-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-5);
+    transition: opacity .5s ease, transform .5s ease;
+
+    &.is-loading {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+}
+
+.index-app-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--sys-color-bg-surface);
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+    cursor: pointer;
+    transition: border-color .25s, transform .25s;
+
+    &:hover {
+        border-color: var(--sys-color-primary-border);
+        transform: translateY(-4px);
+    }
+
+    &:hover .index-app-cover img {
+        transform: scale(1.05);
+    }
+}
+
+.index-app-cover {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border-bottom: 1px solid var(--sys-color-border-light);
+    background-color: var(--sys-color-fill-light);
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .35s ease;
+    }
+}
+
+.index-app-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+}
+
+.index-app-name {
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-semibold);
+}
+
+/* 两行截断复用全局 .multi-hidden，这里只负责配色与字号 */
+.index-app-desc {
+    min-height: 36px;
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-xs);
+    line-height: 18px;
+}
+
+.index-app-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px dashed var(--sys-color-border-light);
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-xs);
+}
+
+.index-app-avatar {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--sys-radius-full);
+    object-fit: cover;
+}
+
+.index-app-dev {
+    flex: 1;
+    min-width: 0;
+}
+
+.index-app-nums {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--space-3);
+}
+
+.index-app-num {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+
+    i {
+        font-size: var(--sys-font-size-xs);
+    }
+}
+
+/* ========== 数据概况 ========== */
+.index-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-5);
+}
+
+.index-stat {
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-5);
+    background-color: var(--sys-color-bg-surface);
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+    cursor: pointer;
+    transition: border-color .25s, transform .25s;
+
+
+    &:hover {
+        border-color: var(--index-accent);
+        transform: translateY(-4px);
+    }
+
+    &:hover .index-stat-ic {
+        background-color: var(--index-accent);
+        color: var(--el-color-white);
+    }
+}
+
+.index-stat--success {
+    --index-accent: var(--sys-color-success);
+    --index-accent-soft: var(--el-color-success-light-9);
+}
+
+.index-stat--warning {
+    --index-accent: var(--sys-color-warning);
+    --index-accent-soft: var(--el-color-warning-light-9);
+}
+
+.index-stat--danger {
+    --index-accent: var(--sys-color-danger);
+    --index-accent-soft: var(--el-color-danger-light-9);
+}
+
+.index-stat--info {
+    --index-accent: var(--sys-color-info);
+    --index-accent-soft: var(--sys-color-fill-light);
+}
+
+.index-stat--primary {
+    --index-accent: var(--sys-color-primary);
+    --index-accent-soft: var(--sys-color-primary-soft);
+}
+
+.index-stat-ic {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--sys-radius-md);
+    background-color: var(--index-accent-soft);
+    color: var(--index-accent);
+    font-size: var(--sys-font-size-md);
+    transition: background-color .25s, color .25s;
+}
+
+.index-stat-num {
+    color: var(--sys-color-text-primary);
+    font-size: 30px;
+    font-weight: var(--sys-font-weight-semibold);
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+}
+
+.index-stat-label {
+    margin-top: var(--space-1);
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-sm);
+}
+
+/* ========== 常用功能 ========== */
+.index-fn-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-5);
+}
+
+.index-fn {
+    --index-accent: var(--sys-color-primary);
+    --index-accent-soft: var(--sys-color-primary-soft);
+
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background-color: var(--sys-color-bg-surface);
+    border: var(--border-default);
+    border-radius: var(--sys-radius-lg);
+    cursor: pointer;
+    transition: border-color .25s, transform .25s;
+
+    &:hover {
+        border-color: var(--index-accent);
+        transform: translateY(-4px);
+    }
+
+    &:hover .index-fn-ic {
+        border-color: var(--index-accent);
+        transform: scale(1.06);
+    }
+}
+
+/* 五个入口按 Token 状态色区分，保持色彩语义统一 */
+.index-fn:nth-child(1) {
+    --index-accent: var(--sys-color-primary);
+    --index-accent-soft: var(--sys-color-primary-soft);
+}
+
+.index-fn:nth-child(2) {
+    --index-accent: var(--sys-color-primary-hover);
+    --index-accent-soft: var(--sys-color-primary-muted);
+}
+
+.index-fn:nth-child(3) {
+    --index-accent: var(--sys-color-success);
+    --index-accent-soft: var(--el-color-success-light-9);
+}
+
+.index-fn:nth-child(4) {
+    --index-accent: var(--sys-color-warning);
+    --index-accent-soft: var(--el-color-warning-light-9);
+}
+
+.index-fn:nth-child(5) {
+    --index-accent: var(--sys-color-danger);
+    --index-accent-soft: var(--el-color-danger-light-9);
+}
+
+.index-fn-ic {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: var(--sys-radius-md);
+    background-color: var(--index-accent-soft);
+    transition: border-color .25s, transform .25s;
+
+    img {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+    }
+}
+
+.index-fn-text {
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-medium);
+}
+
+/* ========== 趋势图表 ========== */
+.index-chart-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--index-gap);
+}
+
+.index-chart-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    font-size: var(--sys-font-size-base);
+    font-weight: var(--sys-font-weight-medium);
+}
+
+.index-chart-legend {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--sys-radius-sm);
+}
+
+.index-chart-legend--site {
+    background-color: var(--index-chart-site);
+}
+
+.index-chart-legend--user {
+    background-color: var(--index-chart-user);
+}
+
+.index-chart-body {
+    width: 100%;
+    height: 280px;
+}
+
+/* ========== 版权信息 ========== */
+.index-copyright {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    color: var(--sys-color-text-secondary);
+    font-size: var(--sys-font-size-xs);
+
+    a {
+        color: inherit;
+    }
+}
+
+.index-copyright-links {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 1180px) {
+
+    .index-row,
+    .index-chart-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .index-app-grid,
+    .index-stat-grid,
+    .index-fn-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .index-dashboard {
+        padding: var(--space-3);
+    }
+
+    .index-app-grid,
+    .index-stat-grid,
+    .index-fn-grid,
+    .index-tile-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .index-page > * {
+        animation: none;
+    }
+
+    .index-tile,
+    .index-app-card,
+    .index-stat,
+    .index-fn {
+        transition: none;
+    }
 }
 </style>

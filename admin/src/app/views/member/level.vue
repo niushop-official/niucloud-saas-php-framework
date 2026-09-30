@@ -1,14 +1,14 @@
 <template>
     <!--会员等级-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" @click="addEvent">{{ t('addMemberLevel') }}</el-button>
             </div>
 
-            <el-card class="box-card !border-none my-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none my-[10px] table-search-wrap table-fill-page__search" shadow="never">
                 <el-form :inline="true" :model="memberLevelTableData.searchParam" ref="searchFormRef">
                     <el-form-item :label="t('levelName')" prop="level_name">
                         <el-input v-model.trim="memberLevelTableData.searchParam.level_name" :placeholder="t('levelNamePlaceholder')" />
@@ -20,8 +20,9 @@
                 </el-form>
             </el-card>
 
-            <div class="mt-[10px]">
-                <el-table :data="memberLevelTableData.data" size="large" v-loading="memberLevelTableData.loading">
+            <div class="mt-[10px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="memberLevelTableData.data" size="large" v-loading="memberLevelTableData.loading">
 
                     <template #empty>
                         <span>{{ !memberLevelTableData.loading ? t('emptyData') : '' }}</span>
@@ -57,6 +58,7 @@
                     </el-table-column>
 
                 </el-table>
+                </div>
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="memberLevelTableData.page" v-model:page-size="memberLevelTableData.limit"
                         layout="total, sizes, prev, pager, next, jumper" :total="memberLevelTableData.total"
@@ -73,11 +75,15 @@ import { t } from '@/lang'
 import { getMemberLevelPageList, deleteMemberLevel } from '@/app/api/member'
 import { ElMessageBox, FormInstance } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import { setTablePageStorage,getTablePageStorage } from "@/utils/common";
 
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const memberLevelTableData = reactive({
     page: 1,

@@ -212,6 +212,16 @@ export const currRoute = () => {
     return route ? route.route : ''
 }
 
+/**
+ * 获取当前所在插件名，非插件页返回 app
+ */
+export const currAddon = () => {
+    const pages = getCurrentPages()
+    const route = pages.length ? (pages[pages.length - 1] as AnyObject).route || '' : ''
+    const pathArr = route.split('/').filter(Boolean)
+    return pathArr[0] === 'addon' ? pathArr[1] || 'app' : 'app'
+}
+
 // 获取分享路由
 export const currShareRoute = () => {
     const pages: any = getCurrentPages()
@@ -815,6 +825,15 @@ export function setThemeColor(path: string) {
 export function themeColorToHex(param: any) {
     const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/
     const rgbaRegex = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(,\s*\d*\.?\d+)?\)$/
+    // 兼容接口或本地缓存中 JSON 字符串形式的主题色配置。
+    while (typeof param === 'string') {
+        try {
+            param = JSON.parse(param)
+        } catch (e) {
+            return param
+        }
+    }
+    if (!param || typeof param !== 'object') return param
     for (let key in param) {
         if (rgbaRegex.test(param[key])) {
             const values = param[key].replace('rgba(', '').replace(')', '').split(',');

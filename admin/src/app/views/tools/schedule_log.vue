@@ -1,17 +1,9 @@
 <template>
-    <div class="main-container">
+    <el-drawer v-model="visible" class="schedule-log-drawer-root" :title="pageName" direction="rtl" size="80%" :destroy-on-close="false" @closed="onClosed">
+        <div class="schedule-log-drawer table-fill-page">
+        <div class="table-fill-page__card">
 
-        <el-card class="card !border-none" shadow="never">
-            <el-page-header :icon="ArrowLeft" @back="back()">
-                <template #content>
-                    <span class="text-large font-600 mr-3">{{ pageName }}</span>
-                </template>
-            </el-page-header>
-        </el-card>
-
-        <el-card class="box-card !border-none" shadow="never">
-
-            <el-card class="box-card !border-none mb-[10px] table-search-wrap" shadow="never">
+            <el-card class="box-card !border-none table-search-wrap table-fill-page__search" shadow="never">
                 <div class="flex justify-between">
                     <el-form :inline="true" :model="cronTableData.searchParam" ref="searchFormRef">
                         <el-form-item :label="t('name')" prop="key">
@@ -39,17 +31,29 @@
                 </div>
             </el-card>
 
-            <div class="mt-[20px]">
-                <div class="mb-[10px] flex items-center">
-                    <el-checkbox v-model="toggleCheckbox" size="large" class="px-[14px]" @change="toggleChange" :indeterminate="isIndeterminate" />
-                    <el-button @click="batchDelete" size="small" :loading="deleteLoading">{{ t('batchDelete') }}</el-button>
-                </div>
-
-                <el-table :data="cronTableData.data" size="large" v-loading="cronTableData.loading" ref="cronLogListTableRef" @selection-change="handleSelectionChange">
+            <div class="table-panel table-fill-page__panel">
+                <table-toolbar
+                    :title="pageName"
+                    :selected-count="selectedCount"
+                    :current-page-count="cronTableData.data.length"
+                    :total-count="cronTableData.total"
+                    :selection-loading="selectionLoading"
+                    :allow-select-all="false"
+                    @select-page="selectCurrentPage"
+                    @clear-selection="clearSelection"
+                >
+                    <template #batch-actions>
+                        <el-button class="table-delete" link :disabled="!selectedCount || selectionLoading" :loading="deleteLoading" @click="batchDelete">
+                            {{ t('batchDelete') }}
+                        </el-button>
+                    </template>
+                </table-toolbar>
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="cronTableData.data" size="large" v-loading="cronTableData.loading" ref="cronLogListTableRef" row-key="id" @selection-change="handleSelectionChange">
                     <template #empty>
                         <span>{{ !cronTableData.loading ? t('emptyData') : '' }}</span>
                     </template>
-                    <el-table-column type="selection" width="55" />
+                    <el-table-column type="selection" width="55" reserve-selection />
                     <el-table-column prop="id" :label="t('id')" min-width="80" />
                     <el-table-column prop="name" :label="t('name')" min-width="150" />
                     <el-table-column prop="key" :label="t('key')" min-width="150" />
@@ -68,13 +72,16 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="mt-[16px] flex justify-end">
-                    <el-pagination v-model:current-page="cronTableData.page" v-model:page-size="cronTableData.limit"
-                        layout="total, sizes, prev, pager, next, jumper" :total="cronTableData.total"
-                        @size-change="loadCronLogList()" @current-change="loadCronLogList" />
                 </div>
+                <table-pagination
+                    v-model:current-page="cronTableData.page"
+                    v-model:page-size="cronTableData.limit"
+                    :total="cronTableData.total"
+                    @size-change="loadCronLogList()"
+                    @current-change="loadCronLogList"
+                />
             </div>
-        </el-card>
+        </div>
 
         <el-dialog v-model="showDialog" :title="t('cronInfo')" width="550px" :destroy-on-close="true">
             <el-form :model="formData" label-width="110px" ref="formRef" class="page-form" v-loading="loading">
@@ -111,23 +118,33 @@
             </span>
             </template>
         </el-dialog>
-    </div>
+        </div>
+    </el-drawer>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { t } from '@/lang'
-import { ArrowLeft } from "@element-plus/icons-vue"
+import { reactive, ref, computed, nextTick } from 'vue'
+import { t as translate, i18n, language } from '@/lang'
+import useSystemStore from '@/stores/modules/system'
 import { getCronLogList, getCronTemplate, deleteCronLog, clearCronLog } from '@/app/api/sys'
-import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
-import { useRouter, useRoute } from 'vue-router'
+import { ElMessageBox, ElMessage, ElTable, FormInstance } from 'element-plus'
+import TablePagination from '@/components/table-pagination/index.vue'
+import TableToolbar from '@/components/table-toolbar/index.vue'
+import { useRoute } from 'vue-router'
+
+const systemStore = useSystemStore()
+language.loadLocaleMessages('', 'tools/schedule_log', systemStore.lang || 'zh-cn')
+
+const t = (message: string) => {
+    const key = `tools.schedule_log.${message}`
+    const value = i18n.global.t(key)
+    return value != key ? value : translate(message)
+}
 
 const route = useRoute()
-const router = useRouter()
-const pageName = route.meta.title
-const back = () => {
-    router.push('/tools/schedule')
-}
+const pageName = String(route.path).includes('schedule_log') ? String(route.meta.title || '') : translate('cronLog')
+const visible = ref(false)
+const scheduleId = ref<any>('')
 
 const cronTableData = reactive({
     page: 1,
@@ -136,7 +153,7 @@ const cronTableData = reactive({
     loading: true,
     data: [],
     searchParam: {
-        schedule_id: route.query.id,
+        schedule_id: '',
         key: '',
         status: 'all',
         execute_time: []
@@ -156,6 +173,22 @@ const setTypeList = async () => {
 }
 setTypeList()
 
+const open = (id: number | string) => {
+    scheduleId.value = id
+    cronTableData.searchParam.schedule_id = id
+    cronTableData.searchParam.key = ''
+    cronTableData.searchParam.status = 'all'
+    cronTableData.searchParam.execute_time = []
+    selectedIds.value = []
+    visible.value = true
+    loadCronLogList()
+}
+
+const onClosed = () => {
+    cronTableData.data = []
+    cronTableData.total = 0
+}
+
 /**
  * 获取日志列表
  */
@@ -163,20 +196,19 @@ const loadCronLogList = (page: number = 1) => {
     cronTableData.loading = true
     cronTableData.page = page
 
-    getCronLogList({
+    return getCronLogList({
         page: cronTableData.page,
         limit: cronTableData.limit,
         ...cronTableData.searchParam
-    }).then(res => {
-        cronTableData.loading = false
+    }).then(async res => {
         cronTableData.data = res.data.data
         cronTableData.total = res.data.total
+        await syncCurrentPageSelection()
     }).catch(() => {
+    }).finally(() => {
         cronTableData.loading = false
     })
 }
-loadCronLogList()
-
 const showDialog = ref(false)
 const loading = ref(true)
 const repeat = ref(false)
@@ -232,6 +264,7 @@ const delEvent = (data: any) => {
             ids: data.id
         }).then((res: any) => {
             if (res.code == 1) {
+                selectedIds.value = selectedIds.value.filter(item => item != data.id)
                 loadCronLogList()
             }
             repeat.value = false
@@ -241,42 +274,63 @@ const delEvent = (data: any) => {
     })
 }
 
-// 批量复选框
-const toggleCheckbox = ref()
-
-// 复选框中间状态
-const isIndeterminate = ref(false)
-
-// 监听批量复选框事件
-const toggleChange = (value: any) => {
-    isIndeterminate.value = false
-    cronLogListTableRef.value.toggleAllSelection()
-}
-
-const cronLogListTableRef = ref()
+const cronLogListTableRef = ref<InstanceType<typeof ElTable>>()
 
 // 选中数据
-const multipleSelection: any = ref([])
+const selectedIds = ref<number[]>([])
+const selectionLoading = ref(false)
+const syncingSelection = ref(false)
+const selectedCount = computed(() => selectedIds.value.length)
+
+/**
+ * 将跨页选择状态同步到当前页复选框
+ */
+const syncCurrentPageSelection = async () => {
+    await nextTick()
+    syncingSelection.value = true
+    cronLogListTableRef.value?.clearSelection()
+    const selectedIdSet = new Set(selectedIds.value)
+    cronTableData.data.forEach((row: any) => {
+        if (selectedIdSet.has(row.id)) cronLogListTableRef.value?.toggleRowSelection(row, true)
+    })
+    await nextTick()
+    syncingSelection.value = false
+}
 
 // 监听表格单行选中
-const handleSelectionChange = (val: []) => {
-    multipleSelection.value = val
+const handleSelectionChange = (rows: any[]) => {
+    if (syncingSelection.value) return
+    const currentPageIds = new Set(cronTableData.data.map((row: any) => row.id))
+    const otherPageIds = selectedIds.value.filter(id => !currentPageIds.has(id))
+    selectedIds.value = Array.from(new Set([
+        ...otherPageIds,
+        ...rows.map(row => row.id)
+    ]))
+}
 
-    toggleCheckbox.value = false
-    if (multipleSelection.value.length > 0 && multipleSelection.value.length < cronTableData.data.length) {
-        isIndeterminate.value = true
-    } else {
-        isIndeterminate.value = false
-    }
+/**
+ * 重新选择当前页数据
+ */
+const selectCurrentPage = () => {
+    selectedIds.value = cronTableData.data.map((row: any) => row.id)
+    syncCurrentPageSelection()
+}
 
-    if (multipleSelection.value.length == cronTableData.data.length && cronTableData.data.length && multipleSelection.value.length) {
-        toggleCheckbox.value = true
-    }
+/**
+ * 清空全部分页选择
+ */
+const clearSelection = () => {
+    selectedIds.value = []
+    syncingSelection.value = true
+    cronLogListTableRef.value?.clearSelection()
+    nextTick(() => {
+        syncingSelection.value = false
+    })
 }
 
 // 批量删除
 const batchDelete = () => {
-    if (multipleSelection.value.length == 0) {
+    if (selectedIds.value.length == 0) {
         ElMessage({
             type: 'warning',
             message: `${t('batchEmptySelectedCronLogTips')}`
@@ -295,16 +349,13 @@ const batchDelete = () => {
         repeat.value = true
         deleteLoading.value = true
 
-        const ids: any = []
-        multipleSelection.value.forEach((item: any) => {
-            ids.push(item.id)
-        })
+        const ids: any = [ ...selectedIds.value ]
 
         deleteCronLog({
             ids
         }).then(() => {
+            clearSelection()
             loadCronLogList()
-            toggleCheckbox.value = false
             repeat.value = false
             deleteLoading.value = false
         }).catch(() => {
@@ -327,13 +378,13 @@ const clearAll = () => {
         repeat.value = true
         clearLoading.value = true
 
-        let schedule_id: any = route.query.id ?? ''
+        let schedule_id: any = scheduleId.value ?? ''
 
         clearCronLog({
             schedule_id
         }).then(() => {
+            clearSelection()
             loadCronLogList()
-            toggleCheckbox.value = false
             repeat.value = false
             clearLoading.value = false
         }).catch(() => {
@@ -343,6 +394,26 @@ const clearAll = () => {
     })
 }
 
+if (String(route.path).includes('schedule_log') && route.query.id) {
+    open(route.query.id as string)
+}
+
+defineExpose({
+    open
+})
+
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.schedule-log-drawer-root .el-drawer__body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.schedule-log-drawer-root .schedule-log-drawer {
+    flex: 1;
+    min-height: 0;
+}
+</style>

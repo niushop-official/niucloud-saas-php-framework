@@ -1,85 +1,51 @@
 <template>
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
-
-           <div class="flex justify-between items-center">
-                <span class="text-page-title">{{pageName}}</span>
-            </div>
-
-            <div class="mt-[20px]">
-                <el-table :data="storageTableData.data" size="large" v-loading="loading">
-
-                    <template #empty>
-                        <span>{{ !loading ? t('emptyData') : '' }}</span>
-                    </template>
-
-                    <el-table-column prop="name" :label="t('name')" min-width="100" :show-overflow-tooltip="true"/>
-                    <el-table-column :label="t('isUse')" min-width="180" align="center">
-                        <template #default="{ row }">
-                            <el-tag class="ml-2" type="success" v-if="row.is_use == 1">{{ t('statusNormal') }}</el-tag>
-                            <el-tag class="ml-2" type="error" v-if="row.is_use == 0">{{t('statusDeactivate') }}</el-tag>
-                        </template>
-                    </el-table-column>
-
-                    <el-table-column :label="t('operation')" align="right" fixed="right" width="100">
-                       <template #default="{ row, $index }">
-                           <el-button type="primary" link @click="editEvent(row, $index)">{{ t('config') }}</el-button>
-                       </template>
-                    </el-table-column>
-
-                </el-table>
-            </div>
-
-            <template v-for="(item, index) in storageTableData.data">
-                <component :is="item.component" :ref="(el) => setStorageTypeRefs(el, index)" v-if="item.component" @complete="loadStorageList()"/>
-            </template>
-        </el-card>
-    </div>
+    <StorageConfig/>
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { t } from '@/lang'
-import { getStorageList } from '@/app/api/sys'
-import { useRoute } from 'vue-router'
-import { resolveAsyncComponent } from '@/utils/core-component-resolver'
-
-const route = useRoute()
-const pageName = route.meta.title
-const storageTypeRefs = ref([])
-
-const storageTableData = reactive({
-    data: []
-})
-const loading = ref(true)
-
-/**
- * 获取配置信息
- */
-const loadStorageList = () => {
-    loading.value = true
-    getStorageList().then(({ data }) => {
-        Object.keys(data).forEach((key: string) => {
-            data[key].component && (data[key].component = resolveAsyncComponent(data[key].component))
-        })
-        storageTableData.data = data
-        loading.value = false
-    }).catch(() => {
-        loading.value = false
-    })
-}
-
-loadStorageList()
-
-const setStorageTypeRefs = (el, index) => {
-    storageTypeRefs.value[index] = (el)
-}
-
-const editEvent = (data: any, index: number) => {
-    storageTypeRefs.value[index].setFormData(data)
-    storageTypeRefs.value[index].showDialog = true
-}
-
+//平台端与站点端共用同一套多套存储配置页面
+import StorageConfig from './components/storage-config.vue'
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+// 全局 el-card 被设为透明，本页需要白底内容区
+.box-card {
+    --el-card-bg-color: var(--cmp-card-bg, var(--el-bg-color-overlay)) !important;
+    background-color: var(--cmp-card-bg, var(--el-bg-color-overlay)) !important;
+    border-radius: 8px !important;
+}
+
+.storage-type-panel {
+    width: 190px;
+    flex-shrink: 0;
+    padding-right: 12px;
+    border-right: 1px solid var(--el-border-color-lighter);
+    overflow-y: auto;
+}
+
+.storage-type-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    border: 1px solid var(--el-border-color-lighter);
+    border-radius: var(--cmp-control-radius);
+    cursor: pointer;
+    transition: all .2s;
+    background-color: var(--cmp-card-bg, var(--el-bg-color-overlay));
+
+    &:hover {
+        border-color: var(--el-color-primary-light-5);
+    }
+
+    &.is-active {
+        border-color: var(--el-color-primary);
+        background-color: var(--el-color-primary-light-9);
+    }
+}
+
+.storage-type-icon {
+    font-size: 20px;
+    color: var(--el-color-primary);
+}
+</style>

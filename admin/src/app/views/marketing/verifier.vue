@@ -1,15 +1,16 @@
 <template>
     <!--核销员-->
-    <div class="main-container">
-        <el-card class="box-card !border-none" shadow="never">
+    <div ref="pageRef" class="main-container table-fill-page" :style="pageStyle">
+        <el-card class="box-card !border-none table-fill-page__card" shadow="never">
 
             <div class="flex justify-between items-center">
                 <span class="text-page-title">{{ pageName }}</span>
                 <el-button type="primary" @click="addEvent">{{ t('addVerifier') }}</el-button>
             </div>
 
-            <div class="mt-[20px]">
-                <el-table :data="verifierTable.data" size="large" v-loading="verifierTable.loading">
+            <div class="mt-[20px] table-fill-page__panel">
+                <div class="table-fill-page__table">
+                <el-table height="100%" :data="verifierTable.data" size="large" v-loading="verifierTable.loading">
                     <template #empty>
                         <span>{{ !verifierTable.loading ? t('emptyData') : '' }}</span>
                     </template>
@@ -37,13 +38,14 @@
 
                     <el-table-column :label="t('createTime')" prop="create_time" min-width="120"/>
 
-                    <el-table-column :label="t('operation')" fixed="right" align="right" width="120">
+                    <el-table-column :label="t('operation')" fixed="right" align="right" width="140">
                         <template #default="{ row }">
                             <el-button type="primary" link @click="editEvent(row)">{{ t('edit') }}</el-button>
                             <el-button type="primary" link @click="deleteEvent(row.id)">{{ t('delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
+                </div>
 
                 <div class="mt-[16px] flex justify-end">
                     <el-pagination v-model:current-page="verifierTable.page" v-model:page-size="verifierTable.limit"
@@ -81,6 +83,7 @@
 import { reactive, ref, nextTick } from 'vue'
 import { t } from '@/lang'
 import { useRouter, useRoute } from 'vue-router'
+import { useTablePageHeight } from '@/hooks/useTablePageHeight'
 import {
     getVerifierList,
     deleteVerifier,
@@ -96,6 +99,9 @@ import { img } from '@/utils/common'
 const route = useRoute()
 const router = useRouter()
 const pageName = route.meta.title
+
+// 表格占满页面剩余高度，超出部分在表格内部滚动
+const { pageRef, pageStyle } = useTablePageHeight()
 
 const showDialog = ref(false)
 const addLoading = ref(false)

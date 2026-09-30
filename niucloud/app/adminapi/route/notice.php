@@ -97,8 +97,37 @@ Route::group('notice', function () {
     Route::get('bind/info', 'notice.BindMerchant/merchantBindInfo');
     Route::post('bind/cancel', 'notice.BindMerchant/unBindMerchant');
 
+    /************************************************* 站内信 *****************************************************/
+    // 消息分类树
+    Route::get('message/category', 'notice.NoticeMessage/category');
+    // 消息列表
+    Route::get('message/list', 'notice.NoticeMessage/lists');
+    // 消息详情
+    Route::get('message/info/:id', 'notice.NoticeMessage/info');
+    // 各分类未读数量
+    Route::get('message/unread_count', 'notice.NoticeMessage/unreadCount');
+    // 标记已读（ids 为空表示全部已读）
+    Route::put('message/mark_read', 'notice.NoticeMessage/markRead');
+    // 删除消息
+    Route::delete('message/del', 'notice.NoticeMessage/del');
+
 })->middleware([
     AdminCheckToken::class,
     AdminCheckRole::class,
     AdminLog::class
+]);
+
+/**
+ * 实时推送：单独分组，只做 token 校验
+ * 不挂 AdminCheckRole（避免每次连接重复加载全量菜单接口清单）
+ * 不挂 AdminLog（避免高频 WRITE 操作日志）
+ * 注意：EventSource 不能自定义请求头，token / site-id 通过 query 传递
+ */
+Route::group('notice/message', function () {
+    // SSE 消息推送流（首选）
+    Route::get('stream', 'notice.NoticeMessage/stream');
+    // 长轮询监听（SSE 不可用时的降级方案）
+    Route::get('listen', 'notice.NoticeMessage/listen');
+})->middleware([
+    AdminCheckToken::class,
 ]);

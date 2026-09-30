@@ -11,6 +11,8 @@
 
 namespace app\adminapi\controller\niucloud;
 
+use app\dict\sys\CloudBuildDict;
+use app\service\admin\niucloud\BuildVersionService;
 use app\service\admin\niucloud\NiucloudService;
 use app\service\core\niucloud\CoreCloudBuildService;
 use core\base\BaseAdminController;
@@ -31,9 +33,11 @@ class Cloud extends BaseAdminController
      */
     public function build() {
         $data = $this->request->params([
+            [ 'scope', 'all' ],
+            [ 'port', [] ],
             [ 'addon', [] ]
         ]);
-        return success(data:(new CoreCloudBuildService())->cloudBuild($data['addon']));
+        return success(data:(new CoreCloudBuildService())->cloudBuild($data));
     }
 
     /**
@@ -60,16 +64,85 @@ class Cloud extends BaseAdminController
      * @return \think\Response
      */
     public function clearBuildTask() {
-        return success(data:(new CoreCloudBuildService())->clearTask());
+        $type = request()->param('type', 'cancel');
+        $service = new CoreCloudBuildService();
+        // 任务完成后清除：记录明确的「完成」步骤；否则按用户取消处理
+        if ($type === 'finish') {
+            return success(data: $service->finishCloudBuild());
+        }
+        return success(data: $service->cancelCloudBuild());
+    }
+
+    // 编译前环境检测已统一到通用校验（sys/check?scene=cloud_build）
+    // CoreCloudBuildService::buildPreCheck() 仍保留，由通用校验服务复用
+
+    /**
+     * 获取编译命令配置（编译范围 / 编译端口 / 编译命令）
+     * @description 获取编译命令配置
+     * @return \think\Response
+     */
+    public function buildCommand() {
+        $config = CloudBuildDict::getBuildConfig();
+        $root = rtrim(str_replace('\\', '/', dirname(root_path())), '/');
+        $custom_ports = ( new CoreCloudBuildService() )->getCustomPorts();
+        foreach ($custom_ports as &$port) {
+            $port[ 'command' ] = str_replace('{root}', $root, $port[ 'command' ] ?? '');
+        }
+        unset($port);
+        $config[ 'customPortOptions' ] = $custom_ports;
+        return success('SUCCESS', $config);
     }
 
     /**
-     * 编译前环境检测
-     * @description 编译前环境检测
+     * 编译端口列表（含端口说明与最近一次发版记录）
+     * @description 获取编译端口列表
      * @return \think\Response
      */
-    public function buildPreCheck() {
-        return success(data:(new CoreCloudBuildService())->buildPreCheck());
+    public function getBuildPorts() {
+        return success(data:( new BuildVersionService() )->getPorts());
+    }
+
+    /**
+     * 发版记录分页
+     * @description 获取发版记录列表
+     * @return \think\Response
+     */
+    public function getVersionList() {
+        $data = $this->request->params([
+            [ 'port_key', '' ],
+            [ 'version', '' ],
+            [ 'release_status', '' ],
+            [ 'page', 1 ],
+            [ 'limit', 10 ],
+        ]);
+        return success(data:( new BuildVersionService() )->getPage($data));
+    }
+
+    /**
+     * 切换版本发布状态
+     * @description 发布 / 取消发布版本
+     * @return \think\Response
+     */
+    public function setVersionRelease() {
+        $data = $this->request->params([
+            [ 'id', 0 ],
+            [ 'release_status', 0 ],
+        ]);
+        ( new BuildVersionService() )->setRelease((int) $data[ 'id' ], (int) $data[ 'release_status' ]);
+        return success('SET_SUCCESS');
+    }
+
+    /**
+     * 删除版本记录
+     * @description 删除发版记录
+     * @return \think\Response
+     */
+    public function delVersion() {
+        $data = $this->request->params([
+            [ 'ids', '' ],
+        ]);
+        ( new BuildVersionService() )->del($data[ 'ids' ]);
+        return success('DELETE_SUCCESS');
     }
 
     /**
@@ -110,35 +183,4 @@ class Cloud extends BaseAdminController
         return success('SUCCESS',(new NiucloudService())->getLocalCloudCompileConfig());
     }
 
-    /**
-     * 启动后台下载（SSE编译完成后调用）
-     * @description 启动后台下载
-     * @return \think\Response
-     */
-    public function startServerDownload()
-    {
-        $data = $this->request->params([
-            [ 'task_id', '' ],
-            [ 'download_url', '' ],
-            [ 'authorize_code', '' ],
-            [ 'timestamp', '' ],
-        ]);
-        return success('操作成功', (new CoreCloudBuildService())->startServerDownload(
-            $data['task_id'],
-            $data['download_url'],
-            $data['authorize_code'],
-            $data['timestamp']
-        ));
-    }
-
-    /**
-     * 获取后台下载进度
-     * @description 获取后台下载进度
-     * @return \think\Response
-     */
-    public function getSseBuildLog()
-    {
-        $taskId = $this->request->param('task_id', '');
-        return success('操作成功', (new CoreCloudBuildService())->getSseBuildLog($taskId));
-    }
 }

@@ -3,20 +3,22 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2023 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2025 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+declare (strict_types = 1);
 
 namespace think\model\relation;
 
+use BackedEnum;
 use Closure;
 use think\db\exception\DbException as Exception;
 use think\db\Query;
 use think\helper\Str;
-use think\Model;
+use think\model\contract\Modelable as Model;
 use think\model\Relation;
 
 /**
@@ -63,7 +65,7 @@ class MorphTo extends Relation
      * @param array   $alias     多态别名定义
      * @param ?string $relation  关联名
      */
-    public function __construct(Model $parent, string $morphType, string $morphKey, array $alias = [], string $relation = null)
+    public function __construct(Model $parent, string $morphType, string $morphKey, array $alias = [], ?string $relation = null)
     {
         $this->parent       = $parent;
         $this->morphType    = $morphType;
@@ -93,7 +95,7 @@ class MorphTo extends Relation
      *
      * @return Model
      */
-    public function getRelation(array $subRelation = [], Closure $closure = null)
+    public function getRelation(array $subRelation = [], ?Closure $closure = null)
     {
         $morphKey   = $this->morphKey;
         $morphType  = $this->morphType;
@@ -104,13 +106,7 @@ class MorphTo extends Relation
         // 主键数据
         $pk = $this->parent->$morphKey;
 
-        $relationModel = class_exists($model) ? $this->buildQuery((new $model())->relation($subRelation))->find($pk) : null;
-
-        if ($relationModel) {
-            $relationModel->setParent(clone $this->parent);
-        }
-
-        return $relationModel;
+        return class_exists($model) ? $this->buildQuery((new $model())->relation($subRelation))->find($pk) : null;
     }
 
     /**
@@ -124,7 +120,7 @@ class MorphTo extends Relation
      *
      * @return Query
      */
-    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '', Query $query = null)
+    public function has(string $operator = '>=', int $count = 1, string $id = '*', string $joinType = '', ?Query $query = null)
     {
         return $this->parent;
     }
@@ -139,27 +135,29 @@ class MorphTo extends Relation
      *
      * @return Query
      */
-    public function hasWhere($where = [], $fields = null, string $joinType = '', Query $query = null)
+    public function hasWhere($where = [], $fields = null, string $joinType = '', ?Query $query = null, string $logic = '')
     {
-        $alias = class_basename($this->parent);
+        $model = Str::snake(class_basename($this->parent));
         $types = $this->parent->distinct()->column($this->morphType);
         $query = $query ?: $this->parent->db();
+        $alias = $query->getAlias() ?: $model;
 
         return $query->alias($alias)
-            ->where(function (Query $query) use ($types, $where, $alias) {
+            ->where(function (Query $query) use ($types, $where, $alias, $logic) {
                 foreach ($types as $type) {
                     if ($type) {
-                        $query->whereExists(function (Query $query) use ($type, $where, $alias) {
+                        $query->whereExists(function (Query $query) use ($type, $where, $alias, $logic) {
                             $class = $this->parseModel($type);
                             /** @var Model $model */
                             $model = new $class();
 
                             $table = $model->getTable();
+                            $logic = 'OR' == $logic ? 'whereOr' : 'where';
                             $query
                                 ->table($table)
                                 ->where($alias . '.' . $this->morphType, $type)
-                                ->whereRaw("`{$alias}`.`{$this->morphKey}`=`{$table}`.`{$model->getPk()}`")
-                                ->where($where);
+                                ->whereColumn($alias . '.' . $this->morphKey, $table . '.' . $model->getPk())
+                                ->$logic($where);
                         }, 'OR');
                     }
                 }
@@ -173,8 +171,12 @@ class MorphTo extends Relation
      *
      * @return Model
      */
-    protected function parseModel(string $model): string
+    protected function parseModel($model): string
     {
+        if ($model instanceof BackedEnum) {
+            $model = $model->value;
+        }
+
         if (isset($this->alias[$model])) {
             $model = $this->alias[$model];
         }
@@ -226,7 +228,7 @@ class MorphTo extends Relation
      *
      * @return void
      */
-    public function eagerlyResultSet(array &$resultSet, string $relation, array $subRelation, Closure $closure = null, array $cache = []): void
+    public function eagerlyResultSet(array &$resultSet, string $relation, array $subRelation, ?Closure $closure = null, array $cache = []): void
     {
         $morphKey   = $this->morphKey;
         $morphType  = $this->morphType;
@@ -243,18 +245,20 @@ class MorphTo extends Relation
             foreach ($range as $key => $val) {
                 // 多态类型映射
                 $model = $this->parseModel($key);
-                $obj = new $model();
-                if (!is_null($closure)) {
-                    $obj = $closure($obj);
-                }
-                $pk = $obj->getPk();
-                $list = $obj->with($subRelation)
-                    ->cache($cache[0] ?? false, $cache[1] ?? null, $cache[2] ?? null)
-                    ->select($val);
                 $data = [];
+                if (class_exists($model)) {
+                    $obj = new $model();
+                    if (!is_null($closure)) {
+                        $obj = $closure($obj);
+                    }
+                    $pk = $obj->getPk();
+                    $list = $obj->with($subRelation)
+                        ->cache($cache[0] ?? false, $cache[1] ?? null, $cache[2] ?? null)
+                        ->select($val);
 
-                foreach ($list as $k => $vo) {
-                    $data[$vo->$pk] = $vo;
+                    foreach ($list as $k => $vo) {
+                        $data[$vo->$pk] = $vo;
+                    }
                 }
 
                 foreach ($resultSet as $result) {
@@ -264,8 +268,6 @@ class MorphTo extends Relation
                             $relationModel = null;
                         } else {
                             $relationModel = $data[$result->$morphKey];
-                            $relationModel->setParent(clone $result);
-                            $relationModel->exists(true);
                         }
 
                         $result->setRelation($relation, $relationModel);
@@ -286,7 +288,7 @@ class MorphTo extends Relation
      *
      * @return void
      */
-    public function eagerlyResult(Model $result, string $relation, array $subRelation = [], Closure $closure = null, array $cache = []): void
+    public function eagerlyResult(Model $result, string $relation, array $subRelation = [], ?Closure $closure = null, array $cache = []): void
     {
         // 多态类型映射
         $model = $this->parseModel($result->{$this->morphType});
@@ -304,7 +306,7 @@ class MorphTo extends Relation
      *
      * @return int
      */
-    public function relationCount(Model $result, Closure $closure = null, string $aggregate = 'count', string $field = '*')
+    public function relationCount(Model $result, ?Closure $closure = null, string $aggregate = 'count', string $field = '*')
     {
     }
 
@@ -329,11 +331,6 @@ class MorphTo extends Relation
             $data = (new $model())->with($subRelation)
                 ->cache($cache[0] ?? false, $cache[1] ?? null, $cache[2] ?? null)
                 ->find($pk);
-
-            if ($data) {
-                $data->setParent(clone $result);
-                $data->exists(true);
-            }
         }
 
         $result->setRelation($relation, $data ?: null);
@@ -353,8 +350,8 @@ class MorphTo extends Relation
         $morphType  = $this->morphType;
         $pk         = $model->getPk();
 
-        $this->parent->setAttr($morphKey, $model->$pk);
-        $this->parent->setAttr($morphType, $type ?: get_class($model));
+        $this->parent->set($morphKey, $model->$pk);
+        $this->parent->set($morphType, $type ?: get_class($model));
         $this->parent->save();
 
         return $this->parent->setRelation($this->relation, $model);
@@ -370,8 +367,8 @@ class MorphTo extends Relation
         $morphKey   = $this->morphKey;
         $morphType  = $this->morphType;
 
-        $this->parent->setAttr($morphKey, null);
-        $this->parent->setAttr($morphType, null);
+        $this->parent->set($morphKey, null);
+        $this->parent->set($morphType, null);
         $this->parent->save();
 
         return $this->parent->setRelation($this->relation, null);
