@@ -23,9 +23,22 @@ class Route extends BaseDict
         $addons = $this->getLocalAddons();
 
         foreach ($addons as $k => $v) {
-            $route_path = $this->getAddonAppPath($v) . DIRECTORY_SEPARATOR . $data['app_type'] . DIRECTORY_SEPARATOR . "route" . DIRECTORY_SEPARATOR . "route.php";
-            if (is_file($route_path)) {
-                include $route_path;
+            $main_route_path = $this->getAddonAppPath($v) . DIRECTORY_SEPARATOR . $data['app_type'] . DIRECTORY_SEPARATOR . "route" . DIRECTORY_SEPARATOR . "route.php";
+            if (is_file($main_route_path)) {
+                include $main_route_path;
+            }
+            
+            $route_dir = $this->getAddonAppPath($v) . DIRECTORY_SEPARATOR . $data['app_type'] . DIRECTORY_SEPARATOR . "route";
+            if (is_dir($route_dir)) {
+                $files = scandir($route_dir);
+                foreach ($files as $file) {
+                    if ($file != '.' && $file != '..' && $file != 'route.php' && pathinfo($file, PATHINFO_EXTENSION) == 'php') {
+                        $route_file = $route_dir . DIRECTORY_SEPARATOR . $file;
+                        if (is_file($route_file)) {
+                            include $route_file;
+                        }
+                    }
+                }
             }
         }
         return true;
