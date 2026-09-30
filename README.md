@@ -60,21 +60,9 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 ### 演示地址
 
-- 平台后台演示网址：[<a href='http://demo-saas.site.niucloud.com/admin' target="_blank"> 查看 </a>]
-  <a href='http://demo-saas.site.niucloud.com/admin' target="_blank">http://demo-saas.site.niucloud.com/admin</a><br>
+- 平台后台演示网址：[<a href='https://v2-cs.site.niucloud.com/admin' target="_blank"> 查看 </a>]
+  <a href='https://v2-cs.site.niucloud.com/admin' target="_blank">https://v2-cs.site.niucloud.com/admin</a><br>
   账号：admin 密码：123456
-
-- 商城后台演示网址：[<a href='https://demo-saas.site.niucloud.com/site/shop/index' target="_blank"> 查看 </a>]
-  <a href='https://demo-saas.site.niucloud.com/site/shop/index' target="_blank">http://demo-saas.site.niucloud.com/site/shop/index</a><br>
-  商城系统账号：admin 密码：123456
-
-- 旅游后台演示网址：[<a href='https://demo-saas.site.niucloud.com/site/tourism/index' target="_blank"> 查看 </a>]
-  <a href='https://demo-saas.site.niucloud.com/site/tourism/index/' target="_blank">https://demo-saas.site.niucloud.com/site/tourism/index</a><br>
-  旅游系统账号：admin 密码：123456
-
-- 会员卡后台演示网址：[<a href='https://demo-saas.site.niucloud.com/site/vipcard/index' target="_blank"> 查看 </a>]
-  <a href='https://demo-saas.site.niucloud.com/site/vipcard/index' target="_blank">https://demo-saas.site.niucloud.com/site/vipcard/index</a><br>
-  会员卡系统账号：admin 密码：123456
 
 
 ### 加入NIUCLOUD开发者生态，一起助力成就程序员创业梦想！！！
