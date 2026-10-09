@@ -38,7 +38,7 @@ class Language {
             }
             this.loadLocale.push(`${app}/${locale}/${file}`)
 
-            if (app != 'app' && this.loadLocale.includes(`${app}/${locale}/pages`)) {
+            if (app != 'app' && !this.loadLocale.includes(`${app}/${locale}/pages`)) {
                 const pagesMessages = await import(`~/addon/${app}/lang/${locale}/pages.json`)
                 this.i18n.global.mergeLocaleMessage(locale, pagesMessages)
                 this.loadLocale.push(`${app}/${locale}/pages`)
