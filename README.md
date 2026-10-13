@@ -24,15 +24,10 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 ```
 ### 管理端framework
-<table>
-    <tbody>
-          <tr>
+<img src="niucloud/public/static/resource/images/admin2.jpg" alt="平台端" style="max-width: 200px; display: block; margin-bottom: 20px;">
     ![输入图片说明](niucloud/public/static/resource/images/admin2.jpg)
     ![输入图片说明](niucloud/public/static/resource/images/shop13.jpg)
     ![输入图片说明](niucloud/public/static/resource/images/site2.jpg)
-          </tr>	 
-    </tbody>
-</table>
 
 
 
