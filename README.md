@@ -29,7 +29,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 ### 商城插件SHOP
 
 <table>
-    <tbody>
+    
     <tr>
         <td><img src="niucloud/public/static/resource/images/shop1.jpg"></td>
         <td><img src="niucloud/public/static/resource/images/shop2.jpg"></td>
@@ -44,7 +44,7 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
         <td><img src="niucloud/public/static/resource/images/shop8.jpg"></td>
     </tr>
 
-</tbody></table>
+</tbody>
 
 
 
