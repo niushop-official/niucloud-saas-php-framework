@@ -28,23 +28,24 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 ### 商城插件SHOP
 
+### 商城插件SHOP
 <table>
-    
-    <tr>
-        <td><img src="niucloud/public/static/resource/images/shop1.jpg"></td>
-        <td><img src="niucloud/public/static/resource/images/shop2.jpg"></td>
-        <td><img src="niucloud/public/static/resource/images/shop3.jpg"></td>
-        <td><img src="niucloud/public/static/resource/images/shop4.jpg"></td>
-       
-    </tr>
-    <tr>
-        <td><img src="niucloud/public/static/resource/images/shop5.jpg"></td>
-        <td><img src="niucloud/public/static/resource/images/shop6.jpg"></td>
-        <td><img src="niucloud/public/static/resource/images/shop7.jpg"></td>
-        <td><img src="niucloud/public/static/resource/images/shop8.jpg"></td>
-    </tr>
-
+<tbody>
+<tr>
+<td><img src="public/static/resource/images/shop1.jpg"></td>
+<td><img src="public/static/resource/images/shop2.jpg"></td>
+<td><img src="public/static/resource/images/shop3.jpg"></td>
+<td><img src="public/static/resource/images/shop4.jpg"></td>
+</tr>
+<tr>
+<td><img src="public/static/resource/images/shop5.jpg"></td>
+<td><img src="public/static/resource/images/shop6.jpg"></td>
+<td><img src="public/static/resource/images/shop7.jpg"></td>
+<td><img src="public/static/resource/images/shop8.jpg"></td>
+</tr>
 </tbody>
+</table>
+
 
 
 
