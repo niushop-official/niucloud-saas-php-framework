@@ -31,16 +31,17 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 <table>
     <tbody>
     <tr>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A27.Bll5k5Oi.jpg"></td>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A28.CWYJfJc4.jpg"></td>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A24.BL9nyNIW.jpg"></td>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A26.D_LsTXAd.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop1.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop2.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop3.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop4.jpg"></td>
+       
     </tr>
     <tr>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A21.DG4KeG7m.jpg"></td>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A22.DUOosIBy.jpg"></td>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A23.DqUGqBi6.jpg"></td>
-        <td><img src="https://doc.press.niucloud.com/assets/%E5%95%86%E5%9F%8E%E7%95%8C%E9%9D%A25.kD9xOpcL.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop5.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop6.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop7.jpg"></td>
+        <td><img src="niucloud/public/static/resource/images/shop8.jpg"></td>
     </tr>
 
 </tbody></table>
@@ -69,13 +70,13 @@ niucloud-admin-saas是一款快速开发通用管理后台框架，整体功能�
 
 加入企业微信群技术交流，请扫描下面二维码:
 
-<img src="https://doc.press.niucloud.com/assets/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81.2X1GoZf1.jpg" alt="企业微信二维码" style="max-width: 200px; border: 1px solid #eee; padding: 10px;">
+<img src="niucloud/public/static/resource/images/weixin1.png" alt="企业微信二维码" style="max-width: 200px; border: 1px solid #eee; padding: 10px;">
 
 ### 产品LOGO
 
-<img src="https://doc.press.niucloud.com/assets/%E4%BA%A7%E5%93%81logo.BSKlM-Op.png" alt="产品logo" style="max-width: 200px; display: block; margin-bottom: 20px;">
+<img src="niucloud/public/static/resource/images/logo1.png" alt="产品logo" style="max-width: 200px; display: block; margin-bottom: 20px;">
 
-<img src="https://doc.press.niucloud.com/assets/%E4%BA%A7%E5%93%81logo2.Cm3hxmfq.png" style="max-width: 200px; display: block;">
+<img src="niucloud/public/static/resource/images/logo2.png" style="max-width: 200px; display: block;">
 
 ### 开源使用须知
 
